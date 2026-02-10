@@ -1,0 +1,43 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/mnt/c/Users/hrd13/Documents/Gak/0\\ Study/800Claude/20260201_SUITS/.claude/hooks/validate-paper-request.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '📝 Donna: SUITS.md にシーンを追加してください'"
+          },
+          {
+            "type": "command",
+            "command": "/mnt/c/Users/hrd13/Documents/Gak/0\\ Study/800Claude/20260201_SUITS/.claude/hooks/check-suits-lines.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '✅ Donna: セッション終了前チェック - SUITS.md は更新されましたか？'"
+          },
+          {
+            "type": "command",
+            "command": "/mnt/c/Users/hrd13/Documents/Gak/0\\ Study/800Claude/20260201_SUITS/.claude/hooks/check-suits-lines.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

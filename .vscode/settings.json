@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "*.md": "markdown"
+  },
+  "editor.wordWrap": "on",
+  "editor.formatOnSave": true,
+  "markdown.preview.breaks": true
+}
