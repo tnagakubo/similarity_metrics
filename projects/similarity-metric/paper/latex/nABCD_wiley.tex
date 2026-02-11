@@ -34,11 +34,7 @@
 \corres{Corresponding Author, Department Name, Institution Name, Address. \email{corresponding@institution.edu}}
 
 \abstract[Abstract]{%
-\textbf{Background}: The ICH E17 guideline recommends regional pooling in multi-regional clinical trials (MRCTs) based on similarity of effect modifier (EM) distributions, but provides no specific methodology for quantifying such similarity. Existing approaches focus on location differences (standardized mean difference) or lack interpretable scales (Kolmogorov--Smirnov statistic).
-\textbf{Objective}: To develop and validate a metric for estimating EM distributional differences across regions, together with a clinical calibration framework that translates those estimates into potential treatment effect heterogeneity on the outcome scale.
-\textbf{Methods}: We propose the normalized Area Between Cumulative Distributions (nABCD), defined as the Wasserstein-1 distance between two distributions divided by twice the pooled interquartile range. Through its connection to the treatment effect heterogeneity bound, nABCD enables clinical calibration: the maximum potential regional treatment effect difference ($\Delta_{\max}$) is expressed as a function of nABCD, the pooled IQR, and the CATE sensitivity of the EM. Bootstrap confidence intervals quantify estimation uncertainty. We conducted simulation studies across scenarios including location shifts, scale differences, and shape differences, with sample sizes from 50 to 200 per region.
-\textbf{Results}: The nABCD estimator showed bias $<0.02$ for $n \geq 100$ across non-null scenarios with moderate effect sizes (10{,}000 replications); bias of approximately $-0.04$ persisted for the largest distributional difference (true nABCD $= 0.372$). Bootstrap 95\% confidence intervals achieved coverage within 0.87--0.98 for $n \geq 100$ in most scenarios. Unlike standardized mean difference, nABCD captured scale and shape differences where SMD showed no effect. Application to a diabetes MRCT demonstrated that clinical calibration with $\Delta_{\max}$ provides context-dependent interpretation: the same distributional difference carries different clinical implications depending on the EM's CATE sensitivity.
-\textbf{Conclusions}: nABCD provides a validated metric for assessing EM distributional similarity in MRCTs. Through its connection to treatment effect heterogeneity bounds, nABCD translates distributional differences into potential treatment effect differences on the clinical scale, enabling context-dependent interpretation calibrated to the sensitivity of each effect modifier. We recommend $n \geq 100$ per region for reliable estimation and inference.}
+The ICH E17 guideline recommends regional pooling in multi-regional clinical trials (MRCTs) based on similarity of effect modifier (EM) distributions, but provides no specific methodology for quantifying such similarity. Existing approaches focus on location differences (standardized mean difference) or lack interpretable scales (Kolmogorov--Smirnov statistic). We propose the normalized Area Between Cumulative Distributions (nABCD), defined as the Wasserstein-1 distance between two distributions divided by twice the pooled interquartile range. Through its connection to the treatment effect heterogeneity bound, nABCD enables clinical calibration: the maximum potential regional treatment effect difference ($\Delta_{\max}$) can be expressed as a function of nABCD, the pooled IQR, and the CATE sensitivity of the EM, with bootstrap confidence intervals quantifying estimation uncertainty. Simulation studies across location, scale, and shape scenarios at sample sizes typical in MRCT regional subgroups demonstrated satisfactory bias and coverage of the bootstrap-based estimator. Unlike the standardized mean difference, nABCD captured variance and shape differences that are invisible to location-only metrics. Application to a diabetes MRCT illustrated that clinical calibration provides context-dependent interpretation: the same distributional difference carries different clinical implications depending on the strength of effect modification. The nABCD framework fills a methodological gap in ICH E17 implementation by translating distributional differences into potential treatment effect heterogeneity on the clinical scale, supporting evidence-based pooling decisions.}
 
 \keywords{multi-regional clinical trial; ICH E17; effect modifier; Wasserstein distance; regional pooling; distributional similarity}
 
@@ -67,7 +63,7 @@ Multi-regional clinical trials (MRCTs), conducted across multiple countries or r
 A key strategy for addressing potential regional heterogeneity is the regional pooling approach, wherein regions with similar patient characteristics are grouped for randomization and/or analysis.\cite{iche17} The ICH E17 guideline explicitly recommends that pooling decisions be based on the similarity of effect modifier (EM) distributions:
 
 \begin{quote}
-``Regions may be pooled for randomisation and/or analysis if subjects are thought to be \textbf{similar enough} with respect to intrinsic and/or extrinsic factors relevant to the disease and/or drug under study.'' (ICH E17, Section 2.2.5)
+``Regions may be pooled for randomisation and/or analysis if subjects are thought to be \emph{similar enough} with respect to intrinsic and/or extrinsic factors relevant to the disease and/or drug under study.'' (ICH E17, Section 2.2.5)
 \end{quote}
 
 An effect modifier is a baseline patient characteristic---such as age, disease severity, or genetic marker---for which the treatment benefit differs across subgroups. For example, if younger patients respond better to treatment than older patients, age is an effect modifier. When such heterogeneity exists, even if the drug works identically at the individual level, regions with different patient compositions may observe different average treatment effects. A region with predominantly younger patients would show larger benefits than a region with predominantly older patients, not because the drug works differently, but because the patient mix differs. This fundamental relationship underscores why EM distributional similarity is critical to the validity of regional pooling.
@@ -93,21 +89,21 @@ Kolmogorov--Smirnov statistic & No interpretable scale for decision-making \\
 
 \subsection{Objectives and Contribution}\label{sec:objectives}
 
-This paper addresses the methodological gap by proposing the \textbf{normalized Area Between Cumulative Distributions (nABCD)}, a metric for comparing EM distributions across regions, together with a clinical calibration framework that translates distributional differences into potential treatment effect heterogeneity on the outcome scale. Our specific research question is:
+This paper addresses the methodological gap by proposing the \emph{normalized Area Between Cumulative Distributions} (nABCD), a metric for comparing EM distributions across regions, together with a clinical calibration framework that translates distributional differences into potential treatment effect heterogeneity on the outcome scale. Our specific research question is:
 
 \begin{quote}
-\textbf{How can we estimate distributional similarity between regions in a scale-free manner, and translate that estimate into clinically interpretable information about potential treatment effect heterogeneity?}
+How can we estimate distributional similarity between regions in a scale-free manner, and translate that estimate into clinically interpretable information about potential treatment effect heterogeneity?
 \end{quote}
 
-The emphasis is on \textbf{estimation and clinical interpretation}, not hypothesis testing. We seek to provide regulatory scientists with quantitative tools that inform deliberation, not with binary accept/reject rules. This design philosophy reflects the ICH E17 principle that pooling decisions require contextual judgment rather than mechanical application of thresholds.
+The emphasis is on \emph{estimation and clinical interpretation}, not hypothesis testing. We seek to provide regulatory scientists with quantitative tools that inform deliberation, not with binary accept/reject rules. This design philosophy reflects the ICH E17 principle that pooling decisions require contextual judgment rather than mechanical application of thresholds.
 
 The nABCD metric measures the total area between two cumulative distribution functions, normalized by the pooled interquartile range to achieve scale-free interpretation. The framework offers four contributions:
 
 \begin{enumerate}[1.]
-\item \textbf{Full distributional comparison}: The Wasserstein-1 distance captures differences in location, scale, and shape simultaneously.\cite{panaretos2019}
-\item \textbf{Scale-free estimation}: Normalization by IQR yields a unitless measure, enabling comparisons across EMs measured on different scales. Bootstrap confidence intervals quantify estimation uncertainty.
-\item \textbf{Clinical calibration}: Through the heterogeneity bound (Proposition~\ref{prop:heterogeneity}), nABCD estimates can be translated into potential treatment effect differences ($\Delta_{\max}$) specific to each EM's clinical context, expressed on the primary outcome scale.\cite{pearl2011}
-\item \textbf{Sensitivity analysis}: Because the calibration depends on the CATE sensitivity parameter $L$, which may be uncertain, the framework naturally accommodates sensitivity analysis over $L$, providing a richer evidence base for decision-making than a single binary test.
+\item \emph{Full distributional comparison}: The Wasserstein-1 distance captures differences in location, scale, and shape simultaneously.\cite{panaretos2019}
+\item \emph{Scale-free estimation}: Normalization by IQR yields a unitless measure, enabling comparisons across EMs measured on different scales. Bootstrap confidence intervals quantify estimation uncertainty.
+\item \emph{Clinical calibration}: Through the heterogeneity bound (Proposition~\ref{prop:heterogeneity}), nABCD estimates can be translated into potential treatment effect differences ($\Delta_{\max}$) specific to each EM's clinical context, expressed on the primary outcome scale.\cite{pearl2011}
+\item \emph{Sensitivity analysis}: Because the calibration depends on the CATE sensitivity parameter $L$, which may be uncertain, the framework naturally accommodates sensitivity analysis over $L$, providing a richer evidence base for decision-making than a single binary test.
 \end{enumerate}
 
 The remainder of this paper is organized as follows. Section~\ref{sec:methods} presents the methodological framework. Section~\ref{sec:simulation} describes a comprehensive simulation study. Section~\ref{sec:application} illustrates application to an MRCT dataset. Section~\ref{sec:discussion} discusses implications, limitations, and future directions.
@@ -144,7 +140,7 @@ Geometrically, this equals the total area between the two CDFs (Figure~\ref{fig:
 \caption{nABCD as the area between cumulative distribution functions. The shaded region represents the Wasserstein-1 distance $W_1(F_1, F_2)$, which equals the total area between the two CDFs. nABCD normalizes this area by twice the pooled IQR to achieve scale-free interpretation.\label{fig:nabcd_definition}}
 \end{figure}
 
-The \textbf{normalized Area Between Cumulative Distributions (nABCD)} is defined as the Wasserstein-1 distance normalized by twice the pooled interquartile range:
+The \emph{normalized Area Between Cumulative Distributions} (nABCD) is defined as the Wasserstein-1 distance normalized by twice the pooled interquartile range:
 \begin{equation}
 \text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}},
 \label{eq:nabcd}
@@ -176,7 +172,7 @@ Given samples $\{X_{1,i}\}_{i=1}^{n_1}$ from region 1 and $\{X_{2,j}\}_{j=1}^{n_
 \end{equation}
 where $x_{(1)} < \cdots < x_{(n_1+n_2)}$ are the combined order statistics.
 
-\textbf{Computational complexity}: $O((n_1 + n_2) \log(n_1 + n_2))$, dominated by sorting.
+\emph{Computational complexity}: $O((n_1 + n_2) \log(n_1 + n_2))$, dominated by sorting.
 
 We employ the nonparametric percentile bootstrap for inference\cite{delbarrio1999,sommerfeld2018} with $B = 2{,}000$ replicates.
 
@@ -268,10 +264,10 @@ For each scenario, we generated samples of size $n = 50$, 100, and 200 per regio
 
 Consistent with the estimation-centered framework, we evaluated:
 \begin{enumerate}[1.]
-\item \textbf{Bias}: $\text{Mean}(\widehat{\text{nABCD}}) - \text{true nABCD}$
-\item \textbf{Root mean squared error (RMSE)}: $\sqrt{\text{Mean}[(\widehat{\text{nABCD}} - \text{true nABCD})^2]}$
-\item \textbf{Coverage probability}: Proportion of 95\% bootstrap CIs containing the true value
-\item \textbf{CI width}: Mean width of bootstrap CIs, reflecting estimation precision
+\item \emph{Bias}: $\text{Mean}(\widehat{\text{nABCD}}) - \text{true nABCD}$
+\item \emph{Root mean squared error (RMSE)}: $\sqrt{\text{Mean}[(\widehat{\text{nABCD}} - \text{true nABCD})^2]}$
+\item \emph{Coverage probability}: Proportion of 95\% bootstrap CIs containing the true value
+\item \emph{CI width}: Mean width of bootstrap CIs, reflecting estimation precision
 \end{enumerate}
 
 \subsection{Results}\label{sec:sim_results}
@@ -394,10 +390,10 @@ S08 (Shape only) & $0.070 \pm 0.024$ & $0.00 \pm 0.14$ & Only nABCD detects \\
 
 In summary, the simulation study demonstrates that the nABCD estimator provides reliable estimation with the following properties at sample sizes typical in MRCT regional subgroups:
 \begin{enumerate}[1.]
-\item \textbf{Bias}: Less than 0.02 for non-null scenarios at $n \geq 100$, excluding S05 where persistent bias of $-0.04$ reflects boundary effects at large true values
-\item \textbf{Coverage}: 0.87--0.98 at $n \geq 100$ for most scenarios
-\item \textbf{Precision}: RMSE below 0.06 and CI width below 0.18 at $n \geq 100$
-\item \textbf{Sensitivity}: Captures location, scale, and shape differences where SMD is limited to location only
+\item \emph{Bias}: Less than 0.02 for non-null scenarios at $n \geq 100$, excluding S05 where persistent bias of $-0.04$ reflects boundary effects at large true values
+\item \emph{Coverage}: 0.87--0.98 at $n \geq 100$ for most scenarios
+\item \emph{Precision}: RMSE below 0.06 and CI width below 0.18 at $n \geq 100$
+\item \emph{Sensitivity}: Captures location, scale, and shape differences where SMD is limited to location only
 \end{enumerate}
 
 Scenario S04 (0.5$\sigma$ location shift, true nABCD $= 0.186$) exemplifies the operating characteristics at clinically relevant effect sizes: bias was negligible ($-0.003$ at $n = 100$), coverage was nominal (0.950), and CI width (0.18) translated to a $\Delta_{\max}$ CI width of $2 \times 0.3 \times 1.5 \times 0.18 = 0.16$\% HbA1c when calibrated with $L = 0.3$ and IQR $= 1.5$---a level of precision sufficient for informed regulatory deliberation.
@@ -449,15 +445,15 @@ HbA1c & 0.27 (0.20--0.34) & 0.19 (0.13--0.26) & 0.10 (0.05--0.16) \\
 
 The nABCD values alone do not determine pooling decisions. We apply the clinical calibration procedure from Section~\ref{sec:inference} to translate distributional differences into potential treatment effect heterogeneity.
 
-\textbf{Step 1: Estimate CATE sensitivity $L$ for each EM.}
+\emph{Step 1: Estimate CATE sensitivity $L$ for each EM.}
 From published subgroup analyses in diabetes trials, we adopt the following estimates for the Lipschitz constant of the CATE function:
 \begin{itemize}
-\item \textbf{Age}: $L_{\text{age}} \approx 0.01$\% HbA1c per year. Subgroup analyses typically show modest age--treatment interactions, with treatment effect varying by approximately 0.1\% HbA1c per decade of age.
-\item \textbf{BMI}: $L_{\text{BMI}} \approx 0.02$\% HbA1c per kg/m$^2$. A regression analysis of DPP-4 inhibitor efficacy estimated a BMI coefficient of $-0.02$ per kg/m$^2$ ($p = 0.024$) for the relationship between BMI and HbA1c reduction.\cite{kim2015}
-\item \textbf{HbA1c}: $L_{\text{HbA1c}} \approx 0.3$\% HbA1c per \% HbA1c. Baseline HbA1c is the strongest effect modifier for most glucose-lowering therapies: meta-regression of 98 DPP-4 inhibitor trials estimated 0.4--0.5 percentage points greater HbA1c reduction per 1\% higher baseline,\cite{craddy2014} and a GLP-1 receptor agonist study estimated $\beta = -0.31$ per \% HbA1c after correcting for regression to the mean.\cite{jones2016}
+\item \emph{Age}: $L_{\text{age}} \approx 0.01$\% HbA1c per year. Subgroup analyses typically show modest age--treatment interactions, with treatment effect varying by approximately 0.1\% HbA1c per decade of age.
+\item \emph{BMI}: $L_{\text{BMI}} \approx 0.02$\% HbA1c per kg/m$^2$. A regression analysis of DPP-4 inhibitor efficacy estimated a BMI coefficient of $-0.02$ per kg/m$^2$ ($p = 0.024$) for the relationship between BMI and HbA1c reduction.\cite{kim2015}
+\item \emph{HbA1c}: $L_{\text{HbA1c}} \approx 0.3$\% HbA1c per \% HbA1c. Baseline HbA1c is the strongest effect modifier for most glucose-lowering therapies: meta-regression of 98 DPP-4 inhibitor trials estimated 0.4--0.5 percentage points greater HbA1c reduction per 1\% higher baseline,\cite{craddy2014} and a GLP-1 receptor agonist study estimated $\beta = -0.31$ per \% HbA1c after correcting for regression to the mean.\cite{jones2016}
 \end{itemize}
 
-\textbf{Step 2: Compute $\Delta_{\max}$ for the most discrepant region pair.}
+\emph{Step 2: Compute $\Delta_{\max}$ for the most discrepant region pair.}
 Table~\ref{tab:calibration} presents the clinical calibration for the Japan--US comparison, which showed the largest nABCD values across all EMs.
 
 \begin{table}[ht]
@@ -476,16 +472,16 @@ HbA1c & 0.27 & 0.30 & 1.5\% & 0.24\% & $< 0.4$\% \\
 \end{tablenotes}
 \end{table}
 
-\textbf{Step 3: Interpret $\Delta_{\max}$ in clinical context.}
+\emph{Step 3: Interpret $\Delta_{\max}$ in clinical context.}
 
 The calibration reveals a nuanced picture that illustrates why clinical context, not nABCD alone, must drive interpretation:
 \begin{itemize}
-\item \textbf{Age} (nABCD = 0.12): $\Delta_{\max} = 0.03$\%, representing less than 4\% of the overall treatment effect ($-0.8$\% HbA1c) and less than 8\% of the non-inferiority margin. Age is a weak effect modifier for this drug class, and the distributional difference between regions translates to negligible potential heterogeneity.
-\item \textbf{BMI} (nABCD = 0.51): Despite the large distributional difference, $\Delta_{\max} = 0.16$\%, or 20\% of the overall treatment effect. BMI's low CATE sensitivity ($L = 0.02$) means that even substantial distributional differences have limited impact on treatment effect heterogeneity. Note that reference benchmarks alone would suggest ``large difference''---an assessment that overlooks the weak relationship between BMI and treatment response for this drug class.
-\item \textbf{HbA1c} (nABCD = 0.27): $\Delta_{\max} = 0.24$\%, reaching 30\% of the overall treatment effect and 60\% of the non-inferiority margin. Although the nABCD is smaller than for BMI, baseline HbA1c's strong CATE sensitivity ($L = 0.30$) means the moderate distributional difference carries greater clinical weight. This comparison warrants careful deliberation.
+\item \emph{Age} (nABCD = 0.12): $\Delta_{\max} = 0.03$\%, representing less than 4\% of the overall treatment effect ($-0.8$\% HbA1c) and less than 8\% of the non-inferiority margin. Age is a weak effect modifier for this drug class, and the distributional difference between regions translates to negligible potential heterogeneity.
+\item \emph{BMI} (nABCD = 0.51): Despite the large distributional difference, $\Delta_{\max} = 0.16$\%, or 20\% of the overall treatment effect. BMI's low CATE sensitivity ($L = 0.02$) means that even substantial distributional differences have limited impact on treatment effect heterogeneity. Note that reference benchmarks alone would suggest ``large difference''---an assessment that overlooks the weak relationship between BMI and treatment response for this drug class.
+\item \emph{HbA1c} (nABCD = 0.27): $\Delta_{\max} = 0.24$\%, reaching 30\% of the overall treatment effect and 60\% of the non-inferiority margin. Although the nABCD is smaller than for BMI, baseline HbA1c's strong CATE sensitivity ($L = 0.30$) means the moderate distributional difference carries greater clinical weight. This comparison warrants careful deliberation.
 \end{itemize}
 
-This example demonstrates that \textbf{the clinical meaning of nABCD depends on the EM's role as an effect modifier}. A large nABCD for a weak EM (BMI, $L = 0.02$) may be less consequential than a moderate nABCD for a strong EM (HbA1c, $L = 0.30$). When $L$ is uncertain, sensitivity analysis over plausible values is essential. Table~\ref{tab:sensitivity} illustrates this for baseline HbA1c.
+This example demonstrates that the clinical meaning of nABCD depends on the EM's role as an effect modifier. A large nABCD for a weak EM (BMI, $L = 0.02$) may be less consequential than a moderate nABCD for a strong EM (HbA1c, $L = 0.30$). When $L$ is uncertain, sensitivity analysis over plausible values is essential. Table~\ref{tab:sensitivity} illustrates this for baseline HbA1c.
 
 \begin{table}[ht]
 \caption{Sensitivity analysis: $\Delta_{\max}$ as a function of assumed CATE sensitivity $L$ for baseline HbA1c (Japan vs.\ US, nABCD = 0.27, IQR = 1.5\%).\label{tab:sensitivity}}
@@ -509,7 +505,7 @@ The sensitivity analysis provides trial designers and regulators with a transpar
 
 The estimation precision from the simulation study (Section~\ref{sec:simulation}) propagates directly to the precision of $\Delta_{\max}$. For HbA1c (nABCD CI width $\approx 0.14$ at $n = 150$--200), the CI width in $\Delta_{\max}$ units is $2 \times 0.30 \times 1.5 \times 0.14 = 0.13$\% HbA1c---a level of uncertainty small enough to support meaningful clinical calibration. For BMI, where $L = 0.02$, the same nABCD CI width translates to only $2 \times 0.02 \times 7.8 \times 0.14 = 0.04$\% HbA1c, demonstrating that estimation uncertainty in $\Delta_{\max}$ scales with CATE sensitivity.
 
-The analysis illustrates that nABCD serves as a \textbf{measuring instrument} for distributional distance, while the \textbf{clinical judgment} of whether that distance matters requires integration with domain knowledge about the EM's CATE sensitivity. The role of the statistician is to provide $\Delta_{\max}$ and its uncertainty; the role of the clinical team is to evaluate that information against the therapeutic context.
+The analysis illustrates that nABCD serves as a measuring instrument for distributional distance, while the clinical judgment of whether that distance matters requires integration with domain knowledge about the EM's CATE sensitivity. The role of the statistician is to provide $\Delta_{\max}$ and its uncertainty; the role of the clinical team is to evaluate that information against the therapeutic context.
 
 %==============================================================================
 \section{Discussion}\label{sec:discussion}

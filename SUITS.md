@@ -28,6 +28,7 @@
 | Round 3 | Remove Power/Type I Error from simulation | 1.3, 3, 3.3.2, Abstract, Discussion |
 | Round 4 | Harvey's 4 decisions from sim review | 3.2, 5.2, power remnant fix, S04 showcase |
 | Louis Re-review | 1C/0M/2m — Abstract S05 bias qualification | Abstract, Sim Summary (3.2) |
+| SiM Convention | Tak指示: Abstract narrative化、本文bold除去 | Abstract, 全Section |
 
 ### Active Tasks — Phase 8: Submission-Ready Plan (Jessica approved)
 
@@ -64,6 +65,60 @@
 ---
 
 ## Live Script
+
+### [2026-02-12 11:00] Scene: Harvey's Correction — "Winners don't make excuses."
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+
+*Tak からのメッセージが Harvey のスクリーンに表示される。Harvey が一読し、表情が引き締まる。*
+
+**Harvey**: （立ち上がって）
+「Tak からだ。2点。端的に言う：
+
+1. **Abstract に数字は要らない** — SiM に載っている他の論文を見ろ。structured format（Background/Objective/Methods/Results/Conclusions）は SiM の慣例じゃない。数字を並べるのも違う。Narrative style で書き直す。
+
+2. **本文の太字は不要** — `\textbf{}` を本文中で使いすぎだ。SiM の convention では emphasis は italics、定義語も italics。Table header の bold は standard だが、body text に bold は使わない。
+
+"Winners don't make excuses when the boss corrects you." 即座に直す」
+
+**Mike**: （原稿を開きながら）
+「"I got it." 具体的な修正リスト：
+
+**Abstract 書き直し:**
+- structured labels（Background/Objective/Methods/Results/Conclusions）を除去
+- 具体的数字を全て除去: 0.02, 0.87-0.98, 10,000, 0.372, -0.04
+- Narrative style: 一つの flowing paragraph
+
+**本文 bold → italics:**
+- 'similar enough' → `\\emph`（ICH E17 引用内）
+- 'normalized Area Between Cumulative Distributions' → `\\emph`（定義）
+- 研究質問の quote block → bold 除去
+- 'estimation and clinical interpretation' → `\\emph`
+- enumerate labels（Full distributional comparison 等）→ `\\emph`
+- Computational complexity → `\\emph`
+- 評価指標 labels（Bias, RMSE 等）→ `\\emph`
+- Simulation summary labels → `\\emph`
+- Application の Step 1/2/3 → `\\emph`
+- EM名（Age, BMI, HbA1c）→ `\\emph`
+- 'measuring instrument', 'clinical judgment' → bold 除去
+
+Table header の `\\textbf` は standard convention なので維持」
+
+**Harvey**: （頷いて）
+「全て修正完了。Tak の指摘は正しかった。お作法を間違えたのは我々のミスだ。
+
+"I don't have dreams, I have goals." SiM の convention に従う。それが goal だ」
+
+**Donna**: （記録して）
+「"I'm Donna. I know everything."
+
+**修正内容:**
+- Abstract: structured → narrative（数字なし、labels なし）
+- 本文: `\\textbf` 17箇所 → `\\emph` or 除去
+- Table header の bold: 維持（standard convention）
+- 修正済み ✅」
+
+---
 
 ### [2026-02-12 10:30] Scene: Louis Re-Review — "You just got Litt up!"
 
