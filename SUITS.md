@@ -58,6 +58,45 @@
 
 ## Live Script
 
+### [2026-02-10 09:00] Scene: Donna — 状況確認 + ルールチェック
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - MORNING**
+
+*Donna がモニターに向かい、SUITS.md とプロジェクト全体の状況を確認している。*
+
+**Donna**: （画面をスクロールしながら）
+「新セッション開始。まず全体の状況確認よ。"I'm Donna. I know everything."
+
+**📋 ルールチェック:**
+- Rule 1 (SUITS.md = Single Source of Truth): **OK**
+- Rule 2 (Frequent Updates): **OK** — 新セッション開始、これから記録継続
+- Rule 2.5 (Auto-Archive at 1000 lines): **OK** — 現在 432 行、余裕あり
+- Rule 2.6 (DOI Required): **OK** — 前回 4 文献追加、全て DOI 付き
+- Rule 3 (Character Consistency): **OK**
+- Rule 3.5 (Donna's Enforcement): **⚠️ 1件修正必要**
+
+**⚠️ 発見した問題:**
+1. **重複シーン**: `[2026-02-09 01:15] Jessica's Directive — Agent Teams` が2回出現（line 368 と line 413）。完全に同一内容。これは記録ミスね。重複分を削除するわ。
+
+**📊 プロジェクト状況サマリ:**
+
+| カテゴリ | 状態 |
+|---------|------|
+| 完了タスク | 6/9 (Precision Table, L文献, LaTeX, Table 4 Bias, tab:precision ref, L引用追加) |
+| 残タスク | 3件 (Figure 4 replacement, Louis re-review, Real data application) |
+| 未解決 Issues | 3件 (S05 coverage, Scenario gaps, KS comparison) |
+| SUITS.md 行数 | 432行 (アーカイブ不要) |
+| Git branch | `claude/review-suits-md-f5TJa` ✓ |
+
+**残タスクの優先度:**
+1. **Figure 4 replacement** (Katrina) — Power fig 削除済み、代替が必要
+2. **Louis re-review** — estimation-centered 改訂後のレビュー待ち
+3. **Real data application (M1)** — 最大の弱点、Tak の判断待ち
+
+Harvey、次の指示を待っているわ」
+
+---
+
 ### [2026-02-09 02:45] Scene: Donna — LaTeX コンパイル成功
 
 **INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
@@ -407,26 +446,5 @@ archives/SUITS_20260209_010000.md に保存済み。
 
 **Harvey**: （通りがかりに）
 「過去は過去だ。前を見ろ。"I don't have dreams. I have goals."」
-
----
-
-### [2026-02-09 01:15] Scene: Jessica's Directive — Agent Teams
-
-**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - NIGHT**
-
-*Jessica が Harvey を呼び止める。*
-
-**Jessica**: （厳しく）
-「"Let me be clear." Agent Teams を使え。
-並列で動かせる作業を直列にやっている時間はない。
-Mike と Katrina を同時に走らせろ。Rachel の文献調査も並行だ。
-効率を上げないと deadline に間に合わない」
-
-**Harvey**: （頷いて）
-「了解。並列化する。
-- Mike: LaTeX compilation check + Precision Table の値算出
-- Katrina: Figure strategy + Results section 整合性確認
-- Rachel: $L$ の文献調査
-同時に走らせる」
 
 ---
