@@ -29,6 +29,7 @@
 | Round 4 | Harvey's 4 decisions from sim review | 3.2, 5.2, power remnant fix, S04 showcase |
 | Louis Re-review | 1C/0M/2m — Abstract S05 bias qualification | Abstract, Sim Summary (3.2) |
 | SiM Convention | Tak指示: Abstract narrative化、本文bold除去 | Abstract, 全Section |
+| External Review | 2C/3M/3m — W1根拠、複数EM、Prop命名、Bootstrap境界 | 2.1, 5.1(new), 5.2, Prop.1 |
 
 ### Active Tasks — Phase 8: Submission-Ready Plan (Jessica approved)
 
@@ -65,6 +66,137 @@
 ---
 
 ## Live Script
+
+### [2026-02-12 11:30] Scene: External Review — "Three Pairs of Eyes"
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Louis がコンファレンスルームのホワイトボードに 3 名の外部レビュアーの名前を書く。Harvey、Mike、Katrina、Rachel が着席。*
+
+**Louis**: （資料を配りながら）
+「外部レビューを招集した。この論文の 3 つの柱 — Wasserstein 理論、臨床試験の規制実務、Bootstrap 推論 — それぞれの専門家だ。
+
+1. **Dr. Cédric Beaumont** — Villani-style OT theorist。最適輸送の理論的基盤を審査。
+2. **Dr. Sarah Pemberton** — Pocock-style clinical trialist。規制実務への適用可能性を審査。
+3. **Dr. Neville Hartigan** — Hall-style bootstrap theorist。Bootstrap 推論の理論的妥当性を審査。
+
+"You just got Litt up!" — 容赦なく行くぞ」
+
+---
+
+*Dr. Beaumont が原稿の Section 2.1 を開く。*
+
+**Dr. Beaumont** (Villani-style):
+「理論面から 3 点指摘する。
+
+**[C1] W1 vs W2 の選択根拠が不十分** ❌ Critical
+
+論文は Wasserstein-1 距離を使用しているが、なぜ W1 であって W2 ではないのか。W2 は Gaussian family で closed-form を持ち、統計的推論の漸近理論も整備されている。
+
+ただし — 私自身の答えを言えば — W1 の選択は正しい。理由は equation (2) の heterogeneity bound だ：
+
+$$|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot W_1(F_1, F_2)$$
+
+CATE 関数 $\tau(x)$ が Lipschitz 連続であれば、Kantorovich-Rubinstein 双対性により bound は自然に W1 を要求する。W2 では Lipschitz bound が成立しない。
+
+問題は、**この根拠が原稿に明示されていない**ことだ。Reviewer は必ず聞く。Section 2.1 で Kantorovich-Rubinstein 双対性への一文を加えるべきだ。
+
+**[M1] Proposition 1 の命名が不正確** ⚠️ Major
+
+'Boundedness' と名付けているが、証明しているのは non-negativity であって上界（有界性）ではない。nABCD の上界は一般には無限だ（heavy-tail 分布で IQR は有限でも W1 は無限になりうる）。'Non-negativity' に改名するか、上界の議論を追加すべきだ。
+
+**[m1] 収束速度の欠如** ⚠️ Minor
+
+1 次元の W1 推定量の収束速度は $O(n^{-1/2})$（対数項なし、del Barrio et al. 1999）。IQR の収束速度も $O(n^{-1/2})$。nABCD の漸近正規性を Appendix で述べるべきだ。ただし submit blocking ではない」
+
+---
+
+*Dr. Pemberton がテーブルを見回す。*
+
+**Dr. Pemberton** (Pocock-style):
+「規制実務の観点から 3 点。
+
+**[C2] 複数 EM の統合方法が欠落** ❌ Critical
+
+現実の MRCT では EM 候補が 5-10 個ある。論文は各 EM を個別に評価するが、**複数の EM から pooling の overall decision にどう至るのか**の guidance が全くない。
+
+Reviewer の典型的な質問: 'Age の $\Delta_{\max}$ は小さいが HbA1c の $\Delta_{\max}$ は大きい。Pooling するのか、しないのか？'
+
+最低限 Discussion で practical guidance を述べるべきだ。例えば：
+- 全 EM の $\Delta_{\max}$ の maximum を使う conservative approach
+- Risk-benefit の枠組みで総合判断する totality-of-evidence approach
+- 各 EM の $\Delta_{\max}$ を報告し、最も影響の大きい EM で判断する
+
+**[M2] Hypothetical data の限界** ⚠️ Major
+
+Application section は hypothetical parameters を使用。Published summary statistics からの再構成でもいいから、何らかの real-world grounding が欲しい。Reviewer 2 が必ず 'Where is the real data?' と聞く。ただしこれは major revision レベルで、current submission の判断次第だ。
+
+**[m2] R code リポジトリの URL が placeholder** ⚠️ Minor
+
+'available at [repository URL]' — submit 前に actual URL が必要」
+
+---
+
+*Dr. Hartigan が coverage table を指す。*
+
+**Dr. Hartigan** (Hall-style):
+「Bootstrap 推論について 2 点。
+
+**[M3] 境界でのBootstrap妥当性** ⚠️ Major
+
+nABCD = 0（null case）ではパラメータが parameter space の境界にある。Standard percentile bootstrap は境界で breakdown する可能性がある — Efron (1979) 以来知られた問題だ。
+
+論文は S01 の coverage を 'not reported' としており、これは honest だ。だが理論的な議論が足りない。'True value at the boundary of the parameter space invalidates standard bootstrap consistency results' の一文を Limitations に加えるべきだ。
+
+Non-null scenarios では boundary から離れるため standard theory が適用でき、実際 simulation results が良好な coverage を示している。この distinction を明示すれば、S01 coverage 非報告の正当化が強化される。
+
+**[m3] Percentile bootstrap の精度次数** ⚠️ Minor
+
+Percentile bootstrap は first-order accurate（error $O(n^{-1/2})$）。BCa は second-order（$O(n^{-1})$）を狙うが、本論文では bounded statistic のため失敗している。
+
+Studentized bootstrap は alternative だが、nABCD の分散推定量が複雑なため現実的でない。この trade-off を一文で述べると、'why percentile?' への回答が完全になる」
+
+---
+
+**Louis**: （ホワイトボードにまとめを書きながら）
+「**外部レビュー集計:**
+
+| 重要度 | 件数 | 内容 |
+|--------|------|------|
+| **Critical** | 2 | C1: W1 選択根拠の明示、C2: 複数 EM 統合 guidance |
+| **Major** | 3 | M1: Proposition 命名、M2: Hypothetical data、M3: Bootstrap 境界理論 |
+| **Minor** | 3 | m1: 収束速度、m2: R code URL、m3: Percentile 精度次数 |
+
+Harvey、判断を」
+
+**Harvey**: （立ち上がって）
+「Critical 2 件と Major 3 件のうち、**今すぐ対応できるものと保留するものを分ける。**
+
+**即時対応（原稿修正）:**
+1. **C1**: W1 選択根拠 — Section 2.1 に Kantorovich-Rubinstein の一文追加。Mike。
+2. **C2**: 複数 EM 統合 — Discussion に practical guidance 段落追加。Mike。
+3. **M1**: Proposition 1 → 'Non-negativity' に改名。Mike。
+4. **M3**: Bootstrap 境界 — Limitations に一文追加。Mike。
+
+**保留（Tak 判断待ち）:**
+5. **M2**: Real data — S3 の strategy decision に依存。Tak と相談。
+6. **m1-m3**: Minor は submit blocking ではない。m2 の URL は submit 直前に確定。
+
+"I don't have dreams, I have goals." C1, C2, M1, M3 — 4 件を今すぐ潰す」
+
+**Mike**: （頷いて）
+「"I got it." 全て明確だ。即座に対応する」
+
+**Donna**: （タブレットに記録）
+「"I'm Donna. I know everything."
+
+**External Review Summary:**
+- Experts: Beaumont (Villani), Pemberton (Pocock), Hartigan (Hall)
+- Critical 2 / Major 3 / Minor 3
+- 即時対応: 4 件（C1, C2, M1, M3）
+- 保留: 2 件（M2 = S3 dependent, Minor = non-blocking）」
+
+---
 
 ### [2026-02-12 11:00] Scene: Harvey's Correction — "Winners don't make excuses."
 

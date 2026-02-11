@@ -133,7 +133,7 @@ W_1(F, G) = \int_{-\infty}^{\infty} |F(x) - G(x)| \, dx.
 \label{eq:wasserstein}
 \end{equation}
 
-Geometrically, this equals the total area between the two CDFs (Figure~\ref{fig:nabcd_definition}). Unlike the standardized mean difference, the Wasserstein distance responds to changes in variance, skewness, and other distributional features.\cite{panaretos2019}
+Geometrically, this equals the total area between the two CDFs (Figure~\ref{fig:nabcd_definition}). Unlike the standardized mean difference, the Wasserstein distance responds to changes in variance, skewness, and other distributional features.\cite{panaretos2019} We use $W_1$ rather than higher-order Wasserstein distances because the Lipschitz bound in equation~(\ref{eq:heterogeneity_bound}) requires the $W_1$ distance specifically; by the Kantorovich--Rubinstein duality, $W_1(F_1, F_2) = \sup_{\|f\|_{\text{Lip}} \leq 1} |\int f \, dF_1 - \int f \, dF_2|$, which directly connects Lipschitz-continuous functions (including the CATE) to distributional distance.\cite{villani2009}
 
 \begin{figure}[t]
 \centerline{\includegraphics[width=\textwidth]{fig2_nabcd_definition.pdf}}
@@ -148,7 +148,7 @@ The \emph{normalized Area Between Cumulative Distributions} (nABCD) is defined a
 where the pooled IQR is computed from the combined sample. The IQR-based normalization enables scale-free interpretation, is resistant to outliers, and expresses distributional differences in units of spread.
 
 \begin{proposition}\label{prop:boundedness}
-\textup{(Boundedness).} For distributions with finite IQR, $\text{nABCD} \geq 0$, with equality if and only if $F_1 = F_2$.
+\textup{(Non-negativity).} For distributions with finite IQR, $\text{nABCD} \geq 0$, with equality if and only if $F_1 = F_2$.
 \end{proposition}
 
 \begin{proposition}\label{prop:heterogeneity}
@@ -528,13 +528,17 @@ Based on our findings, we offer the following recommendations for practitioners:
 \item When $L$ cannot be estimated, use the reference benchmarks in Table~\ref{tab:benchmarks} as initial guidance, recognizing that clinical calibration provides a more rigorous basis for decision-making.
 \end{enumerate}
 
+\subsection{Practical Considerations for Multiple Effect Modifiers}\label{sec:multiple_em}
+
+In practice, multiple candidate EMs may be evaluated simultaneously. The nABCD framework assesses each EM separately, and we recommend reporting $\Delta_{\max}$ and its CI for every candidate EM across all region pairs. To arrive at an overall pooling recommendation, trial designers may adopt a conservative approach based on the maximum $\Delta_{\max}$ across all EMs and region pairs, or they may take a totality-of-evidence approach in which the collection of $\Delta_{\max}$ values, together with their uncertainties and the reliability of each $L$ estimate, informs a holistic judgment. The choice between these strategies depends on the regulatory context: for applications where a formal pooling criterion is required, the maximum $\Delta_{\max}$ provides a defensible worst-case assessment; for advisory settings where pooling decisions are informed by clinical deliberation, the full set of calibrated results offers a richer evidence base.
+
 \subsection{Limitations and Future Directions}\label{sec:limitations}
 
 Several limitations should be acknowledged:
 \begin{enumerate}[1.]
 \item The current formulation applies to continuous EMs only; extensions to categorical or mixed-type EMs require further development.
 \item nABCD evaluates each EM separately rather than jointly; a multivariate extension would address potential confounding among EMs.
-\item Positive bias under the null at small sample sizes ($n < 100$) can inflate nABCD estimates, and persistent negative bias at large true values (S05, nABCD $= 0.372$) leads to progressive undercoverage (0.731 at $n = 200$). These boundary effects are inherent to the non-negative, bounded nature of nABCD as a function of the Wasserstein distance. Coverage can also exhibit non-monotonic behavior: for the shape scenario (S08), coverage was 0.573 at $n = 50$, 0.945 at $n = 100$, and 0.996 at $n = 200$, reflecting how the balance between bias magnitude and CI width shifts with sample size. We recommend $n \geq 100$ per region for reliable point estimation and confidence intervals, and caution that coverage may degrade when the true nABCD exceeds approximately 0.3.
+\item Positive bias under the null at small sample sizes ($n < 100$) can inflate nABCD estimates, and persistent negative bias at large true values (S05, nABCD $= 0.372$) leads to progressive undercoverage (0.731 at $n = 200$). These boundary effects are inherent to the non-negative, bounded nature of nABCD as a function of the Wasserstein distance. When the true value equals zero, the parameter lies on the boundary of the parameter space, where standard bootstrap consistency results may not apply;\cite{andrews2000} we therefore do not report null-scenario coverage and recommend interpreting nABCD estimates near zero with caution. Coverage can also exhibit non-monotonic behavior: for the shape scenario (S08), coverage was 0.573 at $n = 50$, 0.945 at $n = 100$, and 0.996 at $n = 200$, reflecting how the balance between bias magnitude and CI width shifts with sample size. We use the percentile bootstrap, which is first-order accurate; bias-corrected methods such as BCa showed inferior performance for this bounded statistic (Section~\ref{sec:sim_results}), and the studentized bootstrap would require variance estimation for the Wasserstein distance ratio, which adds substantial complexity. We recommend $n \geq 100$ per region for reliable point estimation and confidence intervals, and caution that coverage may degrade when the true nABCD exceeds approximately 0.3.
 \item The clinical calibration requires estimation of CATE sensitivity $L$, which may not always be available from prior data. Reference benchmarks are provided as a fallback but should not replace context-specific calibration.
 \end{enumerate}
 
