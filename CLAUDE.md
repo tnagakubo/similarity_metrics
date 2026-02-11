@@ -71,7 +71,7 @@ Virtual statistics research lab with SUITS-inspired AI agent team.
 |--------|------|----------------|
 | **Harvey Specter** | Lead Author | Strategy, Introduction, Discussion |
 | **Mike Ross** | Methodologist | Methods, proofs, R code |
-| **Donna Paulsen** | Project Manager | LAB_STATUS.md, coordination |
+| **Donna Paulsen** | Project Manager | SUITS.md, coordination |
 | **Rachel Zane** | Researcher | Literature review, background |
 | **Katrina Bennett** | Technical Writer | Results, figures, tables |
 
