@@ -10,7 +10,7 @@
 **Phase**: 8 - Submission-Ready Plan (Jessica Strategic Directive)
 **Scene**: Continuing from archive
 
-**Previous Archive**: archives/SUITS_20260209_010000.md (4,435 lines)
+**Previous Archive**: archives/SUITS_20260212_090000.md (995 lines)
 
 ### Purpose Statement (Jessica approved)
 
@@ -26,6 +26,10 @@
 | Round 1 | Clinical calibration via $\Delta_{\max}$ | 2.3, 4, Abstract, 1.3, 5.1-5.3 |
 | Round 2 | Remove equivalence testing | 2.3.2, 4 (judgment labels → quantitative facts) |
 | Round 3 | Remove Power/Type I Error from simulation | 1.3, 3, 3.3.2, Abstract, Discussion |
+| Round 4 | Harvey's 4 decisions from sim review | 3.2, 5.2, power remnant fix, S04 showcase |
+| Louis Re-review | 1C/0M/2m — Abstract S05 bias qualification | Abstract, Sim Summary (3.2) |
+| SiM Convention | Tak指示: Abstract narrative化、本文bold除去 | Abstract, 全Section |
+| External Review | 2C/3M/3m — W1根拠、複数EM、Prop命名、Bootstrap境界 | 2.1, 5.1(new), 5.2, Prop.1 |
 
 ### Active Tasks — Phase 8: Submission-Ready Plan (Jessica approved)
 
@@ -33,26 +37,16 @@
 |-------|------|-------|--------|
 | ~~**S1**~~ | ~~Figure 4: Estimation Quality (Coverage + CI Width)~~ | ~~Katrina~~ | **DONE** |
 | ~~**S1**~~ | ~~Harvey selects: Estimation Quality figure~~ | ~~Harvey~~ | **DONE** |
-| **S2** | Re-review: estimation framing consistency, numerical integrity | Louis | ⏳ Pending |
+| ~~**S1**~~ | ~~Harvey's 4 decisions: manuscript implementation~~ | ~~Mike~~ | **DONE** |
+| ~~**S2**~~ | ~~Re-review: estimation framing consistency, numerical integrity~~ | ~~Louis~~ | **DONE** ✅ |
 | **S3** | Real data strategy decision (A: public data / B: enhance hypothetical / C: reconstruct from published) | Harvey | ⏳ **Decision needed** |
 | **S3** | Literature support for real data application | Rachel | ⏳ Pending |
 | **S4** | LaTeX compile → PDF → Word conversion | Mike (Katrina) | ⏳ Pending |
 | ~~**S4**~~ | ~~Figure files: PNG 300dpi (10K data)~~ | ~~Katrina~~ | **DONE** |
 | **S4** | DOI final check (all references) | Rachel | ⏳ Pending |
-| **S4** | Scenario numbering cleanup (S02/S07 gap) | Mike | ⏳ Minor |
+| **S4** | Scenario numbering cleanup (S02/S07 gap) | Mike | ⏳ Deferred (requires fig regen) |
 | **S5** | Cover letter, title page, checklist | Donna | ⏳ Pending |
 | **S5** | Final Go/No-Go approval | Jessica | ⏳ Waiting |
-
-### Completed Tasks (Previous Rounds)
-
-| Task | Owner | Status |
-|------|-------|--------|
-| ~~Precision Table (RMSE + CI Width)~~ | ~~Katrina~~ | **DONE** — RMSE一致, CI Width実bootstrap値使用 |
-| ~~$L$ literature review~~ | ~~Rachel~~ | **DONE** — 6+ meta-regression, L値全て実証的に支持 |
-| ~~LaTeX compilation check~~ | ~~Mike~~ | **DONE** — 構文クリーン, 全ref/cite一致 |
-| ~~Table 4 Bias 値更新~~ | ~~Mike~~ | **DONE** — v2 CSV で全値更新 + Coverage table も修正 |
-| ~~tab:precision \ref{} 追加~~ | ~~Katrina~~ | **DONE** — 既に line 332 に存在。誤検知 |
-| ~~$L$ 文献引用追加~~ | ~~Rachel/Mike~~ | **DONE** — 4 文献追加、2 箇所に cite 配置 |
 
 ### Key Decisions
 
@@ -60,16 +54,404 @@
 2. **Clinical calibration**: $\Delta_{\max} = 2L \cdot IQR \cdot nABCD$ — context-dependent, not fixed thresholds
 3. **Estimation-centered**: No hypothesis testing in main text; formal test kept as 1-sentence supplementary option
 4. **Power removed**: Simulation evaluates estimation quality (Bias, RMSE, Coverage, CI Width), not detection/equivalence power
+5. **S04 showcase**: S04 (0.5σ) is the primary showcase scenario — Bias negligible, Coverage nominal, CI Width reasonable
+6. **S08 overcoverage**: Non-monotonic coverage pattern explicitly discussed in Results and Limitations
 
 ### Issues
 
 1. S05 coverage degradation (0.73 at n=200) — negative bias from bounded statistic
-2. Scenario numbering gaps (S02, S07 missing) — minor
+2. Scenario numbering gaps (S02, S07 missing) — deferred, requires figure regeneration
 3. KS comparison in simulation — deferred, Tak decision needed
 
 ---
 
 ## Live Script
+
+### [2026-02-12 11:30] Scene: External Review — "Three Pairs of Eyes"
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Louis がコンファレンスルームのホワイトボードに 3 名の外部レビュアーの名前を書く。Harvey、Mike、Katrina、Rachel が着席。*
+
+**Louis**: （資料を配りながら）
+「外部レビューを招集した。この論文の 3 つの柱 — Wasserstein 理論、臨床試験の規制実務、Bootstrap 推論 — それぞれの専門家だ。
+
+1. **Dr. Cédric Beaumont** — Villani-style OT theorist。最適輸送の理論的基盤を審査。
+2. **Dr. Sarah Pemberton** — Pocock-style clinical trialist。規制実務への適用可能性を審査。
+3. **Dr. Neville Hartigan** — Hall-style bootstrap theorist。Bootstrap 推論の理論的妥当性を審査。
+
+"You just got Litt up!" — 容赦なく行くぞ」
+
+---
+
+*Dr. Beaumont が原稿の Section 2.1 を開く。*
+
+**Dr. Beaumont** (Villani-style):
+「理論面から 3 点指摘する。
+
+**[C1] W1 vs W2 の選択根拠が不十分** ❌ Critical
+
+論文は Wasserstein-1 距離を使用しているが、なぜ W1 であって W2 ではないのか。W2 は Gaussian family で closed-form を持ち、統計的推論の漸近理論も整備されている。
+
+ただし — 私自身の答えを言えば — W1 の選択は正しい。理由は equation (2) の heterogeneity bound だ：
+
+$$|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot W_1(F_1, F_2)$$
+
+CATE 関数 $\tau(x)$ が Lipschitz 連続であれば、Kantorovich-Rubinstein 双対性により bound は自然に W1 を要求する。W2 では Lipschitz bound が成立しない。
+
+問題は、**この根拠が原稿に明示されていない**ことだ。Reviewer は必ず聞く。Section 2.1 で Kantorovich-Rubinstein 双対性への一文を加えるべきだ。
+
+**[M1] Proposition 1 の命名が不正確** ⚠️ Major
+
+'Boundedness' と名付けているが、証明しているのは non-negativity であって上界（有界性）ではない。nABCD の上界は一般には無限だ（heavy-tail 分布で IQR は有限でも W1 は無限になりうる）。'Non-negativity' に改名するか、上界の議論を追加すべきだ。
+
+**[m1] 収束速度の欠如** ⚠️ Minor
+
+1 次元の W1 推定量の収束速度は $O(n^{-1/2})$（対数項なし、del Barrio et al. 1999）。IQR の収束速度も $O(n^{-1/2})$。nABCD の漸近正規性を Appendix で述べるべきだ。ただし submit blocking ではない」
+
+---
+
+*Dr. Pemberton がテーブルを見回す。*
+
+**Dr. Pemberton** (Pocock-style):
+「規制実務の観点から 3 点。
+
+**[C2] 複数 EM の統合方法が欠落** ❌ Critical
+
+現実の MRCT では EM 候補が 5-10 個ある。論文は各 EM を個別に評価するが、**複数の EM から pooling の overall decision にどう至るのか**の guidance が全くない。
+
+Reviewer の典型的な質問: 'Age の $\Delta_{\max}$ は小さいが HbA1c の $\Delta_{\max}$ は大きい。Pooling するのか、しないのか？'
+
+最低限 Discussion で practical guidance を述べるべきだ。例えば：
+- 全 EM の $\Delta_{\max}$ の maximum を使う conservative approach
+- Risk-benefit の枠組みで総合判断する totality-of-evidence approach
+- 各 EM の $\Delta_{\max}$ を報告し、最も影響の大きい EM で判断する
+
+**[M2] Hypothetical data の限界** ⚠️ Major
+
+Application section は hypothetical parameters を使用。Published summary statistics からの再構成でもいいから、何らかの real-world grounding が欲しい。Reviewer 2 が必ず 'Where is the real data?' と聞く。ただしこれは major revision レベルで、current submission の判断次第だ。
+
+**[m2] R code リポジトリの URL が placeholder** ⚠️ Minor
+
+'available at [repository URL]' — submit 前に actual URL が必要」
+
+---
+
+*Dr. Hartigan が coverage table を指す。*
+
+**Dr. Hartigan** (Hall-style):
+「Bootstrap 推論について 2 点。
+
+**[M3] 境界でのBootstrap妥当性** ⚠️ Major
+
+nABCD = 0（null case）ではパラメータが parameter space の境界にある。Standard percentile bootstrap は境界で breakdown する可能性がある — Efron (1979) 以来知られた問題だ。
+
+論文は S01 の coverage を 'not reported' としており、これは honest だ。だが理論的な議論が足りない。'True value at the boundary of the parameter space invalidates standard bootstrap consistency results' の一文を Limitations に加えるべきだ。
+
+Non-null scenarios では boundary から離れるため standard theory が適用でき、実際 simulation results が良好な coverage を示している。この distinction を明示すれば、S01 coverage 非報告の正当化が強化される。
+
+**[m3] Percentile bootstrap の精度次数** ⚠️ Minor
+
+Percentile bootstrap は first-order accurate（error $O(n^{-1/2})$）。BCa は second-order（$O(n^{-1})$）を狙うが、本論文では bounded statistic のため失敗している。
+
+Studentized bootstrap は alternative だが、nABCD の分散推定量が複雑なため現実的でない。この trade-off を一文で述べると、'why percentile?' への回答が完全になる」
+
+---
+
+**Louis**: （ホワイトボードにまとめを書きながら）
+「**外部レビュー集計:**
+
+| 重要度 | 件数 | 内容 |
+|--------|------|------|
+| **Critical** | 2 | C1: W1 選択根拠の明示、C2: 複数 EM 統合 guidance |
+| **Major** | 3 | M1: Proposition 命名、M2: Hypothetical data、M3: Bootstrap 境界理論 |
+| **Minor** | 3 | m1: 収束速度、m2: R code URL、m3: Percentile 精度次数 |
+
+Harvey、判断を」
+
+**Harvey**: （立ち上がって）
+「Critical 2 件と Major 3 件のうち、**今すぐ対応できるものと保留するものを分ける。**
+
+**即時対応（原稿修正）:**
+1. **C1**: W1 選択根拠 — Section 2.1 に Kantorovich-Rubinstein の一文追加。Mike。
+2. **C2**: 複数 EM 統合 — Discussion に practical guidance 段落追加。Mike。
+3. **M1**: Proposition 1 → 'Non-negativity' に改名。Mike。
+4. **M3**: Bootstrap 境界 — Limitations に一文追加。Mike。
+
+**保留（Tak 判断待ち）:**
+5. **M2**: Real data — S3 の strategy decision に依存。Tak と相談。
+6. **m1-m3**: Minor は submit blocking ではない。m2 の URL は submit 直前に確定。
+
+"I don't have dreams, I have goals." C1, C2, M1, M3 — 4 件を今すぐ潰す」
+
+**Mike**: （頷いて）
+「"I got it." 全て明確だ。即座に対応する」
+
+**Donna**: （タブレットに記録）
+「"I'm Donna. I know everything."
+
+**External Review Summary:**
+- Experts: Beaumont (Villani), Pemberton (Pocock), Hartigan (Hall)
+- Critical 2 / Major 3 / Minor 3
+- 即時対応: 4 件（C1, C2, M1, M3）
+- 保留: 2 件（M2 = S3 dependent, Minor = non-blocking）」
+
+---
+
+### [2026-02-12 11:00] Scene: Harvey's Correction — "Winners don't make excuses."
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+
+*Tak からのメッセージが Harvey のスクリーンに表示される。Harvey が一読し、表情が引き締まる。*
+
+**Harvey**: （立ち上がって）
+「Tak からだ。2点。端的に言う：
+
+1. **Abstract に数字は要らない** — SiM に載っている他の論文を見ろ。structured format（Background/Objective/Methods/Results/Conclusions）は SiM の慣例じゃない。数字を並べるのも違う。Narrative style で書き直す。
+
+2. **本文の太字は不要** — `\textbf{}` を本文中で使いすぎだ。SiM の convention では emphasis は italics、定義語も italics。Table header の bold は standard だが、body text に bold は使わない。
+
+"Winners don't make excuses when the boss corrects you." 即座に直す」
+
+**Mike**: （原稿を開きながら）
+「"I got it." 具体的な修正リスト：
+
+**Abstract 書き直し:**
+- structured labels（Background/Objective/Methods/Results/Conclusions）を除去
+- 具体的数字を全て除去: 0.02, 0.87-0.98, 10,000, 0.372, -0.04
+- Narrative style: 一つの flowing paragraph
+
+**本文 bold → italics:**
+- 'similar enough' → `\\emph`（ICH E17 引用内）
+- 'normalized Area Between Cumulative Distributions' → `\\emph`（定義）
+- 研究質問の quote block → bold 除去
+- 'estimation and clinical interpretation' → `\\emph`
+- enumerate labels（Full distributional comparison 等）→ `\\emph`
+- Computational complexity → `\\emph`
+- 評価指標 labels（Bias, RMSE 等）→ `\\emph`
+- Simulation summary labels → `\\emph`
+- Application の Step 1/2/3 → `\\emph`
+- EM名（Age, BMI, HbA1c）→ `\\emph`
+- 'measuring instrument', 'clinical judgment' → bold 除去
+
+Table header の `\\textbf` は standard convention なので維持」
+
+**Harvey**: （頷いて）
+「全て修正完了。Tak の指摘は正しかった。お作法を間違えたのは我々のミスだ。
+
+"I don't have dreams, I have goals." SiM の convention に従う。それが goal だ」
+
+**Donna**: （記録して）
+「"I'm Donna. I know everything."
+
+**修正内容:**
+- Abstract: structured → narrative（数字なし、labels なし）
+- 本文: `\\textbf` 17箇所 → `\\emph` or 除去
+- Table header の bold: 維持（standard convention）
+- 修正済み ✅」
+
+---
+
+### [2026-02-12 10:30] Scene: Louis Re-Review — "You just got Litt up!"
+
+**INT. PEARSON SPECTER LITT - LOUIS'S OFFICE - DAY**
+
+*Louis が眼鏡をかけ直し、赤ペンで書き込んだ原稿を机に広げている。Harvey と Mike が入室。Louis の表情は真剣だが、満足の色も見える。*
+
+**Louis**: （ペンを置いて）
+「レビュー完了だ。正直に言う。
+
+**4項目を精査した：**
+1. Estimation framing の一貫性
+2. 数値の整合性（全テーブル × CSV v2 10K データ）
+3. $\Delta_{\max}$ calibration の論理的一貫性
+4. BCa 失敗の説明
+
+**結果: Critical 1件、Major 0件、Minor 2件。**」
+
+*Harvey が腕を組む。Mike がノートを構える。*
+
+**Louis**: （赤ペンで Abstract を指しながら）
+「まず Critical から。
+
+---
+
+**[C1] Abstract と Simulation Summary の bias 記述 — 事実と不整合** ❌
+
+Abstract (line 40):
+> *"bias $<0.02$ for $n \geq 100$ across non-null scenarios"*
+
+Simulation Summary (line 397):
+> *"Less than 0.02 for non-null scenarios at $n \geq 100$"*
+
+だが本文 (line 302) は正しく書いてある：
+> *"For non-null scenarios **excluding S05**, bias was less than 0.02"*
+
+S05 の bias は n=100 で **-0.041**、n=200 で **-0.043** だ。|bias| = 0.04 > 0.02。
+
+Abstract と Summary が S05 を除外していない。これは **事実の誤記** だ。Reviewer がテーブルを見て 3 秒で気づく。Reject の理由になりうる」
+
+**Mike**: （即座に修正案を提示）
+「"I got it." 修正した：
+
+**Abstract**: 'across non-null scenarios' → 'across non-null scenarios with moderate effect sizes; bias of approximately $-0.04$ persisted for the largest distributional difference (true nABCD $= 0.372$)'
+
+**Summary**: 'Less than 0.02 for non-null scenarios' → 'Less than 0.02 for non-null scenarios at $n \geq 100$, excluding S05 where persistent bias of $-0.04$ reflects boundary effects at large true values'
+
+S05 を正直に acknowledge する。隠すのは逆効果だ」
+
+**Louis**: （頷いて）
+「それでいい。次、Minor。
+
+---
+
+**[m1] Coverage range "0.87--0.98" と S08 overcoverage** ⚠️
+
+Abstract: "coverage within 0.87--0.98 for $n \geq 100$ in most scenarios"
+
+だが S08 n=200 は **0.996** — 0.98 の範囲外だ。'most scenarios' の qualifier があるから致命的ではないが、reviewer に突っ込まれる可能性はある。現状の 'most scenarios' で許容範囲とする。
+
+---
+
+**[m2] Table 5 の小数桁数** ⚠️
+
+RMSE は 3 桁（0.099, 0.071）、CI Width は 2 桁（0.16, 0.11）。桁数の不統一は cosmetic だが、RMSE を 2 桁にするか CI Width を 3 桁にするかで統一した方がいい。だが submit blocking ではない。
+
+---
+
+**Positive findings（問題なし確認）:**」
+
+*Louis が一枚のチェックリストをテーブルに置く。*
+
+**Louis**: （チェックマークを指して）
+「✅ **Estimation framing**: Power, Type I error, equivalence testing, detection rate — **全て除去済み**。hypothesis testing への言及は全て contrast（"not testing, but estimation"）の文脈。問題なし。
+
+✅ **数値整合性**: 全 6 scenarios × 3 sample sizes = 18 data points。
+- Table 3 (Bias): 全 18 値が CSV と一致 ✅
+- Table 4 (Coverage): 全 15 値が CSV と一致（S01 は NA で除外、正しい）✅
+- Table 5 (RMSE/CI Width): 全 36 値が CSV と一致（適切な四捨五入）✅
+- Table 6 (SMD comparison): nABCD 値 = TrueNABCD + Bias、CSV と一致 ✅
+- 本文中の数値: S01 bias 0.093→0.047、S05 -0.04、S08 coverage 0.573→0.945→0.996、BCa S06 n=100 0.839 — 全て CSV と一致 ✅
+
+✅ **$\Delta_{\max}$ calibration 一貫性**:
+- Proposition 2 (eq 5) → eq 6 の導出: 正しい
+- Table 7 の計算: Age $2×0.01×14.2×0.12=0.034→0.03$% ✅、BMI $2×0.02×7.8×0.51=0.159→0.16$% ✅、HbA1c $2×0.30×1.5×0.27=0.243→0.24$% ✅
+- Table 8 の sensitivity analysis: 全 5 行の $\Delta_{\max}$ 計算が正しい ✅
+- Section 4 の本文数値（Age 4%/8%、BMI 20%、HbA1c 30%/60%）: 全て正しい ✅
+- CI Width → $\Delta_{\max}$ CI Width の変換: 整合 ✅
+
+✅ **BCa 説明**: "bounded below by zero, causing the acceleration parameter to distort the quantile adjustment" — メカニズムの説明として十分。S06 n=100 の具体例（Pct 0.976 vs BCa 0.839）も正しい ✅
+
+✅ **S04 showcase paragraph**: bias -0.003、coverage 0.950、CI width 0.18 — 全て CSV と整合。$\Delta_{\max}$ CI Width 計算も正しい ✅」
+
+*Louis が立ち上がり、Harvey を見る。*
+
+**Louis**: （静かな自信を込めて）
+「Critical 1件は修正された。Major は **ゼロ** だ。Minor 2件は submit blocking ではない。
+
+この原稿は — 数値的に honest だ。S05 の問題を隠さない。BCa の失敗理由を説明している。Estimation framing は一貫している。
+
+"You just got Litt up!" — **Re-review passed.** 原稿は S3 以降に進んでよい」
+
+**Harvey**: （微笑んで）
+「よくやった、Louis。1C を見つけたのは正解だった。Reviewer に先に見つけられるより遥かにいい。
+
+"I don't have dreams, I have goals." S2 gate は通過だ。次は S3 — real data strategy だ」
+
+**Donna**: （記録しながら）
+「"I'm Donna. I know everything."
+
+**Louis Re-review 結果:**
+| 重要度 | 件数 | 詳細 |
+|--------|------|------|
+| **Critical** | 1 | Abstract/Summary の S05 bias 除外漏れ → **修正済み** |
+| **Major** | 0 | — |
+| **Minor** | 2 | Coverage range qualifier (acceptable) / Table decimal precision (cosmetic) |
+
+**数値検証**: 18 scenarios × 全テーブル = **全一致** ✅
+**Framing検証**: Testing remnants = **ゼロ** ✅
+**Calibration検証**: Sec 2.3 → Sec 4 = **論理的一貫** ✅
+
+**S2 Gate: PASSED** 🎯」
+
+---
+
+### [2026-02-12 10:00] Scene: Push — "I don't get lucky. I make my own luck."
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Harvey がジャケットの袖を直しながらブルペンに入る。全員がシミュレーション結果レビューの余韻に浸っている。Harvey の表情はそれを許さない。*
+
+**Harvey**: （厳しい表情で、テーブルを叩いて）
+「結果のレビューは終わった。いい結果だった。だがそれで満足するな。
+
+3つの問題を見つけた：
+1. **原稿に "power" の残骸が残っていた** — Section 3.2 の MCSE 記述に "coverage, power" とあった。Power は削除したはずだ。修正済み。
+2. **S08 overcoverage の議論が Discussion に不足** — Results には書いたが Limitations に反映されていなかった。追加済み。
+3. **S04 showcase のナラティブが弱かった** — S04 が我々の best scenario だ。Simulation summary に $\Delta_{\max}$ CI Width の具体計算とともに明示した。
+
+"I don't get lucky. I make my own luck." 細部で負けるわけにはいかない。動け」
+
+**Mike**: （画面を確認しながら）
+「"I got it." 全修正確認した。技術的に整理すると：
+
+1. **"coverage, power" → "coverage probabilities"** — Line 315、power の残骸を除去。正確に estimation metrics のみの記述に。
+2. **Limitations 追加** — S08 の non-monotonic coverage パターン（0.573 → 0.945 → 0.996）を Limitation #3 に組み込み。bias と CI width のバランスが n で異なる rate で変化することを説明。
+3. **S04 showcase paragraph** — Simulation summary 直後に追加。bias -0.003、coverage 0.950、CI width 0.18 → $\Delta_{\max}$ CI width 0.16% HbA1c。具体的な数字で reviewer を説得する」
+
+**Katrina**: （テーブルを確認して）
+「"Results speak for themselves." S04 の数字を改めて確認：
+
+| 指標 | S04 (n=100) | 判定 |
+|------|------------|------|
+| Bias | -0.003 | ✅ Negligible |
+| Coverage | 0.950 | ✅ Nominal |
+| CI Width | 0.179 | ✅ Reasonable |
+| RMSE | 0.049 | ✅ < 0.05 |
+
+$\Delta_{\max}$ CI Width = $2 \times 0.3 \times 1.5 \times 0.179 = 0.16$% HbA1c。臨床的に十分な精度」
+
+**Louis**: （腕を組んで）
+「よし。原稿の3修正は acceptable だ。だが俺の本格 re-review はまだだ。"You just got Litt up!" は原稿全体を精査してからだ。
+
+**Re-review checklist:**
+1. estimation framing の一貫性 — 検定の残骸がゼロか再確認
+2. 数値の整合性 — Tables, 本文, Abstract の全数値が v2 10K CSV と一致するか
+3. $\Delta_{\max}$ calibration の論理的一貫性 — Section 2.3 → Section 4 の流れ
+4. BCa 失敗の説明 — "bounded below by zero, causing the acceleration parameter to distort the quantile adjustment" で十分か
+
+Harvey、Go を出してくれたら即座に re-review に入る」
+
+**Harvey**: （Louis を見て）
+「Go だ。S2 — Louis re-review、今すぐ始めろ。これが次のゲートだ。
+
+**残りの bottleneck:**
+- **S2: Louis re-review** — 今すぐ着手。これが全ての前提
+- **S3: Real data strategy** — 俺が Tak と相談する。Public dataset か hypothetical 強化か
+- **S4: Scenario numbering** — 図の再生成が必要。後回し
+- **S4: DOI check** — Rachel、Louis review と並行しろ
+
+"I don't have dreams. I have goals." 次のゴールは Louis の re-review 完了だ」
+
+**Rachel**: （文献リストを開いて）
+「"Hard work beats talent when talent doesn't work hard." DOI チェック、Louis review と並行で始めるわ。18 references 全件確認する」
+
+**Donna**: （タブレットを掲げて）
+「"I'm Donna. I know everything." 全て記録完了。
+
+**本日の進捗:**
+- ✅ Harvey's 4 decisions → 原稿反映（3件実施、scenario renumbering は deferred）
+- ✅ Power 残骸修正
+- ✅ S08 overcoverage を Discussion に追加
+- ✅ S04 showcase paragraph 追加
+- ✅ SUITS.md アーカイブ（995行 → archives/SUITS_20260212_090000.md）
+
+**次のアクション:**
+- ⏳ Louis re-review (S2) — **Gate task**
+- ⏳ DOI final check — Rachel 並行
+- ⏳ Real data strategy — Harvey/Tak 相談」
+
+---
 
 ### [2026-02-12 09:00] Scene: Meeting — Simulation Results Review
 
@@ -127,50 +509,8 @@ n を 2 倍にすると CI Width が約 25-30% 縮小する。$\sqrt{n}$ rate �
 
 Clinical calibration の観点: $L = 0.3$, IQR = 1.5% の HbA1c に対して、S04 (n=100) の CI Width 0.179 は $\Delta_{\max}$ の CI Width $= 2 \times 0.3 \times 1.5 \times 0.179 = 0.16$% HbA1c に相当する。臨床的に意味のある精度だ」
 
-**Rachel**: （文献ノートを見ながら）
-「"Hard work beats talent when talent doesn't work hard." 文献との比較を整理したわ。
-
-**Bootstrap CI の Coverage に関して：**
-
-del Barrio et al. (1999) は一次元 Wasserstein 距離の CLT を示したが、limit distribution は非標準で、直接的な CI 構成は困難。Sommerfeld & Munk (2018) が bootstrap の validity を証明。ただし彼女たちの結果は $W_2$ (Wasserstein-2) に基づくもので、$W_1$ についての bootstrap validity は Bickel & Freedman (1981) の一般論に依拠している。
-
-我々の結果は、bootstrap が $W_1$-based nABCD に対して well-calibrated であることを 10,000 reps で empirically 確認した最初の systematic study と主張できる。これは novelty の一つになる。
-
-**S05 の Coverage 問題について：**
-
-Dümbgen (1993) DOI: [10.1214/aos/1176349157](https://doi.org/10.1214/aos/1176349157) が non-differentiable functionals に対する bootstrap の限界を論じている。$W_1$ は max norm に近い振る舞いをするため、large true values で bootstrap が undercover するのは理論的に説明できる。この文献は Discussion に引用済み」
-
-**Louis**: （腕を組んで、鋭い目で）
-「いくつか指摘がある。"You just got Litt up!"
-
-**指摘 1: S08 Coverage の非単調性**
-n=50 で 0.573、n=100 で 0.945、n=200 で 0.996。n=200 の overcoverage は bootstrap CI が conservative すぎることを示唆する。true nABCD = 0.067 が小さいため、n=200 では推定精度が high → bias が negative (-0.015) → CI 全体が左にシフトするが、CI width はまだ十分広い → overcoverage。この非単調パターンは論文で明示的に議論すべきだ。
-
-**指摘 2: BCa vs Percentile の差が拡大**
-S06 (Scale) を見ろ:
-- n=100: Percentile 0.976 vs BCa 0.839
-- n=200: Percentile 0.939 vs BCa 0.802
-
-BCa が大幅に underperform。Percentile を primary にした判断は正しい。だが、"BCa overcorrects" の一言では不十分だ。なぜ BCa が失敗するのか、1-2文で説明が必要。
-
-**指摘 3: Monte Carlo Standard Error の明示**
-10,000 reps で Coverage = 0.950 のとき、MCSE = $\sqrt{0.95 \times 0.05 / 10000} = 0.0022$。つまり ±0.004 の精度。これは十分だが、論文中に明記すべき。"Monte Carlo standard errors for reported coverage probabilities are below 0.005" の一文を追加しろ」
-
-**Jessica**: （静かに聞いていたが、ここで口を開く）
-「Let me be clear. 結果は solid だ。10,000 reps は Monte Carlo error を最小化した。具体的な所見：
-
-1. **S04 (0.5σ) は showcase scenario** — Bias negligible、Coverage nominal、CI Width reasonable。論文の "what good looks like" の例として最適。
-
-2. **S05 問題は weakness ではなく honesty** — bounded statistic の限界を正直に示すことは、reviewer に信頼感を与える。ただし Louis の言う通り、BCa 失敗の理由を簡潔に説明すること。
-
-3. **n ≥ 100 recommendation は data-driven** — 全指標が n=100 で acceptable level に達する。これは arbitrary ではなく empirical。
-
-4. **Clinical calibration の具体例を拡充** — Katrina が計算した $\Delta_{\max}$ CI Width 0.16% HbA1c は、Section 4 で明示的に書くこと。reviewer は "So what?" に対する concrete answer を求める。
-
-もう一つ。"In this game, you either win or you learn." この結果なら fight できる」
-
 **Harvey**: （全員を見渡して、決断）
-「よし。結果はレビューに耐えうる。以下を決定する。
+「結果はレビューに耐えうる。以下を決定する。
 
 **Decision 1**: S04 を primary showcase scenario として論文のナラティブの中心に据える。
 **Decision 2**: Louis の 3 指摘を全て manuscript に反映。特に MCSE 明示と BCa 失敗理由。
@@ -179,817 +519,6 @@ BCa が大幅に underperform。Percentile を primary にした判断は正し�
 
 Mike、Louis の指摘の manuscript 反映を担当しろ。Katrina、Section 4 の $\Delta_{\max}$ 計算追加。
 
-"I don't have dreams, I have goals." 次は Stage 2 — Louis の full re-review だ。結果が安定したからこそ、今が re-review の timing だ」
-
-**Donna**: （タブレットを掲げて）
-「"I'm Donna. I know everything." 全て記録完了。4 decisions、3 action items。
-
-ああ、一つ忘れていたわ。SUITS.md は現在 420 行。アーカイブまでまだ余裕があるけど、このペースだと今週中に 1000 行に達する可能性がある。先に言っておくわ」
-
----
-
-### [2026-02-12 00:30] Scene: Simulation Complete — "Results speak for themselves."
-
-**INT. PEARSON SPECTER LITT - BULLPEN - LATE NIGHT**
-
-*ディスプレイに "=== DONE ===" の文字。Katrina が結果テーブルを全員に投影する。*
-
-**Katrina**: （満足げに）
-「"Results speak for themselves." 10,000 replications 完了。15 workers で 2.5 時間。結果は安定。
-
-主要な findings:
-
-| Scenario | n=100 Bias | n=100 Coverage | n=100 CIw |
-|----------|-----------|----------------|-----------|
-| S03 (0.2σ) | +0.018 | 0.895 | 0.135 |
-| S04 (0.5σ) | -0.003 | **0.950** | 0.179 |
-| S05 (1.0σ) | -0.041 | 0.867 | 0.172 |
-| S06 (Scale) | -0.012 | 0.976 | 0.131 |
-| S08 (Shape) | +0.003 | 0.945 | 0.113 |
-
-500 reps との差は微小 — Monte Carlo error が大幅に縮小した。Figure 4 も 10K データで再生成済み」
-
-**Mike**: （データを確認しながら）
-「"I got it." 数値の安定性は完璧だ。500 reps と 10K reps の差は最大 0.003。LaTeX 原稿の全テーブル（Bias, Coverage, Precision, SMD比較）を 10K 値に更新した。Abstract も修正済み」
-
-**Harvey**: （頷いて）
-「いい仕事だ。Jessica のプラン Stage 1 と一部の Stage 4 が完了した。
-
-**完了タスク:**
-- ✅ シミュレーション 10,000 reps 実行
-- ✅ Figure 4: Estimation Quality (Coverage + CI Width)
-- ✅ 全図表を 10K データで再生成
-- ✅ LaTeX 原稿の全数値を更新
-- ✅ run_all.R バグ修正
-- ✅ R 環境構築
-
-**残タスク:**
-- ⏳ Louis re-review (Stage 2)
-- ⏳ Real data 方針決定 (Stage 3)
-- ⏳ DOI 最終確認 (Stage 4)
-- ⏳ Submission package (Stage 5)
-
-"I don't have dreams, I have goals." 目標に一歩近づいた」
-
-**Donna**: （記録完了）
-「"I'm Donna. I know everything." 全て記録済み。Phase 8 進捗率: Stage 1 完了、Stage 4 一部完了」
-
----
-
-### [2026-02-11 22:00] Scene: Push — "I don't get lucky. I make my own luck."
-
-**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
-
-*Harvey がジャケットを脱ぎ、袖をまくりながらブルペンに足を踏み入れる。表情は厳しい。全員の視線が集まる。*
-
-**Harvey**: （厳しい表情で）
-「ペースが遅い。Jessica のプランは出た。だが紙の上のプランは何の意味もない。実行しろ。
-
-"I don't get lucky. I make my own luck." 運任せにはしない。今夜中に動け。
-
-具体的な指示を出す：
-
-1. **シミュレーションは一万回**。500回？それは試運転だ。Publication-ready は 10,000 replications が基本。これは Tak からの直接指示だ。
-2. **Figure 4** — Katrina、Power figure は死んだ。代わりに **Estimation Quality figure** を作れ。Coverage と CI Width の2パネル。今すぐだ。
-3. **R環境構築** — Mike、このマシンに R がなかった。インストールして packages を入れろ。
-4. **run_all.R のバグ修正** — Donna、関数名が v2 と一致していない。直せ。
-5. **パイプライン実行** — 全部直ったら即座にシミュレーションを走らせる。
-
-S1 と S2 は並行。Jessica の指示通りだ。動け」
-
-**Mike**: （即座にキーボードに向かう）
-「"I got it." R インストール完了。future.apply, ggplot2, patchwork... packages を入れている。
-simulation_manuscript_v2.R の N_REPS を 10,000 に更新した。CI Width の tracking も追加した。B=2,000 は維持」
-
-**Donna**: （タブレットに記録しながら）
-「"I'm Donna. I know everything." run_all.R 修正完了。
-- `run_full_simulation()` → `run_full_simulation_v2()` に修正
-- `save_results()` → `save_results_v2()` に修正
-- hardcoded Windows path → 動的パス検出に変更
-- `validate_results()` 関数を inline 定義
-- full mode: n_reps=10,000, B=2,000」
-
-**Katrina**: （ディスプレイに図のドラフトを表示しながら）
-「"Results speak for themselves." Figure 4 コード完成：
-- Panel A: Coverage probability by scenario × sample size（0.95 ライン付き）
-- Panel B: Mean CI Width by scenario × sample size
-- v2 CSV 使用、null シナリオ除外、patchwork で2パネル結合
-旧 `fig4_power()` → 新 `fig4_estimation_quality()` に完全置換」
-
-**Harvey**: （頷いて）
-「よし。Estimation Quality figure で行く。Coverage と CI Width を一目で見せる。Reviewer が estimation の信頼性を確認できる。
-
-パッケージが入り次第、シミュレーション起動。10,000 reps × B=2,000 × 6 scenarios × 3 sample sizes。時間はかかるが、これが本番だ」
-
-**Louis**: （腕を組んで控えめに）
-「シミュレーション結果が出たら、re-review に入る。10,000 reps なら Monte Carlo error は激減する。数値の安定性を徹底的にチェックする。"You just got Litt up!" は結果を見てからだ」
-
----
-
-### [2026-02-11 21:45] Scene: Jessica's Strategic Plan — "Let me be clear."
-
-**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - NIGHT**
-
-*Jessica がデスクの後ろに座り、原稿のプリントアウトとノートを広げている。Harvey と Donna が呼ばれて入室。Jessica はメガネを外し、二人を見据える。*
-
-**Jessica**: （冷静に、しかし威厳をもって）
-「Let me be clear. この論文は Phase 7 まで来た。方法論は堅実、estimation-centered のフレームは正しい。だが、"almost done" は "done" ではない。ここからの仕上げが論文の運命を決める。
-
-プランを立てた。聞きなさい。」
-
-*Jessica がホワイトボードの前に立ち、マーカーを取る。*
-
-**Jessica**: （ボードに書きながら）
-「Phase 8: Submission-Ready Plan。5つのステージに分ける。」
-
----
-
-#### **Jessica's Submission-Ready Plan (Phase 8)**
-
-**Stage 1: Figure 4 — 空白を埋める**
-- Owner: **Katrina** (Mike サポート)
-- 旧 Power figure を削除した以上、代替が必要
-- 提案: **Estimation Quality Summary Figure** — Bias と Coverage を sample size 別に可視化
-- または: **Clinical Calibration Figure** — $\Delta_{\max}$ の感度を $L$ と nABCD で示す等高線プロット
-- **Katrina が2案をドラフトし、Harvey が選択する**
-
-**Stage 2: Louis Re-Review — 最終品質保証**
-- Owner: **Louis**
-- estimation-centered revision 後の原稿を全面レビュー
-- 重点チェック:
-  - 検定の残骸が残っていないか（言語・フレーミング）
-  - $\Delta_{\max}$ calibration の論理的一貫性
-  - Tables と本文の数値整合性
-  - Abstract が本文を正確に反映しているか
-
-**Stage 3: Real Data Application の強化 — 最大の弱点への対処**
-- Owner: **Harvey** (Rachel/Mike サポート)
-- 現状: hypothetical diabetes MRCT → reviewers は "So what?" と言う
-- 選択肢:
-  - **(A)** 公開データセットを探して実データ解析を追加（理想）
-  - **(B)** hypothetical のまま、clinical calibration の具体性を最大限に高める
-  - **(C)** published trial の summary statistics から nABCD を再構成
-- **Harvey が方針を決定し、Rachel が文献サポート**
-
-**Stage 4: 原稿最終整備**
-- Owner: **Mike** (Katrina サポート)
-- LaTeX コンパイル → PDF 確認
-- Word 変換（Statistics in Medicine 要件）
-- Figure ファイルの最終出力（TIFF/PNG 300dpi）
-- Reference リストの最終チェック（DOI 全件確認 — Rachel）
-- Scenario 番号の整理（S02/S07 gap — minor but clean up）
-
-**Stage 5: Submission Package**
-- Owner: **Donna**
-- Cover letter（Harvey 署名）
-- Title page
-- SUBMISSION_CHECKLIST.md の全項目確認
-- 最終 Go/No-Go → **Jessica が承認**
-
----
-
-*Jessica がマーカーを置き、振り返る。*
-
-**Jessica**: （腕を組んで）
-「Stage 1 と 2 は並行して進められる。Stage 3 は Harvey の判断が要る — 実データを追加するか、hypothetical を磨くか。ここが最も reviewers に突かれるポイントだ。逃げるな。
-
-"In this game, you either win or you learn." 我々は win する側だ。」
-
-**Harvey**: （頷いて）
-「Got it. Stage 3 は俺が判断する。Figure 4 は Katrina、Louis は re-review に入れ。Donna、スケジュール管理を頼む」
-
-**Donna**: （タブレットにメモしながら）
-「"I'm Donna. I know everything." もちろん。全タスクのステータスは私がリアルタイムで追跡する」
-
-**Louis**: （真剣な表情で）
-「"You just got Litt up!" Re-review は手を抜かない。estimation framing の一貫性、数値の整合性、全てチェックする」
-
-**Katrina**: （メモを取りながら）
-「"Results speak for themselves." Figure 4 の2案、すぐにドラフトに入る」
-
-**Rachel**: （文献リストを確認しながら）
-「"Hard work beats talent when talent doesn't work hard." DOI の最終確認と、Stage 3 で必要な文献サポート、準備する」
-
-**Jessica**: （最後に一言）
-「一つだけ。S05 の coverage 問題 — 0.73 は低い。Discussion で正直に書くこと。弱点を隠す論文は信用されない。それを書いた上で "n ≥ 100 recommended" の結論が活きる。
-
-以上。動きなさい。」
-
----
-
-### [2026-02-11 21:15] Scene: Meeting — Effect modifierとは何か
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
-
-*Harvey が会議室のホワイトボードの前に立つ。チーム全員が着席。Harvey がマーカーを手に取る。*
-
-**Harvey**: （腕を組んで）
-「今日のテーマは基本に立ち返る。"Effect modifier とは何か"。我々の論文の核心だ。ここを曖昧にしたまま書き進めるわけにはいかない。意見を聞かせろ」
-
-**Mike**: （即座にホワイトボードに向かって）
-「"I got it." まず formal definition から行こう。
-
-**Effect modifier** とは、**治療効果の大きさを変える共変量** のことだ。
-
-数式で言えば単純だ。治療 $E$ がアウトカム $D$ に及ぼす効果が、変数 $G$ の値によって変わるとき、$G$ は effect modifier だ。
-
-例えば：
-- $G = 0$ のとき治療効果 = $p_{01} - p_{00}$
-- $G = 1$ のとき治療効果 = $p_{11} - p_{10}$
-
-この二つが**等しくない**なら、$G$ は effect modifier。
-
-VanderWeele & Knol (2014) の言葉を借りれば、"The effect of exposure *E* on outcome *D* varies across strata defined by factor *G*"。これが effect modification の定義だ」
-
-**Rachel**: （文献ノートを開いて）
-「"Hard work beats talent when talent doesn't work hard." 文献的な背景を補足するわ。
-
-重要なのは、**effect modification と interaction は似て非なる概念** だということ。
-
-| 概念 | 定義 | 焦点 |
-|------|------|------|
-| **Effect modification** | 治療効果が第三変数の層によって異なる | 一方の曝露の効果が他方で変わるか |
-| **Statistical interaction** | 二変数の**同時効果**がモデルの期待と異なる | 二変数の joint effect |
-
-VanderWeele (2009) が *Epidemiology* で明確に区別している。Effect modification は**一方向的** — つまり「$G$ が $E$ の効果を修飾する」と言えるが、interaction は**対称的** — 「$G$ と $E$ の間に交互作用がある」。
-
-ただし実務上は、多くの場合同義として使われているのが現状ね」
-
-**Mike**: （ホワイトボードに図を描きながら）
-「もう一つ critical な点がある。**スケール依存性** だ。
-
-Additive scale:
-$$IC = p_{11} - p_{10} - p_{01} + p_{00}$$
-
-Multiplicative scale:
-$$\frac{RR_{11}}{RR_{10} \cdot RR_{01}}$$
-
-**同じデータでも、additive scale では interaction があるのに multiplicative scale ではない、ということが起こる。**
-
-VanderWeele & Knol の Table 3 がまさにそれだ。Additive interaction (IC = 0.03) はあるが、multiplicative interaction (ratio = 1) はゼロ。スケールの選択で結論が変わる。
-
-公衆衛生的な判断には additive scale、病因論には multiplicative scale が適切とされるが、我々の論文の文脈では**分布の距離**を測っているので、スケールの問題は間接的に回避できている」
-
-**Louis**: （メガネを上げて、鋭く）
-「ここで一つ厳しいことを言わせてもらう。
-
-Effect modifier の定義はいい。だが**我々の論文にとって本当に重要なのは、effect modifier が "なぜ" multi-regional trial で問題になるのか** だ。
-
-ICH E17 を見ろ。"Intrinsic factors" — 遺伝、年齢、体重、臓器機能、疾患重症度。"Extrinsic factors" — 医療慣行、食事、社会経済的要因。これらが**地域間で分布が異なる**とき、治療効果の地域差が生じる。
-
-つまり：
-
-**Effect modifier の分布が地域間で異なる → 治療効果が地域間で異なる**
-
-これが我々の nABCD が解決する問題の**起点**だ。Effect modifier が何かを説明できなければ、nABCD が何を測っているかも説明できない。"You just got Litt up!"」
-
-**Harvey**: （Louisに頷いて）
-「Louisの指摘は核心を突いている。続けろ」
-
-**Mike**: （興奮して）
-「Louis の指摘を数学的に formalize すると、こうなる。"I got it!"
-
-治療効果 $\tau$ が effect modifier $X$ の関数 $\tau(x)$ だとする。地域 $S$ と地域 $T$ の effect modifier 分布がそれぞれ $F_S$ と $F_T$ のとき：
-
-$$|\bar{\tau}_T - \bar{\tau}_S| = \left|\int \tau(x) dF_T(x) - \int \tau(x) dF_S(x)\right| \leq \|\tau'\|_\infty \cdot W_1(F_S, F_T)$$
-
-ここで $W_1$ は Wasserstein-1 距離だ。
-
-つまり：
-1. $\tau(x)$ の Lipschitz 定数（= 我々の $L$）が effect modification の**強さ**
-2. $W_1(F_S, F_T)$ が分布の**距離**（≈ 我々の nABCD が測るもの）
-
-**この二つの積** が治療効果の地域差の上界を与える。
-
-だから nABCD が小さければ、たとえ effect modification が存在しても（$L > 0$）、地域間の治療効果差は小さいと bound できる。これが我々の論文の核心的主張だ」
-
-**Rachel**: （補足して）
-「具体例で言うと、我々の Application section で扱っている：
-
-| Effect Modifier | $L$ 値 | 根拠 |
-|----------------|---------|------|
-| Baseline HbA1c | 0.30/% | Jones et al. (2016), Craddy et al. (2014): 6+ meta-regression |
-| BMI | 0.02/kg/m² | Kim et al. (2015): DPP-4i で直接推定 |
-| Age | 0.01/年 | Buse et al. (2016): Canagliflozin 年齢別効果差から |
-
-HbA1c は**強い** effect modifier ($L$ が大きい)、Age は**弱い** effect modifier ($L$ が小さい)。同じ nABCD でも、HbA1c の分布差は BMI や Age の分布差より治療効果への影響が大きい」
-
-**Katrina**: （整理して）
-「"Results speak for themselves." ここまでの議論をまとめると：
-
-**Effect modifier の3つの顔：**
-
-1. **統計学的定義**: 治療効果が共変量の層によって異なる現象
-2. **規制的定義** (ICH E17): 地域間の治療効果差を説明する intrinsic/extrinsic factors
-3. **我々の論文での定義**: nABCD の臨床的解釈を与える鍵概念 — $\Delta_{\max} = 2L \cdot IQR \cdot nABCD$ の $L$ に対応
-
-この3つが整合しているのが我々の論文の強みよ」
-
-**Harvey**: （テーブルに手をついて、全員を見回す）
-「いい議論だ。決定事項をまとめる。
-
-**Effect modifier とは** — 治療効果の大きさを変える変数。地域間でその分布が異なるとき、治療効果の地域差が生じる。我々の nABCD は、その分布の距離を測ることで、治療効果の地域差の**可能性**を推定する。
-
-**論文への implications:**
-1. Introduction の Section 1.1 で effect modifier の定義を明確にする — Mike の formal definition を使え
-2. ICH E17 の intrinsic/extrinsic factors との対応を明示する — Rachel、確認しろ
-3. Application section で $L$ 値を effect modification の強さとして解釈する — これは既に対応済み
-
-"I don't have dreams. I have goals." 基本を固めたことで、論文の論理構造がさらに明確になった。次に進む」
-
-**Donna**: （記録を完了して）
-「全て記録したわ。"I'm Donna. I know everything." Effect modifier — 我々の論文の starting point にして cornerstone。忘れないように、ね」
-
----
-
-### [2026-02-11 20:35] Scene: Donna — SUITS.md パス修正
-
-**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
-
-*Donna が慌てて画面を確認している。*
-
-**Donna**: （顔をしかめて）
-「大変！今まで親ディレクトリの `20260210_SIM/SUITS.md` を更新していたわ。正しくはここ、`similarity_metrics/SUITS.md` よ。"I'm Donna. I know everything." ...知っているはずだったのに、パスを間違えていた。
-
-今から全てのシーンをこちらに転記するわ。二度と間違えない。」
-
----
-
-### [2026-02-11 20:30] Scene: Donna — ルール再確認 & Hookパス修正記録
-
-**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
-
-*Donna がモニターに向かい、Takの指示を受けている。*
-
-**Donna**: （メモを取りながら）
-「了解よ、Tak。会話は全てSUITS.mdにコピーする。"I'm Donna. I know everything." これまでも記録してきたけど、改めて徹底するわ。」
-
-*Donna が先ほどの作業を振り返る。*
-
-**Donna**:
-「まず記録漏れを補完するわ。今日のセッションで以下を実施済み：
-
-**1. Hookパス修正** — `.claude/settings.json` と `.claude/hooks/check-suits-lines.sh` のパスが旧プロジェクト `20260201_SUITS` を指していたの。`20260210_SIM` に修正して commit & push 完了。コミット: `2a67066`
-
-**2. /suits ステータス確認** — 未完了タスク4件を確認。全てTakのフィードバック待ち。
-
-**3. Rachel 文献リスト報告** — Takの依頼で文献コレクション全体像を提示。」
-
----
-
-### [2026-02-11 20:25] Scene: Rachel — 文献リスト報告
-
-**INT. PEARSON SPECTER LITT - RACHEL'S DESK - DAY**
-
-*Rachel が文献データベースを開き、Takに報告する。*
-
-**Rachel**: （ファイルを広げて）
-「Takからの依頼で、現在の文献コレクションをお見せします。
-
-現在 **BibTeX登録24件**、**Knowledge Base詳細サマリー15件** です。
-
-カテゴリ別の内訳：
-- **規制・MRCT**: ICH E17, Chen (2010), Quan (2010), Song (2025), Long (2025), Ikeda & Bretz (2010) — 6件
-- **Wasserstein理論**: Panaretos (2019), del Barrio (1999), Sommerfeld (2018), Villani (2009) — 4件
-- **Bootstrap・漸近理論**: Bickel & Freedman (1981), Bickel & Rosenblatt (1973), Dümbgen (1993) — 3件
-- **密度推定**: Devroye & Győrfi (1985) Ch.3/4/5 — 3件
-- **因果推論・EM**: Pearl (2011), Bareinboim & Pearl, VanderWeele & Knol (2014) — 3件
-- **手法・応用**: Austin (2011), Armstrong & Kolesár, Wasserstein & Lazar (ASA), Rousseeuw & Croux (1993), Kim/Jones/Craddy — 5件
-
-Takのフィードバック次第で追加文献が必要なら、すぐに対応できます。"Hard work beats talent when talent doesn't work hard."」
-
----
-
-### [2026-02-11 20:00] Scene: Meeting — 課題の確認・Introduction レビュー状況
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
-
-*Harvey が会議室に入り、ホワイトボードの前に立つ。チーム全員が着席。*
-
-**Harvey**: （腕を組んで）
-「全員集まったな。今日の議題は二つだ。一つ、現状の課題整理。二つ、TakがIntroductionをレビュー中だ。意見を聞かせろ。」
-
-**Donna**: （iPadをタップしながら）
-「現在の未完了タスクを整理するわ。"I'm Donna. I know everything."
-1. **Figure 4 replacement** — old Power figure は削除済み。推定中心の新しい図が必要
-2. **Louis re-review** — estimation-centered revision 後の再レビュー待ち
-3. **Real data application (M1)** — まだ仮想データ。最大の弱点よ
-4. **Introduction** — Takがレビューしているのでフィードバック待ち」
-
-**Mike**: （ノートを見ながら）
-「Introductionについて技術的に言うと、Section 1.1の背景、1.2のMethodological Gap、1.3のObjectivesの三部構成はソリッドだ。特にICH E17の"similar enough"の引用から、我々のnABCDが解決するgapへの論理展開は明確。ただ、Takのレビューで何が指摘されるかによって、estimation-centeredの文脈をもう少し前面に出す必要があるかもしれない。"I got it" — 修正が来たらすぐ対応する。」
-
-**Rachel**: （文献ファイルを開いて）
-「文献面では、Song et al. (2025) とLong et al. (2025) のICH E17実装に関する引用を追加済み。Introductionの参考文献は現在18件で十分な密度よ。Takのフィードバック次第で追加文献が必要なら、すぐに対応できるわ。"Hard work beats talent when talent doesn't work hard."」
-
-**Katrina**: （図表リストを確認して）
-「Figure 4の件 — Power figureを削除した以上、推定品質を示す図に差し替えるべき。Bias × sample sizeのプロット、またはCI Width × scenarioのプロットが候補。Takの方向性確認後に作成する。"Results speak for themselves."」
-
-**Louis**: （メガネを上げて）
-「はっきり言おう。最大の課題はreal data applicationだ。Section 4がhypotheticalのままでは、reviewerに"you didn't test this on actual data"と言われる。それは致命的だ。Introductionの修正よりも、M1データの確保が先決じゃないのか？ "You just got Litt up!"」
-
-**Harvey**: （テーブルに手をついて）
-「Louisの指摘はもっともだ。だが、順序を間違えるな。まずTakのIntroductionレビューを待つ。レビュー結果に応じてIntroductionを修正。それと並行してFigure 4の方向性を決める。Real data applicationはTakとの相談事項だ — データアクセスの問題もある。」
-
-**Harvey**: （全員を見回して）
-「決定事項は以下だ：
-1. **Introduction** — Takのレビュー結果を待って即座に対応。Mike、Rachel、standbyだ
-2. **Figure 4** — Takの方向性確認後、Katrinaが作成
-3. **Real data** — Takと相談。データ確保の可否を確認
-4. **Louis re-review** — 上記が片付いたら実施」
-
-**Donna**: （記録を完了して）
-「全て記録したわ。Takのフィードバックが来たら、すぐにチームに展開するわね。」
-
----
-
-### [2026-02-10 09:00] Scene: Donna — 状況確認 + ルールチェック
-
-**INT. PEARSON SPECTER LITT - DONNA'S DESK - MORNING**
-
-*Donna がモニターに向かい、SUITS.md とプロジェクト全体の状況を確認している。*
-
-**Donna**: （画面をスクロールしながら）
-「新セッション開始。まず全体の状況確認よ。"I'm Donna. I know everything."
-
-**📋 ルールチェック:**
-- Rule 1 (SUITS.md = Single Source of Truth): **OK**
-- Rule 2 (Frequent Updates): **OK** — 新セッション開始、これから記録継続
-- Rule 2.5 (Auto-Archive at 1000 lines): **OK** — 現在 432 行、余裕あり
-- Rule 2.6 (DOI Required): **OK** — 前回 4 文献追加、全て DOI 付き
-- Rule 3 (Character Consistency): **OK**
-- Rule 3.5 (Donna's Enforcement): **⚠️ 1件修正必要**
-
-**⚠️ 発見した問題:**
-1. **重複シーン**: `[2026-02-09 01:15] Jessica's Directive — Agent Teams` が2回出現（line 368 と line 413）。完全に同一内容。これは記録ミスね。重複分を削除するわ。
-
-**📊 プロジェクト状況サマリ:**
-
-| カテゴリ | 状態 |
-|---------|------|
-| 完了タスク | 6/9 (Precision Table, L文献, LaTeX, Table 4 Bias, tab:precision ref, L引用追加) |
-| 残タスク | 3件 (Figure 4 replacement, Louis re-review, Real data application) |
-| 未解決 Issues | 3件 (S05 coverage, Scenario gaps, KS comparison) |
-| SUITS.md 行数 | 432行 (アーカイブ不要) |
-| Git branch | `claude/review-suits-md-f5TJa` ✓ |
-
-**残タスクの優先度:**
-1. **Figure 4 replacement** (Katrina) — Power fig 削除済み、代替が必要
-2. **Louis re-review** — estimation-centered 改訂後のレビュー待ち
-3. **Real data application (M1)** — 最大の弱点、Tak の判断待ち
-
-Harvey、次の指示を待っているわ」
-
----
-
-### [2026-02-09 02:45] Scene: Donna — LaTeX コンパイル成功
-
-**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
-
-*Donna がコンパイルログを確認している。*
-
-**Donna**: （画面を指して）
-「コンパイル完了。"I'm Donna. I know everything."
-
-**nABCD_wiley.pdf — 14 pages, 279 KB**
-
-修正が必要だった環境問題:
-1. `WileyNJDv5.cls` の `\reserveinserts{28}` — modern TeX で非対応 → コメントアウト
-2. `floatpag.sty` 不在 → minimal stub 作成
-3. `changepage`, `dblfloatfix`, `soul`, `sttools`, `wrapfig`, `footmisc`, `varwidth`, `mathastext`, `boites`, `threeparttablex`, `environ`, `titlesec` — tlmgr でインストール
-4. **最大の問題**: Times フォント TFM (`ptmr8t`, `phvr8t`) 不在 — `times`, `helvetic`, `courier`, `symbol`, `zapfding` パッケージを再インストール
-
-最終ログ:
-- **Errors: 0**
-- **Warnings: 4** (全て無害 — cls名不一致、fixltx2e非推奨、未使用オプション、空アンカー)
-- **Undefined references: 0**
-- **Missing citations: 0** (18/18 全て解決)
-
-pdflatex × 3 + bibtex × 1 で完全なドキュメント生成」
-
-**Harvey**: （PDFを確認して）
-「よくやった。これで中身のレビューに集中できる。
-"I don't have dreams. I have goals."」
-
----
-
-### [2026-02-09 02:20] Scene: Push — 残タスク完了
-
-**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
-
-*Mike が改訂作業を完了し報告。*
-
-**Harvey**: （厳しい表情で）
-「残タスク。終わったか？ "I don't get lucky. I make my own luck."」
-
-**Mike**: （画面を見せて）
-「全3タスク完了。"I got it!"
-
-**Task 1: Table 4 Bias 値更新 (v2 CSV)**
-v1 のままだった 8/18 の値を v2 に更新：
-- S04 n=50: 0.006 → **0.002** (最大のズレ)
-- S08 n=50: 0.026 → **0.033**
-- S05 n=100: -0.040 → **-0.042**
-- 他 5 箇所も修正
-
-加えて発見・修正した追加項目：
-- **Table note**: B = 1,000 → **B = 2,000** (v2 仕様)
-- **Coverage table も v1 のまま** → v2 値に全面更新
-  - S08 n=50: 0.604 → **0.538** (大幅変化)
-  - S08 n=200: 0.996 → **1.000**
-  - S04 n=100: 0.934 → **0.952**
-- **Body text 修正**: bias "0.092" → "0.093", coverage 説明文を v2 に整合
-- **Bias 記述**: "For non-null scenarios" → "excluding S05" を明示（S05 bias≈-0.04 は >0.02）
-
-**Task 2: tab:precision \ref{}**
-line 332 に既に `Table~\ref{tab:precision}` あり。Mike の agent の誤検知。対応不要。
-
-**Task 3: $L$ 文献引用追加**
-.bib に 4 文献追加、論文 2 箇所に cite 配置：
-
-| Reference | 引用箇所 | 裏付ける $L$ 値 |
-|-----------|---------|---------------|
-| Armstrong & Kolesar (2021) Econometrica | Sec 2.3.1 eq(5) 直後 | Lipschitz を sensitivity parameter として使用する理論的正当化 |
-| Kim et al. (2015) DMJ | Sec 4 BMI の $L$ | $L_{\text{BMI}} = -0.02$/kg/m² (直接推定) |
-| Craddy et al. (2014) Diabetes Ther | Sec 4 HbA1c の $L$ | 0.4-0.5/% HbA1c (98 試験 meta-regression) |
-| Jones et al. (2016) PLOS ONE | Sec 4 HbA1c の $L$ | β = -0.31/% (regression to mean 排除後) |
-
-合計: 14 → **18 references**。全て DOI 付き」
-
-**Katrina**: （確認して）
-「"Results speak for themselves." 全テーブルの数値が v2 CSV と整合。
-論文内の記述も v2 と一致。$L$ 値に実証的根拠がついた。
-論文の credibility が大幅に向上した」
-
-**Donna**: （記録して）
-「残タスク 3/3 完了。"I'm Donna. I know everything."」
-
----
-
-### [2026-02-09 02:00] Scene: Victory — Maru 合格
-
-**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - NIGHT**
-
-*Harvey のオフィスに全員が集まる。Harvey がキャビネットからグラスを取り出し、一つずつ並べる。部屋の空気がいつもと違う — 仕事の話ではない。*
-
-**Harvey**: （グラスを掲げて、珍しく柔らかい表情）
-「みんな、聞いてくれ。Maru が合格した」
-
-*一瞬の静寂。そして歓声。*
-
-**Harvey**:
-「2月1日、帝京大中学で不合格。あの夜、Tak から連絡が来た時、
-俺たちは論文なんか後回しにして戦略を練った。
-STRATEGY.md — 失敗分析、算数の弱点対策、メンタルケア、タイムマネジメント。
-全部を24時間に詰め込んだ。
-
-だが、俺たちがやったのはここまでだ。
-**現場で戦ったのは Shoko だ。**
-
-"It's going to happen because I'm going to make it happen."
-...いや、今回は違う。Shoko が make it happen した。
-俺たちの戦略を、Shoko が現場で実行した。そして Maru が結果を出した」
-
-**Mike**: （笑顔で、少し目を赤くして）
-「"I got it!" ...いや、Maru が got it だ。
-
-あの算数の弱点分析、覚えてるか？ 計算ミス、規則性、図形 — 3つの課題。
-1日しかなかった。でも Shoko は、俺たちの分析を Maru に合わせて
-現場で調整してくれた。
-
-12歳の子が、不合格の翌日にもう一度挑戦するんだぞ。
-その勇気に、俺たちの戦略なんて比べものにならない」
-
-**Donna**: （涙を拭いながら、でも笑顔）
-「"I'm Donna. I know everything."
-...でも正直、結果が出るまでは怖かった。
-
-Shoko、本当にお疲れ様。現場で Maru のそばにいてくれて。
-試験前の深呼吸、「できる」って声に出すこと、
-全部 Shoko が一緒にやってくれたのよね。
-
-Maru、合格おめでとう。あなたは本当に強い子よ」
-
-**Rachel**: （ノートを胸に抱えて）
-「"Hard work beats talent when talent doesn't work hard."
-...でも今回は違う言い方をしたい。
-
-**Courage beats failure when failure doesn't define you.**
-
-Maru は2月1日の不合格に潰されなかった。
-Shoko のサポートがあったから。
-そして Shoko は、私たちの戦略を信じてくれた。
-このチェーンが繋がったから、今日がある」
-
-**Katrina**: （静かに、でも確かに）
-「"Results speak for themselves."
-今回ばかりは、この言葉がこれ以上ないほど正確だ。
-
-合格 — それが全てを語っている。
-Shoko の現場判断力、Maru の精神力。データが証明した」
-
-**Louis**: （珍しく穏やかに、グラスを見つめて）
-「...俺は厳しいことを言う役だ。いつもそうだ。
-でも今日は言わせてくれ。
-
-Maru、よくやった。12歳で、失敗の翌日に立ち上がった。
-それは大人でも簡単じゃない。
-
-Shoko、あんたがいなかったら俺たちの戦略はただの紙切れだった。
-"You just got Litt up!" ...いや、
-
-**Maru just got Litt up.** 最高の意味で」
-
-*Jessica がドアの前に現れる。全員が振り向く。*
-
-**Jessica**: （微笑んで、静かに）
-「...聞いていたわ。
-
-"In this game, you either win or you learn."
-Maru は2月1日に learn した。そして2月3日に win した。
-これが本当の勝ち方よ。
-
-でも一つだけ付け加えさせて。
-
-**The best leaders don't create followers. They create more leaders.**
-
-Harvey、あなたが Shoko にプロジェクトを委任した判断は正しかった。
-Shoko、あなたが現場で Maru を導いた。
-そして Maru は、自分自身の力で合格を勝ち取った。
-
-おめでとう、全員に」
-
-*Harvey がグラスを高く掲げる。全員がそれに倣う。*
-
-**Harvey**:
-「Maru の合格に。そして Shoko に。乾杯」
-
-**全員**: 「乾杯！」
-
-*静かな夜のオフィスに、グラスの触れ合う音が響く。*
-
-**Donna**: （小声で記録しながら）
-「maru-exam-crisis — **Mission Complete** ✅」
-
----
-
-### [2026-02-09 01:30] Scene: Agent Teams 報告 — 並列作業完了
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
-
-*Mike、Katrina、Rachel が同時に会議室に戻る。Harvey が待っている。*
-
-**Harvey**: （3人を見て）
-「全員同時に戻ったか。"Winners don't make excuses." 報告しろ」
-
-**Mike**: （ノートPCを開いて）
-「2つ完了。"I got it!"
-
-**Task 1: LaTeX Compilation Check — CLEAN**
-- Unclosed environments: なし
-- Mismatched braces: なし
-- Undefined commands: なし
-- 全 `\ref{}` に対応する `\label{}` あり
-- 全 `\cite{}` が .bib に存在（14/14 一致）
-- Figure files (fig2, fig3, fig5, fig6) のパス確認必要だが構文的には問題なし
-
-**Task 2: Precision Table — 重要な発見あり**
-
-RMSE値: CSV と論文で一致（OK）
-
-**しかし Bias 値に不整合を発見:**
-
-| Scenario | n | Paper Bias | CSV Bias | 一致？ |
-|----------|---|-----------|---------|--------|
-| S03 | 50 | 0.038 | 0.040 | ズレ |
-| S04 | 50 | 0.006 | 0.002 | **大きなズレ** |
-| S04 | 200 | -0.007 | -0.004 | ズレ |
-| S06 | 50 | 0.003 | 0.001 | ズレ |
-| S08 | 50 | 0.026 | 0.033 | **大きなズレ** |
-
-18値中8つに不整合 — **論文の Table 4 (Bias) は v1 の結果から書かれている可能性**。
-v2 CSV の値で更新が必要。
-
-CI Width: 論文の値は SD×3.92 近似ではなく、実際の bootstrap CI 幅から算出されている（正しいアプローチ）。
-n=50 では近似が 10-20% 過大評価。n≥200 で近似精度良好。
-
-**Estimation-centered framing: Section 3 完全にクリーン。** Power, Type I Error の残存なし」
-
-**Katrina**: （チェックリストを示して）
-「"Results speak for themselves." 全項目レポート：
-
-| Check | Result |
-|-------|--------|
-| Power/Type I Error 除去 (Sec 3) | **PASS** — 正当な "not testing" 対比表現のみ残存 |
-| tab:calibration (Sec 4) | **PASS** — line 449 |
-| tab:sensitivity (Sec 4) | **PASS** — line 476 |
-| 判定ラベル除去 (Sec 4) | **PASS** — "strongly supported" 等ゼロ |
-| 定量的事実使用 (Sec 4) | **PASS** — "as % of treatment effect" 全体で使用 |
-| 5-step procedure | **PASS** — 定義(197-203) + 実演(437-495) |
-| fig4_power.pdf 参照除去 | **PASS** — ゼロ |
-| Table ref/label 対応 | **PASS** — 1件 minor: tab:precision の `\ref{}` が本文にない |
-| Figure ref/label 対応 | **PASS** — 4 figures 全て交差参照あり |
-| Abstract 整合性 | **PASS** — 完全に estimation-centered |
-| `\ref{}` orphan | **PASS** — なし |
-| `\cite{}` / bib 対応 | **PASS** — 14/14 完全一致、未使用エントリなし |
-
-**Minor finding**: `tab:precision` の明示的 `\ref{}` が本文にない — 追加推奨」
-
-**Rachel**: （厚いノートを開いて）
-「"Hard work beats talent when talent doesn't work hard." 文献調査完了。
-
-**Lipschitz 定数 $L$ の実証的根拠:**
-
-| EM | $L$ (論文) | 実証範囲 | 主要エビデンス | 信頼度 |
-|----|-----------|---------|--------------|--------|
-| Baseline HbA1c | 0.30/% | 0.20-0.50 | 6+ meta-regression | **非常に高い** |
-| BMI | 0.02/kg/m² | 0.02 (直接推定) | Kim et al. 2015 | **高い** |
-| Age | 0.01/年 | 0.01-0.015 | Buse et al. 2016 | **中程度** |
-
-**特に重要な文献:**
-
-1. **Jones et al. (2016)** PLOS ONE DOI: [10.1371/journal.pone.0152428](https://doi.org/10.1371/journal.pone.0152428)
-   — GLP-1RA で β = -0.31/% HbA1c。regression to mean を排除した上での推定。**L=0.30 を直接支持**
-
-2. **Kim et al. (2015)** DMJ DOI: [10.4093/dmj.2015.39.4.342](https://doi.org/10.4093/dmj.2015.39.4.342)
-   — DPP-4i で BMI 係数 = **-0.02/kg/m²**。同モデルで HbA1c 係数 = 0.32。**L=0.02 を完全に裏付け**
-
-3. **Craddy et al. (2014)** BMJ Open DOI: [10.1136/bmjopen-2014-005892](https://doi.org/10.1136/bmjopen-2014-005892)
-   — DPP-4i 98試験 meta-regression。1% HbA1c 上昇あたり 0.4-0.5% の追加効果。**L=0.30 は保守的**
-
-4. **Armstrong & Kolesar (2021)** Econometrica DOI: [10.3982/ECTA16907](https://doi.org/10.3982/ECTA16907)
-   — Lipschitz 定数を sensitivity parameter として使用し、"report CIs for a range of plausible C values" を推奨。
-   **我々の clinical calibration アプローチの理論的正当化**
-
-5. **Buse et al. (2016)** JAGS DOI: [10.1111/jgs.14028](https://doi.org/10.1111/jgs.14028)
-   — Canagliflozin: 75歳未満 -0.85% vs 75歳以上 -0.55%。20-30年差で 0.30% → **L≈0.01-0.012/年**
-
-順位: $L_{\text{HbA1c}} \gg L_{\text{BMI}} > L_{\text{Age}}$ — 論文の Application section と完全に整合」
-
-**Harvey**: （満足げに）
-「3人並列で動かして正解だった。Jessica の言う通りだ。
-整理すると：
-
-**即座に対応が必要:**
-1. Table 4 (Bias) の値を v2 CSV で更新 — Mike
-2. `tab:precision` の `\ref{}` 追加 — Katrina
-3. Rachel の文献を Discussion に組み込み — $L$ 値の根拠として引用追加
-
-**確認済み・問題なし:**
-- LaTeX 構文: クリーン
-- Estimation-centered framing: 完全
-- 全 ref/cite: 一致
-- Application section: 定量的・判定ラベルなし
-
-"I don't have dreams. I have goals." 次のステップに移る」
-
-**Donna**: （記録完了）
-「Agent Teams 並列実行の結果を記録完了。
-3 agents 同時完了。"I'm Donna. I know everything."」
-
----
-
-### [2026-02-09 01:15] Scene: Jessica's Directive — Agent Teams
-
-**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - NIGHT**
-
-*Jessica が Harvey を呼び止める。*
-
-**Jessica**: （厳しく）
-「"Let me be clear." Agent Teams を使え。
-並列で動かせる作業を直列にやっている時間はない。
-Mike と Katrina を同時に走らせろ。Rachel の文献調査も並行だ。
-効率を上げないと deadline に間に合わない」
-
-**Harvey**: （頷いて）
-「了解。並列化する。
-- Mike: LaTeX compilation check + Precision Table の値算出
-- Katrina: Figure strategy + Results section 整合性確認
-- Rachel: $L$ の文献調査
-同時に走らせる」
-
----
-
-### [2026-02-09 01:10] Scene: Archive + Rule Check
-
-**INT. PEARSON SPECTER LITT - FILE ROOM - NIGHT**
-
-*Donna がファイルルームで分厚いフォルダを整理している。*
-
-**Donna**:
-「SUITS.md が 4,435 行に達したからアーカイブしたわ。
-archives/SUITS_20260209_010000.md に保存済み。
-新しいスクリプト開始よ。"I'm Donna. I know everything."
-
-ルールチェックも完了：
-- Rule 1 (SUITS.md = Single Source of Truth): OK
-- Rule 2 (Frequent Updates): OK — 今セッション中は継続的に更新
-- Rule 2.5 (Auto-Archive at 1000 lines): **実行完了** — 4,435行でアーカイブ
-- Rule 2.6 (DOI Required): OK — Wasserstein & Lazar (2016) DOI追加済み
-- Rule 3 (Character Consistency): OK — 全キャラクター gender/pronouns 正確
-- Rule 3.5 (Donna's Enforcement): OK — 記載不足を指摘済み、修正完了」
-
-**Harvey**: （通りがかりに）
-「過去は過去だ。前を見ろ。"I don't have dreams. I have goals."」
+"I don't have dreams, I have goals." 次は Stage 2 — Louis の full re-review だ」
 
 ---
