@@ -48,7 +48,13 @@
       "Bash(for pkg in mathastext psnfss threeparttablex environ trimspaces)",
       "Bash(for pkg in boites)",
       "Bash(for pkg in tex-gyre mathptmx newtx fpl palatino)",
-      "Bash(tlmgr search:*)"
+      "Bash(tlmgr search:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nFix hook paths from old project \\(20260201_SUITS\\) to current project \\(20260210_SIM\\)\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)",
+      "Bash(git stash pop:*)"
     ]
   }
 }

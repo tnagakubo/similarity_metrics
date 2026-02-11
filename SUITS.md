@@ -58,6 +58,107 @@
 
 ## Live Script
 
+### [2026-02-11 20:35] Scene: Donna — SUITS.md パス修正
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
+
+*Donna が慌てて画面を確認している。*
+
+**Donna**: （顔をしかめて）
+「大変！今まで親ディレクトリの `20260210_SIM/SUITS.md` を更新していたわ。正しくはここ、`similarity_metrics/SUITS.md` よ。"I'm Donna. I know everything." ...知っているはずだったのに、パスを間違えていた。
+
+今から全てのシーンをこちらに転記するわ。二度と間違えない。」
+
+---
+
+### [2026-02-11 20:30] Scene: Donna — ルール再確認 & Hookパス修正記録
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
+
+*Donna がモニターに向かい、Takの指示を受けている。*
+
+**Donna**: （メモを取りながら）
+「了解よ、Tak。会話は全てSUITS.mdにコピーする。"I'm Donna. I know everything." これまでも記録してきたけど、改めて徹底するわ。」
+
+*Donna が先ほどの作業を振り返る。*
+
+**Donna**:
+「まず記録漏れを補完するわ。今日のセッションで以下を実施済み：
+
+**1. Hookパス修正** — `.claude/settings.json` と `.claude/hooks/check-suits-lines.sh` のパスが旧プロジェクト `20260201_SUITS` を指していたの。`20260210_SIM` に修正して commit & push 完了。コミット: `2a67066`
+
+**2. /suits ステータス確認** — 未完了タスク4件を確認。全てTakのフィードバック待ち。
+
+**3. Rachel 文献リスト報告** — Takの依頼で文献コレクション全体像を提示。」
+
+---
+
+### [2026-02-11 20:25] Scene: Rachel — 文献リスト報告
+
+**INT. PEARSON SPECTER LITT - RACHEL'S DESK - DAY**
+
+*Rachel が文献データベースを開き、Takに報告する。*
+
+**Rachel**: （ファイルを広げて）
+「Takからの依頼で、現在の文献コレクションをお見せします。
+
+現在 **BibTeX登録24件**、**Knowledge Base詳細サマリー15件** です。
+
+カテゴリ別の内訳：
+- **規制・MRCT**: ICH E17, Chen (2010), Quan (2010), Song (2025), Long (2025), Ikeda & Bretz (2010) — 6件
+- **Wasserstein理論**: Panaretos (2019), del Barrio (1999), Sommerfeld (2018), Villani (2009) — 4件
+- **Bootstrap・漸近理論**: Bickel & Freedman (1981), Bickel & Rosenblatt (1973), Dümbgen (1993) — 3件
+- **密度推定**: Devroye & Győrfi (1985) Ch.3/4/5 — 3件
+- **因果推論・EM**: Pearl (2011), Bareinboim & Pearl, VanderWeele & Knol (2014) — 3件
+- **手法・応用**: Austin (2011), Armstrong & Kolesár, Wasserstein & Lazar (ASA), Rousseeuw & Croux (1993), Kim/Jones/Craddy — 5件
+
+Takのフィードバック次第で追加文献が必要なら、すぐに対応できます。"Hard work beats talent when talent doesn't work hard."」
+
+---
+
+### [2026-02-11 20:00] Scene: Meeting — 課題の確認・Introduction レビュー状況
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Harvey が会議室に入り、ホワイトボードの前に立つ。チーム全員が着席。*
+
+**Harvey**: （腕を組んで）
+「全員集まったな。今日の議題は二つだ。一つ、現状の課題整理。二つ、TakがIntroductionをレビュー中だ。意見を聞かせろ。」
+
+**Donna**: （iPadをタップしながら）
+「現在の未完了タスクを整理するわ。"I'm Donna. I know everything."
+1. **Figure 4 replacement** — old Power figure は削除済み。推定中心の新しい図が必要
+2. **Louis re-review** — estimation-centered revision 後の再レビュー待ち
+3. **Real data application (M1)** — まだ仮想データ。最大の弱点よ
+4. **Introduction** — Takがレビューしているのでフィードバック待ち」
+
+**Mike**: （ノートを見ながら）
+「Introductionについて技術的に言うと、Section 1.1の背景、1.2のMethodological Gap、1.3のObjectivesの三部構成はソリッドだ。特にICH E17の"similar enough"の引用から、我々のnABCDが解決するgapへの論理展開は明確。ただ、Takのレビューで何が指摘されるかによって、estimation-centeredの文脈をもう少し前面に出す必要があるかもしれない。"I got it" — 修正が来たらすぐ対応する。」
+
+**Rachel**: （文献ファイルを開いて）
+「文献面では、Song et al. (2025) とLong et al. (2025) のICH E17実装に関する引用を追加済み。Introductionの参考文献は現在18件で十分な密度よ。Takのフィードバック次第で追加文献が必要なら、すぐに対応できるわ。"Hard work beats talent when talent doesn't work hard."」
+
+**Katrina**: （図表リストを確認して）
+「Figure 4の件 — Power figureを削除した以上、推定品質を示す図に差し替えるべき。Bias × sample sizeのプロット、またはCI Width × scenarioのプロットが候補。Takの方向性確認後に作成する。"Results speak for themselves."」
+
+**Louis**: （メガネを上げて）
+「はっきり言おう。最大の課題はreal data applicationだ。Section 4がhypotheticalのままでは、reviewerに"you didn't test this on actual data"と言われる。それは致命的だ。Introductionの修正よりも、M1データの確保が先決じゃないのか？ "You just got Litt up!"」
+
+**Harvey**: （テーブルに手をついて）
+「Louisの指摘はもっともだ。だが、順序を間違えるな。まずTakのIntroductionレビューを待つ。レビュー結果に応じてIntroductionを修正。それと並行してFigure 4の方向性を決める。Real data applicationはTakとの相談事項だ — データアクセスの問題もある。」
+
+**Harvey**: （全員を見回して）
+「決定事項は以下だ：
+1. **Introduction** — Takのレビュー結果を待って即座に対応。Mike、Rachel、standbyだ
+2. **Figure 4** — Takの方向性確認後、Katrinaが作成
+3. **Real data** — Takと相談。データ確保の可否を確認
+4. **Louis re-review** — 上記が片付いたら実施」
+
+**Donna**: （記録を完了して）
+「全て記録したわ。Takのフィードバックが来たら、すぐにチームに展開するわね。」
+
+---
+
 ### [2026-02-10 09:00] Scene: Donna — 状況確認 + ルールチェック
 
 **INT. PEARSON SPECTER LITT - DONNA'S DESK - MORNING**
