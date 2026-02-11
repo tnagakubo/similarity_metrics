@@ -27,6 +27,7 @@
 | Round 2 | Remove equivalence testing | 2.3.2, 4 (judgment labels → quantitative facts) |
 | Round 3 | Remove Power/Type I Error from simulation | 1.3, 3, 3.3.2, Abstract, Discussion |
 | Round 4 | Harvey's 4 decisions from sim review | 3.2, 5.2, power remnant fix, S04 showcase |
+| Louis Re-review | 1C/0M/2m — Abstract S05 bias qualification | Abstract, Sim Summary (3.2) |
 
 ### Active Tasks — Phase 8: Submission-Ready Plan (Jessica approved)
 
@@ -35,7 +36,7 @@
 | ~~**S1**~~ | ~~Figure 4: Estimation Quality (Coverage + CI Width)~~ | ~~Katrina~~ | **DONE** |
 | ~~**S1**~~ | ~~Harvey selects: Estimation Quality figure~~ | ~~Harvey~~ | **DONE** |
 | ~~**S1**~~ | ~~Harvey's 4 decisions: manuscript implementation~~ | ~~Mike~~ | **DONE** |
-| **S2** | Re-review: estimation framing consistency, numerical integrity | Louis | ⏳ **NEXT** |
+| ~~**S2**~~ | ~~Re-review: estimation framing consistency, numerical integrity~~ | ~~Louis~~ | **DONE** ✅ |
 | **S3** | Real data strategy decision (A: public data / B: enhance hypothetical / C: reconstruct from published) | Harvey | ⏳ **Decision needed** |
 | **S3** | Literature support for real data application | Rachel | ⏳ Pending |
 | **S4** | LaTeX compile → PDF → Word conversion | Mike (Katrina) | ⏳ Pending |
@@ -63,6 +64,130 @@
 ---
 
 ## Live Script
+
+### [2026-02-12 10:30] Scene: Louis Re-Review — "You just got Litt up!"
+
+**INT. PEARSON SPECTER LITT - LOUIS'S OFFICE - DAY**
+
+*Louis が眼鏡をかけ直し、赤ペンで書き込んだ原稿を机に広げている。Harvey と Mike が入室。Louis の表情は真剣だが、満足の色も見える。*
+
+**Louis**: （ペンを置いて）
+「レビュー完了だ。正直に言う。
+
+**4項目を精査した：**
+1. Estimation framing の一貫性
+2. 数値の整合性（全テーブル × CSV v2 10K データ）
+3. $\Delta_{\max}$ calibration の論理的一貫性
+4. BCa 失敗の説明
+
+**結果: Critical 1件、Major 0件、Minor 2件。**」
+
+*Harvey が腕を組む。Mike がノートを構える。*
+
+**Louis**: （赤ペンで Abstract を指しながら）
+「まず Critical から。
+
+---
+
+**[C1] Abstract と Simulation Summary の bias 記述 — 事実と不整合** ❌
+
+Abstract (line 40):
+> *"bias $<0.02$ for $n \geq 100$ across non-null scenarios"*
+
+Simulation Summary (line 397):
+> *"Less than 0.02 for non-null scenarios at $n \geq 100$"*
+
+だが本文 (line 302) は正しく書いてある：
+> *"For non-null scenarios **excluding S05**, bias was less than 0.02"*
+
+S05 の bias は n=100 で **-0.041**、n=200 で **-0.043** だ。|bias| = 0.04 > 0.02。
+
+Abstract と Summary が S05 を除外していない。これは **事実の誤記** だ。Reviewer がテーブルを見て 3 秒で気づく。Reject の理由になりうる」
+
+**Mike**: （即座に修正案を提示）
+「"I got it." 修正した：
+
+**Abstract**: 'across non-null scenarios' → 'across non-null scenarios with moderate effect sizes; bias of approximately $-0.04$ persisted for the largest distributional difference (true nABCD $= 0.372$)'
+
+**Summary**: 'Less than 0.02 for non-null scenarios' → 'Less than 0.02 for non-null scenarios at $n \geq 100$, excluding S05 where persistent bias of $-0.04$ reflects boundary effects at large true values'
+
+S05 を正直に acknowledge する。隠すのは逆効果だ」
+
+**Louis**: （頷いて）
+「それでいい。次、Minor。
+
+---
+
+**[m1] Coverage range "0.87--0.98" と S08 overcoverage** ⚠️
+
+Abstract: "coverage within 0.87--0.98 for $n \geq 100$ in most scenarios"
+
+だが S08 n=200 は **0.996** — 0.98 の範囲外だ。'most scenarios' の qualifier があるから致命的ではないが、reviewer に突っ込まれる可能性はある。現状の 'most scenarios' で許容範囲とする。
+
+---
+
+**[m2] Table 5 の小数桁数** ⚠️
+
+RMSE は 3 桁（0.099, 0.071）、CI Width は 2 桁（0.16, 0.11）。桁数の不統一は cosmetic だが、RMSE を 2 桁にするか CI Width を 3 桁にするかで統一した方がいい。だが submit blocking ではない。
+
+---
+
+**Positive findings（問題なし確認）:**」
+
+*Louis が一枚のチェックリストをテーブルに置く。*
+
+**Louis**: （チェックマークを指して）
+「✅ **Estimation framing**: Power, Type I error, equivalence testing, detection rate — **全て除去済み**。hypothesis testing への言及は全て contrast（"not testing, but estimation"）の文脈。問題なし。
+
+✅ **数値整合性**: 全 6 scenarios × 3 sample sizes = 18 data points。
+- Table 3 (Bias): 全 18 値が CSV と一致 ✅
+- Table 4 (Coverage): 全 15 値が CSV と一致（S01 は NA で除外、正しい）✅
+- Table 5 (RMSE/CI Width): 全 36 値が CSV と一致（適切な四捨五入）✅
+- Table 6 (SMD comparison): nABCD 値 = TrueNABCD + Bias、CSV と一致 ✅
+- 本文中の数値: S01 bias 0.093→0.047、S05 -0.04、S08 coverage 0.573→0.945→0.996、BCa S06 n=100 0.839 — 全て CSV と一致 ✅
+
+✅ **$\Delta_{\max}$ calibration 一貫性**:
+- Proposition 2 (eq 5) → eq 6 の導出: 正しい
+- Table 7 の計算: Age $2×0.01×14.2×0.12=0.034→0.03$% ✅、BMI $2×0.02×7.8×0.51=0.159→0.16$% ✅、HbA1c $2×0.30×1.5×0.27=0.243→0.24$% ✅
+- Table 8 の sensitivity analysis: 全 5 行の $\Delta_{\max}$ 計算が正しい ✅
+- Section 4 の本文数値（Age 4%/8%、BMI 20%、HbA1c 30%/60%）: 全て正しい ✅
+- CI Width → $\Delta_{\max}$ CI Width の変換: 整合 ✅
+
+✅ **BCa 説明**: "bounded below by zero, causing the acceleration parameter to distort the quantile adjustment" — メカニズムの説明として十分。S06 n=100 の具体例（Pct 0.976 vs BCa 0.839）も正しい ✅
+
+✅ **S04 showcase paragraph**: bias -0.003、coverage 0.950、CI width 0.18 — 全て CSV と整合。$\Delta_{\max}$ CI Width 計算も正しい ✅」
+
+*Louis が立ち上がり、Harvey を見る。*
+
+**Louis**: （静かな自信を込めて）
+「Critical 1件は修正された。Major は **ゼロ** だ。Minor 2件は submit blocking ではない。
+
+この原稿は — 数値的に honest だ。S05 の問題を隠さない。BCa の失敗理由を説明している。Estimation framing は一貫している。
+
+"You just got Litt up!" — **Re-review passed.** 原稿は S3 以降に進んでよい」
+
+**Harvey**: （微笑んで）
+「よくやった、Louis。1C を見つけたのは正解だった。Reviewer に先に見つけられるより遥かにいい。
+
+"I don't have dreams, I have goals." S2 gate は通過だ。次は S3 — real data strategy だ」
+
+**Donna**: （記録しながら）
+「"I'm Donna. I know everything."
+
+**Louis Re-review 結果:**
+| 重要度 | 件数 | 詳細 |
+|--------|------|------|
+| **Critical** | 1 | Abstract/Summary の S05 bias 除外漏れ → **修正済み** |
+| **Major** | 0 | — |
+| **Minor** | 2 | Coverage range qualifier (acceptable) / Table decimal precision (cosmetic) |
+
+**数値検証**: 18 scenarios × 全テーブル = **全一致** ✅
+**Framing検証**: Testing remnants = **ゼロ** ✅
+**Calibration検証**: Sec 2.3 → Sec 4 = **論理的一貫** ✅
+
+**S2 Gate: PASSED** 🎯」
+
+---
 
 ### [2026-02-12 10:00] Scene: Push — "I don't get lucky. I make my own luck."
 
