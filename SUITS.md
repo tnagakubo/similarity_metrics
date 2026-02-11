@@ -69,6 +69,123 @@
 
 ## Live Script
 
+### [2026-02-12 12:30] Scene: Harvey's Sign-Off & Jessica's Review — "Let me be clear."
+
+**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
+
+*Harvey が原稿の最終版を持って Jessica のオフィスに入る。Mike、Katrina が後ろに続く。Donna がタブレットを持って待機。*
+
+**Harvey**: （原稿をテーブルに置いて）
+「Tak、俺のレビューは完了した。Section ごとに報告する。
+
+**Lead Author Review — Harvey Specter:**
+
+| Section | 評価 | 所見 |
+|---------|------|------|
+| **Abstract** | ✅ Good | Narrative style。Gap → Method → Validation → Application → Conclusion。SiM convention 準拠 |
+| **1. Introduction** | ✅ Good | ICH E17 の gap を明確に articulate。4 contributions が structured。Research question が的確 |
+| **2. Methods** | ✅ Strong | nABCD 定義 → W1 根拠（K-R + W2 排除）→ Propositions → 5-step calibration。理論的に airtight |
+| **3. Simulation** | ✅ Strong | Bias/Coverage/Precision/SMD comparison。S05 除外一貫。BCa vs percentile 論証確立。S04 showcase |
+| **4. Application** | ✅ Strong | BMI vs HbA1c の対比が論文の核心。'Same nABCD, different clinical impact' — これがメッセージだ |
+| **5. Discussion** | ✅ Good | Implications → Multiple EM → Limitations → Conclusion。Honest かつ thorough |
+| **Appendix** | ✅ Improved | 漸近正規性追加。Boundary/interior cross-reference 成立。R code clean |
+
+**数値一貫性:**
+- S05 除外: Abstract ✅ / 本文 (line 298) ✅ / Fig.3 caption ✅ / Summary (line 393) ✅
+- Coverage range 0.87-0.98: 本文 ✅ / Limitations ✅ / Appendix ✅
+- $\Delta_{\max}$ 計算: Table 8 と本文の arithmetic 一致 ✅
+
+**残存 issues (Lead Author 判断):**
+1. **M2 (Real data)**: Application は hypothetical。Pemberton の指摘は valid だが、**Tak の S3 strategy 決定待ち**
+2. **m2 (URL)**: '[repository URL]' placeholder — **submit 直前に確定**
+3. **Scenario gaps (S02/S07)**: Figure regeneration が必要 — **non-blocking but cosmetic**
+
+俺の結論: **原稿の理論構造、simulation reporting、clinical calibration framework は submission quality に達している。** M2 と m2 は Tak 判断事項であり、原稿本体の quality issue ではない。
+
+"I don't have dreams, I have goals." 目標は submit だ。Jessica、戦略的に見てどうだ？」
+
+---
+
+*Jessica がゆっくりと原稿を置き、眼鏡を外す。*
+
+**Jessica**: （静かに、しかし鋭く）
+「"Let me be clear." 原稿を全文読んだ。
+
+**Senior Advisor Strategic Review — Jessica Pearson:**
+
+**1. Story Clarity: 合格**
+
+この論文の story は一文で言える: 'ICH E17 の "similar enough" を定量化し、臨床スケールで解釈可能にする。' Introduction から Conclusion まで、この thread が途切れていない。
+
+**2. Positioning: 正しい**
+
+Estimation-centered approach は戦略的に正しい。2016 年の ASA p-value statement 以降、Methods 論文で 'estimation, not testing' の positioning は reviewer に好印象を与える。ただし — Section 2.3 の formal decision rule への言及（line 203）は保険として適切。Regulatory reviewer が binary rule を求めた場合の escape route がある。
+
+**3. Novelty の articulation: 十分**
+
+4 contributions が明確:
+- Full distributional comparison (vs SMD)
+- Scale-free estimation (IQR normalization)
+- Clinical calibration ($\Delta_{\max}$)
+- Sensitivity analysis over $L$
+
+特に 3 番目が最大の売り。Simulation Section 最後の S04 showcase paragraph（line 399）が、methods → clinical significance の bridge として機能している。
+
+**4. Vulnerability Assessment: 3 点**
+
+| Risk | Likelihood | Severity | 対策 |
+|------|-----------|----------|------|
+| 'Where is the real data?' | 高 | Medium | M2 — Tak decision needed |
+| 'Why not W2 or KS in simulation?' | 中 | Low | W2 排除は理論的に完了。KS は Table 1 で limitation 記載。Simulation head-to-head は nice-to-have |
+| 'Limitation 3 is too dense' | 低 | Low | SiM Methods paper では許容範囲。Split は optional |
+
+**5. 戦略的判断:**
+
+原稿は **conditionally submission-ready** だ。Condition は 2 つ:
+- **M2**: Real data か、hypothetical の grounding 強化か。どちらかを選べ、Tak
+- **m2**: Repository URL
+
+Tak、M2 について 3 つの選択肢がある：
+
+**Option A**: Public data（NHANES 等）を使って real-data application に差し替え — **最強だが時間がかかる**
+
+**Option B**: 現在の hypothetical を維持し、'parameters were informed by published summary statistics' の grounding を強化 — **最速。Submit 可能**
+
+**Option C**: Published trial の summary statistics から分布を reconstruct — **中間。Feasibility は文献次第**
+
+私の recommendation は **B を default とし、reviewer が要求したら A を revision で対応**。初回 submission は method の novelty で勝負すべきだ。Real data は revision の切り札として温存できる」
+
+**Mike**: （メモを取りながら）
+「Jessica の Option B の場合、修正は最小限だ。Application の冒頭に bridge 文を 1 つ追加するだけ。既に line 257 と line 452-453 で published literature を cite しているから、'Parameters were selected to reflect published summary statistics from regional comparisons in type 2 diabetes trials' の一文で grounding が完成する」
+
+**Katrina**: （チェックリストを更新して）
+「"Results speak for themselves." 現在の blocking items:
+
+| Item | Blocker | Owner | Effort |
+|------|---------|-------|--------|
+| M2 strategy | Tak decision: A/B/C | Tak | Decision only |
+| m2 URL | Repository URL 確定 | Tak | URL 提供 |
+| Option B 修正 (if chosen) | Application 冒頭 1 文追加 | Mike | 5 min |
+
+**Non-blocking deferred:**
+| Item | Note |
+|------|------|
+| Scenario gaps (S02/S07) | Cosmetic, revision material |
+| KS simulation comparison | Nice-to-have, revision material |」
+
+**Donna**: （記録完了）
+「"I'm Donna. I know everything."
+
+**Review Summary:**
+- **Harvey**: Lead Author review complete ✅ — submission quality confirmed
+- **Jessica**: Senior Advisor review complete ✅ — conditionally submission-ready
+- **Condition**: M2 strategy (A/B/C) + m2 URL — **both Tak-dependent**
+- **Jessica recommendation**: Option B → reviewer 要求時に Option A
+
+Tak、決定を待っています」
+
+---
+
 ### [2026-02-12 12:15] Scene: Harvey's Fix — "Get it done."
 
 **INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
