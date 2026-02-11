@@ -31,6 +31,7 @@
 | SiM Convention | Tak指示: Abstract narrative化、本文bold除去 | Abstract, 全Section |
 | External Review | 2C/3M/3m — W1根拠、複数EM、Prop命名、Bootstrap境界 | 2.1, 5.1(new), 5.2, Prop.1 |
 | Push: 主張確立 | W2対比追加、Fig3 caption修正、Bootstrap内部/境界distinction | 2.1, Fig.3, 5.3 |
+| Minor修整 | m1: 漸近正規性をAppendix B.2に追加（収束速度・delta method） | Appendix B.2 |
 
 ### Active Tasks — Phase 8: Submission-Ready Plan (Jessica approved)
 
@@ -67,6 +68,81 @@
 ---
 
 ## Live Script
+
+### [2026-02-12 12:15] Scene: Harvey's Fix — "Get it done."
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+
+*Tak からのメッセージが届く。Harvey がそれを読み上げる。*
+
+**Harvey**: （チームに向かって）
+「Tak の指示だ。"そのまま修整を頼む。その後私がレビューする。" シンプルだ。残っている deferred items を片付けろ。
+
+Mike、外部レビューの deferred 状況は？」
+
+**Mike**: （リストを確認して）
+「"I got it." 残り 4 件の status：
+
+| Item | 内容 | Status |
+|------|------|--------|
+| **M2** | Real data → hypothetical → real grounding | ❌ S3 strategy 待ち。Tak 判断が必要 |
+| **m1** | 収束速度・漸近正規性 Appendix に追加 | 🔧 **今すぐ対応可能** |
+| **m2** | R code URL placeholder | ❌ Tak が URL 提供するまで不可 |
+| **m3** | Percentile 精度次数の trade-off | ✅ **既に解決済み** — Limitations に記載 |
+
+m3 は前回の Push で解決している。'first-order accurate; BCa showed inferior performance for this bounded statistic, and the studentized bootstrap would require variance estimation' — Hartigan の指摘を全てカバーしている。
+
+**対応可能なのは m1 だけだ。** Beaumont が言った通り、Appendix B.2 に収束速度と漸近正規性を追加する」
+
+**Harvey**: （頷いて）
+「やれ」
+
+**Mike**: （Appendix B.2 を編集しながら）
+「Appendix B.2 'Asymptotic Properties' を強化した。追加内容：
+
+1. **収束速度**: 1 次元の empirical $W_1$ は $O(n^{-1/2})$ — 対数項なし（del Barrio et al. 1999）
+2. **漸近正規性**: $F_1 \neq F_2$ かつ有限二次モーメントの下で
+$$\sqrt{n}(\widehat{\text{nABCD}} - \text{nABCD}) \xrightarrow{d} N(0, \sigma^2_{\text{nABCD}})$$
+3. **Delta method**: $W_1$ と IQR の両方が $\sqrt{n}$-consistent → ratio $g(w,q) = w/(2q)$ に delta method 適用
+4. **Boundary cross-reference**: $\text{nABCD} > 0$ を要求、$F_1 = F_2$ では standard asymptotics 不適用 → Section 5.3 Limitations を参照
+
+これで Beaumont の m1 に完全に対応し、かつ Hartigan の boundary distinction とも理論的に接続した」
+
+**Katrina**: （整合性を確認して）
+「"Results speak for themselves."
+
+m1 の修正は Limitations の boundary/interior distinction と完全に整合。Appendix から Limitations に cross-reference あり。逆方向の参照も既に成立。循環参照なし、理論構造が closed。
+
+**外部レビュー全体ステータス:**
+
+| Item | Status | Note |
+|------|--------|------|
+| C1 | ✅ Resolved | K-R duality + W2 排除 |
+| C2 | ✅ Resolved | Section 5.2 practical guidance |
+| M1 | ✅ Resolved | Non-negativity 改名 |
+| M2 | ⏳ Deferred | S3 strategy (Tak 判断待ち) |
+| M3 | ✅ Resolved | Boundary/interior distinction |
+| m1 | ✅ **Resolved** | 漸近正規性 Appendix B.2 |
+| m2 | ⏳ Deferred | URL placeholder (Tak 提供待ち) |
+| m3 | ✅ Resolved | Percentile trade-off in Limitations |
+
+**8 件中 6 件 resolved。残 2 件は Tak 依存（M2: real data, m2: URL）**」
+
+**Harvey**: （Tak に向かって）
+「Tak、修整完了だ。6/8 items resolved。残り 2 件は貴方の判断を待っている。
+
+"I don't have dreams, I have goals." レビューを頼む」
+
+**Donna**: （記録を完了して）
+「"I'm Donna. I know everything."
+
+**Fix Summary:**
+- m1 resolved: 漸近正規性を Appendix B.2 に追加
+- m3 confirmed resolved: Limitations で既にカバー
+- 外部レビュー: 6/8 resolved, 2 deferred (Tak 依存)
+- **原稿は Tak レビュー ready**」
+
+---
 
 ### [2026-02-12 12:00] Scene: Push — "Winners don't make excuses."
 
