@@ -308,6 +308,12 @@ For non-null scenarios excluding S05, bias was less than 0.02 in absolute value 
 
 Table~\ref{tab:coverage} presents coverage probabilities of the 95\% bootstrap confidence intervals. For $n \geq 100$, coverage was within 0.87--0.98 for most scenarios (S04, S06, S08), with moderate undercoverage for S03 at $n = 100$ (0.895). S05 showed progressive undercoverage with increasing $n$ (0.867 at $n = 100$, 0.731 at $n = 200$), attributable to the persistent negative bias under large distributional differences. At $n = 50$, undercoverage was more pronounced, particularly for S08 (0.573) and S03 (0.672), indicating that this sample size is insufficient for reliable inference.
 
+Coverage exhibited a non-monotonic pattern across sample sizes for the shape scenario (S08): 0.573 at $n = 50$, 0.945 at $n = 100$, and 0.996 at $n = 200$. The low coverage at $n = 50$ reflects large positive bias relative to CI width, while the overcoverage at $n = 200$ reflects the combination of shrinking bias ($-0.015$) with CIs that remain relatively wide for this small true value. This pattern suggests that coverage performance depends on the balance between bias magnitude and CI width, both of which change with $n$ but at different rates.
+
+We also evaluated BCa (bias-corrected and accelerated) confidence intervals. BCa intervals showed consistently lower coverage than percentile intervals across all scenarios, with the largest discrepancy in scale and shape scenarios (e.g., S06 at $n = 100$: percentile 0.976 vs.\ BCa 0.839). The BCa correction overcorrects for nABCD because the statistic is bounded below by zero, causing the acceleration parameter to distort the quantile adjustment. Based on these findings, we adopt percentile bootstrap as the primary inference method.
+
+Monte Carlo standard errors for all reported proportions (coverage, power) were below 0.005 at 10{,}000 replications, ensuring that observed differences across scenarios and sample sizes reflect genuine operating characteristic differences rather than simulation noise.
+
 \begin{table}[ht]
 \caption{Coverage probability of 95\% bootstrap confidence intervals.\label{tab:coverage}}
 \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccc@{}}
@@ -499,6 +505,8 @@ $\boldsymbol{L}$ \textbf{(assumed)} & $\boldsymbol{\Delta_{\max}}$ & \textbf{as 
 
 The sensitivity analysis provides trial designers and regulators with a transparent view: for this EM and region pair, at what level of CATE sensitivity does the distributional difference begin to matter clinically? This framing supports informed deliberation rather than a binary decision, consistent with the ICH E17 principle that ``similar enough'' requires contextual judgment.
 
+The estimation precision from the simulation study (Section~\ref{sec:simulation}) propagates directly to the precision of $\Delta_{\max}$. For HbA1c (nABCD CI width $\approx 0.14$ at $n = 150$--200), the CI width in $\Delta_{\max}$ units is $2 \times 0.30 \times 1.5 \times 0.14 = 0.13$\% HbA1c---a level of uncertainty small enough to support meaningful clinical calibration. For BMI, where $L = 0.02$, the same nABCD CI width translates to only $2 \times 0.02 \times 7.8 \times 0.14 = 0.04$\% HbA1c, demonstrating that estimation uncertainty in $\Delta_{\max}$ scales with CATE sensitivity.
+
 The analysis illustrates that nABCD serves as a \textbf{measuring instrument} for distributional distance, while the \textbf{clinical judgment} of whether that distance matters requires integration with domain knowledge about the EM's CATE sensitivity. The role of the statistician is to provide $\Delta_{\max}$ and its uncertainty; the role of the clinical team is to evaluate that information against the therapeutic context.
 
 %==============================================================================
@@ -528,7 +536,7 @@ Several limitations should be acknowledged:
 \begin{enumerate}[1.]
 \item The current formulation applies to continuous EMs only; extensions to categorical or mixed-type EMs require further development.
 \item nABCD evaluates each EM separately rather than jointly; a multivariate extension would address potential confounding among EMs.
-\item Positive bias under the null at small sample sizes ($n < 100$) can inflate nABCD estimates; we recommend $n \geq 100$ per region for reliable point estimation and confidence intervals.
+\item Positive bias under the null at small sample sizes ($n < 100$) can inflate nABCD estimates, and persistent negative bias at large true values (S05, nABCD $= 0.372$) leads to progressive undercoverage (0.731 at $n = 200$). These boundary effects are inherent to the non-negative, bounded nature of nABCD as a function of the Wasserstein distance. We recommend $n \geq 100$ per region for reliable point estimation and confidence intervals, and caution that coverage may degrade when the true nABCD exceeds approximately 0.3.
 \item The clinical calibration requires estimation of CATE sensitivity $L$, which may not always be available from prior data. Reference benchmarks are provided as a fallback but should not replace context-specific calibration.
 \end{enumerate}
 
