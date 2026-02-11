@@ -58,6 +58,131 @@
 
 ## Live Script
 
+### [2026-02-11 21:15] Scene: Meeting — Effect modifierとは何か
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Harvey が会議室のホワイトボードの前に立つ。チーム全員が着席。Harvey がマーカーを手に取る。*
+
+**Harvey**: （腕を組んで）
+「今日のテーマは基本に立ち返る。"Effect modifier とは何か"。我々の論文の核心だ。ここを曖昧にしたまま書き進めるわけにはいかない。意見を聞かせろ」
+
+**Mike**: （即座にホワイトボードに向かって）
+「"I got it." まず formal definition から行こう。
+
+**Effect modifier** とは、**治療効果の大きさを変える共変量** のことだ。
+
+数式で言えば単純だ。治療 $E$ がアウトカム $D$ に及ぼす効果が、変数 $G$ の値によって変わるとき、$G$ は effect modifier だ。
+
+例えば：
+- $G = 0$ のとき治療効果 = $p_{01} - p_{00}$
+- $G = 1$ のとき治療効果 = $p_{11} - p_{10}$
+
+この二つが**等しくない**なら、$G$ は effect modifier。
+
+VanderWeele & Knol (2014) の言葉を借りれば、"The effect of exposure *E* on outcome *D* varies across strata defined by factor *G*"。これが effect modification の定義だ」
+
+**Rachel**: （文献ノートを開いて）
+「"Hard work beats talent when talent doesn't work hard." 文献的な背景を補足するわ。
+
+重要なのは、**effect modification と interaction は似て非なる概念** だということ。
+
+| 概念 | 定義 | 焦点 |
+|------|------|------|
+| **Effect modification** | 治療効果が第三変数の層によって異なる | 一方の曝露の効果が他方で変わるか |
+| **Statistical interaction** | 二変数の**同時効果**がモデルの期待と異なる | 二変数の joint effect |
+
+VanderWeele (2009) が *Epidemiology* で明確に区別している。Effect modification は**一方向的** — つまり「$G$ が $E$ の効果を修飾する」と言えるが、interaction は**対称的** — 「$G$ と $E$ の間に交互作用がある」。
+
+ただし実務上は、多くの場合同義として使われているのが現状ね」
+
+**Mike**: （ホワイトボードに図を描きながら）
+「もう一つ critical な点がある。**スケール依存性** だ。
+
+Additive scale:
+$$IC = p_{11} - p_{10} - p_{01} + p_{00}$$
+
+Multiplicative scale:
+$$\frac{RR_{11}}{RR_{10} \cdot RR_{01}}$$
+
+**同じデータでも、additive scale では interaction があるのに multiplicative scale ではない、ということが起こる。**
+
+VanderWeele & Knol の Table 3 がまさにそれだ。Additive interaction (IC = 0.03) はあるが、multiplicative interaction (ratio = 1) はゼロ。スケールの選択で結論が変わる。
+
+公衆衛生的な判断には additive scale、病因論には multiplicative scale が適切とされるが、我々の論文の文脈では**分布の距離**を測っているので、スケールの問題は間接的に回避できている」
+
+**Louis**: （メガネを上げて、鋭く）
+「ここで一つ厳しいことを言わせてもらう。
+
+Effect modifier の定義はいい。だが**我々の論文にとって本当に重要なのは、effect modifier が "なぜ" multi-regional trial で問題になるのか** だ。
+
+ICH E17 を見ろ。"Intrinsic factors" — 遺伝、年齢、体重、臓器機能、疾患重症度。"Extrinsic factors" — 医療慣行、食事、社会経済的要因。これらが**地域間で分布が異なる**とき、治療効果の地域差が生じる。
+
+つまり：
+
+**Effect modifier の分布が地域間で異なる → 治療効果が地域間で異なる**
+
+これが我々の nABCD が解決する問題の**起点**だ。Effect modifier が何かを説明できなければ、nABCD が何を測っているかも説明できない。"You just got Litt up!"」
+
+**Harvey**: （Louisに頷いて）
+「Louisの指摘は核心を突いている。続けろ」
+
+**Mike**: （興奮して）
+「Louis の指摘を数学的に formalize すると、こうなる。"I got it!"
+
+治療効果 $\tau$ が effect modifier $X$ の関数 $\tau(x)$ だとする。地域 $S$ と地域 $T$ の effect modifier 分布がそれぞれ $F_S$ と $F_T$ のとき：
+
+$$|\bar{\tau}_T - \bar{\tau}_S| = \left|\int \tau(x) dF_T(x) - \int \tau(x) dF_S(x)\right| \leq \|\tau'\|_\infty \cdot W_1(F_S, F_T)$$
+
+ここで $W_1$ は Wasserstein-1 距離だ。
+
+つまり：
+1. $\tau(x)$ の Lipschitz 定数（= 我々の $L$）が effect modification の**強さ**
+2. $W_1(F_S, F_T)$ が分布の**距離**（≈ 我々の nABCD が測るもの）
+
+**この二つの積** が治療効果の地域差の上界を与える。
+
+だから nABCD が小さければ、たとえ effect modification が存在しても（$L > 0$）、地域間の治療効果差は小さいと bound できる。これが我々の論文の核心的主張だ」
+
+**Rachel**: （補足して）
+「具体例で言うと、我々の Application section で扱っている：
+
+| Effect Modifier | $L$ 値 | 根拠 |
+|----------------|---------|------|
+| Baseline HbA1c | 0.30/% | Jones et al. (2016), Craddy et al. (2014): 6+ meta-regression |
+| BMI | 0.02/kg/m² | Kim et al. (2015): DPP-4i で直接推定 |
+| Age | 0.01/年 | Buse et al. (2016): Canagliflozin 年齢別効果差から |
+
+HbA1c は**強い** effect modifier ($L$ が大きい)、Age は**弱い** effect modifier ($L$ が小さい)。同じ nABCD でも、HbA1c の分布差は BMI や Age の分布差より治療効果への影響が大きい」
+
+**Katrina**: （整理して）
+「"Results speak for themselves." ここまでの議論をまとめると：
+
+**Effect modifier の3つの顔：**
+
+1. **統計学的定義**: 治療効果が共変量の層によって異なる現象
+2. **規制的定義** (ICH E17): 地域間の治療効果差を説明する intrinsic/extrinsic factors
+3. **我々の論文での定義**: nABCD の臨床的解釈を与える鍵概念 — $\Delta_{\max} = 2L \cdot IQR \cdot nABCD$ の $L$ に対応
+
+この3つが整合しているのが我々の論文の強みよ」
+
+**Harvey**: （テーブルに手をついて、全員を見回す）
+「いい議論だ。決定事項をまとめる。
+
+**Effect modifier とは** — 治療効果の大きさを変える変数。地域間でその分布が異なるとき、治療効果の地域差が生じる。我々の nABCD は、その分布の距離を測ることで、治療効果の地域差の**可能性**を推定する。
+
+**論文への implications:**
+1. Introduction の Section 1.1 で effect modifier の定義を明確にする — Mike の formal definition を使え
+2. ICH E17 の intrinsic/extrinsic factors との対応を明示する — Rachel、確認しろ
+3. Application section で $L$ 値を effect modification の強さとして解釈する — これは既に対応済み
+
+"I don't have dreams. I have goals." 基本を固めたことで、論文の論理構造がさらに明確になった。次に進む」
+
+**Donna**: （記録を完了して）
+「全て記録したわ。"I'm Donna. I know everything." Effect modifier — 我々の論文の starting point にして cornerstone。忘れないように、ね」
+
+---
+
 ### [2026-02-11 20:35] Scene: Donna — SUITS.md パス修正
 
 **INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
