@@ -30,6 +30,7 @@
 | Louis Re-review | 1C/0M/2m — Abstract S05 bias qualification | Abstract, Sim Summary (3.2) |
 | SiM Convention | Tak指示: Abstract narrative化、本文bold除去 | Abstract, 全Section |
 | External Review | 2C/3M/3m — W1根拠、複数EM、Prop命名、Bootstrap境界 | 2.1, 5.1(new), 5.2, Prop.1 |
+| Push: 主張確立 | W2対比追加、Fig3 caption修正、Bootstrap内部/境界distinction | 2.1, Fig.3, 5.3 |
 
 ### Active Tasks — Phase 8: Submission-Ready Plan (Jessica approved)
 
@@ -66,6 +67,68 @@
 ---
 
 ## Live Script
+
+### [2026-02-12 12:00] Scene: Push — "Winners don't make excuses."
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+
+*Harvey がジャケットの袖を直し、外部レビューの報告書を机に置く。Mike と Katrina が対面に座る。*
+
+**Harvey**: （立ち上がって、窓に背を向けて）
+「外部レビューは終わった。Beaumont、Pemberton、Hartigan — 3 人とも的確だった。だが**修正して終わりじゃない**。専門家が指摘したポイントを逆手に取って、**我々の主張を確立する**。
+
+3 つのアクション：
+
+1. **W1 vs W2 — 攻めの論証**: Beaumont が認めた通り、W1 の選択は正しい。K-R duality は既に書いた。だが reviewer は 'Why not W2?' と聞く。W2 が Lipschitz dual を持たず、heterogeneity bound を提供**できない**ことを明示した。これは防御ではない — **唯一の正解が W1 である**という主張だ。
+
+2. **Figure 3 caption — 残存した不整合**: Louis が Abstract と Summary の S05 除外漏れを潰した。だが Figure 3 caption にも同じ問題が残っていた。'for non-null scenarios excluding S05' に修正。数値の honest さは全箇所で一貫させる。
+
+3. **Bootstrap 境界 vs 内部 — Hartigan の知恵を活用**: Hartigan が言った distinction — 境界（true = 0）では bootstrap consistency が崩れるが、内部（non-null）では standard theory が適用される。この distinction を Limitations に明記した。Non-null での coverage 0.87-0.98 がその empirical evidence だ。守りの limitation ではなく、**我々の推奨（n ≥ 100、null 近傍に注意）の理論的裏付け**として書いた。
+
+"Winners don't make excuses when the other side validates your position." 専門家が我々を正しいと認めた。それを原稿に刻め」
+
+**Mike**: （画面を確認しながら）
+「"I got it." 3 点とも実装完了。具体的に：
+
+**Section 2.1 (line 136)**: 'The $W_2$ distance, while admitting closed-form expressions for Gaussian families, does not possess this dual characterization via Lipschitz functions and therefore cannot provide the heterogeneity bound that is central to our clinical calibration framework.' — W2 を排除する一文追加。
+
+**Figure 3 caption**: 'For non-null scenarios excluding S05, bias is less than 0.02 at $n \geq 100$.' — S05 除外を明記。本文・Summary・Abstract と完全一貫。
+
+**Limitations (line 541)**: 'For non-null scenarios, the true value lies in the interior of the parameter space where standard bootstrap consistency holds, and our simulation confirms this with coverage of 0.87--0.98 at $n \geq 100$ for most scenarios.' — 境界/内部の理論的 distinction を明示」
+
+**Katrina**: （チェックリストを確認して）
+「"Results speak for themselves." 全修正箇所を検証：
+
+| 修正 | 箇所 | 内容 | 整合性 |
+|------|------|------|--------|
+| W2 対比 | Sec 2.1 | K-R duality → W2 排除 | ✅ eq(2) と整合 |
+| Fig.3 caption | Fig.3 | S05 除外追加 | ✅ 本文/Summary/Abstract と一貫 |
+| Bootstrap distinction | Sec 5.3 | 境界 vs 内部 | ✅ Coverage data と整合 |
+
+数値の変更なし。論理の強化のみ」
+
+**Harvey**: （満足げに頷いて）
+「"I don't have dreams, I have goals." 外部専門家の 3 人が我々の方法論を検証し、我々はそのフィードバックを原稿の強みに変換した。
+
+**現在の原稿状態:**
+- W1 選択: 理論的に唯一の正解であることを明示 ✅
+- 数値一貫性: 全 caption、本文、Summary、Abstract で S05 除外を反映 ✅
+- Bootstrap 理論: 境界/内部の distinction で推奨の根拠を確立 ✅
+- Proposition 1: Non-negativity に改名済み ✅
+- 複数 EM: Section 5.2 で practical guidance 確立済み ✅
+
+**C1, C2, M1, M3 — 全件 resolved.** 次は S3 の real data strategy だ」
+
+**Donna**: （タブレットに記録して）
+「"I'm Donna. I know everything."
+
+**Push Summary:**
+- 修正 3 件実施（W2 対比、Fig3 caption、Bootstrap distinction）
+- 外部レビュー即時対応 4 件: **全件 resolved** ✅
+- 原稿の主張: 防御 → 攻めの論証に転換
+- 残 deferred: M2 (real data), m1-m3 (minor, non-blocking)」
+
+---
 
 ### [2026-02-12 11:30] Scene: External Review — "Three Pairs of Eyes"
 
