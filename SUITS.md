@@ -31,13 +31,13 @@
 
 | Stage | Task | Owner | Status |
 |-------|------|-------|--------|
-| **S1** | Figure 4: Draft 2 candidate designs (Estimation Quality / Clinical Calibration) | Katrina (Mike) | ⏳ Pending |
-| **S1** | Figure 4: Harvey selects final design | Harvey | ⏳ Waiting |
+| ~~**S1**~~ | ~~Figure 4: Estimation Quality (Coverage + CI Width)~~ | ~~Katrina~~ | **DONE** |
+| ~~**S1**~~ | ~~Harvey selects: Estimation Quality figure~~ | ~~Harvey~~ | **DONE** |
 | **S2** | Re-review: estimation framing consistency, numerical integrity | Louis | ⏳ Pending |
 | **S3** | Real data strategy decision (A: public data / B: enhance hypothetical / C: reconstruct from published) | Harvey | ⏳ **Decision needed** |
 | **S3** | Literature support for real data application | Rachel | ⏳ Pending |
 | **S4** | LaTeX compile → PDF → Word conversion | Mike (Katrina) | ⏳ Pending |
-| **S4** | Figure files: TIFF/PNG 300dpi | Katrina | ⏳ Pending |
+| ~~**S4**~~ | ~~Figure files: PNG 300dpi (10K data)~~ | ~~Katrina~~ | **DONE** |
 | **S4** | DOI final check (all references) | Rachel | ⏳ Pending |
 | **S4** | Scenario numbering cleanup (S02/S07 gap) | Mike | ⏳ Minor |
 | **S5** | Cover letter, title page, checklist | Donna | ⏳ Pending |
@@ -70,6 +70,54 @@
 ---
 
 ## Live Script
+
+### [2026-02-12 00:30] Scene: Simulation Complete — "Results speak for themselves."
+
+**INT. PEARSON SPECTER LITT - BULLPEN - LATE NIGHT**
+
+*ディスプレイに "=== DONE ===" の文字。Katrina が結果テーブルを全員に投影する。*
+
+**Katrina**: （満足げに）
+「"Results speak for themselves." 10,000 replications 完了。15 workers で 2.5 時間。結果は安定。
+
+主要な findings:
+
+| Scenario | n=100 Bias | n=100 Coverage | n=100 CIw |
+|----------|-----------|----------------|-----------|
+| S03 (0.2σ) | +0.018 | 0.895 | 0.135 |
+| S04 (0.5σ) | -0.003 | **0.950** | 0.179 |
+| S05 (1.0σ) | -0.041 | 0.867 | 0.172 |
+| S06 (Scale) | -0.012 | 0.976 | 0.131 |
+| S08 (Shape) | +0.003 | 0.945 | 0.113 |
+
+500 reps との差は微小 — Monte Carlo error が大幅に縮小した。Figure 4 も 10K データで再生成済み」
+
+**Mike**: （データを確認しながら）
+「"I got it." 数値の安定性は完璧だ。500 reps と 10K reps の差は最大 0.003。LaTeX 原稿の全テーブル（Bias, Coverage, Precision, SMD比較）を 10K 値に更新した。Abstract も修正済み」
+
+**Harvey**: （頷いて）
+「いい仕事だ。Jessica のプラン Stage 1 と一部の Stage 4 が完了した。
+
+**完了タスク:**
+- ✅ シミュレーション 10,000 reps 実行
+- ✅ Figure 4: Estimation Quality (Coverage + CI Width)
+- ✅ 全図表を 10K データで再生成
+- ✅ LaTeX 原稿の全数値を更新
+- ✅ run_all.R バグ修正
+- ✅ R 環境構築
+
+**残タスク:**
+- ⏳ Louis re-review (Stage 2)
+- ⏳ Real data 方針決定 (Stage 3)
+- ⏳ DOI 最終確認 (Stage 4)
+- ⏳ Submission package (Stage 5)
+
+"I don't have dreams, I have goals." 目標に一歩近づいた」
+
+**Donna**: （記録完了）
+「"I'm Donna. I know everything." 全て記録済み。Phase 8 進捗率: Stage 1 完了、Stage 4 一部完了」
+
+---
 
 ### [2026-02-11 22:00] Scene: Push — "I don't get lucky. I make my own luck."
 

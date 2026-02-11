@@ -37,7 +37,7 @@
 \textbf{Background}: The ICH E17 guideline recommends regional pooling in multi-regional clinical trials (MRCTs) based on similarity of effect modifier (EM) distributions, but provides no specific methodology for quantifying such similarity. Existing approaches focus on location differences (standardized mean difference) or lack interpretable scales (Kolmogorov--Smirnov statistic).
 \textbf{Objective}: To develop and validate a metric for estimating EM distributional differences across regions, together with a clinical calibration framework that translates those estimates into potential treatment effect heterogeneity on the outcome scale.
 \textbf{Methods}: We propose the normalized Area Between Cumulative Distributions (nABCD), defined as the Wasserstein-1 distance between two distributions divided by twice the pooled interquartile range. Through its connection to the treatment effect heterogeneity bound, nABCD enables clinical calibration: the maximum potential regional treatment effect difference ($\Delta_{\max}$) is expressed as a function of nABCD, the pooled IQR, and the CATE sensitivity of the EM. Bootstrap confidence intervals quantify estimation uncertainty. We conducted simulation studies across scenarios including location shifts, scale differences, and shape differences, with sample sizes from 50 to 200 per region.
-\textbf{Results}: The nABCD estimator showed bias $<0.02$ for $n \geq 100$ across non-null scenarios. Bootstrap 95\% confidence intervals achieved coverage within 0.89--0.98 for $n \geq 100$ in most scenarios. Unlike standardized mean difference, nABCD captured scale and shape differences where SMD showed no effect. Application to a diabetes MRCT demonstrated that clinical calibration with $\Delta_{\max}$ provides context-dependent interpretation: the same distributional difference carries different clinical implications depending on the EM's CATE sensitivity.
+\textbf{Results}: The nABCD estimator showed bias $<0.02$ for $n \geq 100$ across non-null scenarios (10{,}000 replications). Bootstrap 95\% confidence intervals achieved coverage within 0.87--0.98 for $n \geq 100$ in most scenarios. Unlike standardized mean difference, nABCD captured scale and shape differences where SMD showed no effect. Application to a diabetes MRCT demonstrated that clinical calibration with $\Delta_{\max}$ provides context-dependent interpretation: the same distributional difference carries different clinical implications depending on the EM's CATE sensitivity.
 \textbf{Conclusions}: nABCD provides a validated metric for assessing EM distributional similarity in MRCTs. Through its connection to treatment effect heterogeneity bounds, nABCD translates distributional differences into potential treatment effect differences on the clinical scale, enabling context-dependent interpretation calibrated to the sensitivity of each effect modifier. We recommend $n \geq 100$ per region for reliable estimation and inference.}
 
 \keywords{multi-regional clinical trial; ICH E17; effect modifier; Wasserstein distance; regional pooling; distributional similarity}
@@ -278,7 +278,7 @@ Consistent with the estimation-centered framework, we evaluated:
 
 \subsubsection{Point Estimation and Coverage}
 
-Table~\ref{tab:bias} presents the bias of the nABCD estimator across scenarios and sample sizes. The estimator showed positive bias under the null hypothesis (S01), with bias decreasing from 0.093 at $n=50$ to 0.046 at $n=200$. This positive bias is attributable to the non-negative nature of the Wasserstein distance: even when true nABCD equals zero, sampling variability produces positive estimates.
+Table~\ref{tab:bias} presents the bias of the nABCD estimator across scenarios and sample sizes. The estimator showed positive bias under the null hypothesis (S01), with bias decreasing from 0.093 at $n=50$ to 0.047 at $n=200$. This positive bias is attributable to the non-negative nature of the Wasserstein distance: even when true nABCD equals zero, sampling variability produces positive estimates.
 
 \begin{table}[ht]
 \caption{Bias of nABCD estimator by scenario and sample size.\label{tab:bias}}
@@ -286,12 +286,12 @@ Table~\ref{tab:bias} presents the bias of the nABCD estimator across scenarios a
 \toprule
 \textbf{Scenario} & \textbf{True nABCD} & $\boldsymbol{n=50}$ & $\boldsymbol{n=100}$ & $\boldsymbol{n=200}$ \\
 \midrule
-S01 (Null) & 0.000 & 0.093 & 0.066 & 0.046 \\
-S03 (0.2$\sigma$) & 0.074 & 0.040 & 0.019 & 0.006 \\
-S04 (0.5$\sigma$) & 0.186 & 0.002 & $-0.002$ & $-0.004$ \\
-S05 (1.0$\sigma$) & 0.372 & $-0.035$ & $-0.042$ & $-0.044$ \\
-S06 (Scale) & 0.148 & 0.001 & $-0.014$ & $-0.018$ \\
-S08 (Shape) & 0.067 & 0.033 & 0.003 & $-0.016$ \\
+S01 (Null) & 0.000 & 0.093 & 0.066 & 0.047 \\
+S03 (0.2$\sigma$) & 0.074 & 0.039 & 0.018 & 0.007 \\
+S04 (0.5$\sigma$) & 0.186 & 0.004 & $-0.003$ & $-0.004$ \\
+S05 (1.0$\sigma$) & 0.372 & $-0.038$ & $-0.041$ & $-0.043$ \\
+S06 (Scale) & 0.148 & 0.001 & $-0.012$ & $-0.019$ \\
+S08 (Shape) & 0.067 & 0.029 & 0.003 & $-0.015$ \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
@@ -299,14 +299,14 @@ S08 (Shape) & 0.067 & 0.033 & 0.003 & $-0.016$ \\
 \end{tablenotes}
 \end{table}
 
-For non-null scenarios excluding S05, bias was less than 0.02 in absolute value at $n \geq 100$, indicating satisfactory point estimation performance at practical sample sizes. For S05 (1.0$\sigma$ location shift), negative bias of approximately $-0.04$ persisted across all sample sizes, reflecting the bounded nature of nABCD near its theoretical upper range (Figure~\ref{fig:bias}).
+For non-null scenarios excluding S05, bias was less than 0.02 in absolute value at $n \geq 100$, indicating satisfactory point estimation performance at practical sample sizes. For S05 (1.0$\sigma$ location shift), negative bias of approximately $-0.04$ persisted across all sample sizes, reflecting the bounded nature of nABCD near its theoretical upper range (Figure~\ref{fig:bias}). These patterns were highly stable across the 10{,}000 replications.
 
 \begin{figure}[t]
 \centerline{\includegraphics[width=\textwidth]{fig3_bias.pdf}}
 \caption{Bias of nABCD estimator by scenario and sample size. Horizontal dashed lines indicate $\pm 0.02$ bias threshold. Bias is less than 0.02 for non-null scenarios at $n \geq 100$.\label{fig:bias}}
 \end{figure}
 
-Table~\ref{tab:coverage} presents coverage probabilities of the 95\% bootstrap confidence intervals. For $n \geq 100$, coverage was within 0.93--0.98 for most scenarios (S04, S06, S08), with moderate undercoverage for S03 at $n = 100$ (0.896). S05 showed progressive undercoverage with increasing $n$ (0.852 at $n = 100$, 0.732 at $n = 200$), attributable to the persistent negative bias under large distributional differences. At $n = 50$, undercoverage was more pronounced, particularly for S08 (0.538) and S03 (0.674), indicating that this sample size is insufficient for reliable inference.
+Table~\ref{tab:coverage} presents coverage probabilities of the 95\% bootstrap confidence intervals. For $n \geq 100$, coverage was within 0.87--0.98 for most scenarios (S04, S06, S08), with moderate undercoverage for S03 at $n = 100$ (0.895). S05 showed progressive undercoverage with increasing $n$ (0.867 at $n = 100$, 0.731 at $n = 200$), attributable to the persistent negative bias under large distributional differences. At $n = 50$, undercoverage was more pronounced, particularly for S08 (0.573) and S03 (0.672), indicating that this sample size is insufficient for reliable inference.
 
 \begin{table}[ht]
 \caption{Coverage probability of 95\% bootstrap confidence intervals.\label{tab:coverage}}
@@ -314,11 +314,11 @@ Table~\ref{tab:coverage} presents coverage probabilities of the 95\% bootstrap c
 \toprule
 \textbf{Scenario} & $\boldsymbol{n=50}$ & $\boldsymbol{n=100}$ & $\boldsymbol{n=200}$ \\
 \midrule
-S03 (0.2$\sigma$) & 0.674 & 0.896 & 0.950 \\
-S04 (0.5$\sigma$) & 0.952 & 0.952 & 0.936 \\
-S05 (1.0$\sigma$) & 0.918 & 0.852 & 0.732 \\
-S06 (Scale) & 0.958 & 0.978 & 0.950 \\
-S08 (Shape) & 0.538 & 0.950 & 1.000 \\
+S03 (0.2$\sigma$) & 0.672 & 0.895 & 0.949 \\
+S04 (0.5$\sigma$) & 0.956 & 0.950 & 0.949 \\
+S05 (1.0$\sigma$) & 0.929 & 0.867 & 0.731 \\
+S06 (Scale) & 0.963 & 0.976 & 0.939 \\
+S08 (Shape) & 0.573 & 0.945 & 0.996 \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
@@ -336,7 +336,7 @@ Figure~\ref{fig:estimation_quality} summarizes the estimation quality across sce
 \caption{Estimation quality of nABCD bootstrap inference. Panel~(A) shows coverage probability of 95\% bootstrap confidence intervals; dashed and dotted lines indicate the nominal 0.95 and minimum acceptable 0.90 levels. Panel~(B) shows mean CI width in nABCD units. Coverage exceeds 0.90 for most scenarios at $n \geq 100$; CI width narrows consistently with increasing $n$.\label{fig:estimation_quality}}
 \end{figure*}
 
-Table~\ref{tab:precision} presents the RMSE and mean CI width across scenarios. RMSE decreased consistently with increasing $n$, reaching values below 0.05 for all scenarios at $n = 200$. Mean CI width narrowed proportionally, with CIs at $n = 100$ typically spanning 0.10--0.16 in nABCD units. In the clinical calibration framework, this CI width propagates to $\Delta_{\max}$: for example, with $L = 0.3$ and IQR = 1.5, a CI width of 0.14 in nABCD corresponds to a CI width of $2 \times 0.3 \times 1.5 \times 0.14 = 0.13$\% HbA1c---a level of precision sufficient for meaningful clinical calibration.
+Table~\ref{tab:precision} presents the RMSE and mean CI width across scenarios. RMSE decreased consistently with increasing $n$, reaching values below 0.05 for all scenarios at $n = 200$. Mean CI width narrowed proportionally, with CIs at $n = 100$ typically spanning 0.11--0.18 in nABCD units. In the clinical calibration framework, this CI width propagates to $\Delta_{\max}$: for example, with $L = 0.3$ and IQR = 1.5, a CI width of 0.13 in nABCD corresponds to a CI width of $2 \times 0.3 \times 1.5 \times 0.13 = 0.12$\% HbA1c---a level of precision sufficient for meaningful clinical calibration.
 
 \begin{table}[ht]
 \caption{RMSE and mean CI width by scenario and sample size.\label{tab:precision}}
@@ -346,12 +346,12 @@ Table~\ref{tab:precision} presents the RMSE and mean CI width across scenarios. 
 \cmidrule(lr){2-4}\cmidrule(lr){5-7}
 \textbf{Scenario} & $\boldsymbol{n=50}$ & $\boldsymbol{n=100}$ & $\boldsymbol{n=200}$ & $\boldsymbol{n=50}$ & $\boldsymbol{n=100}$ & $\boldsymbol{n=200}$ \\
 \midrule
-S01 (Null) & 0.099 & 0.071 & 0.049 & 0.12 & 0.10 & 0.07 \\
-S03 (0.2$\sigma$) & 0.063 & 0.041 & 0.032 & 0.16 & 0.14 & 0.12 \\
-S04 (0.5$\sigma$) & 0.066 & 0.048 & 0.037 & 0.21 & 0.17 & 0.14 \\
-S05 (1.0$\sigma$) & 0.072 & 0.061 & 0.053 & 0.22 & 0.16 & 0.11 \\
-S06 (Scale) & 0.048 & 0.035 & 0.029 & 0.16 & 0.12 & 0.09 \\
-S08 (Shape) & 0.051 & 0.023 & 0.024 & 0.13 & 0.09 & 0.07 \\
+S01 (Null) & 0.099 & 0.071 & 0.050 & 0.16 & 0.11 & 0.08 \\
+S03 (0.2$\sigma$) & 0.062 & 0.042 & 0.032 & 0.18 & 0.13 & 0.11 \\
+S04 (0.5$\sigma$) & 0.066 & 0.049 & 0.036 & 0.23 & 0.18 & 0.13 \\
+S05 (1.0$\sigma$) & 0.073 & 0.060 & 0.053 & 0.24 & 0.17 & 0.12 \\
+S06 (Scale) & 0.045 & 0.035 & 0.030 & 0.19 & 0.13 & 0.09 \\
+S08 (Shape) & 0.046 & 0.025 & 0.023 & 0.17 & 0.11 & 0.08 \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
@@ -359,7 +359,7 @@ S08 (Shape) & 0.051 & 0.023 & 0.024 & 0.13 & 0.09 & 0.07 \\
 \end{tablenotes}
 \end{table}
 
-Under the null hypothesis (S01), the positive bias produces CIs that are shifted upward from zero. At $n = 50$, the mean estimate was 0.093 with mean CI width 0.12; at $n = 200$, the mean estimate decreased to 0.046 with mean CI width 0.07. This bias is relevant for clinical calibration: when the true distributional difference is zero, the estimator will suggest a small positive $\Delta_{\max}$. Practitioners should be aware of this conservative tendency, particularly at smaller sample sizes.
+Under the null hypothesis (S01), the positive bias produces CIs that are shifted upward from zero. At $n = 50$, the mean estimate was 0.093 with mean CI width 0.16; at $n = 200$, the mean estimate decreased to 0.047 with mean CI width 0.08. This bias is relevant for clinical calibration: when the true distributional difference is zero, the estimator will suggest a small positive $\Delta_{\max}$. Practitioners should be aware of this conservative tendency, particularly at smaller sample sizes.
 
 \subsubsection{Comparison with Standardized Mean Difference}
 
@@ -371,9 +371,9 @@ Table~\ref{tab:smd} compares the sensitivity of nABCD and SMD to different types
 \toprule
 \textbf{Scenario} & \textbf{nABCD (mean $\pm$ SD)} & \textbf{SMD (mean $\pm$ SD)} & \textbf{Implication} \\
 \midrule
-S04 (Location) & $0.184 \pm 0.048$ & $0.50 \pm 0.14$ & Both detect \\
-S06 (Scale only) & $0.134 \pm 0.032$ & $0.00 \pm 0.14$ & Only nABCD detects \\
-S08 (Shape only) & $0.069 \pm 0.023$ & $0.00 \pm 0.14$ & Only nABCD detects \\
+S04 (Location) & $0.183 \pm 0.049$ & $0.50 \pm 0.14$ & Both detect \\
+S06 (Scale only) & $0.136 \pm 0.033$ & $0.00 \pm 0.14$ & Only nABCD detects \\
+S08 (Shape only) & $0.070 \pm 0.024$ & $0.00 \pm 0.14$ & Only nABCD detects \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
@@ -389,8 +389,8 @@ S08 (Shape only) & $0.069 \pm 0.023$ & $0.00 \pm 0.14$ & Only nABCD detects \\
 In summary, the simulation study demonstrates that the nABCD estimator provides reliable estimation with the following properties at sample sizes typical in MRCT regional subgroups:
 \begin{enumerate}[1.]
 \item \textbf{Bias}: Less than 0.02 for non-null scenarios at $n \geq 100$
-\item \textbf{Coverage}: 0.89--0.98 at $n \geq 100$ for most scenarios
-\item \textbf{Precision}: RMSE below 0.05 and CI width below 0.17 at $n \geq 100$
+\item \textbf{Coverage}: 0.87--0.98 at $n \geq 100$ for most scenarios
+\item \textbf{Precision}: RMSE below 0.06 and CI width below 0.18 at $n \geq 100$
 \item \textbf{Sensitivity}: Captures location, scale, and shape differences where SMD is limited to location only
 \end{enumerate}
 
