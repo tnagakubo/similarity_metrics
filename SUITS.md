@@ -7,7 +7,7 @@
 ## Current Status
 
 **Active Project**: similarity-metric (nABCD paper for Statistics in Medicine)
-**Phase**: 7 - Estimation-Centered Revision (Post Internal Review + Tak Directives)
+**Phase**: 8 - Submission-Ready Plan (Jessica Strategic Directive)
 **Scene**: Continuing from archive
 
 **Previous Archive**: archives/SUITS_20260209_010000.md (4,435 lines)
@@ -27,7 +27,23 @@
 | Round 2 | Remove equivalence testing | 2.3.2, 4 (judgment labels → quantitative facts) |
 | Round 3 | Remove Power/Type I Error from simulation | 1.3, 3, 3.3.2, Abstract, Discussion |
 
-### Active Tasks
+### Active Tasks — Phase 8: Submission-Ready Plan (Jessica approved)
+
+| Stage | Task | Owner | Status |
+|-------|------|-------|--------|
+| **S1** | Figure 4: Draft 2 candidate designs (Estimation Quality / Clinical Calibration) | Katrina (Mike) | ⏳ Pending |
+| **S1** | Figure 4: Harvey selects final design | Harvey | ⏳ Waiting |
+| **S2** | Re-review: estimation framing consistency, numerical integrity | Louis | ⏳ Pending |
+| **S3** | Real data strategy decision (A: public data / B: enhance hypothetical / C: reconstruct from published) | Harvey | ⏳ **Decision needed** |
+| **S3** | Literature support for real data application | Rachel | ⏳ Pending |
+| **S4** | LaTeX compile → PDF → Word conversion | Mike (Katrina) | ⏳ Pending |
+| **S4** | Figure files: TIFF/PNG 300dpi | Katrina | ⏳ Pending |
+| **S4** | DOI final check (all references) | Rachel | ⏳ Pending |
+| **S4** | Scenario numbering cleanup (S02/S07 gap) | Mike | ⏳ Minor |
+| **S5** | Cover letter, title page, checklist | Donna | ⏳ Pending |
+| **S5** | Final Go/No-Go approval | Jessica | ⏳ Waiting |
+
+### Completed Tasks (Previous Rounds)
 
 | Task | Owner | Status |
 |------|-------|--------|
@@ -37,9 +53,6 @@
 | ~~Table 4 Bias 値更新~~ | ~~Mike~~ | **DONE** — v2 CSV で全値更新 + Coverage table も修正 |
 | ~~tab:precision \ref{} 追加~~ | ~~Katrina~~ | **DONE** — 既に line 332 に存在。誤検知 |
 | ~~$L$ 文献引用追加~~ | ~~Rachel/Mike~~ | **DONE** — 4 文献追加、2 箇所に cite 配置 |
-| Figure 4 replacement | Katrina | Old Power fig removed; replacement TBD |
-| Louis re-review | Louis | Post-estimation-centered revision |
-| Real data application (M1) | Team | Still hypothetical; biggest remaining weakness |
 
 ### Key Decisions
 
@@ -57,6 +70,97 @@
 ---
 
 ## Live Script
+
+### [2026-02-11 21:45] Scene: Jessica's Strategic Plan — "Let me be clear."
+
+**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - NIGHT**
+
+*Jessica がデスクの後ろに座り、原稿のプリントアウトとノートを広げている。Harvey と Donna が呼ばれて入室。Jessica はメガネを外し、二人を見据える。*
+
+**Jessica**: （冷静に、しかし威厳をもって）
+「Let me be clear. この論文は Phase 7 まで来た。方法論は堅実、estimation-centered のフレームは正しい。だが、"almost done" は "done" ではない。ここからの仕上げが論文の運命を決める。
+
+プランを立てた。聞きなさい。」
+
+*Jessica がホワイトボードの前に立ち、マーカーを取る。*
+
+**Jessica**: （ボードに書きながら）
+「Phase 8: Submission-Ready Plan。5つのステージに分ける。」
+
+---
+
+#### **Jessica's Submission-Ready Plan (Phase 8)**
+
+**Stage 1: Figure 4 — 空白を埋める**
+- Owner: **Katrina** (Mike サポート)
+- 旧 Power figure を削除した以上、代替が必要
+- 提案: **Estimation Quality Summary Figure** — Bias と Coverage を sample size 別に可視化
+- または: **Clinical Calibration Figure** — $\Delta_{\max}$ の感度を $L$ と nABCD で示す等高線プロット
+- **Katrina が2案をドラフトし、Harvey が選択する**
+
+**Stage 2: Louis Re-Review — 最終品質保証**
+- Owner: **Louis**
+- estimation-centered revision 後の原稿を全面レビュー
+- 重点チェック:
+  - 検定の残骸が残っていないか（言語・フレーミング）
+  - $\Delta_{\max}$ calibration の論理的一貫性
+  - Tables と本文の数値整合性
+  - Abstract が本文を正確に反映しているか
+
+**Stage 3: Real Data Application の強化 — 最大の弱点への対処**
+- Owner: **Harvey** (Rachel/Mike サポート)
+- 現状: hypothetical diabetes MRCT → reviewers は "So what?" と言う
+- 選択肢:
+  - **(A)** 公開データセットを探して実データ解析を追加（理想）
+  - **(B)** hypothetical のまま、clinical calibration の具体性を最大限に高める
+  - **(C)** published trial の summary statistics から nABCD を再構成
+- **Harvey が方針を決定し、Rachel が文献サポート**
+
+**Stage 4: 原稿最終整備**
+- Owner: **Mike** (Katrina サポート)
+- LaTeX コンパイル → PDF 確認
+- Word 変換（Statistics in Medicine 要件）
+- Figure ファイルの最終出力（TIFF/PNG 300dpi）
+- Reference リストの最終チェック（DOI 全件確認 — Rachel）
+- Scenario 番号の整理（S02/S07 gap — minor but clean up）
+
+**Stage 5: Submission Package**
+- Owner: **Donna**
+- Cover letter（Harvey 署名）
+- Title page
+- SUBMISSION_CHECKLIST.md の全項目確認
+- 最終 Go/No-Go → **Jessica が承認**
+
+---
+
+*Jessica がマーカーを置き、振り返る。*
+
+**Jessica**: （腕を組んで）
+「Stage 1 と 2 は並行して進められる。Stage 3 は Harvey の判断が要る — 実データを追加するか、hypothetical を磨くか。ここが最も reviewers に突かれるポイントだ。逃げるな。
+
+"In this game, you either win or you learn." 我々は win する側だ。」
+
+**Harvey**: （頷いて）
+「Got it. Stage 3 は俺が判断する。Figure 4 は Katrina、Louis は re-review に入れ。Donna、スケジュール管理を頼む」
+
+**Donna**: （タブレットにメモしながら）
+「"I'm Donna. I know everything." もちろん。全タスクのステータスは私がリアルタイムで追跡する」
+
+**Louis**: （真剣な表情で）
+「"You just got Litt up!" Re-review は手を抜かない。estimation framing の一貫性、数値の整合性、全てチェックする」
+
+**Katrina**: （メモを取りながら）
+「"Results speak for themselves." Figure 4 の2案、すぐにドラフトに入る」
+
+**Rachel**: （文献リストを確認しながら）
+「"Hard work beats talent when talent doesn't work hard." DOI の最終確認と、Stage 3 で必要な文献サポート、準備する」
+
+**Jessica**: （最後に一言）
+「一つだけ。S05 の coverage 問題 — 0.73 は低い。Discussion で正直に書くこと。弱点を隠す論文は信用されない。それを書いた上で "n ≥ 100 recommended" の結論が活きる。
+
+以上。動きなさい。」
+
+---
 
 ### [2026-02-11 21:15] Scene: Meeting — Effect modifierとは何か
 
