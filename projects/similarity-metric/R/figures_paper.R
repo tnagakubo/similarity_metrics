@@ -43,6 +43,14 @@ load_simulation_results <- function(data_dir = DATA_DIR) {
   read_csv(filepath, show_col_types = FALSE)
 }
 
+load_simulation_v2 <- function(data_dir = DATA_DIR) {
+  filepath <- file.path(data_dir, "simulation_results_v2.csv")
+  if (!file.exists(filepath)) {
+    stop("Simulation results v2 file not found: ", filepath)
+  }
+  read_csv(filepath, show_col_types = FALSE)
+}
+
 load_application_params <- function(data_dir = DATA_DIR) {
   filepath <- file.path(data_dir, "application_params.csv")
   if (!file.exists(filepath)) {
@@ -93,7 +101,7 @@ fig2_nabcd_definition <- function(mu1 = 45, mu2 = 55, sigma = 10) {
 # =============================================================================
 
 fig3_bias <- function(data_dir = DATA_DIR) {
-  sim_results <- load_simulation_results(data_dir)
+  sim_results <- load_simulation_v2(data_dir)
 
   # Prepare data for plotting
   scenario_labels <- c(
@@ -130,36 +138,76 @@ fig3_bias <- function(data_dir = DATA_DIR) {
 }
 
 # =============================================================================
-# Figure 4: Power Curves (from data)
+# Figure 4: Estimation Quality — Coverage + CI Width (Estimation-Centered)
+# Replaces old power figure per Jessica Phase 8 directive
 # =============================================================================
 
-fig4_power <- function(data_dir = DATA_DIR, threshold = 0.05) {
-  sim_results <- load_simulation_results(data_dir)
+fig4_estimation_quality <- function(data_dir = DATA_DIR) {
+  sim_results <- load_simulation_v2(data_dir)
 
-  power_data <- sim_results %>%
-    filter(!is.na(Power)) %>%
-    select(TrueNABCD, SampleSize, Power) %>%
-    distinct() %>%
+  # If MeanCIWidth not present (old CSV), approximate from RMSE
+  if (!"MeanCIWidth" %in% names(sim_results)) {
+    sim_results <- sim_results %>%
+      mutate(MeanCIWidth = 2 * 1.96 * SD)
+  }
+
+  # Exclude null scenario (coverage undefined at boundary)
+  plot_data <- sim_results %>%
+    filter(Scenario != "S01") %>%
     mutate(
+      ScenarioLabel = factor(
+        case_when(
+          Scenario == "S03" ~ "S03 (0.2s)",
+          Scenario == "S04" ~ "S04 (0.5s)",
+          Scenario == "S05" ~ "S05 (1.0s)",
+          Scenario == "S06" ~ "S06 (Scale)",
+          Scenario == "S08" ~ "S08 (Shape)",
+          TRUE ~ Scenario
+        ),
+        levels = c("S03 (0.2s)", "S04 (0.5s)", "S05 (1.0s)",
+                    "S06 (Scale)", "S08 (Shape)")
+      ),
       SampleSizeLabel = factor(paste0("n=", SampleSize),
                                levels = c("n=50", "n=100", "n=200"))
     )
 
-  ggplot(power_data, aes(x = TrueNABCD, y = Power, color = SampleSizeLabel)) +
-    geom_line(linewidth = 1) +
-    geom_point(size = 3) +
-    geom_vline(xintercept = threshold, linetype = "dashed", color = "grey50") +
-    geom_hline(yintercept = 0.80, linetype = "dotted", color = "grey50") +
-    scale_color_manual(values = COLORS_SAMPLE) +
-    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
+  # Panel A: Coverage probability
+  p1 <- ggplot(plot_data, aes(x = ScenarioLabel, y = Coverage_Pct,
+                               fill = SampleSizeLabel)) +
+    geom_col(position = position_dodge(0.8), width = 0.7) +
+    geom_hline(yintercept = 0.95, linetype = "dashed", color = "red", alpha = 0.7) +
+    geom_hline(yintercept = 0.90, linetype = "dotted", color = "orange", alpha = 0.7) +
+    scale_fill_manual(values = COLORS_SAMPLE) +
+    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1)) +
     labs(
-      x = "True nABCD",
-      y = "Power",
-      color = "Sample Size",
-      title = paste0("Figure 4: Power for Detecting nABCD > ", threshold)
+      x = NULL,
+      y = "Coverage Probability",
+      fill = "Sample Size",
+      subtitle = "A) Bootstrap 95% CI Coverage"
     ) +
-    annotate("text", x = threshold, y = 0.05,
-             label = paste0("delta = ", threshold), hjust = -0.1, size = 3)
+    annotate("text", x = 5.4, y = 0.95, label = "0.95", color = "red",
+             size = 3, hjust = 0) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+  # Panel B: Mean CI Width
+  p2 <- ggplot(plot_data, aes(x = ScenarioLabel, y = MeanCIWidth,
+                               fill = SampleSizeLabel)) +
+    geom_col(position = position_dodge(0.8), width = 0.7) +
+    scale_fill_manual(values = COLORS_SAMPLE) +
+    labs(
+      x = NULL,
+      y = "Mean CI Width (nABCD units)",
+      fill = "Sample Size",
+      subtitle = "B) Estimation Precision"
+    ) +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+  p1 + p2 +
+    plot_layout(guides = "collect") +
+    plot_annotation(
+      title = "Figure 4: Estimation Quality of nABCD Bootstrap Inference"
+    ) &
+    theme(legend.position = "bottom")
 }
 
 # =============================================================================
@@ -310,11 +358,11 @@ generate_all_figures <- function(data_dir = DATA_DIR, output_dir = OUTPUT_DIR) {
          fig3_bias(data_dir), width = 10, height = 5)
   message("  Figure 3: Done")
 
-  # Figure 4
-  ggsave(file.path(output_dir, "fig4_power.png"),
-         fig4_power(data_dir), width = 8, height = 5, dpi = 300)
-  ggsave(file.path(output_dir, "fig4_power.pdf"),
-         fig4_power(data_dir), width = 8, height = 5)
+  # Figure 4 (Estimation Quality: Coverage + CI Width)
+  ggsave(file.path(output_dir, "fig4_estimation_quality.png"),
+         fig4_estimation_quality(data_dir), width = 12, height = 5, dpi = 300)
+  ggsave(file.path(output_dir, "fig4_estimation_quality.pdf"),
+         fig4_estimation_quality(data_dir), width = 12, height = 5)
   message("  Figure 4: Done")
 
   # Figure 5

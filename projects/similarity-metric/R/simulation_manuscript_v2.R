@@ -186,6 +186,10 @@ run_scenario_v2 <- function(scenario, n_per_group, n_reps = 500, B = 2000,
   rmse    <- sqrt(mean((estimates - true_val)^2, na.rm = TRUE))
   sd_est  <- sd(estimates, na.rm = TRUE)
 
+  # --- CI Width ---
+  ci_widths <- pct_upper - pct_lower
+  mean_ci_width <- mean(ci_widths, na.rm = TRUE)
+
   # --- Coverage ---
   if (true_val > 0) {
     cov_pct <- mean(pct_lower <= true_val & true_val <= pct_upper, na.rm = TRUE)
@@ -210,6 +214,7 @@ run_scenario_v2 <- function(scenario, n_per_group, n_reps = 500, B = 2000,
     summary = list(
       mean_est = mean(estimates, na.rm = TRUE),
       sd_est = sd_est, bias = bias, rmse = rmse,
+      mean_ci_width = mean_ci_width,
       cov_pct = cov_pct, cov_bca = cov_bca,
       detect_pwr_pct = detect_pwr_pct, detect_pwr_bca = detect_pwr_bca,
       equiv_pwr_pct  = equiv_pwr_pct,  equiv_pwr_bca  = equiv_pwr_bca
@@ -261,7 +266,8 @@ run_full_simulation_v2 <- function(n_reps = 500, B = 2000, seed = 42,
 
       cat("    Bias=", sprintf("%+.4f", s$bias),
           " RMSE=", sprintf("%.4f", s$rmse),
-          " SD=", sprintf("%.4f", s$sd_est), "\n")
+          " SD=", sprintf("%.4f", s$sd_est),
+          " CIw=", sprintf("%.4f", s$mean_ci_width), "\n")
       cat("    Cov  Pct=", sprintf("%.3f", ifelse(is.na(s$cov_pct), -1, s$cov_pct)),
           " BCa=", sprintf("%.3f", ifelse(is.na(s$cov_bca), -1, s$cov_bca)), "\n")
       cat("    Det  Pct=", sprintf("%.3f", s$detect_pwr_pct),
@@ -273,6 +279,7 @@ run_full_simulation_v2 <- function(n_reps = 500, B = 2000, seed = 42,
       summary_table <- rbind(summary_table, data.frame(
         Scenario = sc_id, SampleSize = n, TrueNABCD = sc$true_nABCD,
         Bias = round(s$bias, 4), RMSE = round(s$rmse, 4), SD = round(s$sd_est, 4),
+        MeanCIWidth = round(s$mean_ci_width, 4),
         Coverage_Pct = round(s$cov_pct, 3), Coverage_BCa = round(s$cov_bca, 3),
         DetectPower_Pct = round(s$detect_pwr_pct, 3), DetectPower_BCa = round(s$detect_pwr_bca, 3),
         EquivPower_Pct = round(s$equiv_pwr_pct, 3), EquivPower_BCa = round(s$equiv_pwr_bca, 3),
@@ -287,9 +294,13 @@ run_full_simulation_v2 <- function(n_reps = 500, B = 2000, seed = 42,
 }
 
 save_results_v2 <- function(summary_table, filepath = "data/simulation_results_v2.csv") {
+  dir.create(dirname(filepath), showWarnings = FALSE, recursive = TRUE)
   write.csv(summary_table, filepath, row.names = FALSE)
   cat("Saved:", filepath, "\n")
 }
+
+# Alias for backward compatibility with run_all.R
+save_results <- save_results_v2
 
 # =============================================================================
 # Main Execution
@@ -301,7 +312,7 @@ if (interactive() || !exists("SKIP_SIMULATION")) {
   cat("========================================\n\n")
 
   # --- Adjust these for quick vs full ---
-  N_REPS <- 500    # Quick: 50,  Full: 2000+
+  N_REPS <- 10000  # Quick: 50,  Full: 10000
   B_BOOT <- 2000   # Quick: 500, Full: 2000
   SEED   <- 42
 

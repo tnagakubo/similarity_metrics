@@ -71,6 +71,56 @@
 
 ## Live Script
 
+### [2026-02-11 22:00] Scene: Push — "I don't get lucky. I make my own luck."
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*Harvey がジャケットを脱ぎ、袖をまくりながらブルペンに足を踏み入れる。表情は厳しい。全員の視線が集まる。*
+
+**Harvey**: （厳しい表情で）
+「ペースが遅い。Jessica のプランは出た。だが紙の上のプランは何の意味もない。実行しろ。
+
+"I don't get lucky. I make my own luck." 運任せにはしない。今夜中に動け。
+
+具体的な指示を出す：
+
+1. **シミュレーションは一万回**。500回？それは試運転だ。Publication-ready は 10,000 replications が基本。これは Tak からの直接指示だ。
+2. **Figure 4** — Katrina、Power figure は死んだ。代わりに **Estimation Quality figure** を作れ。Coverage と CI Width の2パネル。今すぐだ。
+3. **R環境構築** — Mike、このマシンに R がなかった。インストールして packages を入れろ。
+4. **run_all.R のバグ修正** — Donna、関数名が v2 と一致していない。直せ。
+5. **パイプライン実行** — 全部直ったら即座にシミュレーションを走らせる。
+
+S1 と S2 は並行。Jessica の指示通りだ。動け」
+
+**Mike**: （即座にキーボードに向かう）
+「"I got it." R インストール完了。future.apply, ggplot2, patchwork... packages を入れている。
+simulation_manuscript_v2.R の N_REPS を 10,000 に更新した。CI Width の tracking も追加した。B=2,000 は維持」
+
+**Donna**: （タブレットに記録しながら）
+「"I'm Donna. I know everything." run_all.R 修正完了。
+- `run_full_simulation()` → `run_full_simulation_v2()` に修正
+- `save_results()` → `save_results_v2()` に修正
+- hardcoded Windows path → 動的パス検出に変更
+- `validate_results()` 関数を inline 定義
+- full mode: n_reps=10,000, B=2,000」
+
+**Katrina**: （ディスプレイに図のドラフトを表示しながら）
+「"Results speak for themselves." Figure 4 コード完成：
+- Panel A: Coverage probability by scenario × sample size（0.95 ライン付き）
+- Panel B: Mean CI Width by scenario × sample size
+- v2 CSV 使用、null シナリオ除外、patchwork で2パネル結合
+旧 `fig4_power()` → 新 `fig4_estimation_quality()` に完全置換」
+
+**Harvey**: （頷いて）
+「よし。Estimation Quality figure で行く。Coverage と CI Width を一目で見せる。Reviewer が estimation の信頼性を確認できる。
+
+パッケージが入り次第、シミュレーション起動。10,000 reps × B=2,000 × 6 scenarios × 3 sample sizes。時間はかかるが、これが本番だ」
+
+**Louis**: （腕を組んで控えめに）
+「シミュレーション結果が出たら、re-review に入る。10,000 reps なら Monte Carlo error は激減する。数値の安定性を徹底的にチェックする。"You just got Litt up!" は結果を見てからだ」
+
+---
+
 ### [2026-02-11 21:45] Scene: Jessica's Strategic Plan — "Let me be clear."
 
 **INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - NIGHT**
