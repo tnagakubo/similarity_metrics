@@ -312,7 +312,7 @@ Coverage exhibited a non-monotonic pattern across sample sizes for the shape sce
 
 We also evaluated BCa (bias-corrected and accelerated) confidence intervals. BCa intervals showed consistently lower coverage than percentile intervals across all scenarios, with the largest discrepancy in scale and shape scenarios (e.g., S06 at $n = 100$: percentile 0.976 vs.\ BCa 0.839). The BCa correction overcorrects for nABCD because the statistic is bounded below by zero, causing the acceleration parameter to distort the quantile adjustment. Based on these findings, we adopt percentile bootstrap as the primary inference method.
 
-Monte Carlo standard errors for all reported proportions (coverage, power) were below 0.005 at 10{,}000 replications, ensuring that observed differences across scenarios and sample sizes reflect genuine operating characteristic differences rather than simulation noise.
+Monte Carlo standard errors for all reported coverage probabilities were below 0.005 at 10{,}000 replications, ensuring that observed differences across scenarios and sample sizes reflect genuine operating characteristic differences rather than simulation noise.
 
 \begin{table}[ht]
 \caption{Coverage probability of 95\% bootstrap confidence intervals.\label{tab:coverage}}
@@ -399,6 +399,8 @@ In summary, the simulation study demonstrates that the nABCD estimator provides 
 \item \textbf{Precision}: RMSE below 0.06 and CI width below 0.18 at $n \geq 100$
 \item \textbf{Sensitivity}: Captures location, scale, and shape differences where SMD is limited to location only
 \end{enumerate}
+
+Scenario S04 (0.5$\sigma$ location shift, true nABCD $= 0.186$) exemplifies the operating characteristics at clinically relevant effect sizes: bias was negligible ($-0.003$ at $n = 100$), coverage was nominal (0.950), and CI width (0.18) translated to a $\Delta_{\max}$ CI width of $2 \times 0.3 \times 1.5 \times 0.18 = 0.16$\% HbA1c when calibrated with $L = 0.3$ and IQR $= 1.5$---a level of precision sufficient for informed regulatory deliberation.
 
 These estimation properties ensure that nABCD, when combined with the clinical calibration framework, provides $\Delta_{\max}$ estimates of sufficient quality for regulatory deliberation. We recommend $n \geq 100$ per region for reliable estimation and inference.
 
@@ -536,7 +538,7 @@ Several limitations should be acknowledged:
 \begin{enumerate}[1.]
 \item The current formulation applies to continuous EMs only; extensions to categorical or mixed-type EMs require further development.
 \item nABCD evaluates each EM separately rather than jointly; a multivariate extension would address potential confounding among EMs.
-\item Positive bias under the null at small sample sizes ($n < 100$) can inflate nABCD estimates, and persistent negative bias at large true values (S05, nABCD $= 0.372$) leads to progressive undercoverage (0.731 at $n = 200$). These boundary effects are inherent to the non-negative, bounded nature of nABCD as a function of the Wasserstein distance. We recommend $n \geq 100$ per region for reliable point estimation and confidence intervals, and caution that coverage may degrade when the true nABCD exceeds approximately 0.3.
+\item Positive bias under the null at small sample sizes ($n < 100$) can inflate nABCD estimates, and persistent negative bias at large true values (S05, nABCD $= 0.372$) leads to progressive undercoverage (0.731 at $n = 200$). These boundary effects are inherent to the non-negative, bounded nature of nABCD as a function of the Wasserstein distance. Coverage can also exhibit non-monotonic behavior: for the shape scenario (S08), coverage was 0.573 at $n = 50$, 0.945 at $n = 100$, and 0.996 at $n = 200$, reflecting how the balance between bias magnitude and CI width shifts with sample size. We recommend $n \geq 100$ per region for reliable point estimation and confidence intervals, and caution that coverage may degrade when the true nABCD exceeds approximately 0.3.
 \item The clinical calibration requires estimation of CATE sensitivity $L$, which may not always be available from prior data. Reference benchmarks are provided as a fallback but should not replace context-specific calibration.
 \end{enumerate}
 
