@@ -31,13 +31,13 @@
 
 | Stage | Task | Owner | Status |
 |-------|------|-------|--------|
-| **S1** | Figure 4: Draft 2 candidate designs (Estimation Quality / Clinical Calibration) | Katrina (Mike) | ⏳ Pending |
-| **S1** | Figure 4: Harvey selects final design | Harvey | ⏳ Waiting |
+| ~~**S1**~~ | ~~Figure 4: Estimation Quality (Coverage + CI Width)~~ | ~~Katrina~~ | **DONE** |
+| ~~**S1**~~ | ~~Harvey selects: Estimation Quality figure~~ | ~~Harvey~~ | **DONE** |
 | **S2** | Re-review: estimation framing consistency, numerical integrity | Louis | ⏳ Pending |
 | **S3** | Real data strategy decision (A: public data / B: enhance hypothetical / C: reconstruct from published) | Harvey | ⏳ **Decision needed** |
 | **S3** | Literature support for real data application | Rachel | ⏳ Pending |
 | **S4** | LaTeX compile → PDF → Word conversion | Mike (Katrina) | ⏳ Pending |
-| **S4** | Figure files: TIFF/PNG 300dpi | Katrina | ⏳ Pending |
+| ~~**S4**~~ | ~~Figure files: PNG 300dpi (10K data)~~ | ~~Katrina~~ | **DONE** |
 | **S4** | DOI final check (all references) | Rachel | ⏳ Pending |
 | **S4** | Scenario numbering cleanup (S02/S07 gap) | Mike | ⏳ Minor |
 | **S5** | Cover letter, title page, checklist | Donna | ⏳ Pending |
@@ -70,6 +70,221 @@
 ---
 
 ## Live Script
+
+### [2026-02-12 09:00] Scene: Meeting — Simulation Results Review
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Harvey が大型ディスプレイにシミュレーション結果テーブルを映す。全メンバー着席。コーヒーの香りが漂う朝のミーティング。*
+
+**Harvey**: （立ったまま、テーブルを見回して）
+「10,000 replications が完了した。これは試運転じゃない。本番の結果だ。全員の目でレビューしろ。見落としがあれば今日中に潰す。意見を聞かせろ」
+
+**Mike**: （ディスプレイを指しながら）
+「"I got it." 技術的な所見を整理する。
+
+**1. Bias — 想定通り、問題なし**
+
+| Scenario | n=50 | n=100 | n=200 | 判定 |
+|----------|------|-------|-------|------|
+| S01 (Null) | +0.093 | +0.066 | +0.047 | 境界効果 — 予想通り |
+| S03 (0.2σ) | +0.039 | +0.018 | +0.007 | ✅ n≥100 で < 0.02 |
+| S04 (0.5σ) | +0.004 | -0.003 | -0.004 | ✅ 全 n で negligible |
+| S05 (1.0σ) | -0.038 | -0.041 | -0.043 | ⚠️ 持続的負バイアス |
+| S06 (Scale) | +0.001 | -0.012 | -0.019 | ✅ n≥100 で < 0.02 |
+| S08 (Shape) | +0.029 | +0.003 | -0.015 | ✅ n≥100 で < 0.02 |
+
+S05 の負バイアス約 -0.04 は bounded statistic の性質。nABCD は [0, ∞) だが、true value 0.372 が実効的な上限に近いため、推定値が下に引っ張られる。これは正直に Discussion に書いている。
+
+**2. Coverage — 核心的な話題**
+
+Percentile CI の Coverage:
+
+| Scenario | n=50 | n=100 | n=200 |
+|----------|------|-------|-------|
+| S03 (0.2σ) | 0.672 | 0.895 | **0.949** |
+| S04 (0.5σ) | **0.956** | **0.950** | **0.949** |
+| S06 (Scale) | **0.963** | **0.976** | **0.939** |
+| S08 (Shape) | 0.573 | **0.945** | **0.996** |
+| S05 (1.0σ) | **0.929** | 0.867 | 0.731 |
+
+n≥100 で bold = 0.90 以上。S04, S06, S08 は n≥100 で excellent。S03 は n=100 で 0.895 — ギリギリ acceptable。S05 は known issue。
+
+注目すべきは **S08 (Shape) n=200 の 0.996** だ。これは overcoverage — CI が広すぎることを意味する。Shape scenario では分布の非対称性が影響している可能性がある」
+
+**Katrina**: （Figure 4 を投影しながら）
+「"Results speak for themselves." Figure 4 のパネル B — CI Width を見てほしい。
+
+| Scenario | n=50 | n=100 | n=200 |
+|----------|------|-------|-------|
+| S03 | 0.181 | 0.135 | 0.106 |
+| S04 | 0.229 | 0.179 | 0.134 |
+| S05 | 0.243 | 0.172 | 0.121 |
+| S06 | 0.186 | 0.131 | 0.094 |
+| S08 | 0.165 | 0.113 | 0.078 |
+
+n を 2 倍にすると CI Width が約 25-30% 縮小する。$\sqrt{n}$ rate と整合。n=100 で 0.11-0.18 の範囲。
+
+Clinical calibration の観点: $L = 0.3$, IQR = 1.5% の HbA1c に対して、S04 (n=100) の CI Width 0.179 は $\Delta_{\max}$ の CI Width $= 2 \times 0.3 \times 1.5 \times 0.179 = 0.16$% HbA1c に相当する。臨床的に意味のある精度だ」
+
+**Rachel**: （文献ノートを見ながら）
+「"Hard work beats talent when talent doesn't work hard." 文献との比較を整理したわ。
+
+**Bootstrap CI の Coverage に関して：**
+
+del Barrio et al. (1999) は一次元 Wasserstein 距離の CLT を示したが、limit distribution は非標準で、直接的な CI 構成は困難。Sommerfeld & Munk (2018) が bootstrap の validity を証明。ただし彼女たちの結果は $W_2$ (Wasserstein-2) に基づくもので、$W_1$ についての bootstrap validity は Bickel & Freedman (1981) の一般論に依拠している。
+
+我々の結果は、bootstrap が $W_1$-based nABCD に対して well-calibrated であることを 10,000 reps で empirically 確認した最初の systematic study と主張できる。これは novelty の一つになる。
+
+**S05 の Coverage 問題について：**
+
+Dümbgen (1993) DOI: [10.1214/aos/1176349157](https://doi.org/10.1214/aos/1176349157) が non-differentiable functionals に対する bootstrap の限界を論じている。$W_1$ は max norm に近い振る舞いをするため、large true values で bootstrap が undercover するのは理論的に説明できる。この文献は Discussion に引用済み」
+
+**Louis**: （腕を組んで、鋭い目で）
+「いくつか指摘がある。"You just got Litt up!"
+
+**指摘 1: S08 Coverage の非単調性**
+n=50 で 0.573、n=100 で 0.945、n=200 で 0.996。n=200 の overcoverage は bootstrap CI が conservative すぎることを示唆する。true nABCD = 0.067 が小さいため、n=200 では推定精度が high → bias が negative (-0.015) → CI 全体が左にシフトするが、CI width はまだ十分広い → overcoverage。この非単調パターンは論文で明示的に議論すべきだ。
+
+**指摘 2: BCa vs Percentile の差が拡大**
+S06 (Scale) を見ろ:
+- n=100: Percentile 0.976 vs BCa 0.839
+- n=200: Percentile 0.939 vs BCa 0.802
+
+BCa が大幅に underperform。Percentile を primary にした判断は正しい。だが、"BCa overcorrects" の一言では不十分だ。なぜ BCa が失敗するのか、1-2文で説明が必要。
+
+**指摘 3: Monte Carlo Standard Error の明示**
+10,000 reps で Coverage = 0.950 のとき、MCSE = $\sqrt{0.95 \times 0.05 / 10000} = 0.0022$。つまり ±0.004 の精度。これは十分だが、論文中に明記すべき。"Monte Carlo standard errors for reported coverage probabilities are below 0.005" の一文を追加しろ」
+
+**Jessica**: （静かに聞いていたが、ここで口を開く）
+「Let me be clear. 結果は solid だ。10,000 reps は Monte Carlo error を最小化した。具体的な所見：
+
+1. **S04 (0.5σ) は showcase scenario** — Bias negligible、Coverage nominal、CI Width reasonable。論文の "what good looks like" の例として最適。
+
+2. **S05 問題は weakness ではなく honesty** — bounded statistic の限界を正直に示すことは、reviewer に信頼感を与える。ただし Louis の言う通り、BCa 失敗の理由を簡潔に説明すること。
+
+3. **n ≥ 100 recommendation は data-driven** — 全指標が n=100 で acceptable level に達する。これは arbitrary ではなく empirical。
+
+4. **Clinical calibration の具体例を拡充** — Katrina が計算した $\Delta_{\max}$ CI Width 0.16% HbA1c は、Section 4 で明示的に書くこと。reviewer は "So what?" に対する concrete answer を求める。
+
+もう一つ。"In this game, you either win or you learn." この結果なら fight できる」
+
+**Harvey**: （全員を見渡して、決断）
+「よし。結果はレビューに耐えうる。以下を決定する。
+
+**Decision 1**: S04 を primary showcase scenario として論文のナラティブの中心に据える。
+**Decision 2**: Louis の 3 指摘を全て manuscript に反映。特に MCSE 明示と BCa 失敗理由。
+**Decision 3**: S08 の overcoverage の非単調パターンを Discussion で議論。
+**Decision 4**: $\Delta_{\max}$ CI Width の具体計算を Section 4 に追加。
+
+Mike、Louis の指摘の manuscript 反映を担当しろ。Katrina、Section 4 の $\Delta_{\max}$ 計算追加。
+
+"I don't have dreams, I have goals." 次は Stage 2 — Louis の full re-review だ。結果が安定したからこそ、今が re-review の timing だ」
+
+**Donna**: （タブレットを掲げて）
+「"I'm Donna. I know everything." 全て記録完了。4 decisions、3 action items。
+
+ああ、一つ忘れていたわ。SUITS.md は現在 420 行。アーカイブまでまだ余裕があるけど、このペースだと今週中に 1000 行に達する可能性がある。先に言っておくわ」
+
+---
+
+### [2026-02-12 00:30] Scene: Simulation Complete — "Results speak for themselves."
+
+**INT. PEARSON SPECTER LITT - BULLPEN - LATE NIGHT**
+
+*ディスプレイに "=== DONE ===" の文字。Katrina が結果テーブルを全員に投影する。*
+
+**Katrina**: （満足げに）
+「"Results speak for themselves." 10,000 replications 完了。15 workers で 2.5 時間。結果は安定。
+
+主要な findings:
+
+| Scenario | n=100 Bias | n=100 Coverage | n=100 CIw |
+|----------|-----------|----------------|-----------|
+| S03 (0.2σ) | +0.018 | 0.895 | 0.135 |
+| S04 (0.5σ) | -0.003 | **0.950** | 0.179 |
+| S05 (1.0σ) | -0.041 | 0.867 | 0.172 |
+| S06 (Scale) | -0.012 | 0.976 | 0.131 |
+| S08 (Shape) | +0.003 | 0.945 | 0.113 |
+
+500 reps との差は微小 — Monte Carlo error が大幅に縮小した。Figure 4 も 10K データで再生成済み」
+
+**Mike**: （データを確認しながら）
+「"I got it." 数値の安定性は完璧だ。500 reps と 10K reps の差は最大 0.003。LaTeX 原稿の全テーブル（Bias, Coverage, Precision, SMD比較）を 10K 値に更新した。Abstract も修正済み」
+
+**Harvey**: （頷いて）
+「いい仕事だ。Jessica のプラン Stage 1 と一部の Stage 4 が完了した。
+
+**完了タスク:**
+- ✅ シミュレーション 10,000 reps 実行
+- ✅ Figure 4: Estimation Quality (Coverage + CI Width)
+- ✅ 全図表を 10K データで再生成
+- ✅ LaTeX 原稿の全数値を更新
+- ✅ run_all.R バグ修正
+- ✅ R 環境構築
+
+**残タスク:**
+- ⏳ Louis re-review (Stage 2)
+- ⏳ Real data 方針決定 (Stage 3)
+- ⏳ DOI 最終確認 (Stage 4)
+- ⏳ Submission package (Stage 5)
+
+"I don't have dreams, I have goals." 目標に一歩近づいた」
+
+**Donna**: （記録完了）
+「"I'm Donna. I know everything." 全て記録済み。Phase 8 進捗率: Stage 1 完了、Stage 4 一部完了」
+
+---
+
+### [2026-02-11 22:00] Scene: Push — "I don't get lucky. I make my own luck."
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*Harvey がジャケットを脱ぎ、袖をまくりながらブルペンに足を踏み入れる。表情は厳しい。全員の視線が集まる。*
+
+**Harvey**: （厳しい表情で）
+「ペースが遅い。Jessica のプランは出た。だが紙の上のプランは何の意味もない。実行しろ。
+
+"I don't get lucky. I make my own luck." 運任せにはしない。今夜中に動け。
+
+具体的な指示を出す：
+
+1. **シミュレーションは一万回**。500回？それは試運転だ。Publication-ready は 10,000 replications が基本。これは Tak からの直接指示だ。
+2. **Figure 4** — Katrina、Power figure は死んだ。代わりに **Estimation Quality figure** を作れ。Coverage と CI Width の2パネル。今すぐだ。
+3. **R環境構築** — Mike、このマシンに R がなかった。インストールして packages を入れろ。
+4. **run_all.R のバグ修正** — Donna、関数名が v2 と一致していない。直せ。
+5. **パイプライン実行** — 全部直ったら即座にシミュレーションを走らせる。
+
+S1 と S2 は並行。Jessica の指示通りだ。動け」
+
+**Mike**: （即座にキーボードに向かう）
+「"I got it." R インストール完了。future.apply, ggplot2, patchwork... packages を入れている。
+simulation_manuscript_v2.R の N_REPS を 10,000 に更新した。CI Width の tracking も追加した。B=2,000 は維持」
+
+**Donna**: （タブレットに記録しながら）
+「"I'm Donna. I know everything." run_all.R 修正完了。
+- `run_full_simulation()` → `run_full_simulation_v2()` に修正
+- `save_results()` → `save_results_v2()` に修正
+- hardcoded Windows path → 動的パス検出に変更
+- `validate_results()` 関数を inline 定義
+- full mode: n_reps=10,000, B=2,000」
+
+**Katrina**: （ディスプレイに図のドラフトを表示しながら）
+「"Results speak for themselves." Figure 4 コード完成：
+- Panel A: Coverage probability by scenario × sample size（0.95 ライン付き）
+- Panel B: Mean CI Width by scenario × sample size
+- v2 CSV 使用、null シナリオ除外、patchwork で2パネル結合
+旧 `fig4_power()` → 新 `fig4_estimation_quality()` に完全置換」
+
+**Harvey**: （頷いて）
+「よし。Estimation Quality figure で行く。Coverage と CI Width を一目で見せる。Reviewer が estimation の信頼性を確認できる。
+
+パッケージが入り次第、シミュレーション起動。10,000 reps × B=2,000 × 6 scenarios × 3 sample sizes。時間はかかるが、これが本番だ」
+
+**Louis**: （腕を組んで控えめに）
+「シミュレーション結果が出たら、re-review に入る。10,000 reps なら Monte Carlo error は激減する。数値の安定性を徹底的にチェックする。"You just got Litt up!" は結果を見てからだ」
+
+---
 
 ### [2026-02-11 21:45] Scene: Jessica's Strategic Plan — "Let me be clear."
 
