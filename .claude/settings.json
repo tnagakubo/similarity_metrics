@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/mnt/c/Users/hrd13/Documents/Gak/0\\ Study/800Claude/20260201_SUITS/.claude/hooks/validate-paper-request.sh"
+            "command": "/mnt/c/Users/hrd13/Documents/Gak/0\\ Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/validate-paper-request.sh"
           }
         ]
       }
@@ -20,7 +20,7 @@
           },
           {
             "type": "command",
-            "command": "/mnt/c/Users/hrd13/Documents/Gak/0\\ Study/800Claude/20260201_SUITS/.claude/hooks/check-suits-lines.sh"
+            "command": "/mnt/c/Users/hrd13/Documents/Gak/0\\ Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/check-suits-lines.sh"
           }
         ]
       }
@@ -34,7 +34,7 @@
           },
           {
             "type": "command",
-            "command": "/mnt/c/Users/hrd13/Documents/Gak/0\\ Study/800Claude/20260201_SUITS/.claude/hooks/check-suits-lines.sh"
+            "command": "/mnt/c/Users/hrd13/Documents/Gak/0\\ Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/check-suits-lines.sh"
           }
         ]
       }

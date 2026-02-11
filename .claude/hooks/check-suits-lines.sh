@@ -2,7 +2,7 @@
 # Donna's Gatekeeper: SUITS.md Line Count Monitor
 # Warns at 800+, alerts at 900+
 
-SUITS_FILE="/mnt/c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260201_SUITS/SUITS.md"
+SUITS_FILE="/mnt/c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/SUITS.md"
 
 if [ -f "$SUITS_FILE" ]; then
   LINES=$(wc -l < "$SUITS_FILE")
