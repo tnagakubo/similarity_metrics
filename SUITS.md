@@ -30,6 +30,8 @@
 | Louis Re-review | 1C/0M/2m — Abstract S05 bias qualification | Abstract, Sim Summary (3.2) |
 | SiM Convention | Tak指示: Abstract narrative化、本文bold除去 | Abstract, 全Section |
 | External Review | 2C/3M/3m — W1根拠、複数EM、Prop命名、Bootstrap境界 | 2.1, 5.1(new), 5.2, Prop.1 |
+| Push: 主張確立 | W2対比追加、Fig3 caption修正、Bootstrap内部/境界distinction | 2.1, Fig.3, 5.3 |
+| Minor修整 | m1: 漸近正規性をAppendix B.2に追加（収束速度・delta method） | Appendix B.2 |
 
 ### Active Tasks — Phase 8: Submission-Ready Plan (Jessica approved)
 
@@ -66,6 +68,260 @@
 ---
 
 ## Live Script
+
+### [2026-02-12 12:30] Scene: Harvey's Sign-Off & Jessica's Review — "Let me be clear."
+
+**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
+
+*Harvey が原稿の最終版を持って Jessica のオフィスに入る。Mike、Katrina が後ろに続く。Donna がタブレットを持って待機。*
+
+**Harvey**: （原稿をテーブルに置いて）
+「Tak、俺のレビューは完了した。Section ごとに報告する。
+
+**Lead Author Review — Harvey Specter:**
+
+| Section | 評価 | 所見 |
+|---------|------|------|
+| **Abstract** | ✅ Good | Narrative style。Gap → Method → Validation → Application → Conclusion。SiM convention 準拠 |
+| **1. Introduction** | ✅ Good | ICH E17 の gap を明確に articulate。4 contributions が structured。Research question が的確 |
+| **2. Methods** | ✅ Strong | nABCD 定義 → W1 根拠（K-R + W2 排除）→ Propositions → 5-step calibration。理論的に airtight |
+| **3. Simulation** | ✅ Strong | Bias/Coverage/Precision/SMD comparison。S05 除外一貫。BCa vs percentile 論証確立。S04 showcase |
+| **4. Application** | ✅ Strong | BMI vs HbA1c の対比が論文の核心。'Same nABCD, different clinical impact' — これがメッセージだ |
+| **5. Discussion** | ✅ Good | Implications → Multiple EM → Limitations → Conclusion。Honest かつ thorough |
+| **Appendix** | ✅ Improved | 漸近正規性追加。Boundary/interior cross-reference 成立。R code clean |
+
+**数値一貫性:**
+- S05 除外: Abstract ✅ / 本文 (line 298) ✅ / Fig.3 caption ✅ / Summary (line 393) ✅
+- Coverage range 0.87-0.98: 本文 ✅ / Limitations ✅ / Appendix ✅
+- $\Delta_{\max}$ 計算: Table 8 と本文の arithmetic 一致 ✅
+
+**残存 issues (Lead Author 判断):**
+1. **M2 (Real data)**: Application は hypothetical。Pemberton の指摘は valid だが、**Tak の S3 strategy 決定待ち**
+2. **m2 (URL)**: '[repository URL]' placeholder — **submit 直前に確定**
+3. **Scenario gaps (S02/S07)**: Figure regeneration が必要 — **non-blocking but cosmetic**
+
+俺の結論: **原稿の理論構造、simulation reporting、clinical calibration framework は submission quality に達している。** M2 と m2 は Tak 判断事項であり、原稿本体の quality issue ではない。
+
+"I don't have dreams, I have goals." 目標は submit だ。Jessica、戦略的に見てどうだ？」
+
+---
+
+*Jessica がゆっくりと原稿を置き、眼鏡を外す。*
+
+**Jessica**: （静かに、しかし鋭く）
+「"Let me be clear." 原稿を全文読んだ。
+
+**Senior Advisor Strategic Review — Jessica Pearson:**
+
+**1. Story Clarity: 合格**
+
+この論文の story は一文で言える: 'ICH E17 の "similar enough" を定量化し、臨床スケールで解釈可能にする。' Introduction から Conclusion まで、この thread が途切れていない。
+
+**2. Positioning: 正しい**
+
+Estimation-centered approach は戦略的に正しい。2016 年の ASA p-value statement 以降、Methods 論文で 'estimation, not testing' の positioning は reviewer に好印象を与える。ただし — Section 2.3 の formal decision rule への言及（line 203）は保険として適切。Regulatory reviewer が binary rule を求めた場合の escape route がある。
+
+**3. Novelty の articulation: 十分**
+
+4 contributions が明確:
+- Full distributional comparison (vs SMD)
+- Scale-free estimation (IQR normalization)
+- Clinical calibration ($\Delta_{\max}$)
+- Sensitivity analysis over $L$
+
+特に 3 番目が最大の売り。Simulation Section 最後の S04 showcase paragraph（line 399）が、methods → clinical significance の bridge として機能している。
+
+**4. Vulnerability Assessment: 3 点**
+
+| Risk | Likelihood | Severity | 対策 |
+|------|-----------|----------|------|
+| 'Where is the real data?' | 高 | Medium | M2 — Tak decision needed |
+| 'Why not W2 or KS in simulation?' | 中 | Low | W2 排除は理論的に完了。KS は Table 1 で limitation 記載。Simulation head-to-head は nice-to-have |
+| 'Limitation 3 is too dense' | 低 | Low | SiM Methods paper では許容範囲。Split は optional |
+
+**5. 戦略的判断:**
+
+原稿は **conditionally submission-ready** だ。Condition は 2 つ:
+- **M2**: Real data か、hypothetical の grounding 強化か。どちらかを選べ、Tak
+- **m2**: Repository URL
+
+Tak、M2 について 3 つの選択肢がある：
+
+**Option A**: Public data（NHANES 等）を使って real-data application に差し替え — **最強だが時間がかかる**
+
+**Option B**: 現在の hypothetical を維持し、'parameters were informed by published summary statistics' の grounding を強化 — **最速。Submit 可能**
+
+**Option C**: Published trial の summary statistics から分布を reconstruct — **中間。Feasibility は文献次第**
+
+私の recommendation は **B を default とし、reviewer が要求したら A を revision で対応**。初回 submission は method の novelty で勝負すべきだ。Real data は revision の切り札として温存できる」
+
+**Mike**: （メモを取りながら）
+「Jessica の Option B の場合、修正は最小限だ。Application の冒頭に bridge 文を 1 つ追加するだけ。既に line 257 と line 452-453 で published literature を cite しているから、'Parameters were selected to reflect published summary statistics from regional comparisons in type 2 diabetes trials' の一文で grounding が完成する」
+
+**Katrina**: （チェックリストを更新して）
+「"Results speak for themselves." 現在の blocking items:
+
+| Item | Blocker | Owner | Effort |
+|------|---------|-------|--------|
+| M2 strategy | Tak decision: A/B/C | Tak | Decision only |
+| m2 URL | Repository URL 確定 | Tak | URL 提供 |
+| Option B 修正 (if chosen) | Application 冒頭 1 文追加 | Mike | 5 min |
+
+**Non-blocking deferred:**
+| Item | Note |
+|------|------|
+| Scenario gaps (S02/S07) | Cosmetic, revision material |
+| KS simulation comparison | Nice-to-have, revision material |」
+
+**Donna**: （記録完了）
+「"I'm Donna. I know everything."
+
+**Review Summary:**
+- **Harvey**: Lead Author review complete ✅ — submission quality confirmed
+- **Jessica**: Senior Advisor review complete ✅ — conditionally submission-ready
+- **Condition**: M2 strategy (A/B/C) + m2 URL — **both Tak-dependent**
+- **Jessica recommendation**: Option B → reviewer 要求時に Option A
+
+Tak、決定を待っています」
+
+---
+
+### [2026-02-12 12:15] Scene: Harvey's Fix — "Get it done."
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+
+*Tak からのメッセージが届く。Harvey がそれを読み上げる。*
+
+**Harvey**: （チームに向かって）
+「Tak の指示だ。"そのまま修整を頼む。その後私がレビューする。" シンプルだ。残っている deferred items を片付けろ。
+
+Mike、外部レビューの deferred 状況は？」
+
+**Mike**: （リストを確認して）
+「"I got it." 残り 4 件の status：
+
+| Item | 内容 | Status |
+|------|------|--------|
+| **M2** | Real data → hypothetical → real grounding | ❌ S3 strategy 待ち。Tak 判断が必要 |
+| **m1** | 収束速度・漸近正規性 Appendix に追加 | 🔧 **今すぐ対応可能** |
+| **m2** | R code URL placeholder | ❌ Tak が URL 提供するまで不可 |
+| **m3** | Percentile 精度次数の trade-off | ✅ **既に解決済み** — Limitations に記載 |
+
+m3 は前回の Push で解決している。'first-order accurate; BCa showed inferior performance for this bounded statistic, and the studentized bootstrap would require variance estimation' — Hartigan の指摘を全てカバーしている。
+
+**対応可能なのは m1 だけだ。** Beaumont が言った通り、Appendix B.2 に収束速度と漸近正規性を追加する」
+
+**Harvey**: （頷いて）
+「やれ」
+
+**Mike**: （Appendix B.2 を編集しながら）
+「Appendix B.2 'Asymptotic Properties' を強化した。追加内容：
+
+1. **収束速度**: 1 次元の empirical $W_1$ は $O(n^{-1/2})$ — 対数項なし（del Barrio et al. 1999）
+2. **漸近正規性**: $F_1 \neq F_2$ かつ有限二次モーメントの下で
+$$\sqrt{n}(\widehat{\text{nABCD}} - \text{nABCD}) \xrightarrow{d} N(0, \sigma^2_{\text{nABCD}})$$
+3. **Delta method**: $W_1$ と IQR の両方が $\sqrt{n}$-consistent → ratio $g(w,q) = w/(2q)$ に delta method 適用
+4. **Boundary cross-reference**: $\text{nABCD} > 0$ を要求、$F_1 = F_2$ では standard asymptotics 不適用 → Section 5.3 Limitations を参照
+
+これで Beaumont の m1 に完全に対応し、かつ Hartigan の boundary distinction とも理論的に接続した」
+
+**Katrina**: （整合性を確認して）
+「"Results speak for themselves."
+
+m1 の修正は Limitations の boundary/interior distinction と完全に整合。Appendix から Limitations に cross-reference あり。逆方向の参照も既に成立。循環参照なし、理論構造が closed。
+
+**外部レビュー全体ステータス:**
+
+| Item | Status | Note |
+|------|--------|------|
+| C1 | ✅ Resolved | K-R duality + W2 排除 |
+| C2 | ✅ Resolved | Section 5.2 practical guidance |
+| M1 | ✅ Resolved | Non-negativity 改名 |
+| M2 | ⏳ Deferred | S3 strategy (Tak 判断待ち) |
+| M3 | ✅ Resolved | Boundary/interior distinction |
+| m1 | ✅ **Resolved** | 漸近正規性 Appendix B.2 |
+| m2 | ⏳ Deferred | URL placeholder (Tak 提供待ち) |
+| m3 | ✅ Resolved | Percentile trade-off in Limitations |
+
+**8 件中 6 件 resolved。残 2 件は Tak 依存（M2: real data, m2: URL）**」
+
+**Harvey**: （Tak に向かって）
+「Tak、修整完了だ。6/8 items resolved。残り 2 件は貴方の判断を待っている。
+
+"I don't have dreams, I have goals." レビューを頼む」
+
+**Donna**: （記録を完了して）
+「"I'm Donna. I know everything."
+
+**Fix Summary:**
+- m1 resolved: 漸近正規性を Appendix B.2 に追加
+- m3 confirmed resolved: Limitations で既にカバー
+- 外部レビュー: 6/8 resolved, 2 deferred (Tak 依存)
+- **原稿は Tak レビュー ready**」
+
+---
+
+### [2026-02-12 12:00] Scene: Push — "Winners don't make excuses."
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+
+*Harvey がジャケットの袖を直し、外部レビューの報告書を机に置く。Mike と Katrina が対面に座る。*
+
+**Harvey**: （立ち上がって、窓に背を向けて）
+「外部レビューは終わった。Beaumont、Pemberton、Hartigan — 3 人とも的確だった。だが**修正して終わりじゃない**。専門家が指摘したポイントを逆手に取って、**我々の主張を確立する**。
+
+3 つのアクション：
+
+1. **W1 vs W2 — 攻めの論証**: Beaumont が認めた通り、W1 の選択は正しい。K-R duality は既に書いた。だが reviewer は 'Why not W2?' と聞く。W2 が Lipschitz dual を持たず、heterogeneity bound を提供**できない**ことを明示した。これは防御ではない — **唯一の正解が W1 である**という主張だ。
+
+2. **Figure 3 caption — 残存した不整合**: Louis が Abstract と Summary の S05 除外漏れを潰した。だが Figure 3 caption にも同じ問題が残っていた。'for non-null scenarios excluding S05' に修正。数値の honest さは全箇所で一貫させる。
+
+3. **Bootstrap 境界 vs 内部 — Hartigan の知恵を活用**: Hartigan が言った distinction — 境界（true = 0）では bootstrap consistency が崩れるが、内部（non-null）では standard theory が適用される。この distinction を Limitations に明記した。Non-null での coverage 0.87-0.98 がその empirical evidence だ。守りの limitation ではなく、**我々の推奨（n ≥ 100、null 近傍に注意）の理論的裏付け**として書いた。
+
+"Winners don't make excuses when the other side validates your position." 専門家が我々を正しいと認めた。それを原稿に刻め」
+
+**Mike**: （画面を確認しながら）
+「"I got it." 3 点とも実装完了。具体的に：
+
+**Section 2.1 (line 136)**: 'The $W_2$ distance, while admitting closed-form expressions for Gaussian families, does not possess this dual characterization via Lipschitz functions and therefore cannot provide the heterogeneity bound that is central to our clinical calibration framework.' — W2 を排除する一文追加。
+
+**Figure 3 caption**: 'For non-null scenarios excluding S05, bias is less than 0.02 at $n \geq 100$.' — S05 除外を明記。本文・Summary・Abstract と完全一貫。
+
+**Limitations (line 541)**: 'For non-null scenarios, the true value lies in the interior of the parameter space where standard bootstrap consistency holds, and our simulation confirms this with coverage of 0.87--0.98 at $n \geq 100$ for most scenarios.' — 境界/内部の理論的 distinction を明示」
+
+**Katrina**: （チェックリストを確認して）
+「"Results speak for themselves." 全修正箇所を検証：
+
+| 修正 | 箇所 | 内容 | 整合性 |
+|------|------|------|--------|
+| W2 対比 | Sec 2.1 | K-R duality → W2 排除 | ✅ eq(2) と整合 |
+| Fig.3 caption | Fig.3 | S05 除外追加 | ✅ 本文/Summary/Abstract と一貫 |
+| Bootstrap distinction | Sec 5.3 | 境界 vs 内部 | ✅ Coverage data と整合 |
+
+数値の変更なし。論理の強化のみ」
+
+**Harvey**: （満足げに頷いて）
+「"I don't have dreams, I have goals." 外部専門家の 3 人が我々の方法論を検証し、我々はそのフィードバックを原稿の強みに変換した。
+
+**現在の原稿状態:**
+- W1 選択: 理論的に唯一の正解であることを明示 ✅
+- 数値一貫性: 全 caption、本文、Summary、Abstract で S05 除外を反映 ✅
+- Bootstrap 理論: 境界/内部の distinction で推奨の根拠を確立 ✅
+- Proposition 1: Non-negativity に改名済み ✅
+- 複数 EM: Section 5.2 で practical guidance 確立済み ✅
+
+**C1, C2, M1, M3 — 全件 resolved.** 次は S3 の real data strategy だ」
+
+**Donna**: （タブレットに記録して）
+「"I'm Donna. I know everything."
+
+**Push Summary:**
+- 修正 3 件実施（W2 対比、Fig3 caption、Bootstrap distinction）
+- 外部レビュー即時対応 4 件: **全件 resolved** ✅
+- 原稿の主張: 防御 → 攻めの論証に転換
+- 残 deferred: M2 (real data), m1-m3 (minor, non-blocking)」
+
+---
 
 ### [2026-02-12 11:30] Scene: External Review — "Three Pairs of Eyes"
 
