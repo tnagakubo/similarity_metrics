@@ -1,46 +1,46 @@
-This is BibTeX, Version 0.99d (TeX Live 2024)
+This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: nABCD_wiley.aux
 The style file: WileyNJD-AMA.bst
 Database file #1: nABCD_wiley.bib
-You've used 18 entries,
+You've used 19 entries,
             2086 wiz_defined-function locations,
-            652 strings with 7418 characters,
-and the built_in function-call counts, 3591 in all, are:
-= -- 302
-> -- 154
+            659 strings with 7569 characters,
+and the built_in function-call counts, 3770 in all, are:
+= -- 318
+> -- 159
 < -- 0
-+ -- 68
-- -- 50
-* -- 454
-:= -- 626
-add.period$ -- 21
-call.type$ -- 18
++ -- 70
+- -- 51
+* -- 477
+:= -- 654
+add.period$ -- 22
+call.type$ -- 19
 change.case$ -- 1
 chr.to.int$ -- 0
-cite$ -- 18
-duplicate$ -- 191
-empty$ -- 356
-format.name$ -- 50
-if$ -- 780
+cite$ -- 19
+duplicate$ -- 202
+empty$ -- 376
+format.name$ -- 51
+if$ -- 821
 int.to.chr$ -- 0
-int.to.str$ -- 18
-missing$ -- 18
-newline$ -- 74
-num.names$ -- 18
-pop$ -- 27
+int.to.str$ -- 19
+missing$ -- 19
+newline$ -- 78
+num.names$ -- 19
+pop$ -- 28
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 19
+skip$ -- 20
 stack$ -- 0
 substring$ -- 0
-swap$ -- 61
+swap$ -- 65
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 18
-width$ -- 20
-write$ -- 228
+while$ -- 19
+width$ -- 21
+write$ -- 241
