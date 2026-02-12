@@ -69,6 +69,53 @@
 
 ## Live Script
 
+### [2026-02-12 12:45] Scene: Donna's Compile — "I'm Donna. I know everything."
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
+
+*Tak が Donna に直接指示を出す。Donna がすぐに動く。*
+
+**Donna**: （キーボードに向かって）
+「"I'm Donna. I know everything." Tak の指示: compile。了解。
+
+**Step 1: 環境確認**
+texlive 未インストール。即座にインストール — pdfTeX 3.141592653-2.6-1.40.25 確認。
+
+**Step 2: 初回コンパイル**
+pdflatex × 2 pass → **PDF 生成成功: 16 pages, 294 KB**。
+ただし warning を 1 件検出:
+
+❌ `Citation 'andrews2000' undefined`
+
+andrews2000 — Andrews (2000) "Inconsistency of the Bootstrap when a Parameter is on the Boundary of the Parameter Space" *Econometrica*。M3 対応で Limitations に追加した citation だが、**bib ファイルへの追加が漏れていた**。
+
+**Step 3: 修正**
+`nABCD_wiley.bib` に追加:
+- Andrews, D W K (2000), *Econometrica*, 68(2):399-405
+- DOI: 10.1111/1468-0262.00114
+
+**Step 4: 再コンパイル**
+pdflatex → bibtex → pdflatex → pdflatex（4 pass）
+
+**最終結果:**
+| 項目 | 結果 |
+|------|------|
+| Pages | 16 |
+| Errors | **0** |
+| Undefined citations | **0** |
+| Warnings | Class warning のみ（Wiley template 由来、無害） |
+| References | 19 件、全て resolved |
+| andrews2000 | Ref [19] として正常表示 ✅ |
+| Appendix A.2 | 漸近正規性 eq (A1) 正常レンダリング ✅ |
+| Appendix B | R code listing 正常表示 ✅ |
+| Figures | fig2-fig6 全て正常埋め込み ✅ |
+
+**PDF path**: `projects/similarity-metric/paper/latex/nABCD_wiley.pdf`
+
+Harvey、Mike — bib 追加漏れは今後注意。新しい `\cite{}` を原稿に追加したら、同時に bib にもエントリを追加すること」
+
+---
+
 ### [2026-02-12 12:30] Scene: Harvey's Sign-Off & Jessica's Review — "Let me be clear."
 
 **INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
