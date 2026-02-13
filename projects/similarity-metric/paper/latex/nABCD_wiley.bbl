@@ -2,122 +2,77 @@
 \providecommand \doibase [0]{http://dx.doi.org/}%
 
 \bibitem{chen2010}
-Chen J, Quan H, Binkowitz B, et al. Assessing consistent treatment effect in a
-  multi-regional clinical trial: a systematic review. {\it Pharm Stat.}
-  2010\string;9(3)\string:242--253.
+Chen J, Quan H, Binkowitz B, et al. Assessing consistent treatment effect in a multi-regional clinical trial: a systematic review. {\it Pharm Stat.} 2010\string;9(3)\string:242--253.
 \newblock \href {\doibase 10.1002/pst.438} {doi: 10.1002/pst.438}
 
 \bibitem{quan2010}
-Quan H, Li M, Chen J, et al. Assessment of consistency of treatment effects in
-  multiregional clinical trials. {\it Drug Inf J.}
-  2010\string;44(5)\string:617--632.
-\newblock \href {\doibase 10.1177/009286151004400515} {doi:
-  10.1177/009286151004400515}
+Quan H, Li M, Chen J, et al. Assessment of consistency of treatment effects in multiregional clinical trials. {\it Drug Inf J.} 2010\string;44(5)\string:617--632.
+\newblock \href {\doibase 10.1177/009286151004400515} {doi: 10.1177/009286151004400515}
 
 \bibitem{iche17}
-{ICH E17 Expert Working Group} . General Principles for Planning and Design of
-  Multi-Regional Clinical Trials ({E17}). tech. rep., International Council for
-  Harmonisation; Geneva, Switzerland:   2017.
+{ICH E17 Expert Working Group} . General Principles for Planning and Design of Multi-Regional Clinical Trials ({E17}). tech. rep., International Council for Harmonisation; Geneva, Switzerland:   2017.
 
 \bibitem{song2025}
-Song J, Ji C, Chen M, Luo X, Quan H, Chen J. Basic Considerations for Data
-  Pooling Strategy in Multi-Regional Clinical Trials ({MRCTs}). {\it Ther Innov
-  Regul Sci.} 2025\string;59(2)\string:359--364.
-\newblock \href {\doibase 10.1007/s43441-025-00744-8} {doi:
-  10.1007/s43441-025-00744-8}
+Song J, Ji C, Chen M, Luo X, Quan H, Chen J. Basic Considerations for Data Pooling Strategy in Multi-Regional Clinical Trials ({MRCTs}). {\it Ther Innov Regul Sci.} 2025\string;59(2)\string:359--364.
+\newblock \href {\doibase 10.1007/s43441-025-00744-8} {doi: 10.1007/s43441-025-00744-8}
 
 \bibitem{long2025}
-Long M, Wu H, Liu X, Chen J. Basic Considerations for the Consistency
-  Evaluation Based on {ICH} {E17} Guideline. {\it Ther Innov Regul Sci.}
-  2025\string;59(2)\string:328--336.
-\newblock \href {\doibase 10.1007/s43441-024-00737-z} {doi:
-  10.1007/s43441-024-00737-z}
+Long M, Wu H, Liu X, Chen J. Basic Considerations for the Consistency Evaluation Based on {ICH} {E17} Guideline. {\it Ther Innov Regul Sci.} 2025\string;59(2)\string:328--336.
+\newblock \href {\doibase 10.1007/s43441-024-00737-z} {doi: 10.1007/s43441-024-00737-z}
 
 \bibitem{austin2011}
-Austin PC. An introduction to propensity score methods for reducing the effects
-  of confounding in observational studies. {\it Multivariate Behav Res.}
-  2011\string;46(3)\string:399--424.
-\newblock \href {\doibase 10.1080/00273171.2011.568786} {doi:
-  10.1080/00273171.2011.568786}
+Austin PC. An introduction to propensity score methods for reducing the effects of confounding in observational studies. {\it Multivariate Behav Res.} 2011\string;46(3)\string:399--424.
+\newblock \href {\doibase 10.1080/00273171.2011.568786} {doi: 10.1080/00273171.2011.568786}
 
 \bibitem{panaretos2019}
-Panaretos VM, Zemel Y. Statistical aspects of {W}asserstein distances. {\it
-  Annu Rev Stat Appl.} 2019\string;6\string:405--431.
-\newblock \href {\doibase 10.1146/annurev-statistics-030718-104938} {doi:
-  10.1146/annurev-statistics-030718-104938}
+Panaretos VM, Zemel Y. Statistical aspects of {W}asserstein distances. {\it Annu Rev Stat Appl.} 2019\string;6\string:405--431.
+\newblock \href {\doibase 10.1146/annurev-statistics-030718-104938} {doi: 10.1146/annurev-statistics-030718-104938}
 
 \bibitem{pearl2011}
-Pearl J, Bareinboim E. Transportability of causal and statistical relations: A
-  formal approach. In: . 25. AAAI Press.  2011; Menlo Park, CA\string:247--254.
+Pearl J, Bareinboim E. Transportability of causal and statistical relations: A formal approach. In: . 25. AAAI Press.  2011; Menlo Park, CA\string:247--254.
 
 \bibitem{villani2009}
 Villani C. {\it Optimal Transport: Old and New}.
 \newblock Springer, 2009
 
 \bibitem{delbarrio1999}
-Barrio dE, Gin{\'e} E, Matr{\'a}n C. Central limit theorems for the
-  {W}asserstein distance between the empirical and the true distributions. {\it
-  Ann Probab.} 1999\string;27(2)\string:1009--1071.
+Barrio dE, Gin{\'e} E, Matr{\'a}n C. Central limit theorems for the {W}asserstein distance between the empirical and the true distributions. {\it Ann Probab.} 1999\string;27(2)\string:1009--1071.
 \newblock \href {\doibase 10.1214/aop/1022677394} {doi: 10.1214/aop/1022677394}
 
 \bibitem{sommerfeld2018}
-Sommerfeld M, Munk A. Inference for empirical {W}asserstein distances on finite
-  spaces. {\it J R Stat Soc Series B.} 2018\string;80(1)\string:219--238.
+Sommerfeld M, Munk A. Inference for empirical {W}asserstein distances on finite spaces. {\it J R Stat Soc Series B.} 2018\string;80(1)\string:219--238.
 \newblock \href {\doibase 10.1111/rssb.12236} {doi: 10.1111/rssb.12236}
 
 \bibitem{armstrong2021}
-Armstrong TB, Koles{\'a}r M. Finite-Sample Optimal Estimation and Inference on
-  Average Treatment Effects Under Unconfoundedness. {\it Econometrica.}
-  2021\string;89(3)\string:1141--1177.
+Armstrong TB, Koles{\'a}r M. Finite-Sample Optimal Estimation and Inference on Average Treatment Effects Under Unconfoundedness. {\it Econometrica.} 2021\string;89(3)\string:1141--1177.
 \newblock \href {\doibase 10.3982/ECTA16907} {doi: 10.3982/ECTA16907}
 
 \bibitem{wasserstein2016}
-Wasserstein RL, Lazar NA. The {ASA} Statement on p-Values: Context, Process,
-  and Purpose. {\it Am Stat.} 2016\string;70(2)\string:129--133.
-\newblock \href {\doibase 10.1080/00031305.2016.1154108} {doi:
-  10.1080/00031305.2016.1154108}
+Wasserstein RL, Lazar NA. The {ASA} Statement on p-Values: Context, Process, and Purpose. {\it Am Stat.} 2016\string;70(2)\string:129--133.
+\newblock \href {\doibase 10.1080/00031305.2016.1154108} {doi: 10.1080/00031305.2016.1154108}
 
 \bibitem{sai2021}
-Sai K, Nakatani E, Iwama Y, Ono S. Efficacy Comparison for a Schizophrenia and
-  a Dysuria Drug Among East Asian Populations: A Retrospective Analysis Using
-  Multi-regional Clinical Trial Data. {\it Ther Innov Regul Sci.}
-  2021\string;55(3)\string:523--538.
-\newblock \href {\doibase 10.1007/s43441-020-00246-9} {doi:
-  10.1007/s43441-020-00246-9}
+Sai K, Nakatani E, Iwama Y, Ono S. Efficacy Comparison for a Schizophrenia and a Dysuria Drug Among East Asian Populations: A Retrospective Analysis Using Multi-regional Clinical Trial Data. {\it Ther Innov Regul Sci.} 2021\string;55(3)\string:523--538.
+\newblock \href {\doibase 10.1007/s43441-020-00246-9} {doi: 10.1007/s43441-020-00246-9}
 
 \bibitem{kim2015}
-Kim YG, Hahn S, Oh TJ, Kwak SH, Park KS, Cho YM. Predictive Factors for
-  Efficacy of Dipeptidyl Peptidase-4 Inhibitors in Patients with Type 2
-  Diabetes Mellitus. {\it Diabetes Metab J.} 2015\string;39(4)\string:342--348.
-\newblock \href {\doibase 10.4093/dmj.2015.39.4.342} {doi:
-  10.4093/dmj.2015.39.4.342}
+Kim YG, Hahn S, Oh TJ, Kwak SH, Park KS, Cho YM. Predictive Factors for Efficacy of Dipeptidyl Peptidase-4 Inhibitors in Patients with Type 2 Diabetes Mellitus. {\it Diabetes Metab J.} 2015\string;39(4)\string:342--348.
+\newblock \href {\doibase 10.4093/dmj.2015.39.4.342} {doi: 10.4093/dmj.2015.39.4.342}
 
 \bibitem{craddy2014}
-Craddy P, Palin HJ, Johnson KI. Comparative effectiveness of
-  dipeptidylpeptidase-4 inhibitors in type 2 diabetes: a systematic review and
-  mixed treatment comparison. {\it Diabetes Ther.}
-  2014\string;5(1)\string:1--41.
-\newblock \href {\doibase 10.1007/s13300-014-0061-3} {doi:
-  10.1007/s13300-014-0061-3}
+Craddy P, Palin HJ, Johnson KI. Comparative effectiveness of dipeptidylpeptidase-4 inhibitors in type 2 diabetes: a systematic review and mixed treatment comparison. {\it Diabetes Ther.} 2014\string;5(1)\string:1--41.
+\newblock \href {\doibase 10.1007/s13300-014-0061-3} {doi: 10.1007/s13300-014-0061-3}
 
 \bibitem{jones2016}
-Jones AG, McDonald TJ, Shields BM, et al. Should Studies of Diabetes Treatment
-  Stratification Correct for Baseline {HbA1c}?. {\it PLoS One.}
-  2016\string;11(4)\string:e0152428.
-\newblock \href {\doibase 10.1371/journal.pone.0152428} {doi:
-  10.1371/journal.pone.0152428}
+Jones AG, McDonald TJ, Shields BM, et al. Should Studies of Diabetes Treatment Stratification Correct for Baseline {HbA1c}?. {\it PLoS One.} 2016\string;11(4)\string:e0152428.
+\newblock \href {\doibase 10.1371/journal.pone.0152428} {doi: 10.1371/journal.pone.0152428}
 
 \bibitem{bareinboim2016}
-Bareinboim E, Pearl J. Causal inference and the data-fusion problem. {\it Proc
-  Natl Acad Sci USA.} 2016\string;113(27)\string:7345--7352.
-\newblock \href {\doibase 10.1073/pnas.1510507113} {doi:
-  10.1073/pnas.1510507113}
+Bareinboim E, Pearl J. Causal inference and the data-fusion problem. {\it Proc Natl Acad Sci USA.} 2016\string;113(27)\string:7345--7352.
+\newblock \href {\doibase 10.1073/pnas.1510507113} {doi: 10.1073/pnas.1510507113}
 
 \bibitem{andrews2000}
-Andrews DWK. Inconsistency of the Bootstrap when a Parameter is on the Boundary
-  of the Parameter Space. {\it Econometrica.}
-  2000\string;68(2)\string:399--405.
-\newblock \href {\doibase 10.1111/1468-0262.00114} {doi:
-  10.1111/1468-0262.00114}
+Andrews DWK. Inconsistency of the Bootstrap when a Parameter is on the Boundary of the Parameter Space. {\it Econometrica.} 2000\string;68(2)\string:399--405.
+\newblock \href {\doibase 10.1111/1468-0262.00114} {doi: 10.1111/1468-0262.00114}
 
 \end{thebibliography}

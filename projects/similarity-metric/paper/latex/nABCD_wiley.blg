@@ -1,11 +1,11 @@
-This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
+This is upBibTeX, Version 0.99d-j0.36-u1.30 (utf8.uptex) (TeX Live 2024)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: nABCD_wiley.aux
 The style file: WileyNJD-AMA.bst
 Database file #1: nABCD_wiley.bib
 You've used 19 entries,
             2086 wiz_defined-function locations,
-            659 strings with 7569 characters,
+            660 strings with 7582 characters,
 and the built_in function-call counts, 3770 in all, are:
 = -- 318
 > -- 159
@@ -44,3 +44,4 @@ warning$ -- 0
 while$ -- 19
 width$ -- 21
 write$ -- 241
+is.kanji.str$ -- 0

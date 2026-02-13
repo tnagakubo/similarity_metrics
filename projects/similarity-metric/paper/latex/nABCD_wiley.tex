@@ -56,19 +56,15 @@ The ICH E17 guideline recommends regional pooling in multi-regional clinical tri
 \section{Introduction}\label{sec:intro}
 %==============================================================================
 
-\subsection{Background}\label{sec:background}
-
 Multi-regional clinical trials (MRCTs), conducted across multiple countries or regulatory regions under a single protocol, have become the standard paradigm for global pharmaceutical development.\cite{chen2010,quan2010} This approach offers substantial benefits: accelerated timelines, broader generalizability, and earlier access to new therapies for patients worldwide. The International Council for Harmonisation (ICH) E17 guideline, adopted in 2017, established principles for planning and designing MRCTs, with a central assumption that treatment effects are generalizable across the target population.\cite{iche17}
 
-A key strategy for addressing potential regional heterogeneity is the regional pooling approach, wherein regions with similar patient characteristics are grouped for randomization and/or analysis.\cite{iche17} The ICH E17 guideline explicitly recommends that pooling decisions be based on the similarity of effect modifier (EM) distributions:
+A key strategy for enhancing the ability to asess regional consistency in treatment outcomes is the regional pooling approach, wherein regions with similar patient characteristics are grouped for analysis.\cite{iche17} The ICH E17 guideline explicitly recommends that pooling decisions be based on the similarity of effect modifier (EM) distributions:
 
 \begin{quote}
 ``Regions may be pooled for randomisation and/or analysis if subjects are thought to be \emph{similar enough} with respect to intrinsic and/or extrinsic factors relevant to the disease and/or drug under study.'' (ICH E17, Section 2.2.5)
 \end{quote}
 
 An effect modifier is a baseline patient characteristic---such as age, disease severity, or genetic marker---for which the treatment benefit differs across subgroups. For example, if younger patients respond better to treatment than older patients, age is an effect modifier. When such heterogeneity exists, even if the drug works identically at the individual level, regions with different patient compositions may observe different average treatment effects. A region with predominantly younger patients would show larger benefits than a region with predominantly older patients, not because the drug works differently, but because the patient mix differs. This fundamental relationship underscores why EM distributional similarity is critical to the validity of regional pooling.
-
-\subsection{The Methodological Gap}\label{sec:gap}
 
 Despite the regulatory importance of EM distributional similarity, current practice lacks a standardized quantitative methodology. The ICH E17 guideline provides no specific metric, threshold, or statistical procedure for determining when distributions are ``similar enough.'' Recent regulatory guidance has highlighted this gap. Song et al., writing from the China NMPA perspective on ICH E17 implementation, note the challenge of operationalizing pooling criteria without quantitative tools.\cite{song2025} Long et al.\ further discuss basic considerations for consistency evaluation under ICH E17.\cite{long2025}
 
@@ -86,8 +82,6 @@ Kolmogorov--Smirnov statistic & No interpretable scale for decision-making \\
 \bottomrule
 \end{tabular*}
 \end{table}
-
-\subsection{Objectives and Contribution}\label{sec:objectives}
 
 This paper addresses the methodological gap by proposing the \emph{normalized Area Between Cumulative Distributions} (nABCD), a metric for comparing EM distributions across regions, together with a clinical calibration framework that translates distributional differences into potential treatment effect heterogeneity on the outcome scale. Our specific research question is:
 
@@ -513,8 +507,6 @@ The analysis illustrates that nABCD serves as a measuring instrument for distrib
 
 We developed and validated nABCD, a normalized metric for comparing effect modifier distributions in MRCTs. Our contributions include: (1)~a principled metric combining Wasserstein-1 distance with IQR normalization; (2)~a theoretical framework connecting nABCD to treatment effect heterogeneity through the heterogeneity bound; (3)~a clinical calibration procedure that translates nABCD values into context-specific assessments using CATE sensitivity; and (4)~rigorous validation through simulation.
 
-\subsection{Implications for Practice}\label{sec:implications}
-
 The nABCD metric addresses limitations of current approaches. Compared to SMD, nABCD captures full distributional differences including variance and shape. Our simulation demonstrated that nABCD captured scale differences (S06) and shape differences (S08) where SMD estimates remained near zero. Compared to the KS statistic, nABCD provides a direct connection to treatment effect heterogeneity through the heterogeneity bound (equation~\ref{eq:delta_max}), enabling clinical calibration rather than purely statistical assessment. Compared to visual inspection, nABCD is objective and reproducible.
 
 The clinical calibration procedure introduced in Section~\ref{sec:inference} represents a departure from fixed-threshold approaches. Cohen's $d$ benchmarks (small = 0.2, medium = 0.5, large = 0.8) have been widely criticized for context-free application, and we deliberately avoid this pattern. Instead, the heterogeneity bound provides a principled mechanism to translate nABCD into clinically meaningful units. This approach respects the ICH E17 principle that ``similar enough'' is context-dependent: the same nABCD value may support pooling for one EM (where CATE sensitivity is low) but warrant separate analysis for another (where CATE sensitivity is high), as demonstrated in Section~\ref{sec:application}. This connection draws on transportability theory\cite{pearl2011,bareinboim2016} to relate distributional distance to potential treatment effect heterogeneity.
@@ -528,11 +520,7 @@ Based on our findings, we offer the following recommendations for practitioners:
 \item When $L$ cannot be estimated, use the reference benchmarks in Table~\ref{tab:benchmarks} as initial guidance, recognizing that clinical calibration provides a more rigorous basis for decision-making.
 \end{enumerate}
 
-\subsection{Practical Considerations for Multiple Effect Modifiers}\label{sec:multiple_em}
-
 In practice, multiple candidate EMs may be evaluated simultaneously. The nABCD framework assesses each EM separately, and we recommend reporting $\Delta_{\max}$ and its CI for every candidate EM across all region pairs. To arrive at an overall pooling recommendation, trial designers may adopt a conservative approach based on the maximum $\Delta_{\max}$ across all EMs and region pairs, or they may take a totality-of-evidence approach in which the collection of $\Delta_{\max}$ values, together with their uncertainties and the reliability of each $L$ estimate, informs a holistic judgment. The choice between these strategies depends on the regulatory context: for applications where a formal pooling criterion is required, the maximum $\Delta_{\max}$ provides a defensible worst-case assessment; for advisory settings where pooling decisions are informed by clinical deliberation, the full set of calibrated results offers a richer evidence base.
-
-\subsection{Limitations and Future Directions}\label{sec:limitations}
 
 Several limitations should be acknowledged:
 \begin{enumerate}[1.]
@@ -543,8 +531,6 @@ Several limitations should be acknowledged:
 \end{enumerate}
 
 Future work should address multivariate extensions, bias correction methods for small samples, and empirical calibration of CATE sensitivity parameters using real MRCT data. Methods for estimating $L$ from historical trial databases would strengthen the clinical calibration framework. The nABCD framework could also be extended to longitudinal EM profiles, enabling dynamic assessment of distributional similarity over time.
-
-\subsection{Conclusion}\label{sec:conclusion}
 
 nABCD fills a methodological gap in ICH E17 implementation by providing a principled framework for assessing distributional similarity. Rather than reducing ``similar enough'' to a fixed threshold, the clinical calibration procedure translates distributional differences into context-specific assessments of potential treatment effect heterogeneity, enabling evidence-based and clinically grounded pooling decisions. Open-source R code is available to facilitate adoption.
 
