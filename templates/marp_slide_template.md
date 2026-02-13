@@ -20,7 +20,7 @@ style: |
     --text-light: #303030;
     --bg-light: #F8F9FA;
     --bw: 10px;
-    --footer-space: 32px;
+    --footer-space: 24px;
   }
 
   /* ---- Base slide ---- */
@@ -66,7 +66,7 @@ style: |
     box-sizing: border-box;
     background: var(--accent1);
     color: white;
-    font-size: 36px;
+    font-size: 48px;
     font-weight: 700;
     padding: 18px 60px 14px;
     margin: 0;
@@ -77,7 +77,7 @@ style: |
   /* ---- H2 ---- */
   section h2 {
     color: var(--accent1);
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 700;
     border-bottom: 3px solid var(--accent2);
     padding-bottom: 6px;
@@ -99,7 +99,7 @@ style: |
     bottom: 4px;
     left: 20px;
     right: auto;
-    font-size: 16px;
+    font-size: 14px;
     color: var(--text-light);
     letter-spacing: 0.02em;
     z-index: 2;
@@ -114,7 +114,7 @@ style: |
     left: 0;
     right: 0;
     width: 100%;
-    font-size: 16px;
+    font-size: 14px;
     color: var(--text-light);
     text-align: center;
     letter-spacing: 0.02em;
@@ -131,7 +131,7 @@ style: |
     left: auto;
     width: auto;
     height: auto;
-    font-size: 16px;
+    font-size: 14px;
     color: var(--text-light);
     background: none;
     padding: 0;
@@ -233,8 +233,8 @@ style: |
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
     padding: 60px;
   }
 
@@ -242,7 +242,7 @@ style: |
     position: static;
     background: transparent;
     color: white;
-    font-size: 64px;
+    font-size: 86px;
     font-weight: 900;
     margin: 0 0 20px 0;
     padding: 0;
@@ -251,8 +251,7 @@ style: |
   }
 
   section.title h2 {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 30px;
+    font-size: 68px;
     font-weight: 400;
     border: none;
     margin: 0 0 40px 0;
@@ -260,9 +259,9 @@ style: |
   }
 
   section.title p {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 24px;
+    font-size: 42px;
     margin: 4px 0;
+    align-self: flex-end;
   }
 
   section.title::before {
@@ -287,23 +286,23 @@ style: |
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
+    padding: 60px;
   }
 
   section.section h1 {
     position: static;
     background: transparent;
     color: white;
-    font-size: 44px;
+    font-size: 72px;
     margin: 0;
     padding: 0 0 16px 0;
     border-bottom: 4px solid var(--accent2);
   }
 
   section.section h2 {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 28px;
+    font-size: 60px;
     font-weight: 400;
     border: none;
   }
@@ -400,7 +399,7 @@ Tak Nagakubo
 
 <!-- _class: section -->
 
-# 1. 背景と目的
+# 背景と目的
 
 ---
 
