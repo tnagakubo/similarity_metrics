@@ -8,16 +8,16 @@ style: |
   /* ============================================
      Marp Slide Template
      - Accent Color 1: #1E3A5F (Deep Navy)
-     - Accent Color 2: #D4842C (Warm Amber)
+     - Accent Color 2: #199be6
      ============================================ */
 
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
 
   :root {
     --accent1: #1E3A5F;
-    --accent2: #D4842C;
-    --text-main: #333333;
-    --text-light: #666666;
+    --accent2: #199be6;
+    --text-main: #000000;
+    --text-light: #303030;
     --bg-light: #F8F9FA;
     --bw: 10px;
     --footer-space: 32px;
@@ -382,10 +382,9 @@ style: |
 
 # プレゼンテーションタイトル
 
-## サブタイトル
+## 
 
-著者名
-Feb 12, 2026
+Tak Nagakubo
 
 ---
 
