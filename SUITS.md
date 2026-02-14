@@ -4,6 +4,34 @@
 
 ---
 
+### [2026-02-14 12:00] Scene: Section 2 解説セッション
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Katrina がホワイトボードの前に立ち、論文のSection 2（Methods）の構造図を描き始める。*
+
+**Katrina**:（冷静に資料を整理しながら）
+「Takさんから Section 2 の詳細解説の依頼。"Results speak for themselves." でも、Methodsも同じ。構造を分解して、一つずつ説明する。」
+
+**Donna**:（メモを取りながら）
+「Katrina の解説セッション、記録開始。"I'm Donna. I know everything." But even I appreciate a good technical walkthrough.」
+
+**Katrina**:（ホワイトボードに3つの枠を描き）
+「Section 2は3部構成。2.1でnABCDを定義し、2.2で推定方法を示し、2.3で臨床キャリブレーションに接続する。」
+
+*Katrina は各サブセクションの数式を正確に板書しながら、論理の流れを説明していく。*
+
+**Katrina**:（Proposition 2を指差しながら）
+「核心はここ。Wasserstein距離をIQRで割って正規化する——それ自体は技術的工夫に過ぎない。しかしProposition 2により、nABCDは $\Delta_{\max} = 2L \cdot \text{IQR} \cdot \text{nABCD}$ として治療効果の異質性の上界に直結する。測定値を臨床スケールに翻訳する——これがこの論文のMethodsの独自性。」
+
+**Katrina**:（最後のスライドを示し）
+「ベンチマークは便宜的な参照値に過ぎない。Section 4のApplicationが示す通り、BMIのnABCD=0.51でも $L$ が小さければ臨床的影響は限定的。HbA1cのnABCD=0.27でも $L$ が大きければ要注意。"Results speak for themselves." 数値の意味は文脈が決める。」
+
+**Donna**:（記録完了）
+「解説セッション完了、SUITS.md更新済み。Katrina、いつも通り的確。」
+
+---
+
 ## Current Status
 
 **Active Project**: similarity-metric (nABCD paper for Statistics in Medicine)
