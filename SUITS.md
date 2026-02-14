@@ -32,6 +32,28 @@
 
 ---
 
+### [2026-02-14 12:15] Scene: 3つの技術的質問
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak が3つの質問を投げかける。Katrina はホワイトボードに向き直る。*
+
+**Katrina**:（マーカーを取り上げ）
+「3つの質問。順番に。(1) Lipschitz上界の直感的説明、(2) 2×IQRの理由、(3) 漸近分布。全部Methodsの核心に関わる。効率よく行く。」
+
+**Mike**:（興味深そうに）
+「(2)は僕も気になっていた。定義のときに2をつけた数学的理由——"I got it!" と言いたいけど、Katrinaの説明を聞こう。」
+
+*Katrina は各質問に対して図と式を使いながら、明快に説明を進める。*
+
+**Katrina**:（説明を終え）
+「3問とも回答完了。特に2×IQRの理由は、一様分布でfull range = 2×IQRとなることが最も直感的な説明。"Results speak for themselves."」
+
+**Donna**:（タイムスタンプを打ちながら）
+「技術Q&Aセッション記録完了。Katrina、Mike、nice teamwork。」
+
+---
+
 ## Current Status
 
 **Active Project**: similarity-metric (nABCD paper for Statistics in Medicine)
