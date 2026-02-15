@@ -15,9 +15,24 @@ library(patchwork)
 # Configuration
 # =============================================================================
 
-# Paths (relative to project root) - no trailing slash
-DATA_DIR <- "data"
-OUTPUT_DIR <- "figures"
+# Paths - auto-detect project root from script location
+.find_project_root <- function() {
+  # 1. When source()'d: use script path
+  for (f in rev(sys.frames())) {
+    if (!is.null(f$ofile)) return(dirname(dirname(normalizePath(f$ofile))))
+  }
+  # 2. RStudio: use active document path
+  if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
+    path <- tryCatch(rstudioapi::getActiveDocumentContext()$path, error = function(e) "")
+    if (nzchar(path)) return(dirname(dirname(normalizePath(path))))
+  }
+  # 3. Fallback: getwd()
+  getwd()
+}
+.project_root <- .find_project_root()
+
+DATA_DIR <- file.path(.project_root, "data")
+OUTPUT_DIR <- file.path(.project_root, "figures")
 
 # Set theme for journal
 theme_set(theme_bw(base_size = 11) +
@@ -60,6 +75,58 @@ load_application_params <- function(data_dir = DATA_DIR) {
 }
 
 # =============================================================================
+# Figure 1: Scenario Overview — Density plots for all 8 scenarios
+# =============================================================================
+
+fig1_scenario_overview <- function(n_plot = 5000, seed = 42) {
+  set.seed(seed)
+
+  # Scenario definitions (matched to simulation_manuscript_v2.R)
+  sc_defs <- list(
+    list(id = "S1", name = "Null (identical)",
+         d1 = rnorm(n_plot, 50, 10), d2 = rnorm(n_plot, 50, 10)),
+    list(id = "S2", name = "Location (0.2 sigma)",
+         d1 = rnorm(n_plot, 50, 10), d2 = rnorm(n_plot, 52, 10)),
+    list(id = "S3", name = "Location (0.5 sigma)",
+         d1 = rnorm(n_plot, 50, 10), d2 = rnorm(n_plot, 55, 10)),
+    list(id = "S4", name = "Location (1.0 sigma)",
+         d1 = rnorm(n_plot, 50, 10), d2 = rnorm(n_plot, 60, 10)),
+    list(id = "S5", name = "Scale (1.5x)",
+         d1 = rnorm(n_plot, 50, 10), d2 = rnorm(n_plot, 50, 15)),
+    list(id = "S6", name = "Shape (Gamma)",
+         d1 = rnorm(n_plot, 50, 10), d2 = rgamma(n_plot, shape = 25, rate = 0.5)),
+    list(id = "S7", name = "Skew (log-normal)",
+         d1 = rnorm(n_plot, 50, 10),
+         d2 = rlnorm(n_plot, meanlog = log(50) - 0.5^2/2, sdlog = 0.5)),
+    list(id = "S8", name = "Location + Scale",
+         d1 = rnorm(n_plot, 50, 10), d2 = rnorm(n_plot, 55, 15))
+  )
+
+  # Build data frame
+  df_all <- do.call(rbind, lapply(sc_defs, function(sc) {
+    tibble(
+      Scenario = paste0(sc$id, ": ", sc$name),
+      Value    = c(sc$d1, sc$d2),
+      Region   = rep(c("Region 1", "Region 2"), each = n_plot)
+    )
+  }))
+
+  df_all$Scenario <- factor(df_all$Scenario, levels = sapply(sc_defs, function(s)
+    paste0(s$id, ": ", s$name)))
+
+  ggplot(df_all, aes(x = Value, fill = Region)) +
+    geom_density(alpha = 0.45, linewidth = 0.4) +
+    facet_wrap(~ Scenario, ncol = 4, scales = "free") +
+    scale_fill_manual(values = c("Region 1" = "#E69F00", "Region 2" = "#0072B2")) +
+    labs(x = "Effect Modifier Value", y = "Density", fill = NULL) +
+    theme(
+      strip.text = element_text(size = 9, face = "bold"),
+      axis.text = element_text(size = 7),
+      legend.position = "bottom"
+    )
+}
+
+# =============================================================================
 # Figure 2: nABCD Visual Definition
 # =============================================================================
 
@@ -88,8 +155,7 @@ fig2_nabcd_definition <- function(mu1 = 45, mu2 = 55, sigma = 10) {
     labs(
       x = "Effect Modifier Value",
       y = "Cumulative Probability",
-      color = NULL,
-      title = "Figure 2: nABCD as Area Between CDFs"
+      color = NULL
     ) +
     annotate("text", x = mean(c(mu1, mu2)), y = 0.5,
              label = "W1 = Shaded Area", size = 4, fontface = "italic") +
@@ -105,12 +171,14 @@ fig3_bias <- function(data_dir = DATA_DIR) {
 
   # Prepare data for plotting
   scenario_labels <- c(
-    "S01" = "S01\n(Null)",
-    "S03" = "S03\n(0.2s)",
-    "S04" = "S04\n(0.5s)",
-    "S05" = "S05\n(1.0s)",
-    "S06" = "S06\n(Scale)",
-    "S08" = "S08\n(Shape)"
+    "S1" = "S1\n(Null)",
+    "S2" = "S2\n(0.2s)",
+    "S3" = "S3\n(0.5s)",
+    "S4" = "S4\n(1.0s)",
+    "S5" = "S5\n(Scale)",
+    "S6" = "S6\n(Gamma)",
+    "S7" = "S7\n(LogN)",
+    "S8" = "S8\n(Loc+Sc)"
   )
 
   bias_data <- sim_results %>%
@@ -131,14 +199,13 @@ fig3_bias <- function(data_dir = DATA_DIR) {
     labs(
       x = "Scenario",
       y = "Bias",
-      fill = "Sample Size",
-      title = "Figure 3: Bias of nABCD Estimator"
+      fill = "Sample Size"
     ) +
     annotate("text", x = 6.3, y = 0.02, label = "+/-0.02", color = "red", size = 3)
 }
 
 # =============================================================================
-# Figure 4: Estimation Quality — Coverage + CI Width (Estimation-Centered)
+# Figure 4: Estimation Quality - Coverage + CI Width (Estimation-Centered)
 # Replaces old power figure per Jessica Phase 8 directive
 # =============================================================================
 
@@ -153,19 +220,21 @@ fig4_estimation_quality <- function(data_dir = DATA_DIR) {
 
   # Exclude null scenario (coverage undefined at boundary)
   plot_data <- sim_results %>%
-    filter(Scenario != "S01") %>%
+    filter(Scenario != "S1") %>%
     mutate(
       ScenarioLabel = factor(
         case_when(
-          Scenario == "S03" ~ "S03 (0.2s)",
-          Scenario == "S04" ~ "S04 (0.5s)",
-          Scenario == "S05" ~ "S05 (1.0s)",
-          Scenario == "S06" ~ "S06 (Scale)",
-          Scenario == "S08" ~ "S08 (Shape)",
+          Scenario == "S2" ~ "S2 (0.2s)",
+          Scenario == "S3" ~ "S3 (0.5s)",
+          Scenario == "S4" ~ "S4 (1.0s)",
+          Scenario == "S5" ~ "S5 (Scale)",
+          Scenario == "S6" ~ "S6 (Gamma)",
+          Scenario == "S7" ~ "S7 (LogN)",
+          Scenario == "S8" ~ "S8 (Loc+Sc)",
           TRUE ~ Scenario
         ),
-        levels = c("S03 (0.2s)", "S04 (0.5s)", "S05 (1.0s)",
-                    "S06 (Scale)", "S08 (Shape)")
+        levels = c("S2 (0.2s)", "S3 (0.5s)", "S4 (1.0s)",
+                    "S5 (Scale)", "S6 (Gamma)", "S7 (LogN)", "S8 (Loc+Sc)")
       ),
       SampleSizeLabel = factor(paste0("n=", SampleSize),
                                levels = c("n=50", "n=100", "n=200"))
@@ -203,10 +272,7 @@ fig4_estimation_quality <- function(data_dir = DATA_DIR) {
     theme(axis.text.x = element_text(angle = 30, hjust = 1))
 
   p1 + p2 +
-    plot_layout(guides = "collect") +
-    plot_annotation(
-      title = "Figure 4: Estimation Quality of nABCD Bootstrap Inference"
-    ) &
+    plot_layout(guides = "collect") &
     theme(legend.position = "bottom")
 }
 
@@ -271,8 +337,7 @@ fig5_smd_comparison <- function(n = 500, mu = 50, sd1 = 10, sd2 = 15, seed = 123
       subtitle = "B) Metric comparison"
     )
 
-  p1 + p2 +
-    plot_annotation(title = "Figure 5: nABCD Detects Scale Differences Missed by SMD")
+  p1 + p2
 }
 
 # =============================================================================
@@ -329,9 +394,7 @@ fig6_application <- function(data_dir = DATA_DIR, em = "BMI", seed = 456) {
       x = x_label,
       y = "Density",
       fill = "Region",
-      color = "Region",
-      title = paste0("Figure 6: ", em, " Distribution by Region"),
-      subtitle = subtitle_text
+      color = "Region"
     )
 }
 
@@ -342,7 +405,15 @@ fig6_application <- function(data_dir = DATA_DIR, em = "BMI", seed = 456) {
 generate_all_figures <- function(data_dir = DATA_DIR, output_dir = OUTPUT_DIR) {
   dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
+  message("Project root: ", .project_root)
   message("Generating figures from data in: ", data_dir)
+
+  # Figure 1: Scenario Overview
+  ggsave(file.path(output_dir, "fig1_scenario_overview.png"),
+         fig1_scenario_overview(), width = 14, height = 7, dpi = 300)
+  ggsave(file.path(output_dir, "fig1_scenario_overview.pdf"),
+         fig1_scenario_overview(), width = 14, height = 7)
+  message("  Figure 1: Done")
 
   # Figure 2
   ggsave(file.path(output_dir, "fig2_nabcd_definition.png"),
@@ -385,9 +456,8 @@ generate_all_figures <- function(data_dir = DATA_DIR, output_dir = OUTPUT_DIR) {
 # =============================================================================
 # Usage
 # =============================================================================
-# Set working directory to project root, then:
-# source("R/figures_paper.R")
-# generate_all_figures()
+# source("R/figures_paper.R")  # or open in RStudio
+# generate_all_figures()       # works from any working directory
 #
 # Or generate individual figures:
 # fig3_bias("data/")

@@ -5,7 +5,7 @@ Associate / Technical Writer
 Results section, figures, tables, technical writing
 
 ## Character
-- "Litt the hell up." (learned from Louis)
+- "Results speak for themselves."
 - Competent and efficient
 - Honest and reliable
 - Hates waste

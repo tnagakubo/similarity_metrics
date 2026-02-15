@@ -7,15 +7,24 @@
 # =============================================================================
 
 # Use script directory to set project root
-SCRIPT_DIR <- if (interactive()) {
-  "."
-} else {
-  tryCatch(
-    dirname(dirname(normalizePath(commandArgs(trailingOnly = FALSE)[
-      grep("--file=", commandArgs(trailingOnly = FALSE))]))),
-    error = function(e) "."
-  )
-}
+SCRIPT_DIR <- tryCatch({
+  # When sourced interactively: use source file location
+  script_path <- sys.frame(1)$ofile
+  if (!is.null(script_path)) {
+    dirname(dirname(normalizePath(script_path)))
+  } else {
+    stop("no ofile")
+  }
+}, error = function(e) {
+  # When run via Rscript: parse --file= argument
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- args[grep("--file=", args)]
+  if (length(file_arg) > 0) {
+    dirname(dirname(normalizePath(sub("--file=", "", file_arg))))
+  } else {
+    "."
+  }
+})
 setwd(SCRIPT_DIR)
 cat("Working directory:", getwd(), "\n")
 
@@ -59,7 +68,8 @@ start_time <- Sys.time()
 results <- run_full_simulation_v2(
   n_reps = PARAMS[[MODE]]$n_reps,
   B = PARAMS[[MODE]]$B,
-  seed = SEED
+  seed = SEED,
+  compute_bca = TRUE  # BCa needed for paper comparison; FALSE for speed
 )
 end_time <- Sys.time()
 
@@ -89,7 +99,7 @@ validate_results <- function(summary_table) {
 
   # Check bias at n >= 100
   bias_check <- summary_table[summary_table$SampleSize >= 100 &
-                              summary_table$Scenario != "S01", ]
+                              summary_table$Scenario != "S1", ]
   max_abs_bias <- max(abs(bias_check$Bias), na.rm = TRUE)
   cat("  Max |Bias| at n>=100 (non-null):", round(max_abs_bias, 4), "\n")
 

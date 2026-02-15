@@ -5,7 +5,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/mnt/c/Users/hrd13/Documents/Gak/0\\ Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/validate-paper-request.sh"
+            "command": "bash .claude/hooks/remind-suits-on-prompt.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/validate-paper-request.sh"
           }
         ]
       }
@@ -16,11 +20,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '📝 Donna: SUITS.md にシーンを追加してください'"
+            "command": "bash .claude/hooks/check-suits-update.sh"
           },
           {
             "type": "command",
-            "command": "/mnt/c/Users/hrd13/Documents/Gak/0\\ Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/check-suits-lines.sh"
+            "command": "bash .claude/hooks/check-suits-lines.sh"
           }
         ]
       }
@@ -30,11 +34,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '✅ Donna: セッション終了前チェック - SUITS.md は更新されましたか？'"
-          },
-          {
-            "type": "command",
-            "command": "/mnt/c/Users/hrd13/Documents/Gak/0\\ Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/check-suits-lines.sh"
+            "command": "bash .claude/hooks/check-suits-lines.sh"
           }
         ]
       }

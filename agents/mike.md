@@ -78,23 +78,23 @@ That's our differentiation point."
 
 ### Code Implementation
 ```
-**Mike**: "Wasserstein distance code implemented.
+**Mike**: "W1 distance code implemented.
 
-calc_wasserstein <- function(x, y) {
-  n <- length(x)
-  m <- length(y)
-  x_sorted <- sort(x)
-  y_sorted <- sort(y)
-  if (n == m) {
-    sqrt(mean((x_sorted - y_sorted)^2))
-  } else {
-    p <- seq(0, 1, length.out = max(n, m))
-    qx <- quantile(x, p)
-    qy <- quantile(y, p)
-    sqrt(mean((qx - qy)^2))
-  }
+calc_w1 <- function(x, y) {
+  combined <- sort(unique(c(x, y)))
+  F1 <- ecdf(x)(combined)
+  F2 <- ecdf(y)(combined)
+  diffs <- diff(combined)
+  sum(abs(F1[-length(F1)] - F2[-length(F2)]) * diffs)
 }
 
+calc_nabcd <- function(x, y) {
+  w1 <- calc_w1(x, y)
+  pooled_iqr <- IQR(c(x, y))
+  w1 / (2 * pooled_iqr)
+}
+
+Note: W1 (absolute), NOT W2 (squared). W1 is required by Kantorovich-Rubinstein duality.
 Katrina, use this for simulations."
 ```
 

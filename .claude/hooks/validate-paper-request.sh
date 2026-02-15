@@ -11,19 +11,14 @@ if [ -z "$PROMPT" ]; then
 fi
 
 # Check if this is a paper request (case insensitive)
-if echo "$PROMPT" | grep -qiE "(request-paper|/request-paper|paper.*request|論文.*リクエスト|PDF.*取得)"; then
+if echo "$PROMPT" | grep -qiE "(request-paper|/request-paper|paper.*request)"; then
   # Check for DOI pattern (10.xxxx) or URL (http/https)
   if echo "$PROMPT" | grep -qiE "(10\.[0-9]+/|doi:|https?://|DOI)"; then
-    # Has DOI or URL - OK
     exit 0
   else
-    # Missing DOI/URL - Block!
-    echo "❌ Donna: Paper Request には DOI または URL が必要です！" >&2
-    echo "   Format: DOI: 10.xxxx/yyyy または URL: https://..." >&2
-    echo "   Rule 2.6 violation - request blocked" >&2
+    echo "Donna: Paper Request requires DOI or URL. Rule 2.6." >&2
     exit 2
   fi
 fi
 
-# Not a paper request - pass through
 exit 0

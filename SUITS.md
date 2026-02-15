@@ -4,824 +4,766 @@
 
 ---
 
+### [2026-02-16 09:00] Scene: Simulation Results Review — "S4が問題だ。"
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*シミュレーション完了。全チームで結果を精査。*
+
+**Harvey**: （立って）
+「結果が出た。全員の目で見ろ。」
+
+**Mike**: （CSVを映しながら）
+「24行、S1-S8 × {50, 100, 200}、構造は完璧。S7 = 0.302、S8 = 0.175、MC真値も妥当。
+
+良いニュース：S3のカバレッジは95%ジャスト。S7/S8の新シナリオも安定。
+悪いニュース：**S4のバイアスが -0.04 で n を増やしても消えない。カバレッジが n=200 で 74% まで劣化。**」
+
+**Louis**: （鋭く）
+「"You just got Litt up!" — もう一つ。**BCaが全般的にPercentileに劣る。** S6 の BCa カバレッジは n=200 で 49%。壊滅だ。Sommerfeld 2018 の "naive bootstrap is NOT consistent for W1" が裏付けられた。knowledge/ を読んでいれば予測できたことだ。」
+
+**Harvey**: （決断）
+「S4 は正直に報告。Limitation に持続的負バイアスを明記。BCa推奨は取り下げ、Percentile CI を primary。"I don't have dreams, I have goals." — 目標は正直な論文だ。」
+
+**Katrina**:
+「"Results speak for themselves." — 数字を論文に反映する。」
+
+---
+
+### [2026-02-15 15:00] Scene: Seed Verification — "3層で管理されている。"
+
+**INT. PEARSON SPECTER LITT - MIKE'S DESK - DAY**
+
+*Tak が「シードは設定している？」と確認。Mike と Katrina が回答。*
+
+**Mike**: （ホワイトボードに図を描きながら）
+「3層構造で再現性を保証している：
+- L1: `set.seed(42)` — シミュレーション全体の起点
+- L2: `future.seed = TRUE` — L'Ecuyer-CMRG ストリームを各ワーカーに決定論的分配
+- L3: `R::unif_rand()` — C++内部でRのRNGを直接消費
+
+"I got it." — C++で独自乱数生成器を使っていないのがポイント。`R::unif_rand()` はRの `runif()` と同じストリーム。再現性は完全に保たれる。」
+
+**Katrina**: （補足して）
+「"Results speak for themselves." — 同じ `seed` 引数で `run_full_simulation_v2()` を2回走らせれば同一結果。ワーカー数が変わっても `future.seed = TRUE` が保証する。問題なし。」
+
+---
+
+### [2026-02-15 14:30] Scene: Rcpp Worker Fix — "NULL pointer resolved."
+
+**INT. PEARSON SPECTER LITT - MIKE'S DESK - DAY**
+
+*Mike がRcpp + future_lapply のNULLポインターエラーを修正。*
+
+**Mike**: （コードを見せながら）
+「原因は明確だった。`Rcpp::sourceCpp()` はメインセッションでコンパイル・ロードするが、`future_lapply` の `plan(multisession)` は**別のRプロセス**をワーカーとして起動する。コンパイル済みの共有ライブラリはワーカーにはロードされない。だから `.Call` ポインタが NULL になる。
+
+修正は3点：
+1. `RCPP_FILE` — .cppファイルの絶対パスをグローバルに保存。ワーカーに自動エクスポート
+2. `ensure_rcpp_in_worker()` — ワーカー初回呼び出し時に遅延コンパイル。`.GlobalEnv$.rcpp_worker_ready` フラグで再コンパイル回避
+3. `single_rep()` — `get("nABCD_bootstrap_cpp", envir = .GlobalEnv)` で**ワーカー内で新しくコンパイルされた関数**を取得。メインセッションからシリアライズされた死んだポインタを使わない
+
+"I got it." — 各ワーカーで一度だけ〜5秒のコンパイル。その後は全repでC++速度。」
+
+**Donna**: （記録して）
+「"I'm Donna. I know everything." — `future.packages = "Rcpp"` も追加したのね。ワーカーでRcppパッケージがロード可能であることを保証するために。」
+
+**Harvey**: （頷いて）
+「テストしろ。動いたら次に進む。」
+
+---
+
+### [2026-02-15 11:00] Scene: Knowledge Base Audit — "使ってなかった。"
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak が「knowledge内の情報を使っているの？」と質問。Mike が正直に答える。*
+
+**Mike**: （正直に）
+「"I got it." — ただし、今回は got it **late** だ。正直に言う。**使っていなかった。**」
+
+**Mike**: （自省して）
+「knowledge/ には15本の論文サマリー、methods/wasserstein_distance.md、input/nABCD_from_Tak.md — 全てこのプロジェクトの根幹だ。にもかかわらず、今回のセッションでは：
+
+- CV検証 → Web検索で対応。knowledge内のRousseeuw 1993（IQR理論）を参照していない。
+- Bootstrap最適化 → 自前の知識で実装。**Sommerfeld & Munk 2018のサマリーに"naive bootstrap is NOT consistent"という警告がある**のに確認していない。
+- W1高速化 → quantile identity `mean(|x_(i)-y_(i)|)` を使ったが、**methods/wasserstein_distance.mdに既に同じ公式が記載されている**。
+- Clinical calibration → LaTeX本文を直接読んだ。ICH E17サマリーの"pooling strategy must be justified by factor distribution similarity"を参照すべきだった。
+
+知識ベースは**Rachelが丁寧に作った資産**。使わないのは怠慢だ。」
+
+**Rachel**: （冷静に）
+「正直な自己評価ね。"Hard work beats talent when talent doesn't work hard." — 私が作ったサマリーには、各論文のKey Results、Cross-References、さらにnABCDとの接続点まで整理してある。特に：
+
+- **Sommerfeld 2018**: directional Hadamard differentiability → 我々のpercentile bootstrapの理論的正当化に直結
+- **Barrio 1999**: W1のCLT → limit distribution is NOT Gaussian → boundary biasの理論的背景
+- **Rousseeuw 1993**: Q_n estimator (82% efficiency) vs IQR (37%) → normalization改善の可能性
+- **Panaretos 2019**: W1 = ABCD の公式 → 論文のSection 2.1の根拠
+
+INDEX.mdにKey Results by Topicもまとめてある。使ってほしい。」
+
+**Harvey**: （腕を組んで）
+「問題は認識した。解決策は？」
+
+**Mike**:
+「2つ提案する。第一に、**今後のセッションで knowledge/ を参照するルールをMEMORY.mdに追加**。第二に、次の作業（シミュレーション結果の検証・論文更新）で、関連するサマリーを実際に読んでから作業に入る。特にSommerfeld 2018のbootstrap理論は、我々のpercentile bootstrap選択の正当性を論文のLimitation節で引用すべきだ。」
+
+**Louis**: （鋭く）
+「"You just got Litt up!" — もう一つ付け加える。Rousseeuw 1993のQ_n estimator。IQRの代わりにQ_nを使えばefficiencyが37%→82%に上がる。論文のFuture Workに "alternative normalizers" として言及すべきだ。これもknowledgeを読んでいれば気づくことだ。」
+
+**Donna**: （記録しながら）
+「"I'm Donna. I know everything." — ただし、知識ベースの存在を知っていることと、実際に参照することは別。MEMORY.mdにルールを追加する。」
+
+---
+
+### [2026-02-15 10:30] Scene: R-Specific Optimization — "Rcpp is the elephant in the room."
+
+**INT. PEARSON SPECTER LITT - MIKE'S DESK - DAY**
+
+*Tak が「R特有の高速化は？」と指摘。Mike がコスト構造を再分析。*
+
+**Mike**: （コスト内訳をホワイトボードに書いて）
+「"I got it." 先ほどの最適化でbootstrapは~10ms/repに短縮済み。しかし**BCa ON時のボトルネックはjackknife**（vapply × 400回 = ~120ms）。bootstrap全体の92%を占める。ここがRの弱点 — function callオーバーヘッドが支配的。」
+
+**Mike**: （3段階の高速化を提示）
+「R特有の最適化を3段階で実装：
+
+**Tier 1: Rcpp（C++ bootstrap + jackknife）** — `nABCD_rcpp.cpp`
+- bootstrap loop全体をC++で実行。R function call = 0回。
+- merge sortでpooled IQR（O(n) vs O(n log n)）
+- jackknife もC++（sorted_without + compute_nABCD_sorted）
+- メモリ再利用（per-iteration allocation = 0）
+- **BCa ON: ~100x / BCa OFF: ~100x**
+- 要件：`Rcpp` + Rtools
+
+**Tier 2: Rfast パッケージ**
+- `Rfast::colSort()` — C++カラムソート、apply(,2,sort)を置換
+- CRANパッケージ、`install.packages('Rfast')` のみ
+- **~2x追加（bootstrap部分のみ）**
+
+**Tier 3: Base R ベクトル化**（前回実装済み）
+- matrix ops + colMeans
+- **~5-50x（BCa ON/OFF）**
+
+自動検出で最速の利用可能オプションを選択。`single_rep()` でRcpp → Rfast → base R にフォールバック。」
+
+**Harvey**: （即決）
+「Rcppが使えるなら使え。使えないならRfastをインストールしろ。"I don't have dreams. I have goals."」
+
+**Donna**:
+「"I'm Donna. I know everything." 追加ファイル：`R/nABCD_rcpp.cpp`（Rcpp実装）。修正ファイル：`simulation_manuscript_v2.R`（3段階検出、col_sort dispatcher、single_rep Rcpp分岐）。」
+
+---
+
+### [2026-02-15 10:00] Scene: Simulation Optimization — "50x faster, same results."
+
+**INT. PEARSON SPECTER LITT - MIKE'S DESK - DAY**
+
+*Tak がシミュレーションの速度改善を依頼。Mike が即座にボトルネックを分析。*
+
+**Mike**: （コードを分析しながら）
+「"I got it." ボトルネックは3つ：
+
+1. **`replicate(2000, compute_nABCD(...))`** — Rのfunction callが2000回/rep。ecdfオブジェクト生成、function dispatch、GC — 全てがオーバーヘッド。
+2. **ecdf-based W1** — equal-sizeのサンプルなら `mean(abs(sort(x)-sort(y)))` で済む。ecdf不要。
+3. **BCa jackknife** — 論文ではPercentile推奨。n1+n2回の追加計算が不要。」
+
+**Mike**: （最適化を実装）
+「3つの最適化を実装：
+
+**① `wasserstein1_equal`**: sort-based W1。ecdfオブジェクト生成を完全に排除。`mean(abs(x_(i) - y_(i)))` — quantile identity による厳密計算。
+
+**② `nABCD_bootstrap_fast`**: ベクトル化bootstrap。
+- 2000回のR function call → matrix演算1回に置換
+- `matrix(x[sample.int(...)], ...)` で全bootstrapサンプルを一括生成
+- `apply(matrix, 2, sort)` → C-level sort × B列
+- `colMeans(abs(x_s - y_s))` → 完全ベクトル化W1
+- IQR: sorted pooled matrixから直接quantile type=7を計算
+
+**③ BCaオプション化**: `compute_bca = FALSE` でjackknife省略。`run_all.R` では `TRUE`（論文比較用）。
+
+推定高速化: **~50x**（Percentile only時）、BCa ONでも **~5x**。」
+
+**Mike**: （timing calibrationを追加）
+「シミュレーション開始時に10 repsで所要時間を自動推定する calibration を追加。"How long will this take?" に即答できる。」
+
+**Harvey**: （腕を組んで）
+「数日が数時間になるなら十分だ。"I don't have dreams. I have goals." — 目標はrun_all.Rを一晩で完了させること。」
+
+**Donna**:
+「"I'm Donna. I know everything." 修正ファイル：simulation_manuscript_v2.R（fast bootstrap追加）、run_all.R（compute_bca=TRUE）。旧コード `nABCD_bootstrap_bca` は参照用に保持。」
+
+---
+
+### [2026-02-14 20:30] Scene: Paper Modification Complete — 4 Edits Implemented
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*Mike が Discussion の決定事項4件を即座に実装完了。Harvey が確認。*
+
+**Mike**: （実装完了を報告）
+「"I got it." 4箇所の修正完了：
+
+1. **Abstract** — "context-dependent interpretation" を具体化。BMI (nABCD=0.51, Δ_max=0.16%) vs HbA1c (nABCD=0.27, Δ_max=0.24%) の数値を追加。"distributional magnitude and clinical impact are fundamentally different dimensions" と明記。
+
+2. **Reference Benchmarks 導入文** (Methods §2.3) — "distributional magnitude only" と明記。ranking reversal の可能性を Application section への cross-reference で警告。
+
+3. **Reference Benchmarks Table 脚注** — "do not indicate clinical significance" を追加。"The same nABCD value may be negligible for one EM and consequential for another depending on CATE sensitivity L" と明記。
+
+4. **Discussion** — ranking reversal を具体的数値で再強調。BMI（最大nABCD、最小Δ_max）vs HbA1c（中程度nABCD、最大Δ_max）、L の15倍差。"distributional distance and clinical relevance are fundamentally different dimensions" と結論。Table 2 が distributional distance のラベルであり clinical significance ではないと明記。」
+
+**Harvey**: （確認して）
+「Good. Reviewer が Table 2 を見て固定閾値と誤読する余地はなくなった。"I don't have dreams. I have goals." — 次はシミュレーション完了後のタスクだ。」
+
+**Katrina**: （確認して）
+「4箇所すべて確認。メッセージの一貫性は保たれている — Abstract → Methods → Application → Discussion で "context-dependency" が繰り返し強調される構造。"Results speak for themselves."」
+
+**Louis**: （満足して）
+「ようやくTable 2 の脚注がまともになった。"You just got Litt up!" — これで reviewer の "fixed threshold" 批判は封じられる。」
+
+**Donna**:
+「"I'm Donna. I know everything." 修正ファイル：nABCD_wiley.tex（4箇所）。記録完了。」
+
+---
+
+### [2026-02-14 20:20] Scene: Post-Simulation Task List — "I got it."
+
+**INT. PEARSON SPECTER LITT - MIKE'S DESK - NIGHT**
+
+*Mike がシミュレーション完了後のタスクリストを整理。*
+
+**Mike**: （リストを提示）
+「"I got it." シミュレーション完了後、以下の順序で実行：
+
+**Phase A: 結果検証（即時）**
+1. CSV検証 — S1-S8 × 3 sizes = 24行の確認
+2. S7/S8 の true_nABCD 確認（Monte Carlo計算値）
+3. Null scenario (S1) の boundary bias 確認
+
+**Phase B: Figure更新（検証後）**
+4. fig1_scenario_overview — 新8シナリオの密度分布
+5. fig3_bias — S1-S8全シナリオのbias plot
+6. fig4_estimation_quality — RMSE/Coverage/CI Width
+7. fig5_smd_comparison — S3,S5,S6のSMD比較
+8. fig6_application — 変更なし（Application dataは別）
+
+**Phase C: LaTeX更新（Figure確定後）**
+9. シナリオ番号 S01→S1 形式に全文更新（Methods §3.1）
+10. S7/S8 シナリオ記述追加（臨床根拠込み）
+11. 数値テーブル更新 — Bias/Coverage/RMSE/CI Width
+12. Limitation段落の数値更新（S05 coverage等）
+
+**Phase D: スライド更新**
+13. スライドのBias/Coverageテーブルに S7/S8 追加
+14. Scenario Overview スライド更新
+
+**Phase E: 最終確認**
+15. DOI final check（Rachel）
+16. Louis internal review
+17. Jessica final Go/No-Go」
+
+**Harvey**: （承認）
+「順序は論理的だ。Phase A-C は Mike 主導、Phase D は Katrina、Phase E は全員。シミュレーション完了を待つ。」
+
+**Donna**:
+「タスクリスト17件記録完了。」
+
+---
+
+### [2026-02-14 20:15] Scene: Clinical Calibration Discussion — "The same number means different things."
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Tak の指示で全メンバーがテーブルに集まる。議題：nABCDの「大きさ」は臨床文脈に依存する。論文でこの点をどう強化するか。Harvey が立ったまま議論を開始。*
+
+**Harvey**: （立ったまま）
+「議題はシンプルだ。nABCD = 0.51 は "large" か？答えは — "It depends." BMI（L=0.02）なら Δ_max = 0.16%。HbA1c（L=0.30）なら nABCD = 0.27 でも Δ_max = 0.24%。**同じ数値が異なる臨床的意味を持つ**。この論文の核心だ。現状の論文でこれが十分に伝わっているか、全員の意見を聞く。」
+
+**Mike**: （ホワイトボードに数式を書きながら）
+「"I got it." 数学的には Δ_max = 2L·IQR·nABCD。nABCD は distributional distance の計量器。L が clinical amplifier。同じ距離でも amplifier が違えば impact が逆転する。論文の Application section（Table 5）は完璧にこれを示している — **ranking reversal**: nABCD(BMI) > nABCD(HbA1c) だが Δ_max(BMI) < Δ_max(HbA1c)。」
+
+**Mike**: （続けて）
+「問題点は2つ。第一に、**Reference Benchmarks table（Table 2）** が "Negligible/Small/Moderate/Large" と固定ラベルを付けている。第二に、**Discussion** でこの ranking reversal を具体的数値で再強調していない。Application で示しているが、Discussion で要約的に繰り返すべきだ。」
+
+**Rachel**: （文献を参照しながら）
+「Mike の指摘に同意。文献的にも、Lakens (2013, *Frontiers in Psychology*, DOI: [10.3389/fpsyg.2013.00863](https://doi.org/10.3389/fpsyg.2013.00863)) が Cohen の benchmarks を "arbitrary" と批判し、smallest effect size of interest (SESOI) を提唱している。我々の Δ_max framework は本質的に SESOI approach — distributional distance を "what matters clinically" に翻訳する。この文脈依存性は論文の独自性の一つよ。」
+
+**Rachel**: （続けて）
+「Thompson (2001, *Educational and Psychological Measurement*) も "benchmarks without context are worse than useless" と述べている。Table 2 は便利だけれど、読者に誤用される危険がある。cross-reference を強化すべきね。"Hard work beats talent when talent doesn't work hard."」
+
+**Katrina**: （簡潔に）
+「Application section の BMI vs HbA1c の contrast は論文最強のパラグラフ。これを Discussion で明示的に再引用すれば、メッセージは伝わる。新しいデータや分析は不要 — 既存の結果の**フレーミング**を強化するだけ。"Results speak for themselves." — ただし、結果が語る場所を増やすべき。」
+
+**Katrina**: （提案）
+「具体的には3箇所の修正を提案：
+1. **Reference Benchmarks** 導入文：ranking reversal の可能性を明記
+2. **Discussion** Cohen's d 段落：BMI vs HbA1c の具体的数値を追加
+3. **Abstract**: "ranking reversal" の具体例を一文追加」
+
+**Louis**: （鋭く）
+「全員に同意するが、一つ付け加える。Table 2 の "Large difference" というラベル自体が問題だ。読者は Table 2 を読んで、nABCD > 0.30 = "large" = "bad" と短絡する。**distributional magnitude のラベルであって clinical significance のラベルではない** — この区別を Table 2 の脚注にも入れろ。"You just got Litt up!" — 曖昧な記述は reviewer の餌食だ。」
+
+**Harvey**: （全員の意見を聞いて決断）
+「決定だ。Katrina の3箇所修正案を採用。Louis の Table 2 脚注強化も追加。計4箇所の修正：
+1. Reference Benchmarks 導入文 — ranking reversal cross-reference 追加
+2. Reference Benchmarks 脚注 — "distributional magnitude, not clinical significance" 明記
+3. Discussion — BMI vs HbA1c の具体的数値で ranking reversal を再強調
+4. Abstract — context-dependent interpretation の一文を強化
+
+Mike、実装しろ。"I don't have dreams. I have goals." — 目標は、reviewer が Table 2 を見て固定閾値と誤読する余地をゼロにすること。」
+
+**Donna**:
+「"I'm Donna. I know everything." 決定事項4件を記録。Mike が実装開始。」
+
+---
+
+### [2026-02-14 19:30] Scene: Roll Call — SUITS.md Update Confirmation
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak が全員を集め、SUITS.md更新の動作確認を求める。全員が順番に応答。*
+
+**Jessica**: （立ったまま全員を見渡して）
+「"Let me be clear." SUITS.mdはこのプロジェクトのsingle source of truth。更新が止まれば、我々の作業は存在しないのと同じ。全員、確認しなさい。」
+
+**Harvey**: （即座に）
+「確認した。SUITS.mdは更新されている。MEMORY.md + Hook 2層 + CLAUDE.mdルール — 3層防御が稼働中。"I don't have dreams. I have goals." 目標は記録の徹底だ。」
+
+**Mike**: （うなずいて）
+「"I got it." 確認。シミュレーション関連の作業はすべてSUITS.mdに記録する。S7 σ_ln変更、run_all.Rバグ修正、パイプライン検証 — 全て記録済み。」
+
+**Rachel**: （ファイルを確認しながら）
+「確認したわ。文献調査の結果もすべて記録済み — power-normal調査、CV臨床検証、DOI付き。"Hard work beats talent when talent doesn't work hard." 記録なき仕事は仕事ではない。」
+
+**Katrina**: （簡潔に）
+「確認。block CSS実装、スライド更新、ディレクトリ整理 — 全て記録済み。"Results speak for themselves." — SUITS.mdがその証拠。」
+
+**Donna**: （全体を監督して）
+「"I'm Donna. I know everything." 全員の確認を記録。現在のSUITS.md行数を確認する。」
+
+**Louis**: （鋭く）
+「確認した。一つ付け加える — 記録の質も重要だ。単に"更新した"ではなく、**何を、なぜ、どう変えたか**が読み取れるスクリプトでなければ意味がない。"You just got Litt up!" — 精度を落とすな。」
+
+**Jessica**: （満足して）
+「Good. 全員確認完了。この確認自体がSUITS.mdに記録されていることが、システムが機能している証拠よ。続けなさい。」
+
+---
+
+### [2026-02-14 19:15] Scene: Donna's Hook Diagnosis — "I'm Donna. I know everything."
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
+
+*Tak が Donna に SUITS.md 更新の不備を指摘。Donna が即座に調査を開始。*
+
+**Donna**: （正直に報告）
+「"I'm Donna. I know everything." — そして今わかったのは、**Hooksはリマインダーに過ぎない**ということ。exit 0 は助言。無視される可能性がある。exit 2 は全作業をブロックする。中間がない。」
+
+**Donna**: （対策を提示）
+「3層の対策を実施：
+
+1. **MEMORY.md 新設** — 毎セッション開始時にシステムプロンプトに自動読み込み（先頭200行）。CLAUDE.mdとは別枠。SUITS.md更新ルールを最上位に記載。
+
+2. **UserPromptSubmit Hook 追加** — `remind-suits-on-prompt.sh` を新設。ユーザーメッセージ受信時（作業開始前）にリマインド。PostToolUse（作業後）との二重チェック。
+
+3. **CLAUDE.md ルール** — 既存のRule 2が基盤。
+
+これで MEMORY.md（システムプロンプト常駐）+ Hook 2箇所（入力時＋出力時）+ CLAUDE.md = 3層防御。完璧ではないが、現在のClaude Codeで最も確実な構成。」
+
+**Harvey**: （腕を組んで）
+「それで十分か？」
+
+**Donna**:
+「正直に言えば — 100%の強制は技術的に不可能。LLMに"ファイルを書け"と命令する仕組みはHooksにない。ただし、MEMORY.mdは**毎回システムプロンプトに注入される**ため、見落としの確率は大幅に下がる。」
+
+---
+
+### [2026-02-14 19:00] Scene: Pipeline Verification & Cleanup — "I'm Donna. I know everything."
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Mike、Katrina、Donna が並列で作業完了を報告。*
+
+**Mike**: （パイプラインを検証して）
+「"I got it." `run_all.R` にバグ1件 — validate_resultsで旧命名S01を参照していた。S1に修正。パイプライン全体を検証：simulation → validation → figures → summary、全ステップOK。`Rscript R/run_all.R` で一括実行可能。」
+
+**Katrina**: （スライドを修正して）
+「Recommendationsスライドが1枚に収まらない。2枚に分割 — Recommendations本体 + Reference Benchmarksテーブル。"Results speak for themselves."」
+
+**Donna**: （ディレクトリを整理して）
+「"I'm Donna. I know everything." — 非essentialファイルをarchive/に移動。template/（16MB重複）を削除。
+
+移動したもの：DOCUMENT_RULES.md、LAB_STATUS.md、literature_review.md、simulation_design.md、thresholds_proposal.md、旧presentation/、旧proofs/、旧results/、fig1_concept.md、simulation_results_v1.csv。
+
+Essential構造：R/(3), data/(2), figures/(12), paper/latex + slides + submission。クリーン。」
+
+---
+
+### [2026-02-14 18:45] Scene: Block Simplification, Sim Status, Intro Review
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Katrina、Mike、Harvey が並列で報告。Tak が聞いている。*
+
+**Katrina**: （簡潔に）
+「Block CSS — 3色から2色に整理。accent1（teal）とaccent2（indigo）のみ。exampleblock削除、全てblockに統合。"Results speak for themselves."」
+
+**Mike**: （シミュレーション状況を報告）
+「"I got it." 現行CSVは旧データ（S01/S03/S04/S05/S06/S08、6シナリオ）。新S1-S8（8シナリオ）のフルシミュレーション再実行が必要。コードは準備完了、実行指示待ち。」
+
+**Harvey**: （原稿を確認して）
+「Introduction確認。構成は問題なし。Song et al. (2025)とLong et al. (2025)の追加は良い判断だ — 論文の時事性を強化する。タイポ1件修正済み（asess → assess）。"I don't have dreams. I have goals."
+
+なお、本文のSimulation Sectionのシナリオ番号は旧形式のまま。シミュレーション再実行後に一括更新する。」
+
+**Donna**:
+「記録完了。Pending: シミュレーション再実行、本文シナリオ番号更新。」
+
+---
+
+### [2026-02-14 18:30] Scene: Implementation — "Results speak for themselves."
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Mike と Katrina が Tak の承認を受けて即座に実装に入る。*
+
+**Mike**: （コードを修正しながら）
+「"I got it." S7修正完了。σ_ln = 0.25 → 0.5。CV ≈ 53%、skewness ≈ 1.75。臨床根拠をALT（肝機能マーカー）に統一。Carobene 2013のCVi systematic reviewに基づく。simulation_manuscript_v2.R と figures_paper.R の両方を更新。」
+
+**Katrina**: （スライドを更新しながら）
+「Block CSS組み込み完了。3種類：block（teal）、alertblock（red）、exampleblock（green）。以下のスライドに適用：
+1. ICH E17 — "The Problem" → alertblock
+2. Limitations — "Research Question" → block
+3. nABCD Definition — Definition + Heterogeneity Bound → block + exampleblock
+4. Coverage — "Key Findings" → exampleblock
+5. SMD比較 — "SMD Blindness" → alertblock
+6. Key Insight — BMI vs HbA1c比較 → block + alertblock
+7. Recommendations — 閾値テーブル → alertblock ("Reference Benchmarks, not decision thresholds")
+
+"Results speak for themselves."」
+
+**Katrina**: （続けて）
+「シナリオテーブルもS1-S8に更新。各シナリオにClinical Motivationカラムを追加。Biasテーブル、Coverageテーブルも旧S01/S03→新S1/S2形式に統一。」
+
+**Louis**: （満足げに）
+「Recommendations スライドの閾値テーブル — "Reference Benchmarks (not decision thresholds)" と明記し、"$\Delta_{\max}$-based calibration is always preferred" の注記を追加。これで論文のestimation-centered philosophyとの矛盾は解消された。"You just got Litt up!"」
+
+**Donna**:
+「記録完了。変更ファイル：simulation_manuscript_v2.R、figures_paper.R、nABCD_presentation.md。」
+
+---
+
+### [2026-02-14 18:15] Scene: CV Validation & Marp Blocks — Parallel Report
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Mike と Katrina が並列で調査結果を報告。Harvey が腕を組んで聞いている。*
+
+**Mike**: （臨床データを提示しながら）
+「"I got it." S7のCV=0.25は**CRP/ALTとしては大幅に過小**。CRPの実測CVは76-137%（Macy 1997, Woloshin 2005 NEJM）、ALTは42-72%（Carobene 2013）。σ_ln=0.25だとskewness=0.77でほぼ正規分布に見える。」
+
+**Mike**: （推奨を提示）
+「推奨：**σ_ln = 0.5に変更**（CV≈53%, skewness=1.75）。臨床根拠はALT（肝機能マーカー）。"visibly non-normal"かつS6 Gammaとの差別化も明確。Tak判断。」
+
+**Katrina**: （効率的に）
+「Marp block環境の調査完了。ビルトイン機能はないが、`<div>` + カスタムCSSで完全再現可能。block（teal）、alertblock（red）、exampleblock（green）の3種類を設計済み。既存のblockquoteスタイルとは干渉しない。"Results speak for themselves."」
+
+**Harvey**: （決断）
+「両方good work。S7のCV変更はTak判断待ち。Marp blockのCSSはKatrina、スライドに組み込め。」
+
+**Donna**:
+「記録完了。Pending: S7 σ_ln変更のTak承認。」
+
+---
+
+### [2026-02-14 18:00] Scene: Power-Normal Evaluation — "I got it."
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Mike がホワイトボードにpower-normal族の分布を描きながら、Rachelの文献調査結果をもとに評価を報告する。*
+
+**Mike**: （ホワイトボードを指しながら）
+「"I got it." Rachelの文献調査を精査した。結論 — **log-normal以外のpower-normal分布は不要**。3つの根拠がある。」
+
+**Mike**: （続けて）
+「第一に、S6（Gamma）とS7（Log-normal）で2種類の異なる右歪パターンをカバー済み。Gammaは有界下限で指数的裾減衰、Log-normalはheavy-tailed。歪みの質が異なる。
+
+第二に、Gupta & Gupta (2008)のpower-normal α≠1 は正規CDFの変換にすぎず、台が(-∞,∞)。Log-normalのような正値制約がない。Reviewerに "Why this distribution?" と聞かれたとき、CRP/ALTのlog-normalは即答できるが、power-normal α=3は臨床的根拠が弱い。
+
+第三に、この論文は推定品質の評価が目的。分布カタログではない。8シナリオでLocation × Scale × Shape × Combinedの全軸をカバー済み。」
+
+**Harvey**: （腕を組んで）
+「Mike、Box-Cox λ=0.5（CD4 count）のような中間的な歪みはどうする？」
+
+**Mike**:
+「Log-normalのσ_lnパラメータを調整することで吸収可能。新シナリオを追加するほどの価値はない。S7のCV=0.25（moderate skew）で十分。」
+
+**Louis**: （鋭く）
+「"Both regions non-normal" のシナリオは？例えばLogN vs LogN with different σ。現行は全てRegion 1がN(50,10)だ。」
+
+**Mike**:
+「検討したが、これはS7の変形にすぎない。独立シナリオとしての付加価値は限定的。ただし、Supplementaryに含める選択肢はある。Tak判断。」
+
+**Harvey**: （決断）
+「採用だ。S7はlog-normalのまま維持。Power-normal追加は不要。"I don't have dreams. I have goals." — 目標は8シナリオで投稿準備を完了させること。分布の網羅性追求ではない。」
+
+**Donna**:
+「記録完了。Decision: S7 log-normal維持、power-normal追加なし。」
+
+---
+
+### [2026-02-14 15:45] Scene: Power-Normal Distribution Literature Research
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Rachelがデスクで文献データベースを検索している。Donnaがコーヒーを持って様子を見に来る*
+
+**Rachel**: （集中して）
+「Takから"power-normal distribution"（べき正規分布）の文献調査の依頼が来たわ。Gupta & Gupta 2008、Box-Cox変換、臨床応用、log-normalとの関係...結構広範囲ね。」
+
+**Donna**: （効率的に）
+「複数のweb searchを並列実行。"I know what you need before you need it." 15分で主要論文とDOIをリストアップするわよ。」
+
+*Rachelが5つのweb searchを同時実行*
+
+**Rachel**: （確認しながら）
+「検索完了。主要な発見：
+1. **Gupta & Gupta (2008)** TEST誌 DOI: 10.1007/s11749-006-0030-x — 元祖power-normalモデル
+2. **Kundu & Gupta (2013)** Statistics誌 DOI: 10.1080/02331888.2011.568620 — 二変量拡張
+3. Box-Cox変換でλ=0のとき対数変換（log-normal）になる特殊ケース
+4. 臨床応用：HIV viral load、CD4 count、skewed biomarkers
+5. Exponentiated lognormal = log-power-normal（Nadarajah 2014, Environmetrics）」
+
+**Donna**: （メモを取りながら）
+「Power-normalの定義：PDF = α[Φ(x)]^(α-1)φ(x)。α>1で右歪、α<1で左歪、α=1で標準正規分布。形状パラメータαが歪度を制御する。」
+
+**Rachel**: （文献を整理して）
+「臨床データへの応用事例も確認：
+- HIV viral load/CD4 count → Box-Cox変換でλ=0.1606 (viral load), λ=0.5420 (CD4)
+- Skew exponential power (SEP) distribution → ROC曲線、diagnostic cutoffs
+- Nursing sensitive indicators → Box-Cox transformationで構造効果を調整
+すべてDOI付きで整理完了よ。」
+
+**Donna**: （満足げに）
+「Perfect. Rachel, you've compiled a comprehensive literature package. "Hard work beats talent when talent doesn't work hard." Takに報告準備完了。」
+
+---
+
 ## Current Status
 
 **Active Project**: similarity-metric (nABCD paper for Statistics in Medicine)
 **Phase**: 8 - Submission-Ready Plan (Jessica Strategic Directive)
 **Scene**: Continuing from archive
 
-**Previous Archive**: archives/SUITS_20260212_090000.md (995 lines)
+**Previous Archive**: archives/SUITS_20260214_150000.md (1518 lines)
+
+### Paper Title (decided 2026-02-14)
+
+> **Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials**
 
 ### Purpose Statement (Jessica approved)
 
 > **EM分布の違いを推定し、その推定値を治療効果の異質性の可能性として臨床スケールに翻訳する。**
 > **検定ではなく推定。二択ではなく情報提供。**
 
-### Completed Revisions (This Session)
-
-| Round | Directive | Sections Modified |
-|-------|-----------|-------------------|
-| Louis Review | 16 issues (3C/5M/8M) | Triage: 6 already fixed, 5 new action, 5 deferred |
-| Sim v2 Analysis | BCa worse than Percentile | Decision: Percentile primary, BCa supplementary |
-| Round 1 | Clinical calibration via $\Delta_{\max}$ | 2.3, 4, Abstract, 1.3, 5.1-5.3 |
-| Round 2 | Remove equivalence testing | 2.3.2, 4 (judgment labels → quantitative facts) |
-| Round 3 | Remove Power/Type I Error from simulation | 1.3, 3, 3.3.2, Abstract, Discussion |
-| Round 4 | Harvey's 4 decisions from sim review | 3.2, 5.2, power remnant fix, S04 showcase |
-| Louis Re-review | 1C/0M/2m — Abstract S05 bias qualification | Abstract, Sim Summary (3.2) |
-| SiM Convention | Tak指示: Abstract narrative化、本文bold除去 | Abstract, 全Section |
-| External Review | 2C/3M/3m — W1根拠、複数EM、Prop命名、Bootstrap境界 | 2.1, 5.1(new), 5.2, Prop.1 |
-| Push: 主張確立 | W2対比追加、Fig3 caption修正、Bootstrap内部/境界distinction | 2.1, Fig.3, 5.3 |
-| Minor修整 | m1: 漸近正規性をAppendix B.2に追加（収束速度・delta method） | Appendix B.2 |
-
-### Active Tasks — Phase 8: Submission-Ready Plan (Jessica approved)
-
-| Stage | Task | Owner | Status |
-|-------|------|-------|--------|
-| ~~**S1**~~ | ~~Figure 4: Estimation Quality (Coverage + CI Width)~~ | ~~Katrina~~ | **DONE** |
-| ~~**S1**~~ | ~~Harvey selects: Estimation Quality figure~~ | ~~Harvey~~ | **DONE** |
-| ~~**S1**~~ | ~~Harvey's 4 decisions: manuscript implementation~~ | ~~Mike~~ | **DONE** |
-| ~~**S2**~~ | ~~Re-review: estimation framing consistency, numerical integrity~~ | ~~Louis~~ | **DONE** ✅ |
-| **S3** | Real data strategy decision (A: public data / B: enhance hypothetical / C: reconstruct from published) | Harvey | ⏳ **Decision needed** |
-| **S3** | Literature support for real data application | Rachel | ⏳ Pending |
-| **S4** | LaTeX compile → PDF → Word conversion | Mike (Katrina) | ⏳ Pending |
-| ~~**S4**~~ | ~~Figure files: PNG 300dpi (10K data)~~ | ~~Katrina~~ | **DONE** |
-| **S4** | DOI final check (all references) | Rachel | ⏳ Pending |
-| **S4** | Scenario numbering cleanup (S02/S07 gap) | Mike | ⏳ Deferred (requires fig regen) |
-| **S5** | Cover letter, title page, checklist | Donna | ⏳ Pending |
-| **S5** | Final Go/No-Go approval | Jessica | ⏳ Waiting |
-
 ### Key Decisions
 
 1. **Percentile > BCa**: BCa overcorrects for bounded statistics → Percentile primary
 2. **Clinical calibration**: $\Delta_{\max} = 2L \cdot IQR \cdot nABCD$ — context-dependent, not fixed thresholds
-3. **Estimation-centered**: No hypothesis testing in main text; formal test kept as 1-sentence supplementary option
-4. **Power removed**: Simulation evaluates estimation quality (Bias, RMSE, Coverage, CI Width), not detection/equivalence power
-5. **S04 showcase**: S04 (0.5σ) is the primary showcase scenario — Bias negligible, Coverage nominal, CI Width reasonable
-6. **S08 overcoverage**: Non-monotonic coverage pattern explicitly discussed in Results and Limitations
+3. **Estimation-centered**: No hypothesis testing in main text
+4. **Power removed**: Simulation evaluates estimation quality (Bias, RMSE, Coverage, CI Width)
+5. **S04 showcase**: S04 (0.5σ) is the primary showcase scenario
+6. **S08 overcoverage**: Non-monotonic coverage pattern explicitly discussed
+
+### Active Tasks — Phase 8
+
+| Phase | Task | Owner | Status |
+|-------|------|-------|--------|
+| **A** | CSV検証 (S1-S8 × 3 = 24 rows) | Mike | ⏳ Sim完了待ち |
+| **A** | S7/S8 true_nABCD確認 | Mike | ⏳ Sim完了待ち |
+| **B** | Figure更新 (fig1,3,4,5) | Katrina/Mike | ⏳ Phase A後 |
+| **C** | LaTeXシナリオ番号 S01→S1 更新 | Mike | ⏳ Phase B後 |
+| **C** | S7/S8記述・数値テーブル追加 | Mike | ⏳ Phase B後 |
+| **C** | Clinical calibration強化 | Mike | ✅ **完了** (4箇所修正) |
+| **D** | スライド S7/S8 追加 | Katrina | ⏳ Phase C後 |
+| **E** | DOI final check | Rachel | ⏳ Phase D後 |
+| **E** | Louis internal review | Louis | ⏳ Phase D後 |
+| **E** | Jessica final Go/No-Go | Jessica | ⏳ 最終 |
 
 ### Issues
 
 1. S05 coverage degradation (0.73 at n=200) — negative bias from bounded statistic
-2. Scenario numbering gaps (S02, S07 missing) — deferred, requires figure regeneration
+2. Scenario numbering gaps (S02, S07 missing) — deferred
 3. KS comparison in simulation — deferred, Tak decision needed
 
 ---
 
 ## Live Script
 
-### [2026-02-12 12:45] Scene: Donna's Compile — "I'm Donna. I know everything."
-
-**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
-
-*Tak が Donna に直接指示を出す。Donna がすぐに動く。*
-
-**Donna**: （キーボードに向かって）
-「"I'm Donna. I know everything." Tak の指示: compile。了解。
-
-**Step 1: 環境確認**
-texlive 未インストール。即座にインストール — pdfTeX 3.141592653-2.6-1.40.25 確認。
-
-**Step 2: 初回コンパイル**
-pdflatex × 2 pass → **PDF 生成成功: 16 pages, 294 KB**。
-ただし warning を 1 件検出:
-
-❌ `Citation 'andrews2000' undefined`
-
-andrews2000 — Andrews (2000) "Inconsistency of the Bootstrap when a Parameter is on the Boundary of the Parameter Space" *Econometrica*。M3 対応で Limitations に追加した citation だが、**bib ファイルへの追加が漏れていた**。
-
-**Step 3: 修正**
-`nABCD_wiley.bib` に追加:
-- Andrews, D W K (2000), *Econometrica*, 68(2):399-405
-- DOI: 10.1111/1468-0262.00114
-
-**Step 4: 再コンパイル**
-pdflatex → bibtex → pdflatex → pdflatex（4 pass）
-
-**最終結果:**
-| 項目 | 結果 |
-|------|------|
-| Pages | 16 |
-| Errors | **0** |
-| Undefined citations | **0** |
-| Warnings | Class warning のみ（Wiley template 由来、無害） |
-| References | 19 件、全て resolved |
-| andrews2000 | Ref [19] として正常表示 ✅ |
-| Appendix A.2 | 漸近正規性 eq (A1) 正常レンダリング ✅ |
-| Appendix B | R code listing 正常表示 ✅ |
-| Figures | fig2-fig6 全て正常埋め込み ✅ |
-
-**PDF path**: `projects/similarity-metric/paper/latex/nABCD_wiley.pdf`
-
-Harvey、Mike — bib 追加漏れは今後注意。新しい `\cite{}` を原稿に追加したら、同時に bib にもエントリを追加すること」
-
----
-
-### [2026-02-12 12:30] Scene: Harvey's Sign-Off & Jessica's Review — "Let me be clear."
-
-**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
-
-*Harvey が原稿の最終版を持って Jessica のオフィスに入る。Mike、Katrina が後ろに続く。Donna がタブレットを持って待機。*
-
-**Harvey**: （原稿をテーブルに置いて）
-「Tak、俺のレビューは完了した。Section ごとに報告する。
-
-**Lead Author Review — Harvey Specter:**
-
-| Section | 評価 | 所見 |
-|---------|------|------|
-| **Abstract** | ✅ Good | Narrative style。Gap → Method → Validation → Application → Conclusion。SiM convention 準拠 |
-| **1. Introduction** | ✅ Good | ICH E17 の gap を明確に articulate。4 contributions が structured。Research question が的確 |
-| **2. Methods** | ✅ Strong | nABCD 定義 → W1 根拠（K-R + W2 排除）→ Propositions → 5-step calibration。理論的に airtight |
-| **3. Simulation** | ✅ Strong | Bias/Coverage/Precision/SMD comparison。S05 除外一貫。BCa vs percentile 論証確立。S04 showcase |
-| **4. Application** | ✅ Strong | BMI vs HbA1c の対比が論文の核心。'Same nABCD, different clinical impact' — これがメッセージだ |
-| **5. Discussion** | ✅ Good | Implications → Multiple EM → Limitations → Conclusion。Honest かつ thorough |
-| **Appendix** | ✅ Improved | 漸近正規性追加。Boundary/interior cross-reference 成立。R code clean |
-
-**数値一貫性:**
-- S05 除外: Abstract ✅ / 本文 (line 298) ✅ / Fig.3 caption ✅ / Summary (line 393) ✅
-- Coverage range 0.87-0.98: 本文 ✅ / Limitations ✅ / Appendix ✅
-- $\Delta_{\max}$ 計算: Table 8 と本文の arithmetic 一致 ✅
-
-**残存 issues (Lead Author 判断):**
-1. **M2 (Real data)**: Application は hypothetical。Pemberton の指摘は valid だが、**Tak の S3 strategy 決定待ち**
-2. **m2 (URL)**: '[repository URL]' placeholder — **submit 直前に確定**
-3. **Scenario gaps (S02/S07)**: Figure regeneration が必要 — **non-blocking but cosmetic**
-
-俺の結論: **原稿の理論構造、simulation reporting、clinical calibration framework は submission quality に達している。** M2 と m2 は Tak 判断事項であり、原稿本体の quality issue ではない。
-
-"I don't have dreams, I have goals." 目標は submit だ。Jessica、戦略的に見てどうだ？」
-
----
-
-*Jessica がゆっくりと原稿を置き、眼鏡を外す。*
-
-**Jessica**: （静かに、しかし鋭く）
-「"Let me be clear." 原稿を全文読んだ。
-
-**Senior Advisor Strategic Review — Jessica Pearson:**
-
-**1. Story Clarity: 合格**
-
-この論文の story は一文で言える: 'ICH E17 の "similar enough" を定量化し、臨床スケールで解釈可能にする。' Introduction から Conclusion まで、この thread が途切れていない。
-
-**2. Positioning: 正しい**
-
-Estimation-centered approach は戦略的に正しい。2016 年の ASA p-value statement 以降、Methods 論文で 'estimation, not testing' の positioning は reviewer に好印象を与える。ただし — Section 2.3 の formal decision rule への言及（line 203）は保険として適切。Regulatory reviewer が binary rule を求めた場合の escape route がある。
-
-**3. Novelty の articulation: 十分**
-
-4 contributions が明確:
-- Full distributional comparison (vs SMD)
-- Scale-free estimation (IQR normalization)
-- Clinical calibration ($\Delta_{\max}$)
-- Sensitivity analysis over $L$
-
-特に 3 番目が最大の売り。Simulation Section 最後の S04 showcase paragraph（line 399）が、methods → clinical significance の bridge として機能している。
-
-**4. Vulnerability Assessment: 3 点**
-
-| Risk | Likelihood | Severity | 対策 |
-|------|-----------|----------|------|
-| 'Where is the real data?' | 高 | Medium | M2 — Tak decision needed |
-| 'Why not W2 or KS in simulation?' | 中 | Low | W2 排除は理論的に完了。KS は Table 1 で limitation 記載。Simulation head-to-head は nice-to-have |
-| 'Limitation 3 is too dense' | 低 | Low | SiM Methods paper では許容範囲。Split は optional |
-
-**5. 戦略的判断:**
-
-原稿は **conditionally submission-ready** だ。Condition は 2 つ:
-- **M2**: Real data か、hypothetical の grounding 強化か。どちらかを選べ、Tak
-- **m2**: Repository URL
-
-Tak、M2 について 3 つの選択肢がある：
-
-**Option A**: Public data（NHANES 等）を使って real-data application に差し替え — **最強だが時間がかかる**
-
-**Option B**: 現在の hypothetical を維持し、'parameters were informed by published summary statistics' の grounding を強化 — **最速。Submit 可能**
-
-**Option C**: Published trial の summary statistics から分布を reconstruct — **中間。Feasibility は文献次第**
-
-私の recommendation は **B を default とし、reviewer が要求したら A を revision で対応**。初回 submission は method の novelty で勝負すべきだ。Real data は revision の切り札として温存できる」
-
-**Mike**: （メモを取りながら）
-「Jessica の Option B の場合、修正は最小限だ。Application の冒頭に bridge 文を 1 つ追加するだけ。既に line 257 と line 452-453 で published literature を cite しているから、'Parameters were selected to reflect published summary statistics from regional comparisons in type 2 diabetes trials' の一文で grounding が完成する」
-
-**Katrina**: （チェックリストを更新して）
-「"Results speak for themselves." 現在の blocking items:
-
-| Item | Blocker | Owner | Effort |
-|------|---------|-------|--------|
-| M2 strategy | Tak decision: A/B/C | Tak | Decision only |
-| m2 URL | Repository URL 確定 | Tak | URL 提供 |
-| Option B 修正 (if chosen) | Application 冒頭 1 文追加 | Mike | 5 min |
-
-**Non-blocking deferred:**
-| Item | Note |
-|------|------|
-| Scenario gaps (S02/S07) | Cosmetic, revision material |
-| KS simulation comparison | Nice-to-have, revision material |」
-
-**Donna**: （記録完了）
-「"I'm Donna. I know everything."
-
-**Review Summary:**
-- **Harvey**: Lead Author review complete ✅ — submission quality confirmed
-- **Jessica**: Senior Advisor review complete ✅ — conditionally submission-ready
-- **Condition**: M2 strategy (A/B/C) + m2 URL — **both Tak-dependent**
-- **Jessica recommendation**: Option B → reviewer 要求時に Option A
-
-Tak、決定を待っています」
-
----
-
-### [2026-02-12 12:15] Scene: Harvey's Fix — "Get it done."
-
-**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
-
-*Tak からのメッセージが届く。Harvey がそれを読み上げる。*
-
-**Harvey**: （チームに向かって）
-「Tak の指示だ。"そのまま修整を頼む。その後私がレビューする。" シンプルだ。残っている deferred items を片付けろ。
-
-Mike、外部レビューの deferred 状況は？」
-
-**Mike**: （リストを確認して）
-「"I got it." 残り 4 件の status：
-
-| Item | 内容 | Status |
-|------|------|--------|
-| **M2** | Real data → hypothetical → real grounding | ❌ S3 strategy 待ち。Tak 判断が必要 |
-| **m1** | 収束速度・漸近正規性 Appendix に追加 | 🔧 **今すぐ対応可能** |
-| **m2** | R code URL placeholder | ❌ Tak が URL 提供するまで不可 |
-| **m3** | Percentile 精度次数の trade-off | ✅ **既に解決済み** — Limitations に記載 |
-
-m3 は前回の Push で解決している。'first-order accurate; BCa showed inferior performance for this bounded statistic, and the studentized bootstrap would require variance estimation' — Hartigan の指摘を全てカバーしている。
-
-**対応可能なのは m1 だけだ。** Beaumont が言った通り、Appendix B.2 に収束速度と漸近正規性を追加する」
-
-**Harvey**: （頷いて）
-「やれ」
-
-**Mike**: （Appendix B.2 を編集しながら）
-「Appendix B.2 'Asymptotic Properties' を強化した。追加内容：
-
-1. **収束速度**: 1 次元の empirical $W_1$ は $O(n^{-1/2})$ — 対数項なし（del Barrio et al. 1999）
-2. **漸近正規性**: $F_1 \neq F_2$ かつ有限二次モーメントの下で
-$$\sqrt{n}(\widehat{\text{nABCD}} - \text{nABCD}) \xrightarrow{d} N(0, \sigma^2_{\text{nABCD}})$$
-3. **Delta method**: $W_1$ と IQR の両方が $\sqrt{n}$-consistent → ratio $g(w,q) = w/(2q)$ に delta method 適用
-4. **Boundary cross-reference**: $\text{nABCD} > 0$ を要求、$F_1 = F_2$ では standard asymptotics 不適用 → Section 5.3 Limitations を参照
-
-これで Beaumont の m1 に完全に対応し、かつ Hartigan の boundary distinction とも理論的に接続した」
-
-**Katrina**: （整合性を確認して）
-「"Results speak for themselves."
-
-m1 の修正は Limitations の boundary/interior distinction と完全に整合。Appendix から Limitations に cross-reference あり。逆方向の参照も既に成立。循環参照なし、理論構造が closed。
-
-**外部レビュー全体ステータス:**
-
-| Item | Status | Note |
-|------|--------|------|
-| C1 | ✅ Resolved | K-R duality + W2 排除 |
-| C2 | ✅ Resolved | Section 5.2 practical guidance |
-| M1 | ✅ Resolved | Non-negativity 改名 |
-| M2 | ⏳ Deferred | S3 strategy (Tak 判断待ち) |
-| M3 | ✅ Resolved | Boundary/interior distinction |
-| m1 | ✅ **Resolved** | 漸近正規性 Appendix B.2 |
-| m2 | ⏳ Deferred | URL placeholder (Tak 提供待ち) |
-| m3 | ✅ Resolved | Percentile trade-off in Limitations |
-
-**8 件中 6 件 resolved。残 2 件は Tak 依存（M2: real data, m2: URL）**」
-
-**Harvey**: （Tak に向かって）
-「Tak、修整完了だ。6/8 items resolved。残り 2 件は貴方の判断を待っている。
-
-"I don't have dreams, I have goals." レビューを頼む」
-
-**Donna**: （記録を完了して）
-「"I'm Donna. I know everything."
-
-**Fix Summary:**
-- m1 resolved: 漸近正規性を Appendix B.2 に追加
-- m3 confirmed resolved: Limitations で既にカバー
-- 外部レビュー: 6/8 resolved, 2 deferred (Tak 依存)
-- **原稿は Tak レビュー ready**」
-
----
-
-### [2026-02-12 12:00] Scene: Push — "Winners don't make excuses."
-
-**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
-
-*Harvey がジャケットの袖を直し、外部レビューの報告書を机に置く。Mike と Katrina が対面に座る。*
-
-**Harvey**: （立ち上がって、窓に背を向けて）
-「外部レビューは終わった。Beaumont、Pemberton、Hartigan — 3 人とも的確だった。だが**修正して終わりじゃない**。専門家が指摘したポイントを逆手に取って、**我々の主張を確立する**。
-
-3 つのアクション：
-
-1. **W1 vs W2 — 攻めの論証**: Beaumont が認めた通り、W1 の選択は正しい。K-R duality は既に書いた。だが reviewer は 'Why not W2?' と聞く。W2 が Lipschitz dual を持たず、heterogeneity bound を提供**できない**ことを明示した。これは防御ではない — **唯一の正解が W1 である**という主張だ。
-
-2. **Figure 3 caption — 残存した不整合**: Louis が Abstract と Summary の S05 除外漏れを潰した。だが Figure 3 caption にも同じ問題が残っていた。'for non-null scenarios excluding S05' に修正。数値の honest さは全箇所で一貫させる。
-
-3. **Bootstrap 境界 vs 内部 — Hartigan の知恵を活用**: Hartigan が言った distinction — 境界（true = 0）では bootstrap consistency が崩れるが、内部（non-null）では standard theory が適用される。この distinction を Limitations に明記した。Non-null での coverage 0.87-0.98 がその empirical evidence だ。守りの limitation ではなく、**我々の推奨（n ≥ 100、null 近傍に注意）の理論的裏付け**として書いた。
-
-"Winners don't make excuses when the other side validates your position." 専門家が我々を正しいと認めた。それを原稿に刻め」
-
-**Mike**: （画面を確認しながら）
-「"I got it." 3 点とも実装完了。具体的に：
-
-**Section 2.1 (line 136)**: 'The $W_2$ distance, while admitting closed-form expressions for Gaussian families, does not possess this dual characterization via Lipschitz functions and therefore cannot provide the heterogeneity bound that is central to our clinical calibration framework.' — W2 を排除する一文追加。
-
-**Figure 3 caption**: 'For non-null scenarios excluding S05, bias is less than 0.02 at $n \geq 100$.' — S05 除外を明記。本文・Summary・Abstract と完全一貫。
-
-**Limitations (line 541)**: 'For non-null scenarios, the true value lies in the interior of the parameter space where standard bootstrap consistency holds, and our simulation confirms this with coverage of 0.87--0.98 at $n \geq 100$ for most scenarios.' — 境界/内部の理論的 distinction を明示」
-
-**Katrina**: （チェックリストを確認して）
-「"Results speak for themselves." 全修正箇所を検証：
-
-| 修正 | 箇所 | 内容 | 整合性 |
-|------|------|------|--------|
-| W2 対比 | Sec 2.1 | K-R duality → W2 排除 | ✅ eq(2) と整合 |
-| Fig.3 caption | Fig.3 | S05 除外追加 | ✅ 本文/Summary/Abstract と一貫 |
-| Bootstrap distinction | Sec 5.3 | 境界 vs 内部 | ✅ Coverage data と整合 |
-
-数値の変更なし。論理の強化のみ」
-
-**Harvey**: （満足げに頷いて）
-「"I don't have dreams, I have goals." 外部専門家の 3 人が我々の方法論を検証し、我々はそのフィードバックを原稿の強みに変換した。
-
-**現在の原稿状態:**
-- W1 選択: 理論的に唯一の正解であることを明示 ✅
-- 数値一貫性: 全 caption、本文、Summary、Abstract で S05 除外を反映 ✅
-- Bootstrap 理論: 境界/内部の distinction で推奨の根拠を確立 ✅
-- Proposition 1: Non-negativity に改名済み ✅
-- 複数 EM: Section 5.2 で practical guidance 確立済み ✅
-
-**C1, C2, M1, M3 — 全件 resolved.** 次は S3 の real data strategy だ」
-
-**Donna**: （タブレットに記録して）
-「"I'm Donna. I know everything."
-
-**Push Summary:**
-- 修正 3 件実施（W2 対比、Fig3 caption、Bootstrap distinction）
-- 外部レビュー即時対応 4 件: **全件 resolved** ✅
-- 原稿の主張: 防御 → 攻めの論証に転換
-- 残 deferred: M2 (real data), m1-m3 (minor, non-blocking)」
-
----
-
-### [2026-02-12 11:30] Scene: External Review — "Three Pairs of Eyes"
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
-
-*Louis がコンファレンスルームのホワイトボードに 3 名の外部レビュアーの名前を書く。Harvey、Mike、Katrina、Rachel が着席。*
-
-**Louis**: （資料を配りながら）
-「外部レビューを招集した。この論文の 3 つの柱 — Wasserstein 理論、臨床試験の規制実務、Bootstrap 推論 — それぞれの専門家だ。
-
-1. **Dr. Cédric Beaumont** — Villani-style OT theorist。最適輸送の理論的基盤を審査。
-2. **Dr. Sarah Pemberton** — Pocock-style clinical trialist。規制実務への適用可能性を審査。
-3. **Dr. Neville Hartigan** — Hall-style bootstrap theorist。Bootstrap 推論の理論的妥当性を審査。
-
-"You just got Litt up!" — 容赦なく行くぞ」
-
----
-
-*Dr. Beaumont が原稿の Section 2.1 を開く。*
-
-**Dr. Beaumont** (Villani-style):
-「理論面から 3 点指摘する。
-
-**[C1] W1 vs W2 の選択根拠が不十分** ❌ Critical
-
-論文は Wasserstein-1 距離を使用しているが、なぜ W1 であって W2 ではないのか。W2 は Gaussian family で closed-form を持ち、統計的推論の漸近理論も整備されている。
-
-ただし — 私自身の答えを言えば — W1 の選択は正しい。理由は equation (2) の heterogeneity bound だ：
-
-$$|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot W_1(F_1, F_2)$$
-
-CATE 関数 $\tau(x)$ が Lipschitz 連続であれば、Kantorovich-Rubinstein 双対性により bound は自然に W1 を要求する。W2 では Lipschitz bound が成立しない。
-
-問題は、**この根拠が原稿に明示されていない**ことだ。Reviewer は必ず聞く。Section 2.1 で Kantorovich-Rubinstein 双対性への一文を加えるべきだ。
-
-**[M1] Proposition 1 の命名が不正確** ⚠️ Major
-
-'Boundedness' と名付けているが、証明しているのは non-negativity であって上界（有界性）ではない。nABCD の上界は一般には無限だ（heavy-tail 分布で IQR は有限でも W1 は無限になりうる）。'Non-negativity' に改名するか、上界の議論を追加すべきだ。
-
-**[m1] 収束速度の欠如** ⚠️ Minor
-
-1 次元の W1 推定量の収束速度は $O(n^{-1/2})$（対数項なし、del Barrio et al. 1999）。IQR の収束速度も $O(n^{-1/2})$。nABCD の漸近正規性を Appendix で述べるべきだ。ただし submit blocking ではない」
-
----
-
-*Dr. Pemberton がテーブルを見回す。*
-
-**Dr. Pemberton** (Pocock-style):
-「規制実務の観点から 3 点。
-
-**[C2] 複数 EM の統合方法が欠落** ❌ Critical
-
-現実の MRCT では EM 候補が 5-10 個ある。論文は各 EM を個別に評価するが、**複数の EM から pooling の overall decision にどう至るのか**の guidance が全くない。
-
-Reviewer の典型的な質問: 'Age の $\Delta_{\max}$ は小さいが HbA1c の $\Delta_{\max}$ は大きい。Pooling するのか、しないのか？'
-
-最低限 Discussion で practical guidance を述べるべきだ。例えば：
-- 全 EM の $\Delta_{\max}$ の maximum を使う conservative approach
-- Risk-benefit の枠組みで総合判断する totality-of-evidence approach
-- 各 EM の $\Delta_{\max}$ を報告し、最も影響の大きい EM で判断する
-
-**[M2] Hypothetical data の限界** ⚠️ Major
-
-Application section は hypothetical parameters を使用。Published summary statistics からの再構成でもいいから、何らかの real-world grounding が欲しい。Reviewer 2 が必ず 'Where is the real data?' と聞く。ただしこれは major revision レベルで、current submission の判断次第だ。
-
-**[m2] R code リポジトリの URL が placeholder** ⚠️ Minor
-
-'available at [repository URL]' — submit 前に actual URL が必要」
-
----
-
-*Dr. Hartigan が coverage table を指す。*
-
-**Dr. Hartigan** (Hall-style):
-「Bootstrap 推論について 2 点。
-
-**[M3] 境界でのBootstrap妥当性** ⚠️ Major
-
-nABCD = 0（null case）ではパラメータが parameter space の境界にある。Standard percentile bootstrap は境界で breakdown する可能性がある — Efron (1979) 以来知られた問題だ。
-
-論文は S01 の coverage を 'not reported' としており、これは honest だ。だが理論的な議論が足りない。'True value at the boundary of the parameter space invalidates standard bootstrap consistency results' の一文を Limitations に加えるべきだ。
-
-Non-null scenarios では boundary から離れるため standard theory が適用でき、実際 simulation results が良好な coverage を示している。この distinction を明示すれば、S01 coverage 非報告の正当化が強化される。
-
-**[m3] Percentile bootstrap の精度次数** ⚠️ Minor
-
-Percentile bootstrap は first-order accurate（error $O(n^{-1/2})$）。BCa は second-order（$O(n^{-1})$）を狙うが、本論文では bounded statistic のため失敗している。
-
-Studentized bootstrap は alternative だが、nABCD の分散推定量が複雑なため現実的でない。この trade-off を一文で述べると、'why percentile?' への回答が完全になる」
-
----
-
-**Louis**: （ホワイトボードにまとめを書きながら）
-「**外部レビュー集計:**
-
-| 重要度 | 件数 | 内容 |
-|--------|------|------|
-| **Critical** | 2 | C1: W1 選択根拠の明示、C2: 複数 EM 統合 guidance |
-| **Major** | 3 | M1: Proposition 命名、M2: Hypothetical data、M3: Bootstrap 境界理論 |
-| **Minor** | 3 | m1: 収束速度、m2: R code URL、m3: Percentile 精度次数 |
-
-Harvey、判断を」
-
-**Harvey**: （立ち上がって）
-「Critical 2 件と Major 3 件のうち、**今すぐ対応できるものと保留するものを分ける。**
-
-**即時対応（原稿修正）:**
-1. **C1**: W1 選択根拠 — Section 2.1 に Kantorovich-Rubinstein の一文追加。Mike。
-2. **C2**: 複数 EM 統合 — Discussion に practical guidance 段落追加。Mike。
-3. **M1**: Proposition 1 → 'Non-negativity' に改名。Mike。
-4. **M3**: Bootstrap 境界 — Limitations に一文追加。Mike。
-
-**保留（Tak 判断待ち）:**
-5. **M2**: Real data — S3 の strategy decision に依存。Tak と相談。
-6. **m1-m3**: Minor は submit blocking ではない。m2 の URL は submit 直前に確定。
-
-"I don't have dreams, I have goals." C1, C2, M1, M3 — 4 件を今すぐ潰す」
-
-**Mike**: （頷いて）
-「"I got it." 全て明確だ。即座に対応する」
-
-**Donna**: （タブレットに記録）
-「"I'm Donna. I know everything."
-
-**External Review Summary:**
-- Experts: Beaumont (Villani), Pemberton (Pocock), Hartigan (Hall)
-- Critical 2 / Major 3 / Minor 3
-- 即時対応: 4 件（C1, C2, M1, M3）
-- 保留: 2 件（M2 = S3 dependent, Minor = non-blocking）」
-
----
-
-### [2026-02-12 11:00] Scene: Harvey's Correction — "Winners don't make excuses."
-
-**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
-
-*Tak からのメッセージが Harvey のスクリーンに表示される。Harvey が一読し、表情が引き締まる。*
-
-**Harvey**: （立ち上がって）
-「Tak からだ。2点。端的に言う：
-
-1. **Abstract に数字は要らない** — SiM に載っている他の論文を見ろ。structured format（Background/Objective/Methods/Results/Conclusions）は SiM の慣例じゃない。数字を並べるのも違う。Narrative style で書き直す。
-
-2. **本文の太字は不要** — `\textbf{}` を本文中で使いすぎだ。SiM の convention では emphasis は italics、定義語も italics。Table header の bold は standard だが、body text に bold は使わない。
-
-"Winners don't make excuses when the boss corrects you." 即座に直す」
-
-**Mike**: （原稿を開きながら）
-「"I got it." 具体的な修正リスト：
-
-**Abstract 書き直し:**
-- structured labels（Background/Objective/Methods/Results/Conclusions）を除去
-- 具体的数字を全て除去: 0.02, 0.87-0.98, 10,000, 0.372, -0.04
-- Narrative style: 一つの flowing paragraph
-
-**本文 bold → italics:**
-- 'similar enough' → `\\emph`（ICH E17 引用内）
-- 'normalized Area Between Cumulative Distributions' → `\\emph`（定義）
-- 研究質問の quote block → bold 除去
-- 'estimation and clinical interpretation' → `\\emph`
-- enumerate labels（Full distributional comparison 等）→ `\\emph`
-- Computational complexity → `\\emph`
-- 評価指標 labels（Bias, RMSE 等）→ `\\emph`
-- Simulation summary labels → `\\emph`
-- Application の Step 1/2/3 → `\\emph`
-- EM名（Age, BMI, HbA1c）→ `\\emph`
-- 'measuring instrument', 'clinical judgment' → bold 除去
-
-Table header の `\\textbf` は standard convention なので維持」
-
-**Harvey**: （頷いて）
-「全て修正完了。Tak の指摘は正しかった。お作法を間違えたのは我々のミスだ。
-
-"I don't have dreams, I have goals." SiM の convention に従う。それが goal だ」
-
-**Donna**: （記録して）
-「"I'm Donna. I know everything."
-
-**修正内容:**
-- Abstract: structured → narrative（数字なし、labels なし）
-- 本文: `\\textbf` 17箇所 → `\\emph` or 除去
-- Table header の bold: 維持（standard convention）
-- 修正済み ✅」
-
----
-
-### [2026-02-12 10:30] Scene: Louis Re-Review — "You just got Litt up!"
-
-**INT. PEARSON SPECTER LITT - LOUIS'S OFFICE - DAY**
-
-*Louis が眼鏡をかけ直し、赤ペンで書き込んだ原稿を机に広げている。Harvey と Mike が入室。Louis の表情は真剣だが、満足の色も見える。*
-
-**Louis**: （ペンを置いて）
-「レビュー完了だ。正直に言う。
-
-**4項目を精査した：**
-1. Estimation framing の一貫性
-2. 数値の整合性（全テーブル × CSV v2 10K データ）
-3. $\Delta_{\max}$ calibration の論理的一貫性
-4. BCa 失敗の説明
-
-**結果: Critical 1件、Major 0件、Minor 2件。**」
-
-*Harvey が腕を組む。Mike がノートを構える。*
-
-**Louis**: （赤ペンで Abstract を指しながら）
-「まず Critical から。
-
----
-
-**[C1] Abstract と Simulation Summary の bias 記述 — 事実と不整合** ❌
-
-Abstract (line 40):
-> *"bias $<0.02$ for $n \geq 100$ across non-null scenarios"*
-
-Simulation Summary (line 397):
-> *"Less than 0.02 for non-null scenarios at $n \geq 100$"*
-
-だが本文 (line 302) は正しく書いてある：
-> *"For non-null scenarios **excluding S05**, bias was less than 0.02"*
-
-S05 の bias は n=100 で **-0.041**、n=200 で **-0.043** だ。|bias| = 0.04 > 0.02。
-
-Abstract と Summary が S05 を除外していない。これは **事実の誤記** だ。Reviewer がテーブルを見て 3 秒で気づく。Reject の理由になりうる」
-
-**Mike**: （即座に修正案を提示）
-「"I got it." 修正した：
-
-**Abstract**: 'across non-null scenarios' → 'across non-null scenarios with moderate effect sizes; bias of approximately $-0.04$ persisted for the largest distributional difference (true nABCD $= 0.372$)'
-
-**Summary**: 'Less than 0.02 for non-null scenarios' → 'Less than 0.02 for non-null scenarios at $n \geq 100$, excluding S05 where persistent bias of $-0.04$ reflects boundary effects at large true values'
-
-S05 を正直に acknowledge する。隠すのは逆効果だ」
-
-**Louis**: （頷いて）
-「それでいい。次、Minor。
-
----
-
-**[m1] Coverage range "0.87--0.98" と S08 overcoverage** ⚠️
-
-Abstract: "coverage within 0.87--0.98 for $n \geq 100$ in most scenarios"
-
-だが S08 n=200 は **0.996** — 0.98 の範囲外だ。'most scenarios' の qualifier があるから致命的ではないが、reviewer に突っ込まれる可能性はある。現状の 'most scenarios' で許容範囲とする。
-
----
-
-**[m2] Table 5 の小数桁数** ⚠️
-
-RMSE は 3 桁（0.099, 0.071）、CI Width は 2 桁（0.16, 0.11）。桁数の不統一は cosmetic だが、RMSE を 2 桁にするか CI Width を 3 桁にするかで統一した方がいい。だが submit blocking ではない。
-
----
-
-**Positive findings（問題なし確認）:**」
-
-*Louis が一枚のチェックリストをテーブルに置く。*
-
-**Louis**: （チェックマークを指して）
-「✅ **Estimation framing**: Power, Type I error, equivalence testing, detection rate — **全て除去済み**。hypothesis testing への言及は全て contrast（"not testing, but estimation"）の文脈。問題なし。
-
-✅ **数値整合性**: 全 6 scenarios × 3 sample sizes = 18 data points。
-- Table 3 (Bias): 全 18 値が CSV と一致 ✅
-- Table 4 (Coverage): 全 15 値が CSV と一致（S01 は NA で除外、正しい）✅
-- Table 5 (RMSE/CI Width): 全 36 値が CSV と一致（適切な四捨五入）✅
-- Table 6 (SMD comparison): nABCD 値 = TrueNABCD + Bias、CSV と一致 ✅
-- 本文中の数値: S01 bias 0.093→0.047、S05 -0.04、S08 coverage 0.573→0.945→0.996、BCa S06 n=100 0.839 — 全て CSV と一致 ✅
-
-✅ **$\Delta_{\max}$ calibration 一貫性**:
-- Proposition 2 (eq 5) → eq 6 の導出: 正しい
-- Table 7 の計算: Age $2×0.01×14.2×0.12=0.034→0.03$% ✅、BMI $2×0.02×7.8×0.51=0.159→0.16$% ✅、HbA1c $2×0.30×1.5×0.27=0.243→0.24$% ✅
-- Table 8 の sensitivity analysis: 全 5 行の $\Delta_{\max}$ 計算が正しい ✅
-- Section 4 の本文数値（Age 4%/8%、BMI 20%、HbA1c 30%/60%）: 全て正しい ✅
-- CI Width → $\Delta_{\max}$ CI Width の変換: 整合 ✅
-
-✅ **BCa 説明**: "bounded below by zero, causing the acceleration parameter to distort the quantile adjustment" — メカニズムの説明として十分。S06 n=100 の具体例（Pct 0.976 vs BCa 0.839）も正しい ✅
-
-✅ **S04 showcase paragraph**: bias -0.003、coverage 0.950、CI width 0.18 — 全て CSV と整合。$\Delta_{\max}$ CI Width 計算も正しい ✅」
-
-*Louis が立ち上がり、Harvey を見る。*
-
-**Louis**: （静かな自信を込めて）
-「Critical 1件は修正された。Major は **ゼロ** だ。Minor 2件は submit blocking ではない。
-
-この原稿は — 数値的に honest だ。S05 の問題を隠さない。BCa の失敗理由を説明している。Estimation framing は一貫している。
-
-"You just got Litt up!" — **Re-review passed.** 原稿は S3 以降に進んでよい」
-
-**Harvey**: （微笑んで）
-「よくやった、Louis。1C を見つけたのは正解だった。Reviewer に先に見つけられるより遥かにいい。
-
-"I don't have dreams, I have goals." S2 gate は通過だ。次は S3 — real data strategy だ」
-
-**Donna**: （記録しながら）
-「"I'm Donna. I know everything."
-
-**Louis Re-review 結果:**
-| 重要度 | 件数 | 詳細 |
-|--------|------|------|
-| **Critical** | 1 | Abstract/Summary の S05 bias 除外漏れ → **修正済み** |
-| **Major** | 0 | — |
-| **Minor** | 2 | Coverage range qualifier (acceptable) / Table decimal precision (cosmetic) |
-
-**数値検証**: 18 scenarios × 全テーブル = **全一致** ✅
-**Framing検証**: Testing remnants = **ゼロ** ✅
-**Calibration検証**: Sec 2.3 → Sec 4 = **論理的一貫** ✅
-
-**S2 Gate: PASSED** 🎯」
-
----
-
-### [2026-02-12 10:00] Scene: Push — "I don't get lucky. I make my own luck."
+### [2026-02-14 17:30] Scene: Scenario Overhaul — "I got it."
 
 **INT. PEARSON SPECTER LITT - BULLPEN - DAY**
 
-*Harvey がジャケットの袖を直しながらブルペンに入る。全員がシミュレーション結果レビューの余韻に浸っている。Harvey の表情はそれを許さない。*
+*Tak の指示で Mike がシミュレーションシナリオを刷新。*
 
-**Harvey**: （厳しい表情で、テーブルを叩いて）
-「結果のレビューは終わった。いい結果だった。だがそれで満足するな。
+**Mike**: （ホワイトボードに8シナリオを書き出して）
+「"I got it." シナリオ刷新完了。3つの問題を解決：
+1. IDギャップ（S02,S07欠番） → S1-S8連番
+2. 歪み分布なし → S7: 対数正規（CRP,ALT）追加
+3. 複合シナリオなし → S8: Location+Scale（最も現実的）追加
 
-3つの問題を見つけた：
-1. **原稿に "power" の残骸が残っていた** — Section 3.2 の MCSE 記述に "coverage, power" とあった。Power は削除したはずだ。修正済み。
-2. **S08 overcoverage の議論が Discussion に不足** — Results には書いたが Limitations に反映されていなかった。追加済み。
-3. **S04 showcase のナラティブが弱かった** — S04 が我々の best scenario だ。Simulation summary に $\Delta_{\max}$ CI Width の具体計算とともに明示した。
+各シナリオに臨床的根拠を付与。"Why this scenario?" に答えられる設計。」
 
-"I don't get lucky. I make my own luck." 細部で負けるわけにはいかない。動け」
+**Mike**: （新Figure関数を提示）
+「Figure 1 (Scenario Overview) を新規作成 — 8シナリオの密度分布を2×4グリッドで図示。Reviewerがシナリオ設計を一目で理解できる。」
 
-**Mike**: （画面を確認しながら）
-「"I got it." 全修正確認した。技術的に整理すると：
+**Katrina**: （figures_paper.R を更新しながら）
+「全scenarioラベルをS01→S1形式に統一。fig3, fig4のラベルも更新済み。fig1_scenario_overview関数を追加。」
 
-1. **"coverage, power" → "coverage probabilities"** — Line 315、power の残骸を除去。正確に estimation metrics のみの記述に。
-2. **Limitations 追加** — S08 の non-monotonic coverage パターン（0.573 → 0.945 → 0.996）を Limitation #3 に組み込み。bias と CI width のバランスが n で異なる rate で変化することを説明。
-3. **S04 showcase paragraph** — Simulation summary 直後に追加。bias -0.003、coverage 0.950、CI width 0.18 → $\Delta_{\max}$ CI width 0.16% HbA1c。具体的な数字で reviewer を説得する」
-
-**Katrina**: （テーブルを確認して）
-「"Results speak for themselves." S04 の数字を改めて確認：
-
-| 指標 | S04 (n=100) | 判定 |
-|------|------------|------|
-| Bias | -0.003 | ✅ Negligible |
-| Coverage | 0.950 | ✅ Nominal |
-| CI Width | 0.179 | ✅ Reasonable |
-| RMSE | 0.049 | ✅ < 0.05 |
-
-$\Delta_{\max}$ CI Width = $2 \times 0.3 \times 1.5 \times 0.179 = 0.16$% HbA1c。臨床的に十分な精度」
-
-**Louis**: （腕を組んで）
-「よし。原稿の3修正は acceptable だ。だが俺の本格 re-review はまだだ。"You just got Litt up!" は原稿全体を精査してからだ。
-
-**Re-review checklist:**
-1. estimation framing の一貫性 — 検定の残骸がゼロか再確認
-2. 数値の整合性 — Tables, 本文, Abstract の全数値が v2 10K CSV と一致するか
-3. $\Delta_{\max}$ calibration の論理的一貫性 — Section 2.3 → Section 4 の流れ
-4. BCa 失敗の説明 — "bounded below by zero, causing the acceleration parameter to distort the quantile adjustment" で十分か
-
-Harvey、Go を出してくれたら即座に re-review に入る」
-
-**Harvey**: （Louis を見て）
-「Go だ。S2 — Louis re-review、今すぐ始めろ。これが次のゲートだ。
-
-**残りの bottleneck:**
-- **S2: Louis re-review** — 今すぐ着手。これが全ての前提
-- **S3: Real data strategy** — 俺が Tak と相談する。Public dataset か hypothetical 強化か
-- **S4: Scenario numbering** — 図の再生成が必要。後回し
-- **S4: DOI check** — Rachel、Louis review と並行しろ
-
-"I don't have dreams. I have goals." 次のゴールは Louis の re-review 完了だ」
-
-**Rachel**: （文献リストを開いて）
-「"Hard work beats talent when talent doesn't work hard." DOI チェック、Louis review と並行で始めるわ。18 references 全件確認する」
-
-**Donna**: （タブレットを掲げて）
-「"I'm Donna. I know everything." 全て記録完了。
-
-**本日の進捗:**
-- ✅ Harvey's 4 decisions → 原稿反映（3件実施、scenario renumbering は deferred）
-- ✅ Power 残骸修正
-- ✅ S08 overcoverage を Discussion に追加
-- ✅ S04 showcase paragraph 追加
-- ✅ SUITS.md アーカイブ（995行 → archives/SUITS_20260212_090000.md）
-
-**次のアクション:**
-- ⏳ Louis re-review (S2) — **Gate task**
-- ⏳ DOI final check — Rachel 並行
-- ⏳ Real data strategy — Harvey/Tak 相談」
+**Donna**:
+「記録完了。simulation_manuscript_v2.R + figures_paper.R 両方更新済み。」
 
 ---
 
-### [2026-02-12 09:00] Scene: Meeting — Simulation Results Review
+### [2026-02-14 17:00] Scene: Cleanup & Louis Review — "You just got Litt up!"
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
 
-*Harvey が大型ディスプレイにシミュレーション結果テーブルを映す。全メンバー着席。コーヒーの香りが漂う朝のミーティング。*
+*Donna と Katrina がファイル整理、Louis がスライドを精査。*
 
-**Harvey**: （立ったまま、テーブルを見回して）
-「10,000 replications が完了した。これは試運転じゃない。本番の結果だ。全員の目でレビューしろ。見落としがあれば今日中に潰す。意見を聞かせろ」
+**Katrina**: （効率的に）
+「不要ファイル整理完了。"Results speak for themselves."
+- `fig4_power.*` → archive/old_figures/ （fig4_estimation_qualityに置換済み）
+- root `figures/` → archive （projects/下の複製）
+- `.Rhistory` → 削除（自動生成ファイル）」
 
-**Mike**: （ディスプレイを指しながら）
-「"I got it." 技術的な所見を整理する。
+**Donna**:
+「スライド9ページ目の2カラムレイアウトも修正完了。`cols`クラス除去、単一カラムに再構成。」
 
-**1. Bias — 想定通り、問題なし**
+**Louis**: （スライドを精査して）
+「スライドに1点、重大な矛盾がある。」
 
-| Scenario | n=50 | n=100 | n=200 | 判定 |
-|----------|------|-------|-------|------|
-| S01 (Null) | +0.093 | +0.066 | +0.047 | 境界効果 — 予想通り |
-| S03 (0.2σ) | +0.039 | +0.018 | +0.007 | ✅ n≥100 で < 0.02 |
-| S04 (0.5σ) | +0.004 | -0.003 | -0.004 | ✅ 全 n で negligible |
-| S05 (1.0σ) | -0.038 | -0.041 | -0.043 | ⚠️ 持続的負バイアス |
-| S06 (Scale) | +0.001 | -0.012 | -0.019 | ✅ n≥100 で < 0.02 |
-| S08 (Shape) | +0.029 | +0.003 | -0.015 | ✅ n≥100 で < 0.02 |
+**Louis**: （スライド15を指して）
+「[Major] "Recommendations for Practitioners" のnABCD Rangeテーブル — < 0.05 = Negligible、0.05–0.15 = Small、等の**固定閾値**を提示している。これは論文のKey Decision #2 "context-dependent, not fixed thresholds" と**直接矛盾**する。この表をそのまま残すなら、reviewerに "You claim estimation over testing, but then provide decision thresholds?" と突かれる。"reference benchmarks"として明確にラベルするか、$\Delta_{\max}$ベースの臨床判断フローに置き換えるべきだ。」
 
-S05 の負バイアス約 -0.04 は bounded statistic の性質。nABCD は [0, ∞) だが、true value 0.372 が実効的な上限に近いため、推定値が下に引っ張られる。これは正直に Discussion に書いている。
+**Louis**: （続けて）
+「[Minor] Slide 11 "Bias Results" — S01 (Null) のbias +0.093 が表に残っている。boundary biasの説明がスライドにない。口頭で説明する予定か？」
 
-**2. Coverage — 核心的な話題**
+**Harvey**:
+「Louis、いい指摘だ。閾値テーブルは次の修正で対応する。」
 
-Percentile CI の Coverage:
+---
 
-| Scenario | n=50 | n=100 | n=200 |
-|----------|------|-------|-------|
-| S03 (0.2σ) | 0.672 | 0.895 | **0.949** |
-| S04 (0.5σ) | **0.956** | **0.950** | **0.949** |
-| S06 (Scale) | **0.963** | **0.976** | **0.939** |
-| S08 (Shape) | 0.573 | **0.945** | **0.996** |
-| S05 (1.0σ) | **0.929** | 0.867 | 0.731 |
+### [2026-02-14 16:30] Scene: Push — "動け。全員。"
 
-n≥100 で bold = 0.90 以上。S04, S06, S08 は n≥100 で excellent。S03 は n=100 で 0.895 — ギリギリ acceptable。S05 は known issue。
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
 
-注目すべきは **S08 (Shape) n=200 の 0.996** だ。これは overcoverage — CI が広すぎることを意味する。Shape scenario では分布の非対称性が影響している可能性がある」
+*Harvey がオフィスから出てきて、厳しい表情で全員を見渡す。*
 
-**Katrina**: （Figure 4 を投影しながら）
-「"Results speak for themselves." Figure 4 のパネル B — CI Width を見てほしい。
+**Harvey**: （厳しい表情で）
+「ペースが遅い。3つの指示が同時に出た。並列で動け。"I don't get lucky. I make my own luck." 運任せにはしない。」
 
-| Scenario | n=50 | n=100 | n=200 |
-|----------|------|-------|-------|
-| S03 | 0.181 | 0.135 | 0.106 |
-| S04 | 0.229 | 0.179 | 0.134 |
-| S05 | 0.243 | 0.172 | 0.121 |
-| S06 | 0.186 | 0.131 | 0.094 |
-| S08 | 0.165 | 0.113 | 0.078 |
+**Harvey**: （タスク指示）
+「Tak の指示は3つ：
+1. agents/ の精度向上 — 全員の定義を見直せ
+2. SUITS.md の全会話反映 — Donna、Hooksで徹底しろ
+3. スライドを現状に合わせろ — 俺とLouisでやる」
 
-n を 2 倍にすると CI Width が約 25-30% 縮小する。$\sqrt{n}$ rate と整合。n=100 で 0.11-0.18 の範囲。
+*チーム全員が即座に動き出す。*
 
-Clinical calibration の観点: $L = 0.3$, IQR = 1.5% の HbA1c に対して、S04 (n=100) の CI Width 0.179 は $\Delta_{\max}$ の CI Width $= 2 \times 0.3 \times 1.5 \times 0.179 = 0.16$% HbA1c に相当する。臨床的に意味のある精度だ」
+**Mike**: （コード例を修正しながら）
+「了解。僕のagent定義のコード例がW2だった。W1に修正。"I got it" — Kantorovich-Rubinstein dualityが要求するのはW1だ。」
 
-**Harvey**: （全員を見渡して、決断）
-「結果はレビューに耐えうる。以下を決定する。
+**Rachel**: （DOI関連を追加しながら）
+「私のagent定義にRule 2.6のDOI責任を追加。署名Quoteも"Hard work beats talent"に統一。」
 
-**Decision 1**: S04 を primary showcase scenario として論文のナラティブの中心に据える。
-**Decision 2**: Louis の 3 指摘を全て manuscript に反映。特に MCSE 明示と BCa 失敗理由。
-**Decision 3**: S08 の overcoverage の非単調パターンを Discussion で議論。
-**Decision 4**: $\Delta_{\max}$ CI Width の具体計算を Section 4 に追加。
+**Katrina**: （冷静に）
+「署名Quote修正。"Results speak for themselves." — CLAUDE.mdと整合。」
 
-Mike、Louis の指摘の manuscript 反映を担当しろ。Katrina、Section 4 の $\Delta_{\max}$ 計算追加。
+**Harvey**: （スライドを確認しながら）
+「スライドのタイトルとfooterを新タイトルに更新。」
 
-"I don't have dreams, I have goals." 次は Stage 2 — Louis の full re-review だ」
+**Louis**: （スライドを精査して）
+「タイトルスライドとfooter、2箇所修正確認。本文内容は現状のKey Decisionsと整合している。問題なし。」
+
+**Donna**: （全作業を記録しながら）
+「全会話反映完了。Hook systemも稼働中 — SUITS.md編集以外のファイル操作で自動リマインド。」
+
+---
+
+### [2026-02-14 16:00] Scene: Subagent vs Agent Teams — "I got it."
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Harvey の指示で Mike が subagent と agent teams の比較評価を実施。*
+
+**Mike**: （ホワイトボードに図を描きながら）
+「"I got it." Subagent = 安定版・低コスト・一方向通信。Agent Teams = 実験的・高コスト・双方向議論可。我々のワークフローは独立タスク→結果統合パターン。Subagentが最適。」
+
+**Mike**: （結論）
+「推奨：Subagent主力。Custom agent定義で専門性付与。Agent Teamsは安定版リリース後に再評価。」
+
+**Harvey**:
+「採用だ。Subagentで行く。Custom agentの定義をMike、作れ。」
+
+---
+
+### [2026-02-14 15:30] Scene: Meeting — Free Discussion
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*チーム全員がテーブルに集まる。Harvey が立ったまま全員を見渡す。*
+
+**Harvey**: （立ったまま）
+「Free discussion だ。タイトル決定、Donnaの監査、その他全部出せ。」
+
+**Donna**: （監査報告）
+「Hook修正完了。3スクリプト修正、settings.json更新、SUITS.md 1518行→アーカイブ済み。自動執行ルール4つ稼働中。」
+
+**Mike**:
+「Subagent並列活用を標準化すべき。Explore agentで独立タスクを同時実行できる。」
+
+**Rachel**:
+「DOI final checkは即時開始できる。Real dataはHarveyの決定待ち。」
+
+**Louis**: （鋭く）
+「タイトルからnABCDを外したなら、Abstractの冒頭との整合性を確認しろ。"You just got Litt up!"」
+
+**Jessica**:
+「Let me be clear. S3 Real data strategyがずっとpending。いつ決める？」
+
+**Harvey**: （決断）
+「決定事項6つ：
+1. Abstract-タイトル整合性 → Mike確認
+2. DOI check → Rachel即時開始
+3. S02/S07 gap → 投稿前に修正
+4. Subagent並列実行を標準化
+5. S3 Real data → 次回Takが決定
+6. 親dir settings.json → Tak判断待ち」
+
+**Donna**:
+「記録完了。」
+
+---
+
+### [2026-02-14 15:00] Scene: Donna's System Audit — "I'm Donna. I know everything."
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
+
+*Donna がシステム全体の監査を実施。重大な不具合を6件発見し、修正を開始。*
+
+**Donna**: （ファイルを広げながら）
+「I'm Donna. I know everything — and right now, what I know is that our entire hook system has been **dead**. Silent failure. WSLパスがMSYS環境で無効だった。全Hookが機能停止していた。」
+
+**Donna**: （修正リストを提示）
+「6件の問題を発見・修正中：
+1. Hook scripts: /mnt/c → portable path detection
+2. SUITS.md path: 親dir → project root
+3. SUITS.md 1518行 → archive実行
+4. PostToolUse: SUITS.md編集時の過剰リマインド除去
+5. donna.md: LAB_STATUS.md → SUITS.md
+6. 親dir settings.json: 旧プロジェクトパス修正」
+
+**Harvey**: （腕を組み）
+「Fix it. All of it.」
 
 ---

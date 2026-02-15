@@ -1,25 +1,25 @@
 # Fdb version 4
-["bibtex nABCD_wiley"] 1770964378.25418 "nABCD_wiley.aux" "nABCD_wiley.bbl" "nABCD_wiley" 1770964380.3518 0
+["bibtex nABCD_wiley"] 1770964378.25418 "nABCD_wiley.aux" "nABCD_wiley.bbl" "nABCD_wiley" 1771047123.86931 0
   "./nABCD_wiley.bib" 1770907513.07115 6719 f3e2328dd695f7a185f157d22795345a ""
   "./wileyNJD-AMA.bst" 1770455185.28324 19155 8fd474a7161c22bb6a795bd57510d2e1 ""
-  "nABCD_wiley.aux" 1770964379.73494 25583 a95d6857deaec10f5036267351ab0ef8 "pdflatex"
+  "nABCD_wiley.aux" 1771047123.16505 25583 a95d6857deaec10f5036267351ab0ef8 "pdflatex"
   (generated)
   "nABCD_wiley.bbl"
   "nABCD_wiley.blg"
   (rewritten before read)
-["pdflatex"] 1770964378.48173 "c:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/paper/latex/nABCD_wiley.tex" "nABCD_wiley.pdf" "nABCD_wiley" 1770964380.3533 0
-  "../../figures/fig2_nabcd_definition.pdf" 1770907513.04808 12738 9827c76ca5f4693cbad2c4e42deb4205 ""
-  "../../figures/fig3_bias.pdf" 1770907513.05478 5334 732529f7df3823c5a6c42e8fa2733a87 ""
-  "../../figures/fig4_estimation_quality.pdf" 1770907513.05478 6054 dc96919f5f27476df405c0aebd24f259 ""
-  "../../figures/fig5_smd_comparison.pdf" 1770907513.06135 13454 d965106e4207b1389cc969ea871d5ba8 ""
-  "../../figures/fig6_application.pdf" 1770907513.06337 16010 e7e9118edffa633c183546cea08b78b7 ""
+["pdflatex"] 1771047121.68593 "c:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/paper/latex/nABCD_wiley.tex" "nABCD_wiley.pdf" "nABCD_wiley" 1771047123.87068 0
+  "../../figures/fig2_nabcd_definition.pdf" 1771046935.15893 12548 830d7f8a48f94e55333269e027caa26e ""
+  "../../figures/fig3_bias.pdf" 1771046936.35856 5110 9fc9f8547d46a7ea43608bfabaf55e5f ""
+  "../../figures/fig4_estimation_quality.pdf" 1771046937.38024 5831 ef7418eb4e2c05ac7009f182e19eab0a ""
+  "../../figures/fig5_smd_comparison.pdf" 1771046938.1642 13268 2c226213710a18b6822acbd10bc401a6 ""
+  "../../figures/fig6_application.pdf" 1771046938.67789 15868 a7f242dd4273398734764107945d77f2 ""
   "LETTERSP.STY" 1770455185.36055 12456 8477929c9a9407e7414310179cbc8b3e ""
   "NJDnatbib.sty" 1770455185.29748 47139 89bf57251a5bf5c11ed54a3c9baf6d8a ""
   "WileyNJDv5.cls" 1770653981.70227 229184 c59f739819242fe33200a8b0f60a013f ""
   "algorithm.sty" 1770455185.32324 3349 a740febc3f1b2643b9cddc03a96915e4 ""
   "algorithmicx.sty" 1770455185.34917 26750 ce139c05a983e19ddca355b43e29c395 ""
   "algpseudocode.sty" 1770455323.6638 582 fe142aba30b372c51f70b5ce826b6d17 ""
-  "c:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/paper/latex/nABCD_wiley.tex" 1770964275.90544 54586 d6dce8aa11f0eb548117af1354441b23 ""
+  "c:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/paper/latex/nABCD_wiley.tex" 1771038218.27829 54571 ab2968f7f678cc3c9462c183baa5b1a1 ""
   "c:/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc" 1727502357.26878 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm" 1770654042.65975 1292 bd42be2f344128bff6d35d98474adfe3 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/adobe/courier/pcrr8t.tfm" 1770654042.66177 1384 4632f5e54900a7dadbb83f555bc61e56 ""
@@ -208,7 +208,7 @@
   "c:/texlive/2024/texmf.cnf" 1727503606.94507 713 baa45e065482d44c4cd81b98ef72c63b ""
   "cuted.sty" 1770484037.69759 32452 41238b2d586e047f606df7dbfc1c149f ""
   "floatpag.sty" 1770648831.05915 276 c763d7b9ab967da672d5f1aa2f3f1aea ""
-  "nABCD_wiley.aux" 1770964379.73494 25583 a95d6857deaec10f5036267351ab0ef8 "pdflatex"
+  "nABCD_wiley.aux" 1771047123.16505 25583 a95d6857deaec10f5036267351ab0ef8 "pdflatex"
   "nABCD_wiley.bbl" 1770964378.43834 5200 09ae57a8e8dd7c1683fe95cce13179e4 "bibtex nABCD_wiley"
   (generated)
   "nABCD_wiley.aux"

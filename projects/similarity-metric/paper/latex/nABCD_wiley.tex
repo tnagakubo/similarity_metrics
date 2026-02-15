@@ -16,7 +16,7 @@
 
 \begin{document}
 
-\title{nABCD: A Normalized Metric for Comparing Effect Modifier Distributions in Multi-Regional Clinical Trials}
+\title{Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials}
 
 \author[1]{Author One}
 
@@ -25,7 +25,7 @@
 \author[1]{Author Three}
 
 \authormark{AUTHOR ONE \textsc{et al.}}
-\titlemark{nABCD FOR COMPARING EFFECT MODIFIER DISTRIBUTIONS}
+\titlemark{QUANTIFYING EFFECT MODIFIER SIMILARITY FOR REGIONAL POOLING}
 
 \address[1]{\orgdiv{Department Name}, \orgname{Institution Name}, \orgaddress{\state{State}, \country{Country}}}
 
@@ -34,7 +34,7 @@
 \corres{Corresponding Author, Department Name, Institution Name, Address. \email{corresponding@institution.edu}}
 
 \abstract[Abstract]{%
-The ICH E17 guideline recommends regional pooling in multi-regional clinical trials (MRCTs) based on similarity of effect modifier (EM) distributions, but provides no specific methodology for quantifying such similarity. Existing approaches focus on location differences (standardized mean difference) or lack interpretable scales (Kolmogorov--Smirnov statistic). We propose the normalized Area Between Cumulative Distributions (nABCD), defined as the Wasserstein-1 distance between two distributions divided by twice the pooled interquartile range. Through its connection to the treatment effect heterogeneity bound, nABCD enables clinical calibration: the maximum potential regional treatment effect difference ($\Delta_{\max}$) can be expressed as a function of nABCD, the pooled IQR, and the CATE sensitivity of the EM, with bootstrap confidence intervals quantifying estimation uncertainty. Simulation studies across location, scale, and shape scenarios at sample sizes typical in MRCT regional subgroups demonstrated satisfactory bias and coverage of the bootstrap-based estimator. Unlike the standardized mean difference, nABCD captured variance and shape differences that are invisible to location-only metrics. Application to a diabetes MRCT illustrated that clinical calibration provides context-dependent interpretation: the same distributional difference carries different clinical implications depending on the strength of effect modification. The nABCD framework fills a methodological gap in ICH E17 implementation by translating distributional differences into potential treatment effect heterogeneity on the clinical scale, supporting evidence-based pooling decisions.}
+The ICH E17 guideline recommends regional pooling in multi-regional clinical trials (MRCTs) based on similarity of effect modifier (EM) distributions, but provides no specific methodology for quantifying such similarity. Existing approaches focus on location differences (standardized mean difference) or lack interpretable scales (Kolmogorov--Smirnov statistic). We propose the normalized Area Between Cumulative Distributions (nABCD), defined as the Wasserstein-1 distance between two distributions divided by twice the pooled interquartile range. Through its connection to the treatment effect heterogeneity bound, nABCD enables clinical calibration: the maximum potential regional treatment effect difference ($\Delta_{\max}$) can be expressed as a function of nABCD, the pooled IQR, and the CATE sensitivity of the EM, with bootstrap confidence intervals quantifying estimation uncertainty. Simulation studies across location, scale, and shape scenarios at sample sizes typical in MRCT regional subgroups demonstrated satisfactory bias and coverage of the bootstrap-based estimator. Unlike the standardized mean difference, nABCD captured variance and shape differences that are invisible to location-only metrics. Application to a diabetes MRCT illustrated that clinical calibration provides context-dependent interpretation: a large distributional difference in a weak effect modifier (BMI: nABCD $= 0.51$, $\Delta_{\max} = 0.16$\%) carried less clinical weight than a moderate difference in a strong effect modifier (baseline HbA1c: nABCD $= 0.27$, $\Delta_{\max} = 0.24$\%), demonstrating that distributional magnitude and clinical impact are fundamentally different dimensions. The nABCD framework fills a methodological gap in ICH E17 implementation by translating distributional differences into potential treatment effect heterogeneity on the clinical scale, supporting evidence-based pooling decisions.}
 
 \keywords{multi-regional clinical trial; ICH E17; effect modifier; Wasserstein distance; regional pooling; distributional similarity}
 
@@ -42,7 +42,7 @@ The ICH E17 guideline recommends regional pooling in multi-regional clinical tri
 \author{Author One},
 \author{Author Two}, and
 \author{Author Three}}.
-\ctitle{nABCD: A normalized metric for comparing effect modifier distributions in multi-regional clinical trials.} \cjournal{Statist.\ Med.} \cvol{2025;00:1--18}.}
+\ctitle{Quantifying effect modifier similarity for regional pooling in multi-regional clinical trials.} \cjournal{Statist.\ Med.} \cvol{2025;00:1--18}.}
 
 \maketitle
 
@@ -58,7 +58,7 @@ The ICH E17 guideline recommends regional pooling in multi-regional clinical tri
 
 Multi-regional clinical trials (MRCTs), conducted across multiple countries or regulatory regions under a single protocol, have become the standard paradigm for global pharmaceutical development.\cite{chen2010,quan2010} This approach offers substantial benefits: accelerated timelines, broader generalizability, and earlier access to new therapies for patients worldwide. The International Council for Harmonisation (ICH) E17 guideline, adopted in 2017, established principles for planning and designing MRCTs, with a central assumption that treatment effects are generalizable across the target population.\cite{iche17}
 
-A key strategy for enhancing the ability to asess regional consistency in treatment outcomes is the regional pooling approach, wherein regions with similar patient characteristics are grouped for analysis.\cite{iche17} The ICH E17 guideline explicitly recommends that pooling decisions be based on the similarity of effect modifier (EM) distributions:
+A key strategy for enhancing the ability to assess regional consistency in treatment outcomes is the regional pooling approach, wherein regions with similar patient characteristics are grouped for analysis.\cite{iche17} The ICH E17 guideline explicitly recommends that pooling decisions be based on the similarity of effect modifier (EM) distributions:
 
 \begin{quote}
 ``Regions may be pooled for randomisation and/or analysis if subjects are thought to be \emph{similar enough} with respect to intrinsic and/or extrinsic factors relevant to the disease and/or drug under study.'' (ICH E17, Section 2.2.5)
@@ -198,7 +198,7 @@ When regulatory agencies require a formal decision rule, the estimation framewor
 
 \subsubsection{Reference Benchmarks}
 
-When prior knowledge of $L$ is unavailable, the benchmarks in Table~\ref{tab:benchmarks} provide a convenience reference for initial assessment. These assume moderate CATE sensitivity and should be interpreted cautiously.
+When prior knowledge of $L$ is unavailable, the benchmarks in Table~\ref{tab:benchmarks} provide a convenience reference for initial assessment. These labels describe \emph{distributional magnitude} only and should not be conflated with clinical significance: as Section~\ref{sec:application} demonstrates, a ``large'' nABCD for a weak effect modifier may carry less clinical consequence than a ``moderate'' nABCD for a strong effect modifier, because CATE sensitivity $L$ determines how distributional distance translates into treatment effect heterogeneity.
 
 \begin{table}[ht]
 \caption{Reference benchmarks for nABCD values when CATE sensitivity $L$ is unknown.\label{tab:benchmarks}}
@@ -213,7 +213,7 @@ $> 0.30$ & Large difference & Clinical calibration essential \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
-\item These benchmarks are convenience references assuming moderate CATE sensitivity. Actual pooling decisions should use clinical calibration (equation~\ref{eq:delta_max}) whenever possible.
+\item These benchmarks describe distributional magnitude assuming moderate CATE sensitivity and do not indicate clinical significance. The same nABCD value may be negligible for one EM and consequential for another depending on CATE sensitivity $L$. Actual pooling decisions should use clinical calibration (equation~\ref{eq:delta_max}) whenever possible.
 \end{tablenotes}
 \end{table}
 
@@ -258,8 +258,8 @@ For each scenario, we generated samples of size $n = 50$, 100, and 200 per regio
 
 Consistent with the estimation-centered framework, we evaluated:
 \begin{enumerate}[1.]
-\item \emph{Bias}: $\text{Mean}(\widehat{\text{nABCD}}) - \text{true nABCD}$
-\item \emph{Root mean squared error (RMSE)}: $\sqrt{\text{Mean}[(\widehat{\text{nABCD}} - \text{true nABCD})^2]}$
+\item \emph{Bias}: $\text{Mean}(\widehat{\text{nABCD}}) - \text{nABCD}$
+\item \emph{Root mean squared error (RMSE)}: $\sqrt{\text{Mean}[(\widehat{\text{nABCD}} - \text{nABCD})^2]}$
 \item \emph{Coverage probability}: Proportion of 95\% bootstrap CIs containing the true value
 \item \emph{CI width}: Mean width of bootstrap CIs, reflecting estimation precision
 \end{enumerate}
@@ -285,7 +285,7 @@ S08 (Shape) & 0.067 & 0.029 & 0.003 & $-0.015$ \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
-\item Bias is defined as $\text{Mean}(\widehat{\text{nABCD}}) - \text{true nABCD}$. Results based on 10{,}000 replications with $B = 2{,}000$ bootstrap resamples.
+\item Bias is defined as $\text{Mean}(\widehat{\text{nABCD}}) - \text{nABCD}$. Results based on 10{,}000 replications with $B = 2{,}000$ bootstrap resamples.
 \end{tablenotes}
 \end{table}
 
@@ -509,7 +509,7 @@ We developed and validated nABCD, a normalized metric for comparing effect modif
 
 The nABCD metric addresses limitations of current approaches. Compared to SMD, nABCD captures full distributional differences including variance and shape. Our simulation demonstrated that nABCD captured scale differences (S06) and shape differences (S08) where SMD estimates remained near zero. Compared to the KS statistic, nABCD provides a direct connection to treatment effect heterogeneity through the heterogeneity bound (equation~\ref{eq:delta_max}), enabling clinical calibration rather than purely statistical assessment. Compared to visual inspection, nABCD is objective and reproducible.
 
-The clinical calibration procedure introduced in Section~\ref{sec:inference} represents a departure from fixed-threshold approaches. Cohen's $d$ benchmarks (small = 0.2, medium = 0.5, large = 0.8) have been widely criticized for context-free application, and we deliberately avoid this pattern. Instead, the heterogeneity bound provides a principled mechanism to translate nABCD into clinically meaningful units. This approach respects the ICH E17 principle that ``similar enough'' is context-dependent: the same nABCD value may support pooling for one EM (where CATE sensitivity is low) but warrant separate analysis for another (where CATE sensitivity is high), as demonstrated in Section~\ref{sec:application}. This connection draws on transportability theory\cite{pearl2011,bareinboim2016} to relate distributional distance to potential treatment effect heterogeneity.
+The clinical calibration procedure introduced in Section~\ref{sec:inference} represents a departure from fixed-threshold approaches. Cohen's $d$ benchmarks (small = 0.2, medium = 0.5, large = 0.8) have been widely criticized for context-free application, and we deliberately avoid this pattern. Instead, the heterogeneity bound provides a principled mechanism to translate nABCD into clinically meaningful units. This approach respects the ICH E17 principle that ``similar enough'' is context-dependent: the same nABCD value may support pooling for one EM (where CATE sensitivity is low) but warrant separate analysis for another (where CATE sensitivity is high). Indeed, the application example revealed a \emph{ranking reversal}: BMI had the largest distributional difference (nABCD $= 0.51$) yet the smallest clinical impact ($\Delta_{\max} = 0.16$\%), while baseline HbA1c had a moderate distributional difference (nABCD $= 0.27$) but the largest clinical impact ($\Delta_{\max} = 0.24$\%) due to its 15-fold higher CATE sensitivity. This reversal underscores that distributional distance and clinical relevance are fundamentally different dimensions, and that nABCD magnitude labels (Table~\ref{tab:benchmarks}) describe distributional distance only, not clinical significance. This connection draws on transportability theory\cite{pearl2011,bareinboim2016} to relate distributional distance to potential treatment effect heterogeneity.
 
 Based on our findings, we offer the following recommendations for practitioners:
 \begin{enumerate}[1.]

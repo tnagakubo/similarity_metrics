@@ -1,19 +1,21 @@
 #!/bin/bash
 # Donna's Gatekeeper: SUITS.md Line Count Monitor
-# Warns at 800+, alerts at 900+
+# Portable path detection (works in MSYS, WSL, Linux)
 
-SUITS_FILE="/mnt/c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/SUITS.md"
+SCRIPT_DIR="$(cd "$(dirname "$0")" 2>/dev/null && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." 2>/dev/null && pwd)"
+SUITS_FILE="$PROJECT_DIR/SUITS.md"
 
 if [ -f "$SUITS_FILE" ]; then
   LINES=$(wc -l < "$SUITS_FILE")
 
   if [ "$LINES" -ge 1000 ]; then
-    echo "🚨 Donna: SUITS.md が ${LINES} 行です！1000行超過 - 即座にアーカイブしてください！" >&2
-    echo "   /archive コマンドを実行してください" >&2
+    echo "Donna: SUITS.md ${LINES} lines. Archive now. /archive" >&2
+    exit 2
   elif [ "$LINES" -ge 900 ]; then
-    echo "🔴 Donna: SUITS.md が ${LINES} 行です！アーカイブ準備をしてください" >&2
+    echo "Donna: SUITS.md ${LINES} lines. Prepare archive." >&2
   elif [ "$LINES" -ge 800 ]; then
-    echo "⚠️ Donna: SUITS.md が ${LINES} 行です（警告ライン超過）" >&2
+    echo "Donna: SUITS.md ${LINES} lines. Warning." >&2
   fi
 fi
 

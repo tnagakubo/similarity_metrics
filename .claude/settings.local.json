@@ -54,7 +54,21 @@
       "Bash(git push:*)",
       "Bash(git pull:*)",
       "Bash(git stash:*)",
-      "Bash(git stash pop:*)"
+      "Bash(git stash pop:*)",
+      "Bash(xxd:*)",
+      "Bash(echo:*)",
+      "Bash(bash \"/c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/check-suits-lines.sh\")",
+      "Bash(bash .claude/hooks/check-suits-lines.sh)",
+      "Bash(sort:*)",
+      "Bash(wc:*)",
+      "WebFetch(domain:academic.oup.com)",
+      "WebFetch(domain:julien-arino.github.io)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.nejm.org)",
+      "WebFetch(domain:rnd195.github.io)",
+      "WebFetch(domain:marpit.marp.app)",
+      "WebFetch(domain:westgard.com)",
+      "WebFetch(domain:chris-ayers.com)"
     ]
   }
 }
