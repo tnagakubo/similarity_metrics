@@ -4,6 +4,95 @@
 
 ---
 
+### [2026-02-16 11:00] Scene: LaTeX Update Complete — "You just got Litt up!"
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*LaTeX更新完了。チームで確認。*
+
+**Mike**: （報告）
+「"I got it." LaTeX更新完了。修正内容：
+
+**1. シナリオテーブル (Table 3)**
+- S01-S08 → S1-S8 連番に変更
+- S7 (Skew: Log-normal) 追加 — true nABCD = 0.302
+- S8 (Location + Scale) 追加 — true nABCD = 0.175
+- 脚注にS7のCV説明（ALT臨床根拠）追加
+
+**2. バイアステーブル (Table 4)**
+- 全シナリオ番号 S01→S1 形式に統一
+- 新シナリオ S7/S8 の数値追加
+- S7: bias +0.019/+0.009/+0.005 (n=50/100/200)
+- S8: bias +0.024/+0.011/+0.006
+
+**3. カバレッジテーブル (Table 5)**
+- S7: coverage 0.953/0.954/0.951 — 優秀
+- S8: coverage 0.916/0.932/0.939 — 改善傾向
+- S4 undercoverage 0.740 at n=200 を正確に反映
+
+**4. RMSE/CI Widthテーブル (Table 6)**
+- 8シナリオ全て更新
+- S7: CI Width 0.27/0.19/0.13 — skew分布のため若干広め
+- S8: CI Width 0.22/0.16/0.12
+
+**5. 本文**
+- 全シナリオ言及を新番号に更新
+- BCa比較の具体値更新 (S5: 0.979 vs 0.841)
+- Discussion のシナリオ参照更新
+- Figure caption更新」
+
+**Katrina**: （確認）
+「"Results speak for themselves." 表の整合性を確認。数値はCSV simulation_results_v2.csv と一致。」
+
+**Louis**: （精査して）
+「"You just got Litt up!" タイポも修正されている — `\\end{table>` → `\\end{table}`。論文は compile ready。」
+
+**Harvey**: （満足して）
+「Good work. シミュレーション結果が論文に正確に反映された。"I don't have dreams. I have goals." — 次はスライド更新だ。」
+
+**Donna**:
+「"I'm Donna. I know everything." 記録完了。LaTeX修正：シナリオテーブル、バイアステーブル、カバレッジテーブル、RMSE/CI Width テーブル、本文シナリオ参照、Figure caption。」
+
+---
+
+### [2026-02-16 10:30] Scene: LaTeX Update — "Results speak for themselves."
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*シミュレーション結果をLaTeX論文に反映する作業を開始。Harvey が指揮。*
+
+**Harvey**: （立って）
+「シミュレーション結果が確定した。LaTeXを更新する。Mike、Katrina、動け。」
+
+**Mike**: （CSVを確認しながら）
+「"I got it." 結果の確認完了。8シナリオ × 3サンプルサイズ = 24行、全て揃っている。主要な数値：
+
+| Scenario | True nABCD | Bias (n=100) | Coverage (n=100) |
+|----------|-----------|--------------|------------------|
+| S1 (Null) | 0.000 | +0.066 | NA (boundary) |
+| S2 (0.2σ) | 0.074 | +0.018 | 0.896 |
+| S3 (0.5σ) | 0.186 | -0.002 | 0.949 |
+| S4 (1.0σ) | 0.372 | -0.041 | 0.874 |
+| S5 (Scale) | 0.148 | -0.012 | 0.979 |
+| S6 (Shape) | 0.067 | +0.003 | 0.949 |
+| S7 (LogN) | 0.302 | +0.009 | 0.954 |
+| S8 (Loc+Scale) | 0.175 | +0.011 | 0.932 |
+
+論文更新が必要な箇所：
+1. シナリオテーブル (Table 3) — S01-S08 → S1-S8、True nABCD値更新
+2. バイアステーブル (Table 4) — 全数値更新
+3. カバレッジテーブル (Table 5) — 全数値更新
+4. RMSE/CI Widthテーブル (Table 6) — 全数値更新
+5. 本文中の具体的数値 — Limitation節など」
+
+**Katrina**: （効率的に）
+「"Results speak for themselves." 論文の表番号と構成を確認。更新準備完了。」
+
+**Donna**:
+「"I'm Donna. I know everything." 記録中。LaTeX更新作業開始。」
+
+---
+
 ### [2026-02-16 09:00] Scene: Simulation Results Review — "S4が問題だ。"
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**

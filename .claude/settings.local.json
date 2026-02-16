@@ -68,7 +68,10 @@
       "WebFetch(domain:rnd195.github.io)",
       "WebFetch(domain:marpit.marp.app)",
       "WebFetch(domain:westgard.com)",
-      "WebFetch(domain:chris-ayers.com)"
+      "WebFetch(domain:chris-ayers.com)",
+      "Bash(where:*)",
+      "Bash(dir:*)",
+      "Bash(dir \"C:\\\\Program Files\\\\MiKTeX\")"
     ]
   }
 }
