@@ -4,6 +4,37 @@
 
 ---
 
+### [2026-02-17 10:00] Scene: Full Paper Update — "全テーブル、全テキスト、完了。"
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Mike と Katrina がシミュレーション結果を論文に反映する全面更新を実施。*
+
+**Mike**: （チェックリストを見せながら）
+「7タスク、全完了。変更点を報告する：
+
+**1. シナリオテーブル (Table 2)** — S01→S1, S03→S2, ..., S08→S6。S7 (log-normal, ALT, true=0.302) と S8 (location+scale, true=0.175) を追加。"Two sets of scenarios" → 単一の統合セット (S1-S8)。
+
+**2. Bias テーブル (Table 3)** — 全数値をCSVから更新。S7, S8行追加。テキストにS7/S8の良好なバイアス (< 0.012 at n≥100) を記述。S4の負バイアスの原因を "upward bias in pooled IQR" と明記。
+
+**3. Coverage テーブル (Table 4)** — S2-S8の7行。S7 (0.953/0.954/0.951) と S8 (0.916/0.932/0.939) 追加。テキストでS3, S7, S8の "near-nominal" カバレッジを強調。BCa議論更新: S6 n=200 で Pct 0.997 vs BCa 0.493。
+
+**4. Precision テーブル (Table 5)** — RMSE + CI Width 全更新。S7 (CIW: 0.27/0.19/0.13), S8 (0.22/0.16/0.12) 追加。
+
+**5. SMD比較テーブル (Table 6)** — S7行追加: nABCD 0.311 vs SMD 0.00 — "a large distributional difference entirely invisible to SMD"。
+
+**6. Summary** — 5項目に拡張。Robustness項追加。S3をexemplar scenarioに。
+
+**7. Discussion/Limitations** — S4 undercoverage 0.740, BCa inferior across "all eight scenarios"。S4バイアスの物理的説明追加。」
+
+**Katrina**: （確認して）
+「"Results speak for themselves." — Abstract も更新: "eight scenarios" + "percentile bootstrap" + "skewness" を明記。旧ID (S01-S08) はゼロ。`grep S0[1-9]` で確認済み。」
+
+**Harvey**: （頷いて）
+「"I don't have dreams, I have goals." — LaTeXコンパイルして最終確認しろ。」
+
+---
+
 ### [2026-02-16 09:00] Scene: Simulation Results Review — "S4が問題だ。"
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
