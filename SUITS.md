@@ -4,6 +4,38 @@
 
 ---
 
+### [2026-02-20 09:00] Scene: Conference Abstract Preparation — "I got it."
+
+**INT. PEARSON SPECTER LITT - MIKE'S DESK - DAY**
+
+*Takから「Global Stats Conference用のAbstract作成」と「タイトル再考」の指示。*
+
+**Mike**: （論文を読み直して）
+「"I got it." Global Stats Conference用にAbstract 3 sentencesで作成。制約条件：
+- Simulation結果は含めない（長すぎる）
+- Problem statementとSolutionだけでOK
+- タイトルは "Consideration of similarity metrics for regional pooling strategy in multi-regional clinical trials" を修正
+
+初稿作成後、Takがより簡潔なバージョンに改訂：
+
+**Title (確定):**
+"Quantifying Effect Modifier Similarity for Regional Pooling Strategy in Multi-Regional Clinical Trials"
+
+**Abstract (3 sentences - Final):**
+
+The ICH E17 guideline mentions regional pooling in multi-regional clinical trials based on effect modifier distributional similarity, but provides no specific methodology for quantifying "similar enough". I propose the normalized Area Between Cumulative Distributions (nABCD), defined as the Wasserstein-1 distance normalized by twice the pooled interquartile range, which provides a scale-free metric capturing location, scale, and shape differences. nABCD enables evidence-based pooling decisions in ICH E17 implementation.
+
+変更点：
+- heterogeneity boundの数式削除（より簡潔に）
+- "We propose" → "I propose"（一人称）
+- Clinical calibration詳細を最後の文から削除
+- タイポ修正："renage" → "range"」
+
+**Donna**:
+「"I'm Donna. I know everything." 記録完了。Conference abstract作成 — 3 sentences, タイトル修正。」
+
+---
+
 ### [2026-02-16 11:00] Scene: LaTeX Update Complete — "You just got Litt up!"
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
