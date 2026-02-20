@@ -4,6 +4,7 @@
 
 ---
 
+<<<<<<< HEAD
 ### [2026-02-20 09:00] Scene: Conference Abstract Preparation — "I got it."
 
 **INT. PEARSON SPECTER LITT - MIKE'S DESK - DAY**
@@ -88,40 +89,36 @@ The ICH E17 guideline mentions regional pooling in multi-regional clinical trial
 ---
 
 ### [2026-02-16 10:30] Scene: LaTeX Update — "Results speak for themselves."
+=======
+### [2026-02-17 10:00] Scene: Full Paper Update — "全テーブル、全テキスト、完了。"
+>>>>>>> 16d161c445333d5b9d50a419998c3934ec8ed7f4
 
 **INT. PEARSON SPECTER LITT - BULLPEN - DAY**
 
-*シミュレーション結果をLaTeX論文に反映する作業を開始。Harvey が指揮。*
+*Mike と Katrina がシミュレーション結果を論文に反映する全面更新を実施。*
 
-**Harvey**: （立って）
-「シミュレーション結果が確定した。LaTeXを更新する。Mike、Katrina、動け。」
+**Mike**: （チェックリストを見せながら）
+「7タスク、全完了。変更点を報告する：
 
-**Mike**: （CSVを確認しながら）
-「"I got it." 結果の確認完了。8シナリオ × 3サンプルサイズ = 24行、全て揃っている。主要な数値：
+**1. シナリオテーブル (Table 2)** — S01→S1, S03→S2, ..., S08→S6。S7 (log-normal, ALT, true=0.302) と S8 (location+scale, true=0.175) を追加。"Two sets of scenarios" → 単一の統合セット (S1-S8)。
 
-| Scenario | True nABCD | Bias (n=100) | Coverage (n=100) |
-|----------|-----------|--------------|------------------|
-| S1 (Null) | 0.000 | +0.066 | NA (boundary) |
-| S2 (0.2σ) | 0.074 | +0.018 | 0.896 |
-| S3 (0.5σ) | 0.186 | -0.002 | 0.949 |
-| S4 (1.0σ) | 0.372 | -0.041 | 0.874 |
-| S5 (Scale) | 0.148 | -0.012 | 0.979 |
-| S6 (Shape) | 0.067 | +0.003 | 0.949 |
-| S7 (LogN) | 0.302 | +0.009 | 0.954 |
-| S8 (Loc+Scale) | 0.175 | +0.011 | 0.932 |
+**2. Bias テーブル (Table 3)** — 全数値をCSVから更新。S7, S8行追加。テキストにS7/S8の良好なバイアス (< 0.012 at n≥100) を記述。S4の負バイアスの原因を "upward bias in pooled IQR" と明記。
 
-論文更新が必要な箇所：
-1. シナリオテーブル (Table 3) — S01-S08 → S1-S8、True nABCD値更新
-2. バイアステーブル (Table 4) — 全数値更新
-3. カバレッジテーブル (Table 5) — 全数値更新
-4. RMSE/CI Widthテーブル (Table 6) — 全数値更新
-5. 本文中の具体的数値 — Limitation節など」
+**3. Coverage テーブル (Table 4)** — S2-S8の7行。S7 (0.953/0.954/0.951) と S8 (0.916/0.932/0.939) 追加。テキストでS3, S7, S8の "near-nominal" カバレッジを強調。BCa議論更新: S6 n=200 で Pct 0.997 vs BCa 0.493。
 
-**Katrina**: （効率的に）
-「"Results speak for themselves." 論文の表番号と構成を確認。更新準備完了。」
+**4. Precision テーブル (Table 5)** — RMSE + CI Width 全更新。S7 (CIW: 0.27/0.19/0.13), S8 (0.22/0.16/0.12) 追加。
 
-**Donna**:
-「"I'm Donna. I know everything." 記録中。LaTeX更新作業開始。」
+**5. SMD比較テーブル (Table 6)** — S7行追加: nABCD 0.311 vs SMD 0.00 — "a large distributional difference entirely invisible to SMD"。
+
+**6. Summary** — 5項目に拡張。Robustness項追加。S3をexemplar scenarioに。
+
+**7. Discussion/Limitations** — S4 undercoverage 0.740, BCa inferior across "all eight scenarios"。S4バイアスの物理的説明追加。」
+
+**Katrina**: （確認して）
+「"Results speak for themselves." — Abstract も更新: "eight scenarios" + "percentile bootstrap" + "skewness" を明記。旧ID (S01-S08) はゼロ。`grep S0[1-9]` で確認済み。」
+
+**Harvey**: （頷いて）
+「"I don't have dreams, I have goals." — LaTeXコンパイルして最終確認しろ。」
 
 ---
 
