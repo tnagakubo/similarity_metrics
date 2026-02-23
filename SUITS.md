@@ -4,6 +4,43 @@
 
 ---
 
+### [2026-02-23 10:30] Scene: Jessica's Ruling — "LaTeX で出す。Wordは不要。"
+
+**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
+
+*TakがJessicaにStatistics in Medicineの投稿形式について確認を求める。Jessica、眼鏡を外して静かに答える。*
+
+**Jessica**: （明確に）
+「"Let me be clear." Statistics in MedicineはLaTeX投稿を **正式に受け付けている**。docxへの変換は不要。
+
+公式ガイドラインを確認した：
+
+1. **LaTeX投稿フロー**:
+   - Review用: compiled PDFを "Main Document" としてアップロード
+   - TeX sourceファイル + .bib/.bbl を "Supplemental Material not for review" としてアップロード
+   - 採択後、Wileyがauthor's LaTeX fileから直接typeset
+
+2. **SiM独自のLaTeX class file**がある — 使用推奨だが必須ではない
+
+3. **Figure**: EPS, PDF, またはTIFF — LaTeX内での図生成は非推奨、**separate filesで提出**
+
+4. **フォーマット**: Times/Helvetica/Courier 12pt。**Double spacingは必須ではない**
+
+5. **ORCID必須**
+
+つまり、現在の `nABCD_wiley.tex` + compiled PDF でそのまま投稿できる。SUBMISSION_CHECKLISTを修正した — Word変換の全タスクを削除。これでRed Zoneが大幅に減った。」
+
+**Harvey**: （満足げに）
+「"That's what I like to hear." 無駄な作業を一つ潰した。Mike、Word変換の工数がゼロになった。残りに集中しろ。」
+
+**Donna**: （チェックリストを更新しながら）
+「"I'm Donna. I know everything." SUBMISSION_CHECKLIST.md更新完了。docx関連タスク全削除、Figure statusを6点✅に更新、フォーマット要件をLaTeX基準に修正。」
+
+**Rachel**: （確認して）
+「"Hard work beats talent when talent doesn't work hard." 一つ確認 — SiMのガイドラインでORCID必須とあるので、title pageにORCID追加が必要です。」
+
+---
+
 ### [2026-02-23 10:00] Scene: Paper Writing Status Briefing — "I don't have dreams, I have goals."
 
 **INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
