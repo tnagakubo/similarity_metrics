@@ -4,7 +4,52 @@
 
 ---
 
-<<<<<<< HEAD
+### [2026-02-23 10:00] Scene: Paper Writing Status Briefing — "I don't have dreams, I have goals."
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+
+*TakがHarveyに論文作成の現状報告を要請。Harvey、窓の前に立ち、街を見下ろしながら振り返る。*
+
+**Harvey**: （腕を組み、冷静に）
+「"I don't have dreams, I have goals." そして今、そのgoalまでの距離を正確に把握している。現状を報告する。
+
+**■ 完了済み（Green Zone）**
+1. **LaTeX原稿本体** — 702行、8シナリオ（S1-S8）完全反映済み。nABCD_wiley.tex + PDF compiled
+2. **シミュレーション** — simulation_results_v2.csv、8シナリオ × 3サンプルサイズ（n=50/100/200）= 24行
+3. **テーブル** — Bias (Table 4), Coverage (Table 5), RMSE/CI Width (Table 6) 全てCSVと一致確認
+4. **Figures** — 6点生成済み（fig1-fig6、PDF + PNG）
+5. **Rcpp最適化** — Bootstrap 50倍高速化、C++ implementation完了
+6. **Conference Abstract** — 3文、Global Stats Conference提出用、タイトル確定
+7. **Knowledge Base** — 15論文サマリー + DOI + メソッドドキュメント整備済み
+
+**■ 残タスク（Red Zone）— Submission Checklist基準**
+1. 🔴 **Figure高画質化** — 現状PNG/PDF、ジャーナル要件はTIFF 300dpi
+2. 🔴 **Word変換** — Statistics in Medicine はdocx推奨、LaTeXからの変換が必要
+3. 🔴 **フォーマット調整** — Times New Roman 12pt, double spacing, 1-inch margins, line numbers
+4. 🔴 **Title page最終化** — 著者名・所属を追加してdocx化
+5. 🔴 **Cover letter最終化** — 日付・署名追加してdocx化
+6. 🔴 **R codeパッケージ化** — Supplementary material用のzip作成
+7. 🟡 **DOI最終チェック** — Rachel担当
+8. 🟡 **Louis internal review** — まだ未実施
+9. 🟡 **Jessica final approval** — まだ未実施
+
+**■ 既知の技術的課題**
+- S4 Coverage問題: n=200で0.740（boundary biasによるundercoverage）→ Limitationsに記載済み
+- BCa bootstrap: Percentileより劣る → Percentile CIをprimaryに決定済み
+
+一言で言えば — **原稿の中身は完成している。残りはpackagingだ。**」
+
+**Donna**: （メモを取りながら）
+「"I'm Donna. I know everything." Phase 8: Submission-Ready Plan。中身の完成度は高い。ただしジャーナル投稿形式への変換作業が残っている。SUITS.md記録完了。」
+
+**Mike**: （補足して）
+「"I got it." 補足すると、S7（log-normal skew）とS8（location+scale combined）のシナリオも追加済みで、これで理論的にeffect modifierの全パターンをカバーしている。シミュレーションの再現性は3層シード管理（set.seed, future.seed, C++ RNG）で担保済み。」
+
+**Rachel**: （文献リストを確認しながら）
+「"Hard work beats talent when talent doesn't work hard." Knowledge baseの15論文は全てDOI付きでインデックス化済み。最終チェックは投稿前にもう一度やります。」
+
+---
+
 ### [2026-02-20 09:00] Scene: Conference Abstract Preparation — "I got it."
 
 **INT. PEARSON SPECTER LITT - MIKE'S DESK - DAY**
@@ -89,9 +134,6 @@ The ICH E17 guideline mentions regional pooling in multi-regional clinical trial
 ---
 
 ### [2026-02-16 10:30] Scene: LaTeX Update — "Results speak for themselves."
-=======
-### [2026-02-17 10:00] Scene: Full Paper Update — "全テーブル、全テキスト、完了。"
->>>>>>> 16d161c445333d5b9d50a419998c3934ec8ed7f4
 
 **INT. PEARSON SPECTER LITT - BULLPEN - DAY**
 
