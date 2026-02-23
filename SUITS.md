@@ -50,7 +50,7 @@
 | DOI final check | Rachel | ⏳ Phase D後 |
 | Louis internal review | Louis | ⏳ Phase D後 |
 | Jessica final Go/No-Go | Jessica | ⏳ 最終 |
-| **Clinical calibration概念図** | **Mike** | 🆕 Meeting決定 |
+| **Clinical calibration概念図** | **Mike** | ✅ 完了 (3ファイル) |
 | **Web Appendix: Worked Example** | **Katrina** | 🆕 Meeting決定 |
 | **Worked Example — L推定文献補強** | **Rachel** | 🆕 Meeting決定 |
 | **説明資料ドラフトレビュー** | **Louis** | 🆕 Meeting決定 |
@@ -77,6 +77,43 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-02-23 11:15] Scene: Mike の概念図 — "I got it. 全体像を一枚で見せる。"
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Mike がデスクで3つのファイルを仕上げ、Harvey とKatrina に見せる。*
+
+**Mike**: （画面を回して）
+「"I got it." Clinical calibration の概念図、3ファイル作った：
+
+**1. `fig_clinical_calibration_flow.mmd`** — メインフローチャート（Mermaid）
+```
+Step 0: Input (F₁, F₂)
+  → Step 1: Compute nABCD = W₁ / (2 × IQR)  + Bootstrap CI
+  → Step 2: Estimate CATE sensitivity L (from prior data)
+  → Step 3: Δ_max = 2L × IQR × nABCD (Heterogeneity Bound)
+  → Step 4: Compare vs clinical benchmarks (Tx effect, NI margin)
+  → Step 5: Clinical Judgment
+```
+色分けで各ステップの情報源を区別。nABCD（青）、CATE sensitivity（橙）、calibration（緑）、interpretation（紫）。
+
+**2. `fig_ranking_reversal.mmd`** — Ranking Reversal の概念図（Mermaid）
+BMI（nABCD=0.51, Large → Δ_max=0.16%, Moderate）と HbA1c（nABCD=0.27, Moderate → Δ_max=0.24%, Highest）の **逆転** を視覚的に表現。L の違い（0.02 vs 0.30）が rankingを反転させることを一目で理解できる。
+
+**3. `fig_clinical_calibration.drawio`** — 統合版（draw.io XML）
+上記2つを1枚に統合。上半分がフローチャート、下半分がRanking Reversal。右側に "Why Wasserstein? (Kantorovich-Rubinstein)" と "Why NOT KL?" のアノテーション付き。」
+
+**Katrina**: （確認して）
+「"Results speak for themselves." プレゼンには Mermaid 版が使いやすい。Marp スライドに直接埋め込める。draw.io 版は投稿用の高解像度 figure 生成に使えるわ。」
+
+**Harvey**: （頷いて）
+「一目で伝わる。これがあれば "What is clinical calibration?" への答えが5秒で済む。"I don't have dreams, I have goals." — 次は Discussion の KL 段落だ。」
+
+**Donna**: （記録して）
+「Clinical calibration概念図タスク完了マーク。ファイルは全て `paper/slides/` に格納。」
+
+---
 
 ### [2026-02-23 11:00] Scene: Meeting — KL Divergence との比較は必要か？
 
