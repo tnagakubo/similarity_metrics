@@ -14,13 +14,15 @@
 
 | File | Format | Status | Notes |
 |------|--------|--------|-------|
-| Main manuscript | .docx or .tex+.pdf | 🔴 TODO | Convert from markdown |
-| Title page | .docx | 🟡 Draft | `submission/title_page.md` |
-| Cover letter | .docx | 🟡 Draft | `submission/cover_letter.md` |
-| Figure 1 | .tiff or .png (300 dpi) | 🔴 TODO | Run R code |
-| Figure 2 | .tiff or .png (300 dpi) | 🔴 TODO | Run R code |
-| Figure 3 | .tiff or .png (300 dpi) | 🔴 TODO | Run R code |
-| Figure 4 | .tiff or .png (300 dpi) | 🔴 TODO | Run R code |
+| Main manuscript | .tex + .pdf | ✅ Done | `nABCD_wiley.tex` + compiled PDF |
+| Title page | .tex or .pdf | 🟡 Draft | `submission/title_page.md` → integrate into .tex |
+| Cover letter | .pdf | 🟡 Draft | `submission/cover_letter.md` → convert to PDF |
+| Figure 1 | .eps, .pdf, or .tiff | ✅ Done | fig1_scenario_overview.pdf/.png |
+| Figure 2 | .eps, .pdf, or .tiff | ✅ Done | fig2_nabcd_definition.pdf/.png |
+| Figure 3 | .eps, .pdf, or .tiff | ✅ Done | fig3_bias.pdf/.png |
+| Figure 4 | .eps, .pdf, or .tiff | ✅ Done | fig4_estimation_quality.pdf/.png |
+| Figure 5 | .eps, .pdf, or .tiff | ✅ Done | fig5_smd_comparison.pdf/.png |
+| Figure 6 | .eps, .pdf, or .tiff | ✅ Done | fig6_application.pdf/.png |
 | Supplementary material | .zip | 🔴 TODO | R code package |
 
 ### Manuscript Requirements
@@ -31,19 +33,19 @@
 | Short title | ≤70 chars | 42 | ✅ |
 | Keywords | ≤6 | 6 | ✅ |
 | References | Numbered | 10 | ✅ |
-| Figures | Separate files | 4 planned | 🔴 |
+| Figures | Separate files | 6 generated | ✅ |
 | Tables | In manuscript | 7 | 🟡 |
 
 ### Format Specifications
 
 | Element | Specification | Status |
 |---------|---------------|--------|
-| Font | Times New Roman 12pt | 🔴 TODO |
-| Line spacing | Double | 🔴 TODO |
-| Margins | 1 inch all sides | 🔴 TODO |
-| Page numbers | Bottom center | 🔴 TODO |
-| Line numbers | Continuous | 🔴 TODO |
-| Figure format | TIFF/PNG 300 dpi | 🔴 TODO |
+| Font | Times/Helvetica/Courier 12pt | 🟢 LaTeX handles |
+| Line spacing | Not required (SiM guideline) | 🟢 N/A |
+| Margins | Standard LaTeX | 🟢 LaTeX handles |
+| Page numbers | Standard LaTeX | 🟢 LaTeX handles |
+| Line numbers | Optional for submission | 🟡 Add lineno pkg |
+| Figure format | EPS/PDF/TIFF | ✅ PDF available |
 | Reference style | Vancouver (numbered) | ✅ |
 
 ---
@@ -59,25 +61,19 @@
   generate_all_figures()
   ```
 
-- [ ] **Convert manuscript to Word**
-  - Option A: Pandoc
-    ```bash
-    pandoc paper/nABCD_manuscript_SiM.md -o paper/submission/nABCD_manuscript.docx
-    ```
-  - Option B: Manual copy to Word template
+- [x] ~~**Convert manuscript to Word**~~ — **NOT NEEDED**: SiM accepts LaTeX directly
+  - Submit compiled PDF as "Main Document"
+  - Upload .tex source + .bib/.bbl as "Supplemental Material not for review"
 
-- [ ] **Format tables in Word**
-  - Use Word's table feature
-  - No vertical lines (SiM style)
-  - Horizontal lines: top, header bottom, table bottom only
+- [ ] **Verify LaTeX compiles cleanly** — Ensure nABCD_wiley.tex produces clean PDF
 
 - [ ] **Finalize title page**
-  - Add author names and affiliations
-  - Convert to .docx
+  - Add author names, affiliations, ORCID
+  - Integrate into .tex or submit as separate PDF
 
 - [ ] **Finalize cover letter**
   - Add date and signatures
-  - Convert to .docx
+  - Convert to PDF
 
 ### Phase 2: Supporting
 
@@ -115,11 +111,11 @@
 3. Start new submission
 4. Select article type: "Original Article"
 5. Upload files in order:
-   - Main document (.docx)
-   - Title page (.docx)
-   - Figures (separate files)
-   - Supplementary material (.zip)
-   - Cover letter (.docx)
+   - Main document: compiled PDF (File Designation: "Main Document")
+   - TeX source files + .bib/.bbl (File Designation: "Supplemental Material not for review")
+   - Figures: separate EPS/PDF/TIFF files
+   - Supplementary material: R code .zip
+   - Cover letter: PDF
 6. Enter metadata (title, abstract, keywords, authors)
 7. Suggest reviewers (optional but recommended)
 8. Submit
@@ -145,4 +141,4 @@
 ---
 
 *Checklist created: 2026-02-05*
-*Last updated: 2026-02-05*
+*Last updated: 2026-02-23 — Jessica review: LaTeX submission confirmed, docx conversion removed*

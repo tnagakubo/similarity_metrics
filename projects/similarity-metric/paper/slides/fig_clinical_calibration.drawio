@@ -1,0 +1,190 @@
+<mxfile host="app.diagrams.net" modified="2026-02-23" agent="research-lab" version="24.0">
+  <diagram name="Clinical Calibration Framework" id="clinical-calibration">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="1" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ===== TITLE ===== -->
+        <mxCell id="title" value="&lt;b&gt;Clinical Calibration Framework for nABCD&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=24;fontFamily=Noto Sans JP;fontColor=#1E3A5F;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="800" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="From Distributional Distance to Clinical Interpretation" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=14;fontFamily=Noto Sans JP;fontColor=#666666;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="400" y="55" width="800" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== STEP 0: INPUT ===== -->
+        <mxCell id="step0_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E3A5F;strokeWidth=2;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="110" width="280" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="step0_label" value="&lt;b&gt;Step 0: Input&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=14;fontColor=#1E3A5F;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="40" y="115" width="280" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="region1" value="&lt;b&gt;Region 1&lt;/b&gt;&lt;br&gt;EM Distribution &lt;i&gt;F&lt;/i&gt;₁&lt;br&gt;(e.g., Japan, &lt;i&gt;n&lt;/i&gt;=150)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1565C0;strokeWidth=1;fontSize=12;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="55" y="150" width="115" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="region2" value="&lt;b&gt;Region 2&lt;/b&gt;&lt;br&gt;EM Distribution &lt;i&gt;F&lt;/i&gt;₂&lt;br&gt;(e.g., US, &lt;i&gt;n&lt;/i&gt;=200)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1565C0;strokeWidth=1;fontSize=12;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="190" y="150" width="115" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="step0_note" value="Candidate EMs:&lt;br&gt;Age, BMI, HbA1c, ..." style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#546E7A;fontStyle=2;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="55" y="235" width="250" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrow Step 0 → Step 1 -->
+        <mxCell id="arrow01" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#1E3A5F;strokeWidth=2;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="step0_box" target="step1_box">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== STEP 1: COMPUTE nABCD ===== -->
+        <mxCell id="step1_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D4E6F1;strokeColor=#1E3A5F;strokeWidth=2;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="380" y="110" width="280" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="step1_label" value="&lt;b&gt;Step 1: Compute nABCD&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=14;fontColor=#1E3A5F;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="380" y="115" width="280" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="w1_calc" value="&lt;b&gt;Wasserstein-1 Distance&lt;/b&gt;&lt;br&gt;&lt;i&gt;W&lt;/i&gt;₁ = ∫|&lt;i&gt;F&lt;/i&gt;₁(x) − &lt;i&gt;F&lt;/i&gt;₂(x)| d&lt;i&gt;x&lt;/i&gt;&lt;br&gt;= Area between CDFs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#90CAF9;strokeColor=#1565C0;strokeWidth=1;fontSize=11;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="395" y="150" width="250" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="nabcd_formula" value="$$\text{nABCD} = \frac{W_1}{2 \cdot \text{IQR}_{\text{pooled}}}$$&lt;br&gt;+ Bootstrap 95% CI (&lt;i&gt;B&lt;/i&gt; = 2000)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1E3A5F;strokeColor=#0D1B2A;strokeWidth=2;fontSize=12;fontColor=#FFFFFF;fontFamily=Noto Sans JP;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="395" y="218" width="250" height="65" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrow Step 1 → Step 3 -->
+        <mxCell id="arrow13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#1E3A5F;strokeWidth=2;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="step1_box" target="step3_box">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== STEP 2: CATE SENSITIVITY (top right) ===== -->
+        <mxCell id="step2_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;strokeWidth=2;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="720" y="110" width="280" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="step2_label" value="&lt;b&gt;Step 2: CATE Sensitivity&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=14;fontColor=#E65100;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="720" y="115" width="280" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="l_def" value="&lt;b&gt;Lipschitz constant &lt;i&gt;L&lt;/i&gt;&lt;/b&gt;&lt;br&gt;= CATE sensitivity of EM&lt;br&gt;&lt;i&gt;L&lt;/i&gt; ≈ Δτ / Δ&lt;i&gt;x&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E65100;strokeWidth=1;fontSize=12;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="735" y="150" width="250" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="l_sources" value="Sources:&lt;br&gt;• Subgroup analyses  • Meta-regression&lt;br&gt;• Expert elicitation  • Pilot data" style="text;html=1;align=left;verticalAlign=middle;fontSize=10;fontColor=#795548;fontStyle=2;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="735" y="215" width="250" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="l_examples" value="&lt;font size='1'&gt;&lt;b&gt;Example&lt;/b&gt;: Age &lt;i&gt;L&lt;/i&gt;=0.01 | BMI &lt;i&gt;L&lt;/i&gt;=0.02 | HbA1c &lt;i&gt;L&lt;/i&gt;=0.30&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#BF360C;fontStyle=1;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="735" y="270" width="250" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrow Step 2 → Step 3 -->
+        <mxCell id="arrow23" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#E65100;strokeWidth=2;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="step2_box" target="step3_box">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== STEP 3: CLINICAL CALIBRATION (center) ===== -->
+        <mxCell id="step3_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#1B5E20;strokeWidth=3;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="380" y="370" width="620" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="step3_label" value="&lt;b&gt;Step 3: Clinical Calibration — Heterogeneity Bound&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=14;fontColor=#1B5E20;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="380" y="375" width="620" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="delta_formula" value="$$\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}$$" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A5D6A7;strokeColor=#1B5E20;strokeWidth=2;fontSize=16;fontColor=#1B5E20;fontFamily=Noto Sans JP;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="395" y="408" width="310" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="delta_meaning" value="= &lt;b&gt;Maximum potential difference&lt;/b&gt;&lt;br&gt;in regional average treatment effects&lt;br&gt;attributable to EM distributional difference" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#2E7D32;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="720" y="400" width="260" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="ci_prop" value="CI: [Δ&lt;sub&gt;max,L&lt;/sub&gt;, Δ&lt;sub&gt;max,U&lt;/sub&gt;] = 2&lt;i&gt;L&lt;/i&gt; × IQR × [nABCD&lt;sub&gt;L&lt;/sub&gt;, nABCD&lt;sub&gt;U&lt;/sub&gt;]" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#1B5E20;fontStyle=2;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="395" y="458" width="590" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrow Step 3 → Step 4 -->
+        <mxCell id="arrow34" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#1B5E20;strokeWidth=2;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="step3_box" target="step4_box">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== STEP 4: INTERPRETATION (bottom) ===== -->
+        <mxCell id="step4_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#4A148C;strokeWidth=2;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="370" width="280" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="step4_label" value="&lt;b&gt;Step 4: Clinical Interpretation&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=14;fontColor=#4A148C;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="40" y="375" width="280" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="benchmarks" value="Compare Δ&lt;sub&gt;max&lt;/sub&gt; against:&lt;br&gt;• Overall treatment effect&lt;br&gt;• Non-inferiority margin (Δ&lt;sub&gt;clin&lt;/sub&gt;)&lt;br&gt;• MCID&lt;br&gt;+ Sensitivity analysis over &lt;i&gt;L&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CE93D8;strokeColor=#4A148C;strokeWidth=1;fontSize=11;fontColor=#FFFFFF;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="55" y="408" width="250" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== RANKING REVERSAL BOX (bottom center) ===== -->
+        <mxCell id="reversal_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FF8F00;strokeWidth=2;arcSize=8;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="40" y="550" width="960" height="190" as="geometry"/>
+        </mxCell>
+        <mxCell id="reversal_title" value="⚠ &lt;b&gt;Key Insight: Ranking Reversal&lt;/b&gt; — nABCD magnitude ≠ clinical significance" style="text;html=1;align=center;verticalAlign=top;fontSize=14;fontColor=#E65100;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="40" y="555" width="960" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- BMI column -->
+        <mxCell id="rev_bmi_nabcd" value="&lt;b&gt;BMI&lt;/b&gt;&lt;br&gt;nABCD = &lt;b&gt;0.51&lt;/b&gt;&lt;br&gt;&lt;font color='#C62828'&gt;■ Large&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCDD2;strokeColor=#C62828;strokeWidth=2;fontSize=12;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="60" y="590" width="130" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="rev_bmi_l" value="&lt;i&gt;L&lt;/i&gt; = 0.02&lt;br&gt;Weak EM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0E0E0;strokeColor=#9E9E9E;strokeWidth=1;fontSize=11;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="210" y="595" width="90" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="rev_bmi_delta" value="Δ&lt;sub&gt;max&lt;/sub&gt; = &lt;b&gt;0.16%&lt;/b&gt;&lt;br&gt;&lt;font color='#F9A825'&gt;20% of Tx effect&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F9A825;strokeWidth=2;fontSize=12;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="320" y="590" width="150" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- HbA1c column -->
+        <mxCell id="rev_hba_nabcd" value="&lt;b&gt;HbA1c&lt;/b&gt;&lt;br&gt;nABCD = &lt;b&gt;0.27&lt;/b&gt;&lt;br&gt;&lt;font color='#F9A825'&gt;■ Moderate&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F9A825;strokeWidth=2;fontSize=12;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="60" y="665" width="130" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="rev_hba_l" value="&lt;i&gt;L&lt;/i&gt; = 0.30&lt;br&gt;&lt;b&gt;Strong EM&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E65100;strokeWidth=2;fontSize=11;fontFamily=Noto Sans JP;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="210" y="670" width="90" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="rev_hba_delta" value="Δ&lt;sub&gt;max&lt;/sub&gt; = &lt;b&gt;0.24%&lt;/b&gt;&lt;br&gt;&lt;font color='#C62828'&gt;30% of Tx effect&lt;br&gt;60% of NI margin&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCDD2;strokeColor=#C62828;strokeWidth=2;fontSize=12;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="320" y="665" width="150" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrows for reversal -->
+        <mxCell id="rev_arr1" style="rounded=1;strokeColor=#9E9E9E;strokeWidth=2;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="rev_bmi_nabcd" target="rev_bmi_l">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="rev_arr2" style="rounded=1;strokeColor=#9E9E9E;strokeWidth=2;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="rev_bmi_l" target="rev_bmi_delta">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="rev_arr3" style="rounded=1;strokeColor=#E65100;strokeWidth=2;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="rev_hba_nabcd" target="rev_hba_l">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="rev_arr4" style="rounded=1;strokeColor=#E65100;strokeWidth=2;endArrow=blockThin;endFill=1;" edge="1" parent="1" source="rev_hba_l" target="rev_hba_delta">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Reversal arrow -->
+        <mxCell id="rev_cross" value="&lt;b&gt;RANKING&lt;br&gt;REVERSAL&lt;/b&gt;" style="shape=doubleArrow;whiteSpace=wrap;html=1;fillColor=#FF8F00;strokeColor=#E65100;strokeWidth=2;fontSize=11;fontColor=#FFFFFF;fontFamily=Noto Sans JP;rotation=-90;arrowWidth=0.4;arrowSize=0.3;" vertex="1" parent="1">
+          <mxGeometry x="480" y="634" width="60" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Conclusion box -->
+        <mxCell id="conclusion" value="&lt;b&gt;Conclusion:&lt;/b&gt; Distributional distance (nABCD) and clinical relevance (Δ&lt;sub&gt;max&lt;/sub&gt;) are fundamentally different dimensions.&lt;br&gt;Clinical calibration via the heterogeneity bound is essential — nABCD magnitude labels describe distance only, not significance." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1E3A5F;strokeColor=#0D1B2A;strokeWidth=2;fontSize=12;fontColor=#FFFFFF;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+          <mxGeometry x="560" y="590" width="420" height="135" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== ANNOTATIONS ===== -->
+        <mxCell id="note_kantorovich" value="&lt;i&gt;Why Wasserstein?&lt;/i&gt;&lt;br&gt;Kantorovich-Rubinstein duality:&lt;br&gt;&lt;i&gt;W&lt;/i&gt;₁ = sup&lt;sub&gt;‖&lt;i&gt;f&lt;/i&gt;‖&lt;sub&gt;Lip&lt;/sub&gt;≤1&lt;/sub&gt; |∫&lt;i&gt;f&lt;/i&gt; d&lt;i&gt;P&lt;/i&gt; − ∫&lt;i&gt;f&lt;/i&gt; d&lt;i&gt;Q&lt;/i&gt;|&lt;br&gt;→ Directly bounds Lipschitz functions&lt;br&gt;(including CATE)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECEFF1;strokeColor=#90A4AE;strokeWidth=1;fontSize=10;fontColor=#37474F;fontFamily=Noto Sans JP;dashed=1;dashPattern=4 2;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="110" width="230" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="note_vs_kl" value="&lt;i&gt;Why NOT KL divergence?&lt;/i&gt;&lt;br&gt;• Asymmetric (not a metric)&lt;br&gt;• Can be ∞ (support mismatch)&lt;br&gt;• No Lipschitz bound&lt;br&gt;→ Cannot provide Δ&lt;sub&gt;max&lt;/sub&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEBEE;strokeColor=#EF9A9A;strokeWidth=1;fontSize=10;fontColor=#C62828;fontFamily=Noto Sans JP;dashed=1;dashPattern=4 2;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="230" width="230" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- Proposition box -->
+        <mxCell id="prop2" value="&lt;b&gt;Proposition 2&lt;/b&gt;&lt;br&gt;|τ̄₁ − τ̄₂| ≤ 2&lt;i&gt;L&lt;/i&gt; · IQR · nABCD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1B5E20;strokeColor=#0D1B2A;strokeWidth=2;fontSize=12;fontColor=#FFFFFF;fontFamily=Noto Sans JP;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="370" width="230" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Dashed connections to annotations -->
+        <mxCell id="dash1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#90A4AE;strokeWidth=1;dashed=1;endArrow=none;" edge="1" parent="1" source="w1_calc" target="note_kantorovich">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="dash2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#90A4AE;strokeWidth=1;dashed=1;endArrow=none;" edge="1" parent="1" source="step3_box" target="prop2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

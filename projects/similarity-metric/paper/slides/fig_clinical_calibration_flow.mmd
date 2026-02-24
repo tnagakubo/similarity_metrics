@@ -1,0 +1,68 @@
+%%{ init: { 'theme': 'base', 'themeVariables': { 'primaryColor': '#1E3A5F', 'primaryTextColor': '#fff', 'primaryBorderColor': '#0D1B2A', 'lineColor': '#1E3A5F', 'secondaryColor': '#E8F0FE', 'tertiaryColor': '#FFF3E0', 'fontSize': '16px' } } }%%
+flowchart TD
+    %% ===== Input Layer =====
+    subgraph INPUT["<b>Step 0: Input Data</b>"]
+        direction LR
+        F1["Region 1<br/>EM Distribution <i>F</i>₁<br/>(e.g., Japan)"]
+        F2["Region 2<br/>EM Distribution <i>F</i>₂<br/>(e.g., US)"]
+    end
+
+    %% ===== nABCD Computation =====
+    subgraph COMPUTE["<b>Step 1: Compute nABCD</b>"]
+        W1["Wasserstein-1 Distance<br/><i>W</i>₁(<i>F</i>₁, <i>F</i>₂) = ∫|<i>F</i>₁(x) − <i>F</i>₂(x)| dx"]
+        IQR["Pooled IQR<br/>from combined sample"]
+        NABCD["<b>nABCD</b> = <i>W</i>₁ / (2 × IQR<sub>pooled</sub>)<br/>+ Bootstrap 95% CI"]
+    end
+
+    %% ===== CATE Sensitivity =====
+    subgraph CATE["<b>Step 2: Estimate CATE Sensitivity</b>"]
+        direction LR
+        LEST["Lipschitz constant <i>L</i><br/>from prior data / subgroup analyses<br/><i>L</i> ≈ Δτ / Δx"]
+        LSRC["Sources:<br/>• Published subgroup analyses<br/>• Meta-regression<br/>• Expert elicitation"]
+    end
+
+    %% ===== Clinical Calibration =====
+    subgraph CALIB["<b>Step 3: Compute Δ<sub>max</sub></b>"]
+        DELTA["<b>Δ<sub>max</sub> = 2<i>L</i> × IQR<sub>pooled</sub> × nABCD</b><br/>Maximum potential treatment effect difference<br/>+ Propagated CI"]
+    end
+
+    %% ===== Clinical Context =====
+    subgraph CONTEXT["<b>Step 4: Clinical Interpretation</b>"]
+        direction LR
+        BENCH["Clinical Benchmarks<br/>• Overall treatment effect<br/>• NI margin (Δ<sub>clin</sub>)<br/>• MCID"]
+        COMPARE["Compare:<br/>Δ<sub>max</sub> vs Benchmarks<br/>+ Sensitivity analysis over <i>L</i>"]
+    end
+
+    %% ===== Decision =====
+    DECISION{"<b>Step 5: Clinical Judgment</b><br/>Pooling decision<br/>informed by Δ<sub>max</sub><br/>for ALL candidate EMs"}
+
+    %% ===== Connections =====
+    F1 --> W1
+    F2 --> W1
+    F1 --> IQR
+    F2 --> IQR
+    W1 --> NABCD
+    IQR --> NABCD
+
+    NABCD --> DELTA
+    LEST --> DELTA
+    LSRC -.-> LEST
+
+    DELTA --> COMPARE
+    BENCH --> COMPARE
+    COMPARE --> DECISION
+
+    %% ===== Styling =====
+    classDef inputStyle fill:#E8F0FE,stroke:#1E3A5F,stroke-width:2px,color:#1E3A5F
+    classDef computeStyle fill:#D4E6F1,stroke:#1E3A5F,stroke-width:2px,color:#1E3A5F
+    classDef cateStyle fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#4E342E
+    classDef calibStyle fill:#E8F5E9,stroke:#1B5E20,stroke-width:2px,color:#1B5E20
+    classDef contextStyle fill:#F3E5F5,stroke:#4A148C,stroke-width:2px,color:#4A148C
+    classDef decisionStyle fill:#1E3A5F,stroke:#0D1B2A,stroke-width:3px,color:#FFFFFF
+
+    class F1,F2 inputStyle
+    class W1,IQR,NABCD computeStyle
+    class LEST,LSRC cateStyle
+    class DELTA calibStyle
+    class BENCH,COMPARE contextStyle
+    class DECISION decisionStyle

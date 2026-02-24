@@ -1,0 +1,46 @@
+%%{ init: { 'theme': 'base', 'themeVariables': { 'fontSize': '15px' } } }%%
+flowchart LR
+    %% ===== Title =====
+    %% Ranking Reversal: Why nABCD alone is insufficient
+
+    subgraph LEFT["<b>Distributional Distance (nABCD)</b>"]
+        direction TB
+        BMI_D["<b>BMI</b><br/>nABCD = <b>0.51</b><br/>🟥 Large"]
+        HBA_D["<b>HbA1c</b><br/>nABCD = <b>0.27</b><br/>🟨 Moderate"]
+        AGE_D["<b>Age</b><br/>nABCD = <b>0.12</b><br/>🟩 Small"]
+    end
+
+    subgraph MID["<b>CATE Sensitivity (<i>L</i>)</b>"]
+        direction TB
+        BMI_L["<i>L</i> = 0.02<br/>Weak EM"]
+        HBA_L["<i>L</i> = 0.30<br/><b>Strong EM</b>"]
+        AGE_L["<i>L</i> = 0.01<br/>Weak EM"]
+    end
+
+    subgraph RIGHT["<b>Clinical Impact (Δ<sub>max</sub>)</b>"]
+        direction TB
+        HBA_C["<b>HbA1c</b><br/>Δ<sub>max</sub> = <b>0.24%</b><br/>🟥 30% of Tx effect<br/>60% of NI margin"]
+        BMI_C["<b>BMI</b><br/>Δ<sub>max</sub> = <b>0.16%</b><br/>🟨 20% of Tx effect"]
+        AGE_C["<b>Age</b><br/>Δ<sub>max</sub> = <b>0.03%</b><br/>🟩 4% of Tx effect"]
+    end
+
+    BMI_D --> BMI_L --> BMI_C
+    HBA_D --> HBA_L --> HBA_C
+    AGE_D --> AGE_L --> AGE_C
+
+    %% ===== Styling =====
+    classDef highRisk fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+    classDef medRisk fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#E65100
+    classDef lowRisk fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef neutral fill:#F5F5F5,stroke:#616161,stroke-width:1px,color:#212121
+    classDef strongEM fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+    classDef weakEM fill:#E0E0E0,stroke:#757575,stroke-width:1px,color:#424242
+
+    class BMI_D highRisk
+    class HBA_D medRisk
+    class AGE_D lowRisk
+    class HBA_C highRisk
+    class BMI_C medRisk
+    class AGE_C lowRisk
+    class HBA_L strongEM
+    class BMI_L,AGE_L weakEM
