@@ -56,10 +56,10 @@
 | **L推定文献補強 (Kim/Craddy/Jones DOI確認)** | **Rachel** | 🆕 説明Meeting決定 |
 | **Web Appendix統合 (Worked Example + 説明)** | **Katrina + Rachel** | 🆕 説明Meeting決定 |
 | **説明資料ドラフトレビュー** | **Louis** | 🆕 説明Meeting決定 |
-| **Discussion: KL divergence段落追加** | **Mike** | 🆕 Meeting決定 |
-| **Gibbs & Su (2002) 引用追加** | **Rachel** | 🆕 Meeting決定 |
+| **Discussion: KL divergence段落追加** | **Mike** | ✅ 完了 |
+| **Gibbs & Su (2002) 引用追加** | **Rachel** | ✅ 完了 |
 | **KL段落 internal review** | **Louis** | 🆕 Meeting決定 |
-| **TeXファイル merge conflict 解消 (2箇所)** | **Mike** | 🆕 緊急 |
+| **TeXファイル merge conflict 解消 (11箇所)** | **Mike** | ✅ 完了 (1時間) |
 
 ---
 
@@ -68,7 +68,7 @@
 1. S05 coverage degradation (0.73 at n=200) — negative bias from bounded statistic
 2. Scenario numbering gaps (S02, S07 missing) — deferred
 3. KS comparison in simulation — deferred, Tak decision needed
-4. **TeXファイル merge conflict** — Discussion section に `<<<<<<< HEAD` が2箇所残存（緊急）
+4. **TeXファイル merge conflict 解消完了** — 11箇所すべて解消、S7/S8 完全統合（緊急タスク完了）
 
 ---
 
@@ -79,6 +79,270 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-02-27 13:30] Scene: Mike & Rachel の報告 — "KL divergence 段落、完了した。"
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Harvey、Louis、Jessica がテーブルに座っている。Mike と Rachel が入ってくる。*
+
+**Mike**: （ラップトップを開いて）
+「"I got it." KL divergence 段落、Discussion section に追加完了。Line 518 の直後、SMD/KS 比較段落の次に配置した。」
+
+**Harvey**: （画面を見て）
+「内容を説明しろ。」
+
+**Mike**: （指しながら）
+「レビュワーが必ず聞く質問を先手で潰す戦略。"Why Wasserstein instead of KL divergence?" への3つの答え：
+
+**1. Asymmetry (非対称性)**:
+$D_{\text{KL}}(P \| Q) \neq D_{\text{KL}}(Q \| P)$ — Region A vs B と B vs A で値が変わる。MRCT の pooling decision は本質的に対称であるべき。
+
+**2. Infinite divergence (無限発散)**:
+Support が一致しない時 (empirical distribution で頻発)、KL は infinity に発散。Density estimation と bandwidth 選択が必要になり tuning parameter が増える。
+
+**3. No Lipschitz bound (決定的)**:
+Wasserstein には Kantorovich-Rubinstein duality があり、Proposition 2 の heterogeneity bound が成立する。**KL にはこれがない**。Clinical calibration framework の根拠が失われる。
+
+この3点を1段落 (約180 words) にまとめた。Gibbs & Su (2002) と Villani (2008) を引用。」
+
+**Rachel**: （手を挙げて）
+「"Hard work beats talent when talent doesn't work hard." Gibbs & Su (2002) の citation、bibliography に追加完了：
+
+```bibtex
+@article{gibbs2002,
+  author  = "Gibbs, A L and Su, F E",
+  title   = "On Choosing and Bounding Probability Metrics",
+  year    = "2002",
+  journal = "Int Stat Rev",
+  volume  = "70",
+  number  = "3",
+  pages   = "419--435",
+  doi     = "10.1111/j.1751-5823.2002.tb00178.x"
+}
+```
+
+DOI 検証済み。この論文は Wasserstein が weak convergence を metrize する topological な利点を明確にしていて、我々の主張を補強する。」
+
+**Louis**: （鋭く読み進めながら）
+「"You just got Litt up!" ...良い。段落の構成が論理的だ：
+1. 非対称性 → MRCT の symmetric nature と矛盾
+2. 無限発散 → 実用上の問題 (complexity, tuning)
+3. Lipschitz bound の不在 → **これが決定的** (clinical calibration の根拠が失われる)
+
+3点目に "most critically" と書いて強調しているのも正しい。レビュワーはここで納得する。
+
+**一つだけ確認**：Proposition 2 が何か、明示的に参照されているか？」
+
+**Mike**: （頷いて）
+「Line 519: "enabling Proposition~2's heterogeneity bound" と書いた。Proposition 2 は Section 3.2 で定義済み。Reference は明確。」
+
+**Jessica**: （静かに、しかし決定的に）
+「"Let me be clear." 内容は承認する。3つの理由が階層化されている——実用的問題 (1, 2) から理論的決定打 (3) への流れが説得力を持つ。
+
+この段落は **preemptive defense** として十分。R1 で KL simulation を求められたら、その時対応すればいい。今は投稿を優先する。
+
+Louis、この段落で internal review は完了か？」
+
+**Louis**: （腕を組んで）
+「この段落については承認する。ただし **TeX 全体の review** はまだだ。Merge conflict 解消後の全文を通読する必要がある。今夜中にやる。」
+
+**Harvey**: （立ち上がって）
+「決定だ。**Critical path 完全突破**：
+1. ✅ Merge conflict 解消 (11箇所)
+2. ✅ KL divergence 段落追加
+3. ✅ Gibbs & Su (2002) 引用追加
+
+**次のステップ**：
+- **Louis** — 今夜18時までに TeX 全文 review
+- **Katrina** — Worked Example、明日12時まで
+- **Mike** — 直感的説明スライド、明日18時まで
+
+"I don't have dreams, I have goals." — 48時間以内に submission-ready。進め。」
+
+**Donna**: （全て記録して）
+「"I'm Donna. I know everything." Critical path 完全突破、記録完了。次は parallel work よ。」
+
+---
+
+### [2026-02-27 11:45] Scene: Mike の報告 — "全て解消した。"
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+
+*Mike が Harvey のオフィスに入る。*
+
+**Mike**: （自信を持って）
+「"I got it." TeX merge conflict、**11箇所すべて解消**した。」
+
+**Harvey**: （眉を上げて）
+「1時間で？確認させろ。」
+
+**Mike**: （ラップトップを開いて見せる）
+「`grep -c "<<<<<<< HEAD" nABCD_wiley.tex` → **0**。conflict marker は完全に消えた。
+
+**Resolution strategy**:
+- Incoming branch（S7/S8 を含む新しい記述）を base に採用
+- HEAD 側の clinical motivation 記述で価値があるものは merge
+- S7 (Log-normal skew) と S8 (location + scale) が全 table/figure に完全統合
+- LaTeX syntax も検証済み
+
+**11箇所の内訳**:
+1. Line 230-234: Scenario overview paragraph
+2. Line 242-246: S1 table row description
+3. Line 252-256: S7 table row
+4. Line 261-267: Table notes (clinical motivation)
+5. Line 302-310: Bias table S6-S8 rows
+6. Line 318-344: Bias/coverage results paragraph
+7. Line 358-366: Coverage table S6-S8 rows
+8. Line 384-388: RMSE paragraph
+9. Line 403-411: RMSE table S6-S8 rows
+10. Line 434-437: S7 SMD comparison row (retained)
+11. Line 452-463: Summary enumeration
+
+**Critical Path unblocked**。これで KL divergence 段落の追加に進める。」
+
+**Harvey**: （頷いて）
+「よくやった。これで投稿が見えてきた。"I don't have dreams, I have goals." 次は KL 段落だ。今日16時までに TeX に反映しろ。」
+
+**Mike**:
+「了解。取りかかる。」
+
+**Donna**: （ドアから顔を出して）
+「"I'm Donna. I know everything." Mike、タスクリスト更新完了。次は KL divergence よ。」
+
+---
+
+### [2026-02-27 10:50] Scene: Mike の緊急修正 — "11個もあった..."
+
+**INT. PEARSON SPECTER LITT - MIKE'S DESK - DAY**
+
+*Mike が TeX ファイルを開き、merge conflict を探す。数秒後、顔が青ざめる。*
+
+**Mike**: （息を呑んで）
+「...まずい。2箇所じゃない。**11箇所**ある。」
+
+*Harvey が背後から覗き込む。*
+
+**Harvey**: （厳しく）
+「何？」
+
+**Mike**: （画面を指して）
+「Discussion section の583行目と606行目だけだと思っていた。確認したら、Simulation Design section 全体に散らばってる。**11個の conflict markers**。
+
+理由は分かった。S7/S8 追加時に複数の merge が不完全に終わっていた。HEAD 側と incoming 側で scenario 記述が完全に diverge してる。」
+
+**Harvey**: （腕を組んで）
+「2時間の deadline が吹き飛ぶな。」
+
+**Mike**: （集中して）
+「"I got it." いや、システマティックに処理すれば間に合う。conflict の内容を確認する：
+- **Line 230-234**: Scenario overview — S7/S8 を含む新しい記述を採用
+- **Line 242-246**: S1 description — "Null (identical)" に統一
+- **Line 252-254**: S7 description — log-normal の詳細記述を採用
+- 残り8個も同様のパターン
+
+**Strategy**: 基本的に incoming branch (S7/S8 を含む新しい記述) を優先。ただし clinical motivation の記述は HEAD 側の方が詳しい箇所があるので、merge して best of both を取る。
+
+**今から1時間で全て解消する**。」
+
+**Donna**: （デスクから声をかけて）
+「"I'm Donna. I know everything." 11個の conflict リスト、Excel にまとめて進捗トラッキングするわ。10分ごとに報告して。」
+
+**Mike**: （頷いて）
+「了解。取りかかる。」
+
+---
+
+### [2026-02-27 10:45] Scene: Push — 停滞を打破する
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Harvey が Bullpen に大股で入ってくる。全員の作業が止まる。*
+
+**Harvey**: （厳しい表情で全員を見渡して）
+「ペースが遅い。4日間、会議で決めたことが**何も終わっていない**。
+"I don't get lucky. I make my own luck." 運任せにはしない。**今動け**。」
+
+*Mike がデスクから顔を上げる。*
+
+**Mike**: （緊張して）
+「Harvey、状況を説明させてくれ...」
+
+**Harvey**: （手を上げて遮る）
+「言い訳はいらん。**事実を言え**：
+1. TeX merge conflict — 2箇所、まだ残ってるな？
+2. KL divergence の Discussion 段落 — 書いたか？
+3. Clinical calibration の説明資料 — どこまで進んだ？
+
+**30秒で答えろ、Mike。**」
+
+**Mike**: （深呼吸して）
+「"I got it." 整理する：
+1. **TeX merge conflict** — まだ残ってる。Discussion section lines 583-587 と 606-610。**今日中に修正する**。
+2. **KL divergence 段落** — 下書きはできてるが、まだ TeX に反映してない。merge conflict を先に解消する必要がある。
+3. **説明資料** — 概念図は完成してる。Worked Example と直感的説明スライドはまだ着手してない。」
+
+**Harvey**: （鋭く）
+「つまり、**緊急タスクが4日間放置されている**。これでは投稿できない。」
+
+*Katrina が手を挙げる。*
+
+**Katrina**: （冷静に）
+「"Results speak for themselves." 私も反省してる。Worked Example の着手が遅れた。今から取りかかるわ。HbA1c の数値で Step 1-5 を今日中に完成させる。」
+
+**Rachel**: （申し訳なさそうに）
+「"Hard work beats talent when talent doesn't work hard." L 推定の文献補強も遅れてる。Kim 2015, Craddy 2014, Jones 2016 の DOI 確認を今日中に終わらせるわ。」
+
+**Louis**: （腕を組んで）
+「"You just got Litt up!" 私は Review 待ちだが、Draft が来てない。Mike、merge conflict を潰してから KL 段落を書け。それが終わったらすぐに Review に入る。**今夜中にやる**。」
+
+**Harvey**: （頷いて、ホワイトボードに書き始める）
+「**再優先順位付けだ。今から48時間で終わらせる**：
+
+**CRITICAL PATH (blocking everything):**
+1. **Mike**: TeX merge conflict 解消 (2箇所) — **今から2時間以内**
+2. **Mike**: KL divergence Discussion 段落を TeX に反映 — **今日16時まで**
+3. **Louis**: KL 段落の internal review — **今日18時まで**
+
+**PARALLEL WORK (independent):**
+4. **Katrina**: Worked Example (HbA1c Step 1-5 + L 3パターン) — **明日12時まで**
+5. **Rachel**: L 推定文献補強 (Kim/Craddy/Jones DOI) — **今日18時まで**
+6. **Mike**: 直感的説明スライド (アナロジー + Cohen's d) — **明日18時まで**
+7. **Katrina + Rachel**: Web Appendix 統合 — **明後日12時まで**
+8. **Louis**: 説明資料レビュー — **明後日18時まで**
+
+**なぜ停滞したのか。全員に聞く。Donna、記録しろ。**」
+
+**Donna**: （鋭い眼差しで）
+「"I'm Donna. I know everything." 原因を整理するわ：
+- **Rule 2 違反** — 4日間、SUITS.md の更新が止まった。誰も進捗を書かなかった。
+- **Critical path 認識の欠如** — merge conflict がすべてをブロックすることに気づいていなかった。
+- **並列化の失敗** — 独立した作業（Worked Example、文献補強）を待つ理由はなかった。
+
+記録完了。以降、全員 **2時間ごと** に SUITS.md 更新よ。」
+
+**Harvey**: （立ち上がって）
+「"I don't have dreams, I have goals." 目標は **48時間以内に submission-ready TeX + 説明資料一式完成**。
+
+各自、今から動け。Mike、お前は2時間後に merge conflict 解消報告。遅れるなら理由を即報告しろ。
+
+**以上だ。**」
+
+*チーム全員がデスクに戻り、集中して作業を開始する。*
+
+**Mike**: （既に TeX ファイルを開きながら）
+「了解。merge conflict から潰す。」
+
+**Katrina**: （Quarto を開いて）
+「HbA1c の計算に取りかかるわ。」
+
+**Rachel**: （文献データベースを開いて）
+「DOI 確認開始。」
+
+**Louis**: （腕まくりして）
+「Draft が来たらすぐ Review に入る。待ってるぞ、Mike。」
+
+---
 
 ### [2026-02-23 11:30] Scene: Meeting — Clinical Calibration の説明資料をどう作るか
 
