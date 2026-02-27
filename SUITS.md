@@ -80,6 +80,172 @@
 
 ## 🎬 Live Script
 
+### [2026-02-27 14:00] Scene: Meeting — nABCD の初学者への説明、Lipschitz Constant をどう伝えるか
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*全員がテーブルを囲む。Harvey がホワイトボードの前に立つ。*
+
+**Harvey**: （腕を組んで）
+「論文は専門家向けに書くが、レビュワーの中には MRCT の統計家でも optimal transport に馴染みがない者もいる。特に **Lipschitz constant $L$** — これが clinical calibration の核だが、初学者には抽象的すぎる。
+
+説明資料（Worked Example、スライド）でどう伝えるか。意見を聞かせろ。Mike、まず技術的定義から。」
+
+**Mike**: （ホワイトボードに立って書き始める）
+「"I got it." まず正確な定義：
+
+**Definition (Lipschitz Continuity)**:
+関数 $\tau(x)$ が Lipschitz continuous with constant $L$ とは：
+$$|\tau(x_1) - \tau(x_2)| \leq L \cdot |x_1 - x_2| \quad \forall x_1, x_2$$
+
+つまり、$L$ は **"slope の上限"**。$x$ が1単位変わった時、$\tau(x)$ は最大でも $L$ 単位しか変わらない。
+
+**なぜ nABCD に必要か？**
+
+Proposition 2 の heterogeneity bound:
+$$\Delta_{\max} = 2L \cdot \text{IQR} \cdot \text{nABCD}$$
+
+この式が成立するのは、Kantorovich-Rubinstein duality があるから：
+$$W_1(F_1, F_2) = \sup_{f: \|f\|_L \leq 1} \left| \int f \, dF_1 - \int f \, dF_2 \right|$$
+
+$\tau(x)$ が Lipschitz continuous with constant $L$ なら、$f(x) = \tau(x)/L$ は $\|f\|_L \leq 1$ を満たす。だから：
+$$|\mathbb{E}[\tau(X_1)] - \mathbb{E}[\tau(X_2)]| \leq L \cdot W_1(F_1, F_2)$$
+
+これが heterogeneity bound の根拠。
+
+**問題は**：この説明を初学者にすると、30秒で目が死ぬ。」
+
+*全員が苦笑する。*
+
+**Rachel**: （ノートを開いて）
+「"Hard work beats talent when talent doesn't work hard." 文献から pedagogical approach を探した。
+
+**Armstrong & Kolesár (2021)** *Econometrica*:
+- Lipschitz constant を **"sensitivity parameter"** と呼ぶ
+- "How sensitive is the outcome to a one-unit change in X?"
+- 彼らの論文も初学者向けの appendix で "slope bound" として説明
+
+**Imbens & Rubin (2015)** *Causal Inference for Statistics*:
+- Treatment effect heterogeneity を説明する時、**"gradient of treatment effect"** として導入
+- 図解：scatter plot で CATE $\tau(x)$ vs $x$ を描き、傾きの最大値が $L$
+
+**私の提案**：
+1. **"Sensitivity" という言葉を前面に**："L は治療効果の EM に対する感度"
+2. **図解を最優先**：$\tau(x)$ vs $x$ のプロット、傾き $L$ を視覚化
+3. **具体例で anchor**："HbA1c が1%上がると、治療効果が0.3%動く → L = 0.30"」
+
+**Katrina**: （実務的に）
+「"Results speak for themselves." Worked Example で初学者が**最初に躓くポイント**を整理した：
+
+| 躓きポイント | 初学者の疑問 | 解決策 |
+|-------------|-------------|--------|
+| **L の意味** | "なぜ掛けるのか？" | Sensitivity として説明 |
+| **L の推定** | "どこから来るのか？" | 3パターン提示 (Louis 指摘) |
+| **2 × IQR の意味** | "なぜ2倍？" | Worst-case scenario (分布の端同士) |
+| **Clinical scale** | "なぜこれが HbA1c %？" | Units を追跡 (dimensional analysis) |
+
+**Worked Example での説明順序の提案**：
+
+**Step 0: Intuition First (図解)**
+- $\tau(x)$ vs $x$ のプロット (例：HbA1c vs 治療効果)
+- 傾き = sensitivity = $L$
+- "If HbA1c differs, how much could treatment effect differ?"
+
+**Step 1: Define L as Sensitivity**
+- Lipschitz という言葉は footnote に追いやる
+- "CATE sensitivity $L$: maximum rate of change of treatment effect per unit change in EM"
+- 具体例：$L = 0.30$ %HbA1c per %HbA1c reduction → dimensionless after cancellation
+
+**Step 2: Where Does L Come From?**
+- **Pattern A**: Estimated from prior data (Craddy 2014, Jones 2016)
+- **Pattern B**: Sensitivity analysis (Table 7 の範囲)
+- **Pattern C**: Reference benchmarks (Table 5) as fallback
+
+**Step 3: Plug Into Formula**
+- $\Delta_{\max} = 2L \cdot \text{IQR} \cdot \text{nABCD}$
+- Dimensional analysis: $[\%] = [\text{unitless}] \times [\%] \times [\text{unitless}]$
+
+この順序なら、数学的定義を避けながら直感から入れる。」
+
+**Louis**: （鋭く指摘して）
+「"You just got Litt up!" Katrina の順序は良いが、一つ**危険な罠**がある。
+
+初学者は必ず聞く："**なぜ Lipschitz なのか？なぜ単なる slope の平均ではダメなのか？**"
+
+答えは **worst-case analysis** だが、これを誤魔化すと reviewer に突かれる。
+
+**説明すべき論点**：
+1. **Average slope ではなく Maximum slope**：
+   - Pooling decision は **worst-case heterogeneity** を評価する必要がある
+   - EM 分布の差が最も大きい region（IQR の端）で治療効果がどれだけ違いうるか
+
+2. **なぜ bound が保守的で良いのか**：
+   - ICH E17 の文脈では、"similar enough" の判断に **false negative は許容できるが false positive は危険**
+   - Conservative bound は regulatory decision-making で正当化される
+
+3. **Lipschitz assumption の妥当性**：
+   - 多くの生物学的関係は bounded slope を持つ（飽和効果、生理的限界）
+   - Unbounded slope (discontinuity) は非現実的
+
+この3点を Worked Example の注釈に入れないと、"なぜ Lipschitz か" の根拠が弱い。」
+
+**Jessica**: （静かに、しかし決定的に）
+「"Let me be clear." 全員の意見を統合する。
+
+**説明戦略の原則**：
+1. **Intuition → Formalism の順序** (Katrina)
+2. **"Sensitivity" という言葉を使う** (Rachel)
+3. **図解を最優先** (Rachel + Katrina)
+4. **Worst-case の正当化** (Louis)
+
+**Worked Example の構成** (最終決定)：
+
+**Box 1: Visual Intuition**
+- Figure: $\tau(x)$ vs $x$ の scatter plot、傾き $L$ を強調
+- Caption: "L measures how sensitive treatment effect is to changes in EM"
+
+**Box 2: Definition Without Math**
+- "CATE sensitivity $L$: If EM differs by 1 unit, treatment effect differs by at most $L$ units."
+- Footnote: "Formally, this is the Lipschitz constant..."
+
+**Box 3: Why Maximum Slope? (Louis の論点)**
+- "Pooling decisions require worst-case assessment."
+- "L bounds heterogeneity even at distribution tails (IQR endpoints)."
+
+**Box 4: Where to Get L? (3 Patterns)**
+- Prior data / Sensitivity analysis / Reference benchmarks
+
+**Box 5: Worked Calculation**
+- HbA1c example with dimensional analysis
+
+以上。Katrina、この構成で Worked Example を作れ。Mike、スライドにも同じ順序で。」
+
+**Mike**: （頷いて）
+「了解。"Lipschitz" という単語を最初に出さず、"sensitivity" と "maximum slope" で攻める。図解を1枚目に持ってくる。」
+
+**Rachel**: （ノートに書き込んで）
+「Armstrong & Kolesár (2021) の図解スタイルを参考にするわ。彼らの Figure 2 が perfect example。」
+
+**Katrina**: （タスクリストを更新して）
+「"Results speak for themselves." Worked Example に Box 1-5 の構成を実装する。明日12時までに draft 完成させる。」
+
+**Harvey**: （腕を組んで満足そうに）
+「これで初学者にも、reviewer にも通じる説明ができる。"I don't have dreams, I have goals."
+
+**決定事項**：
+1. **Lipschitz の説明順序**: Intuition (図解) → Sensitivity → Worst-case 正当化 → 数学的定義
+2. **"Sensitivity" を primary term に** — "Lipschitz" は footnote
+3. **Katrina**: Worked Example に Box 1-5 構成を実装
+4. **Mike**: スライドも同じ順序で作成
+5. **Rachel**: Armstrong & Kolesár (2021) Figure 2 を参考図として citation
+
+以上だ。動け。」
+
+**Donna**: （全て記録して）
+「"I'm Donna. I know everything." Meeting 決定事項、全て記録完了。初学者説明戦略、確定よ。」
+
+---
+
 ### [2026-02-27 13:30] Scene: Mike & Rachel の報告 — "KL divergence 段落、完了した。"
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
