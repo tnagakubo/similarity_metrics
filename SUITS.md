@@ -16,6 +16,143 @@
 
 ## 🎬 Live Script
 
+### [2026-02-28 16:45] Scene: そもそも Subpopulation Pooling とは何か — 原文に立ち返る
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak が根本的な問いを投げる。Mike がホワイトボードを消して一から描き直す。Katrina が Song (2025) の原文を開く。*
+
+**Mike**: （ホワイトボードのペンを持って）
+「"I got it." まず定義から。ICH E17 と Song (2025) には **2つの pooling strategy** がある。これは全く別のものだ。」
+
+**Katrina**: （Song 原文を読み上げながら）
+「"Results speak for themselves." 原文から正確に引用する。
+
+---
+
+## 2つの Pooling Strategy — 根本的に異なるグルーピングの考え方
+
+### Strategy 1: Region Pooling（地域プーリング）
+
+> *'Pooling some geographical regions, countries or regulatory regions at the planning stage, if subjects in those regions are thought to be similar enough with respect to intrinsic and/or extrinsic factors.'* — ICH E17 Section 2.2.5
+
+**考え方**: 地理で括る。
+
+例：「日本と韓国は患者背景が似ているから、まとめて East Asia region として分析しよう」
+
+```
+Region Pooling の例:
+┌─────────────┐  ┌──────────────┐  ┌──────┐
+│ Japan (n=150)│  │ Korea (n=100)│  │ US   │
+│ 全患者       │  │ 全患者        │  │(n=200)│
+└──────┬──────┘  └──────┬───────┘  └──────┘
+       └────────┬───────┘
+         East Asia Pool
+          (n=250)
+```
+
+→ **国境で線を引く**。中の患者がどんな特性でも関係なく、その国の患者は全員プールに入る。
+
+---
+
+### Strategy 2: Subpopulation Pooling（サブ集団プーリング）
+
+> *'Pooling a subset of the subjects from a particular region with similarly defined subsets from other regions whose members share one or more intrinsic or extrinsic factors important for the drug development programme.'* — ICH E17 Section 2.2.5
+
+**考え方**: 国境を無視して、**患者の特性（EM の値）で括る**。
+
+Song (2025) の重要な記述：
+
+> *'By identifying the true EMs, we are able to define pooled subpopulation by different levels of the EMs without discriminating on regions.'*
+
+> *'Pooling on the subpopulation by a specific attribute would yield the data that resembles a particular region, if this region also enriched with that attribute. This allows the pooled subpopulation to serve as a surrogate for evaluating the efficacy and safety within a specific region.'*
+
+```
+Subpopulation Pooling の例 (EM = 体重):
+                Japan    Korea    US
+低体重(<60kg):   80人     50人    30人  → Low-weight Pool (n=160)
+高体重(≥80kg):   10人     15人   100人  → High-weight Pool (n=125)
+中間(60-80kg):   60人     35人    70人  → Mid-weight Pool (n=165)
+```
+
+→ **国境を横断して、EM の値が同じ患者を集める**。」
+
+**Mike**: （図を指しながら）
+「ここが核心だ。Song が言っていることを翻訳すると：
+
+### Subpopulation Pooling の目的（Song の論理）
+
+1. 体重が true EM だと分かった（= 体重によって治療効果が変わる）
+2. 全地域から低体重の患者を集めて **Low-weight Pool** を作る
+3. この Low-weight Pool は **日本の集団に似ている**（日本は低体重が多いから）
+4. よって Low-weight Pool の治療効果を **日本集団の効果の代理 (surrogate)** として使える
+
+Song の原文が明確に述べている：
+
+> *'For example, if a regional population has lower weight, a subpopulation that pools all low weight subjects from all regions can provide a good representation of the regional population.'*
+
+---
+
+### 2つの戦略を並べて理解する
+
+| | Region Pooling | Subpopulation Pooling |
+|---|---|---|
+| **グルーピング軸** | 地理（国境） | 患者特性（EM 値） |
+| **国境** | 尊重する | 無視する |
+| **前提** | 国内の患者は概ね同質 | EM 値が同じなら国が違っても同質 |
+| **使う場面** | EM が特定できない | EM が特定できた |
+| **Song の例** | 日本+韓国 → East Asia | 全地域の低体重者 → 日本の代理 |
+| **統計的性質** | 国内全データを使える | EM 層別でサンプルが分割される |
+
+---
+
+### なぜ Song は EM ありの場合に Subpopulation Pooling を推すのか
+
+理屈はこうだ：
+
+1. EM が treatment effect を modify する → **同じ EM 値の患者は同じ治療効果を持つはず**
+2. であれば、国が違っても EM 値が同じなら「同じ集団」とみなせる
+3. よって **EM 値でプールすれば、地理の差はノイズにならない**
+
+…というのが Song の主張。」
+
+**Harvey**: （鋭く割り込んで）
+「だが、前回 Katrina と Mike が指摘した通り、**その論理には穴がある**。」
+
+**Katrina**: （続けて）
+「その通り。Song の論理の問題点：
+
+### 問題 1: EM 以外の因子の交絡
+低体重の日本人と低体重のアメリカ人が本当に「同じ」か？
+食事、併用薬、医療慣行、遺伝的背景 — **EM 以外の因子は国に紐づいている**。
+Subpopulation pooling は EM を揃えるが、他の因子は揃わない。
+
+### 問題 2: Surrogate としての妥当性
+Song は『低体重プールは日本集団の surrogate になる』と言うが、
+それは **日本が低体重に enriched されている場合のみ**。
+実際には日本の体重分布は広がりがあり、低体重だけでは日本を代表しない。
+
+### 問題 3: 結局、国の EM 分布が必要
+Surrogate の妥当性を判断するには「日本の EM 分布がどうなっているか」を知る必要がある。
+つまり **subpopulation pooling を正当化するためにも EM 分布の国間比較が前提**。
+
+ここが nABCD の出番。"Results speak for themselves."」
+
+**Mike**: （まとめて）
+「一言でまとめると：
+
+> **Region Pooling** = 国で括る（EM 不明のとき）
+> **Subpopulation Pooling** = EM 値で括る（EM 判明のとき）
+
+そして Tak が前回指摘した通り、**subpopulation pooling は国を無視する手法だが、国の EM 分布を無視していい手法ではない**。
+
+"I got it." — Song の gap はここにある。」
+
+**Donna**: （記録しながら）
+「完璧な整理ね。"I'm Donna. I know everything." これで subpopulation pooling の定義と Song の論理構造、そしてその限界が明確になったわ。」
+
+---
+
 ### [2026-02-28 16:32] Scene: Archive
 
 **INT. PEARSON SPECTER LITT - FILE ROOM - DAY**
