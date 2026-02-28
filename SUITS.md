@@ -16,6 +16,122 @@
 
 ## 🎬 Live Script
 
+### [2026-02-28 17:00] Scene: Song (2025) は現実的に使えるのか — Harvey & Jessica の戦略評価
+
+**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
+
+*Tak の問いを受けて、Harvey が Jessica のオフィスに入る。二人の間に Song (2025) の PDF が置かれている。Louis が窓際で腕を組んでいる。*
+
+**Harvey**: （ソファに座り、率直に）
+「Tak の問いはシンプルだ — Song の方法は現場で使えるか。"Let me be honest." **使えない。**
+
+理由を5つ挙げる。
+
+---
+
+### 1. フローチャートの最初のステップが最も困難
+
+Song のフローチャートは『True EM を同定せよ』から始まる。
+だが Song 自身がこう書いている：
+
+> *'It is extremely challenging to identify the true EMs.'*
+
+**最も困難なステップを入り口に置いて、できなければ region pooling に fallback。**
+これはフレームワークではない。これは願望だ。
+
+### 2. 定量的基準が一切ない
+
+Song のフローチャートの分岐条件を見てみろ：
+- 『EM が同定できたか？』 → Yes/No の基準は？
+- 『東アジア集団間に差がないか？』 → 何をもって「差がない」と判断する？
+- 『similar enough か？』 → どれくらいが enough か？
+
+**全てが定性的判断。数値も、閾値も、検定も、指標も、何もない。**
+
+### 3. 統計手法セクションはリストであってガイダンスではない
+
+Song は Simple pooling / Fixed-effect / Random-effect の3手法を列挙しているが：
+- どの場面でどれを使うかの基準がない
+- 検出力の議論がない
+- サンプルサイズとの関係がない
+
+**料理本でいえば、材料リストだけで調理手順がない。**
+
+### 4. Worked Example がない
+
+- シミュレーションなし
+- 実データ適用なし
+- 具体的数値での判断プロセスの提示なし
+
+**読んで「なるほど」と思っても、月曜日のオフィスに戻って何をすればいいか分からない。**
+
+### 5. Surrogate 論理が未検証
+
+Subpopulation pooling の surrogate 論理：
+> *'低体重プールが日本集団の代理になる'*
+
+これは assertion（主張）であって、demonstration（実証）ではない。
+どの程度の enrichment で surrogate が成り立つか？ **定量化されていない。**
+
+---
+
+"I don't have dreams, I have goals." Song は dream を述べている。Goal にするには nABCD が必要だ。」
+
+**Jessica**: （デスクの向こうから、静かに）
+「"Let me be clear." Harvey の批判は正しい。だが**戦略的な評価**はもう一段深い。
+
+### Song (2025) を正しく位置づけよ
+
+**Song は methods paper ではない。これは regulatory consensus paper だ。**
+
+著者リストを見なさい：Song, Ji, Chen, Dong, Zhu, Wu, Zhang, Zhang, Yu, Wang, Zhang, Jia, Hou — 13人。これは個人研究ではなく、**NMPA 周辺の規制当局・産業界（RDPAC: 中国の外資系製薬協会）のコンセンサスステートメント**。
+
+つまり Song の価値は方法論にはない。価値は：
+
+1. **NMPA がこの問題を認識している**ことの公式な証拠
+2. **ICH E17 の実装に quantitative tools が不足している**ことの規制当局側からの告白
+3. **定量的手法が求められている**ことの demand signal
+
+### nABCD 論文にとっての戦略的意味
+
+Song は nABCD にとって完璧な**前座 (setup)**：
+
+| Song が言っていること | nABCD が提供すること |
+|---|---|
+| 『EM を同定すべき』 | EM 分布の類似性を定量評価する指標 |
+| 『similar enough かどうか判断すべき』 | nABCD + Δ_max による clinical calibration |
+| 『subpopulation pooling を検討すべき』 | surrogate の妥当性を nABCD で検証可能 |
+| 『region pooling の判断基準が必要』 | nABCD < 0.15 のような参考ベンチマーク |
+| 定量化なし、worked example なし | シミュレーション + HbA1c 適用例 |
+
+**Song が『what should be done』を述べ、nABCD が『how to do it』を提供する。** この関係を論文で明確に描くことが、reviewer を説得する最も効果的な戦略よ。
+
+### 一つ注意
+
+Song を批判しすぎてはだめ。彼らは regulatory stakeholder であり、将来の supporter にもなりうる。論文では：
+
+> ✅ 『Song et al. identify the key challenges... We provide the quantitative tools to address them.』
+> ❌ 『Song et al. fail to provide any quantitative methodology...』
+
+**Build on them, don't tear them down.** これが publication strategy の鉄則。」
+
+**Louis**: （窓際から鋭く）
+「"You just got Litt up!" 一つ付け加える。Song の共著者 Wu H は Song と Long **両方**の論文に名前がある。つまりこの2本は**同じグループの連作**だ。Long が consistency evaluation、Song が pooling strategy — 意図的に補完させている。nABCD 論文では両方をセットで引用して、**二本とも quantitative gap を持つ**ことを示すべきだ。KBに Long の PDF がないのは痛い。Tak、早く入手してくれ。」
+
+**Harvey**: （Jessica に頷いて）
+「Jessica の通りだ。Song は使えないが、**使えないことが我々にとって最大の武器**になる。」
+
+**Donna**: （記録しながら）
+「要約：
+1. Song (2025) は現場で使えない — 定量的基準なし、worked example なし
+2. しかし regulatory consensus paper としての価値は大きい — demand signal
+3. nABCD の positioning: Song の『what』に対する『how』を提供
+4. 論文では Song を build on する姿勢、批判しすぎない
+5. Song & Long は同一グループの連作 — セットで引用すべき
+"I'm Donna. I know everything."」
+
+---
+
 ### [2026-02-28 16:45] Scene: そもそも Subpopulation Pooling とは何か — 原文に立ち返る
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
