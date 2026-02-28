@@ -71,7 +71,11 @@
       "WebFetch(domain:chris-ayers.com)",
       "Bash(where:*)",
       "Bash(dir:*)",
-      "Bash(dir \"C:\\\\Program Files\\\\MiKTeX\")"
+      "Bash(dir \"C:\\\\Program Files\\\\MiKTeX\")",
+      "Bash(git checkout:*)",
+      "Bash(git:*)",
+      "Bash(gh pr:*)",
+      "Bash(grep:*)"
     ]
   }
 }
