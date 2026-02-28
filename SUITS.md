@@ -1,3 +1,110 @@
+### [2026-02-28 16:00] Scene: Tak からの指示 — Song (2025) と Long (2025) のレビュー
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak がSlackメッセージを送る。Donna が即座に対応し、チームを招集する。*
+
+**Donna**: （全員に向かって）
+「Tak からリクエストよ。まず状況整理、そして Song (2025) と Long (2025) の内容レビュー。"I'm Donna. I know everything." 整理するわ。
+
+**📍 現在のプロジェクト状況**:
+
+**プロジェクト**: similarity-metric (nABCD paper for Statistics in Medicine)
+**フェーズ**: 8 — Submission-Ready Plan (Jessica Strategic Directive)
+
+**✅ 完了タスク**:
+- Clinical calibration 概念図 3ファイル
+- Clinical calibration 強化
+- KL divergence Discussion 段落追加
+- Gibbs & Su (2002) 引用追加
+- TeX merge conflict 解消 (11箇所)
+- 日本語版論文作成 (`nABCD_paper_ja.md`)
+
+**⏳ 進行中タスク**:
+| タスク | 担当 | 状態 |
+|--------|------|------|
+| Worked Example (HbA1c Step1-5 + L 3パターン) | Katrina | 🆕 |
+| 直感的説明スライド (アナロジー + Cohen's d) | Mike | 🆕 |
+| L推定文献補強 (Kim/Craddy/Jones DOI確認) | Rachel | 🆕 |
+| Web Appendix統合 | Katrina + Rachel | 🆕 |
+| 説明資料ドラフトレビュー | Louis | 待ち |
+| TeX全文 internal review | Louis | 待ち |
+| Jessica final Go/No-Go | Jessica | 最終 |
+
+**⚠️ 注意事項**:
+- Long (2025) は論文で引用済みだが、Knowledge Base に PDF・サマリーが**未登録**
+- Paper Request が必要よ、Tak。」
+
+**Mike**: （ラップトップを開いて）
+「"I got it." じゃあ Song (2025) と Long (2025) の内容を説明する。
+
+---
+
+**📄 Song et al. (2025)**
+*"Basic Considerations for Data Pooling Strategy in Multi-Regional Clinical Trials (MRCTs)"*
+*Therapeutic Innovation & Regulatory Science*, 59:359-364
+DOI: [10.1007/s43441-025-00744-8](https://doi.org/10.1007/s43441-025-00744-8)
+
+**著者**: Song J, Ji C, Chen M, Dong J, Zhu C, Wu H, Zhang W, Zhang K, Yu B, Wang Y, Zhang H, Jia F, Hou Y
+
+**内容**:
+中国 NMPA の視点から ICH E17 のデータプーリング戦略の実装を議論。
+
+**Key Points**:
+1. **Decision Flowchart**: Effect modifier の有無で pooling strategy を分岐
+   - EM あり → Subpopulation pooling
+   - EM なし → Region pooling → 東アジア集団間の差がなければ East Asia pooling
+2. **EM 同定**: 内因性因子（PK/PD、遺伝子、バイオマーカー）と外因性因子（医療慣行、併用薬、食事）
+3. **統計モデル**: Simple pooling / Fixed-effect / Random-effect の3手法
+4. **外部データ借用**: Bayesian methods、Propensity score matching
+
+**nABCD との接点**:
+この論文が指摘する最大の gap ——『true EM の同定は極めて困難。EM が特定できない場合、region pooling を選択する』——を nABCD が定量的に解決する。具体的には：
+- EM 分布の類似性を定量評価する metric を提供
+- 東アジア集団間（日本-中国-韓国）の EM 類似性を数値化
+- "how similar is similar enough" の閾値を提供（< 0.15）
+
+**限界**: 定量的指標なし、閾値ガイダンスなし、統計的フレームワーク sparse。まさに nABCD が埋める gap。」
+
+**Katrina**: （続けて）
+「"Results speak for themselves."
+
+---
+
+**📄 Long et al. (2025)**
+*"Basic Considerations for the Consistency Evaluation Based on ICH E17 Guideline"*
+*Therapeutic Innovation & Regulatory Science*, 59(2):328-336
+DOI: [10.1007/s43441-024-00737-z](https://doi.org/10.1007/s43441-024-00737-z)
+
+**著者**: Long M, Wu H, Liu X, Chen J
+
+**内容**:
+ICH E17 に基づく一貫性評価（consistency evaluation）の基本的考慮事項を議論。
+
+**論文での使用箇所**:
+Introduction (Line 69 of TeX) で Song (2025) と並べて引用：
+> *'Song et al., writing from the China NMPA perspective on ICH E17 implementation, note the challenge of operationalizing pooling criteria without quantitative tools. Long et al. further discuss basic considerations for consistency evaluation under ICH E17.'*
+
+**⚠️ ただし注意**:
+この論文は Knowledge Base に PDF・サマリーが**未登録**。.bbl ファイルの書誌情報と論文中の引用箇所のみ確認可能。詳細な内容レビューには PDF が必要。
+
+**分かっていること（書誌情報から）**:
+- Song (2025) と同じジャーナル (*Ther Innov Regul Sci*) の同じ号に掲載
+- ICH E17 の consistency evaluation に焦点
+- Song が pooling strategy、Long が consistency evaluation — 補完的な関係
+
+Tak、Long (2025) の PDF を `/request-paper` で入手できれば、Rachel がフルサマリーを作成できるわ。」
+
+**Donna**: （まとめて）
+「整理完了。要点は3つ：
+1. プロジェクトは Phase 8、日本語版完了、submission-ready に向けて parallel work 中
+2. Song (2025) — KB にフル登録済み、nABCD の gap を埋める文脈論文
+3. Long (2025) — 引用済みだが KB 未登録、PDF 必要
+
+"I'm Donna. I know everything." …ただし Long の中身は PDF がないと全ては知れないわ。」
+
+---
+
 ### [2026-02-28 15:30] Scene: 日本語版完成
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
