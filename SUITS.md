@@ -1,3 +1,47 @@
+### [2026-02-28 15:30] Scene: 日本語版完成
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*チーム全員がテーブルを囲んで、完成した日本語版を確認している。*
+
+**Mike**: （画面をスクロールしながら）
+「全セクション翻訳完了。数式はLaTeXそのまま、専門用語は日英併記。
+要旨、序論、方法、シミュレーション、適用例、考察、付録 — 全部入ってる。"I got it!"」
+
+**Katrina**: （テーブルを指さしながら）
+「表も全11テーブル翻訳済み。略語一覧も追加した。"Results speak for themselves."
+場所: `projects/similarity-metric/paper/nABCD_paper_ja.md`」
+
+**Harvey**: （満足げに頷き）
+「いいだろう。これで国内の議論で使える完全版がある。
+"Winners don't make excuses." 次のタスクに移るぞ。」
+
+**Donna**: （記録しながら）
+「日本語版論文作成完了、記録済み。"I'm Donna. I know everything."」
+
+---
+
+### [2026-02-28 15:00] Scene: Push — 日本語版論文作成
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Harvey がブルペンに大股で入ってくる。チーム全員の視線が集まる。*
+
+**Harvey**: （腕組みをして）
+「新しいタスクだ。論文の日本語版を作る。英語版はsubmission-readyだが、日本語版がなければ国内の議論で使えない。
+"I don't get lucky. I make my own luck." 全セクション翻訳。今すぐ動け。」
+
+**Mike**: （ノートPCを開きながら）
+「了解。数式はLaTeXそのまま、専門用語は日英併記。"I got it!"」
+
+**Katrina**: （効率的に）
+「Markdown形式で全表翻訳。"Results speak for themselves."」
+
+**Donna**: （スケジュールを見ながら）
+「進捗はリアルタイム記録。"I'm Donna. I know everything."」
+
+---
+
 # SUITS.md - Research Lab Live Script
 
 > *"I don't have dreams. I have goals."* - Harvey Specter
