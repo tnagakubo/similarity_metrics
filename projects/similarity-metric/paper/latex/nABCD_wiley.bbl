@@ -35,6 +35,10 @@ Pearl J, Bareinboim E. Transportability of causal and statistical relations: A f
 Villani C. {\it Optimal Transport: Old and New}.
 \newblock Springer, 2009
 
+\bibitem{rousseeuw1993}
+Rousseeuw PJ, Croux C. Alternatives to the Median Absolute Deviation. {\it J Am Stat Assoc.} 1993\string;88(424)\string:1273--1283.
+\newblock \href {\doibase 10.1080/01621459.1993.10476408} {doi: 10.1080/01621459.1993.10476408}
+
 \bibitem{delbarrio1999}
 Barrio dE, Gin{\'e} E, Matr{\'a}n C. Central limit theorems for the {W}asserstein distance between the empirical and the true distributions. {\it Ann Probab.} 1999\string;27(2)\string:1009--1071.
 \newblock \href {\doibase 10.1214/aop/1022677394} {doi: 10.1214/aop/1022677394}
@@ -51,12 +55,8 @@ Armstrong TB, Koles{\'a}r M. Finite-Sample Optimal Estimation and Inference on A
 Wasserstein RL, Lazar NA. The {ASA} Statement on p-Values: Context, Process, and Purpose. {\it Am Stat.} 2016\string;70(2)\string:129--133.
 \newblock \href {\doibase 10.1080/00031305.2016.1154108} {doi: 10.1080/00031305.2016.1154108}
 
-\bibitem{sai2021}
-Sai K, Nakatani E, Iwama Y, Ono S. Efficacy Comparison for a Schizophrenia and a Dysuria Drug Among East Asian Populations: A Retrospective Analysis Using Multi-regional Clinical Trial Data. {\it Ther Innov Regul Sci.} 2021\string;55(3)\string:523--538.
-\newblock \href {\doibase 10.1007/s43441-020-00246-9} {doi: 10.1007/s43441-020-00246-9}
-
-\bibitem{kim2015}
-Kim YG, Hahn S, Oh TJ, Kwak SH, Park KS, Cho YM. Predictive Factors for Efficacy of Dipeptidyl Peptidase-4 Inhibitors in Patients with Type 2 Diabetes Mellitus. {\it Diabetes Metab J.} 2015\string;39(4)\string:342--348.
+\bibitem{yagi2015}
+Yagi S, Aihara K, Akaike M, et al. Predictive Factors for Efficacy of Dipeptidyl Peptidase-4 Inhibitors in Patients with Type 2 Diabetes Mellitus. {\it Diabetes Metab J.} 2015\string;39(4)\string:342--347.
 \newblock \href {\doibase 10.4093/dmj.2015.39.4.342} {doi: 10.4093/dmj.2015.39.4.342}
 
 \bibitem{craddy2014}
@@ -64,8 +64,12 @@ Craddy P, Palin HJ, Johnson KI. Comparative effectiveness of dipeptidylpeptidase
 \newblock \href {\doibase 10.1007/s13300-014-0061-3} {doi: 10.1007/s13300-014-0061-3}
 
 \bibitem{jones2016}
-Jones AG, McDonald TJ, Shields BM, et al. Should Studies of Diabetes Treatment Stratification Correct for Baseline {HbA1c}?. {\it PLoS One.} 2016\string;11(4)\string:e0152428.
+Jones AG, Lonergan M, Henley WE, Pearson ER, Hattersley AT, Shields BM. Should Studies of Diabetes Treatment Stratification Correct for Baseline {HbA1c}?. {\it PLoS One.} 2016\string;11(4)\string:e0152428.
 \newblock \href {\doibase 10.1371/journal.pone.0152428} {doi: 10.1371/journal.pone.0152428}
+
+\bibitem{gibbs2002}
+Gibbs AL, Su FE. On Choosing and Bounding Probability Metrics. {\it Int Stat Rev.} 2002\string;70(3)\string:419--435.
+\newblock \href {\doibase 10.1111/j.1751-5823.2002.tb00178.x} {doi: 10.1111/j.1751-5823.2002.tb00178.x}
 
 \bibitem{bareinboim2016}
 Bareinboim E, Pearl J. Causal inference and the data-fusion problem. {\it Proc Natl Acad Sci USA.} 2016\string;113(27)\string:7345--7352.

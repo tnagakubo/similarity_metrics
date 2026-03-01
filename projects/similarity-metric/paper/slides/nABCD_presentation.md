@@ -2,7 +2,7 @@
 marp: true
 size: 16:9
 paginate: true
-header: "Feb 13, 2026"
+header: "Mar 1, 2026"
 footer: "Quantifying Effect Modifier Similarity for Regional Pooling in MRCTs"
 math: mathjax
 style: |
@@ -498,11 +498,37 @@ $$
 | Standardized mean difference (SMD) | Captures **only location**, ignores scale and shape |
 | Kolmogorov&ndash;Smirnov statistic | No interpretable scale for decision-making |
 
+Recent regulatory guidance highlights this gap:
+- Song et al. (2025): NMPA perspective on ICH E17 pooling operationalization
+- Long et al. (2025): Basic considerations for consistency evaluation under E17
+
+---
+
+<style scoped>
+section { font-size: 25px; line-height: 1.5; }
+</style>
+
+# Our Approach
+
 <div class="block">
 <div class="block-title">Research Question</div>
 <div class="block-content">
 
 How can we estimate distributional similarity in a **scale-free** manner, and translate that estimate into **clinically interpretable** information about potential treatment effect heterogeneity?
+
+</div>
+</div>
+
+### Design Philosophy
+- **Estimation**, not hypothesis testing &mdash; quantify the difference, don't just accept/reject
+- **Clinical calibration** &mdash; translate distributional differences into the outcome scale
+- **Scope**: Continuous effect modifiers only (categorical/mixed-type EMs require alternative distances)
+
+<div class="alertblock">
+<div class="block-title">Key Principle</div>
+<div class="block-content">
+
+Provide regulatory scientists with **quantitative tools that inform deliberation**, not binary accept/reject rules.
 
 </div>
 </div>
@@ -535,6 +561,10 @@ $$
 
 ---
 
+<style scoped>
+section { font-size: 25px; line-height: 1.4; }
+</style>
+
 # nABCD Definition
 
 <div class="block">
@@ -543,13 +573,14 @@ $$
 
 $$\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}}$$
 
-IQR normalization $\Rightarrow$ **scale-free**, robust to outliers. $\text{nABCD} \geq 0$, with equality iff $F_1 = F_2$.
+IQR normalization $\Rightarrow$ **scale-free**, robust to outliers. &ensp; $\text{nABCD} \geq 0$ (provided $\text{IQR}_{\text{pooled}} > 0$), equality iff $F_1 = F_2$.
+**Why IQR?** Interpretable (central 50% spread), familiar to clinicians. $Q_n$ higher breakdown unnecessary for population-level data.
 
 </div>
 </div>
 
 <div class="block">
-<div class="block-title">Heterogeneity Bound</div>
+<div class="block-title">Heterogeneity Bound (Proposition 2)</div>
 <div class="block-content">
 
 $$|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}$$
@@ -581,6 +612,10 @@ where $L$ = CATE sensitivity (Lipschitz constant of $\tau(x)$)
 
 ---
 
+<style scoped>
+section { font-size: 24px; line-height: 1.4; }
+</style>
+
 # Estimation and Inference
 
 ### Point estimator
@@ -592,9 +627,12 @@ $$
 - Computational complexity: $O((n_1 + n_2) \log(n_1 + n_2))$
 
 ### Inference
-- **Percentile bootstrap** with $B = 2{,}000$ replicates
-- BCa overcorrects for this bounded statistic &mdash; percentile preferred
-- Asymptotic normality holds for $F_1 \neq F_2$ (interior of parameter space)
+- **Percentile bootstrap** ($B = 2{,}000$) &mdash; BCa overcorrects for bounded statistic
+
+### Asymptotic theory (del Barrio et al. 1999)
+- $W_1$ = $L_1$ distance between CDFs $\Rightarrow$ $\sqrt{n}$-convergence to Brownian bridge functional
+- **$F_1 \neq F_2$**: Hadamard derivative is **linear** $\Rightarrow$ bootstrap consistent
+- **$F_1 \approx F_2$**: derivative becomes non-linear $\Rightarrow$ modest undercoverage possible
 
 ---
 
@@ -603,6 +641,11 @@ $$
 # 3. Simulation Study
 
 ---
+
+<style scoped>
+section { font-size: 23px; line-height: 1.5; }
+table { font-size: 0.9em; }
+</style>
 
 # Simulation Design
 
@@ -614,14 +657,19 @@ $$
 | S2 | Location 0.2$\sigma$ | Age: EU vs US | $N(52, 10^2)$ | 0.074 |
 | S3 | Location 0.5$\sigma$ | BMI: Japan vs EU | $N(55, 10^2)$ | 0.186 |
 | S4 | Location 1.0$\sigma$ | BMI: Japan vs US | $N(60, 10^2)$ | 0.372 |
-| S5 | Scale 1.5$\times$ | HbA1c: strict vs broad criteria | $N(50, 15^2)$ | 0.148 |
+| S5 | Scale 1.5$\times$ | HbA1c: strict vs broad | $N(50, 15^2)$ | 0.148 |
 | S6 | Shape (Gamma) | Lab values: eGFR | Gamma(25, 0.5) | 0.067 |
-| S7 | Skew (log-normal) | ALT (CV $\approx$ 53%) | LogN($\sigma$=0.5) | MC |
-| S8 | Location + Scale | BMI: Japan vs US (realistic) | $N(55, 15^2)$ | MC |
+| S7 | Skew (log-normal) | ALT (CV $\approx$ 53%) | LogN($\sigma$=0.5) | 0.302 |
+| S8 | Location + Scale | BMI: Japan vs US | $N(55, 15^2)$ | 0.175 |
 
 - Distribution 1 is always $N(50, 10^2)$. Sample sizes: $n = 50, 100, 200$. 10,000 reps, $B = 2{,}000$.
 
 ---
+
+<style scoped>
+section { font-size: 23px; line-height: 1.5; }
+table { font-size: 0.9em; }
+</style>
 
 # Bias Results
 
@@ -633,12 +681,17 @@ $$
 | S4 (1.0$\sigma$) | 0.372 | &minus;0.038 | &minus;0.041 | &minus;0.043 |
 | S5 (Scale) | 0.148 | +0.001 | &minus;0.012 | &minus;0.019 |
 | S6 (Gamma) | 0.067 | +0.029 | +0.003 | &minus;0.015 |
+| S7 (Skew) | 0.302 | +0.019 | +0.009 | +0.005 |
+| S8 (Loc+Scale) | 0.175 | +0.024 | +0.011 | +0.006 |
 
-- Non-null scenarios (excl. S4): **bias < 0.02** at $n \geq 100$
-- S4: persistent negative bias (~&minus;0.04) from bounded statistic
-- S7, S8 results pending re-simulation
+- Non-null (excl. S4): **bias < 0.02** at $n \geq 100$ &ensp;|&ensp; S4: persistent &minus;0.04 (bounded statistic) &ensp;|&ensp; S7/S8: well-behaved
 
 ---
+
+<style scoped>
+section { font-size: 23px; line-height: 1.5; }
+table { font-size: 0.9em; }
+</style>
 
 # Coverage and Precision
 
@@ -649,13 +702,14 @@ $$
 | S4 (1.0$\sigma$) | **0.929** | 0.867 | 0.731 |
 | S5 (Scale) | **0.963** | **0.976** | **0.939** |
 | S6 (Gamma) | 0.573 | **0.945** | **0.996** |
+| S7 (Skew) | **0.953** | **0.954** | **0.951** |
+| S8 (Loc+Scale) | 0.916 | 0.932 | 0.939 |
 
 <div class="block">
 <div class="block-title">Key Findings</div>
 <div class="block-content">
 
-- Coverage **0.87&ndash;0.98** at $n \geq 100$ for most scenarios
-- S3 (0.5$\sigma$): exemplary &mdash; bias negligible, coverage nominal, RMSE < 0.05
+- Coverage **0.87&ndash;0.98** at $n \geq 100$ &ensp;|&ensp; S7: **near-nominal across all** $n$
 - Recommendation: **$n \geq 100$ per region** for reliable inference
 
 </div>
@@ -667,9 +721,10 @@ $$
 
 | Scenario | nABCD (mean $\pm$ SD) | SMD (mean $\pm$ SD) | Implication |
 |----------|----------------------|---------------------|-------------|
-| S3 (Location) | $0.183 \pm 0.049$ | $0.50 \pm 0.14$ | Both detect |
+| S3 (Location) | $0.184 \pm 0.049$ | $0.50 \pm 0.14$ | Both detect |
 | S5 (Scale only) | $0.136 \pm 0.033$ | $0.00 \pm 0.14$ | **Only nABCD** |
 | S6 (Shape only) | $0.070 \pm 0.024$ | $0.00 \pm 0.14$ | **Only nABCD** |
+| S7 (Skew only) | $0.311 \pm 0.047$ | $0.00 \pm 0.14$ | **Only nABCD** |
 
 <div class="alertblock">
 <div class="block-title">SMD Blindness</div>
