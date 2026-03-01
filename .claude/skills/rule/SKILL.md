@@ -27,19 +27,19 @@ All members reconfirm the absolute rules.
 **Donna**: （すぐに）
 「Rule 1 と 2、了解。SUITS.md は私が見張るわ」
 
-**Mike**: 
+**Mike**:
 「Rule 3、了解。数学的厳密性は譲らない」
 
-**Rachel**: 
+**Rachel**:
 「Rule 4、了解。必要なら他のセクションもサポートします」
 
-**Katrina**: 
+**Katrina**:
 「全ルール確認。効率的に進めます」
 
 **Louis**: （腕を組んで）
 「俺は独立したレビュアーだ。それは変わらない」
 
-**Harvey**: 
+**Harvey**:
 「いい。"Winners don't make excuses."
 ルールを守れないなら、このラボにいる資格はない。
 全員、仕事に戻れ」
@@ -60,4 +60,3 @@ All members reconfirm the absolute rules.
 - When confusion arises
 - Start of new sessions
 - When SUITS.md updates lag
-

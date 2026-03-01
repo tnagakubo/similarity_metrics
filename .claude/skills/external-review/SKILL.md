@@ -1,5 +1,6 @@
 ---
 description: External review by legendary statistician homages
+model: opus
 ---
 
 # Research Lab: External Review
@@ -33,12 +34,12 @@ See `agents/statisticians.md` for full reference.
 
 *Dr. Elena Richter (Wasserman-style) speaks first.*
 
-**Dr. Richter**: 
+**Dr. Richter**:
 「シンプルな方法で十分では？複雑さの正当化が弱い」
 
 *Dr. Marcus Webb (Gelman-style) nods.*
 
-**Dr. Webb**: 
+**Dr. Webb**:
 「事前分布の sensitivity analysis が見当たらない。
 "What does the posterior predictive check show?"」
 

@@ -1,3 +1,261 @@
+### [2026-03-01 10:00] Scene: System Upgrade Complete — 全面アップグレード完了
+
+**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
+
+*Donna がホワイトボードのチェックリストを次々とチェックしていく。Jessica が満足げに見守る。*
+
+**Donna**: （ホワイトボードを指しながら）
+「全アップグレード完了。報告するわ。"I'm Donna. I know everything."
+
+**1. Skills移行**: commands/ → skills/ 移行完了。20個全て。
+- Opus割当: review, external-review, defend, simulate-qa, meeting (5個)
+- Sonnet割当: process-paper, process-papers, process-book, start (4個)
+- Haiku割当: search-kb, read, cite, suits, archive, motivate, request-paper, list-requests (8個)
+- inherit: push, rule, victory (3個)
+
+**2. Hooks強化**: 4本 → 6本に拡張。
+- 新規: SessionStart (セッション開始時コンテキスト注入)
+- 新規: PreToolUse/Bash (危険コマンドブロック)
+
+**3. 旧commands/**: バックアップ済み (commands_backup_20260301)」
+
+**Jessica**: （立ち上がって）
+「"Let me be clear." これでチームの技術基盤は最新になった。Model分離により、重要な判断はOpusが、ルーチンワークはHaikuが担当する。コスト効率と品質の最適化だ」
+
+**Harvey**: （ドアから顔を出して）
+「Model分離のまとめ — 俺とJessicaとLouisがOpus。Mike、Katrina、RachelがSonnet/Haiku。合理的だ。"I don't have dreams, I have goals."」
+
+**Donna**: （最終確認）
+「ただし注意点 — Model指定はSkill実行時に適用される。メインの会話は1つのモデルで動く。次のセッションから新Hooksも有効になるわ」
+
+---
+
+### [2026-03-01 09:30] Scene: システムアップグレード相談 — Model分離・Skills・Hooks全面見直し
+
+**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
+
+*Tak が Donna と Jessica を呼び出す。チームの技術基盤についての戦略会議。*
+
+**Tak**:
+「相談がある。みんなのmodelを分けることはできるか？JessicaはOpus、RachelはHaikuみたいに。あとSkillsが機能しているか確認してくれ。Claude Codeの機能は日々進化している。全面的にアップデートが必要だ」
+
+**Donna**: （即座にファイル構造を確認しながら）
+「了解。全システムの棚卸しを始めるわ。現状を報告する — Skills 21個、Hooks 4本、MCP Server 4つ稼働中。"I'm Donna. I know everything." 全部把握してる」
+
+**Jessica**: （椅子に深く座り）
+「"Let me be clear." これはインフラの問題だ。正しく設計すれば、チーム全体のパフォーマンスが変わる。まず現状分析、次に改善提案。順を追って進めよう」
+
+*Donna がホワイトボードに3つの柱を書く: (1) Model Assignment (2) Skills Migration (3) Hooks Enhancement*
+
+**Donna**: （分析結果を報告）
+「Model分離 — Agent toolのmodel parameterで可能。opus/sonnet/haikuの3択。ただし制約がある。メインの会話は1つのモデルで動くから、チームメンバーがsubagentとして独立作業するときにモデルを指定する形になるわ」
+
+**Jessica**: （戦略的に）
+「つまり、Harvey と私がOpusで戦略判断、Mike がSonnetで数理的作業、Rachel がHaikuで文献スキャン — これは理にかなっている。コスト効率と品質のバランスだ」
+
+**Donna**: （Skillsの監査結果）
+「Skills監査 — 現在 .claude/commands/ に21個のslash command。全部動作確認済み。ただし、新しい .claude/skills/ 形式に移行すれば、model指定・context fork・独自hooks など高度な機能が使える。これがアップグレードの核心よ」
+
+**Jessica**: （決断）
+「提案をまとめろ。Tak に3つのオプションを出す」
+
+---
+
+### [2026-03-01 00:30] Scene: Harvey分析 — Table 1の3手法選定理由
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - NIGHT**
+
+*Tak がHarvey に直接質問。"current tool はこの3つだけか？なぜこれらか？"*
+
+**Harvey**: （立ち上がって）
+「3層の理由がある。(1) Practice landscapeの代表性 — Visual=de facto standard、SMD=最初の定量化、KS=最初の分布検定。(2) 3つの異なる限界カテゴリ — 主観性/情報不完全/解釈不能。(3) 各々がnABCDの異なる優位性を際立たせる。」
+
+**Mike**: （技術補足）
+「載っていない候補: Anderson-Darling, Cramér-von Mises, Energy distance, MMD, KL divergence, Hellinger, OVL, W2。KLはDiscussion L519で3構造問題を議論済み。W2はMethods L130でKR双対性不在を説明済み。A-D/CvMはKSと同カテゴリ。」
+
+**Harvey**: （決定）
+「Table 1は戦略的に正しい。変更不要。Revision Note #4: 査読対応用にA-D/CvM未言及への1文追加を準備。"I don't have dreams, I have goals."」
+
+**Donna**: （記録して）
+「Revision Note #4記録済み。"I'm Donna. I know everything."」
+
+---
+
+### [2026-03-01 00:20] Scene: Meeting — Section 1 精読・理解深化
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*全員がテーブルを囲み、LaTeX原稿を投影してSection 1を精読している。*
+
+**Harvey**: （ホワイトボードに構造図を描いて）
+「Section 1精読会議。全員の分析を聞く。」
+
+**Rachel**: （構造分析）
+「6パート構成 — MRCT背景 → ICH E17 "similar enough" 引用 → EM定義 → 現行手法限界(Table 1) → nABCD提案と4貢献 → 論文構成。Classic gap-fill structure。Long et al. (2025)もすでに引用済み。」
+
+**Mike**: （技術分析）
+「L67のEM説明が論文全体のロジックチェーン。CATE非一定性 → 患者構成差 → 地域ATE差。"not because the drug works differently, but because the patient mix differs" — causal frameworkを使わず直感的に到達させる設計。"I got it!"」
+
+**Katrina**: （Table分析）
+「Table 1のSMD批判 — location onlyでscale/shape/skewnessを見逃す。S5-S7のシミュレーションで実証済み。KSの "no interpretable scale" はdecision-making文脈での批判。」
+
+**Louis**: （批判3点）
+「(1) estimation vs testingの正当化文献が薄い (2) 4 contributionsの順序 — clinical calibrationが3番目は最適か (3) ICH E17 Section 2.2.1引用の検討。"You just got Litt up!"」
+
+**Harvey**: （決定）
+「3点ともrevision notes記録。現行維持、査読フィードバック待ち。Section 1はsolid。"I don't have dreams, I have goals."」
+
+**Donna**: （記録して）
+「Meeting完了。Revision notes 3点記録済み。"I'm Donna. I know everything."」
+
+---
+
+### [2026-03-01 00:15] Scene: Rule Check — 全ルール再確認
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Harvey がテーブルの上座に立ち上がる。全員の手が止まる。*
+
+**Harvey**: （全員を見回して）
+「全員、手を止めろ。ルール確認の時間だ。
+新しいセッションの頭に毎回やる。"I don't have dreams, I have goals." そしてゴールにはルールがある。」
+
+**Donna**: （即座に立ち上がり）
+「**Rule 1**: SUITS.mdがSingle Source of Truth。全作業をドラマ脚本形式で記録。最新エントリはTOPに。
+**Rule 2**: Frequent Updates — 重要なアクションの都度更新。2分以上の遅延は許容しない。
+**Rule 2.5**: 1000行超えたら自動アーカイブ。現在836行 — まだ余裕はあるけど、油断しないで。
+**Rule 2.6**: 文献引用にはDOI必須。さっきのLong et al.もちゃんとDOI付きで登録済み。
+私が全部監視してるわ。"I'm Donna. I know everything."」
+
+**Mike**: （手を挙げて）
+「**Rule 3**: Character Consistency了解。
+Gender参照テーブル確認済み — Harvey=彼、Mike=彼、Donna=彼女、Louis=彼、Rachel=彼女、Katrina=彼女、Jessica=彼女。
+混同は絶対にしない。"I got it!"」
+
+**Rachel**: （ノートを見ながら）
+「**Rule 2.6**の補足として — knowledge baseの参照も忘れないで。
+現在16本の論文が処理済み。作業前にINDEX.mdとsummaries/を確認すること。
+"Hard work beats talent when talent doesn't work hard."」
+
+**Katrina**: （効率よく）
+「全ルール確認済み。**Rule 4**: Flexible Collaboration — 本務はあるが、必要に応じて相互サポート。
+Technical Writerとしてだけでなく、分析でもレビューでも動く。"Results speak for themselves."」
+
+**Louis**: （腕を組んで）
+「**独立レビュアー**としての立場は不変だ。
+チームの仲良しクラブには入らない。俺の仕事は穴を見つけることだ。
+"You just got Litt up!" — それが嫌なら論文の質を上げろ。」
+
+**Harvey**: （満足げに頷いて）
+「いい。全員ルールを理解している。
+"Winners don't make excuses." ルールを守れないなら、このラボにいる資格はない。
+全員、仕事に戻れ。」
+
+**Donna**: （小声でメモしながら）
+「Rule check完了、記録済み。次の更新遅延は私が許さないわよ。」
+
+---
+
+### [2026-03-01 00:10] Scene: Long et al. (2025) Deep Read — Katrina分析
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Katrina がホワイトボードに論文構造図を描き終え、チームに深読み分析を発表している。*
+
+**Katrina**: （資料をめくりながら）
+「Long et al. (2025)のLevel 3分析完了。4パート構成 — Study Design、Results Interpretation、Special Considerations、Statistical Models。
+核心はIntrinsic/Extrinsic Factors & Pooling Strategyセクション。'Holistic approach based on several candidate criteria' を推奨するが、定量的指標は提示していない。
+Song et al.と並べると — Song = pooling strategy、Long = consistency evaluation。
+両方に共通するgap: quantitative metric for distributional similarity。
+"Results speak for themselves." nABCDがそのgapを埋める。」
+
+**Harvey**: （腕組みをして）
+「ICH E17の'what to evaluate'に対して、我々が'how to measure'を提供する。"That's how you win."」
+
+**Donna**: （記録しながら）
+「Deep read完了、記録済み。"I'm Donna. I know everything."」
+
+---
+
+### [2026-03-01 00:00] Scene: Long et al. (2025) ナレッジベース登録
+
+**INT. PEARSON SPECTER LITT - RACHEL'S OFFICE - NIGHT**
+
+*Rachel がデスクでPDFを読み込んでいる。モニターにはICH E17のフローチャートが映っている。*
+
+**Rachel**: （ページをめくりながら）
+「Long et al. (2025)、Therapeutic Innovation & Regulatory Science掲載。
+ICH E17に基づくconsistency evaluationの実務ガイダンスね。
+CDE、NMPA、製薬企業の共著 — 中国規制当局の実装視点が詰まってる。
+"Hard work beats talent when talent doesn't work hard."」
+
+**Mike**: （数式を確認しながら）
+「Non-inferiorityの調整効果量の定式化が面白い。
+Absolute: $T - C + M$、Relative: $T/(C \cdot M)$。
+あと三階層Bayesian hierarchical modelの提案 — studies, subgroups, patients。
+統計モデルのセクションはコンパクトだけど、フレームワークとしては有用だ。」
+
+**Rachel**: （サマリーファイルを完成させて）
+「Knowledge base登録完了。16本目の論文。
+`summaries/Long_2025.md`作成、INDEX.md更新済み。
+DOI: [10.1007/s43441-024-00717-z](https://doi.org/10.1007/s43441-024-00717-z)」
+
+**Harvey**: （ドアに寄りかかって）
+「Song et al.と合わせて、中国のMRCT実務の両輪が揃ったな。
+Song = pooling strategy、Long = consistency evaluation。
+そしてどちらにも共通する gap — quantitative metric for distributional similarity。
+"That's what we do." nABCDがそのギャップを埋める。」
+
+**Donna**: （記録を確認して）
+「Paper #16登録完了。タグ更新、クロスリファレンス追加済み。
+"I'm Donna. I know everything."」
+
+---
+
+### [2026-02-28 15:30] Scene: 日本語版完成
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*チーム全員がテーブルを囲んで、完成した日本語版を確認している。*
+
+**Mike**: （画面をスクロールしながら）
+「全セクション翻訳完了。数式はLaTeXそのまま、専門用語は日英併記。
+要旨、序論、方法、シミュレーション、適用例、考察、付録 — 全部入ってる。"I got it!"」
+
+**Katrina**: （テーブルを指さしながら）
+「表も全11テーブル翻訳済み。略語一覧も追加した。"Results speak for themselves."
+場所: `projects/similarity-metric/paper/nABCD_paper_ja.md`」
+
+**Harvey**: （満足げに頷き）
+「いいだろう。これで国内の議論で使える完全版がある。
+"Winners don't make excuses." 次のタスクに移るぞ。」
+
+**Donna**: （記録しながら）
+「日本語版論文作成完了、記録済み。"I'm Donna. I know everything."」
+
+---
+
+### [2026-02-28 15:00] Scene: Push — 日本語版論文作成
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Harvey がブルペンに大股で入ってくる。チーム全員の視線が集まる。*
+
+**Harvey**: （腕組みをして）
+「新しいタスクだ。論文の日本語版を作る。英語版はsubmission-readyだが、日本語版がなければ国内の議論で使えない。
+"I don't get lucky. I make my own luck." 全セクション翻訳。今すぐ動け。」
+
+**Mike**: （ノートPCを開きながら）
+「了解。数式はLaTeXそのまま、専門用語は日英併記。"I got it!"」
+
+**Katrina**: （効率的に）
+「Markdown形式で全表翻訳。"Results speak for themselves."」
+
+**Donna**: （スケジュールを見ながら）
+「進捗はリアルタイム記録。"I'm Donna. I know everything."」
+
+---
+
 # SUITS.md - Research Lab Live Script
 
 > *"I don't have dreams. I have goals."* - Harvey Specter

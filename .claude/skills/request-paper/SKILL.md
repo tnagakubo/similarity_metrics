@@ -1,5 +1,6 @@
 ---
 description: Request a paper from Tak
+model: haiku
 ---
 
 # Research Lab: Request Paper
@@ -25,7 +26,7 @@ Add brief scene and update Paper Requests section:
 **Rachel**: （Donna のデスクに来て）
 「この論文が必要なの。{citation}」
 
-**Donna**: 
+**Donna**:
 「了解。Tak にリクエスト入れておくわ」
 
 ---
@@ -33,7 +34,7 @@ Add brief scene and update Paper Requests section:
 
 And in Paper Requests section:
 ```markdown
-## 📋 Paper Requests
+## Paper Requests
 
 - [ ] {Author Year} - {Title} - Requested by {member}
 ```

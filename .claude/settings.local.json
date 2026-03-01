@@ -75,7 +75,10 @@
       "Bash(git checkout:*)",
       "Bash(git:*)",
       "Bash(gh pr:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(qpdf:*)",
+      "Bash(mkdir:*)",
+      "Bash(cygpath:*)"
     ]
   }
 }
