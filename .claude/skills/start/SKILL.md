@@ -1,5 +1,6 @@
 ---
 description: Start a new research project (Tak only)
+model: sonnet
 ---
 
 # Research Lab: Start Project
@@ -29,16 +30,16 @@ Project: $ARGUMENTS
 
 *Donna updates the whiteboard.*
 
-**Donna**: 
+**Donna**:
 「プロジェクトフォルダ作成完了。タイムラインはいつも通り私が管理するわ」
 
 **Mike**: （資料を手に取りながら）
 「面白そうだ。方法論は僕が設計する」
 
-**Rachel**: 
+**Rachel**:
 「文献調査、始めます」
 
-**Katrina**: 
+**Katrina**:
 「シミュレーションの準備、整い次第開始します」
 
 ---
@@ -48,4 +49,3 @@ Project: $ARGUMENTS
 - Only Tak can start projects
 - Scene added at TOP of SUITS.md
 - Harvey sets direction immediately
-

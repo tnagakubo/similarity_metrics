@@ -1,5 +1,6 @@
 ---
 description: Show pending paper requests
+model: haiku
 ---
 
 # Research Lab: List Requests

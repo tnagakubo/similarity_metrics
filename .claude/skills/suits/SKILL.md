@@ -1,5 +1,6 @@
 ---
 description: Display current SUITS.md script status
+model: haiku
 ---
 
 # Research Lab: SUITS Status

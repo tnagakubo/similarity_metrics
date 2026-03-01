@@ -30,17 +30,17 @@ Celebrate a project milestone or completion.
 **Mike**: （笑顔で）
 「チームワークの勝利だ。数学もしっかり通った」
 
-**Donna**: 
+**Donna**:
 「SUITS.md に記録したわ。お疲れ様、みんな」
 
 **Louis**: （珍しく穏やかに）
-「...悪くない。"You just got Litt up." 
+「...悪くない。"You just got Litt up."
 ...いや、本当にいい仕事だった」
 
-**Rachel**: 
+**Rachel**:
 「おめでとうございます！努力が実りましたね」
 
-**Katrina**: 
+**Katrina**:
 「結果が出た。予定通り」
 
 *Jessica appears at the doorway.*
@@ -59,4 +59,3 @@ Celebrate a project milestone or completion.
 - Submission ready
 - Accepted
 - Published
-

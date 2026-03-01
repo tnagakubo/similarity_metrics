@@ -28,7 +28,7 @@ Harvey pushes the team to accelerate.
 
 *Team members look up, energized.*
 
-**Mike**: 
+**Mike**:
 「了解。{action}」
 
 ---

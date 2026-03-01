@@ -1,5 +1,6 @@
 ---
 description: Louis conducts internal critical review
+model: opus
 ---
 
 # Research Lab: Review
@@ -27,7 +28,7 @@ Louis reviews the paper draft critically.
 
 *He slides the marked-up draft across.*
 
-**Louis**: 
+**Louis**:
 「Critical が X 件、Major が Y 件、Minor が Z 件。
 まず Critical から。{issue 1}...」
 
@@ -36,7 +37,7 @@ Louis reviews the paper draft critically.
 **Harvey**: （腕を組んで）
 「対応策は？」
 
-**Louis**: 
+**Louis**:
 「{suggested fix}。これを直せば...
 "You just got Litt up!" ...通過だ」
 

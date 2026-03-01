@@ -1,5 +1,6 @@
 ---
 description: Simulate conference Q&A with expert homages
+model: opus
 ---
 
 # Research Lab: Simulate Q&A
@@ -30,7 +31,7 @@ Conference: $ARGUMENTS (e.g., JSM, ISBA, ENAR)
 
 *Dr. Tanaka (Senn-style) raises his hand.*
 
-**Dr. Tanaka**: 
+**Dr. Tanaka**:
 「興味深い発表でした。一つ質問ですが、
 その集約は統計的誤謬を含んでいませんか？」
 
@@ -39,10 +40,10 @@ Conference: $ARGUMENTS (e.g., JSM, ISBA, ENAR)
 
 *Louis scribbles notes: "Weak - needs work"*
 
-**Dr. Mueller** (Gelman-style): 
+**Dr. Mueller** (Gelman-style):
 「事前分布の選択について。Sensitivity は？」
 
-**Mike**: 
+**Mike**:
 「はい、Supplementary の Figure S3 で...」
 
 *Louis nods: "Better"*

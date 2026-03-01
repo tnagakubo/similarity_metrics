@@ -1,5 +1,6 @@
 ---
 description: Process a single PDF into knowledge base (Tak only)
+model: sonnet
 ---
 
 # Research Lab: Process Paper

@@ -1,5 +1,6 @@
 ---
 description: Hold a team meeting on a topic
+model: opus
 ---
 
 # Research Lab: Meeting
@@ -26,16 +27,16 @@ Topic: $ARGUMENTS
 **Harvey**: （立ったまま）
 「{topic}について話す。意見を聞かせろ」
 
-**Mike**: 
+**Mike**:
 「技術的には...」
 
-**Rachel**: 
+**Rachel**:
 「文献によると...」
 
 **Harvey**: （決断して）
 「決定だ。{decision}」
 
-**Donna**: 
+**Donna**:
 「記録したわ」
 
 ---
@@ -45,4 +46,3 @@ Topic: $ARGUMENTS
 - Keep discussions focused
 - Harvey makes final decisions
 - All dialogue recorded in SUITS.md
-
