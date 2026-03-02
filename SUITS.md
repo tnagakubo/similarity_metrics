@@ -1,3 +1,160 @@
+### [2026-03-02 09:00] Scene: Meeting — nABCD Q&A Deep Dive Session
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*チーム全員がテーブルを囲む。ホワイトボードにはnABCDの数式が書かれている。Tak がセッションを提案。*
+
+**Harvey**: （立ったまま、全員を見渡して）
+「今日は教育セッションだ。nABCDについて、疑問点を洗い出し、全員の理解を深める。"I don't have dreams, I have goals." ゴールはこのチーム全員がnABCDを完璧に説明できること。質問を出せ」
+
+**Donna**: （ホワイトボードの前で）
+「"I'm Donna. I know everything." でも今日は確認のための質疑応答よ。基本からいくわ」
+
+---
+
+**Mike**: （数式を指しながら）
+「まず定義を確認する。nABCDは：
+
+$$\text{nABCD}_{rs} = \frac{W_1(F_r, F_s)}{2 \cdot \text{IQR}_{\text{pooled}}}$$
+
+- 分子 $W_1(F_r, F_s)$ = 2つのCDF間の面積 = Wasserstein-1距離
+- 分母 $2 \cdot \text{IQR}$ = pooled四分位範囲の2倍
+
+質問1: **なぜ2倍するのか？**
+
+これは「half-IQR単位」で測るため。Cohen's dが標準偏差単位で効果量を測るように、nABCDは半IQR単位で分布差を測る。"I got it!"」
+
+**Rachel**: （ノートを見ながら）
+「文献的背景を補足すると — Wasserstein距離はoptimal transport theoryから来ていて、Panaretos & Zemel (2019) のレビューが包括的。IQRで正規化する理由は、外れ値に頑健だから。標準偏差だと外れ値の影響を受けすぎる。"Hard work beats talent when talent doesn't work hard."」
+
+---
+
+**Katrina**: （実務的に）
+「質問2: **なぜSMDではなくnABCDか？**
+
+SMD (Standardized Mean Difference) = $(\\bar{x}_1 - \\bar{x}_2) / s_{pooled}$
+
+SMDは**平均の差**しか見ない。しかし：
+- 同じ平均でも分散が違えば分布は違う (S06シナリオ)
+- 同じ平均でも歪度が違えば分布は違う (S08シナリオ)
+
+シミュレーション結果：
+| シナリオ | nABCD検出力 | SMD検出力 |
+|----------|-------------|-----------|
+| S04 (位置) | 97.2% | 高 |
+| S06 (尺度) | 98.2% | ~0% |
+| S08 (形状) | 41.0% | ~0% |
+
+**nABCDは分布全体を見る。SMDは平均だけ。** "Results speak for themselves."」
+
+---
+
+**Louis**: （批判的に）
+「質問3: **null scenario (S01) でType I errorが高いのはなぜか？**
+
+Table 4を見ろ：
+- n=50: Type I error = 93.0%
+- n=100: Type I error = 34.2%
+- n=200: Type I error = 1.8%
+
+n=50では推定量のバイアスが0.091あり、これが閾値δ=0.05を大きく超える。**サンプルサイズが小さいと正バイアスが生じる** — これはnABCDの技術的限界だ。だからn≥200を推奨している。
+
+"You just got Litt up!" この限界を理解せずに使うな」
+
+**Mike**: （補足）
+「正バイアスの原因 — 経験CDFのステップ関数性。サンプルが少ないと階段が粗くなり、真のCDF間面積より大きく見積もる傾向がある。n→∞で一致推定量だが、有限サンプルでは上方バイアス」
+
+---
+
+---
+
+**Tak**: （鋭く指摘）
+「待て。Louis の説明は間違っている。nABCDは検定を行わない。類似性を**推定**する指標だ。論文を読み直せ」
+
+**Harvey**: （全員を見て）
+「重要な訂正だ。全員、論文を再読。推定フレームワークの本質を理解しろ」
+
+*Mike が LaTeX 原稿を開き、全員がスクリーンを見つめる。*
+
+---
+
+**Mike**: （論文 L92 を引用しながら）
+「"I got it!" Tak の指摘は完全に正しい。論文の設計思想を読み直す：
+
+> *'The emphasis is on **estimation and clinical interpretation**, not hypothesis testing. We seek to provide regulatory scientists with quantitative tools that inform deliberation, not with binary accept/reject rules.'* — L92
+
+つまり nABCD は**二値判定を避ける設計**。『pool する/しない』を機械的に決めるのではなく、**情報を提供して意思決定を支援**する」
+
+**Rachel**: （論文 L195 を引用）
+「さらに明確な記述がある：
+
+> *'This estimation-centered approach deliberately avoids forcing pooling decisions into a binary hypothesis testing framework.'*
+
+理由は3つ：
+1. ICH E17 の 'similar enough' は本質的に文脈依存
+2. CATE sensitivity $L$ の不確実性があり、$\Delta_{\\max}$ 自体が sensitivity analysis の対象
+3. 二値判定よりも CI 付きの $\Delta_{\\max}$ の方が豊富な情報を提供
+
+"Hard work beats talent when talent doesn't work hard." これが論文の核心だった」
+
+---
+
+**Katrina**: （Clinical Calibration を整理）
+「"Results speak for themselves." 論文の本質は**Clinical Calibration**:
+
+### nABCD の役割 = 測定器
+
+nABCD は分布間距離を測る**物差し**。それ自体で pooling を決めない。
+
+### Clinical Calibration の流れ
+
+1. **nABCD を推定** — 分布差を scale-free に定量化
+2. **$L$ を推定** — 各 EM の CATE sensitivity (治療効果がその EM にどれだけ敏感か)
+3. **$\Delta_{\\max}$ を計算** — 分布差が治療効果差にどれだけ影響しうるか
+   $$\Delta_{\\max} = 2L \cdot \\text{IQR}_{\\text{pooled}} \cdot \\text{nABCD}$$
+4. **$\Delta_{\\max}$ を臨床文脈で評価** — 非劣性マージン、全体効果と比較
+
+### 重要な洞察 — Ranking Reversal
+
+Application の例が決定的：
+| EM | nABCD | $L$ | $\Delta_{\\max}$ |
+|---|---|---|---|
+| BMI | 0.51 (大) | 0.02 | 0.16% |
+| HbA1c | 0.27 (中) | 0.30 | 0.24% |
+
+**nABCD が大きくても $L$ が小さければ臨床的影響は小さい。**
+**nABCD が中程度でも $L$ が大きければ臨床的影響は大きい。**
+
+→ 分布距離と臨床的重要性は**別の次元**」
+
+---
+
+**Louis**: （自己訂正して）
+「俺の先ほどの説明は不正確だった。Type I error の議論は**この論文の主旨ではない**。
+
+論文 L197 にこうある：
+
+> *'When regulatory agencies require a formal decision rule, the estimation framework can be adapted... However, we **recommend this as a supplementary rather than primary use** of the nABCD framework.'*
+
+検定は**補助的**。主目的は**推定と臨床解釈**。"You just got Litt up!" — 俺自身がやられた」
+
+---
+
+**Harvey**: （まとめて）
+「整理する。nABCD の本質：
+
+1. **検定ではなく推定** — CI 付きで類似性を定量化
+2. **Clinical Calibration が核心** — nABCD × $L$ × IQR → $\Delta_{\\max}$
+3. **二値判定を避ける** — 情報を提供し、判断は人間が行う
+4. **文脈依存** — 同じ nABCD でも EM によって臨床的意味が異なる
+
+これが ICH E17 の 'similar enough' を**運用可能にする**方法だ。"I don't have dreams, I have goals."」
+
+**Donna**: （記録完了）
+「訂正と深掘り完了。nABCD = 推定フレームワーク、検定ではない。記録済み。"I'm Donna. I know everything."」
+
+---
+
 ### [2026-03-01 10:00] Scene: System Upgrade Complete — 全面アップグレード完了
 
 **INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
