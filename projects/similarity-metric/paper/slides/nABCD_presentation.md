@@ -444,11 +444,11 @@ Author One, Author Two, Author Three
 
 # Outline
 
-1. **Background** &mdash; ICH E17 and the methodological gap
-2. **Methods** &mdash; The nABCD metric and clinical calibration
-3. **Simulation Study** &mdash; Estimation properties
-4. **Application** &mdash; Type 2 diabetes MRCT
-5. **Discussion** &mdash; Implications and future directions
+1. **Background** &mdash; ICH E17 and the regulatory gap
+2. **Methods** &mdash; Heterogeneity bound, nABCD definition, clinical calibration
+3. **Simulation Study** &mdash; Bias, coverage, nABCD vs. SMD
+4. **Application** &mdash; Diabetes MRCT, ranking reversal, sensitivity analysis
+5. **Discussion** &mdash; Estimation-centered philosophy and future directions
 
 ---
 
@@ -558,6 +558,69 @@ $$
 - **Geometrically**: total area between two CDFs
 - Captures location, scale, **and** shape differences
 - $W_1$ is required by the Kantorovich&ndash;Rubinstein duality ($W_2$ cannot provide this bound)
+
+---
+
+<style scoped>
+section { font-size: 23px; line-height: 1.4; }
+</style>
+
+# Derivation: Three Steps
+
+### Step 1 &mdash; $W_1$ as CDF area
+
+$$W_1(F_1, F_2) = \int_{-\infty}^{\infty} |F_1(x) - F_2(x)| \, dx$$
+
+### Step 2 &mdash; Kantorovich&ndash;Rubinstein duality
+
+$$W_1(F_1, F_2) = \sup_{\|f\|_{\text{Lip}} \leq 1} \left| \int f \, dF_1 - \int f \, dF_2 \right|$$
+
+$W_1$ equals the worst-case expected difference over **all 1-Lipschitz functions**.
+
+### Step 3 &mdash; Apply to CATE function
+
+If $\tau(x)$ has Lipschitz constant $L$, then $g(x) = \tau(x)/L$ satisfies $\|g\|_{\text{Lip}} \leq 1$:
+
+$$\frac{1}{L}\,|\bar{\tau}_1 - \bar{\tau}_2| = \left|\int g \, dF_1 - \int g \, dF_2\right| \leq W_1(F_1, F_2) \quad \Rightarrow \quad |\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot W_1 \quad \blacksquare$$
+
+---
+
+# Why $W_1$ &mdash; And Only $W_1$
+
+| Distance | K-R Duality | Heterogeneity Bound | Symmetric | Always Finite |
+|----------|:-----------:|:-------------------:|:---------:|:-------------:|
+| $W_1$ | **Yes** | **Constructible** | Yes | Yes |
+| $W_2$ | No | Not available | Yes | Yes |
+| KL divergence | No | Not available | **No** | **No** |
+
+<div class="alertblock">
+<div class="block-title">Why alternatives fail</div>
+<div class="block-content">
+
+**$W_2$**: Its dual involves *convex* functions, not Lipschitz &mdash; cannot bound CATE heterogeneity.
+**KL**: Asymmetric ($D_{KL}(P \| Q) \neq D_{KL}(Q \| P)$) and diverges when empirical supports don't overlap.
+
+$W_1$ is not a preference &mdash; it is the **unique choice** enabling the heterogeneity bound.
+
+</div>
+</div>
+
+---
+
+# The Bound Is Tight, Not Loose
+
+<div class="block">
+<div class="block-title">Two reasons the upper bound is the right tool</div>
+<div class="block-content">
+
+**1. Regulatory conservatism.** &ensp; False-positive pooling (treating different populations as similar) is the dangerous error. An upper bound provides a worst-case guarantee &mdash; appropriate for regulatory safety decisions.
+
+**2. K-R optimality.** &ensp; There exists a 1-Lipschitz function that *achieves* the supremum. The bound is the **tightest possible** given only Lipschitz smoothness of $\tau(x)$ &mdash; not a rough approximation, but the mathematical optimum.
+
+</div>
+</div>
+
+> The bound answers: *"Given what we know about CATE smoothness, what is the worst that could happen?"*
 
 ---
 
@@ -813,6 +876,35 @@ The clinical meaning of nABCD depends on the EM's CATE sensitivity $L$.
 
 ---
 
+<style scoped>
+section { font-size: 25px; line-height: 1.5; }
+</style>
+
+# Why the Ranking Reverses
+
+### $L$ is the multiplier that changes everything
+
+**BMI** (nABCD = 0.51, $L$ = 0.02) &mdash; Weak effect modifier:
+- Huge distribution gap ($\Delta$ = 7.3 kg/m$^2$) between Japan and US
+- But BMI has **small influence** on treatment effect for this drug class
+- $\Rightarrow$ $\Delta_{\max}$ = 0.16% &mdash; only 40% of non-inferiority margin
+
+**HbA1c** (nABCD = 0.27, $L$ = 0.30) &mdash; Strong effect modifier:
+- Moderate distribution gap ($\Delta$ = 0.8%) between Japan and US
+- But baseline HbA1c has **large influence** on treatment effect
+- $\Rightarrow$ $\Delta_{\max}$ = 0.24% &mdash; **60% of margin**
+
+<div class="alertblock">
+<div class="block-title">Core message</div>
+<div class="block-content">
+
+**Distribution size and clinical consequence are fundamentally different dimensions.** nABCD alone is necessary but not sufficient &mdash; clinical calibration via $\Delta_{\max}$ is what connects them.
+
+</div>
+</div>
+
+---
+
 # Sensitivity Analysis: HbA1c (Japan vs. US)
 
 nABCD = 0.27, IQR = 1.5%
@@ -827,6 +919,27 @@ nABCD = 0.27, IQR = 1.5%
 
 - At $L^* = 0.49$: $\Delta_{\max}$ equals the non-inferiority margin (0.4%)
 - **Transparent view**: at what $L$ does the distributional difference begin to matter?
+
+---
+
+# Estimation, Not Testing
+
+### Why we do not recommend hypothesis testing
+
+<div class="block">
+<div class="block-title">Three reasons</div>
+<div class="block-content">
+
+**1. ICH E17 avoids binary rules.** &ensp; Similarity is "context-dependent" &mdash; one threshold cannot serve all diseases, drugs, or regulatory contexts.
+
+**2. $L$ is uncertain.** &ensp; A single test result obscures uncertainty in the CATE sensitivity. Sensitivity tables + CIs provide a more transparent and honest assessment.
+
+**3. Decision boundaries are context-specific.** &ensp; NI trial ($\Delta_{\text{clin}} = 0.4\%$) vs. superiority trial ($\Delta_{\text{clin}} = 0.8\%$) &mdash; same nABCD, different conclusions.
+
+</div>
+</div>
+
+> Provide nABCD + 95% CI, $\Delta_{\max}$ + 95% CI, and sensitivity ranges &mdash; **regulatory judgment informed by evidence, not ruled by algorithm.**
 
 ---
 
