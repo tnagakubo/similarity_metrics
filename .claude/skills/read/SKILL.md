@@ -1,5 +1,6 @@
 ---
 description: Read a paper at specified level
+model: haiku
 ---
 
 # Research Lab: Read Paper

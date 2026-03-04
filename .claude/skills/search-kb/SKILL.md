@@ -1,5 +1,6 @@
 ---
 description: Search knowledge base
+model: haiku
 ---
 
 # Research Lab: Search KB

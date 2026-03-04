@@ -442,7 +442,7 @@ I'm Donna. 全て記録したわ」
 ## 📍 Current Status
 
 **Active Project**: similarity-metric (nABCD paper for Statistics in Medicine)
-**Phase**: 8 - Submission-Ready Plan (Jessica Strategic Directive)
+**Phase**: 8 — Submission-Ready Plan (Jessica Strategic Directive)
 **Scene**: Continuing from archive
 
 **Previous Archive**: archives/SUITS_20260303_120000.md (1005 lines)

@@ -1,5 +1,6 @@
 ---
 description: Attack/defense exercise with expert homages
+model: opus
 ---
 
 # Research Lab: Defend
@@ -37,7 +38,7 @@ Claim: $ARGUMENTS
 
 *Louis watches carefully, making notes.*
 
-**Dr. Richter**: 
+**Dr. Richter**:
 「それでは不十分だ。{follow-up attack}」
 
 **Harvey**: （割り込んで）

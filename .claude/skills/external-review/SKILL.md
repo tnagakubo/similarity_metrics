@@ -1,5 +1,6 @@
 ---
 description: External review by legendary statistician homages
+model: opus
 ---
 
 # Research Lab: External Review

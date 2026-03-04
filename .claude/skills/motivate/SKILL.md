@@ -1,5 +1,6 @@
 ---
 description: Team member gives encouragement
+model: haiku
 ---
 
 # Research Lab: Motivate

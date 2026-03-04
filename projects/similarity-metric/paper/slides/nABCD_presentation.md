@@ -9,14 +9,14 @@ style: |
   /* ============================================
      Marp Slide Template
      - Accent Color 1: #1E3A5F (Deep Navy)
-     - Accent Color 2: #199be6
+     - Accent Color 2: #0da774
      ============================================ */
 
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
 
   :root {
     --accent1: #003638;
-    --accent2: #1a0da7;
+    --accent2: #0da774;
     --text-main: #000000;
     --text-light: #303030;
     --bg-light: #F8F9FA;

@@ -1,5 +1,6 @@
 ---
 description: Process a book PDF by chapters into knowledge base (Tak only)
+model: sonnet
 ---
 
 # Research Lab: Process Book
@@ -38,7 +39,6 @@ BOOK_ID="{author}_{year}"
 mkdir -p /tmp/book-images/$BOOK_ID
 
 # Convert specified pages to PNG (150dpi)
-# Example: Chapter 3 is pages 100-150
 mutool draw -o /tmp/book-images/$BOOK_ID/ch03_page_%03d.png -r 150 "$ARGUMENTS" 100-150
 ```
 
@@ -123,23 +123,6 @@ DOI: [10.xxxx](https://doi.org/10.xxxx) or ISBN: {isbn}
 
 ## Tags
 {keywords}
-```
-
-## Example Usage
-
-### van der Vaart & Wellner (1996) Chapter 3.9
-```bash
-# 1. Check structure
-pdfinfo vandervaart_wellner_1996.pdf
-
-# 2. Find Chapter 3.9 pages (e.g., pages 374-395)
-
-# 3. Convert to images
-mkdir -p /tmp/book-images/vandervaart_1996
-mutool draw -o /tmp/book-images/vandervaart_1996/ch3.9_page_%03d.png -r 150 vandervaart_wellner_1996.pdf 374-395
-
-# 4. Read images and create summary
-# 5. Save to knowledge/summaries/vandervaart_1996_ch3.9.md
 ```
 
 ## Important

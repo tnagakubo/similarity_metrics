@@ -1,5 +1,6 @@
 ---
 description: Get citation for a paper
+model: haiku
 ---
 
 # Research Lab: Cite

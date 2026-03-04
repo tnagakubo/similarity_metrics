@@ -1,5 +1,6 @@
 ---
 description: Batch process multiple PDFs (Tak only)
+model: sonnet
 ---
 
 # Research Lab: Process Papers (Batch)

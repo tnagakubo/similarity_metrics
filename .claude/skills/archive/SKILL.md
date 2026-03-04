@@ -1,5 +1,6 @@
 ---
 description: Archive SUITS.md when over 1000 lines
+model: haiku
 ---
 
 # Research Lab: Archive
@@ -28,7 +29,7 @@ Archive SUITS.md and start fresh.
 
 *Donna organizes files, moving a thick folder to the archive shelf.*
 
-**Donna**: 
+**Donna**:
 「SUITS.md が 1000 行を超えたからアーカイブしたわ。
 archives/SUITS_{timestamp}.md に保存済み。
 新しいスクリプト開始よ」
@@ -60,7 +61,7 @@ archives/SUITS_{timestamp}.md に保存済み。
 
 ---
 
-## 📍 Current Status
+## Current Status
 
 **Active Project**: {current project or "none"}
 **Scene**: Continuing from archive
@@ -97,7 +98,7 @@ archives/SUITS_{timestamp}.md に保存済み。
 
 [Copy from archived file]
 
-## 📝 Active Tasks
+## Active Tasks
 
 [Copy from archived file]
 
