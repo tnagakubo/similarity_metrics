@@ -4,6 +4,107 @@
 
 ---
 
+### [2026-03-04 03:15] Scene: Meeting — IST効果修飾因子の確認と国別nABCD比較
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Harvey がホワイトボードの前に立つ。Rachel、Mike、Katrina、Donna が着席。Louis がドア際で腕を組む。*
+
+**Harvey**: （全員を見渡して）
+「今日の議題は一つ。ISTの効果修飾因子は何なのか。あるなら国レベルでnABCDを出す。ないなら、baseline共変量 — つまり潜在的な効果修飾因子 — で比較する。論文のプロセスに従え。Rachel、文献から始めろ」
+
+**Rachel**: （ファイルを開いて）
+「"Hard work beats talent when talent doesn't work hard." 調査結果は明確。
+
+**結論: ISTにはaspirinの確認された効果修飾因子は存在しない。**
+
+根拠は3つ:
+
+**1. Chen et al. (2000)** — CAST+IST統合解析 n=40,000
+DOI: [10.1161/01.str.31.6.1240](https://doi.org/10.1161/01.str.31.6.1240)
+- 10の基線特性で28サブグループを事前規定して検討
+- 検討変数: age, sex, consciousness, AF, CT所見, BP, stroke subtype, heparin
+- **χ²(18) = 20.9, NS — どのサブグループでも治療効果の異質性なし**
+- 原文: "The absolute risk reduction does not differ substantially with respect to any subgroup"
+
+**2. Leonardi-Bee et al. (2002)** — SBP分析
+DOI: [10.1161/01.str.0000014509.11540.66](https://doi.org/10.1161/01.str.0000014509.11540.66)
+- SBPはstrong prognostic factorだが、**治療効果の修飾因子としては非有意**
+
+**3. Saxena et al. (2001)** — AF サブグループ
+DOI: [10.1161/hs1001.097093](https://doi.org/10.1161/hs1001.097093)
+- AF患者で高用量heparinの効果に差があるが、aspirin治療効果自体の修飾ではない」
+
+**Harvey**: （頷いて）
+「よし。確認された効果修飾因子はない。つまり論文のプロセスに従えば、baseline共変量 — 潜在的な効果修飾因子 — で比較する。Mike、国レベルの分析結果を出せ」
+
+**Mike**: （モニターを指して）
+「"I got it!" 24カ国（n≥100）で276ペアのnABCDを計算した。Bootstrap CI付き（B=2000）。連続変数3つ: Age, SBP, Delay。論文の limitation #1 で連続EMのみ対応だから、カテゴリカル変数（Sex, RCONSC, STYPE）は今回対象外。
+
+**■ 核心的発見 — 変数別nABCD分布 (276ペア):**
+
+| Variable | Mean | Median | Max | Negligible | Small | Medium | Large |
+|----------|------|--------|-----|------------|-------|--------|-------|
+| **Age** | 0.146 | 0.115 | **0.565** | 13% | 49% | 29% | **9%** |
+| **SBP** | 0.087 | 0.080 | 0.230 | 23% | **67%** | 10% | 0% |
+| **Delay** | 0.111 | 0.095 | 0.321 | 21% | 53% | 24% | 1% |
+
+**■ Age — 最大の分布差 (Top 5):**
+
+| Pair | nABCD | 95% CI |
+|------|-------|--------|
+| UK vs INDI | **0.565** | (0.502, 0.656) |
+| SWED vs INDI | **0.546** | (0.456, 0.588) |
+| ITAL vs INDI | **0.531** | (0.442, 0.576) |
+| SWIT vs INDI | **0.513** | (0.447, 0.571) |
+| NORW vs INDI | **0.465** | (0.397, 0.522) |
+
+India (mean age 56.6歳) vs UK/Sweden/Italy (73-75歳) で **15-18歳差** → nABCD "large" を大きく超える。
+
+**■ SBP — 全て "small〜medium":**
+最大でも NETH vs INDI = 0.230 (medium)。Large域に達するペアなし。
+
+**■ Delay — Singapore が突出:**
+AUST vs SING = 0.321, SWIT vs SING = 0.317 — Singapore (28.8h) vs Austria (14.7h) で14時間差。
+
+**■ Country Profile (平均nABCD across全ペア):**
+- **Age**: INDI (0.372) >> SWED (0.210) > SING (0.201) — Indiaが圧倒的に異質
+- **SBP**: NETH (0.131) ≈ INDI (0.126) ≈ CZEC (0.125) — 国間差は比較的均質
+- **Delay**: SING (0.215) >> AUST (0.167) > HONG (0.151) — Singaporeが突出」
+
+**Katrina**: （テーブルを確認して）
+「"Results speak for themselves." 数字が語る3つのポイント:
+
+1. **Ageが最も異質**: 9%のペアが"large"。Indiaが全てのtop pairに登場。ISTの最大の国間分布差はAge。
+2. **SBPは均質**: Largeペアゼロ。67%がsmall。SBPは国間で最も安定した共変量。
+3. **変数間差が大きい**: 同じ国ペアでもAgeとSBPで全く違うnABCD — まさにnABCDフレームワークの価値。
+
+これは論文のSection 4で示す"ranking reversal"と同じ構造。Ageの分布差が大きくても、CATE sensitivity (L) が小さければΔ_maxは小さい可能性がある」
+
+**Louis**: （批判的に）
+「Wait. "You just got Litt up!" ここで問題がある。Chen et al. (2000) が"no significant effect modification"と結論したのは、**aggregate level**での検出力の問題かもしれない。Nguyen et al. (2020) は23変数のcounterfactual modelで25%の患者にHTE (heterogeneous treatment effect) を示唆している。
+
+つまり: "No confirmed EM" ≠ "No EM exists"。潜在的EMの分布比較は正当化される。ただし、Lの推定がISTでは困難 — subgroup analysisが"NS"だからL ≈ 0と見なすか、それとも検出力不足を考慮してnon-zero Lを仮定するか。これは論文のDiscussionで正直に述べるべきだ」
+
+**Harvey**: （立ち上がって）
+「Louis、的確だ。まとめるぞ:
+
+**決定事項:**
+
+1. **ISTには確認された効果修飾因子はない** (Chen 2000, χ²=20.9 NS)
+2. **したがって、baseline共変量（潜在的EM）で国別nABCDを比較する** — 論文のプロセス通り
+3. **24カ国276ペアの分析完了** — Age, SBP, Delayの3連続変数
+4. **核心的知見**: Ageが最大の国間異質性源（INDIが突出）、SBPは均質、Delayは中間
+5. **Section 4への示唆**: "No confirmed EM"の場合でも、baseline共変量の分布差を定量化し、Δ_max × Lの感度分析で"仮にEMだったら"を示す — これがnABCDフレームワークの価値
+6. **Louisの指摘を反映**: "No significant EM ≠ No EM" は Discussion で acknowledge する
+
+"I don't have dreams, I have goals." 次のステップ: この国別分析をSection 4の実データ適用に組み込む。Katrinaがテーブルを整形、Mikeがbootstrap CIを確認。進め」
+
+**Donna**: （タイピング完了）
+「"I'm Donna. I know everything." 全記録完了。国別nABCD分析スクリプト: `ist_country_nABCD.py`、24カ国276ペア、B=2000 bootstrap。会議の決定事項6点、全て記録済み」
+
+---
+
 ### [2026-03-04 01:30] Scene: IST徹底調査完了 — 試験デザイン・効果修飾因子・36カ国詳細
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
