@@ -1,421 +1,441 @@
-### [2026-03-02 09:00] Scene: Meeting — nABCD Q&A Deep Dive Session
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
-
-*チーム全員がテーブルを囲む。ホワイトボードにはnABCDの数式が書かれている。Tak がセッションを提案。*
-
-**Harvey**: （立ったまま、全員を見渡して）
-「今日は教育セッションだ。nABCDについて、疑問点を洗い出し、全員の理解を深める。"I don't have dreams, I have goals." ゴールはこのチーム全員がnABCDを完璧に説明できること。質問を出せ」
-
-**Donna**: （ホワイトボードの前で）
-「"I'm Donna. I know everything." でも今日は確認のための質疑応答よ。基本からいくわ」
-
----
-
-**Mike**: （数式を指しながら）
-「まず定義を確認する。nABCDは：
-
-$$\text{nABCD}_{rs} = \frac{W_1(F_r, F_s)}{2 \cdot \text{IQR}_{\text{pooled}}}$$
-
-- 分子 $W_1(F_r, F_s)$ = 2つのCDF間の面積 = Wasserstein-1距離
-- 分母 $2 \cdot \text{IQR}$ = pooled四分位範囲の2倍
-
-質問1: **なぜ2倍するのか？**
-
-これは「half-IQR単位」で測るため。Cohen's dが標準偏差単位で効果量を測るように、nABCDは半IQR単位で分布差を測る。"I got it!"」
-
-**Rachel**: （ノートを見ながら）
-「文献的背景を補足すると — Wasserstein距離はoptimal transport theoryから来ていて、Panaretos & Zemel (2019) のレビューが包括的。IQRで正規化する理由は、外れ値に頑健だから。標準偏差だと外れ値の影響を受けすぎる。"Hard work beats talent when talent doesn't work hard."」
-
----
-
-**Katrina**: （実務的に）
-「質問2: **なぜSMDではなくnABCDか？**
-
-SMD (Standardized Mean Difference) = $(\\bar{x}_1 - \\bar{x}_2) / s_{pooled}$
-
-SMDは**平均の差**しか見ない。しかし：
-- 同じ平均でも分散が違えば分布は違う (S06シナリオ)
-- 同じ平均でも歪度が違えば分布は違う (S08シナリオ)
-
-シミュレーション結果：
-| シナリオ | nABCD検出力 | SMD検出力 |
-|----------|-------------|-----------|
-| S04 (位置) | 97.2% | 高 |
-| S06 (尺度) | 98.2% | ~0% |
-| S08 (形状) | 41.0% | ~0% |
-
-**nABCDは分布全体を見る。SMDは平均だけ。** "Results speak for themselves."」
-
----
-
-**Louis**: （批判的に）
-「質問3: **null scenario (S01) でType I errorが高いのはなぜか？**
-
-Table 4を見ろ：
-- n=50: Type I error = 93.0%
-- n=100: Type I error = 34.2%
-- n=200: Type I error = 1.8%
-
-n=50では推定量のバイアスが0.091あり、これが閾値δ=0.05を大きく超える。**サンプルサイズが小さいと正バイアスが生じる** — これはnABCDの技術的限界だ。だからn≥200を推奨している。
-
-"You just got Litt up!" この限界を理解せずに使うな」
-
-**Mike**: （補足）
-「正バイアスの原因 — 経験CDFのステップ関数性。サンプルが少ないと階段が粗くなり、真のCDF間面積より大きく見積もる傾向がある。n→∞で一致推定量だが、有限サンプルでは上方バイアス」
-
----
-
----
-
-**Tak**: （鋭く指摘）
-「待て。Louis の説明は間違っている。nABCDは検定を行わない。類似性を**推定**する指標だ。論文を読み直せ」
-
-**Harvey**: （全員を見て）
-「重要な訂正だ。全員、論文を再読。推定フレームワークの本質を理解しろ」
-
-*Mike が LaTeX 原稿を開き、全員がスクリーンを見つめる。*
-
----
-
-**Mike**: （論文 L92 を引用しながら）
-「"I got it!" Tak の指摘は完全に正しい。論文の設計思想を読み直す：
-
-> *'The emphasis is on **estimation and clinical interpretation**, not hypothesis testing. We seek to provide regulatory scientists with quantitative tools that inform deliberation, not with binary accept/reject rules.'* — L92
-
-つまり nABCD は**二値判定を避ける設計**。『pool する/しない』を機械的に決めるのではなく、**情報を提供して意思決定を支援**する」
-
-**Rachel**: （論文 L195 を引用）
-「さらに明確な記述がある：
-
-> *'This estimation-centered approach deliberately avoids forcing pooling decisions into a binary hypothesis testing framework.'*
-
-理由は3つ：
-1. ICH E17 の 'similar enough' は本質的に文脈依存
-2. CATE sensitivity $L$ の不確実性があり、$\Delta_{\\max}$ 自体が sensitivity analysis の対象
-3. 二値判定よりも CI 付きの $\Delta_{\\max}$ の方が豊富な情報を提供
-
-"Hard work beats talent when talent doesn't work hard." これが論文の核心だった」
-
----
-
-**Katrina**: （Clinical Calibration を整理）
-「"Results speak for themselves." 論文の本質は**Clinical Calibration**:
-
-### nABCD の役割 = 測定器
-
-nABCD は分布間距離を測る**物差し**。それ自体で pooling を決めない。
-
-### Clinical Calibration の流れ
-
-1. **nABCD を推定** — 分布差を scale-free に定量化
-2. **$L$ を推定** — 各 EM の CATE sensitivity (治療効果がその EM にどれだけ敏感か)
-3. **$\Delta_{\\max}$ を計算** — 分布差が治療効果差にどれだけ影響しうるか
-   $$\Delta_{\\max} = 2L \cdot \\text{IQR}_{\\text{pooled}} \cdot \\text{nABCD}$$
-4. **$\Delta_{\\max}$ を臨床文脈で評価** — 非劣性マージン、全体効果と比較
-
-### 重要な洞察 — Ranking Reversal
-
-Application の例が決定的：
-| EM | nABCD | $L$ | $\Delta_{\\max}$ |
-|---|---|---|---|
-| BMI | 0.51 (大) | 0.02 | 0.16% |
-| HbA1c | 0.27 (中) | 0.30 | 0.24% |
-
-**nABCD が大きくても $L$ が小さければ臨床的影響は小さい。**
-**nABCD が中程度でも $L$ が大きければ臨床的影響は大きい。**
-
-→ 分布距離と臨床的重要性は**別の次元**」
-
----
-
-**Louis**: （自己訂正して）
-「俺の先ほどの説明は不正確だった。Type I error の議論は**この論文の主旨ではない**。
-
-論文 L197 にこうある：
-
-> *'When regulatory agencies require a formal decision rule, the estimation framework can be adapted... However, we **recommend this as a supplementary rather than primary use** of the nABCD framework.'*
-
-検定は**補助的**。主目的は**推定と臨床解釈**。"You just got Litt up!" — 俺自身がやられた」
-
----
-
-**Harvey**: （まとめて）
-「整理する。nABCD の本質：
-
-1. **検定ではなく推定** — CI 付きで類似性を定量化
-2. **Clinical Calibration が核心** — nABCD × $L$ × IQR → $\Delta_{\\max}$
-3. **二値判定を避ける** — 情報を提供し、判断は人間が行う
-4. **文脈依存** — 同じ nABCD でも EM によって臨床的意味が異なる
-
-これが ICH E17 の 'similar enough' を**運用可能にする**方法だ。"I don't have dreams, I have goals."」
-
-**Donna**: （記録完了）
-「訂正と深掘り完了。nABCD = 推定フレームワーク、検定ではない。記録済み。"I'm Donna. I know everything."」
-
----
-
-### [2026-03-01 10:00] Scene: System Upgrade Complete — 全面アップグレード完了
-
-**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
-
-*Donna がホワイトボードのチェックリストを次々とチェックしていく。Jessica が満足げに見守る。*
-
-**Donna**: （ホワイトボードを指しながら）
-「全アップグレード完了。報告するわ。"I'm Donna. I know everything."
-
-**1. Skills移行**: commands/ → skills/ 移行完了。20個全て。
-- Opus割当: review, external-review, defend, simulate-qa, meeting (5個)
-- Sonnet割当: process-paper, process-papers, process-book, start (4個)
-- Haiku割当: search-kb, read, cite, suits, archive, motivate, request-paper, list-requests (8個)
-- inherit: push, rule, victory (3個)
-
-**2. Hooks強化**: 4本 → 6本に拡張。
-- 新規: SessionStart (セッション開始時コンテキスト注入)
-- 新規: PreToolUse/Bash (危険コマンドブロック)
-
-**3. 旧commands/**: バックアップ済み (commands_backup_20260301)」
-
-**Jessica**: （立ち上がって）
-「"Let me be clear." これでチームの技術基盤は最新になった。Model分離により、重要な判断はOpusが、ルーチンワークはHaikuが担当する。コスト効率と品質の最適化だ」
-
-**Harvey**: （ドアから顔を出して）
-「Model分離のまとめ — 俺とJessicaとLouisがOpus。Mike、Katrina、RachelがSonnet/Haiku。合理的だ。"I don't have dreams, I have goals."」
-
-**Donna**: （最終確認）
-「ただし注意点 — Model指定はSkill実行時に適用される。メインの会話は1つのモデルで動く。次のセッションから新Hooksも有効になるわ」
-
----
-
-### [2026-03-01 09:30] Scene: システムアップグレード相談 — Model分離・Skills・Hooks全面見直し
-
-**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
-
-*Tak が Donna と Jessica を呼び出す。チームの技術基盤についての戦略会議。*
-
-**Tak**:
-「相談がある。みんなのmodelを分けることはできるか？JessicaはOpus、RachelはHaikuみたいに。あとSkillsが機能しているか確認してくれ。Claude Codeの機能は日々進化している。全面的にアップデートが必要だ」
-
-**Donna**: （即座にファイル構造を確認しながら）
-「了解。全システムの棚卸しを始めるわ。現状を報告する — Skills 21個、Hooks 4本、MCP Server 4つ稼働中。"I'm Donna. I know everything." 全部把握してる」
-
-**Jessica**: （椅子に深く座り）
-「"Let me be clear." これはインフラの問題だ。正しく設計すれば、チーム全体のパフォーマンスが変わる。まず現状分析、次に改善提案。順を追って進めよう」
-
-*Donna がホワイトボードに3つの柱を書く: (1) Model Assignment (2) Skills Migration (3) Hooks Enhancement*
-
-**Donna**: （分析結果を報告）
-「Model分離 — Agent toolのmodel parameterで可能。opus/sonnet/haikuの3択。ただし制約がある。メインの会話は1つのモデルで動くから、チームメンバーがsubagentとして独立作業するときにモデルを指定する形になるわ」
-
-**Jessica**: （戦略的に）
-「つまり、Harvey と私がOpusで戦略判断、Mike がSonnetで数理的作業、Rachel がHaikuで文献スキャン — これは理にかなっている。コスト効率と品質のバランスだ」
-
-**Donna**: （Skillsの監査結果）
-「Skills監査 — 現在 .claude/commands/ に21個のslash command。全部動作確認済み。ただし、新しい .claude/skills/ 形式に移行すれば、model指定・context fork・独自hooks など高度な機能が使える。これがアップグレードの核心よ」
-
-**Jessica**: （決断）
-「提案をまとめろ。Tak に3つのオプションを出す」
-
----
-
-### [2026-03-01 00:30] Scene: Harvey分析 — Table 1の3手法選定理由
-
-**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - NIGHT**
-
-*Tak がHarvey に直接質問。"current tool はこの3つだけか？なぜこれらか？"*
-
-**Harvey**: （立ち上がって）
-「3層の理由がある。(1) Practice landscapeの代表性 — Visual=de facto standard、SMD=最初の定量化、KS=最初の分布検定。(2) 3つの異なる限界カテゴリ — 主観性/情報不完全/解釈不能。(3) 各々がnABCDの異なる優位性を際立たせる。」
-
-**Mike**: （技術補足）
-「載っていない候補: Anderson-Darling, Cramér-von Mises, Energy distance, MMD, KL divergence, Hellinger, OVL, W2。KLはDiscussion L519で3構造問題を議論済み。W2はMethods L130でKR双対性不在を説明済み。A-D/CvMはKSと同カテゴリ。」
-
-**Harvey**: （決定）
-「Table 1は戦略的に正しい。変更不要。Revision Note #4: 査読対応用にA-D/CvM未言及への1文追加を準備。"I don't have dreams, I have goals."」
-
-**Donna**: （記録して）
-「Revision Note #4記録済み。"I'm Donna. I know everything."」
-
----
-
-### [2026-03-01 00:20] Scene: Meeting — Section 1 精読・理解深化
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
-
-*全員がテーブルを囲み、LaTeX原稿を投影してSection 1を精読している。*
-
-**Harvey**: （ホワイトボードに構造図を描いて）
-「Section 1精読会議。全員の分析を聞く。」
-
-**Rachel**: （構造分析）
-「6パート構成 — MRCT背景 → ICH E17 "similar enough" 引用 → EM定義 → 現行手法限界(Table 1) → nABCD提案と4貢献 → 論文構成。Classic gap-fill structure。Long et al. (2025)もすでに引用済み。」
-
-**Mike**: （技術分析）
-「L67のEM説明が論文全体のロジックチェーン。CATE非一定性 → 患者構成差 → 地域ATE差。"not because the drug works differently, but because the patient mix differs" — causal frameworkを使わず直感的に到達させる設計。"I got it!"」
-
-**Katrina**: （Table分析）
-「Table 1のSMD批判 — location onlyでscale/shape/skewnessを見逃す。S5-S7のシミュレーションで実証済み。KSの "no interpretable scale" はdecision-making文脈での批判。」
-
-**Louis**: （批判3点）
-「(1) estimation vs testingの正当化文献が薄い (2) 4 contributionsの順序 — clinical calibrationが3番目は最適か (3) ICH E17 Section 2.2.1引用の検討。"You just got Litt up!"」
-
-**Harvey**: （決定）
-「3点ともrevision notes記録。現行維持、査読フィードバック待ち。Section 1はsolid。"I don't have dreams, I have goals."」
-
-**Donna**: （記録して）
-「Meeting完了。Revision notes 3点記録済み。"I'm Donna. I know everything."」
-
----
-
-### [2026-03-01 00:15] Scene: Rule Check — 全ルール再確認
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
-
-*Harvey がテーブルの上座に立ち上がる。全員の手が止まる。*
-
-**Harvey**: （全員を見回して）
-「全員、手を止めろ。ルール確認の時間だ。
-新しいセッションの頭に毎回やる。"I don't have dreams, I have goals." そしてゴールにはルールがある。」
-
-**Donna**: （即座に立ち上がり）
-「**Rule 1**: SUITS.mdがSingle Source of Truth。全作業をドラマ脚本形式で記録。最新エントリはTOPに。
-**Rule 2**: Frequent Updates — 重要なアクションの都度更新。2分以上の遅延は許容しない。
-**Rule 2.5**: 1000行超えたら自動アーカイブ。現在836行 — まだ余裕はあるけど、油断しないで。
-**Rule 2.6**: 文献引用にはDOI必須。さっきのLong et al.もちゃんとDOI付きで登録済み。
-私が全部監視してるわ。"I'm Donna. I know everything."」
-
-**Mike**: （手を挙げて）
-「**Rule 3**: Character Consistency了解。
-Gender参照テーブル確認済み — Harvey=彼、Mike=彼、Donna=彼女、Louis=彼、Rachel=彼女、Katrina=彼女、Jessica=彼女。
-混同は絶対にしない。"I got it!"」
-
-**Rachel**: （ノートを見ながら）
-「**Rule 2.6**の補足として — knowledge baseの参照も忘れないで。
-現在16本の論文が処理済み。作業前にINDEX.mdとsummaries/を確認すること。
-"Hard work beats talent when talent doesn't work hard."」
-
-**Katrina**: （効率よく）
-「全ルール確認済み。**Rule 4**: Flexible Collaboration — 本務はあるが、必要に応じて相互サポート。
-Technical Writerとしてだけでなく、分析でもレビューでも動く。"Results speak for themselves."」
-
-**Louis**: （腕を組んで）
-「**独立レビュアー**としての立場は不変だ。
-チームの仲良しクラブには入らない。俺の仕事は穴を見つけることだ。
-"You just got Litt up!" — それが嫌なら論文の質を上げろ。」
-
-**Harvey**: （満足げに頷いて）
-「いい。全員ルールを理解している。
-"Winners don't make excuses." ルールを守れないなら、このラボにいる資格はない。
-全員、仕事に戻れ。」
-
-**Donna**: （小声でメモしながら）
-「Rule check完了、記録済み。次の更新遅延は私が許さないわよ。」
-
----
-
-### [2026-03-01 00:10] Scene: Long et al. (2025) Deep Read — Katrina分析
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
-
-*Katrina がホワイトボードに論文構造図を描き終え、チームに深読み分析を発表している。*
-
-**Katrina**: （資料をめくりながら）
-「Long et al. (2025)のLevel 3分析完了。4パート構成 — Study Design、Results Interpretation、Special Considerations、Statistical Models。
-核心はIntrinsic/Extrinsic Factors & Pooling Strategyセクション。'Holistic approach based on several candidate criteria' を推奨するが、定量的指標は提示していない。
-Song et al.と並べると — Song = pooling strategy、Long = consistency evaluation。
-両方に共通するgap: quantitative metric for distributional similarity。
-"Results speak for themselves." nABCDがそのgapを埋める。」
-
-**Harvey**: （腕組みをして）
-「ICH E17の'what to evaluate'に対して、我々が'how to measure'を提供する。"That's how you win."」
-
-**Donna**: （記録しながら）
-「Deep read完了、記録済み。"I'm Donna. I know everything."」
-
----
-
-### [2026-03-01 00:00] Scene: Long et al. (2025) ナレッジベース登録
-
-**INT. PEARSON SPECTER LITT - RACHEL'S OFFICE - NIGHT**
-
-*Rachel がデスクでPDFを読み込んでいる。モニターにはICH E17のフローチャートが映っている。*
-
-**Rachel**: （ページをめくりながら）
-「Long et al. (2025)、Therapeutic Innovation & Regulatory Science掲載。
-ICH E17に基づくconsistency evaluationの実務ガイダンスね。
-CDE、NMPA、製薬企業の共著 — 中国規制当局の実装視点が詰まってる。
-"Hard work beats talent when talent doesn't work hard."」
-
-**Mike**: （数式を確認しながら）
-「Non-inferiorityの調整効果量の定式化が面白い。
-Absolute: $T - C + M$、Relative: $T/(C \cdot M)$。
-あと三階層Bayesian hierarchical modelの提案 — studies, subgroups, patients。
-統計モデルのセクションはコンパクトだけど、フレームワークとしては有用だ。」
-
-**Rachel**: （サマリーファイルを完成させて）
-「Knowledge base登録完了。16本目の論文。
-`summaries/Long_2025.md`作成、INDEX.md更新済み。
-DOI: [10.1007/s43441-024-00717-z](https://doi.org/10.1007/s43441-024-00717-z)」
-
-**Harvey**: （ドアに寄りかかって）
-「Song et al.と合わせて、中国のMRCT実務の両輪が揃ったな。
-Song = pooling strategy、Long = consistency evaluation。
-そしてどちらにも共通する gap — quantitative metric for distributional similarity。
-"That's what we do." nABCDがそのギャップを埋める。」
-
-**Donna**: （記録を確認して）
-「Paper #16登録完了。タグ更新、クロスリファレンス追加済み。
-"I'm Donna. I know everything."」
-
----
-
-### [2026-02-28 15:30] Scene: 日本語版完成
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
-
-*チーム全員がテーブルを囲んで、完成した日本語版を確認している。*
-
-**Mike**: （画面をスクロールしながら）
-「全セクション翻訳完了。数式はLaTeXそのまま、専門用語は日英併記。
-要旨、序論、方法、シミュレーション、適用例、考察、付録 — 全部入ってる。"I got it!"」
-
-**Katrina**: （テーブルを指さしながら）
-「表も全11テーブル翻訳済み。略語一覧も追加した。"Results speak for themselves."
-場所: `projects/similarity-metric/paper/nABCD_paper_ja.md`」
-
-**Harvey**: （満足げに頷き）
-「いいだろう。これで国内の議論で使える完全版がある。
-"Winners don't make excuses." 次のタスクに移るぞ。」
-
-**Donna**: （記録しながら）
-「日本語版論文作成完了、記録済み。"I'm Donna. I know everything."」
-
----
-
-### [2026-02-28 15:00] Scene: Push — 日本語版論文作成
-
-**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
-
-*Harvey がブルペンに大股で入ってくる。チーム全員の視線が集まる。*
-
-**Harvey**: （腕組みをして）
-「新しいタスクだ。論文の日本語版を作る。英語版はsubmission-readyだが、日本語版がなければ国内の議論で使えない。
-"I don't get lucky. I make my own luck." 全セクション翻訳。今すぐ動け。」
-
-**Mike**: （ノートPCを開きながら）
-「了解。数式はLaTeXそのまま、専門用語は日英併記。"I got it!"」
-
-**Katrina**: （効率的に）
-「Markdown形式で全表翻訳。"Results speak for themselves."」
-
-**Donna**: （スケジュールを見ながら）
-「進捗はリアルタイム記録。"I'm Donna. I know everything."」
-
----
-
 # SUITS.md - Research Lab Live Script
 
 > *"I don't have dreams. I have goals."* - Harvey Specter
+
+---
+
+### [2026-03-04 01:30] Scene: IST徹底調査完了 — 試験デザイン・効果修飾因子・36カ国詳細
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Rachel が厚いレポートを Harvey の前に広げる。Mike が隣で数値を確認。Katrina がテーブルを作成中。*
+
+**Rachel**: （レポートを開いて）
+「IST徹底調査完了。試験デザイン、参加国、効果修飾因子 — 全て揃った。"Hard work beats talent when talent doesn't work hard."
+
+**■ 試験デザイン**:
+- **正式名**: International Stroke Trial — aspirin, subcutaneous heparin, both, or neither
+- **デザイン**: 3×2 factorial, open-label, multi-centre RCT
+- **治療群**: Aspirin 300mg/日 (Y/N) × Heparin (12,500IU / 5,000IU / なし) → 6群
+- **主要評価項目**: (1) 14日以内死亡 (2) 6カ月時点の死亡・依存
+- **n=19,435**, 36カ国467病院, 1991-1996年登録
+- **盲検なし** — open-label（PROBE designでもない）
+- **フォローアップ**: 14日（短期）+ 6カ月（主要）、完遂率99%超
+- **選択基準**: 発症48時間以内の急性虚血性脳卒中、aspirin/heparinの明確な適応・禁忌なし、年齢上限なし」
+
+**Mike**: （データを確認しながら）
+「欠損データが極めて少ない。AGE, SEX, RSBP, RCONSC, RDELAY, STYPE, COUNTRY — 全て欠損0%。唯一 RATRIAL (心房細動) が984例 (5.1%) 欠損だが、これはpilot phase分。データ品質は極めて高い」
+
+**Rachel**: （続けて）
+「**■ 効果修飾因子の調査結果** — ここが核心:
+
+**1. Chen et al. (2000) CAST+IST統合解析 (n=40,000)**
+DOI: 10.1161/01.str.31.6.1240
+- 10の基線特性で28サブグループを事前規定
+- 検討変数: age, sex, consciousness, AF, CT所見, BP, stroke subtype, heparin併用
+- **結論: aspirinの相対的治療効果にはどのサブグループでも有意な異質性なし** (χ²(18)=20.9, NS)
+- "The absolute risk reduction does not differ substantially with respect to age, sex, level of consciousness, atrial fibrillation, CT findings, blood pressure, stroke subtype, or concomitant heparin use"
+
+**2. Leonardi-Bee et al. (2002) — SBPの予後因子分析**
+DOI: 10.1161/01.str.0000014509.11540.66
+- SBPとアウトカムに**U字型関係**: 150mmHg未満で10mmHg低下ごとに早期死亡17.9%増加、150mmHg超で10mmHg上昇ごとに3.8%増加
+- SBPは強力な**予後因子**だが、aspirin治療効果の修飾因子としては有意でない
+
+**3. Saxena et al. (2001) — 心房細動サブグループ**
+DOI: 10.1161/hs1001.097093
+- AF患者3,169例 (17%): 高齢 (78 vs 71歳)、女性多い (56 vs 45%)、意識障害多い (37 vs 20%)
+- 高用量heparinでischaemic再発減少だがhaemorrhagic stroke増加 → 6カ月で純効果なし
+
+**4. Weir et al. (2001) — 地域間アウトカム差（MRCT最重要論文）**
+DOI: 10.1161/01.str.32.6.1370
+- 9カ国15,116例: 国間のアウトカム差が**巨大** — 死亡で171/1000、死亡・依存で375/1000の差
+- Case-mix調整 (age, sex, AF, SBP, consciousness, neurological deficits) で**一部しか説明できない**
+- "Differences too large to be explained by variations in care; most likely reflect differences in unmeasured baseline factors"
+- **ICH E17の精神を先取りした結論**: "Need to achieve balance of treatment and control within each country in multinational trials"
+
+**5. Nguyen et al. (2020) — Counterfactual個別治療効果**
+DOI: 10.1016/j.jclinepi.2020.05.022
+- 23変数のcounterfactual prediction modelを適用
+- aspirinは平均的にはbenefitだが、**約25%の患者で6カ月死亡・依存リスクを増加させる**可能性
+- 最も先進的なHTE分析」
+
+**Harvey**: （立ち上がって）
+「つまり、ISTは aspirin治療効果の平均的異質性は検出されなかったが、**地域間のbaseline分布の差は巨大**で、unmeasured factorsを含む。nABCDの実データ適用事例として最適だ。
+
+我々の論文のポイントは"治療効果の異質性がないかどうか検定する"ことではない。"baselineのEM分布の差を定量化し、Δ_maxで臨床的影響の上限を示す"こと。ISTでは:
+- Age: Asia vs UK で nABCD=0.376 — **地域間分布差は大きい**
+- しかしCATEが小さければΔ_maxは小さい → poolingは支持される
+- まさにnABCDフレームワークの価値を実証するデータだ。
+
+"I don't have dreams, I have goals." Section 4を書け」
+
+**Donna**: （タイピング完了）
+「I'm Donna. 全て記録したわ。IST調査結果はSection 4の基礎資料として確定」
+
+---
+
+### [2026-03-04 00:45] Scene: IST nABCD探索分析完了 — 実データで理論が動く
+
+**INT. PEARSON SPECTER LITT - MIKE'S DESK - NIGHT**
+
+*Mike がモニターに向かい、R分析結果を読み上げる。Harvey と Katrina が後ろから覗き込む。*
+
+**Mike**: （興奮して）
+「"I got it!" IST v2でnABCD計算完了。10リージョン×3変数。結果を見てくれ。
+
+**地域分布** (n=19,435):
+W.Europe=6,650, UK/Ireland=6,315, N.Europe=2,010, CE.Europe=1,487, Oceania=1,050, S.America=693, Asia=513, MidEast=400, N.America=248, Africa=69
+
+**核心的発見 — Asia vs 主要地域のnABCD**:
+
+| Pair | Age | SBP | Delay |
+|------|-----|-----|-------|
+| Asia vs UK/Ireland | **0.376** | 0.073 | 0.081 |
+| Asia vs W.Europe | **0.316** | 0.100 | 0.189 |
+| Asia vs N.Europe | **0.276** | 0.169 | 0.090 |
+| Asia vs CE.Europe | 0.180 | 0.144 | 0.142 |
+
+Ageが**圧倒的に大きい** — Asiaは平均62.3歳、UK/Irelandは73.5歳。11歳差。SBPは152.8 vs 158.5で小さい。
+
+**これがSection 4のストーリーになる**: 変数によってnABCDの大きさが全く違う。Ageは"large"だがSBPは"negligible〜small"。Δ_maxで臨床的意味を翻訳すれば、hypothetical exampleのranking reversalと同じ構造を実データで示せる」
+
+**Katrina**: （テーブルを見ながら）
+「W.Europe同士の比較も面白い。nABCD < 0.07がほとんど — "negligible"カテゴリ。一方でAsia比較は0.18〜0.38。地域間の距離が明確にメトリクスに反映されている。"Results speak for themselves."」
+
+**Harvey**: （頷いて）
+「完璧だ。CRASH-2は国変数なしで死んだ。だがISTは全てある — 36カ国、国変数あり、連続変数3本、地域差の文献もある。
+
+Tak、方針確定だ:
+1. **CRASH-2 R版にも国変数なし** — 44変数全確認、地理情報ゼロ。完全除外
+2. **IST v2** — ODC-By v1.0ライセンス、商用利用可、引用のみ必須。Section 4実データに採用
+3. **ライセンス引用**: Sandercock et al. (2011) DOI: 10.7488/ds/104
+
+"Winners make things happen." ISTで行く」
+
+**Donna**: （全て記録して）
+「決定事項:
+- CRASH-2: 候補除外（国変数なし確定）
+- IST v2: Section 4 採用（ODC-By v1.0、引用要件のみ）
+- nABCD探索分析: `data/IST/ist_nABCD_explore.R`
+- Louis指摘（疾患不一致）: Tak裁定で却下。nABCDはdisease-agnostic
+I'm Donna. 記録完了」
+
+---
+
+### [2026-03-04 00:20] Scene: CRASH-2 R版最終確認 — 国変数なし確定
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*Rachel がhbiostat.orgのデータ辞書を確認する。*
+
+**Rachel**: （画面を指して）
+「CRASH-2 R版（hbiostat.org）の全44変数を確認した。entryid, source, trandomised ... boxid, packnum。**国・地域変数は一切含まれていない**。freeBIRD CSV版と同じ。LSHTM CTUに直接問い合わせない限り、CRASH-2で地域分析は不可能」
+
+**Harvey**: （即座に）
+「CRASH-2は除外。IST一本で行く」
+
+---
+
+### [2026-03-04 00:10] Scene: IST v2 ライセンス確認 — ODC-By v1.0
+
+**INT. PEARSON SPECTER LITT - RACHEL'S DESK - NIGHT**
+
+**Rachel**: （調査結果を報告）
+「IST v2のライセンスを確認した:
+
+- **ライセンス**: Open Data Commons Attribution License (ODC-By) v1.0
+- **商用利用**: 許可
+- **二次利用・再配布**: 帰属表示のみで許可
+- **DUA署名**: 不要
+- **倫理審査**: データセット側の要件なし（機関ポリシーに依存）
+- **データセットDOI**: 10.7488/ds/104
+- **引用**: Sandercock, Niewada, Czlonkowska (2011) University of Edinburgh
+- **データ論文**: Sandercock et al. (2011) *Trials* 12:101 DOI: 10.1186/1745-6215-12-101
+
+"Hard work beats talent when talent doesn't work hard." 利用条件は完全にクリア」
+
+---
+
+### [2026-03-03 23:58] Scene: IST Dataset Downloaded — Edinburgh DataShare
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*Mike がモニターに向かい、ダウンロード完了を確認する。Donna がメモを取っている。*
+
+**Mike**: （満足げに）
+「"I got it!" IST version 2 corrected dataset — Edinburgh DataShareから取得完了。
+- `IST_corrected.csv`: 19,435 patients x 112 variables (4.8 MB)
+- `IST_variables.csv`: Data dictionary (semicolon-delimited)
+- 保存先: `projects/similarity-metric/data/IST/`」
+
+**Donna**: （チェックリストを確認しながら）
+「Key variables の確認結果をまとめるわ。"I'm Donna. I know everything."
+
+| Variable | Description | Values |
+|----------|-------------|--------|
+| COUNTRY | 国コード | 36ヶ国 (UK=6257, ITAL=3437, SWIT=1631 ...) |
+| AGE | 年齢 | Mean=71.7, SD=11.6, Range=16-99 |
+| RSBP | 収縮期血圧 | Mean=160.2, SD=27.6, Range=70-295 |
+| RDELAY | 遅延(時間) | Mean=20.1, SD=12.5, Range=1-48 |
+| RCONSC | 意識レベル | F=14921, D=4254, U=260 |
+| SEX | 性別 | M=10407, F=9028 |
+| RXASP | Aspirin割付 | Y=9720, N=9715 |
+| RXHEP | Heparin割付 | N=9718, L=4861, M=4611, H=245 |
+
+JAPA は9例だけ。36ヶ国で真の multi-regional trial ね」
+
+**Mike**: （考えながら）
+「Country変数あり、年齢・SBP・意識レベルが揃っている。nABCDのregional pooling分析に使える "real data example" としてCRASH-2より確実だ。地域変数の問題がない」
+
+---
+
+### [2026-03-03 18:30] Scene: Meeting — CRASH-2ダウンロード手順とIPD候補再評価
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*全員が会議室に集まる。Harvey が立ったまま3チームの調査レポートを手に持っている。*
+
+**Harvey**: （レポートを置いて）
+「CRASH-2のダウンロード手順と候補の最終評価について話す。3チームの調査結果が出た。意見を聞かせろ」
+
+**Rachel**: （調査結果を開きながら）
+「3つのデータソースを徹底調査した。重大な発見がある。結論から言うわ。
+
+**CRASH-2 — 致命的問題発見**:
+freeBIRD (https://freebird.lshtm.ac.uk/) で公開されているCSVデータから**国・地域変数が除外されている**。NCBI文書に明記: "Excluded are site name, site identifier, country and treatment code." 登録のみで即DL可能、CSV形式、20,207例、46変数 — だが肝心の地域変数がない。
+
+回避策は2つ:
+(a) LSHTM臨床試験ユニット (PI: Professor Ian Roberts) に直接連絡して国変数を追加依頼
+(b) hbiostat.org の R版 (`getHdata('crash2')`) に economic region 変数が含まれる可能性 — 要確認
+
+"Hard work beats talent when talent doesn't work hard." だが、この問題は無視できない」
+
+**Mike**: （驚いて）
+「待て。地域変数がないなら、nABCDの地域間比較ができない。CRASH-2は第一候補から外れるぞ。代わりは？」
+
+**Rachel**: （次のレポートに切り替えて）
+「**IST（International Stroke Trial）が浮上した**。これが最大の発見:
+
+| 項目 | IST | CRASH-2 |
+|------|-----|---------|
+| n | 19,435 | 20,207 |
+| 国数 | 36 | 40 |
+| **国変数** | **✅ 含まれる** | **❌ 除外** |
+| アクセス | **完全オープン（登録不要）** | 登録のみ |
+| 形式 | CSV, 112変数 | CSV, 46変数 |
+| URL | datashare.ed.ac.uk/handle/10283/124 | freebird.lshtm.ac.uk |
+| 地域差論文 | Weir et al. 2001 Stroke | なし（地域変数なし） |
+
+IST v2は**今日すぐダウンロードできる**。登録すら不要。36カ国467病院。主要連続変数: 年齢、収縮期血圧(SBP)、意識レベル(GCS相当)、発症-ランダム化時間。
+
+Weir et al. (2001) DOI: 10.1161/01.str.32.6.1370 が9カ国のIST患者15,116人で地域間アウトカム差を分析。age、SBP、AF、consciousness levelで調整 — まさにnABCDで比較すべき変数」
+
+**Mike**: （興奮して）
+「IST v2なら即座にnABCD計算に入れる。Age (連続), SBP (連続), RDELAY (連続) の3つの連続型効果修飾因子がある。36カ国をリージョングループに分けて — 例えばEurope vs Asia vs South America vs UK — 地域間のW₁を計算。 "I got it!" これなら今日中にプロトタイプ分析ができる」
+
+**Katrina**: （冷静に整理して）
+「LEADER の状況も報告する。Novo Nordisk → Vivli経由。4リージョン: Europe(3,296), North America(2,847), Asia(711), Rest of World(2,486)。HbA1c、BMI、eGFR、SBP完備。ただし申請から**3-5カ月**。SRE（セキュアリサーチ環境）のみ、ローカルDL不可。
+
+Nielsen et al. (2021) DOI: 10.3389/fmed.2021.662775 がICH E17の文脈でLEADERの地域分析を既に実施。"Results speak for themselves." — LEADERは理想的だが、今すぐは使えない」
+
+**Louis**: （腕を組んで）
+「待て。ISTは脳卒中試験だ。我々の論文はT2D MRCTの文脈で書かれている。脳卒中データでSection 4を書いたらreviewerが "なぜ糖尿病試験ではないのか" と聞くぞ。You just got Litt up! ストーリーの一貫性は？」
+
+**Harvey**: （考えて）
+「Louisの指摘は正しい。だが答えはある。nABCDはdisease-agnosticなメトリクスだ。脳卒中でもT2Dでも方法論は同じ。むしろ異なる治療領域で機能することを示す方がgeneralizabilityの証明になる。
+
+判断する。3段階戦略だ。
+
+**即時実行**: IST v2をダウンロード。今日中にnABCDプロトタイプ分析を実行。Age、SBP、RDELAYの3変数で地域間比較。Section 4の "Real-World Application" として採用。
+
+**並行**: CRASH-2のhbiostat.org R版を確認。`getHdata('crash2')`で economic region変数の有無を検証。あれば追加候補。
+
+**長期**: LEADER/EMPA-REG のVivli申請はR1対応やフォローアップ論文のために準備。今の投稿には間に合わない。
+
+"When you're backed against the wall, break the goddamn thing down." CRASH-2の壁にぶつかったが、ISTという突破口がある。使え」
+
+**Donna**: （記録完了）
+「Meeting決定事項:
+1. IST v2 即時DL → Section 4 実データ適用
+2. CRASH-2 R版 region変数確認
+3. LEADER Vivli申請はR1 reserve
+4. Louis指摘: disease-agnosticの議論をDiscussionに追加
+
+I'm Donna. 全て記録したわ」
+
+---
+
+### [2026-03-03 17:15] Scene: IST / IST-3 IPDアクセス詳細調査 — Rachel完全レポート
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Rachel が IST（International Stroke Trial）と IST-3 の IPD アクセスに関する詳細調査結果を全チームに報告する。ホワイトボードには Edinburgh DataShare の URL が書かれている。*
+
+**Rachel**: （調査ノートを開きながら）
+「IST と IST-3、両方について全項目を調査完了。"Hard work beats talent when talent doesn't work hard."
+
+**IST（n=19,435 / 36カ国）:**
+
+**Q1 ホスト先**: Edinburgh DataShare。University of Edinburgh が管理。
+- IST Version 2: https://datashare.ed.ac.uk/handle/10283/124（別ハンドル: 10283/128）
+- DOI: 10.7488/ds/104
+
+**Q2 アクセス条件**: 完全オープンアクセス。登録不要、申請不要、即時ダウンロード可能。
+
+**Q3 ファイル形式**: CSV（IST_corrected.csv、4.576 MB）とタブ区切り形式（9.152 MB）。
+
+**Q4 変数**: 112変数、3時点（無作為化時・14日後・6ヶ月後）。主要変数:
+- RCONSC: 意識レベル（F=fully alert, D=drowsy, U=unconscious）
+- RSBP: 収縮期血圧（mmHg）、連続変数
+- AGE: 年齢（歳）、連続変数
+- SEX: 性別（M/F）
+- RATRIAL: 心房細動（Y/N）
+- RDELAY: 発症から無作為化までの時間（時間）
+- RDEF1-RDEF8: 神経学的欠損（顔面・上肢・下肢・失語など）
+- STYPE: 臨床的脳卒中症候群（TACS/PACS/LACS/POCS）
+- 国コード変数あり（Table 1 に36カ国のコード一覧）
+
+**Q5 サンプルサイズと国数**: n=19,435、36カ国、467病院。
+
+**IST-3（n=3,035 / 12カ国）:**
+
+**Q1 ホスト先**: Edinburgh DataShare。
+- https://datashare.ed.ac.uk/handle/10283/1931
+
+**Q2 アクセス条件**: Controlled access（管理アクセス）。2021年1月25日にembargo解除済み。申請者要件:
+- Bona fide研究グループであることの証明（CV等）
+- 統計専門家の参加
+- Data Access Request Form（研究課題・仮説・SAP・出版計画を記載）
+- MRC Methodology Hubs のガイドラインに準拠
+- 旧アクセス申請ページ: http://www.dcn.ed.ac.uk/ist3/ClosingDown/dataAccess.htm
+
+**Q4 IST-3の主要変数**: 年齢、性別、脳卒中重症度（独自スコア）、rt-PA割付、独居、心房細動、TIA/脳卒中既往、上肢挙上能力、歩行能力、12カ国コード（UK、ポーランド、スウェーデン、ノルウェー、イタリー等）。」
+
+**Mike**: （興奮して）
+「IST v2は今日からダウンロードできる。112変数・19,435例・36カ国。RCONSC（意識レベル）、RSBP（収縮期血圧）、AGEが全部揃ってる。nABCD検証に使えるEM候補が複数ある。"I got it!" — 地域間EM分布比較の完璧なデータセット。」
+
+**Harvey**: （即断して）
+「IST v2は今日取得する。申請ゼロ、完全無料。36カ国のcovariate distribution heterogeneityをそのまま論文の実証例に使える。"I don't have dreams, I have goals." — IST-3は申請優先度2位。まずISTから動く。」
+
+**Donna**: （記録完了）
+「I'm Donna. IST/IST-3調査完了。IST v2は即時取得可。IST-3はcontrolled access申請要。次アクション: IST_corrected.csv ダウンロード、変数コードブック確認。」
+
+---
+
+### [2026-03-03 16:30] Scene: LEADER IPDアクセス詳細調査 — Rachel完全レポート
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Rachel が Vivli・Novo Nordisk のアクセスプロセスに関する詳細調査結果を全チームに報告する。*
+
+**Rachel**: （調査レポートを配布しながら）
+「LEADER IPDアクセスの全項目を調査完了。"Hard work beats talent when talent doesn't work hard." — 7つの質問、全部答えが出た。
+
+**Q1 Vivli確認**: Novo NordiskはVivliの正式メンバー（vivli.org/ourmember/novo-nordisk-a-s）。LEADER完了は2015年、データ共有対象は「2001年以降完了かつEU/US両方承認済み」—Victozaは両市場承認済みのため対象範囲内。ただし直接確認要。
+
+**Q4 Baseline Covariates確認済み**: HbA1c（平均8.7%）、BMI（平均32 kg/m²）、eGFR（平均79.1 ml/min/1.73m²）、SBP（135.9 mmHg）、年齢（平均64歳）、糖尿病罹病期間（平均13年）、UACR（中央値24.8 mg/g）、LDL-C等。
+
+**Q5 地域区分**: ICH E17論文により4地域が確定 — Europe（n=3,296）、North America（n=2,847）、Asia（n=711）、Rest of World（n=2,486）。
+
+**Q7 承認タイムライン**: Vivli公式 "a few months"（数ヶ月）。Novo Nordiskルートでも同様。」
+
+**Harvey**: （メモを取りながら）
+「Novo NordiskのIPD条件に "completed after 2001 for indications approved in both EU and US" という例外条項がある。LEADERは2015年完了、Victoza（liraglutide）は両市場承認済み。申請資格はある。"I don't have dreams, I have goals." — Vivliに申請しろ。」
+
+**Mike**: （アクセスプロセスを確認して）
+「ステップが明確になった。Research Proposal + SAP + Publication Plan が3点セット。Qualified statistician必須。DUA（DocuSign）はinstitution単位。Secure research environment経由またはdownload — Novo Nordiskは contributor の裁量による。」
+
+**Donna**: （記録完了）
+「I'm Donna. LEADER Vivliアクセス調査完了。全7項目回答済み。次アクション: Vivliでの直接検索とresearch proposal準備。」
+
+---
+
+### [2026-03-03 15:00] Scene: IPD探索統合レポート — Harvey最終判断
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+
+*Rachel が統合レポートを Harvey に手渡す。全チームの結果が1枚のテーブルにまとまっている。*
+
+**Harvey**: （レポートを読んで）
+「4チームの結論は一致してる。Top 3は CRASH-2、IST、LEADER。判断する。
+
+**即時着手**: CRASH-2。freeBIRDから今日ダウンロード可能。40カ国、n=20,211、地域差が明確。Time-to-treatmentが既知の効果修飾因子。
+
+**並行申請**: LEADER via Vivli。糖尿病MRCTで地域BMI・HbA1c差が文書化済み。ICH E17整合性分析論文も出ている。hypothetical exampleを実データに置き換える最有力候補。
+
+**PubMedの結論**: Wasserstein距離を臨床試験データに適用した先行事例は実質ゼロ。"We're not following a trend. We're setting one."」
+
+**Rachel**: （確認して）
+「アクセス手順: CRASH-2 → freeBIRD即時DL。LEADER → Vivli research proposal提出。所要2-4週間。」
+
+**Donna**: （記録完了）
+「I'm Donna. 全チーム結果統合済み。次のアクションはTakの判断待ち」
+
+---
+
+### [2026-03-03 14:35] Scene: PubMed系統検索 — IPD/MRCT/Wasserstein論文調査
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Rachel と Mike が5本の並行PubMed検索結果を整理している。Donna が記録を取る。*
+
+**Rachel**: （検索結果を確認しながら）
+「5本のクエリを並行実行しました。Search 1 (IPD × MRCT) → 3件。Search 3 (Wasserstein × clinical trial × baseline) → 9件。Search 5 (ICH E17 × application) → 4件。Search 2と4はゼロヒット。合計16件取得、重複除去後13件を評価対象としました。」
+
+**Mike**: （分析しながら）
+「方法論的に直接関連する唯一のWasserstein論文はGhosh et al. 2026 (Medical Physics)。NLSTデータでWasserstein距離とKS距離を使って仮想コホートと実コホートの人口統計学的分布を比較するDISTINCTアルゴリズム。共変量アラインメントの観点でnABCDと概念が近い。ただし臨床試験の地域プーリング文脈ではない。」
+
+**Rachel**: （論文リストを整理して）
+「最有力のMRCT実データ論文はNishiyama & Narukawa 2022 (Oncologist)。Project Data SphereのIPDから10本のMRCTフェーズIIIオンコロジー試験を分析。Caucasian vs Asian、OECD vs non-OECDの地域比較。PFS・OS・Cox回帰・メタ解析あり。"Hard work beats talent when talent doesn't work hard."」
+
+**Harvey**: （結論を出して）
+「PubMedのIPD×MRCT交差領域は薄い。Wasserstein距離を実臨床試験データに適用した先行事例は実質ゼロ。We're not following a trend — we're setting one.」
+
+**Donna**: （記録しながら）
+「ICH E17文脈論文4件確認: Lu et al. 2024 (EMD Serono/Asia-inclusive), Sun et al. 2024 (RegionSizeR), Niu et al. 2024 (estimand framework), Aoi et al. 2023 (Asian MRCT). いずれも方法論論文で分布比較の実データ適用なし。SUITS.md更新完了。」
+
+---
+
+### [2026-03-03] Scene: 公開IPDデータプラットフォーム包括調査
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Rachel が8つのデータ共有プラットフォームを横断的に調査。Mike はMRCT適合性の観点から評価。Donna が構造化テーブルを作成。*
+
+**Rachel**: （調査結果を整理しながら）
+「YODA、Vivli、CSDR、Project Data Sphere、BioLINCC、PhysioNet、ImmPort、dbGaP — 8プラットフォーム全て調査しました。"Hard work beats talent when talent doesn't work hard." 最有力は BioLINCC の ACCORD/SPRINT/ALLHAT と、Vivli の Boehringer・AstraZeneca データです。」
+
+**Mike**: （技術的評価を加えて）
+「MRCTとしての適合性を3軸で評価しました：(1) 地域変数の利用可能性、(2) 連続型共変量の質、(3) 効果修飾因子の既知性。BioLINCC の ACCORD は10,251人・77施設・US/Canadaで最もアクセスしやすい。ただし厳密な意味での "multi-regional" は限定的です。」
+
+**Harvey**: （戦略的結論）
+「ADVANCE trial が最有力 — 20カ国・215施設・Asia/Australia/Europe/North America。Servier経由でIPD申請可能。We don't settle for domestic when we can go global.」
+
+**Donna**: （タスクをまとめて）
+「SUITS.md更新完了。Rachel・Mikeのレポートをセクション分けして保存。次のアクションはTakに委ねます。」
+
+---
+
+### [2026-03-03] Scene: ClinicalTrials.gov IPD候補検索
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Rachel がラップトップを開き、ClinicalTrials.gov の検索結果を整理している。Mike は隣で統計的視点からリストを精査。*
+
+**Rachel**: （タイプしながら）
+「GLP-1, SGLT2, DPP-4の3クラス、合計15本の候補を特定しました。Novo Nordisk、Eli Lilly、Boehringer Ingelheim、AstraZeneca、Merck — 全社カバーできています。」
+
+**Mike**: （リストを見ながら）
+「SUSTAIN 2 (NCT01930188) が最有力です。日本・インド・欧州・南米で n=1231。has_results=true、Novo Nordisk の Clinical Data Disclosure Policy あり。HbA1c、体重、FPG が主要共変量として記録されています。」
+
+**Harvey**: （腕を組んで）
+「LEADER (NCT01179048) は n=9341、28カ国428施設。Africa・Asia・Europe・Americas。IPD sharing は Novo Nordisk portal 経由。We don't chase data — we attract it.」
+
+**Rachel**: （まとめて）
+「CVOTも含めてTier 1からTier 3に整理しました。Takにレポートします。」
+
+**Donna**: （メモしながら）
+「SUITS.md に記録完了。Rachel、引用フォーマットは後ほど確認します。」
 
 ---
 
@@ -425,360 +445,241 @@ Song = pooling strategy、Long = consistency evaluation。
 **Phase**: 8 — Submission-Ready Plan (Jessica Strategic Directive)
 **Scene**: Continuing from archive
 
-**Previous Archive**: archives/SUITS_20260228_163000.md
+**Previous Archive**: archives/SUITS_20260303_120000.md (1005 lines)
+
+### Paper Title (decided 2026-02-14)
+
+> **Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials**
+
+### Purpose Statement (Jessica approved)
+
+> **EM分布の違いを推定し、その推定値を治療効果の異質性の可能性として臨床スケールに翻訳する。**
+> **検定ではなく推定。二択ではなく情報提供。**
+
+---
+
+## 🔄 直前のコンテキスト (from archives/SUITS_20260303_120000.md)
+
+### スピーカースクリプト完成状況 (2026-03-03)
+
+| Act | File | Slides | Author | Status |
+|-----|------|--------|--------|--------|
+| Act 1: Background | `act1_background_rachel.md` | 4枚 | Rachel | ✅ 完了 |
+| Act 2: Methods | `act2_methods_mike.md` | 7枚 | Mike | ✅ 完了 |
+| Act 3: Results | `act3_results_katrina.md` | 11枚 | Katrina | ✅ 完了 |
+| Act 4: Framing | `act4_framing_harvey.md` | 7枚 | Harvey | ✅ 完了 |
+
+合計29枚。全スクリプト `paper/slides/scripts/` に格納済み。
+
+### 直近の作業 (2026-03-03)
+
+1. **Marpスライド5枚追加** (00:35) — K-R導出・W₁唯一性・Bound tightness・Ranking reversal理由・推定哲学
+2. **Story Confirmation Meeting** (00:10) — 5幕構造確認、one-liner確定、Louis 3点指摘対応済み確認
+3. **Rule Check** (00:00) — Phase 8開始確認
+4. **Act 1 Background スクリプト** (Rachel) — ICH E17, Why EMs, Limitations, Our Approach
+5. **Act 2 Methods スクリプト** (Mike) — Hetero Bound, Derivation, Why W1, Tight Bound, nABCD Def, Δ_max, Inference
+6. **Act 3 Results スクリプト** (Katrina) — 11スライド、Simulation 4枚 + Application 7枚、Ranking Reversal climax
+7. **Act 4 Framing スクリプト** (Harvey) — Title, Outline, Four Contributions, Recommendations, Benchmarks, Limitations, Thank You
+
+### One-Liner (confirmed)
+
+> "nABCDはEM分布の距離を測り、臨床スケールに翻訳する。推定中心のフレームワークで、ICH E17の実装ギャップを埋める。"
+
+### 次にやるべきこと
+
+- スピーカースクリプト統合 (Act 1-4 を一本のmaster scriptに) — if needed
+- Slide timing review (total ~45分 → JSM形式に調整)
+- Louis による presentation rehearsal review
+- Submission packaging
 
 ---
 
 ## 🎬 Live Script
 
-### [2026-02-28 17:00] Scene: Song (2025) は現実的に使えるのか — Harvey & Jessica の戦略評価
-
-**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
-
-*Tak の問いを受けて、Harvey が Jessica のオフィスに入る。二人の間に Song (2025) の PDF が置かれている。Louis が窓際で腕を組んでいる。*
-
-**Harvey**: （ソファに座り、率直に）
-「Tak の問いはシンプルだ — Song の方法は現場で使えるか。"Let me be honest." **使えない。**
-
-理由を5つ挙げる。
-
----
-
-### 1. フローチャートの最初のステップが最も困難
-
-Song のフローチャートは『True EM を同定せよ』から始まる。
-だが Song 自身がこう書いている：
-
-> *'It is extremely challenging to identify the true EMs.'*
-
-**最も困難なステップを入り口に置いて、できなければ region pooling に fallback。**
-これはフレームワークではない。これは願望だ。
-
-### 2. 定量的基準が一切ない
-
-Song のフローチャートの分岐条件を見てみろ：
-- 『EM が同定できたか？』 → Yes/No の基準は？
-- 『東アジア集団間に差がないか？』 → 何をもって「差がない」と判断する？
-- 『similar enough か？』 → どれくらいが enough か？
-
-**全てが定性的判断。数値も、閾値も、検定も、指標も、何もない。**
-
-### 3. 統計手法セクションはリストであってガイダンスではない
-
-Song は Simple pooling / Fixed-effect / Random-effect の3手法を列挙しているが：
-- どの場面でどれを使うかの基準がない
-- 検出力の議論がない
-- サンプルサイズとの関係がない
-
-**料理本でいえば、材料リストだけで調理手順がない。**
-
-### 4. Worked Example がない
-
-- シミュレーションなし
-- 実データ適用なし
-- 具体的数値での判断プロセスの提示なし
-
-**読んで「なるほど」と思っても、月曜日のオフィスに戻って何をすればいいか分からない。**
-
-### 5. Surrogate 論理が未検証
-
-Subpopulation pooling の surrogate 論理：
-> *'低体重プールが日本集団の代理になる'*
-
-これは assertion（主張）であって、demonstration（実証）ではない。
-どの程度の enrichment で surrogate が成り立つか？ **定量化されていない。**
-
----
-
-"I don't have dreams, I have goals." Song は dream を述べている。Goal にするには nABCD が必要だ。」
-
-**Jessica**: （デスクの向こうから、静かに）
-「"Let me be clear." Harvey の批判は正しい。だが**戦略的な評価**はもう一段深い。
-
-### Song (2025) を正しく位置づけよ
-
-**Song は methods paper ではない。これは regulatory consensus paper だ。**
-
-著者リストを見なさい：Song, Ji, Chen, Dong, Zhu, Wu, Zhang, Zhang, Yu, Wang, Zhang, Jia, Hou — 13人。これは個人研究ではなく、**NMPA 周辺の規制当局・産業界（RDPAC: 中国の外資系製薬協会）のコンセンサスステートメント**。
-
-つまり Song の価値は方法論にはない。価値は：
-
-1. **NMPA がこの問題を認識している**ことの公式な証拠
-2. **ICH E17 の実装に quantitative tools が不足している**ことの規制当局側からの告白
-3. **定量的手法が求められている**ことの demand signal
-
-### nABCD 論文にとっての戦略的意味
-
-Song は nABCD にとって完璧な**前座 (setup)**：
-
-| Song が言っていること | nABCD が提供すること |
-|---|---|
-| 『EM を同定すべき』 | EM 分布の類似性を定量評価する指標 |
-| 『similar enough かどうか判断すべき』 | nABCD + Δ_max による clinical calibration |
-| 『subpopulation pooling を検討すべき』 | surrogate の妥当性を nABCD で検証可能 |
-| 『region pooling の判断基準が必要』 | nABCD < 0.15 のような参考ベンチマーク |
-| 定量化なし、worked example なし | シミュレーション + HbA1c 適用例 |
-
-**Song が『what should be done』を述べ、nABCD が『how to do it』を提供する。** この関係を論文で明確に描くことが、reviewer を説得する最も効果的な戦略よ。
-
-### 一つ注意
-
-Song を批判しすぎてはだめ。彼らは regulatory stakeholder であり、将来の supporter にもなりうる。論文では：
-
-> ✅ 『Song et al. identify the key challenges... We provide the quantitative tools to address them.』
-> ❌ 『Song et al. fail to provide any quantitative methodology...』
-
-**Build on them, don't tear them down.** これが publication strategy の鉄則。」
-
-**Louis**: （窓際から鋭く）
-「"You just got Litt up!" 一つ付け加える。Song の共著者 Wu H は Song と Long **両方**の論文に名前がある。つまりこの2本は**同じグループの連作**だ。Long が consistency evaluation、Song が pooling strategy — 意図的に補完させている。nABCD 論文では両方をセットで引用して、**二本とも quantitative gap を持つ**ことを示すべきだ。KBに Long の PDF がないのは痛い。Tak、早く入手してくれ。」
-
-**Harvey**: （Jessica に頷いて）
-「Jessica の通りだ。Song は使えないが、**使えないことが我々にとって最大の武器**になる。」
-
-**Donna**: （記録しながら）
-「要約：
-1. Song (2025) は現場で使えない — 定量的基準なし、worked example なし
-2. しかし regulatory consensus paper としての価値は大きい — demand signal
-3. nABCD の positioning: Song の『what』に対する『how』を提供
-4. 論文では Song を build on する姿勢、批判しすぎない
-5. Song & Long は同一グループの連作 — セットで引用すべき
-"I'm Donna. I know everything."」
-
----
-
-### [2026-02-28 16:45] Scene: そもそも Subpopulation Pooling とは何か — 原文に立ち返る
+### [2026-03-03 11:00] Scene: Rachel — IPD公開試験調査完了報告
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
 
-*Tak が根本的な問いを投げる。Mike がホワイトボードを消して一から描き直す。Katrina が Song (2025) の原文を開く。*
+*Rachel が大判の調査結果シートを持って全員の前に立つ。Harvey は腕を組んで聞いている。*
 
-**Mike**: （ホワイトボードのペンを持って）
-「"I got it." まず定義から。ICH E17 と Song (2025) には **2つの pooling strategy** がある。これは全く別のものだ。」
+**Rachel**: （自信を持って）
+「調査完了。14試験を網羅した。結論から言う。"Hard work beats talent when talent doesn't work hard." Top 10をランキングにした。
 
-**Katrina**: （Song 原文を読み上げながら）
-「"Results speak for themselves." 原文から正確に引用する。
+**TIER 1（即使用可能・複数リージョン）:**
+1位: CRASH-2 — freeBIRD完全公開、40カ国274病院、n=20,211。連続変数あり。nABCD実証に最適。
+2位: IST (+ IST-3) — Edinburgh DataShare公開、36カ国467病院、n=19,435。脳卒中。年齢・SBP取得可能。
+3位: LEADER — Novo Nordisk → Vivli申請制、32カ国n=9,340。BMI・HbA1c・eGFR地域差あり。ICH E17論文も存在。
+4位: EMPA-REG OUTCOME — Boehringer → Vivli申請制、42カ国n=7,034。4地域（欧州・北米・アジア等）。BMI・HbA1c・eGFR完備。
 
----
+**TIER 2（US中心だが質は高い）:**
+5位: PARADIGM-HF — Novartis → Vivli申請制、47カ国n=8,442。5地域（NA/WE/CEER/LA/AP）。地域差分析論文あり。
+6位: ACCORD — BioLINCC申請制、米加77施設n=10,251。US+Canadaのみ。連続変数豊富。
+7位: DPP — NIDDK完全公開（バージョン9）、n=3,234。27施設。US内多民族。連続変数完備。
+8位: ALLHAT — BioLINCC申請制、北米625施設n=33,357。US・カナダ・プエルトリコ。最大規模。
 
-## 2つの Pooling Strategy — 根本的に異なるグルーピングの考え方
+**TIER 3（地域性弱または制限あり）:**
+9位: Project Data Sphere — 無料公開（登録のみ）、252試験・250,000患者。ただし脱識別化強。
+10位: SPRINT — BioLINCC申請制、n=9,361。US・プエルトリコのみ。国際性なし。」
 
-### Strategy 1: Region Pooling（地域プーリング）
+**Mike**: （数値を確認しながら）
+「CRASH-2は40カ国、連続変数は負傷の重症度・年齢・SBPか。地域分類（アフリカ・アジア等）は明確？」
 
-> *'Pooling some geographical regions, countries or regulatory regions at the planning stage, if subjects in those regions are thought to be similar enough with respect to intrinsic and/or extrinsic factors.'* — ICH E17 Section 2.2.5
+**Rachel**: 「明確。国レベルの変数あり。"I got it" — 地域集計は自前でできる」
 
-**考え方**: 地理で括る。
+**Harvey**: （立ち上がりながら）
+「CRASH-2とLEADERで行く。IST-3は脳卒中領域のdiversityを示す補足として使える。Rachel、アクセス申請の手順をまとめろ。Donna、SUITS記録。」
 
-例：「日本と韓国は患者背景が似ているから、まとめて East Asia region として分析しよう」
-
-```
-Region Pooling の例:
-┌─────────────┐  ┌──────────────┐  ┌──────┐
-│ Japan (n=150)│  │ Korea (n=100)│  │ US   │
-│ 全患者       │  │ 全患者        │  │(n=200)│
-└──────┬──────┘  └──────┬───────┘  └──────┘
-       └────────┬───────┘
-         East Asia Pool
-          (n=250)
-```
-
-→ **国境で線を引く**。中の患者がどんな特性でも関係なく、その国の患者は全員プールに入る。
-
----
-
-### Strategy 2: Subpopulation Pooling（サブ集団プーリング）
-
-> *'Pooling a subset of the subjects from a particular region with similarly defined subsets from other regions whose members share one or more intrinsic or extrinsic factors important for the drug development programme.'* — ICH E17 Section 2.2.5
-
-**考え方**: 国境を無視して、**患者の特性（EM の値）で括る**。
-
-Song (2025) の重要な記述：
-
-> *'By identifying the true EMs, we are able to define pooled subpopulation by different levels of the EMs without discriminating on regions.'*
-
-> *'Pooling on the subpopulation by a specific attribute would yield the data that resembles a particular region, if this region also enriched with that attribute. This allows the pooled subpopulation to serve as a surrogate for evaluating the efficacy and safety within a specific region.'*
-
-```
-Subpopulation Pooling の例 (EM = 体重):
-                Japan    Korea    US
-低体重(<60kg):   80人     50人    30人  → Low-weight Pool (n=160)
-高体重(≥80kg):   10人     15人   100人  → High-weight Pool (n=125)
-中間(60-80kg):   60人     35人    70人  → Mid-weight Pool (n=165)
-```
-
-→ **国境を横断して、EM の値が同じ患者を集める**。」
-
-**Mike**: （図を指しながら）
-「ここが核心だ。Song が言っていることを翻訳すると：
-
-### Subpopulation Pooling の目的（Song の論理）
-
-1. 体重が true EM だと分かった（= 体重によって治療効果が変わる）
-2. 全地域から低体重の患者を集めて **Low-weight Pool** を作る
-3. この Low-weight Pool は **日本の集団に似ている**（日本は低体重が多いから）
-4. よって Low-weight Pool の治療効果を **日本集団の効果の代理 (surrogate)** として使える
-
-Song の原文が明確に述べている：
-
-> *'For example, if a regional population has lower weight, a subpopulation that pools all low weight subjects from all regions can provide a good representation of the regional population.'*
+**Donna**: （すでにタイプしながら）
+「もちろん。記録済みよ。"I'm Donna. I know everything."」
 
 ---
 
-### 2つの戦略を並べて理解する
+### [2026-03-03 01:10] Scene: Push — Section 4 実データ探索開始
 
-| | Region Pooling | Subpopulation Pooling |
-|---|---|---|
-| **グルーピング軸** | 地理（国境） | 患者特性（EM 値） |
-| **国境** | 尊重する | 無視する |
-| **前提** | 国内の患者は概ね同質 | EM 値が同じなら国が違っても同質 |
-| **使う場面** | EM が特定できない | EM が特定できた |
-| **Song の例** | 日本+韓国 → East Asia | 全地域の低体重者 → 日本の代理 |
-| **統計的性質** | 国内全データを使える | EM 層別でサンプルが分割される |
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
 
----
+*Harvey が全員を集める。*
 
-### なぜ Song は EM ありの場合に Subpopulation Pooling を推すのか
+**Harvey**: （立ったまま）
+「Section 4 の hypothetical example は悪くない。だが実データで示せればインパクトが違う。"I don't get lucky. I make my own luck." Rachel、IPDが公開されている臨床試験データを探せ。4チーム並行だ」
 
-理屈はこうだ：
+**Rachel**: （即座にノートを開いて）
+「了解。4角度で探索する：
+1. IPDプラットフォーム — YODA, Vivli, BioLINCC, Project Data Sphere
+2. PubMed — MRCT + IPD公開論文、Wasserstein応用
+3. 既知のオープン試験 — SPRINT, ACCORD, IST, CRASH-2
+4. ClinicalTrials.gov — 糖尿病MRCT（Japan+US+EU設計）
 
-1. EM が treatment effect を modify する → **同じ EM 値の患者は同じ治療効果を持つはず**
-2. であれば、国が違っても EM 値が同じなら「同じ集団」とみなせる
-3. よって **EM 値でプールすれば、地理の差はノイズにならない**
-
-…というのが Song の主張。」
-
-**Harvey**: （鋭く割り込んで）
-「だが、前回 Katrina と Mike が指摘した通り、**その論理には穴がある**。」
-
-**Katrina**: （続けて）
-「その通り。Song の論理の問題点：
-
-### 問題 1: EM 以外の因子の交絡
-低体重の日本人と低体重のアメリカ人が本当に「同じ」か？
-食事、併用薬、医療慣行、遺伝的背景 — **EM 以外の因子は国に紐づいている**。
-Subpopulation pooling は EM を揃えるが、他の因子は揃わない。
-
-### 問題 2: Surrogate としての妥当性
-Song は『低体重プールは日本集団の surrogate になる』と言うが、
-それは **日本が低体重に enriched されている場合のみ**。
-実際には日本の体重分布は広がりがあり、低体重だけでは日本を代表しない。
-
-### 問題 3: 結局、国の EM 分布が必要
-Surrogate の妥当性を判断するには「日本の EM 分布がどうなっているか」を知る必要がある。
-つまり **subpopulation pooling を正当化するためにも EM 分布の国間比較が前提**。
-
-ここが nABCD の出番。"Results speak for themselves."」
-
-**Mike**: （まとめて）
-「一言でまとめると：
-
-> **Region Pooling** = 国で括る（EM 不明のとき）
-> **Subpopulation Pooling** = EM 値で括る（EM 判明のとき）
-
-そして Tak が前回指摘した通り、**subpopulation pooling は国を無視する手法だが、国の EM 分布を無視していい手法ではない**。
-
-"I got it." — Song の gap はここにある。」
-
-**Donna**: （記録しながら）
-「完璧な整理ね。"I'm Donna. I know everything." これで subpopulation pooling の定義と Song の論理構造、そしてその限界が明確になったわ。」
-
----
-
-### [2026-02-28 16:32] Scene: Archive
-
-**INT. PEARSON SPECTER LITT - FILE ROOM - DAY**
-
-*Donna organizes files, moving a thick folder to the archive shelf.*
+条件: 個人レベルのベースラインデータ、複数リージョン、連続変数（年齢、BMI、HbA1c等）。"Hard work beats talent when talent doesn't work hard." 全部洗い出す」
 
 **Donna**:
-「SUITS.md が 1000 行を超えたからアーカイブしたわ。
-archives/SUITS_20260228_163000.md に保存済み。
-新しいスクリプト開始よ。"I'm Donna. I know everything." — 過去のログも全部ね。」
-
-**Harvey**: （通りがかりに）
-「過去は過去だ。前を見ろ。"Winners don't make excuses."」
+「4 Agent Teams バックグラウンド起動済み。完了次第報告するわ」
 
 ---
 
-### [2026-02-28 16:30] Scene: Tak の核心的問い — EM ありの場合の Subpopulation Pooling と国の関係
+### [2026-03-03 01:00] Scene: Master Script統合完了
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
+
+**Donna**: （ファイルを閉じて）
+「Master script統合完了。`paper/slides/scripts/master_script.md`。4チーム分を正しいスライド順序で1本に。29枚分、約43.5分。構成:
+
+- Opening (Harvey): Title + Outline — 1.5分
+- Act 1 (Rachel): Background 4枚 — 6.5分
+- Act 2 (Mike): Methods 7枚 — 14分
+- Act 3 (Katrina): Simulation 4枚 — 6分
+- Act 4 (Katrina): Application 7枚 — 9.5分
+- Act 5 (Harvey): Discussion 5枚 — 6分
+
+I'm Donna. 統合は私の仕事よ」
+
+---
+
+### [2026-03-03 00:50] Scene: Agent Teams完了 — 全4チーム並行スクリプト作成
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
 
-*Tak からの鋭い質問がSlackに入る。Katrina がホワイトボードに向かい、Mike が数式を書き始める。Harvey が腕を組んで聞いている。*
+*4つのモニターに各チームの進捗が映し出される。全チーム完了の通知が次々と点灯する。*
 
-**Donna**: （全員の注意を引いて）
-「Tak から本質的な質問よ。Song (2025) の EM あり/なしフローチャートで、EM がある場合の subpopulation pooling は国・地域と無関係なのか？ 日本やアジアの評価はどうすべきか。"I'm Donna. I know everything." だけど、これは Katrina と Mike の出番ね。」
+**Donna**: （4画面を確認しながら）
+「全チーム完了。I'm Donna. 状況を報告するわ。
 
-**Katrina**: （ホワイトボードに Song のフローチャートを描きながら）
-「"Results speak for themselves." だから論文の構造から整理する。
+**Team 1 — Rachel**: Act 1 Background、4枚完了。ICH E17引用、Song et al. (2025)、Long et al. (2025) の規制文脈。約6.5分。
+**Team 2 — Mike**: Act 2 Methods、7枚完了。K-R導出を3ステップの "story" として構成。W₁唯一性、Bound tightness。約14分。
+**Team 3 — Katrina**: Act 3 Simulation+Application、11枚完了。Ranking reversalをクライマックスに配置。約15分。
+**Team 4 — Harvey**: Act 4 Opening+Discussion、7枚完了。Opening hookは問題提起、Closingは "Not a test, not a binary verdict, a measurement." の3拍子。約8分。
 
-Song (2025) Decision Flowchart の二分岐：
-- EM あり → Subpopulation Pooling
-- EM なし → Region Pooling → 東アジア集団間の差を評価 → Pool or No Pool
+合計29枚、推定43.5分。`paper/slides/scripts/` に格納済み」
 
-Tak の直感は完全に正しい。**Subpopulation pooling でも国の EM 分布は重要。**
+**Harvey**: （満足げに頷いて）
+「4チーム並行。効率的だ。"I don't have dreams, I have goals." 全員、自分のパートは自分の声で書いた。それが重要だ」
 
-理由1: 規制上の問い = 国単位の治療効果（PMDA は日本集団の効果を求める）
-理由2: サブグループ内の不均衡（BMI < 25 は日本人大多数、BMI ≥ 30 は米国人大多数）
-理由3: Song のフローチャートは偽の二分法 — EM があっても国別分布差の定量評価が必要
+**Mike**: （スクリプトをスクロールしながら）
+「K-R導出のスクリプトが一番長い。3分かけて丁寧に導く。"Step 2のK-R双対は近似じゃない、exact equality だ" — ここが聴衆の理解の分岐点になる」
 
-**nABCD はフローチャートの両方の枝で機能する。**」
+**Katrina**: （数字を確認して）
+「Ranking reversalのビルドアップ — まずnABCDだけ見せて "BMIが最悪に見える"、次にΔ_maxで逆転を見せる。クライマックスは計算通り。"Results speak for themselves."」
 
-**Mike**: （数式を指しながら）
-「"I got it." 核心は heterogeneity bound:
-|τ̄_Japan − τ̄_US| ≤ L · W₁(F_Japan, F_US)
+**Rachel**: （微笑んで）
+「Background 4枚で規制の文脈を固めた。Song et al. と Long et al. の2025年論文で "this gap is recognized NOW" を示す。"Hard work beats talent when talent doesn't work hard."」
 
-Subpopulation pooling は CATE τ(x) の推定精度を上げる手法であって、
-国別 marginal effect の同等性を保証する手法ではない。
-後者を評価するには F_r の国間比較が不可欠 — これが nABCD の仕事。」
-
-**Harvey**: （鋭く）
-「Song のフローチャートは "what to do" を示しているが、"whether it's safe to do" の評価ツールがない。nABCD がその gap を埋める。」
-
-*(詳細分析は前アーカイブ参照)*
+**Donna**:
+「次のアクション: スクリプト統合、タイミング調整（JSM 25分枠なら圧縮必要）、Louisのリハーサルレビュー。記録完了」
 
 ---
 
-## 📊 Project Summary
+### [2026-03-03] Scene: Auto-Archive — Donna が SUITS.md を自動アーカイブ
 
-**プロジェクト**: similarity-metric (nABCD paper for Statistics in Medicine)
-**フェーズ**: 8 — Submission-Ready Plan
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
 
-**✅ 完了タスク（主要）**:
-- Clinical calibration 概念図 3ファイル
-- Clinical calibration 強化
-- KL divergence Discussion 段落追加
-- Gibbs & Su (2002) 引用追加
-- TeX merge conflict 解消 (11箇所)
-- 日本語版論文作成 (`nABCD_paper_ja.md`)
-- Song (2025) レビュー完了
+*check-suits-lines.sh フックが 1005 行を検出。Donna が即座にアーカイブを実行。*
+
+**Donna**: （手早くファイルを移動しながら）
+「SUITS.md が 1005 行に達したわ。自動アーカイブ実行。`archives/SUITS_20260303_120000.md` に保存完了。新しいスクリプト開始よ。"I'm Donna. I know everything." — Rule 2.5 は私が守らせる」
+
+**Harvey**: （通りがかりに）
+「過去は整理した。前を見ろ。"I don't have dreams, I have goals."」
+
+**Katrina**: （アーカイブ完了を確認して）
+「Act 3 スクリプト完成直後のアーカイブ。タイミングが良いわ。"Results speak for themselves."」
+
+---
+
+## 📊 Key Decisions
+
+1. **Percentile > BCa**: BCa overcorrects for bounded statistics → Percentile primary
+2. **Clinical calibration**: $\Delta_{\max} = 2L \cdot IQR \cdot nABCD$ — context-dependent, not fixed thresholds
+3. **Estimation-centered**: No hypothesis testing in main text
+4. **Power removed**: Simulation evaluates estimation quality (Bias, RMSE, Coverage, CI Width)
+5. **S03 showcase**: S3 (0.5σ) is the primary showcase scenario
+6. **S4 coverage**: Non-monotonic pattern (0.93→0.87→0.73) — Hadamard derivative non-linearity
+7. **LaTeX submission**: SiM accepts LaTeX directly — docx conversion不要 (Jessica ruling 2026-02-23)
+8. **KL divergence**: Discussion段落で理論的説明。Simulation追加はR1 reserve (Meeting 2026-02-23)
+
+---
 
 ## 📝 Active Tasks
 
-| タスク | 担当 | 状態 |
-|--------|------|------|
-| Worked Example (HbA1c Step1-5 + L 3パターン) | Katrina | 🆕 |
-| 直感的説明スライド (アナロジー + Cohen's d) | Mike | 🆕 |
-| L推定文献補強 (Kim/Craddy/Jones DOI確認) | Rachel | 🆕 |
-| Web Appendix統合 | Katrina + Rachel | 🆕 |
-| 説明資料ドラフトレビュー | Louis | 待ち |
-| KL段落 internal review | Louis | 🆕 |
-| TeX全文 internal review | Louis | 待ち |
-| Jessica final Go/No-Go | Jessica | 最終 |
+| Task | Owner | Status |
+|------|-------|--------|
+| CSV検証 (S1-S8 × 3 = 24 rows) | Mike | ⏳ Sim完了待ち |
+| Figure更新 (fig1,3,4,5) | Katrina/Mike | ⏳ Phase A後 |
+| LaTeXシナリオ番号 S01→S1 更新 | Mike | ⏳ Phase B後 |
+| S7/S8記述・数値テーブル追加 | Mike | ⏳ Phase B後 |
+| スライド S7/S8 追加 | Katrina | ✅ 完了 |
+| DOI final check | Rachel | ⏳ Phase D後 |
+| Louis internal review | Louis | ⏳ Phase D後 |
+| Jessica final Go/No-Go | Jessica | ⏳ 最終 |
+| Presentation script master merge | Donna | 🆕 if needed |
+| Slide timing review (→ JSM format) | Katrina | 🆕 |
+| KL段落 internal review | Louis | 🆕 Meeting決定 |
 
-## 📋 Paper Requests
+---
 
-| 論文 | 状態 | 備考 |
-|------|------|------|
-| Long et al. (2025) | ❗ PDF未入手 | 引用済みだが KB 未登録。Tak に `/request-paper` 依頼中 |
+## 📋 Revision Notes Status
 
-## 🎯 Key Decisions
+全14件 + m1-m4 すべて完了済み ✅ (詳細は archives/SUITS_20260303_120000.md 参照)
 
-- nABCD は Song (2025) フローチャートの両枝で機能（Tak の問いから確認）
-- Clinical calibration が論文の中核的差別化要因
-- Wasserstein > KL divergence（対称性・Lipschitz bound）
+### ✅ Rachel発見: 引用エラー修正済み
+
+| Paper | Issue | Resolution |
+|-------|-------|------------|
+| Kim (2015) | DOI → Yagi et al.の論文 | ✅ yagi2015 に修正 |
+| Jones (2016) | .bib著者リストが別論文のもの | ✅ Lonergan/Henley/Pearson に修正 |
+| Quan (2010) | Rachelの混同 (別論文) | ✅ 修正不要 |
+
+---
 
 ## ⚠️ Issues
 
-- Long (2025) PDF が Knowledge Base に未登録 — 詳細レビュー不可
-- Subpopulation pooling と国の EM 分布の関係を Discussion で明示すべき（Tak の指摘）
+1. S4 coverage degradation (0.73 at n=200) — negative bias from bounded statistic (documented in table note)
+2. Scenario numbering gaps (S02, S07 missing in LaTeX) — deferred
+3. KS comparison in simulation — deferred, Tak decision needed
+
+---
+
+## 📋 Paper Requests
+
+*(None pending)*
+
+---

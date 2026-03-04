@@ -2,7 +2,7 @@
 marp: true
 size: 16:9
 paginate: true
-header: "Feb 13, 2026"
+header: "Mar 1, 2026"
 footer: "Quantifying Effect Modifier Similarity for Regional Pooling in MRCTs"
 math: mathjax
 style: |
@@ -444,11 +444,11 @@ Author One, Author Two, Author Three
 
 # Outline
 
-1. **Background** &mdash; ICH E17 and the methodological gap
-2. **Methods** &mdash; The nABCD metric and clinical calibration
-3. **Simulation Study** &mdash; Estimation properties
-4. **Application** &mdash; Type 2 diabetes MRCT
-5. **Discussion** &mdash; Implications and future directions
+1. **Background** &mdash; ICH E17 and the regulatory gap
+2. **Methods** &mdash; Heterogeneity bound, nABCD definition, clinical calibration
+3. **Simulation Study** &mdash; Bias, coverage, nABCD vs. SMD
+4. **Application** &mdash; Diabetes MRCT, ranking reversal, sensitivity analysis
+5. **Discussion** &mdash; Estimation-centered philosophy and future directions
 
 ---
 
@@ -498,11 +498,37 @@ $$
 | Standardized mean difference (SMD) | Captures **only location**, ignores scale and shape |
 | Kolmogorov&ndash;Smirnov statistic | No interpretable scale for decision-making |
 
+Recent regulatory guidance highlights this gap:
+- Song et al. (2025): NMPA perspective on ICH E17 pooling operationalization
+- Long et al. (2025): Basic considerations for consistency evaluation under E17
+
+---
+
+<style scoped>
+section { font-size: 25px; line-height: 1.5; }
+</style>
+
+# Our Approach
+
 <div class="block">
 <div class="block-title">Research Question</div>
 <div class="block-content">
 
 How can we estimate distributional similarity in a **scale-free** manner, and translate that estimate into **clinically interpretable** information about potential treatment effect heterogeneity?
+
+</div>
+</div>
+
+### Design Philosophy
+- **Estimation**, not hypothesis testing &mdash; quantify the difference, don't just accept/reject
+- **Clinical calibration** &mdash; translate distributional differences into the outcome scale
+- **Scope**: Continuous effect modifiers only (categorical/mixed-type EMs require alternative distances)
+
+<div class="alertblock">
+<div class="block-title">Key Principle</div>
+<div class="block-content">
+
+Provide regulatory scientists with **quantitative tools that inform deliberation**, not binary accept/reject rules.
 
 </div>
 </div>
@@ -535,6 +561,73 @@ $$
 
 ---
 
+<style scoped>
+section { font-size: 23px; line-height: 1.4; }
+</style>
+
+# Derivation: Three Steps
+
+### Step 1 &mdash; $W_1$ as CDF area
+
+$$W_1(F_1, F_2) = \int_{-\infty}^{\infty} |F_1(x) - F_2(x)| \, dx$$
+
+### Step 2 &mdash; Kantorovich&ndash;Rubinstein duality
+
+$$W_1(F_1, F_2) = \sup_{\|f\|_{\text{Lip}} \leq 1} \left| \int f \, dF_1 - \int f \, dF_2 \right|$$
+
+$W_1$ equals the worst-case expected difference over **all 1-Lipschitz functions**.
+
+### Step 3 &mdash; Apply to CATE function
+
+If $\tau(x)$ has Lipschitz constant $L$, then $g(x) = \tau(x)/L$ satisfies $\|g\|_{\text{Lip}} \leq 1$:
+
+$$\frac{1}{L}\,|\bar{\tau}_1 - \bar{\tau}_2| = \left|\int g \, dF_1 - \int g \, dF_2\right| \leq W_1(F_1, F_2) \quad \Rightarrow \quad |\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot W_1 \quad \blacksquare$$
+
+---
+
+# Why $W_1$ &mdash; And Only $W_1$
+
+| Distance | K-R Duality | Heterogeneity Bound | Symmetric | Always Finite |
+|----------|:-----------:|:-------------------:|:---------:|:-------------:|
+| $W_1$ | **Yes** | **Constructible** | Yes | Yes |
+| $W_2$ | No | Not available | Yes | Yes |
+| KL divergence | No | Not available | **No** | **No** |
+
+<div class="alertblock">
+<div class="block-title">Why alternatives fail</div>
+<div class="block-content">
+
+**$W_2$**: Its dual involves *convex* functions, not Lipschitz &mdash; cannot bound CATE heterogeneity.
+**KL**: Asymmetric ($D_{KL}(P \| Q) \neq D_{KL}(Q \| P)$) and diverges when empirical supports don't overlap.
+
+$W_1$ is not a preference &mdash; it is the **unique choice** enabling the heterogeneity bound.
+
+</div>
+</div>
+
+---
+
+# The Bound Is Tight, Not Loose
+
+<div class="block">
+<div class="block-title">Two reasons the upper bound is the right tool</div>
+<div class="block-content">
+
+**1. Regulatory conservatism.** &ensp; False-positive pooling (treating different populations as similar) is the dangerous error. An upper bound provides a worst-case guarantee &mdash; appropriate for regulatory safety decisions.
+
+**2. K-R optimality.** &ensp; There exists a 1-Lipschitz function that *achieves* the supremum. The bound is the **tightest possible** given only Lipschitz smoothness of $\tau(x)$ &mdash; not a rough approximation, but the mathematical optimum.
+
+</div>
+</div>
+
+> The bound answers: *"Given what we know about CATE smoothness, what is the worst that could happen?"*
+
+---
+
+<style scoped>
+section { font-size: 25px; line-height: 1.4; }
+</style>
+
 # nABCD Definition
 
 <div class="block">
@@ -543,13 +636,14 @@ $$
 
 $$\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}}$$
 
-IQR normalization $\Rightarrow$ **scale-free**, robust to outliers. $\text{nABCD} \geq 0$, with equality iff $F_1 = F_2$.
+IQR normalization $\Rightarrow$ **scale-free**, robust to outliers. &ensp; $\text{nABCD} \geq 0$ (provided $\text{IQR}_{\text{pooled}} > 0$), equality iff $F_1 = F_2$.
+**Why IQR?** Interpretable (central 50% spread), familiar to clinicians. $Q_n$ higher breakdown unnecessary for population-level data.
 
 </div>
 </div>
 
 <div class="block">
-<div class="block-title">Heterogeneity Bound</div>
+<div class="block-title">Heterogeneity Bound (Proposition 2)</div>
 <div class="block-content">
 
 $$|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}$$
@@ -581,6 +675,10 @@ where $L$ = CATE sensitivity (Lipschitz constant of $\tau(x)$)
 
 ---
 
+<style scoped>
+section { font-size: 24px; line-height: 1.4; }
+</style>
+
 # Estimation and Inference
 
 ### Point estimator
@@ -592,9 +690,12 @@ $$
 - Computational complexity: $O((n_1 + n_2) \log(n_1 + n_2))$
 
 ### Inference
-- **Percentile bootstrap** with $B = 2{,}000$ replicates
-- BCa overcorrects for this bounded statistic &mdash; percentile preferred
-- Asymptotic normality holds for $F_1 \neq F_2$ (interior of parameter space)
+- **Percentile bootstrap** ($B = 2{,}000$) &mdash; BCa overcorrects for bounded statistic
+
+### Asymptotic theory (del Barrio et al. 1999)
+- $W_1$ = $L_1$ distance between CDFs $\Rightarrow$ $\sqrt{n}$-convergence to Brownian bridge functional
+- **$F_1 \neq F_2$**: Hadamard derivative is **linear** $\Rightarrow$ bootstrap consistent
+- **$F_1 \approx F_2$**: derivative becomes non-linear $\Rightarrow$ modest undercoverage possible
 
 ---
 
@@ -603,6 +704,11 @@ $$
 # 3. Simulation Study
 
 ---
+
+<style scoped>
+section { font-size: 23px; line-height: 1.5; }
+table { font-size: 0.9em; }
+</style>
 
 # Simulation Design
 
@@ -614,14 +720,19 @@ $$
 | S2 | Location 0.2$\sigma$ | Age: EU vs US | $N(52, 10^2)$ | 0.074 |
 | S3 | Location 0.5$\sigma$ | BMI: Japan vs EU | $N(55, 10^2)$ | 0.186 |
 | S4 | Location 1.0$\sigma$ | BMI: Japan vs US | $N(60, 10^2)$ | 0.372 |
-| S5 | Scale 1.5$\times$ | HbA1c: strict vs broad criteria | $N(50, 15^2)$ | 0.148 |
+| S5 | Scale 1.5$\times$ | HbA1c: strict vs broad | $N(50, 15^2)$ | 0.148 |
 | S6 | Shape (Gamma) | Lab values: eGFR | Gamma(25, 0.5) | 0.067 |
-| S7 | Skew (log-normal) | ALT (CV $\approx$ 53%) | LogN($\sigma$=0.5) | MC |
-| S8 | Location + Scale | BMI: Japan vs US (realistic) | $N(55, 15^2)$ | MC |
+| S7 | Skew (log-normal) | ALT (CV $\approx$ 53%) | LogN($\sigma$=0.5) | 0.302 |
+| S8 | Location + Scale | BMI: Japan vs US | $N(55, 15^2)$ | 0.175 |
 
 - Distribution 1 is always $N(50, 10^2)$. Sample sizes: $n = 50, 100, 200$. 10,000 reps, $B = 2{,}000$.
 
 ---
+
+<style scoped>
+section { font-size: 23px; line-height: 1.5; }
+table { font-size: 0.9em; }
+</style>
 
 # Bias Results
 
@@ -633,12 +744,17 @@ $$
 | S4 (1.0$\sigma$) | 0.372 | &minus;0.038 | &minus;0.041 | &minus;0.043 |
 | S5 (Scale) | 0.148 | +0.001 | &minus;0.012 | &minus;0.019 |
 | S6 (Gamma) | 0.067 | +0.029 | +0.003 | &minus;0.015 |
+| S7 (Skew) | 0.302 | +0.019 | +0.009 | +0.005 |
+| S8 (Loc+Scale) | 0.175 | +0.024 | +0.011 | +0.006 |
 
-- Non-null scenarios (excl. S4): **bias < 0.02** at $n \geq 100$
-- S4: persistent negative bias (~&minus;0.04) from bounded statistic
-- S7, S8 results pending re-simulation
+- Non-null (excl. S4): **bias < 0.02** at $n \geq 100$ &ensp;|&ensp; S4: persistent &minus;0.04 (bounded statistic) &ensp;|&ensp; S7/S8: well-behaved
 
 ---
+
+<style scoped>
+section { font-size: 23px; line-height: 1.5; }
+table { font-size: 0.9em; }
+</style>
 
 # Coverage and Precision
 
@@ -649,13 +765,14 @@ $$
 | S4 (1.0$\sigma$) | **0.929** | 0.867 | 0.731 |
 | S5 (Scale) | **0.963** | **0.976** | **0.939** |
 | S6 (Gamma) | 0.573 | **0.945** | **0.996** |
+| S7 (Skew) | **0.953** | **0.954** | **0.951** |
+| S8 (Loc+Scale) | 0.916 | 0.932 | 0.939 |
 
 <div class="block">
 <div class="block-title">Key Findings</div>
 <div class="block-content">
 
-- Coverage **0.87&ndash;0.98** at $n \geq 100$ for most scenarios
-- S3 (0.5$\sigma$): exemplary &mdash; bias negligible, coverage nominal, RMSE < 0.05
+- Coverage **0.87&ndash;0.98** at $n \geq 100$ &ensp;|&ensp; S7: **near-nominal across all** $n$
 - Recommendation: **$n \geq 100$ per region** for reliable inference
 
 </div>
@@ -667,9 +784,10 @@ $$
 
 | Scenario | nABCD (mean $\pm$ SD) | SMD (mean $\pm$ SD) | Implication |
 |----------|----------------------|---------------------|-------------|
-| S3 (Location) | $0.183 \pm 0.049$ | $0.50 \pm 0.14$ | Both detect |
+| S3 (Location) | $0.184 \pm 0.049$ | $0.50 \pm 0.14$ | Both detect |
 | S5 (Scale only) | $0.136 \pm 0.033$ | $0.00 \pm 0.14$ | **Only nABCD** |
 | S6 (Shape only) | $0.070 \pm 0.024$ | $0.00 \pm 0.14$ | **Only nABCD** |
+| S7 (Skew only) | $0.311 \pm 0.047$ | $0.00 \pm 0.14$ | **Only nABCD** |
 
 <div class="alertblock">
 <div class="block-title">SMD Blindness</div>
@@ -758,6 +876,35 @@ The clinical meaning of nABCD depends on the EM's CATE sensitivity $L$.
 
 ---
 
+<style scoped>
+section { font-size: 25px; line-height: 1.5; }
+</style>
+
+# Why the Ranking Reverses
+
+### $L$ is the multiplier that changes everything
+
+**BMI** (nABCD = 0.51, $L$ = 0.02) &mdash; Weak effect modifier:
+- Huge distribution gap ($\Delta$ = 7.3 kg/m$^2$) between Japan and US
+- But BMI has **small influence** on treatment effect for this drug class
+- $\Rightarrow$ $\Delta_{\max}$ = 0.16% &mdash; only 40% of non-inferiority margin
+
+**HbA1c** (nABCD = 0.27, $L$ = 0.30) &mdash; Strong effect modifier:
+- Moderate distribution gap ($\Delta$ = 0.8%) between Japan and US
+- But baseline HbA1c has **large influence** on treatment effect
+- $\Rightarrow$ $\Delta_{\max}$ = 0.24% &mdash; **60% of margin**
+
+<div class="alertblock">
+<div class="block-title">Core message</div>
+<div class="block-content">
+
+**Distribution size and clinical consequence are fundamentally different dimensions.** nABCD alone is necessary but not sufficient &mdash; clinical calibration via $\Delta_{\max}$ is what connects them.
+
+</div>
+</div>
+
+---
+
 # Sensitivity Analysis: HbA1c (Japan vs. US)
 
 nABCD = 0.27, IQR = 1.5%
@@ -772,6 +919,27 @@ nABCD = 0.27, IQR = 1.5%
 
 - At $L^* = 0.49$: $\Delta_{\max}$ equals the non-inferiority margin (0.4%)
 - **Transparent view**: at what $L$ does the distributional difference begin to matter?
+
+---
+
+# Estimation, Not Testing
+
+### Why we do not recommend hypothesis testing
+
+<div class="block">
+<div class="block-title">Three reasons</div>
+<div class="block-content">
+
+**1. ICH E17 avoids binary rules.** &ensp; Similarity is "context-dependent" &mdash; one threshold cannot serve all diseases, drugs, or regulatory contexts.
+
+**2. $L$ is uncertain.** &ensp; A single test result obscures uncertainty in the CATE sensitivity. Sensitivity tables + CIs provide a more transparent and honest assessment.
+
+**3. Decision boundaries are context-specific.** &ensp; NI trial ($\Delta_{\text{clin}} = 0.4\%$) vs. superiority trial ($\Delta_{\text{clin}} = 0.8\%$) &mdash; same nABCD, different conclusions.
+
+</div>
+</div>
+
+> Provide nABCD + 95% CI, $\Delta_{\max}$ + 95% CI, and sensitivity ranges &mdash; **regulatory judgment informed by evidence, not ruled by algorithm.**
 
 ---
 

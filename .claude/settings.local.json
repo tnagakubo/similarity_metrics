@@ -76,9 +76,21 @@
       "Bash(git:*)",
       "Bash(gh pr:*)",
       "Bash(grep:*)",
-      "Bash(qpdf:*)",
-      "Bash(mkdir:*)",
-      "Bash(cygpath:*)"
+      "WebFetch(domain:yoda.yale.edu)",
+      "WebFetch(domain:biolincc.nhlbi.nih.gov)",
+      "WebFetch(domain:www.clinicalstudydatarequest.com)",
+      "mcp__claude_ai_Clinical_Trials__search_trials",
+      "mcp__claude_ai_Clinical_Trials__get_trial_details",
+      "Bash(python3:*)",
+      "WebFetch(domain:datashare.ed.ac.uk)",
+      "WebFetch(domain:doi.org)",
+      "Bash(R:*)",
+      "WebFetch(domain:trialsjournal.biomedcentral.com)",
+      "WebFetch(domain:hbiostat.org)",
+      "Bash(\"/c/Program Files/R/R-4.5.1/bin/Rscript.exe\":*)",
+      "Bash(/c/Users/hrd13/AppData/Local/Microsoft/WindowsApps/python3:*)",
+      "WebFetch(domain:www.wikijournalclub.org)",
+      "Bash(/tmp/ist3.R:*)"
     ]
   }
 }

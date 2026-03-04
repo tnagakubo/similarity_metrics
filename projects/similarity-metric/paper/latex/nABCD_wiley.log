@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.9.28)  17 FEB 2026 06:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.9.28)  2 MAR 2026 00:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -914,14 +914,30 @@ Package: wrapfig 2003/01/31  v 3.6
 \@authorfigbox=\box131
 \@authorfigboxdim=\skip105
 \biofigadjskip=\skip106
+) (c:/texlive/2024/texmf-dist/tex/latex/mathtools/mathtools.sty
+Package: mathtools 2024/03/11 v1.30 mathematical typesetting tools
+ (c:/texlive/2024/texmf-dist/tex/latex/mathtools/mhsetup.sty
+Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
 )
-LaTeX Font Info:    Trying to load font information for T1+ptm on input line 17.
+\g_MT_multlinerow_int=\count435
+\l_MT_multwidth_dim=\dimen327
+\origjot=\skip107
+\l_MT_shortvdotswithinadjustabove_dim=\dimen328
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen329
+\l_MT_above_intertext_sep=\dimen330
+\l_MT_below_intertext_sep=\dimen331
+\l_MT_above_shortintertext_sep=\dimen332
+\l_MT_below_shortintertext_sep=\dimen333
+\xmathstrut@box=\box132
+\xmathstrut@dim=\dimen334
+)
+LaTeX Font Info:    Trying to load font information for T1+ptm on input line 20.
  (c:/texlive/2024/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 ) (c:/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count435
-\l__pdf_internal_box=\box132
+\l__color_backend_stack_int=\count436
+\l__pdf_internal_box=\box133
 )
 
 LaTeX Warning: Unused global option(s):
@@ -930,36 +946,36 @@ LaTeX Warning: Unused global option(s):
 (./nABCD_wiley.aux)
 \openout1 = `nABCD_wiley.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
  (c:/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count436
-\scratchdimen=\dimen327
-\scratchbox=\box133
-\nofMPsegments=\count437
-\nofMParguments=\count438
+\scratchcounter=\count437
+\scratchdimen=\dimen335
+\scratchbox=\box134
+\nofMPsegments=\count438
+\nofMParguments=\count439
 \everyMPshowfont=\toks58
-\MPscratchCnt=\count439
-\MPscratchDim=\dimen328
-\MPnumerator=\count440
-\makeMPintoPDFobject=\count441
+\MPscratchCnt=\count440
+\MPscratchDim=\dimen336
+\MPnumerator=\count441
+\makeMPintoPDFobject=\count442
 \everyMPtoPDFconversion=\toks59
 ) (c:/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -973,20 +989,20 @@ Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring OFF on input line 17.
-LaTeX Info: Redefining \microtypecontext on input line 17.
-Package microtype Info: Applying patch `item' on input line 17.
-Package microtype Info: Applying patch `toc' on input line 17.
-Package microtype Info: Applying patch `eqnum' on input line 17.
-Package microtype Info: Applying patch `footnote' on input line 17.
-Package microtype Info: Applying patch `verbatim' on input line 17.
+Package hyperref Info: Link coloring OFF on input line 20.
+LaTeX Info: Redefining \microtypecontext on input line 20.
+Package microtype Info: Applying patch `item' on input line 20.
+Package microtype Info: Applying patch `toc' on input line 20.
+Package microtype Info: Applying patch `eqnum' on input line 20.
+Package microtype Info: Applying patch `footnote' on input line 20.
+Package microtype Info: Applying patch `verbatim' on input line 20.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 17.
+LaTeX Info: Redefining \showhyphens on input line 20.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -1029,8 +1045,8 @@ File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\c@lstlisting=\count442
-LaTeX Font Info:    Trying to load font information for T1+phv on input line 47.
+\c@lstlisting=\count443
+LaTeX Font Info:    Trying to load font information for T1+phv on input line 50.
 (c:/texlive/2024/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
 )
@@ -1041,31 +1057,31 @@ Package microtype Info: Loading generic protrusion settings for font family
  (c:/texlive/2024/texmf-dist/tex/latex/microtype/mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 47.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 50.
  (c:/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (c:/texlive/2024/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 47.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 50.
  (c:/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (c:/texlive/2024/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-Overfull \hbox (350.99213pt too wide) in paragraph at lines 47--47
+Overfull \hbox (350.99213pt too wide) in paragraph at lines 50--50
 [][] | || []|[][] 
  []
 
 
-Package hyperref Warning: Ignoring empty anchor on input line 50.
+Package hyperref Warning: Ignoring empty anchor on input line 53.
 
 
 
 
 Overfull \vbox (29.44482pt too high) has occurred while \output is active []
 
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 65.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 68.
  (c:/texlive/2024/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [1{c:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc}
@@ -1073,130 +1089,141 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 \openout3 = `nABCD_wiley.pag'.
 
 ]
-Underfull \hbox (badness 10000) detected at line 74
+Underfull \hbox (badness 10000) detected at line 77
 []
  []
 
 
 
 [2]
-<../../figures/fig2_nabcd_definition.pdf, id=57, 578.16pt x 361.35pt>
+<../../figures/fig2_nabcd_definition.pdf, id=53, 578.16pt x 361.35pt>
 File: ../../figures/fig2_nabcd_definition.pdf Graphic file (type pdf)
 <use ../../figures/fig2_nabcd_definition.pdf>
-Package pdftex.def Info: ../../figures/fig2_nabcd_definition.pdf  used on input line 133.
+Package pdftex.def Info: ../../figures/fig2_nabcd_definition.pdf  used on input line 138.
 (pdftex.def)             Requested size: 504.50787pt x 315.31482pt.
 
 
 [3]
-Underfull \hbox (badness 1436) in paragraph at lines 191--192
+
+[4 <../../figures/fig2_nabcd_definition.pdf>]
+Underfull \hbox (badness 1436) in paragraph at lines 200--201
 []\T1/ptm/m/n/10 (+20) Derive the boot-strap CI for $\OT1/cmr/m/n/10 ^^A[]$ \T1/ptm/m/n/10 (+20) from the nABCD con-fi-dence in-ter-val: $[\OT1/cmr/m/n/10 ^^A[]\T1/ptm/m/n/10 (+20) ,  \OT1/cmr/m/n/10 ^^A[]\T1/ptm/m/n/10 (+20) ] = 2\T1/ptm/m/it/10 (+20) L \OMS/cmsy/m/n/10 ^^A [][] ^^A
  []
 
 
-
-[4 <../../figures/fig2_nabcd_definition.pdf>]
-Underfull \hbox (badness 10000) detected at line 204
-[]
- []
-
-
-Underfull \hbox (badness 10000) detected at line 233
+Underfull \hbox (badness 10000) detected at line 213
 []
  []
 
 
 
 [5]
-Underfull \hbox (badness 10000) detected at line 276
+Underfull \hbox (badness 10000) detected at line 242
 []
  []
 
-<../../figures/fig3_bias.pdf, id=129, 722.7pt x 361.35pt>
-File: ../../figures/fig3_bias.pdf Graphic file (type pdf)
-<use ../../figures/fig3_bias.pdf>
-Package pdftex.def Info: ../../figures/fig3_bias.pdf  used on input line 299.
-(pdftex.def)             Requested size: 504.50787pt x 252.25406pt.
 
 
 [6]
-Underfull \hbox (badness 10000) detected at line 312
+Underfull \hbox (badness 10000) detected at line 283
 []
  []
 
-
-
-[7 <../../figures/fig3_bias.pdf>]
-<../../figures/fig4_estimation_quality.pdf, id=167, 867.24pt x 361.35pt>
-File: ../../figures/fig4_estimation_quality.pdf Graphic file (type pdf)
-<use ../../figures/fig4_estimation_quality.pdf>
-Package pdftex.def Info: ../../figures/fig4_estimation_quality.pdf  used on input line 337.
-(pdftex.def)             Requested size: 504.50787pt x 210.21172pt.
-
-Underfull \hbox (badness 10000) detected at line 344
-[]
- []
-
-
-
-[8 <../../figures/fig4_estimation_quality.pdf>]
-Underfull \hbox (badness 10000) detected at line 373
-[]
- []
-
-<../../figures/fig5_smd_comparison.pdf, id=185, 722.7pt x 361.35pt>
-File: ../../figures/fig5_smd_comparison.pdf Graphic file (type pdf)
-<use ../../figures/fig5_smd_comparison.pdf>
-Package pdftex.def Info: ../../figures/fig5_smd_comparison.pdf  used on input line 390.
+<../../figures/fig3_bias.pdf, id=146, 722.7pt x 361.35pt>
+File: ../../figures/fig3_bias.pdf Graphic file (type pdf)
+<use ../../figures/fig3_bias.pdf>
+Package pdftex.def Info: ../../figures/fig3_bias.pdf  used on input line 306.
 (pdftex.def)             Requested size: 504.50787pt x 252.25406pt.
 
 
-[9]
-Underfull \hbox (badness 10000) detected at line 416
+[7 <../../figures/fig3_bias.pdf>]
+Underfull \hbox (badness 10000) detected at line 319
+[]
+ []
+
+<../../figures/fig4_estimation_quality.pdf, id=169, 867.24pt x 361.35pt>
+File: ../../figures/fig4_estimation_quality.pdf Graphic file (type pdf)
+<use ../../figures/fig4_estimation_quality.pdf>
+Package pdftex.def Info: ../../figures/fig4_estimation_quality.pdf  used on input line 344.
+(pdftex.def)             Requested size: 504.50787pt x 210.21172pt.
+
+Underfull \hbox (badness 10000) detected at line 351
 []
  []
 
 
-Underfull \hbox (badness 10000) detected at line 431
+Underfull \hbox (badness 10000) detected at line 380
 []
  []
 
-<../../figures/fig6_application.pdf, id=199, 578.16pt x 361.35pt>
-File: ../../figures/fig6_application.pdf Graphic file (type pdf)
-<use ../../figures/fig6_application.pdf>
-Package pdftex.def Info: ../../figures/fig6_application.pdf  used on input line 444.
-(pdftex.def)             Requested size: 504.50787pt x 315.31482pt.
+
+
+[8]
+<../../figures/fig5_smd_comparison.pdf, id=180, 722.7pt x 361.35pt>
+File: ../../figures/fig5_smd_comparison.pdf Graphic file (type pdf)
+<use ../../figures/fig5_smd_comparison.pdf>
+Package pdftex.def Info: ../../figures/fig5_smd_comparison.pdf  used on input line 397.
+(pdftex.def)             Requested size: 504.50787pt x 252.25406pt.
+
+
+[9 <../../figures/fig4_estimation_quality.pdf>]
+Underfull \hbox (badness 10000) detected at line 422
+[]
+ []
+
 
 
 [10 <../../figures/fig5_smd_comparison.pdf>]
-Underfull \hbox (badness 10000) detected at line 464
+Underfull \hbox (badness 10000) detected at line 437
+[]
+ []
+
+<../../figures/fig6_application.pdf, id=216, 578.16pt x 361.35pt>
+File: ../../figures/fig6_application.pdf Graphic file (type pdf)
+<use ../../figures/fig6_application.pdf>
+Package pdftex.def Info: ../../figures/fig6_application.pdf  used on input line 450.
+(pdftex.def)             Requested size: 504.50787pt x 315.31482pt.
+
+Underfull \hbox (badness 10000) detected at line 470
 []
  []
 
 
 
-[11 <../../figures/fig6_application.pdf>]
-Underfull \hbox (badness 10000) detected at line 491
+[11]
+Underfull \hbox (badness 10000) detected at line 497
 []
  []
 
 
 
-[12]
+[12 <../../figures/fig6_application.pdf>]
 
-[13] (./nABCD_wiley.bbl
+Package natbib Warning: Citation `villani2008' on page 13 undefined on input line 528.
 
-[14])
-Overfull \hbox (9.0pt too wide) in paragraph at lines 578--578
+
+
+[13]
+
+[14] (./nABCD_wiley.bbl
+Underfull \hbox (badness 3312) in paragraph at lines 39--41
+[]\T1/ptm/m/n/8.5 (+20) Rousseeuw PJ, Croux C. Al-ter-na-tives to the Me-dian Ab-so-lute De-vi-a-tion. \T1/ptm/m/it/8.5 (+20) J Am Stat As-soc. \T1/ptm/m/n/8.5 (+20) 1993;88(424):1273--1283.  []doi:
+ []
+
+
+
+[15])
+Overfull \hbox (9.0pt too wide) in paragraph at lines 590--590
 [] [] 
  []
 
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 602.
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 614.
 
-Underfull \hbox (badness 10000) detected at line 602
+Underfull \hbox (badness 10000) detected at line 614
 []
  []
 
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 602.
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 614.
 (c:/texlive/2024/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
@@ -1206,9 +1233,13 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
 
 
-[15]
+[16]
 
-[16] (./nABCD_wiley.aux)
+Package natbib Warning: There were undefined citations.
+
+
+
+[17] (./nABCD_wiley.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-09-10>
@@ -1224,18 +1255,18 @@ L3 programming layer <2024-09-10>
 (\end occurred when \iftrue on line 4740 was incomplete)
 (\end occurred when \ifx on line 2 was incomplete) 
 Here is how much of TeX's memory you used:
- 23248 strings out of 475496
- 361054 string characters out of 5776763
- 819885 words of memory out of 5000000
- 44880 multiletter control sequences out of 15000+600000
- 669800 words of font info for 419 fonts, out of 8000000 for 9000
+ 23840 strings out of 475496
+ 371683 string characters out of 5776763
+ 836001 words of memory out of 5000000
+ 45421 multiletter control sequences out of 15000+600000
+ 672216 words of font info for 446 fonts, out of 8000000 for 9000
  62 hyphenation exceptions out of 8191
  90i,16n,93p,2144b,2015s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on nABCD_wiley.pdf (16 pages, 305037 bytes).
+<c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on nABCD_wiley.pdf (17 pages, 304094 bytes).
 PDF statistics:
- 563 PDF objects out of 1000 (max. 8388607)
- 492 compressed objects within 5 object streams
- 140 named destinations out of 1000 (max. 500000)
+ 570 PDF objects out of 1000 (max. 8388607)
+ 501 compressed objects within 6 object streams
+ 143 named destinations out of 1000 (max. 500000)
  111914 words of extra memory for PDF output out of 128383 (max. 10000000)
 

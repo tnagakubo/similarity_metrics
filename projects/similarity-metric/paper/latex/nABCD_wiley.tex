@@ -12,6 +12,9 @@
 
 \raggedbottom
 
+\usepackage{mathtools}
+\newcommand{\hnABCD}{\mathrlap{\widehat{\phantom{\text{nA}}}}\text{nABCD}}
+
 \graphicspath{{../../figures/}}
 
 \begin{document}
@@ -100,6 +103,8 @@ The nABCD metric measures the total area between two cumulative distribution fun
 \item \emph{Sensitivity analysis}: Because the calibration depends on the CATE sensitivity parameter $L$, which may be uncertain, the framework naturally accommodates sensitivity analysis over $L$, providing a richer evidence base for decision-making than a single binary test.
 \end{enumerate}
 
+We focus on continuous effect modifiers, for which the first Wasserstein distance provides a natural and theoretically grounded measure of distributional dissimilarity. Categorical or mixed-type effect modifiers (e.g., genotype, race, prior treatment history) require alternative distance measures and are beyond the scope of this work.
+
 The remainder of this paper is organized as follows. Section~\ref{sec:methods} presents the methodological framework. Section~\ref{sec:simulation} describes a comprehensive simulation study. Section~\ref{sec:application} illustrates application to an MRCT dataset. Section~\ref{sec:discussion} discusses implications, limitations, and future directions.
 
 %==============================================================================
@@ -140,9 +145,10 @@ The \emph{normalized Area Between Cumulative Distributions} (nABCD) is defined a
 \label{eq:nabcd}
 \end{equation}
 where the pooled IQR is computed from the combined sample. The IQR-based normalization enables scale-free interpretation, is resistant to outliers, and expresses distributional differences in units of spread.
+We chose the IQR over alternative scale estimators such as the standard deviation or the $Q_n$ statistic of Rousseeuw and Croux.\cite{rousseeuw1993} The IQR is directly interpretable as the central 50\% spread of the EM distribution, a quantity familiar to clinical researchers who routinely report medians and IQRs for non-normally distributed variables. Although $Q_n$ offers a higher breakdown point (50\% vs.\ 25\%) and greater Gaussian efficiency, the high breakdown point is unnecessary here: EM distributions are population-level quantities, not contaminated measurement data, so the robustness advantage of $Q_n$ does not materialize in this setting.
 
 \begin{proposition}\label{prop:boundedness}
-\textup{(Non-negativity).} For distributions with finite IQR, $\text{nABCD} \geq 0$, with equality if and only if $F_1 = F_2$.
+\textup{(Non-negativity).} For distributions with finite first moment, provided $\mathrm{IQR}_{\mathrm{pooled}} > 0$ (i.e., the pooled distribution is non-degenerate), $\text{nABCD} \geq 0$, with equality if and only if $F_1 = F_2$.
 \end{proposition}
 
 \begin{proposition}\label{prop:heterogeneity}
@@ -161,7 +167,7 @@ Substituting (\ref{eq:nabcd}) into (\ref{eq:heterogeneity_bound}) yields $|\bar{
 
 Given samples $\{X_{1,i}\}_{i=1}^{n_1}$ from region 1 and $\{X_{2,j}\}_{j=1}^{n_2}$ from region 2, nABCD is estimated using empirical distribution functions:
 \begin{equation}
-\widehat{\text{nABCD}} = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{2 \cdot \widehat{\text{IQR}}_{\text{pooled}}},
+\hnABCD = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{2 \cdot \widehat{\text{IQR}}_{\text{pooled}}},
 \label{eq:estimator}
 \end{equation}
 where $x_{(1)} < \cdots < x_{(n_1+n_2)}$ are the combined order statistics.
@@ -169,6 +175,9 @@ where $x_{(1)} < \cdots < x_{(n_1+n_2)}$ are the combined order statistics.
 \emph{Computational complexity}: $O((n_1 + n_2) \log(n_1 + n_2))$, dominated by sorting.
 
 We employ the nonparametric percentile bootstrap for inference\cite{delbarrio1999,sommerfeld2018} with $B = 2{,}000$ replicates.
+In one dimension, $W_1$ equals the $L_1$ distance between CDFs, for which del Barrio et al.\cite{delbarrio1999} established $\sqrt{n}$-convergence to a functional of the Brownian bridge; the two-sample extension follows by standard arguments with rate $\sqrt{n_1 n_2/(n_1+n_2)}$.
+When $F_1 \neq F_2$, the Hadamard derivative of the $L_1$ functional is linear---the sign of $F_1(x)-F_2(x)$ is constant almost everywhere---so the ordinary nonparametric bootstrap is consistent.\cite{sommerfeld2018}
+Near the boundary $F_1 = F_2$, the derivative becomes non-linear (a supremum over a convex set), and the naive bootstrap may exhibit modest undercoverage, consistent with the finite-sample behaviour observed in our null-adjacent scenarios (Section~\ref{sec:simulation}).
 
 \subsection{Interpretation and Clinical Calibration}\label{sec:inference}
 
@@ -213,7 +222,7 @@ $> 0.30$ & Large difference & Clinical calibration essential \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
-\item These benchmarks describe distributional magnitude assuming moderate CATE sensitivity and do not indicate clinical significance. The same nABCD value may be negligible for one EM and consequential for another depending on CATE sensitivity $L$. Actual pooling decisions should use clinical calibration (equation~\ref{eq:delta_max}) whenever possible.
+\item These benchmarks serve as initial reference points only; clinical interpretation should always proceed through the calibration framework of Section~\ref{sec:inference}, as the same nABCD value may have different clinical implications depending on the Lipschitz constant $L$. The same nABCD value may be negligible for one EM and consequential for another depending on CATE sensitivity. Actual pooling decisions should use clinical calibration (equation~\ref{eq:delta_max}) whenever possible.
 \end{tablenotes}
 \end{table}
 
@@ -258,8 +267,8 @@ For each scenario, we generated samples of size $n = 50$, 100, and 200 per regio
 
 Consistent with the estimation-centered framework, we evaluated:
 \begin{enumerate}[1.]
-\item \emph{Bias}: $\text{Mean}(\widehat{\text{nABCD}}) - \text{nABCD}$
-\item \emph{Root mean squared error (RMSE)}: $\sqrt{\text{Mean}[(\widehat{\text{nABCD}} - \text{nABCD})^2]}$
+\item \emph{Bias}: $\text{Mean}(\hnABCD) - \text{nABCD}$
+\item \emph{Root mean squared error (RMSE)}: $\sqrt{\text{Mean}[(\hnABCD - \text{nABCD})^2]}$
 \item \emph{Coverage probability}: Proportion of 95\% bootstrap CIs containing the true value
 \item \emph{CI width}: Mean width of bootstrap CIs, reflecting estimation precision
 \end{enumerate}
@@ -287,7 +296,7 @@ S8 (Loc+Scale) & 0.175 & 0.024 & 0.011 & 0.006 \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
-\item Bias is defined as $\text{Mean}(\widehat{\text{nABCD}}) - \text{nABCD}$. Results based on 10{,}000 replications with $B = 2{,}000$ bootstrap resamples.
+\item Bias is defined as $\text{Mean}(\hnABCD) - \text{nABCD}$. Results based on 10{,}000 replications with $B = 2{,}000$ bootstrap resamples.
 \end{tablenotes}
 \end{table}
 
@@ -323,7 +332,7 @@ S8 (Loc+Scale) & 0.916 & 0.932 & 0.939 \\
 \end{tabular*}
 \begin{tablenotes}
 \item Coverage under S1 (Null) is not reported because the true value of 0 lies at the boundary of the parameter space.
-\item For S4 (large effect), coverage decreased at larger sample sizes due to increased precision revealing the persistent negative bias.
+\item For S4 (large effect), coverage decreased at larger sample sizes due to increased precision revealing the persistent negative bias. The modest coverage degradation at small nABCD values (near the null $F_1 = F_2$) is consistent with known theoretical properties of bootstrap inference for Wasserstein distances: at $F_1 = F_2$, the Hadamard derivative of $W_1$ becomes non-linear, which can affect bootstrap consistency.\cite{sommerfeld2018} This boundary behavior diminishes with increasing sample size and increasing distributional separation, as confirmed by the near-nominal coverage observed for S3--S8 at $n \geq 100$.
 \end{tablenotes}
 \end{table}
 
@@ -407,7 +416,7 @@ These estimation properties ensure that nABCD, when combined with the clinical c
 
 \subsection{Example: Type 2 Diabetes MRCT}\label{sec:app_diabetes}
 
-We illustrate the nABCD clinical calibration framework using a hypothetical MRCT in type 2 diabetes with three regions: Japan ($n = 150$), United States ($n = 200$), and European Union ($n = 180$). The primary endpoint was change in HbA1c (\%) at 24 weeks, with an overall treatment effect of $-0.8$\% and a pre-specified non-inferiority margin of $\Delta_{\text{clin}} = 0.4$\% HbA1c. Table~\ref{tab:baseline} presents baseline characteristics by region.
+We illustrate the nABCD clinical calibration framework using a hypothetical MRCT in type 2 diabetes with three regions: Japan ($n = 150$), United States ($n = 200$), and European Union ($n = 180$). The primary endpoint was change in HbA1c (\%) at 24 weeks, with an overall treatment effect of $-0.8$\% and a pre-specified non-inferiority margin of $\Delta_{\text{clin}} = 0.4$\% HbA1c. This example directly addresses the ICH E17 guideline's emphasis on understanding regional differences in intrinsic and extrinsic ethnic factors:\cite{iche17} nABCD quantifies the distributional similarity of such factors across regions, providing the quantitative foundation that ICH E17 calls for but does not prescribe. Table~\ref{tab:baseline} presents baseline characteristics by region.
 
 \begin{table}[ht]
 \caption{Baseline characteristics by region in the hypothetical diabetes MRCT.\label{tab:baseline}}
@@ -450,7 +459,7 @@ The nABCD values alone do not determine pooling decisions. We apply the clinical
 From published subgroup analyses in diabetes trials, we adopt the following estimates for the Lipschitz constant of the CATE function:
 \begin{itemize}
 \item \emph{Age}: $L_{\text{age}} \approx 0.01$\% HbA1c per year. Subgroup analyses typically show modest age--treatment interactions, with treatment effect varying by approximately 0.1\% HbA1c per decade of age.
-\item \emph{BMI}: $L_{\text{BMI}} \approx 0.02$\% HbA1c per kg/m$^2$. A regression analysis of DPP-4 inhibitor efficacy estimated a BMI coefficient of $-0.02$ per kg/m$^2$ ($p = 0.024$) for the relationship between BMI and HbA1c reduction.\cite{kim2015}
+\item \emph{BMI}: $L_{\text{BMI}} \approx 0.02$\% HbA1c per kg/m$^2$. A regression analysis of DPP-4 inhibitor efficacy estimated a BMI coefficient of $-0.02$ per kg/m$^2$ ($p = 0.024$) for the relationship between BMI and HbA1c reduction.\cite{yagi2015}
 \item \emph{HbA1c}: $L_{\text{HbA1c}} \approx 0.3$\% HbA1c per \% HbA1c. Baseline HbA1c is the strongest effect modifier for most glucose-lowering therapies: meta-regression of 98 DPP-4 inhibitor trials estimated 0.4--0.5 percentage points greater HbA1c reduction per 1\% higher baseline,\cite{craddy2014} and a GLP-1 receptor agonist study estimated $\beta = -0.31$ per \% HbA1c after correcting for regression to the mean.\cite{jones2016}
 \end{itemize}
 
@@ -482,7 +491,7 @@ The calibration reveals a nuanced picture that illustrates why clinical context,
 \item \emph{HbA1c} (nABCD = 0.27): $\Delta_{\max} = 0.24$\%, reaching 30\% of the overall treatment effect and 60\% of the non-inferiority margin. Although the nABCD is smaller than for BMI, baseline HbA1c's strong CATE sensitivity ($L = 0.30$) means the moderate distributional difference carries greater clinical weight. This comparison warrants careful deliberation.
 \end{itemize}
 
-This example demonstrates that the clinical meaning of nABCD depends on the EM's role as an effect modifier. A large nABCD for a weak EM (BMI, $L = 0.02$) may be less consequential than a moderate nABCD for a strong EM (HbA1c, $L = 0.30$). When $L$ is uncertain, sensitivity analysis over plausible values is essential. Table~\ref{tab:sensitivity} illustrates this for baseline HbA1c.
+This example demonstrates that the clinical meaning of nABCD depends on the EM's role as an effect modifier. A large nABCD for a weak EM (BMI, $L = 0.02$) may be less consequential than a moderate nABCD for a strong EM (HbA1c, $L = 0.30$). Because $L$ is rarely known with precision, we recommend that practitioners report nABCD results across a range of plausible Lipschitz constants $L$, as the clinical interpretation depends critically on this parameter. Point estimates of $\Delta_{\max}$ at a single $L$ should be accompanied by sensitivity analysis showing how conclusions change across the plausible range. Table~\ref{tab:sensitivity} illustrates this recommended practice for baseline HbA1c.
 
 \begin{table}[ht]
 \caption{Sensitivity analysis: $\Delta_{\max}$ as a function of assumed CATE sensitivity $L$ for baseline HbA1c (Japan vs.\ US, nABCD = 0.27, IQR = 1.5\%).\label{tab:sensitivity}}
@@ -514,7 +523,7 @@ The analysis illustrates that nABCD serves as a measuring instrument for distrib
 
 We developed and validated nABCD, a normalized metric for comparing effect modifier distributions in MRCTs. Our contributions include: (1)~a principled metric combining Wasserstein-1 distance with IQR normalization; (2)~a theoretical framework connecting nABCD to treatment effect heterogeneity through the heterogeneity bound; (3)~a clinical calibration procedure that translates nABCD values into context-specific assessments using CATE sensitivity; and (4)~rigorous validation through simulation.
 
-The nABCD metric addresses limitations of current approaches. Compared to SMD, nABCD captures full distributional differences including variance and shape. Our simulation demonstrated that nABCD captured scale differences (S5), shape differences (S6), and skewness differences (S7) where SMD estimates remained near zero. Compared to the KS statistic, nABCD provides a direct connection to treatment effect heterogeneity through the heterogeneity bound (equation~\ref{eq:delta_max}), enabling clinical calibration rather than purely statistical assessment. Compared to visual inspection, nABCD is objective and reproducible.
+The nABCD metric addresses limitations of current approaches. Compared to SMD, nABCD captures full distributional differences including variance and shape. Our simulation demonstrated that nABCD captured scale differences (S5), shape differences (S6), and skewness differences (S7) where SMD estimates remained near zero. Compared to the KS statistic, nABCD provides a direct connection to treatment effect heterogeneity through the heterogeneity bound (equation~\ref{eq:delta_max}), enabling clinical calibration rather than purely statistical assessment. Compared to visual inspection, nABCD is objective and reproducible. Our approach is conceptually distinct from treatment effect consistency assessment methods\cite{quan2010} which evaluate whether observed treatment effects agree across regions; nABCD operates upstream, quantifying similarity in the effect modifier distributions that may drive such heterogeneity.
 
 The choice of Wasserstein distance over information-theoretic divergences such as Kullback--Leibler (KL) divergence warrants discussion. While KL divergence is a natural measure of distributional difference in information theory, it has structural limitations for the present application. First, $D_{\text{KL}}(P \| Q) \neq D_{\text{KL}}(Q \| P)$, meaning that comparing Region A to Region B yields a different value than comparing B to A---an asymmetry inconsistent with the symmetric nature of regional pooling decisions in MRCTs. Second, KL divergence can diverge to infinity when the support of $Q$ does not cover the support of $P$, a common occurrence with empirical distributions that would require density estimation and bandwidth selection, introducing additional tuning parameters and complexity. Third, and most critically, KL divergence lacks the Lipschitz-bound property central to our framework: the Kantorovich--Rubinstein duality theorem ensures that Wasserstein distance bounds the difference in expectations of Lipschitz-continuous functions, enabling Proposition~2's heterogeneity bound. KL divergence has no analogous result linking it directly to treatment effect heterogeneity for Lipschitz-continuous CATE functions.\cite{gibbs2002} The Wasserstein distance is a true metric satisfying the triangle inequality and metrizing weak convergence,\cite{villani2008} making it the natural choice for our clinical calibration framework.
 
@@ -537,9 +546,13 @@ Several limitations should be acknowledged:
 \item nABCD evaluates each EM separately rather than jointly; a multivariate extension would address potential confounding among EMs.
 \item Positive bias under the null at small sample sizes ($n < 100$) can inflate nABCD estimates, and persistent negative bias at large true values (S4, nABCD $= 0.372$) leads to progressive undercoverage (0.740 at $n = 200$). These boundary effects are inherent to the non-negative, bounded nature of nABCD as a function of the Wasserstein distance. When the true value equals zero, the parameter lies on the boundary of the parameter space, where standard bootstrap consistency results may not apply;\cite{andrews2000} we therefore do not report null-scenario coverage and recommend interpreting nABCD estimates near zero with caution. For non-null scenarios, the true value lies in the interior of the parameter space where standard bootstrap consistency holds, and our simulation confirms this with coverage of 0.87--0.98 at $n \geq 100$ for most scenarios; notably, the new scenarios S7 (skew) and S8 (location + scale) achieved coverage between 0.93--0.95 across all sample sizes. Coverage can also exhibit non-monotonic behavior: for the shape scenario (S6), coverage was 0.576 at $n = 50$, 0.949 at $n = 100$, and 0.997 at $n = 200$, reflecting how the balance between bias magnitude and CI width shifts with sample size. We use the percentile bootstrap, which is first-order accurate; bias-corrected methods such as BCa showed inferior performance for this bounded statistic (Section~\ref{sec:sim_results}), and the studentized bootstrap would require variance estimation for the Wasserstein distance ratio, which adds substantial complexity. We recommend $n \geq 100$ per region for reliable point estimation and confidence intervals, and caution that coverage may degrade when the true nABCD exceeds approximately 0.3.
 \item The clinical calibration requires estimation of CATE sensitivity $L$, which may not always be available from prior data. Reference benchmarks are provided as a fallback but should not replace context-specific calibration.
+\item When multiple effect modifiers are relevant, the current framework evaluates each separately. Aggregation strategies for combining nABCD values across effect modifiers---such as weighted combinations reflecting clinical importance or multivariate extensions using higher-dimensional optimal transport---remain topics for future investigation.
+\item As with any covariate-based approach, nABCD assesses similarity only with respect to measured effect modifiers. Unmeasured or unknown effect modifiers may contribute to treatment effect heterogeneity beyond what the metric captures.
 \end{enumerate}
 
 Future work should address multivariate extensions, bias correction methods for small samples, and empirical calibration of CATE sensitivity parameters using real MRCT data. Methods for estimating $L$ from historical trial databases would strengthen the clinical calibration framework. The nABCD framework could also be extended to longitudinal EM profiles, enabling dynamic assessment of distributional similarity over time.
+
+An R package implementing the nABCD metric with bootstrap inference and the clinical calibration framework described herein is under development.
 
 nABCD fills a methodological gap in ICH E17 implementation by providing a principled framework for assessing distributional similarity. Rather than reducing ``similar enough'' to a fixed threshold, the clinical calibration procedure translates distributional differences into context-specific assessments of potential treatment effect heterogeneity, enabling evidence-based and clinically grounded pooling decisions. Open-source R code is available to facilitate adoption.
 
@@ -585,11 +598,11 @@ Non-negativity follows directly from the non-negativity of the Wasserstein-1 dis
 
 \bmsubsection{Asymptotic Properties\label{app:asymptotic}}
 
-Under standard regularity conditions, the empirical Wasserstein-1 distance $W_1(\hat{F}_1, \hat{F}_2)$ is a consistent estimator of $W_1(F_1, F_2)$.\cite{delbarrio1999} Combined with the consistency of the empirical IQR, $\widehat{\text{nABCD}}$ is a consistent estimator of $\text{nABCD}(F_1, F_2)$.
+Under standard regularity conditions, the empirical Wasserstein-1 distance $W_1(\hat{F}_1, \hat{F}_2)$ is a consistent estimator of $W_1(F_1, F_2)$.\cite{delbarrio1999} Combined with the consistency of the empirical IQR, $\hnABCD$ is a consistent estimator of $\text{nABCD}(F_1, F_2)$.
 
-In one dimension, the empirical $W_1$ distance converges at rate $O(n^{-1/2})$ without logarithmic correction.\cite{delbarrio1999} For two-sample estimation with $F_1 \neq F_2$ and finite second moments, $\sqrt{n}(W_1(\hat{F}_{1,n_1}, \hat{F}_{2,n_2}) - W_1(F_1, F_2))$ converges in distribution to a mean-zero Gaussian, where $n = n_1 + n_2$ with $n_1/n \to \lambda \in (0,1)$. Since the empirical IQR also converges at rate $O(n^{-1/2})$ under standard density conditions, the delta method applied to the ratio $g(w, q) = w/(2q)$ yields asymptotic normality of $\widehat{\text{nABCD}}$:
+In one dimension, the empirical $W_1$ distance converges at rate $O(n^{-1/2})$ without logarithmic correction.\cite{delbarrio1999} For two-sample estimation with $F_1 \neq F_2$ and finite second moments, $\sqrt{n}(W_1(\hat{F}_{1,n_1}, \hat{F}_{2,n_2}) - W_1(F_1, F_2))$ converges in distribution to a mean-zero Gaussian, where $n = n_1 + n_2$ with $n_1/n \to \lambda \in (0,1)$. Since the empirical IQR also converges at rate $O(n^{-1/2})$ under standard density conditions, the delta method applied to the ratio $g(w, q) = w/(2q)$ yields asymptotic normality of $\hnABCD$:
 \begin{equation}
-\sqrt{n}\bigl(\widehat{\text{nABCD}} - \text{nABCD}(F_1, F_2)\bigr) \xrightarrow{d} N(0,\, \sigma^2_{\text{nABCD}}),
+\sqrt{n}\bigl(\hnABCD - \text{nABCD}(F_1, F_2)\bigr) \xrightarrow{d} N(0,\, \sigma^2_{\text{nABCD}}),
 \label{eq:asymptotic_normality}
 \end{equation}
 where $\sigma^2_{\text{nABCD}}$ depends on the asymptotic variances and covariance of the $W_1$ and IQR estimators. This result requires $\text{nABCD} > 0$ (i.e., $F_1 \neq F_2$); at the boundary $F_1 = F_2$, the parameter lies on the edge of the parameter space and standard asymptotics do not apply (see Section~\ref{sec:discussion}).

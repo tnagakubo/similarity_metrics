@@ -1,6 +1,5 @@
 ---
 description: Archive SUITS.md when over 1000 lines
-model: haiku
 ---
 
 # Research Lab: Archive
@@ -29,7 +28,7 @@ Archive SUITS.md and start fresh.
 
 *Donna organizes files, moving a thick folder to the archive shelf.*
 
-**Donna**:
+**Donna**: 
 「SUITS.md が 1000 行を超えたからアーカイブしたわ。
 archives/SUITS_{timestamp}.md に保存済み。
 新しいスクリプト開始よ」
@@ -40,18 +39,6 @@ archives/SUITS_{timestamp}.md に保存済み。
 ---
 ```
 
-## CRITICAL: Context Preservation
-
-アーカイブ時に**直前の作業コンテキスト**を必ず引き継ぐこと。
-アーカイブ前のLive Scriptから以下を抽出し、新SUITS.mdに記載する：
-
-1. **直前の3-5シーンの要約** — 何を議論/作業していたか
-2. **進行中のアクション** — 誰が何をしている途中か
-3. **次にやるべきこと** — 中断された作業、保留中の判断
-4. **Takからの直近の指示** — PI指示は最優先で引き継ぐ
-
-これにより、アーカイブ後もチームは中断なく作業を継続できる。
-
 ## Fresh SUITS.md Template
 
 ```markdown
@@ -61,28 +48,12 @@ archives/SUITS_{timestamp}.md に保存済み。
 
 ---
 
-## Current Status
+## 📍 Current Status
 
 **Active Project**: {current project or "none"}
 **Scene**: Continuing from archive
 
 **Previous Archive**: archives/SUITS_{timestamp}.md
-
----
-
-## 🔄 直前のコンテキスト (from archived scenes)
-
-### 直近の作業
-- {アーカイブ前の直近3-5シーンの要約}
-
-### 進行中のアクション
-- {誰が何をしている途中か}
-
-### 次にやるべきこと
-- {中断された作業、保留中の判断}
-
-### Takからの直近の指示
-- {PIの最新指示を漏れなく引き継ぐ}
 
 ---
 
@@ -94,19 +65,19 @@ archives/SUITS_{timestamp}.md に保存済み。
 
 ---
 
-## 📊 Key Decisions
+## 📊 Project Summary
 
 [Copy from archived file]
 
-## Active Tasks
+## 📝 Active Tasks
 
 [Copy from archived file]
-
-## 📋 Revision Notes
-
-[Copy from archived file, if any]
 
 ## 📋 Paper Requests
+
+[Copy from archived file]
+
+## 🎯 Key Decisions
 
 [Copy from archived file]
 
