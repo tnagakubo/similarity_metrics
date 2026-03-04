@@ -4,6 +4,109 @@
 
 ---
 
+### [2026-03-04 04:00] Scene: Emergency Meeting — 臨床較正の壁：確認済みEMなしでどう進めるか
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Harvey が腕を組んでホワイトボードの前に立つ。ボードには大きく「L = ?」と書かれている。全員の表情が硬い。*
+
+**Harvey**: （全員を見渡して）
+「問題を直視する。ISTには確認された効果修飾因子がない。Chen et al. (2000) が χ²(18)=20.9, NS で棄却した。つまり我々の臨床較正の公式 — Δ_max = 2L × IQR × nABCD — のLが推定できない。24カ国276ペアのnABCDは出した。だがnABCDだけでは"distributional distance"であって"clinical impact"にならない。我々の論文の核心的貢献が臨床較正だ。実データでそれを示せないのか？ 各自の対応策を聞く。Mike、技術面から」
+
+**Mike**: （ホワイトボードに立ち上がって数式を書きながら）
+「"I got it!" 3つの対応策がある。
+
+**対策1: L*逆算アプローチ（Breakeven Analysis）**
+論文のTable 5と同じ構造。ISTの14日死亡率のNI margin相当を仮定して:
+$$L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}$$
+これを計算すれば"この分布差が臨床的に問題になるのは、CATEがLあたりどのくらい変化する場合か"を逆に示せる。Lを推定するのではなく、"Lがいくつ以上なら問題か"を提示する。
+
+例えば UK vs INDI (Age, nABCD=0.565, IQR≈16年):
+- 仮に Δ_clin = 2% (absolute risk reduction)
+- L* = 2% / (2 × 16 × 0.565) = 0.111 (%/年)
+- つまり"年齢1歳あたり治療効果が0.11%以上変化するなら問題"と翻訳できる
+
+**対策2: Nguyen et al. (2020) のCounterfactual推定を活用**
+彼らは23変数のcounterfactual modelでISTのITE（個別治療効果）を推定し、25%の患者でHTE（異質的治療効果）を示唆した。ここからAgeのCATE曲線の傾きを近似できる可能性がある。直接Lは出せないが、"外部推定としてplausible range"を設定できる。
+
+**対策3: 感度分析テーブル（Sensitivity Analysis Table）**
+最もロバストな方法。L = 0.01, 0.05, 0.10, 0.20 の4段階でΔ_maxを計算。論文のTable 5（HbA1c感度分析）と完全に並列構造にする。読者に"あなたの領域知識でLを選んでください"と委ねる。これは推定中心フレームワークの精神と完全に一致する」
+
+**Rachel**: （文献ノートを広げて）
+「"Hard work beats talent when talent doesn't work hard." 文献面から2つ重要な指摘:
+
+**1. "No significant EM" ≠ "L = 0"**
+Chen et al. (2000)のχ²検定はaggregate levelの検出力問題を抱えている。19,435人でも28サブグループの交互作用検定は検出力が低い（VanderWeele & Knol 2014, Section 2.7: "Interaction tests have **lower power** than main effect tests"）。つまりNSは"Lが小さい可能性が高い"であって"L=0が証明された"ではない。
+
+**2. 外部情報源が3つある:**
+- **Leonardi-Bee et al. (2002)**: SBPと14日死亡の関係を詳細定量化。SBPは予後因子（U字型曲線）だが治療効果修飾は有意でない → Lは小さいがゼロではない。この曲線の傾きからL_SBPの上限を近似可能。
+- **Weir et al. (2001)**: 9カ国で死亡率に171/1000の差。Case-mix調整で一部しか説明できない → unmeasured EMの存在示唆。nABCDが測る"baseline分布の差"が大きければ、このunexplained heterogeneityの一部をcaptureできる。
+- **Nguyen et al. (2020)**: Counterfactualモデルで患者レベルのHTEを推定。最も直接的だが、個別変数のLではなく23変数の複合モデル」
+
+**Katrina**: （テーブルレイアウトを手元に用意して）
+「"Results speak for themselves." 論文構造として3つの選択肢を提案する:
+
+**Option A: Hypothetical T2D のみ（現状維持）**
+- メリット: Lが文献から推定可能、clinical calibration完全動作
+- デメリット: "Real data"がない。Reviewerから"Show us real data"と言われるリスク
+
+**Option B: IST追加、nABCDのみ（benchmarks使用）**
+- ISTで24カ国のnABCDを報告、Table 3のbenchmarksで解釈
+- Lが不明なので"When L cannot be estimated, use reference benchmarks"（論文の推奨事項4番）を自ら実践
+- メリット: 実データ示せる。Benchmarks fallback は論文が既に正当化済み
+- デメリット: clinical calibrationの "full demonstration" にならない
+
+**Option C: IST追加、感度分析付き（Mikeの対策1+3組合せ）**
+- nABCD計算 + L*逆算 + 感度分析テーブル
+- "ISTではaspirin治療のCATEが年齢1歳あたり0.11%以上変化しなければ、UK-India間の年齢分布差は臨床的に無視できる"
+- メリット: clinical calibrationの精神を実データで完全に示せる。推定中心の哲学に最も忠実
+- デメリット: Lを"仮定"している点はhypothetical exampleと本質的に同じ
+
+**私の推奨: Option C。** 理由: Hypothetical T2Dが"known Lでの完全較正"、ISTが"unknown Lでの感度分析"。2つの例が相補的になる。論文が"Lが分かる場合"と"Lが不明な場合"の両方の使い方を実証する」
+
+**Louis**: （鋭い目で）
+「"You just got Litt up!" 3点指摘する。
+
+**1. ISTの本当の強みは分布比較そのものにある。** 24カ国276ペア — これは hypothetical の3地域3ペアとはスケールが桁違い。nABCDがmulti-country settingで実用的であることを示す。Ageが最異質でSBPが均質 — 同じ試験内で変数間の"ranking"が異なることが実データで見える。これだけで価値がある。
+
+**2. Lのcircular problem を認めろ。** 我々は"EM分布を比較しろ"と主張している。だがISTでは"EMかどうかが不明"な変数の分布を比較する。これは論文のフローチャート（Song et al. 2025 Figure 1）の"No EMs found → Pooling of regions"パスに該当する。つまりISTのケースは**nABCDが最も必要とされる場面** — EMが不明だからこそ、baseline共変量の分布差を定量化し、"仮にEMだったらどの程度影響するか"を感度分析で示す。**これはweakness ではなく feature だ。**
+
+**3. Discussionに明記せよ:** "When no confirmed EMs exist, the nABCD framework operates as a sensitivity tool: it quantifies baseline distributional differences and, through the heterogeneity bound, evaluates the clinical consequence under varying assumptions about CATE sensitivity." これを3行追加しろ」
+
+**Harvey**: （立ち上がって）
+「全員の提案が出た。判断する。
+
+**最終決定:**
+
+1. **Option C を採用** — ISTを感度分析付きで追加。Katrinaの推奨通り
+2. **2例の相補構造**:
+   - **Hypothetical T2D** (現Section 4): Known Lでのclinical calibration完全版。Ranking reversal showcase
+   - **IST Real Data** (新Section 4.2): Unknown Lでの感度分析版。Multi-country distributional comparison + L*逆算
+3. **IST Section構成**:
+   - 4.2.1: Trial Overview (n=19,435, 36カ国, aspirin 3×2 factorial)
+   - 4.2.2: Baseline Covariate Distribution (24カ国nABCD + bootstrap CI, Age/SBP/Delay)
+   - 4.2.3: Sensitivity Analysis (L*逆算テーブル + Δ_max感度テーブル)
+   - 4.2.4: Interpretation (EM不明時のフレームワーク活用法)
+4. **Louisの指摘を反映**: Discussion に "unknown EM scenario" の3行パラグラフを追加
+5. **文献**: Chen (2000), Leonardi-Bee (2002), Weir (2001) の3本をIST Sectionで引用。Nguyen (2020) はDiscussion参照
+6. **Rachel**: L近似のための外部情報（SBP U字曲線の傾き等）を数値化
+7. **Mike**: IST感度分析テーブルのプロトタイプ作成
+
+"I don't have dreams, I have goals." EMが不明な場合こそnABCDが必要 — Louisの言う通りだ。この壁は乗り越えられる。進め」
+
+**Donna**: （タイピング完了）
+「"I'm Donna. I know everything." 全記録完了。決定7項目、Option C採用、2例相補構造。
+
+**要約**:
+- ❌ 問題: ISTに確認済みEM なし → L推定不可 → 臨床較正の直接適用困難
+- ✅ 解決: 感度分析アプローチ（L*逆算 + Δ_max感度テーブル）で"Lがいくつ以上なら問題か"を提示
+- ✅ 論文構造: Hypothetical (known L) + IST (unknown L, sensitivity) の相補的2例
+- ✅ 理論的正当化: EM不明時こそnABCDの真価 — baseline分布差の定量化 + 感度分析
+
+次のアクション: Mike → IST感度分析テーブル作成、Rachel → 外部L近似情報収集、Katrina → Section 4.2 テーブルレイアウト」
+
+---
+
 ### [2026-03-04 03:15] Scene: Meeting — IST効果修飾因子の確認と国別nABCD比較
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
