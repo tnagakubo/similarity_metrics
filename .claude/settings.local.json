@@ -90,7 +90,17 @@
       "Bash(\"/c/Program Files/R/R-4.5.1/bin/Rscript.exe\":*)",
       "Bash(/c/Users/hrd13/AppData/Local/Microsoft/WindowsApps/python3:*)",
       "WebFetch(domain:www.wikijournalclub.org)",
-      "Bash(/tmp/ist3.R:*)"
+      "Bash(/tmp/ist3.R:*)",
+      "Bash(mkdir:*)",
+      "Bash(python:*)",
+      "Bash(/c/Python313/python.exe:*)",
+      "WebFetch(domain:clinical-brain-sciences.ed.ac.uk)",
+      "WebFetch(domain:cran.r-project.org)",
+      "WebFetch(domain:www.acc.org)",
+      "mcp__claude_ai_PubMed__convert_article_ids",
+      "Bash(cygpath:*)",
+      "WebFetch(domain:rmdopen.bmj.com)",
+      "WebFetch(domain:www.jrheum.org)"
     ]
   }
 }

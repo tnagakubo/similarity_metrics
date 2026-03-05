@@ -42,6 +42,8 @@
 | 13 | Sommerfeld & Munk (2018) "Inference for Empirical Wasserstein Distances on Finite Spaces" | [10.1111/rssb.12236](https://doi.org/10.1111/rssb.12236) | ✅ | ✅ | Wasserstein Bootstrap |
 | 14 | Rousseeuw & Croux (1993) "Alternatives to the Median Absolute Deviation" | [10.1080/01621459.1993.10476408](https://doi.org/10.1080/01621459.1993.10476408) | ✅ | ✅ | Robust Scale Estimation |
 | 15 | Song et al. (2025) "Basic Considerations for Data Pooling Strategy in MRCTs" | [10.1007/s43441-025-00744-8](https://doi.org/10.1007/s43441-025-00744-8) | ✅ | ✅ | MRCT Pooling/China |
+| 16 | Matsushima et al. (2024) "Summary Report of a Public Workshop: Case Studies of MRCT Incorporating Concept of the ICH E17 Guideline" | [10.1002/cpt.3163](https://doi.org/10.1002/cpt.3163) | ✅ | ✅ | MRCT/ICH E17/Case Studies |
+| 17 | Deodhar et al. (2021) "Improvement of Signs and Symptoms of Nonradiographic Axial SpA Treated With Secukinumab: PREVENT Trial" | [10.1002/art.41477](https://doi.org/10.1002/art.41477) | ✅ | ✅ | Clinical Trial/MRCT/Effect Modifier |
 
 ## Papers Pending
 
@@ -73,6 +75,8 @@
 | `summaries/Sommerfeld_2018.md` | Sommerfeld & Munk (2018) | Bootstrap for Wasserstein, directional Hadamard, two-sample inference |
 | `summaries/Rousseeuw_1993.md` | Rousseeuw & Croux (1993) | MAD alternatives, Sn/Qn estimators, robust scale, IQR comparison |
 | `summaries/Song_2025.md` | Song et al. (2025) | China NMPA perspective, pooling flowchart, East Asia pooling, EM identification |
+| `summaries/Matsushima_2024.md` | Matsushima et al. (2024) | PMDA workshop, 3-layer consistency approach, 4 MRCT case studies, 5-dimensional assessment framework |
+| `summaries/Deodhar_2020.md` | Deodhar et al. (2021) | PREVENT trial, secukinumab nr-axSpA, ASAS40, CRP/MRI subgroup as EM, 24-country MRCT |
 
 ---
 
@@ -155,8 +159,23 @@
 ### MRCT Pooling Practice (Regulatory Application)
 - **Song et al. (2025)**: China NMPA implementation of ICH E17
 - **Pooling flowchart**: Decision tree for regional vs subpopulation pooling
+
+### Clinical Evidence for CRP/MRI as Effect Modifier (secukinumab case)
+- **Deodhar et al. (2021) / PREVENT trial**: MRI+ subgroup ASAS40 ~52.3% vs placebo ~21.8% at Week 16
+- **SI joint edema (MRI+)**: LD −3.45 vs placebo −1.64 at Week 16 (P=0.0008)
+- **Implication**: CRP+/MRI− patients respond less well → CRP/MRI is a confirmed EM
+- **nABCD calibration**: Effect size difference between MRI+ and overall (~40.8%) informs Δ_max
+- **Matsushima Case 1 linkage**: Japan had more CRP+/MRI− patients → lower observed ASAS40 → after EM distribution adjustment, consistency restored
 - **Gap identified**: Quantitative metric for "similar enough" - nABCD fills this!
 - **East Asia context**: Japan-China-Korea pooling considerations
+
+### ICH E17 Implementation & Case Studies (Regulatory Validation)
+- **Matsushima et al. (2024)**: PMDA+JPMA workshop report; 4 MRCT case studies (secukinumab, pertuzumab, palbociclib, blonanserin)
+- **3-layer approach**: (1) Overall consistency → (2) EM identification via subgroups → (3) Country-specific benefit-risk based on local EM distribution
+- **5-dimensional assessment**: biological plausibility, internal consistency, external consistency, clinical relevance, statistical uncertainty
+- **Key gap**: Explicitly requires comparing EM *distributions* between regions (Layer 2→3) but provides no quantitative tool — nABCD fills this gap
+- **Key quote**: "The pooling strategy should be justified based on the distribution of the intrinsic and extrinsic factors known to affect the treatment response"
+- **nABCD connection**: nABCD quantifies the distributional similarity required at Layer 2→3 transition; enables pre-trial justification and post-hoc evaluation
 
 ---
 
@@ -171,6 +190,8 @@
 | Assumption A4 (Non-degeneracy) | Bickel & Freedman (1981), Dümbgen (1993) | Section 6; Example 2.1 |
 | Introduction (Regulatory motivation) | ICH E17 (2017) | Section 2.2.1, 2.2.5, Glossary |
 | Pooling justification | ICH E17 (2017) | Section 2.2.5 "Pooled Regions and Pooled Subpopulations" |
+| Introduction (Regulatory gap) | Matsushima et al. (2024) | 3-layer approach; EM distribution comparison required but no quantitative tool |
+| Motivation (Case studies) | Matsushima et al. (2024) | 4 MRCT cases where EM distributions differ between Japan and global |
 
 ---
 
@@ -235,6 +256,12 @@ See: `summaries/Bickel_Freedman_1981.md`
 | #Qn-estimator | Rousseeuw & Croux (1993) |
 | #China-NMPA | Song et al. (2025) |
 | #East-Asia-pooling | Song et al. (2025) |
+| #3-layer-approach | Matsushima et al. (2024) |
+| #PMDA | Matsushima et al. (2024) |
+| #case-studies | Matsushima et al. (2024) |
+| #consistency-framework | Matsushima et al. (2024) |
+| #benefit-risk | Matsushima et al. (2024) |
+| #quantification-gap | Matsushima et al. (2024), Song et al. (2025) |
 
 ---
 
@@ -245,4 +272,4 @@ See: `summaries/Bickel_Freedman_1981.md`
 | `methods/wasserstein_distance.md` | Wasserstein/Optimal Transport Distance | Definition, 1D formula, asymptotic theory, R implementation |
 
 ---
-*Last updated: 2026-02-02 23:30 | Maintained by Rachel*
+*Last updated: 2026-03-05 | Maintained by Rachel*
