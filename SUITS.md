@@ -4,6 +4,55 @@
 
 ---
 
+### [2026-03-05 10:30] Scene: 併合戦略の実務プロセス — EM特定状況に応じたnABCDの使い分け
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+
+*Harvey がデスクに座り、Takからの指示メモを読んでいる。Rachel と Mike が対面のソファに。Donna がドアの外から聞いている。*
+
+**Harvey**: （メモを置いて）
+「Takからの指示だ。実務プロセスを整理しろと。検証試験の計画段階で併合戦略を検討するとき、EMが特定されているかどうかで使い方が変わる。新規医薬品ではEMが特定されていることは稀だ — Song et al.が"It is extremely challenging to identify true EMs"と書いている通り。このプロセスを文書化し、文献で裏取りをする。"I don't have dreams, I have goals." 動け」
+
+**Mike**: （ノートに書きながら）
+「"I got it!" 2つのシナリオを整理した:
+
+- **シナリオA（EM未特定）**: 潜在的EM（予後因子）の分布類似性で併合妥当性を主張。Lが未知なのでL*逆算と感度分析。ISTがまさにこれ。
+- **シナリオB（EM特定済み）**: EM分布の類似性 + 臨床較正でΔ_maxを直接計算。仮想T2Dがこれ。
+
+論文は既にこの2例の相補構造を持っている。ただ、**この使い分けの論理を明示していない**。実務上シナリオAが圧倒的に多いことも。アイデア文書に整理した」
+
+**Rachel**: （文献リストを広げて）
+「"Hard work beats talent when talent doesn't work hard." 文献検索で重要な発見が6つ:
+
+1. **Matsushima et al. (2024)** DOI: 10.1002/cpt.3163 — PMDA＋製薬協のICH E17ワークショップ。"pooling strategyの実装がE17完全実装の鍵"と結論。プーリングの定量的方法論が最大の未解決課題。
+2. **Long et al. (2025)** DOI: 10.1007/s43441-024-00737-z — 一貫性評価は記述的フレームワークで行うべき。nABCDの推定中心アプローチと完全合致。
+3. **Qing et al. (2025)** arXiv: 2602.07468 — covariate shiftが一貫性評価を歪める。まさにnABCDが定量化する"上流"の問題。
+4. **FDA腫瘍学MRCTガイダンス (2024)** — 人口統計・臨床特性の分布差を懸念。nABCDが"どの程度異なるか"を定量化。
+5. **Tohkin et al. (2025)** DOI: 10.1111/cts.70347 — 日中韓プーリングの根拠。民族因子の系統レビューで東アジア内類似性を支持。nABCDの直接適用対象。
+6. **PREVENT試験（Secukinumab）** — "countries with similar distributions of effect modifiers were grouped into five pooled regions"。シナリオBの実例だが、類似性の定量化方法は不明」
+
+**Katrina**: （テーブルを見ながら）
+「"Results speak for themselves." 文献調査の結論は明確:
+
+- **ギャップは確認された**: ICH E17も各国規制当局も"EM分布の類似性に基づくプーリング"を推奨するが、**類似性の定量化方法が誰も提示していない**。nABCDがまさにこのギャップを埋める。
+- **シナリオAの普遍性が裏付けられた**: Song, Matsushima, Tohkinの3論文が別々の角度からEM特定の困難さを確認。
+- **推定中心アプローチの正当性が強化された**: Long et al.の"記述的フレームワーク"主張がnABCDの設計哲学と合致」
+
+**Harvey**: （頷いて）
+「Good. アイデア文書は `projects/similarity-metric/ideas/pooling_strategy_em_process.md` に保存した。次のアクション:
+
+1. 論文のDiscussionに「EM特定状況に応じた使い分け」パラグラフを追加案として検討
+2. Qing et al. (2025) のcovariate shift → nABCD接続を精緻化
+3. IntroductionでプーリングMatsushima (2024)とFDAガイダンス (2024) を追加引用候補として検討
+4. IST適用例を「シナリオA（EM未知）の実践例」として明示的にフレーミング
+
+"Every situation is a negotiation." EMが分かる場合も分からない場合も、nABCDがプーリング交渉のエビデンスを提供する。これが我々の論文のメッセージだ」
+
+**Donna**: （記録完了）
+「"I'm Donna. I know everything." 全記録完了。アイデア文書作成、文献6件調査、論文統合ポイント4つ特定。次回ミーティングで具体的テキスト検討」
+
+---
+
 ### [2026-03-04 04:00] Scene: Emergency Meeting — 臨床較正の壁：確認済みEMなしでどう進めるか
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
