@@ -448,7 +448,8 @@ Author One, Author Two, Author Three
 2. **Methods** &mdash; Heterogeneity bound, nABCD definition, clinical calibration
 3. **Simulation Study** &mdash; Bias, coverage, nABCD vs. SMD
 4. **Application** &mdash; Diabetes MRCT, ranking reversal, sensitivity analysis
-5. **Discussion** &mdash; Estimation-centered philosophy and future directions
+5. **Real-Data Application** &mdash; IST-3: alteplase for acute ischemic stroke
+6. **Discussion** &mdash; Estimation-centered philosophy and future directions
 
 ---
 
@@ -922,6 +923,143 @@ nABCD = 0.27, IQR = 1.5%
 
 ---
 
+<!-- _class: section -->
+
+# 5. Real-Data Application
+## IST-3: Alteplase for Acute Ischemic Stroke
+
+---
+
+<style scoped>
+section { font-size: 24px; line-height: 1.5; }
+table { font-size: 0.85em; }
+</style>
+
+# IST-3: Study Overview
+
+**Third International Stroke Trial** (IST-3 collaborative group, *Lancet* 2012)
+- 3,035 patients, 8 countries, alteplase vs control within 6h of onset
+- Primary outcome: OHS 0&ndash;2 at 6 months &mdash; adjusted OR 1.13 (0.95&ndash;1.35, $p=0.181$)
+
+**Confirmed EMs for alteplase** (Emberson et al., *Lancet* 2014; IPD meta-analysis, 9 trials, $n=6{,}756$):
+
+| EM | Type | Interaction $p$ (Emberson) | IST-3 subgroup $p$ |
+|----|------|---------------------------|---------------------|
+| Treatment delay | Continuous (hours) | **0.016** | Benefit greatest &lt;3h |
+| Age | Continuous (years) | 0.53 | 0.027 (IST-3 alone) |
+| NIHSS | Continuous (score) | 0.06 | **0.003** |
+
+<div class="alertblock">
+<div class="block-title">Why IST-3?</div>
+<div class="block-content">
+
+Public IPD with country data + 3 continuous EMs + confirmed effect modification = ideal for demonstrating nABCD clinical calibration with real data.
+
+</div>
+</div>
+
+---
+
+<style scoped>
+section { font-size: 22px; line-height: 1.4; }
+table { font-size: 0.85em; }
+</style>
+
+# IST-3: Country-Level Patient Characteristics
+
+| Country | $n$ | Age, mean (SD) | Delay, mean (SD) | NIHSS, mean (SD) |
+|---------|-----|----------------|-------------------|-------------------|
+| UK | 1,447 | 78.0 (12.2) | 4.1 (1.2) | 13.1 (6.9) |
+| Poland | 347 | 73.7 (13.1) | 4.6 (1.2) | 9.6 (6.4) |
+| Italy | 326 | 75.9 (12.2) | 4.2 (1.1) | 11.1 (6.6) |
+| Sweden | 297 | 81.0 (10.8) | 3.8 (1.3) | 10.0 (6.5) |
+| Norway | 204 | 76.1 (10.3) | 4.3 (1.8) | 11.9 (6.9) |
+| Australia | 179 | 74.7 (13.1) | 4.6 (1.1) | 14.4 (7.5) |
+| Portugal | 82 | 79.0 (11.5) | 4.3 (1.2) | 14.8 (6.0) |
+| Belgium | 73 | 76.1 (12.4) | 4.0 (1.1) | 10.9 (6.1) |
+
+Key patterns:
+- **Age**: Sweden outlier (median 83 yr vs overall 77 yr)
+- **NIHSS**: Two clusters &mdash; UK/Australia (high, 13&ndash;15) vs Poland/Sweden (low, 10)
+- **Delay**: Sweden fastest (3.8h), Poland/Australia slowest (4.6h)
+
+---
+
+<style scoped>
+section { font-size: 24px; line-height: 1.5; }
+</style>
+
+# IST-3: nABCD Results (28 pairwise comparisons)
+
+| EM | Min | Median | Mean | Max | Max pair |
+|----|-----|--------|------|-----|----------|
+| Age | 0.039 | 0.103 | 0.123 | **0.285** | Sweden&ndash;Belgium |
+| Delay | 0.026 | 0.087 | 0.097 | 0.195 | Sweden&ndash;Australia |
+| NIHSS | 0.027 | 0.101 | 0.113 | 0.240 | Poland&ndash;Portugal |
+
+- All 84 comparisons: nABCD $< 0.30$ (reference: "small" to "moderate")
+- **Age has the largest distributional difference** (Sweden&rsquo;s elderly-focused recruitment)
+- **But does the largest nABCD mean the most concern?**
+
+---
+
+<style scoped>
+section { font-size: 23px; line-height: 1.4; }
+</style>
+
+# IST-3: Clinical Calibration
+
+CATE sensitivity $L$ estimated directly from IST-3 IPD (logistic regression: OHS 0&ndash;2 ~ treatment $\times$ EM):
+
+| EM | Interaction $p$ | $L$ (max &vert;dRD/dEM&vert;) | nABCD max | IQR | $\Delta_{\max}$ |
+|----|-----------------|-------------------------------|-----------|-----|-----------------|
+| Age | 0.614 | 0.00090 /yr | 0.285 | 9&ndash;17 yr | **0.65%pt** |
+| Delay | 0.567 | 0.00901 /hr | 0.195 | 1.7&ndash;2.2 hr | **0.77%pt** |
+| NIHSS | **0.001** | 0.01398 /score | 0.240 | 10&ndash;12 | **7.37%pt** |
+
+<div class="alertblock">
+<div class="block-title">Dramatic ranking reversal</div>
+<div class="block-content">
+
+| EM | nABCD rank | $\Delta_{\max}$ rank | Note |
+|----|-----------|---------------------|------|
+| Age | **1st** (0.285) | **3rd** (0.65%pt) | Largest gap, smallest impact |
+| Delay | 3rd (0.195) | 2nd (0.77%pt) | |
+| NIHSS | 2nd (0.240) | **1st** (7.37%pt) | Moderate gap, **overwhelming impact** |
+
+</div>
+</div>
+
+---
+
+<style scoped>
+section { font-size: 25px; line-height: 1.5; }
+</style>
+
+# IST-3: What This Tells Us
+
+<div class="block">
+<div class="block-title">Age (nABCD = 0.285, $\Delta_{\max}$ = 0.65%pt)</div>
+<div class="block-content">
+
+Sweden&rsquo;s median age (83 yr) vs others (77 yr) creates the **largest distributional gap**. But age has near-zero CATE sensitivity ($L = 0.0009$, interaction $p = 0.61$). Excluding Sweden based on age distribution alone would be **unjustified**.
+
+</div>
+</div>
+
+<div class="alertblock">
+<div class="block-title">NIHSS (nABCD = 0.240, $\Delta_{\max}$ = 7.37%pt)</div>
+<div class="block-content">
+
+Poland (mean NIHSS 9.6) vs Portugal (14.8): **moderate** distributional gap, but NIHSS is a **strong** effect modifier ($L = 0.014$, interaction $p = 0.001$). The potential treatment effect heterogeneity ($\Delta_{\max} = 7.37$%pt) is $\approx 5\times$ the overall treatment effect (RD = 1.5%pt). **This EM demands scrutiny.**
+
+</div>
+</div>
+
+> Same lesson as the diabetes example: **distribution size $\neq$ clinical consequence**.
+
+---
+
 # Estimation, Not Testing
 
 ### Why we do not recommend hypothesis testing
@@ -949,7 +1087,7 @@ nABCD = 0.27, IQR = 1.5%
 
 ---
 
-# Four Contributions
+# Five Contributions
 
 1. **Full distributional comparison**
    $W_1$ captures location, scale, and shape &mdash; unlike SMD
@@ -962,6 +1100,9 @@ nABCD = 0.27, IQR = 1.5%
 
 4. **Sensitivity analysis**
    Framework naturally accommodates uncertainty in $L$, providing richer information than binary testing
+
+5. **Real-data validation (IST-3)**
+   Ranking reversal (age vs NIHSS) confirmed with public IPD from 8 countries
 
 ---
 

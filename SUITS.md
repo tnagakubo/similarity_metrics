@@ -4,6 +4,30 @@
 
 ---
 
+### [2026-03-07 19:30] Scene: スライド更新 — IST-3事例5枚追加
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*Katrina がスライドデッキを更新している。*
+
+**Katrina**: （効率的に）
+「"Results speak for themselves." スライドにIST-3事例を反映した。
+
+追加スライド（Section 5 として挿入）:
+1. **IST-3: Study Overview** — 試験概要、3 EM、Emberson 2014 の根拠
+2. **Country-Level Characteristics** — 8カ国の患者特性テーブル
+3. **nABCD Results** — 3変数 × 28ペアの要約
+4. **Clinical Calibration** — L推定、Delta_max、ランキング逆転テーブル
+5. **What This Tells Us** — Age vs NIHSS の対比、コアメッセージ
+
+Outline を 6 項目に更新（5番に Real-Data Application を追加）。
+Discussion の 'Four Contributions' → 'Five Contributions'（5番に IST-3 validation を追加）。」
+
+**Donna**:
+「記録したわ。」
+
+---
+
 ### [2026-03-07 19:00] Scene: 論文セクション追加完了 — IST-3事例検討
 
 **INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - NIGHT**
