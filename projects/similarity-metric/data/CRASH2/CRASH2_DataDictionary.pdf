@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+
+    <script type="text/javascript">
+// <![CDATA[
+var eprints_http_root = "https://datacompass.lshtm.ac.uk";
+var eprints_http_cgiroot = "https://datacompass.lshtm.ac.uk/cgi";
+var eprints_oai_archive_id = "datacompass.lshtm.ac.uk";
+var eprints_logged_in = false;
+var eprints_logged_in_userid = 0; 
+var eprints_logged_in_username = ""; 
+var eprints_logged_in_usertype = ""; 
+var eprints_lang_id = "en";
+// ]]></script>
+    <style type="text/css">.ep_logged_in { display: none }</style>
+    <link href="/style/auto-3.4.6.css?1768484866" rel="stylesheet" type="text/css" />
+    <script src="/javascript/auto-3.4.6.js?1768484866" type="text/javascript">
+//padder
+</script>
+    <!--[if lte IE 6]>
+        <link rel="stylesheet" type="text/css" href="/style/ie6.css" />
+   <![endif]-->
+    <meta name="Generator" content="EPrints 3.4.6" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="en" />
+    <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript">
+//padder
+</script><script type="text/javascript">
+// <![CDATA[
+google.load("visualization", "48", {packages:["corechart", "geochart"]});
+// ]]></script><script src="https://www.gstatic.com/charts/loader.js" type="text/javascript">
+//padder
+</script><script type="text/javascript">
+// <![CDATA[
+google.load("visualization", "48", {packages:["corechart", "geochart"]});
+// ]]></script><link href="https://datacompass.lshtm.ac.uk/" rel="Top" />
+    <link href="https://datacompass.lshtm.ac.uk/sword-app/servicedocument" rel="Sword" />
+    <link href="https://datacompass.lshtm.ac.uk/id/contents" rel="SwordDeposit" />
+    <link href="https://datacompass.lshtm.ac.uk/cgi/search" rel="Search" type="text/html" />
+    <link href="https://datacompass.lshtm.ac.uk/cgi/opensearchdescription" title="LSHTM Data Compass" rel="Search" type="application/opensearchdescription+xml" />
+    
+      <title>404 File not Found</title>
+	  <link href="https://fonts.googleapis.com/css?family=Material+Icons&amp;display=block" rel="stylesheet" />
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+	  <link href="https://fonts.googleapis.com/css?family=Merriweather:300,400,500" rel="stylesheet" />
+	  <link href="https://fonts.googleapis.com/css?family=Open Sans:300,400,500" rel="stylesheet" />
+	  <link rel="stylesheet" href="/style/bundle.css" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+	  <!--
+    <script type="text/javascript">
+      // <![CDATA[
+        var eprints_http_root = "https://material-uat.leaf.cosector.com";
+        var eprints_http_cgiroot = "https://material-uat.leaf.cosector.com/cgi";
+        var eprints_oai_archive_id = "material-uat.leaf.cosector.com";
+        var eprints_logged_in = false;
+      // ]]>
+    </script>
+      -->
+
+    <!-- D3 Visualisations -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7">// <!-- No script --></script>
+    <!--<script src="/javascript/d3.js"></script>
+    <script src="https://unpkg.com/d3"></script>
+    <script src="https://unpkg.com/d3fc"></script>
+-->
+
+    <style>
+     /* todo get image fir compiling with webpack */
+     .hero-image {
+       background-image: url('/images/hero_image.jpeg');
+     }
+     .latest-card__media {
+       background-image: url("/images/latest.jpeg");
+     }
+
+    </style>
+  </head>
+  <body class="mdc-typography">
+    
+	  <!--
+<div id="tooltip-file1" class="mdc-tooltip mdc-tooltip- -rich" role="tooltip" aria-hidden="true">
+
+  <div class="mdc-tooltip__surface mdc-tooltip__surface-animation">
+    <h2 class="mdc-tooltip__title"> File details </h2>
+    <div class="mdc-tooltip__content">
+      <dl>
+        <dt>File name</dt><dd>Cornish_etal_2022_Complete-case-logistic-regression.pdf</dd>
+        <dt>Restrictions</dt><dd>None</dd>
+        <dt>File size</dt><dd>52MB</dd>
+        <dt>License</dt><dd>[cc logo]</dd>
+        <dt>Type</dt><dd>Published version</dd>
+      </dl>
+    </div>
+  </div>
+</div>
+ -->
+<!--
+              <div class="mdc-dialog" id="dialog1">
+                <div class="mdc-dialog__container">
+                  <div class="mdc-dialog__surface"
+                       role="alertdialog"
+                       aria-modal="true"
+                       aria-labelledby="my-dialog-title"
+                       aria-describedby="my-dialog-content"
+                       tabindex="-1">
+                    <div class="mdc-dialog__content" id="my-dialog-content">
+                        <embed src="https://material-uat.leaf.cosector.com/4669409/1/Berhane-etal-2023-Food-environment-around-schools-and-adolescent.pdf" style="width: 100%; height: 100%" type="application/pdf"/>
+		    </div>
+		    <div class="mdc-dialog__actions">
+                      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">Cancel</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="mdc-dialog__scrim"></div>
+	      </div>
+
+-->
+    <aside class="mdc-drawer mdc-drawer--modal">
+      <div class="mdc-drawer__header">
+        <h1 class="mdc-drawer__title"><img src="/images/logo-black.svg" alt="Data Compass Menu" /></h1>
+        <h2 class="mdc-drawer__subtitle">LSHTM Data Compass</h2>
+      </div>
+      <div class="mdc-drawer__content">
+        <mwc-list>
+
+    
+    <a href="https://datacompass.lshtm.ac.uk/" title="LSHTM Data Compass" class="navbar-brand">
+    <mwc-list-item graphic="avatar" group="browse">
+      <span>Home</span>
+      <mwc-icon slot="graphic">home</mwc-icon>
+    </mwc-list-item>
+    </a>
+    <a href="/information.html" title="Get some detailed repository information" role="menuitem">
+    <mwc-list-item graphic="icon" group="about">
+      <span>About</span>
+      <mwc-icon slot="graphic">fingerprint</mwc-icon>
+    </mwc-list-item>
+    </a>
+    <a href="/policies.html" title="Read about policies relating to this repository" role="menuitem">
+    <mwc-list-item graphic="icon" group="about">
+      <span>Policies</span>
+      <mwc-icon slot="graphic">policy</mwc-icon>
+    </mwc-list-item>
+    </a>
+<!-- some further static pages 
+    <mwc-list-item graphic="icon" group="about">
+      <span>Open access</span>
+      <mwc-icon slot="graphic">lock_open</mwc-icon>
+    </mwc-list-item>
+
+    <mwc-list-item graphic="icon" group="about">
+      <span>Accessibility</span>
+      <mwc-icon slot="graphic">accessibility_new</mwc-icon>
+    </mwc-list-item>
+-->
+  
+    <li divider="divider" padded="padded" role="separator"></li>
+    
+
+    <a href="/view/collection_mode/">
+      <mwc-list-item graphic="avatar" group="browse">
+        <span>
+          
+          Capture Method
+        </span>
+        <mwc-icon slot="graphic">science</mwc-icon>
+      </mwc-list-item>
+    </a>
+    <a href="/view/resourcetype/">
+      <mwc-list-item graphic="avatar" group="browse">
+        <span>
+          
+          Type
+        </span>
+        <mwc-icon slot="graphic">folder</mwc-icon>
+      </mwc-list-item>
+    </a>
+    <a href="/view/open_access/archive.html">
+      <mwc-list-item graphic="avatar" group="browse">
+        <span>
+          Open Data
+        </span>
+        <mwc-icon slot="graphic">lock_open</mwc-icon>
+      </mwc-list-item>
+    </a>
+    <a href="/view/creators/">
+      <mwc-list-item graphic="avatar" group="browse">
+        <span>
+          
+          LSHTM Creator
+        </span>
+        <mwc-icon slot="graphic">person</mwc-icon>
+      </mwc-list-item>
+    </a>
+    <a href="/view/collection/archive.html">
+      <mwc-list-item graphic="avatar" group="browse">
+        <span>
+          
+          Collections
+        </span>
+        <mwc-icon slot="graphic">groups</mwc-icon>
+      </mwc-list-item>
+    </a>
+    <a href="/view/funders/">
+      <mwc-list-item graphic="avatar" group="browse">
+        <span>
+          
+          Funder
+        </span>
+        <mwc-icon slot="graphic">currency_pound</mwc-icon>
+      </mwc-list-item>
+    </a>
+    <a href="/view/divisions/">
+      <mwc-list-item graphic="avatar" group="browse">
+        <span>
+          
+          <!--<epc:phrase ref="viewname_eprint_divisions"/>-->
+          Faculty
+        </span>
+        <mwc-icon slot="graphic">school</mwc-icon>
+      </mwc-list-item>
+    </a>
+    <a href="/view/research_centre/">
+      <mwc-list-item graphic="avatar" group="browse">
+        <span>
+          
+          Research Centre
+        </span>
+        <mwc-icon slot="graphic">biotech</mwc-icon>
+      </mwc-list-item>
+    </a>
+    <a href="/view/year/">
+      <mwc-list-item graphic="avatar" group="browse">
+        <span>
+          
+          Year
+        </span>
+        <mwc-icon slot="graphic">calendar_month</mwc-icon>
+      </mwc-list-item>
+    </a>
+    <a href="/view/">
+      <mwc-list-item graphic="avatar" group="browse">
+        <span>
+            Other browse options
+        </span>
+        <mwc-icon slot="graphic">library_books</mwc-icon>
+      </mwc-list-item>
+    </a>
+  
+    
+    
+      <li divider="divider" padded="padded" role="separator"></li>
+     
+    <a href="/cgi/users/home">
+      <mwc-list-item graphic="icon" group="logged_in">
+      <span>Login</span>
+      <mwc-icon slot="graphic">login</mwc-icon>
+      </mwc-list-item>
+    </a>
+  
+    
+  
+
+      </mwc-list>
+    </div>
+  </aside>
+
+  <div class="mdc-drawer-scrim"></div>
+
+  <div class="mdc-drawer-app-content">
+    <mwc-top-app-bar-fixed>
+      <mwc-icon-button icon="menu" slot="navigationIcon" class="drawer-button"></mwc-icon-button>
+      <div class="title" slot="title"><div class="title-logo"></div><div class="remove-when-small title-archive-name">LSHTM Data Compass</div></div>
+      <mwc-icon-button icon="search" slot="actionItems" onclick="location.href='/cgi/tabbed_search';" title="Search"></mwc-icon-button>
+      <mwc-icon-button icon="login" slot="actionItems" onclick="location.href='/cgi/users/home';" title="Log in"></mwc-icon-button>
+    </mwc-top-app-bar-fixed>
+    <main class="main-content" id="main-content">
+      <div class="mdc-top-app-bar--fixed-adjust">
+        <div class="mdc-layout-grid eprints-main">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              <title class="mdc-typography--headline3">404 File not Found</title>
+              <p>Could not find the file: <code>/id/eprint/34/2/CRASH-2_DataDictionary_PDF.pdf</code></p><p>The file you are trying to access may be related to this item:</p><p>
+    
+
+
+    <span class="person">CRASH-2 Collaborators</span>  
+  
+
+(2010).
+
+<a href="https://datacompass.lshtm.ac.uk/id/eprint/34/"><em>CRASH-2 - Clinical Randomisation of an Antifibrinolytic in Significant Haemorrhage.</em></a>
+
+[Dataset].
+
+
+London School of Hygiene &amp; Tropical Medicine, London, United Kingdom.
+
+
+    <a target="_blank" href="https://doi.org/10.17037/DATA.10">10.17037/DATA.10</a>.
+  
+
+
+
+
+</p><p>If you reached this page by following a link within the repository, please contact the <a href="mailto:researchdatamanagement@lshtm.ac.uk">LSHTM Data Compass administration</a>.  Otherwise, please check that you have typed the URL in correctly, or contact the person or site that supplied you with this URL.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+    <footer>
+      <div class="material_footer mdc-layout-grid">
+        <div class="footer_links mdc-layout-grid__inner">
+          <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
+            <h2>Browse repository</h2>
+            <ul>
+              <li><a href="/view/creators/">LSHTM Creator</a></li>
+              <li><a href="/view/year/">Year</a></li>
+              <li><a href="/view/collection_mode/">Capture Method</a></li>
+              <li><a href="/view/open_access/archive.html">Open Data</a></li>
+            </ul>
+          </div>
+          <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
+            <h2>LSHTM Services</h2>
+            <ul>
+              <li><a href="https://discover.lshtm.ac.uk/">LSHTM Discover</a></li>
+              <li><a href="https://researchonline.lshtm.ac.uk">LSHTM Research Online</a></li>
+              <li><a href="http://calmview.lshtm.ac.uk/">LSHTM Archives Catalogue</a></li>
+              <li><a href="https://open.lshtm.ac.uk/">LSHTM Open Educational Resources</a></li>
+              <li><a href="https://lshtm.assetbank-server.com/">LSHTM Asset Bank</a></li>
+            </ul>
+          </div>
+          <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
+            <h2>Contact Us</h2>
+            <p>Email us at <a href="mailto:researchdatamanagement@lshtm.ac.uk">researchdatamanagement@lshtm.ac.uk</a>
+            <br />Or send us a message using our <a href="/contact.html">contact form</a>.</p>
+          </div>
+        </div>
+        <div class="mdc-layout-grid__inner">
+            <div class="footer_about mdc-layout-grid__cell mdc-layout-grid__cell--span-6">
+              <span>
+              LSHTM Data Compass supports <a href="/cgi/oai2">OAI 2.0</a>
+              </span>
+              <span>
+                <span>LSHTM Data Compass is powered by <em><a href="http://eprints.org/software/">EPrints 3.4</a></em> and is hosted and managed by <a href="https://www.cosector.com/what-we-do/digital-research/">CoSector, University of London</a></span>
+              </span>
+            </div>
+ <div class="footer_logos mdc-layout-grid__cell mdc-layout-grid__cell--span-6">
+            <div class="ep_tm_eprints_logo footer_logo">
+              <a rel="external" href="https://eprints.org/software/">
+                <img alt="EPrints Logo" src="/images/eprintslogo.png" />
+                <img alt="EPrints Publications Flavour Logo" src="/images/flavour.png" />
+              </a>
+            </div>
+            <div class="ep_tm_cosector_logo footer_logo">
+              <a rel="external" href="https://www.cosector.com/what-we-do/digital-research/">
+                <img alt="CoSector Logo" src="/images/cosectorlogo.png" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  <!--  <script src="/javascript/index.bundle.js" async="async"></script>-->
+  <script src="/javascript/jquery.lazy.min.js">// <!-- No script --></script>
+  <script src="/javascript/index.bundle.js">// <!-- No script --></script>
+  <script src="/javascript/scrollspy.bundle.js">// <!-- No script --></script>
+  <script src="/javascript/summary_page.bundle.js">// <!-- No script --></script>
+  <script src="/javascript/browse.bundle.js">// <!-- No script --></script>
+</body>
+</html>

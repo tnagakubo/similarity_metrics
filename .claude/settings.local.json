@@ -100,7 +100,14 @@
       "mcp__claude_ai_PubMed__convert_article_ids",
       "Bash(cygpath:*)",
       "WebFetch(domain:rmdopen.bmj.com)",
-      "WebFetch(domain:www.jrheum.org)"
+      "WebFetch(domain:www.jrheum.org)",
+      "Bash(rm:*)",
+      "Read(//c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/data/IST3/NR>1{sum+=$3; n++} END{print \"\"\"\"Age mean:\"\"\"\", sum/**)",
+      "Read(//c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/data/IST3/NR>1{a[NR]=$3} END{asort\\(a\\); print \"\"\"\"Age min:\"\"\"\", a[1], \"\"\"\"max:\"\"\"\", a[NR-1], \"\"\"\"median:\"\"\"\", a[int\\(NR/**)",
+      "WebFetch(domain:datacompass.lshtm.ac.uk)",
+      "WebFetch(domain:freebird.lshtm.ac.uk)",
+      "Read(//tmp/**)",
+      "WebFetch(domain:search.r-project.org)"
     ]
   }
 }
