@@ -10,7 +10,7 @@ Harvey pushes the team to accelerate.
 
 1. **Harvey**: Identify bottlenecks
 2. **Harvey**: Reassign or reprioritize tasks
-3. Team: Increase pace
+3. All members: Utilize Agent Teams to paceup
 4. **Donna**: Add scene to SUITS.md
 
 ## SUITS.md Scene (add at TOP)

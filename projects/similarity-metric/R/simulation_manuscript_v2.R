@@ -309,47 +309,52 @@ nABCD_bootstrap_bca <- function(x, y, B = 2000, conf = 0.95) {
 # =============================================================================
 
 scenarios <- list(
+  # NOTE: All true_nABCD values computed via Monte Carlo (n=10^6) using
+  # compute_nABCD() which correctly uses MIXTURE (pooled) IQR.
+  # Previous hardcoded values used component IQR, causing systematic
+  # negative bias for scenarios with location/scale shifts.
+  # Fix applied: 2026-03-11 (see archive/appendix_b_corrected.md)
   S1 = list(
     name     = "Null (identical)",
     clinical = "Identical populations across regions",
     dist1    = function(n) rnorm(n, 50, 10),
     dist2    = function(n) rnorm(n, 50, 10),
-    true_nABCD = 0.000
+    true_nABCD = 0  # Exact: identical distributions → W1 = 0
   ),
   S2 = list(
     name     = "Location (0.2 sigma)",
     clinical = "Age: EU vs US (~2yr mean difference, SD=10yr)",
     dist1    = function(n) rnorm(n, 50, 10),
     dist2    = function(n) rnorm(n, 52, 10),
-    true_nABCD = 0.074
+    true_nABCD = NA  # Computed via Monte Carlo below (~0.074)
   ),
   S3 = list(
     name     = "Location (0.5 sigma)",
     clinical = "BMI: Japan vs EU (0.5 SD shift)",
     dist1    = function(n) rnorm(n, 50, 10),
     dist2    = function(n) rnorm(n, 55, 10),
-    true_nABCD = 0.186
+    true_nABCD = NA  # Computed via Monte Carlo below (~0.180)
   ),
   S4 = list(
     name     = "Location (1.0 sigma)",
     clinical = "BMI: Japan vs US (1.0 SD shift)",
     dist1    = function(n) rnorm(n, 50, 10),
     dist2    = function(n) rnorm(n, 60, 10),
-    true_nABCD = 0.372
+    true_nABCD = NA  # Computed via Monte Carlo below (~0.328)
   ),
   S5 = list(
     name     = "Scale (1.5x)",
     clinical = "HbA1c: strict vs broad inclusion criteria",
     dist1    = function(n) rnorm(n, 50, 10),
     dist2    = function(n) rnorm(n, 50, 15),
-    true_nABCD = 0.148
+    true_nABCD = NA  # Computed via Monte Carlo below (~0.123)
   ),
   S6 = list(
     name     = "Shape (Gamma)",
     clinical = "Lab values: eGFR, creatinine (right-skewed)",
     dist1    = function(n) rnorm(n, 50, 10),
     dist2    = function(n) rgamma(n, shape = 25, rate = 0.5),
-    true_nABCD = 0.067
+    true_nABCD = NA  # Computed via Monte Carlo below (~0.024)
   ),
   S7 = list(
     name     = "Skew (log-normal)",

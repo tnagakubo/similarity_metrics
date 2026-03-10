@@ -107,7 +107,28 @@
       "WebFetch(domain:datacompass.lshtm.ac.uk)",
       "WebFetch(domain:freebird.lshtm.ac.uk)",
       "Read(//tmp/**)",
-      "WebFetch(domain:search.r-project.org)"
+      "WebFetch(domain:search.r-project.org)",
+      "Read(//c/Users/hrd13/.claude/usage-data/**)",
+      "Read(//c/Users/hrd13/.claude/usage-data//**)",
+      "Read(//c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/data/IST3/{sum+=$1; sumsq+=$1*$1; n++} END {print \"\"\"\"AGE: n=\"\"\"\"n, \"\"\"\"mean=\"\"\"\"sum/n, \"\"\"\"sd=\"\"\"\"sqrt\\(sumsq/n-\\(sum/**)",
+      "Read(//c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/data/IST3/**)",
+      "Read(//c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/data/IST3/{sum+=$1; sumsq+=$1*$1; n++} END {print \"\"\"\"RSBP: n=\"\"\"\"n, \"\"\"\"mean=\"\"\"\"sum/n, \"\"\"\"sd=\"\"\"\"sqrt\\(sumsq/n-\\(sum/**)",
+      "Read(//c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/data/IST3/{sum+=$1; sumsq+=$1*$1; n++} END {if\\(n>0\\) print \"\"\"\"  AGE: n=\"\"\"\"n, \"\"\"\"mean=\"\"\"\"sum/**)",
+      "WebFetch(domain:dhsprogram.com)",
+      "WebFetch(domain:extranet.who.int)",
+      "WebFetch(domain:g2aging.org)",
+      "WebFetch(domain:www.idhsdata.org)",
+      "WebFetch(domain:ghdx.healthdata.org)",
+      "WebFetch(domain:docs.ropensci.org)",
+      "WebFetch(domain:www.who.int)",
+      "WebFetch(domain:apps.who.int)",
+      "WebFetch(domain:userforum.dhsprogram.com)",
+      "WebFetch(domain:www.thelancet.com)",
+      "WebFetch(domain:bmcpublichealth.biomedcentral.com)",
+      "WebFetch(domain:www.icpsr.umich.edu)",
+      "WebFetch(domain:biomarkers.bsd.uchicago.edu)",
+      "WebFetch(domain:catalog.ihsn.org)",
+      "mcp__ide__executeCode"
     ]
   }
 }

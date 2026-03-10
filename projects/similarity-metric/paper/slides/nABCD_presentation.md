@@ -447,9 +447,8 @@ Author One, Author Two, Author Three
 1. **Background** &mdash; ICH E17 and the regulatory gap
 2. **Methods** &mdash; Heterogeneity bound, nABCD definition, clinical calibration
 3. **Simulation Study** &mdash; Bias, coverage, nABCD vs. SMD
-4. **Application** &mdash; Diabetes MRCT, ranking reversal, sensitivity analysis
-5. **Real-Data Application** &mdash; IST-3: alteplase for acute ischemic stroke
-6. **Discussion** &mdash; Estimation-centered philosophy and future directions
+4. **Application** &mdash; Hypothetical thrombolytic MRCT using IST-3 data
+5. **Discussion** &mdash; Estimation-centered philosophy and future directions
 
 ---
 
@@ -803,130 +802,28 @@ SMD is **blind** to variance and shape differences. nABCD captures the **full di
 
 <!-- _class: section -->
 
-# 4. Application
+# 4. Application: Hypothetical Thrombolytic MRCT
 
 ---
 
-# Type 2 Diabetes MRCT
+# Hypothetical Scenario
 
-Hypothetical MRCT: Japan ($n=150$), US ($n=200$), EU ($n=180$)
-Primary endpoint: Change in HbA1c (%) at 24 weeks
-Overall treatment effect: **&minus;0.8%** &nbsp; | &nbsp; Non-inferiority margin: **0.4%**
+A sponsor developing a **novel thrombolytic** (drug A) for acute ischaemic stroke is planning a **Phase 3 MRCT**.
 
-| Characteristic | Japan | US | EU |
-|---------------|-------|-----|-----|
-| Age, mean (SD) | 62.3 (10.2) | 58.7 (11.5) | 60.1 (10.8) |
-| BMI, mean (SD) | 24.8 (3.2) | 32.1 (5.8) | 29.4 (4.9) |
-| HbA1c, mean (SD) | 7.6 (0.9) | 8.4 (1.3) | 8.1 (1.1) |
-
----
-
-# Pairwise nABCD Values
-
-| Effect Modifier | Japan vs. US | Japan vs. EU | US vs. EU |
-|----------------|-------------|-------------|----------|
-| Age | 0.12 (0.07&ndash;0.18) | 0.08 (0.04&ndash;0.13) | 0.05 (0.02&ndash;0.09) |
-| BMI | **0.51** (0.44&ndash;0.58) | 0.38 (0.31&ndash;0.45) | 0.18 (0.12&ndash;0.24) |
-| HbA1c | 0.27 (0.20&ndash;0.34) | 0.19 (0.13&ndash;0.26) | 0.10 (0.05&ndash;0.16) |
-
-### Japan&ndash;US shows the largest distributional differences
-
-- BMI: nABCD = **0.51** (large)
-- HbA1c: nABCD = **0.27** (moderate)
-- But **does a large nABCD always mean trouble?**
-
----
-
-# Clinical Calibration: Japan vs. US
-
-| EM | nABCD | $L$ | IQR | $\Delta_{\max}$ | vs. margin |
-|----|-------|-----|-----|-----------------|------------|
-| Age | 0.12 | 0.01 | 14.2 yr | **0.03%** | $\ll 0.4\%$ |
-| BMI | 0.51 | 0.02 | 7.8 kg/m$^2$ | **0.16%** | $< 0.4\%$ |
-| HbA1c | 0.27 | 0.30 | 1.5% | **0.24%** | $< 0.4\%$ |
-
-$$
-\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}
-$$
-
----
-
-# Key Insight: Same nABCD, Different Impact
-
-<div class="block">
-<div class="block-title">BMI (nABCD = 0.51, L = 0.02) &mdash; Weak effect modifier</div>
-<div class="block-content">
-
-**Large** distributional difference, but BMI is a **weak** effect modifier for this drug class.
-$\Rightarrow$ $\Delta_{\max}$ = 0.16% &mdash; only 20% of treatment effect
-
-</div>
-</div>
+- Candidate EMs identified from **Emberson et al. (2014)** IPD meta-analysis ($n = 6{,}756$):
+  - **NIHSS** (interaction $p = 0.06$) &mdash; strong candidate
+  - **Age** (interaction $p = 0.53$) &mdash; weak candidate
+- Drug A same pharmacological class as alteplase &rarr; similar EM profiles assumed
+- IST-3 public IPD used as **historical reference** for country-level EM distributions
 
 <div class="alertblock">
-<div class="block-title">HbA1c (nABCD = 0.27, L = 0.30) &mdash; Strong effect modifier</div>
+<div class="block-title">Key framing</div>
 <div class="block-content">
 
-**Moderate** distributional difference, but baseline HbA1c is a **strong** effect modifier.
-$\Rightarrow$ $\Delta_{\max}$ = 0.24% &mdash; 30% of treatment effect, 60% of margin
+nABCD is **one piece of evidence** supporting pooling decisions, not a standalone criterion.
 
 </div>
 </div>
-
-The clinical meaning of nABCD depends on the EM's CATE sensitivity $L$.
-
----
-
-<style scoped>
-section { font-size: 25px; line-height: 1.5; }
-</style>
-
-# Why the Ranking Reverses
-
-### $L$ is the multiplier that changes everything
-
-**BMI** (nABCD = 0.51, $L$ = 0.02) &mdash; Weak effect modifier:
-- Huge distribution gap ($\Delta$ = 7.3 kg/m$^2$) between Japan and US
-- But BMI has **small influence** on treatment effect for this drug class
-- $\Rightarrow$ $\Delta_{\max}$ = 0.16% &mdash; only 40% of non-inferiority margin
-
-**HbA1c** (nABCD = 0.27, $L$ = 0.30) &mdash; Strong effect modifier:
-- Moderate distribution gap ($\Delta$ = 0.8%) between Japan and US
-- But baseline HbA1c has **large influence** on treatment effect
-- $\Rightarrow$ $\Delta_{\max}$ = 0.24% &mdash; **60% of margin**
-
-<div class="alertblock">
-<div class="block-title">Core message</div>
-<div class="block-content">
-
-**Distribution size and clinical consequence are fundamentally different dimensions.** nABCD alone is necessary but not sufficient &mdash; clinical calibration via $\Delta_{\max}$ is what connects them.
-
-</div>
-</div>
-
----
-
-# Sensitivity Analysis: HbA1c (Japan vs. US)
-
-nABCD = 0.27, IQR = 1.5%
-
-| $L$ (assumed) | $\Delta_{\max}$ | as % of treatment effect |
-|---------------|-----------------|--------------------------|
-| 0.10 | 0.08% | 10% |
-| 0.20 | 0.16% | 20% |
-| 0.30 | 0.24% | 30% |
-| 0.40 | 0.32% | 40% |
-| 0.50 | 0.41% | 51% |
-
-- At $L^* = 0.49$: $\Delta_{\max}$ equals the non-inferiority margin (0.4%)
-- **Transparent view**: at what $L$ does the distributional difference begin to matter?
-
----
-
-<!-- _class: section -->
-
-# 5. Real-Data Application
-## IST-3: Alteplase for Acute Ischemic Stroke
 
 ---
 
@@ -950,10 +847,10 @@ table { font-size: 0.85em; }
 | NIHSS | Continuous (score) | 0.06 | **0.003** |
 
 <div class="alertblock">
-<div class="block-title">Why IST-3?</div>
+<div class="block-title">Why IST-3 as historical reference?</div>
 <div class="block-content">
 
-Public IPD with country data + 3 continuous EMs + confirmed effect modification = ideal for demonstrating nABCD clinical calibration with real data.
+Public IPD with country data + continuous EMs + prior effect modification evidence from Emberson meta-analysis = ideal historical reference for demonstrating nABCD in a planning context.
 
 </div>
 </div>
@@ -1003,6 +900,27 @@ section { font-size: 24px; line-height: 1.5; }
 
 ---
 
+# nABCD vs SMD: Real-Data Confirmation
+
+Comparing nABCD and SMD across 28 country pairs confirms simulation findings (S5&ndash;S7):
+
+- **Treatment Delay** (confirmed EM, Emberson $p = 0.016$; skewness = 1.21, excess kurtosis = 20.0):
+  - Norway&ndash;Portugal: **SMD = 0.007** ($\approx 0$) but **nABCD = 0.069** &mdash; means identical (4.34 vs 4.33h) yet Norway has extreme skew (6.76) and high SD (1.80 vs 1.21)
+  - Poland&ndash;Norway: SMD = 0.151 but nABCD = 0.115 (ratio 0.76) &mdash; scale difference captured
+- **Pearson $|r|$** (|SMD| vs nABCD): Treatment delay **0.91** < Age 0.95 < NIHSS 0.98
+  - Lower correlation = **more distributional information beyond location**
+
+<div class="alertblock">
+<div class="block-title">Key insight</div>
+<div class="block-content">
+
+nABCD's advantage emerges precisely when EM distributions are **non-normal** (skewed, heavy-tailed). Treatment delay &mdash; the **strongest confirmed EM** &mdash; shows the greatest SMD&ndash;nABCD divergence in real data.
+
+</div>
+</div>
+
+---
+
 <style scoped>
 section { font-size: 23px; line-height: 1.4; }
 </style>
@@ -1018,14 +936,14 @@ CATE sensitivity $L$ estimated directly from IST-3 IPD (logistic regression: OHS
 | NIHSS | **0.001** | 0.01398 /score | 0.240 | 10&ndash;12 | **7.37%pt** |
 
 <div class="alertblock">
-<div class="block-title">Dramatic ranking reversal</div>
+<div class="block-title">Triple demonstration</div>
 <div class="block-content">
 
-| EM | nABCD rank | $\Delta_{\max}$ rank | Note |
-|----|-----------|---------------------|------|
-| Age | **1st** (0.285) | **3rd** (0.65%pt) | Largest gap, smallest impact |
-| Delay | 3rd (0.195) | 2nd (0.77%pt) | |
-| NIHSS | 2nd (0.240) | **1st** (7.37%pt) | Moderate gap, **overwhelming impact** |
+| EM | Role | Key finding |
+|----|------|-------------|
+| NIHSS | Full calibration ($L$ estimable) | nABCD = 0.240 &rarr; $\Delta_{\max}$ = **5.02&ndash;7.37%pt** (clinically meaningful) |
+| Age | Planning-stage assessment ($L$ uncertain) | nABCD = 0.285 &rarr; $\Delta_{\max}$ = **0.47&ndash;0.65%pt** (limited impact) |
+| Treatment delay | Distributional comparison advantage | SMD $\approx 0$ yet nABCD = **0.069** (skew/kurtosis invisible to SMD) |
 
 </div>
 </div>
@@ -1042,7 +960,7 @@ section { font-size: 25px; line-height: 1.5; }
 <div class="block-title">Age (nABCD = 0.285, $\Delta_{\max}$ = 0.65%pt)</div>
 <div class="block-content">
 
-Sweden&rsquo;s median age (83 yr) vs others (77 yr) creates the **largest distributional gap**. But age has near-zero CATE sensitivity ($L = 0.0009$, interaction $p = 0.61$). Excluding Sweden based on age distribution alone would be **unjustified**.
+Sweden&rsquo;s median age (83 yr) vs others (77 yr) creates the **largest distributional gap**. But age has near-zero CATE sensitivity ($L = 0.0009$, interaction $p = 0.61$). Excluding Sweden based on age distribution alone would be **unjustified**. For the planning exercise, benchmarks (Table 3) classify this as 'moderate', but even full calibration confirms limited impact.
 
 </div>
 </div>
@@ -1051,12 +969,12 @@ Sweden&rsquo;s median age (83 yr) vs others (77 yr) creates the **largest distri
 <div class="block-title">NIHSS (nABCD = 0.240, $\Delta_{\max}$ = 7.37%pt)</div>
 <div class="block-content">
 
-Poland (mean NIHSS 9.6) vs Portugal (14.8): **moderate** distributional gap, but NIHSS is a **strong** effect modifier ($L = 0.014$, interaction $p = 0.001$). The potential treatment effect heterogeneity ($\Delta_{\max} = 7.37$%pt) is $\approx 5\times$ the overall treatment effect (RD = 1.5%pt). **This EM demands scrutiny.**
+Poland (mean NIHSS 9.6) vs Portugal (14.8): **moderate** distributional gap, but NIHSS is a **strong** effect modifier ($L = 0.014$, interaction $p = 0.001$). The potential treatment effect heterogeneity ($\Delta_{\max} = 7.37$%pt) is $\approx 5\times$ the overall treatment effect (RD = 1.5%pt). **This EM demands scrutiny.** Sensitivity analysis ($0.5\times$&ndash;$2\times$ alteplase $L$): $\Delta_{\max}$ = 2.51&ndash;10.04%pt. Clinically meaningful regardless of precise $L$ for drug A.
 
 </div>
 </div>
 
-> Same lesson as the diabetes example: **distribution size $\neq$ clinical consequence**.
+> **Distribution size $\neq$ clinical consequence.**
 
 ---
 
@@ -1089,20 +1007,20 @@ Poland (mean NIHSS 9.6) vs Portugal (14.8): **moderate** distributional gap, but
 
 # Five Contributions
 
-1. **Full distributional comparison**
-   $W_1$ captures location, scale, and shape &mdash; unlike SMD
+1. **nABCD metric**
+   $W_1$ + IQR normalization + bootstrap &mdash; captures full distributional differences SMD misses
 
-2. **Scale-free estimation**
-   IQR normalization enables cross-EM comparisons with bootstrap CIs
+2. **Theoretical framework**
+   K-R duality connects nABCD to treatment effect heterogeneity
 
-3. **Clinical calibration**
-   $\Delta_{\max}$ translates nABCD into potential treatment effect heterogeneity on the clinical scale
+3. **Clinical calibration (conditional tool)**
+   $\Delta_{\max}$ translates nABCD into potential heterogeneity &mdash; when $L$ is estimable
 
-4. **Sensitivity analysis**
-   Framework naturally accommodates uncertainty in $L$, providing richer information than binary testing
+4. **Comparative demonstration (IST-3)**
+   nABCD captures distributional features invisible to SMD in real data
 
-5. **Real-data validation (IST-3)**
-   Ranking reversal (age vs NIHSS) confirmed with public IPD from 8 countries
+5. **Triple demonstration**
+   Full calibration (NIHSS) + planning-stage assessment (age) + distributional advantage (treatment delay) in one dataset
 
 ---
 
@@ -1138,6 +1056,31 @@ Poland (mean NIHSS 9.6) vs Portugal (14.8): **moderate** distributional gap, but
 
 ---
 
+# When Is $L$ Available?
+
+<div class="block">
+<div class="block-title">$L$ estimable (full calibration possible)</div>
+<div class="block-content">
+
+Prior trials or meta-analyses in the same therapeutic area provide subgroup interaction data.
+Example: NIHSS &mdash; Emberson IPD meta-analysis + IST-3 data.
+
+</div>
+</div>
+
+<div class="alertblock">
+<div class="block-title">$L$ uncertain (planning-stage assessment)</div>
+<div class="block-content">
+
+Novel agents or therapeutic areas lacking subgroup analyses. nABCD + reference benchmarks provide **primary assessment**, supplemented by sensitivity analysis over plausible $L$ ranges.
+
+</div>
+</div>
+
+> **nABCD's core value** &mdash; capturing distributional differences invisible to SMD &mdash; holds **regardless** of whether $L$ is available.
+
+---
+
 # Limitations and Future Work
 
 ### Current limitations
@@ -1145,6 +1088,8 @@ Poland (mean NIHSS 9.6) vs Portugal (14.8): **moderate** distributional gap, but
 - Univariate evaluation &mdash; multivariate extension would address EM confounding
 - Positive bias at small $n$ under null; negative bias at large true values
 - CATE sensitivity $L$ may not always be estimable from prior data
+- CATE sensitivity $L$ may not transfer across agents in the same class (e.g., alteplase &rarr; drug A)
+- IST-3 data from 2000&ndash;2011; demographic shifts may limit applicability
 
 ### Future directions
 - Multivariate nABCD extensions
