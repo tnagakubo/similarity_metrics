@@ -3,17 +3,11 @@
 # Exit 0 = OK, Exit 2 = Block
 
 INPUT=$(cat)
-PROMPT=$(echo "$INPUT" | jq -r '.prompt // empty' 2>/dev/null)
 
-# If jq fails or prompt is empty, pass through
-if [ -z "$PROMPT" ]; then
-  exit 0
-fi
-
-# Check if this is a paper request (case insensitive)
-if echo "$PROMPT" | grep -qiE "(request-paper|/request-paper|paper.*request)"; then
+# Only check if this is a paper request (case insensitive)
+if echo "$INPUT" | grep -qiE "(request-paper|/request-paper)"; then
   # Check for DOI pattern (10.xxxx) or URL (http/https)
-  if echo "$PROMPT" | grep -qiE "(10\.[0-9]+/|doi:|https?://|DOI)"; then
+  if echo "$INPUT" | grep -qiE "(10\.[0-9]+/|doi:|https?://|DOI)"; then
     exit 0
   else
     echo "Donna: Paper Request requires DOI or URL. Rule 2.6." >&2

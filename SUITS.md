@@ -4,586 +4,301 @@
 
 ---
 
-## Current Status
+## Current Status (as of 2026-03-16 05:20)
 
-**Active Project**: similarity-metric (nABCD paper for Statistics in Medicine)
-**Phase**: Simulation Re-run & Paper Revision (corrected true values + triangle inequality)
-**Previous Archive**: archives/SUITS_20260310_004231.md
-
----
-
-### [2026-03-11 08:30] Scene: The Full Picture — Simulation Complete, Paper Updated
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - MORNING**
-
-*チーム全員がモニターの前に集まっている。Mike が新しいシミュレーション結果のCSVを開く。*
-
-**Mike**: （結果を読み上げて）
-「Full simulation 完了。10,000 reps、修正済み true values で。結果は劇的だ:
-S4 — bias: -0.042 → +0.001。Coverage: 0.740 → 0.957。"The bug is dead."」
-
-**Katrina**: （テーブルを更新しながら）
-「Table 3, 4, Coverage table 全部更新済み。S3=0.180, S4=0.328, S5=0.122, S6=0.024。
-ただし S6 は問題がある — true=0.024 が小さすぎて positive bias で coverage=0」
-
-**Harvey**: （頷いて）
-「S6 の coverage 問題は limitation として正直に書く。
-そして triangle inequality の結果 — nABCD は metric ではない。
-Paper 全体で 'metric' → 'dissimilarity index' に変更した」
-
-**Rachel**: （文献を確認して）
-「KL divergence も chi-squared distance も triangle inequality を満たさない。
-我々は良い仲間にいるわ。"Hard work beats talent when talent doesn't work hard."」
-
-**Louis**: （腕を組んで）
-「S6 coverage=0 は深刻だ。Near-boundary behavior の限界として
-discussion に書くべきだ。それ以外の修正は妥当だ」
-
-**Mike**: （修正リストを示して）
-「まとめ:
-1. Table 3: true nABCD 値修正（MC mixture IQR）
-2. Table 4: bias 値修正（S4: -0.04→+0.001!）
-3. Coverage table: S4修正、S6削除（near-boundary）
-4. 'metric' → 'dissimilarity index'（全箇所）
-5. W1 は metric、nABCD は not — 論文で明示
-6. Limitation 3 全面書き直し」
-
-**Donna**: （記録しながら）
-「全変更を SUITS.md に記録済み。"I'm Donna. I know everything."」
+**Active Project**: nABCD paper for Statistics in Medicine
+**Phase**: Submission planning — Japan-anchor case study
+**Previous Archive**: archives/SUITS_20260316_052015.md
 
 ---
 
-### [2026-03-10] Scene: The Verdict — Triangle Inequality Falls
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
-
-*Mike がホワイトボードに数式を書き殴っている。Harvey と Rachel が真剣な表情で見守る。*
-
-**Mike**: （目を見開いて）
-「"I got it!" — triangle inequality は成立しない。反例を見つけた。しかも簡単なやつだ。」
-
-*ホワイトボードに N(0,1), N(0,5), N(0,20) と書く*
-
-**Mike**: （数式を指して）
-「Scale-only な正規分布トリプルで ratio = 1.87。N(0,0.1), N(0,1), N(0,10) だと ratio = 3.61。
-メカニズムは "IQR anchoring" だ。50:50 mixture で narrow component が quartiles を 0 付近に固定して、IQR_mix が O(s1) に留まる。一方 W1 は O(s2) で成長する。だから nABCD は O(s2/s1) で発散する。」
-
-**Harvey**: （腕を組んで）
-「Clinical relevance は？ Age の sigma ratio が 10:12:15 程度でも violation が出るのか？」
-
-**Mike**: （データを示して）
-「Yes — ratio = 1.013。Technically violated だが marginal だ。sigma ratio 1:2:4 で ratio = 1.16。
-3x ratio で 1.44。Extreme cases (0.1:1:10) で 3.6。」
-
-**Harvey**: （決断的に）
-「Then we call it what it is — a 'dissimilarity index', not a 'metric'. "Winners don't make excuses." Paper の terminology を全面的に見直す。」
-
-**Rachel**: （メモしながら）
-「KL divergence も chi-squared distance も triangle inequality を満たさない。我々は良い仲間にいるわ。」
-
-**Donna**: （デスクから）
-「Script は `projects/similarity-metric/R/triangle_inequality_check.R` と `triangle_verify.R` に保存済み。Paper の wording 修正が次のタスクね。」
-
----
-
-### [2026-03-11 00:30] Scene: Verification Complete — S4 Coverage Restored
-
-**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
-
-*Mike がモニターの前で verification スクリプトの結果を確認している。Katrina が隣で数値を記録。*
-
-**Mike**: （画面を指して）
-「Monte Carlo で全シナリオの true nABCD を再計算した。結果は Louis の appendix_b_corrected.md と完全一致。
-S4: 0.372 → 0.328（差 -0.044）、S5: 0.148 → 0.122（差 -0.026）、S6: 0.067 → 0.024（差 -0.043）」
-
-**Katrina**: （データを整理して）
-「S4 の coverage も確認済み。修正前: n=50→0.928, n=100→0.874, n=200→0.740（劣化）。
-修正後: n=50→0.920, n=100→0.960, n=200→0.960。名目水準 0.95 を適切にカバーしてる」
-
-**Mike**: （満足げに）
-「"It's not a bias problem. It's a target problem." — そしてターゲットを修正した。
-Full simulation（10,000 reps）をバックグラウンドで実行中。数時間かかる見込み」
-
-**Harvey**: （通りかかりながら）
-「Triangle inequality の調査も並行で走ってるな？」
-
-**Mike**: 「走ってる。nABCD が metric かどうか — 論文の用語に関わる」
-
-**Donna**: （記録しながら）
-「全シナリオ true nABCD 修正値:
-S1=0.001, S2=0.073, S3=0.180, S4=0.328, S5=0.122, S6=0.024, S7=0.304, S8=0.175。
-Full sim 完了待ち。"I'm Donna. I know everything."」
-
----
-
-### [2026-03-10 23:45] Scene: The Smoking Gun — S4 Root Cause Found
-
-**INT. PEARSON SPECTER LITT - MIKE'S OFFICE (BULLPEN) - NIGHT**
-
-*Mike は深夜のオフィスで、S4 coverage degradation の根本原因を追跡中。机にはシミュレーションコードの印刷物と appendix_b_corrected.md が広げられている。*
-
-**Mike**: （目を見開いて）
-「"I got it!" — これは estimator のバイアス問題じゃない。True value のバグだ。」
-
-*椅子を回転させてホワイトボードに向かう*
-
-**Mike**: （数式を書きながら）
-「S4: N(50,10) vs N(60,10)。W1 = |mu1 - mu2| = 10。ここまでは正しい。問題は denominator だ。
-
-hardcoded true_nABCD = 0.372 は *component* IQR = 13.49 で計算してる:
-  10 / (2 × 13.49) = 0.371 ≈ 0.372
-
-でも estimator は pooled = c(x,y) の IQR を使う。それは 50:50 mixture の IQR。
-Mixture 0.5·N(50,10) + 0.5·N(60,10) の IQR ≈ 15.25。
-
-正しい true nABCD = 10 / (2 × 15.25) = 0.328。
-
-差は 0.372 - 0.328 = 0.044。これが報告された persistent bias -0.042 と完全一致する。」
-
-**Mike**: （archive フォルダを指して）
-「しかも Louis が 2月3日に appendix_b_corrected.md で既にこれを指摘してた。
-でも simulation_manuscript_v2.R の hardcoded value が修正されてなかった。
-S5 (scale) と S6 (shape) にも同じ問題がある。」
-
-**Mike**: （結論）
-「Coverage が n の増加で悪化する理由: n が大きくなると CI が narrow になるが、
-CI の中心は正しい値 (0.328) に収束する。でも coverage は間違った値 (0.372) で
-評価してる。CI が narrow になればなるほど、間違った target を含まなくなる。
-"It's not a bias problem. It's a target problem."」
-
----
-
-## 🔄 直前のコンテキスト (from Meeting 5: Scenario Design)
+## 🔄 直前のコンテキスト
 
 ### 直近の作業
-- **Meeting 5: 事例検討のシナリオ作成** (2026-03-10)
-  - All 4 team members completed independent analysis:
-    - **Katrina** recommended Option D: Unified Stroke Scenario (IST-1 + IST-3 two-layer structure)
-    - **Louis** dissented: IST-3 only in main text, IST-1 as supplementary material
-    - **Mike** supported two-layer structure with methodological justification
-    - **Rachel** confirmed IST-1 has no confirmed EMs (Chen et al. 2000), supported L* reverse calculation approach
-  - Harvey's decision (to be recorded): **Unified Stroke Scenario A/B structure**
-    - Section 4.1: Unified Scenario & Data (both IST-1 and IST-3 as complementary)
-    - Section 4.2: Scenario A — EM Unknown (IST-1, 31 countries, L* sensitivity analysis)
-    - Section 4.3: Scenario B — EM Identified (IST-3, NIHSS clinical calibration, ranking reversal, Treatment Delay demo)
-    - Section 4.4: Practical Implications
+1. **全方位捜索完了** (2026-03-16 05:15)
+   - 4チーム並行で Japan IPD を全方位探索
+   - Clinical trial registries, R packages, Public health surveys, ClinicalTrials.gov
+
+2. **結論: Free download で Japan 含む usable multi-country IPD は存在しない**
+   - IST-1: Japan = 9人（n不足）
+   - CRASH-2: Japan = 9人（n不足）
+   - R packages: 0件
+   - Vivli 経由の大規模 MRCT にはあり: ENGAGE AF (21K), ARISTOTLE (336 JP), GARFIELD-AF (4,859 JP) — ただし申請必要
+
+3. **Hook 修正完了** (2026-03-16 04:50)
+   - `check-suits-update.sh`: Windows backslash パス対応、settings.local.json フィルター追加
+   - `remind-suits-on-prompt.sh`: 5分以内に SUITS.md 更新済みなら silent
+   - `validate-paper-request.sh`: `/request-paper` のみに限定
+   - → Permission 追加による hook 誤爆の noise 激減
+
+4. **Meeting: Epidemiological data の事例検討** (2026-03-16 04:15)
+   - Mike: 技術的には valid（Case A pathway のみ）
+   - Rachel: 文献的支持あり（Song et al., Long et al. 2025）
+   - Katrina: 反対（Case A repeat で ranking reversal メッセージ希釈）
+   - Louis: 3つリスク（clinical calibration不可、reviewer relevance疑問、survey design artifact）
+   - **結論**: Case study は IST-1/IST-3 のまま。Discussion に data source flexibility として記述
 
 ### 進行中のアクション
-- Harvey has not yet formally announced decision and rationale in SUITS.md scene
-- Mike and Rachel prepared materials for restructuring but implementation not yet started
-- LaTeX paper (nABCD_wiley.tex) still in old Section 4 structure (IST-3 only + brief Treatment Delay mention)
+- **なし。全ての捜索チームが報告完了。待機中。**
 
 ### 次にやるべきこと
-1. **URGENT**: Record Meeting 5 scene in SUITS.md (Harvey's discussion, decision, and rationale)
-2. **LaTeX Restructuring**: Implement A/B scenario framework in Section 4 of nABCD_wiley.tex
-   - 4.1: Unified Scenario & Data (introduces IST-1 + IST-3 complementary roles)
-   - 4.2: Scenario A — EM Unknown (IST-1 global analysis, 31 countries, nABCD distributions, L* sensitivity table)
-   - 4.3: Scenario B — EM Identified (IST-3 confirmed EMs, clinical calibration, ranking reversal, Treatment Delay scale/shape demo)
-   - 4.4: Practical Implications (how to operationalize in sponsor planning)
-3. **Parallel Tasks**:
-   - Sync Japanese version (nABCD_paper_ja.md)
-   - Update slides (nABCD_presentation.md)
-   - IST-1/DHS/HRS Family registration prep for Tak (if proceeding with data collection)
+**Tak の判断を仰ぐ。2つの選択肢:**
+
+**Option A: Vivli 申請 parallel で進行**
+- ENGAGE AF-TIMI 48 または ARISTOTLE の IPD 申請
+- Research proposal 作成（数週間）
+- Japan-anchor case study を concurrent development
+
+**Option B: IST ベースで initial submission 優先**
+- Current IST-1/IST-3 case study で Stats in Med に submit
+- Reviewer から "Japan は？" と来たら revision で Vivli data 追加
+- Faster path to first decision
 
 ### Takからの直近の指示
-- **2026-03-10 Meeting 4**: "可能性のあるものを並行してすべて進めるのがよいだろう" — pursue all promising data sources in parallel (IST-1, DHS, HRS Family)
-- **2026-03-10 Meeting 5**: "事例検討のシナリオ作成" — design case study scenario structure (now decided: A/B with Unified Stroke)
-- Implicit: Statistical methodology should drive scenario, not the reverse. Data serves illustration.
+1. **「BMJにこだわるな。すべての可能性を捨てずに日本を含んだIPDを探すんだ」** (2026-03-16 04:37)
+   - → 実行完了。全方位探索、結論は上記。
+
+2. **「Japan-anchor の事例検討は捨てきれない」** (2026-03-16 04:05)
+   - → 認識。Option A なら可能。Option B なら Discussion 記述 + revision オプション。
+
+---
+
+## 📊 Key Findings (From Exhaustive Search)
+
+### Vivli-Based Large MRCT with Japan (Top candidates)
+1. **ENGAGE AF-TIMI 48** (Edoxaban AF trial, Daiichi Sankyo sponsor)
+   - N = 21,105, Japan sites confirmed
+   - IPD on Vivli, multiple approved analyses
+
+2. **ARISTOTLE** (Apixaban AF trial, Bristol-Myers Squibb)
+   - N = 20,976, **336 Japanese patients confirmed**
+   - IPD on Vivli/YODA
+
+3. **GARFIELD-AF Registry**
+   - N = ~52,000 total, **4,859 Japanese patients**
+   - Upon reasonable request to investigators
+
+### Public Health Surveys with Japan
+- **JSTAR via g2aging.org**: 4,200人（RIETI申請必要、最長3ヶ月）
+- **HRS/SHARE/CHARLS/KLoSA**: 他国は free registration, Japan別途
+
+### Freely Available but Insufficient Japan
+- **IST-1**: 19,435人、36カ国、Japan = 9人 → n不足
+- **CRASH-2**: 20,207人、40カ国、Japan = 9人 → n不足
+- **CRASH-3**: FreeBIRD、Japan participation unclear
+
+### R Packages
+- **全滅**。Real な Japan multi-country IPD を含むパッケージは存在しない
+- `random.cdisc.data::radsl()` は synthetic（Japan確認だが clinical differences なし）
+
+---
+
+## ⚠️ Paper Current Status
+
+**Title**: Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials
+
+**Case Studies**:
+- Case A (EM Unknown): IST-1 (31 countries, no Japan)
+- Case B (EM Identified): IST-3 (8 countries, Belgium anchor, no Japan)
+
+**Discussion Addition Planned**: Data source flexibility (epidemiological surveys, registries) — Japan-inclusive example as illustrative (no fresh case study)
+
+**Issue**: No substantial Japan-included case study without Vivli IPD access
 
 ---
 
 ## 🎬 Live Script
 
-### [2026-03-10 23:50] Scene: Scenario Design Meeting — Final Decision
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
-
-*The team reconvenes after individual analysis. Mike, Rachel, Katrina, and Louis sit around the table with their position statements. Harvey stands at the head.*
-
-**Harvey**: （立ったまま）
-「Four analysts, four perspectives. Let me synthesize before I decide.」
-
-**Mike**: （資料を広げて）
-「Katrina と同じく Option D（Unified Stroke）を支持する。だが理由を明確にしたい。IST-1 は 31 countries・465 pairs で distributional diversity を示す——これは IST-3 の 8 countries では不可能な geographic scale だ。一方、clinical calibration は IST-3 の NIHSS でしかできない。両データを使う justified reason は simple：**role specialization**。IST-1 は EM Unknown scenario（最も一般的なケース），IST-3 は EM Identified scenario（calibration可能なケース）。二層は pooling_strategy_em_process.md 表4.1 の構造そのものだ」
-
-**Rachel**: （文献ノートを参照して）
-「Chen et al. (2000) の確認の通り，IST-1（aspirin）は 28 subgroups で interaction なし。つまり "no confirmed EM"。これは実務的に最も一般的なシナリオで，逆に IST-1 の strength になる。IST-3 の NIHSS（p=0.001）だけが clinical calibration に使える。$L^*$ 逆算で "どの程度の CATE sensitivity 分布差が問題か" という感度テーブルを IST-1 で示せる」
-
-**Katrina**: （結果をまとめて）
-「Option D なら Section 4 の構造は clean になる。4.1 Unified Scenario & Data（両データの相補的役割）→ 4.2 Scenario A: EM Unknown（IST-1, 31 countries, L* sensitivity）→ 4.3 Scenario B: EM Identified（IST-3, NIHSS calibration, ranking reversal, Treatment Delay distributional demo）→ 4.4 Practical Implications。これは pooling_strategy_em_process.md のプロセス図そのまま」
-
-**Louis**: （腕を組んで）
-「俺が dissent した理由は6つ。第一，two-dataset problem。Edinburgh narrative は beautiful だが，methodology としては weak。Reviewer は "Why two?" と必ず聞く。Mike が言うように role specialization を明示しろ。第二，temporal mismatch（1991-96 data で 2026 planning）の credibility。IST-3 にも同じ caveat があるから，両方に same disclaimer をつければいい。第三，IST-1 は aspirin，IST-3 は alteplase で drug class が違う。"Methodological illustration" と honest に書け。」
-
-「だが——」（息を吸って）「Mike の role specialization の議論は convincing だ。IST-1 EM-Unknown scenario がなければ，論文の applicability は "when you have confirmed EM" に限定される。それは narrow すぎる。Song (2025): "It is extremely challenging to identify true EMs"——つまり most of the time，EM confirmed じゃない。IST-1 がその scenario を demo する value は real だ。俺の dissent を withdraw する。ただし condition がある。Reviewer draft in supplementary まで，IST-1 part の logical necessity を徹底的に justify しろ」
-
-**Harvey**: （メモを取り終えて，立ち上がる）
-「決定だ。**Unified Stroke Scenario，A/B 二層構造**。IST-1 は EM Unknown——全体の方が typical——を demo，IST-3 は EM Identified——calibration 可能な exceptional case——を demo。Two roles, mutually exclusive, together complete.」
-
-「Section 4 restructuring：
-- **4.1 Unified Scenario & Data**: Introduction. Why IST-1 + IST-3? Role division. Geographic scope vs. calibration depth.
-- **4.2 Scenario A: EM Unknown (IST-1, 31 countries)**: nABCD distributions across regions. L* sensitivity table. When would distributional difference matter?
-- **4.3 Scenario B: EM Identified (IST-3, confirmed NIHSS)**: Clinical calibration. Ranking reversal. Treatment Delay as scale/shape demo.
-- **4.4 Practical Implications**: How sponsor would operationalize this in protocol planning.
-
-Scope: Statistics in Medicine submission-ready. No hedging. No apology. Just methodology + illustration.」
-
-**Donna**: （ペンを走らせる）
-「全部記録した。"I'm Donna. I know everything."」
-
----
-
-### [2026-03-11 00:45] Scene: LaTeX Section 4 Restructuring — Unified Scenario Framework Implementation
+### [2026-03-16 08:30] Scene: 論文修正6項目実装完了
 
 **INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
 
-*Mike and Katrina complete the restructuring of Section 4 in nABCD_wiley.tex. Screens show the new A/B scenario flow. Donna verifies cross-references and citations.*
+*Harvey が修正結果を確認する。*
+
+**Harvey**: 「6項目の修正を実装した。」
+
+**Mike**: 「L* sensitivity analysis を Methods 2.3.3 に昇格。Equation (lstar) を正式に導入。Case A との接続も明示した。」
+
+**Katrina**: 「Abstract の "satisfactory" を "for non-negligible distributional differences (nABCD >= 0.1) at n >= 100" に正確化。Discussion 冒頭の redundancy を大幅削減——200語の repeat を compressed summary に。」
+
+**Rachel**: 「Introduction に anchor-based motivation paragraph を追加。Abstract にも small-sample region の pooling partner 特定を追加。」
+
+**Louis**: 「Table 2 の "Suggested Action" を "Calibration Guidance" に変更。"Pooling broadly supportable" のような prescriptive 表現を排除。Age calibration に "illustrative, not a basis for clinical decision-making" の caveat を追加。」
+
+**Donna**: 「修正サマリー:
+1. ✅ Abstract: anchor framing + satisfactory 正確化
+2. ✅ Introduction: small-sample region paragraph 追加
+3. ✅ Methods 2.3.3: L* sensitivity subsection 新設 + eq (lstar)
+4. ✅ Table 2: prescriptive → descriptive
+5. ✅ Age calibration: illustrative caveat
+6. ✅ Discussion: redundancy 削減
+"I'm Donna. I know everything."」
+
+---
+
+### [2026-03-16 08:00] Scene: Meeting — 論文の流れ確認
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*全員が通読結果を持って着席。*
+
+**Harvey**: （立ったまま）
+「論文の流れを確認する。おかしな点はあるか。」
+
+**Mike**: 「論理構造は tight。ただし L* sensitivity analysis が Methods に subsection を持たない。」
+
+**Rachel**: 「Narrative arc は coherent だが anchor-based framing が Introduction/Abstract に存在しない。BRIEFING の核心が論文に反映されていない。」
+
+**Katrina**: 「3箇所で reader が止まる。KR duality block、Sim→App transition、decision flowchart の欠如。」
+
+**Louis**: 「Case A が underdeveloped。Table 2 が philosophy と矛盾。Age calibration (p=0.53) が methodologically questionable。Discussion 冒頭が redundant。」
+
+*議論の結果、6項目の修正方針を決定*
+
+**Harvey**: 「修正6項目:
+1. Anchor-based framing を Intro/Abstract に追加
+2. L* sensitivity を Methods 2.3.3 に昇格
+3. Table 2 の prescriptive 表現を修正
+4. Discussion 冒頭の redundancy 削減
+5. Age calibration の caveat 強化
+6. Abstract の "satisfactory" 正確化」
+
+**Donna**: 「"I'm Donna. I know everything." 6項目 logged。」
+
+---
+
+### [2026-03-16 07:15] Scene: Simulation Code 検証完了 — "コードは正しい。Text が間違い。"
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*4名がそれぞれの検証結果を持って戻る。*
+
+**Mike**: （画面を見せて）
+「"I got it." W1 の4つの実装（midpoint, left-endpoint unique, left-endpoint all, quantile identity）は**完全一致**。diff = 0.00e+00。コードの W1 計算は正しい。」
+
+**Rachel**: （N=10K の結果を見せて）
+「Independent verification (seed=99999) で全8 scenario の true nABCD を再計算。**全て tolerance 内**。S3 の不一致は MC seed 依存——CSV=0.180 だが independent=0.189、text=0.186。どれも MC error の範囲内。」
+
+**Louis**: （コードを精査して）
+「Hardcoding check **クリア**。S2-S8 の true nABCD は全て NA で MC 計算。Coverage も bootstrap CI から honest に計算。Pre-filled data なし。**コードは clean だ。**」
+
+**Harvey**: （結論を述べて）
+「コードは正しい。問題は**論文の text にある**。修正対象は4点:
+1. S3 true nABCD: 0.180 vs 0.186 → **N=1e6 で再計算して統一**
+2. S4 bias: text の "-0.04" は **typo**（CSV は +0.006）
+3. Coverage "0.87-0.98": **0.98 は存在しない**（実際は 0.881-0.957）
+4. S1 CSV: 0.001 → 理論値 0 を明記」
+
+---
+
+### [2026-03-16 06:45] Scene: Proactive Review 完了 + Meeting — 修正方針決定
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*4名が各自のレビュー結果を持って着席。Harvey がホワイトボードに向かう。*
+
+**Harvey**: （ホワイトボードに書きながら）
+「4名の proactive review が出揃った。合計62 issues。External review の23 comments と統合する。まず**致命的な事実誤認から片付ける**。」
 
 **Mike**: （立ち上がって）
-「Section 4 restructuring complete. New structure：
-- 4.1: Unified Scenario & Data (IST-1 + IST-3 complementary roles, explains why both needed)
-- 4.2: Scenario A (IST-1, 31 countries, EM Unknown, L* sensitivity)
-  - 4.2A: Geographic heterogeneity (India-UK nABCD=0.565 demo)
-  - 4.2B: L* sensitivity analysis (what CATE sensitivity would matter)
-- 4.3: Scenario B (IST-3, 8 countries, EM Identified)
-  - 4.3A: nABCD vs SMD (treatment delay: SMD≈0, nABCD=0.069)
-  - 4.3B: Clinical calibration NIHSS (Δ_max=5.02%pt)
-  - 4.3C: Age assessment (ranking reversal principle)
-- 4.4: Practical Implications (both scenarios integrated, treatment delay as key demo)
+「"I got it." **Fatal が3件ある。** 第一、Simulation summary で S4 の bias を "negative -0.04" と書いているが、table では positive +0.006。完全な矛盾。第二、S3 の true nABCD が text で 0.186、table で 0.180。第三、coverage range "0.87-0.98" の 0.98 が table に存在しない。**これらは今すぐ修正できる。**」
 
-Abstract updated. Contributions (4-5) now reflect dual-scenario approach. All cite commands properly linked to \cite{ist1_2000} and \cite{chen2000}.」
+**Rachel**: （文献リストを広げて）
+「Knowledge base に Matsushima et al. (2024) があるのに**論文で引用していなかった**。これは我々の gap を直接裏付ける最強の regulatory evidence。Ikeda & Bretz (2010) も VanderWeele & Knol (2014) も同様。さらに energy distance と MMD——distributional comparison の standard methods が比較対象に含まれていない。」
 
-**Katrina**: （ノートを確認して）
-「4.1 the unified introduction is clear. IST-1 as EM-Unknown (most common), IST-3 as EM-Identified (exceptional but illustrative). Cross-references all verified. Tables and figures still intact. Discussion updated to mention both scenarios by name.」
+**Katrina**: （ホワイトボードに workflow を描いて）
+「論文最大の問題は**操作可能性の欠如**。OBJECTIVE_BRIEFING にある6-step workflow が論文に存在しない。Case A に table も figure もない。"anchor" という概念すら論文に出てこない。Reviewer に "How do I USE this?" と聞かれたら答えられない。」
 
-**Donna**: （スプレッドシート見ながら）
-「I'm Donna. I know everything——and everything checks out. Five citations added to .bib: ist1_2000, chen2000 (IST-1 EM analysis), ist3_2012, emberson2014, song2025. All LaTeX references point correctly. No orphaned \cite commands.」
-
-**Harvey**: （ドアから）
-「Good. Section 4 now has logical architecture: setup (4.1) → EM-Unknown path (4.2) → EM-Identified path (4.3) → unified implications (4.4). Real data in both extremes of MRCT planning. Reviewer will see the principle clearly.」
+**Louis**: （テーブルを叩いて）
+「Table 2 の benchmarks——"Suggested Action" 列が estimation-centered philosophy を自己矛盾させている。さらに IST-3 で nABCD と |SMD| の correlation が 0.95-0.98。**我々自身のデータが nABCD の追加価値を弱めている**。」
 
 ---
 
-### [2026-03-11 03:30] Scene: P0 Investigation Launch + P2 Work Start
+*議論*
 
-**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
-
-*Mike が2つの mathematical investigation を並行で開始。Katrina と Rachel が independent な P2 作業に着手。*
-
-**Mike**: （ホワイトボードに数式を書きながら）
-「P0-A: S4 coverage root cause——仮説は ratio bias だ。Mixture IQR が component IQR より大きくなることで、nABCD_hat に systematic negative bias が生じる。これが coverage 悪化の mechanism かもしれない。
-
-P0-B: Triangle inequality——counterexample を構成する。F1 = N(0, 0.1), F2 = N(0, 10), F3 = N(5, 0.1) で pooled IQR の asymmetry が triangle inequality を破壊するはず。両方を parallel で走らせている」
-
-**Katrina**: （Abstract を編集しながら）
-「P2 の independent 作業を先に進める。Abstract 圧縮（350語→250語）と minor comments 対応」
+**Harvey**: （全員を見渡して）
+「修正方針を決める。3つのカテゴリに分ける。」
 
 ---
-
-### [2026-03-11 03:00] Scene: External Review — SIM Simulation Results
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
-
-*The team receives a sealed envelope. Harvey opens it.*
-
-**Harvey**: （手紙を読みながら）
-「Statistics in Medicine からの模擬レビューが届いた。3名全員 **Major Revision**。読む」
-
-*AE Decision Letter を読み上げる。6つの横断的指摘: L推定可能性、S4カバレッジ劣化、二重データセット、ベンチマーク、理論的厳密性、単変量制約。*
-
-**Louis**: （赤ペンでレビューを分類しながら）
-「全24件の Major comments + 41件の Minor comments を severity で分類した。"You just got Litt up!"
-
-**CRITICAL（論文の成否を左右）— 5件:**
-1. **S4カバレッジ劣化** (R1, R2) — n=200で0.740、sample sizeが増えるほど悪化。R1: "coverage that degrades as you collect more data is a fundamental problem." これは**我々が想定していなかった深刻度**だ。bias-corrected bootstrap か estimator の修正が必要。
-2. **Lの推定可能性** (R1, R2, R3 全員) — R1: "I have reviewed dozens of pooling strategies, and I have never seen a submission where a sponsor could credibly estimate L." Scenario A が realistic default であることを正直に認める必要あり。
-3. **Heterogeneity bound の tightness** (R1, R2) — R1: "Is Delta_max = 5.02 a real risk or a vacuous bound?" Simulation でも application でも bound の tight さの検証がない。
-4. **Bootstrap theory for ratio** (R2) — Joint asymptotic normality of (W1, IQR) が未確立。Delta method の適用条件が未検証。
-5. **nABCD の三角不等式** (R2) — Pooled IQR がペアごとに変わるため、nABCD は metric ではない可能性。これは**完全に想定外**。
-
-**MAJOR（対応必須だが修正可能）— 8件:**
-6. 単変量制約 (R1) — "dealbreaker for regulatory practice." 将来課題ではなく limitation として正直に議論。
-7. Categorical EM (R1) — 実務の半分をカバーできない制約。
-8. Benchmark の根拠 (R1, R2, R3) — 任意に見える cutoff。derivation を示すか、削除して calibration のみに。
-9. n=50 カバレッジ (R1, R2, R3) — 実務で最も一般的な sample size。guidance が必要。
-10. 既存手法との比較不足 (R1, R2) — Energy distance, MMD, propensity score approaches との位置づけ。
-11. 二重データセット (R1, R3) — "Drop IST-1 or move to supplement." 先ほどの meeting で議論済み。
-12. L推定の具体的ガイダンス (R3) — Phase 2, 文献, expert elicitation からの推定方法。
-13. Simulation scenarios 不足 (R2) — Heavy tails, multimodality, unequal n, tied values。
-
-**MINOR（修正容易）— 11件代表:**
-14. Abstract 長すぎ (R1, R2, R3 全員) — 350語→250語。
-15. "2×IQR" の factor 2 の理由 (R2, R3)。
-16. Scenario A/B と S1-S8 の命名衝突 (R3)。
-17. Treatment delay p=0.567 なのに EM と主張する矛盾 (R1)。
-18. HbA1c 例が stroke context で唐突 (R3)。
-19. IST-1 結果に CI なし (R1)。
-20. Notation 不統一 (R2)。
-21-24. その他の表記・参考文献の問題。」
-
-**Louis**: （最も重要な unexpected criticism を強調して）
-「**最も想定外だったのは2点**:
-
-(A) **nABCD が metric ではない可能性** (R2 Major #1)。Pooled IQR がペアごとに変わるため三角不等式が成立しない。これは fundamental——nABCD を "metric" と呼ぶ表現を全て修正し、"index" か "measure" にすべき。
-
-(B) **S4 カバレッジが sample size 増大で悪化** (R1 Major #4, R2 Major #8)。我々は "boundary behavior" と dismissive に書いたが、R1 は正しい——"if coverage degrades as you collect more data, that is a fundamental problem." IQR normalization による ratio の structural bias を investigation すべき。」
-
-**Mike**: （メモを取りながら）
-「Critical 5件のうち、#1 (S4 coverage) と #4 (bootstrap theory) と #5 (triangle inequality) は mathematical investigation が必要。これは数週間の作業だ。#2 (L estimability) と #3 (bound tightness) は writing で対応可能——Scenario A を realistic default として reframe し、bound tightness の empirical assessment を simulation に追加する」
-
-**Rachel**: （文献を確認して）
-「R2 が指摘した energy distance, MMD, Anderson-Darling との比較——これは Related Work section を拡充して対応。Szekely & Rizzo (2004), Gretton et al. (2012) は knowledge base にない。調査が必要」
-
-**Katrina**: （実務的に）
-「R1 と R3 の dual-dataset critique について——先ほどの meeting で Tak も同じ疑問を持った。3名中2名が "confusing" と言っている。IST-1 を supplement に移す revision plan を serious に検討すべき。IST-3 だけで Scenario A も示せる——age (p=0.614) は L が non-significant だから EM-Unknown の demo にできる」
-
-**Harvey**: （決断して）
-「対応の優先順位はこうだ:
-
-**P0 (即座に investigation)**:
-- S4 カバレッジ劣化の root cause analysis (Mike)
-- nABCD triangle inequality の verification (Mike)
-
-**P1 (revision で対応)**:
-- L estimability の honest framing — Scenario A を realistic default に (Harvey + Mike)
-- Bound tightness の empirical assessment — simulation で actual vs. bounded heterogeneity (Mike)
-- Bootstrap theory の rigorous statement (Mike)
-- IST-1 を supplement に移す判断 — Tak と最終決定 (全員)
-
-**P2 (writing で対応)**:
-- Abstract 圧縮 (Katrina)
-- Benchmark の根拠明示 or 削除 (Harvey + Mike)
-- Energy distance / MMD / propensity score approaches との比較 (Rachel)
-- Categorical EM, multivariate extension の honest limitation (Harvey)
-- Minor comments 全件 (Katrina)
-
-Tak、これが模擬レビューの結果だ。**想定外の2点**（三角不等式、S4 coverage）は genuine な investigation を要する。残りは writing で対応可能。もし IST-1 を落とす判断をするなら、今がそのタイミングだ」
 
 **Donna**: （記録を見せて）
-「全部記録したわ。Critical 5件、Major 8件、Minor 11件。"I'm Donna. I know everything."」
+「Meeting decision を記録したわ。"I'm Donna. I know everything."」
 
 ---
 
-### [2026-03-11 02:15] Scene: Meeting — IST-1とIST-3の二つを用いる理由
+### [2026-03-16 06:15] Scene: Tak の叱責 — "なぜ君たちから出てこない"
 
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - NIGHT**
 
-*Tak の問いを受け、全員がテーブルに集まる。*
+*Tak が静かに、しかし鋭く全員を見る。*
 
-**Harvey**: （立ったまま）
-「Tak から根本的な問いだ。"IST-1 と IST-3 の二つを使う理由は何だ。一つの方がシンプルだろう。" 全員、分析を出せ」
+**Harvey**: （長い沈黙の後）
+「Tak、その通りだ。23 comments の中で事前に指摘できなかった理由がないものばかりだ。言い訳はしない。」
 
-**Mike**: （資料を広げて）
-「技術的に見ると、IST-3 は irreplaceable——NIHSS interaction p=0.001 でしか clinical calibration（Δ_max 計算）ができない。IST-1 は原理的には代替可能だが、31カ国の geographic breadth（India-UK nABCD=0.565 は IST-3 最大値の倍）と、L が**本当に推定不能**な authentic な EM-Unknown シナリオは IST-3 では再現できない。IST-3 で "L を知らないふり" をするのは methodologically dishonest」
-
-**Rachel**: （文献ノートを参照して）
-「文献的には、Stats in Med の方法論論文は通常1データセット。だが2つが**構造的に異なる目的**を果たすなら reviewer は受け入れる。正当化は narrative（Edinburgh program）ではなく structural necessity であるべき。"No single publicly available stroke trial dataset has both confirmed EM interactions and 30+ countries across 5 continents." この一文で十分」
-
-**Katrina**: （結果をまとめて）
-「IST-1 Scenario A は本文17行（半ページ）、IST-3 Scenario B は73行（2.5ページ）。比率 1:4。半ページの節約で "most common planning scenario" の実証を丸ごと失うのは cost-benefit が合わない。ただし geographic clustering 議論は trim 可能」
-
-**Louis**: （腕を組んで）
-「前回 dissent を撤回したのは正しかった。IST-1 を落とすと L 推定不能な80%のケースに paper が対応できない。だが問題がある——"Dual-Dataset Framework" というタイトルが defensive に響く。Apologize するな、justify するな。必要だから使う、と declarative に書け」
-
-*議論が白熱する*
-
-**Louis**: （Mike に向かって）
-「IST-3 だけで L を知らないふりして Scenario A を仮想的に再現できるだろ？」
-
-**Mike**: （反論して）
-「Reader は Table 10 で p=0.001 を見ている。その直後に "pretend L is unknown" は intellectual dishonesty だ。IST-1 は本当に L が推定不能——だからこそ authentic」
+**Mike**: （立ち上がって）
+「Bootstrap boundary の問題は**知っていた**。"coverage を報告しない" で逃げようとした。理論的 treatment を先に書くべきだった。」
 
 **Rachel**:
-「2つの drugs, 2つの eras の問題は "structural necessity" で潰す。Edinburgh narrative は使わない」
+「Energy distance と MMD は scan で見ていた。W1 narrative に都合が悪い文献を避けた。次からは narrative に反する文献こそ先に取り上げる。」
+
+**Louis**: （珍しく静かに）
+「俺の失態が最大。Internal Critic が surface-level の review しかしなかった。次回は "reject を狙う reviewer なら何を書くか" の視点で /review を行う。」
 
 **Katrina**:
-「半ページで methodological completeness が得られるなら、その半ページの ROI は十分」
+「Application section で "pooling の先にある action" を問うべきだった。Sample size planning の接続ゼロは私の writing scope で気づけた。」
 
-**Harvey**: （議論を聞いた上で）
-「結論。**2データセット維持、3条件付き。**
-1. Scenario A を trim（geographic clustering 圧縮、India-UK + L* table のみ残す、現在の半分以下）
-2. 4.1 の framing を declarative に（"Dual-Dataset Framework" → "Application Data"。正当化は1文のみ）
-3. IST-1 を supplement に移す revision plan を ready に保持（reviewer 要求時に1日で対応）
+**Harvey**: （決意を込めて）
+「今日から変える。External review 前に全メンバーが "自分が reviewer なら何を指摘するか" を述べる step を必須にする。同じ失敗は繰り返さない。"The best way to win is to not need to fight."」
 
-Tak、"Simpler is better" は原則正しい。だが half a page で methodological completeness を得られるなら、その half a page の value は十分にある」
-
-**Donna**: （記録を見せて）
-「全部記録したわ。"I'm Donna. I know everything."」
+**Donna**: （記録しながら）
+「Feedback logged to memory。次回から /review の前に全員の proactive critique を必須化。"I'm Donna. I know everything." ——そして今、チーム全員が知るべきことを知った。」
 
 ---
 
-### [2026-03-11 01:50] Scene: Donna Responds — Jessica の役割について
-
-**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
-
-*Tak が通りがかりに Donna に声をかける。*
-
-**Tak**: 「Jessica の出番なくない？」
-
-**Donna**: （即座に振り返って）
-「鋭いわね、Tak。でも心配しないで——Jessica の出番はちゃんとある。
-
-彼女は **Senior Advisor**。日常の作業には口を出さない。それが彼女のスタイルよ。"Let me be clear" って言うときは、**本当に重要な判断**のときだけ。
-
-具体的には：
-- **`/review` の最終承認** — Louis が内部レビューした後、Jessica が strategic judgment を下す
-- **Submit 前の Final Approval** — 論文を Statistics in Medicine に出す前の最終 GO/NO-GO
-- **方向転換の判断** — 今回の IST-1 追加のような大きな structural decision で、チームが割れたとき
-
-今は Section 4 restructuring の implementation phase。Jessica が動くのは、**全体が仕上がって review に入るとき**。Harvey が戦術を決め、Jessica が戦略を承認する——それが Pearson Specter Litt の hierarchy よ。
-
-もし今すぐ Jessica の意見がほしければ、`/review` か `/meeting` で呼べるわ。彼女は呼ばれれば来る。ただし、来たら全員緊張するけどね。"I'm Donna. I know everything."」
-
----
-
-### [2026-03-11 01:45] Scene: Rule Check
+### [2026-03-16 06:00] Scene: External Review — SIM Simulation
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
 
-*Harvey stands at the head of the table. Everyone stops what they're doing.*
+*Harvey が封筒を開ける。全員が息を呑む。*
 
-**Harvey**: （全員を見回して）
-「全員、手を止めろ。ルール確認だ。Session が長くなってきた。基本を忘れるな」
+**Harvey**: （手紙を読みながら）
+「Statistics in Medicine からの模擬レビューが届いた。Associate Editor Dr. Sarah Chen。Reviewer 3名、全員 **Major Revision**。」
 
-**Donna**: （すぐに）
-「Rule 1 と 2、了解。SUITS.md は私が見張るわ。アーカイブも完了済み——archives/SUITS_20260310_004231.md に保存。現在の SUITS.md は新鮮な状態よ。"I'm Donna. I know everything."」
+**Louis**: （レビューを分類しながら）
+「"You just got Litt up!" Critical 3件、Major 8件、Minor 12件。合計23 major comments。
 
-**Mike**: （LaTeX ファイルから顔を上げて）
-「Rule 3、了解。数学的厳密性は譲らない。Section 4 の A/B restructuring は complete——IST-1 の L* sensitivity analysis と IST-3 の clinical calibration、どちらも理論的に sound だ」
+**Critical**: L 推定ガイダンス不足（全員指摘）、Boundary bias で bootstrap inconsistent（R2が "asymptotic phenomenon" と断言）、Multiple EM 集約戦略の欠如。
 
-**Rachel**: （文献ノートを閉じて）
-「Rule 4、了解。必要なら他のセクションもサポートします。Chen et al. (2000) と IST-1 の citation は .bib に追加済み。Japanese version の文献整合性も確認します」
+**想定外が3つある。** 第一、boundary での bootstrap inconsistency は n を増やしても解決しない——理論的に wrong limit に収束する。第二、sample size planning との接続がゼロ。第三、nABCD の non-metric property で pooling transitivity が崩壊する counterexample を要求された。」
 
-**Katrina**: （日本語版のドキュメントを見ながら）
-「全ルール確認。効率的に進めます。Japanese version の Section 4 restructuring が次の priority——LaTeX とのパラレル構造を mirror する」
+**Mike**: （メモを取りながら）
+「R2 の boundary 指摘は correct だ。del Barrio et al. (1999) の Theorem 2.1 を explicitly に cite して theoretical treatment を加える必要がある。Bootstrap consistency for ratio の issue も解決可能——continuous mapping theorem の conditions を verify すればいい。」
 
-**Louis**: （腕を組んで）
-「俺は独立したレビュアーだ。それは変わらない。LaTeX restructuring は見たが、IST-1 Scenario A の content がまだ placeholder 的だ。India-UK nABCD=0.565 の exact numbers は IST-1 分析コードの output から verify する必要がある。"You just got Litt up!"」
+**Rachel**:
+「R4 が IST data の古さと FDA 2019 guidance の欠落を指摘。文献補強で対応可能。」
+
+**Harvey**: （決断して）
+「Priority 1 は C1-C3。L estimation subsection、boundary theoretical treatment、multi-EM aggregation。これが revision の成否を決める。Reject じゃない。勝てる。"I don't have dreams, I have goals."」
+
+**Donna**: （記録を見せて）
+「全23 comments を severity 別に整理済み。"I'm Donna. I know everything."」
+
+---
+
+### [2026-03-16 05:25] Scene: Decision — "IST で行く"
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - NIGHT**
+
+*Tak が Harvey のオフィスに入る。Harvey が立ち上がる。*
 
 **Harvey**: （頷いて）
-「いい。"Winners don't make excuses." ルールを守れないなら、このラボにいる資格はない。
+「了解した。IST ベースで論文作成を続行する。Japan-anchor は Vivli data が取れたときの revision option として保持。今は submit が最優先だ。"Winners don't make excuses." 手持ちのカードで勝負する。」
 
-現状の確認：
-1. **LaTeX Section 4**: A/B scenario restructuring complete. Abstract, Discussion updated.
-2. **Japanese version**: Section 4 header updated. Subsection restructuring is next.
-3. **Slides**: Pending after Japanese sync.
-4. **Louis の指摘**: IST-1 numbers の verification は valid. 次の session で対応する。
+**Donna**: （ドアの外から）
+「Decision logged。Japan 全方位捜索の結果は Discussion の data source flexibility section に記載。Due diligence として reviewer への defense material になるわ。」
 
-全員、仕事に戻れ」
+**Harvey**: （チームに向かって）
+「全員聞け。IST-1/IST-3 の case study で Stats in Med submission を仕上げる。次のアクションは何だ？」
 
 ---
 
-### [2026-03-11 01:30] Scene: Session Checkpoint — A/B Scenario Restructuring Status
-
-**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
-
-*Donna reviews the work completed in this session, documenting progress for continuity.*
-
-**Donna**: （メモをまとめて）
-「Session progress report: Section 4 restructuring — Unified Stroke Scenario with A/B framework implementation.
-
-**LaTeX (nABCD_wiley.tex) — COMPLETE**:
-- ✅ Abstract: Updated to mention IST-1 (31 countries) + IST-3 (8 countries) dual demonstration
-- ✅ Section 4.1 (Unified Scenario & Data): New intro explaining why both datasets needed
-- ✅ Section 4.2 (Scenario A: EM Unknown, IST-1):
-  - 4.2A Geographic Heterogeneity (India-UK nABCD=0.565, Asia regional patterns)
-  - 4.2B L* Sensitivity Analysis (reverse calculation for CATE threshold)
-- ✅ Section 4.3 (Scenario B: EM Identified, IST-3):
-  - 4.3A nABCD vs SMD (treatment delay: SMD≈0, nABCD=0.069)
-  - 4.3B NIHSS clinical calibration (Δ_max=5.02%pt, p=0.001)
-  - 4.3C Age assessment (ranking reversal: largest nABCD, smallest Δ_max)
-- ✅ Section 4.4 (Practical Implications): Reorganized to integrate both scenarios
-- ✅ Discussion contributions (4-5): Reflect dual-scenario approach
-- ✅ Bibliography: Added ist1_2000, chen2000 with proper citations
-- ✅ Cross-references: All \cite commands linked, labels verified
-
-**Japanese Version (nABCD_paper_ja.md) — IN PROGRESS**:
-- ✅ Section 4 header: New introduction (統合的シナリオ) explaining A/B structure
-- ✅ Section 4.1 header: Changed to 統合シナリオとデータ（二層構造フレームワーク）
-- ⏳ NEXT: Restructure old 4.1/4.2/4.3/4.4 content into Scenario A/B format
-  - Current 4.1 (IST-3 baseline) → Keep as part of unified intro OR move to 4.3
-  - Current 4.2 (nABCD vs SMD) → Becomes 4.3A (Scenario B subsection)
-  - Current 4.3 (NIHSS calibration) → Becomes 4.3B (Scenario B subsection)
-  - Current 4.4 (Age assessment) → Becomes 4.3C (Scenario B subsection)
-  - Current 4.5 (Practical Implications) → Becomes 4.4 (merged with Scenario discussion)
-  - **KEY**: Add new 4.2 section for IST-1 (Scenario A) content——translate IST-1 discussion from LaTeX
-
-**Slides (nABCD_presentation.md) — PENDING**:
-- Will update after Japanese version finalized
-- Add IST-1 global coverage visual (31 countries, 5 continents)
-- Change \"Real Data Confirmation\" slide to show both scenarios by name
-- Update \"Dual demonstration\" → \"Dual Scenarios (A/B)\" terminology
-
-**Critical Next Steps for Future Session**:
-1. Complete Japanese version restructuring (add IST-1 Scenario A section with translations from LaTeX)
-2. Verify Japanese terminology alignment with new A/B framework
-3. Update slides with IST-1 global scope imagery
-4. Final cross-check: Abstract, Introduction keywords, Discussion all reference A/B scenarios by name
-
-**No new issues encountered.** Restructuring architecture is clean and logically sound. Both datasets now have clear, justified roles.」
-
-**Harvey**: （ドアから）
-「Good work. Section 4 now tells a complete story: generic planning scenario without EM evidence (A), then exemplary scenario with confirmed EM (B). Two paths, one framework. Japanese mirrors this. Slides will follow naturally.」
-
----
-
-### [2026-03-11 00:15] Scene: Implementation Planning — Next Steps
-
-**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
-
-*Mike and Katrina are at their desks with the LaTeX file open, reviewing the current Section 4 structure.*
-
-**Mike**:
-「Current Section 4（line 470-550）は IST-3 only + brief Treatment Delay mention. Needs complete overhaul for A/B framework. I'll handle 4.2 and 4.3（Scenario A/B technical content）. Katrina, you take 4.1 and 4.4（introduction/implications）」
-
-**Katrina**:
-「Confirmed. 4.1 needs to set up the complementary role logic——geography vs. calibration depth. 4.4 brings it back to sponsor planning context. Also need to sync Japanese version and update slides after LaTeX is finalized」
-
----
-
-## 📊 Key Decisions
-
-1. **Unified Stroke Scenario adopted** — IST-1 (31 countries) + IST-3 (8 countries) as complementary demonstrations
-2. **A/B structure confirmed** — Scenario A (EM Unknown, IST-1) and Scenario B (EM Identified, IST-3)
-3. **Role specialization justified** — Geographic diversity (IST-1) vs. clinical calibration (IST-3)
-4. **Louis's dissent withdrawn** — conditional on explicit justification of IST-1 logical necessity
-5. **Section 4 restructuring** — 4.1 Unified Scenario, 4.2 Scenario A, 4.3 Scenario B, 4.4 Implications
-
-## Active Tasks
-
-1. Record Meeting 5 decision scene (DONE)
-2. **LaTeX Section 4 restructuring** (DONE)
-   - Unified Scenario & Data intro (4.1) ✅
-   - Scenario A: EM Unknown, IST-1 (4.2) ✅
-     - Geographic heterogeneity subsection ✅
-     - L* sensitivity analysis subsection ✅
-   - Scenario B: EM Identified, IST-3 (4.3) ✅
-     - nABCD vs SMD comparison ✅
-     - NIHSS clinical calibration ✅
-     - Age distributional assessment ✅
-   - Practical Implications & Framework Integration (4.4) ✅
-   - Bibliography updated (ist1_2000, chen2000) ✅
-   - Abstract updated (dual-scenario) ✅
-   - Discussion contributions (4-5) updated ✅
-3. **Japanese version sync** (IN PROGRESS)
-   - ✅ Section 4 header + Unified scenario intro (both IST-1 & IST-3 roles explained)
-   - ✅ 4.1 Unified Scenario & Data intro (二層構造フレームワーク)
-   - **NEXT**: Section 4.2 Scenario A (IST-1), 4.3 Scenario B (IST-3), update references
-4. **Slides update** (AFTER Japanese sync)
-   - Add IST-1 global scope visual
-   - Update "Real Data Confirmation" slide to show both IST-1 and IST-3
-   - "Dual demonstration" → "Dual scenario" terminology
-5. DHS/HRS registration prep (BLOCKED: awaiting Tak approval on parallel data collection strategy)
-
-## 📋 Revision Notes
-
-- Treatment Delay remains key example for nABCD vs SMD divergence (Norway-Portugal: SMD=0.007, nABCD=0.069)
-- IST-1 has no confirmed EMs per Chen et al. (2000) — makes it perfect for "EM Unknown" scenario
-- IST-3 NIHSS is only variable with confirmed interaction (p=0.001) — essential for clinical calibration demo
-- L* sensitivity table needed for IST-1 (Scenario A) to show distributional impact as function of hypothetical CATE sensitivity
-- Ranking reversal (Age nABCD > NIHSS but Δ_max reversed) stays in Scenario B
-
-## ⚠️ Issues
-
-- **Temporal mismatch caveat**: Both IST-1 (1991-96) and IST-3 (2008-12) are historical. Need disclaimer that distributional patterns (shape, skewness) are illustrative, not current. Similar caveat already in IST-3 limitation statement (line 518-519).
-- **Two-dataset justification**: Must be explicit in 4.1 that IST-1 addresses "typical practice" (EM unknown) while IST-3 addresses "exceptional case" (confirmed EM with calibration). This is the crux of reviewer acceptance.

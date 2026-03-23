@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex nABCD_wiley"] 1772930922.67615 "nABCD_wiley.aux" "nABCD_wiley.bbl" "nABCD_wiley" 1772930924.79527 0
-  "./nABCD_wiley.bib" 1772868802.03471 8729 de525e6631041c60ce117d2839673205 ""
+["bibtex nABCD_wiley"] 1773638256.10605 "nABCD_wiley.aux" "nABCD_wiley.bbl" "nABCD_wiley" 1773638259.24189 0
+  "./nABCD_wiley.bib" 1773071133.54695 9609 e4cc670aeecf727c1a6c7fcbba4de964 ""
   "./wileyNJD-AMA.bst" 1770455185.28324 19155 8fd474a7161c22bb6a795bd57510d2e1 ""
-  "nABCD_wiley.aux" 1772930924.15893 26998 52edece117670304b6f9944dbdbea2d1 "pdflatex"
+  "nABCD_wiley.aux" 1773638258.40444 30752 37500dba1dbeeca52c6a486b596a5d2d "pdflatex"
   (generated)
   "nABCD_wiley.bbl"
   "nABCD_wiley.blg"
   (rewritten before read)
-["pdflatex"] 1772930922.83371 "c:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/paper/latex/nABCD_wiley.tex" "nABCD_wiley.pdf" "nABCD_wiley" 1772930924.79656 0
+["pdflatex"] 1773638256.41114 "c:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/paper/latex/nABCD_wiley.tex" "nABCD_wiley.pdf" "nABCD_wiley" 1773638259.24638 0
   "../../figures/fig2_nabcd_definition.pdf" 1771170623.3942 12548 9d86aa65fcc7b0e466365a1354e97b36 ""
   "../../figures/fig3_bias.pdf" 1771170628.30562 5239 496a1504c9aaa1f4a067f8eae57bd397 ""
   "../../figures/fig4_estimation_quality.pdf" 1771170631.87682 5965 3ee71d43e3e6077c98828fef7cb1024e ""
@@ -18,7 +18,7 @@
   "algorithm.sty" 1770455185.32324 3349 a740febc3f1b2643b9cddc03a96915e4 ""
   "algorithmicx.sty" 1770455185.34917 26750 ce139c05a983e19ddca355b43e29c395 ""
   "algpseudocode.sty" 1770455323.6638 582 fe142aba30b372c51f70b5ce826b6d17 ""
-  "c:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/paper/latex/nABCD_wiley.tex" 1772898161.40088 66167 9e5756f356a793758fd8589700af5254 ""
+  "c:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/paper/latex/nABCD_wiley.tex" 1773552276.08507 79705 cedad69e78cf14fea31b7529e51bbd2c ""
   "c:/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc" 1727502357.26878 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm" 1770654042.65975 1292 bd42be2f344128bff6d35d98474adfe3 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/adobe/courier/pcrr8t.tfm" 1770654042.66177 1384 4632f5e54900a7dadbb83f555bc61e56 ""
@@ -76,6 +76,7 @@
   "c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1727502095.65029 32716 08e384dc442464e7285e891af9f45947 ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1727502095.65029 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb" 1727502095.66628 30457 bc0868ebece724ed7c3d37e3d9bff7bd ""
+  "c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb" 1727502095.69897 31764 459c573c03a4949a528c2cc7f557e217 ""
   "c:/texlive/2024/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb" 1770654042.71131 45758 19968a0990191524e34e1994d4a31cb6 ""
   "c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb" 1770653960.42456 44729 811d6c62865936705a31c797a1d5dada ""
   "c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb" 1770653960.42657 44656 0cbca70e0534538582128f6b54593cca ""
@@ -207,8 +208,8 @@
   "c:/texlive/2024/texmf.cnf" 1727503606.94507 713 baa45e065482d44c4cd81b98ef72c63b ""
   "cuted.sty" 1770484037.69759 32452 41238b2d586e047f606df7dbfc1c149f ""
   "floatpag.sty" 1770648831.05915 276 c763d7b9ab967da672d5f1aa2f3f1aea ""
-  "nABCD_wiley.aux" 1772930924.15893 26998 52edece117670304b6f9944dbdbea2d1 "pdflatex"
-  "nABCD_wiley.bbl" 1772930922.80525 5186 68e690af5510a0a5bd0314b199b7104c "bibtex nABCD_wiley"
+  "nABCD_wiley.aux" 1773638258.40444 30752 37500dba1dbeeca52c6a486b596a5d2d "pdflatex"
+  "nABCD_wiley.bbl" 1773638256.33167 5852 b33eca8844c7d5343f55028eba82a6bc "bibtex nABCD_wiley"
   (generated)
   "nABCD_wiley.aux"
   "nABCD_wiley.log"

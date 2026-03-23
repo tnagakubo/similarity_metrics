@@ -2,135 +2,85 @@
 \providecommand \doibase [0]{http://dx.doi.org/}%
 
 \bibitem{chen2010}
-Chen J, Quan H, Binkowitz B, et al. Assessing consistent treatment effect in a
-  multi-regional clinical trial: a systematic review. {\it Pharm Stat.}
-  2010\string;9(3)\string:242--253.
+Chen J, Quan H, Binkowitz B, et al. Assessing consistent treatment effect in a multi-regional clinical trial: a systematic review. {\it Pharm Stat.} 2010\string;9(3)\string:242--253.
 \newblock \href {\doibase 10.1002/pst.438} {doi: 10.1002/pst.438}
 
 \bibitem{quan2010}
-Quan H, Li M, Chen J, et al. Assessment of consistency of treatment effects in
-  multiregional clinical trials. {\it Drug Inf J.}
-  2010\string;44(5)\string:617--632.
-\newblock \href {\doibase 10.1177/009286151004400515} {doi:
-  10.1177/009286151004400515}
+Quan H, Li M, Chen J, et al. Assessment of consistency of treatment effects in multiregional clinical trials. {\it Drug Inf J.} 2010\string;44(5)\string:617--632.
+\newblock \href {\doibase 10.1177/009286151004400515} {doi: 10.1177/009286151004400515}
 
 \bibitem{iche17}
-{ICH E17 Expert Working Group} . General Principles for Planning and Design of
-  Multi-Regional Clinical Trials ({E17}). tech. rep., International Council for
-  Harmonisation; Geneva, Switzerland:   2017.
+{ICH E17 Expert Working Group} . General Principles for Planning and Design of Multi-Regional Clinical Trials ({E17}). tech. rep., International Council for Harmonisation; Geneva, Switzerland:   2017.
 
 \bibitem{song2025}
-Song J, Ji C, Chen M, Luo X, Quan H, Chen J. Basic Considerations for Data
-  Pooling Strategy in Multi-Regional Clinical Trials ({MRCTs}). {\it Ther Innov
-  Regul Sci.} 2025\string;59(2)\string:359--364.
-\newblock \href {\doibase 10.1007/s43441-025-00744-8} {doi:
-  10.1007/s43441-025-00744-8}
+Song J, Ji C, Chen M, Luo X, Quan H, Chen J. Basic Considerations for Data Pooling Strategy in Multi-Regional Clinical Trials ({MRCTs}). {\it Ther Innov Regul Sci.} 2025\string;59(2)\string:359--364.
+\newblock \href {\doibase 10.1007/s43441-025-00744-8} {doi: 10.1007/s43441-025-00744-8}
 
 \bibitem{long2025}
-Long M, Wu H, Liu X, Chen J. Basic Considerations for the Consistency
-  Evaluation Based on {ICH} {E17} Guideline. {\it Ther Innov Regul Sci.}
-  2025\string;59(2)\string:328--336.
-\newblock \href {\doibase 10.1007/s43441-024-00737-z} {doi:
-  10.1007/s43441-024-00737-z}
+Long M, Wu H, Liu X, Chen J. Basic Considerations for the Consistency Evaluation Based on {ICH} {E17} Guideline. {\it Ther Innov Regul Sci.} 2025\string;59(2)\string:328--336.
+\newblock \href {\doibase 10.1007/s43441-024-00737-z} {doi: 10.1007/s43441-024-00737-z}
 
 \bibitem{austin2011}
-Austin PC. An introduction to propensity score methods for reducing the effects
-  of confounding in observational studies. {\it Multivariate Behav Res.}
-  2011\string;46(3)\string:399--424.
-\newblock \href {\doibase 10.1080/00273171.2011.568786} {doi:
-  10.1080/00273171.2011.568786}
+Austin PC. An introduction to propensity score methods for reducing the effects of confounding in observational studies. {\it Multivariate Behav Res.} 2011\string;46(3)\string:399--424.
+\newblock \href {\doibase 10.1080/00273171.2011.568786} {doi: 10.1080/00273171.2011.568786}
 
 \bibitem{panaretos2019}
-Panaretos VM, Zemel Y. Statistical aspects of {W}asserstein distances. {\it
-  Annu Rev Stat Appl.} 2019\string;6\string:405--431.
-\newblock \href {\doibase 10.1146/annurev-statistics-030718-104938} {doi:
-  10.1146/annurev-statistics-030718-104938}
+Panaretos VM, Zemel Y. Statistical aspects of {W}asserstein distances. {\it Annu Rev Stat Appl.} 2019\string;6\string:405--431.
+\newblock \href {\doibase 10.1146/annurev-statistics-030718-104938} {doi: 10.1146/annurev-statistics-030718-104938}
 
 \bibitem{pearl2011}
-Pearl J, Bareinboim E. Transportability of causal and statistical relations: A
-  formal approach. In: . 25. AAAI Press.  2011; Menlo Park, CA\string:247--254.
+Pearl J, Bareinboim E. Transportability of causal and statistical relations: A formal approach. In: . 25. AAAI Press.  2011; Menlo Park, CA\string:247--254.
 
 \bibitem{villani2009}
 Villani C. {\it Optimal Transport: Old and New}.
 \newblock Springer, 2009
 
 \bibitem{gibbs2002}
-Gibbs AL, Su FE. On Choosing and Bounding Probability Metrics. {\it Int Stat
-  Rev.} 2002\string;70(3)\string:419--435.
-\newblock \href {\doibase 10.1111/j.1751-5823.2002.tb00178.x} {doi:
-  10.1111/j.1751-5823.2002.tb00178.x}
+Gibbs AL, Su FE. On Choosing and Bounding Probability Metrics. {\it Int Stat Rev.} 2002\string;70(3)\string:419--435.
+\newblock \href {\doibase 10.1111/j.1751-5823.2002.tb00178.x} {doi: 10.1111/j.1751-5823.2002.tb00178.x}
 
 \bibitem{rousseeuw1993}
-Rousseeuw PJ, Croux C. Alternatives to the Median Absolute Deviation. {\it J Am
-  Stat Assoc.} 1993\string;88(424)\string:1273--1283.
-\newblock \href {\doibase 10.1080/01621459.1993.10476408} {doi:
-  10.1080/01621459.1993.10476408}
+Rousseeuw PJ, Croux C. Alternatives to the Median Absolute Deviation. {\it J Am Stat Assoc.} 1993\string;88(424)\string:1273--1283.
+\newblock \href {\doibase 10.1080/01621459.1993.10476408} {doi: 10.1080/01621459.1993.10476408}
 
 \bibitem{delbarrio1999}
-Barrio dE, Gin{\'e} E, Matr{\'a}n C. Central limit theorems for the
-  {W}asserstein distance between the empirical and the true distributions. {\it
-  Ann Probab.} 1999\string;27(2)\string:1009--1071.
+Barrio dE, Gin{\'e} E, Matr{\'a}n C. Central limit theorems for the {W}asserstein distance between the empirical and the true distributions. {\it Ann Probab.} 1999\string;27(2)\string:1009--1071.
 \newblock \href {\doibase 10.1214/aop/1022677394} {doi: 10.1214/aop/1022677394}
 
 \bibitem{sommerfeld2018}
-Sommerfeld M, Munk A. Inference for empirical {W}asserstein distances on finite
-  spaces. {\it J R Stat Soc Series B.} 2018\string;80(1)\string:219--238.
+Sommerfeld M, Munk A. Inference for empirical {W}asserstein distances on finite spaces. {\it J R Stat Soc Series B.} 2018\string;80(1)\string:219--238.
 \newblock \href {\doibase 10.1111/rssb.12236} {doi: 10.1111/rssb.12236}
 
 \bibitem{armstrong2021}
-Armstrong TB, Koles{\'a}r M. Finite-Sample Optimal Estimation and Inference on
-  Average Treatment Effects Under Unconfoundedness. {\it Econometrica.}
-  2021\string;89(3)\string:1141--1177.
+Armstrong TB, Koles{\'a}r M. Finite-Sample Optimal Estimation and Inference on Average Treatment Effects Under Unconfoundedness. {\it Econometrica.} 2021\string;89(3)\string:1141--1177.
 \newblock \href {\doibase 10.3982/ECTA16907} {doi: 10.3982/ECTA16907}
 
 \bibitem{wasserstein2016}
-Wasserstein RL, Lazar NA. The {ASA} Statement on p-Values: Context, Process,
-  and Purpose. {\it Am Stat.} 2016\string;70(2)\string:129--133.
-\newblock \href {\doibase 10.1080/00031305.2016.1154108} {doi:
-  10.1080/00031305.2016.1154108}
+Wasserstein RL, Lazar NA. The {ASA} Statement on p-Values: Context, Process, and Purpose. {\it Am Stat.} 2016\string;70(2)\string:129--133.
+\newblock \href {\doibase 10.1080/00031305.2016.1154108} {doi: 10.1080/00031305.2016.1154108}
 
 \bibitem{emberson2014}
-Emberson J, Lees KR, Lyden P, et al. Effect of treatment delay, age, and stroke
-  severity on the effects of intravenous thrombolysis with alteplase for acute
-  ischaemic stroke: a meta-analysis of individual patient data from randomised
-  trials. {\it Lancet.} 2014\string;384(9958)\string:1929--1935.
-\newblock \href {\doibase 10.1016/S0140-6736(14)60584-5} {doi:
-  10.1016/S0140-6736(14)60584-5}
-
-\bibitem{ist3_2012}
-{IST-3 collaborative group} . The benefits and harms of intravenous
-  thrombolysis with recombinant tissue plasminogen activator within 6 h of
-  acute ischaemic stroke ({IST-3}): a randomised controlled trial. {\it
-  Lancet.} 2012\string;379(9834)\string:2352--2363.
-\newblock \href {\doibase 10.1016/S0140-6736(12)60768-5} {doi:
-  10.1016/S0140-6736(12)60768-5}
+Emberson J, Lees KR, Lyden P, et al. Effect of treatment delay, age, and stroke severity on the effects of intravenous thrombolysis with alteplase for acute ischaemic stroke: a meta-analysis of individual patient data from randomised trials. {\it Lancet.} 2014\string;384(9958)\string:1929--1935.
+\newblock \href {\doibase 10.1016/S0140-6736(14)60584-5} {doi: 10.1016/S0140-6736(14)60584-5}
 
 \bibitem{ist1_2000}
-Group ISTC. The International Stroke Trial ({IST}): a randomised trial of
-  aspirin, subcutaneous heparin, both, or neither among 19{,}185 patients with
-  acute ischaemic stroke. {IST} Collaborative Group. {\it Lancet.}
-  1997\string;349(9065)\string:1569--1581.
-\newblock \href {\doibase 10.1016/S0140-6736(97)04011-7} {doi:
-  10.1016/S0140-6736(97)04011-7}
+Group ISTC. The International Stroke Trial ({IST}): a randomised trial of aspirin, subcutaneous heparin, both, or neither among 19{,}185 patients with acute ischaemic stroke. {IST} Collaborative Group. {\it Lancet.} 1997\string;349(9065)\string:1569--1581.
+\newblock \href {\doibase 10.1016/S0140-6736(97)04011-7} {doi: 10.1016/S0140-6736(97)04011-7}
 
 \bibitem{chen2000}
-Chen ZM, Sandercock P, Pan HC, et al. Indications for early aspirin use in
-  acute ischemic stroke: {A} systematic review and meta-analysis. {\it Stroke.}
-  2000\string;31(6)\string:1240--1249.
-\newblock \href {\doibase 10.1161/01.STR.31.6.1240} {doi:
-  10.1161/01.STR.31.6.1240}
+Chen ZM, Sandercock P, Pan HC, et al. Indications for early aspirin use in acute ischemic stroke: {A} systematic review and meta-analysis. {\it Stroke.} 2000\string;31(6)\string:1240--1249.
+\newblock \href {\doibase 10.1161/01.STR.31.6.1240} {doi: 10.1161/01.STR.31.6.1240}
+
+\bibitem{ist3_2012}
+{IST-3 collaborative group} . The benefits and harms of intravenous thrombolysis with recombinant tissue plasminogen activator within 6 h of acute ischaemic stroke ({IST-3}): a randomised controlled trial. {\it Lancet.} 2012\string;379(9834)\string:2352--2363.
+\newblock \href {\doibase 10.1016/S0140-6736(12)60768-5} {doi: 10.1016/S0140-6736(12)60768-5}
 
 \bibitem{bareinboim2016}
-Bareinboim E, Pearl J. Causal inference and the data-fusion problem. {\it Proc
-  Natl Acad Sci USA.} 2016\string;113(27)\string:7345--7352.
-\newblock \href {\doibase 10.1073/pnas.1510507113} {doi:
-  10.1073/pnas.1510507113}
+Bareinboim E, Pearl J. Causal inference and the data-fusion problem. {\it Proc Natl Acad Sci USA.} 2016\string;113(27)\string:7345--7352.
+\newblock \href {\doibase 10.1073/pnas.1510507113} {doi: 10.1073/pnas.1510507113}
 
 \bibitem{andrews2000}
-Andrews DWK. Inconsistency of the Bootstrap when a Parameter is on the Boundary
-  of the Parameter Space. {\it Econometrica.}
-  2000\string;68(2)\string:399--405.
-\newblock \href {\doibase 10.1111/1468-0262.00114} {doi:
-  10.1111/1468-0262.00114}
+Andrews DWK. Inconsistency of the Bootstrap when a Parameter is on the Boundary of the Parameter Space. {\it Econometrica.} 2000\string;68(2)\string:399--405.
+\newblock \href {\doibase 10.1111/1468-0262.00114} {doi: 10.1111/1468-0262.00114}
 
 \end{thebibliography}

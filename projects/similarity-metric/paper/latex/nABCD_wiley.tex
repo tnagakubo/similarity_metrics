@@ -37,7 +37,7 @@
 \corres{Corresponding Author, Department Name, Institution Name, Address. \email{corresponding@institution.edu}}
 
 \abstract[Abstract]{%
-The ICH E17 guideline recommends regional pooling in multi-regional clinical trials (MRCTs) based on similarity of effect modifier (EM) distributions, but provides no specific methodology for quantifying such similarity. Existing approaches focus on location differences (standardized mean difference) or lack interpretable scales (Kolmogorov--Smirnov statistic). We propose the normalized Area Between Cumulative Distributions (nABCD), defined as the Wasserstein-1 distance between two distributions divided by twice the pooled interquartile range. Unlike the standardized mean difference, nABCD captures differences in variance, shape, and skewness---precisely the distributional features that may drive treatment effect heterogeneity through non-linear effect modification. When prior evidence on the conditional average treatment effect (CATE) sensitivity is available, nABCD enables clinical calibration: the maximum potential regional treatment effect difference ($\Delta_{\max}$) can be expressed as a function of nABCD, the pooled IQR, and the CATE sensitivity parameter, with bootstrap confidence intervals quantifying estimation uncertainty. Simulation studies across eight scenarios at sample sizes typical in MRCT regional subgroups demonstrated satisfactory bias and coverage of the percentile bootstrap estimator. Application to two complementary historical datasets illustrates the framework's practical flexibility: the First International Stroke Trial (IST-1; $n = 19{,}435$, 31 countries) demonstrates Case A (EM unknown) using global-scale geographic heterogeneity and $L^*$ sensitivity analysis, while the Third International Stroke Trial (IST-3; $n = 3{,}035$, 8 countries) demonstrates Case B (EM identified) with clinical calibration. In IST-3, nABCD detected distributional differences invisible to the standardized mean difference, yielding markedly different clinical conclusions depending on CATE sensitivity: NIHSS (nABCD $= 0.240$) translated to substantial potential heterogeneity ($\Delta_{\max} = 5.02$ percentage points), whereas age (nABCD $= 0.285$), despite larger distributional magnitude, had limited impact ($\Delta_{\max} = 0.47$ percentage points). Treatment delay exemplified nABCD's distributional sensitivity: Norway--Portugal showed SMD $\approx 0$ yet nABCD $= 0.069$, a divergence from scale and shape differences alone. The nABCD framework fills a methodological gap in ICH E17 implementation by providing a principled distributional comparison measure with an optional clinical calibration pathway, supporting evidence-based pooling decisions across the spectrum from EM-unknown to EM-identified scenarios.}
+The ICH E17 guideline recommends regional pooling in multi-regional clinical trials (MRCTs) based on similarity of effect modifier (EM) distributions, but provides no quantitative methodology. We propose the normalized Area Between Cumulative Distributions (nABCD), a planning-stage dissimilarity index defined as the Wasserstein-1 distance divided by twice the pooled interquartile range. Unlike the standardized mean difference (SMD), nABCD captures differences in variance, shape, and skewness---distributional features that may drive treatment effect heterogeneity through non-linear effect modification. Because nABCD requires only baseline EM distributions, it can be computed from any representative data source, including prior trials, disease registries, and real-world evidence databases---enabling a common planning scenario in which a small-sample region identifies suitable pooling partners before the trial begins. When prior evidence on conditional average treatment effect (CATE) sensitivity is available, clinical calibration translates nABCD into maximum potential regional treatment effect differences ($\Delta_{\max}$) with bootstrap confidence intervals. Simulation studies across eight scenarios demonstrated satisfactory bias and coverage of the percentile bootstrap estimator for non-negligible distributional differences ($\text{nABCD} \geq 0.1$) at $n \geq 100$ per region. Application to two publicly available stroke trial datasets illustrates both common planning scenarios: Case~A (EM unknown; IST-1, 31 countries) using sensitivity analysis, and Case~B (EM identified; IST-3, 8 countries) using clinical calibration. The IST-3 results demonstrate that similar distributional magnitudes can yield markedly different clinical conclusions: NIHSS (nABCD $= 0.240$, $\Delta_{\max} = 5.02$ percentage points) versus age (nABCD $= 0.285$, $\Delta_{\max} = 0.47$ percentage points), underscoring that clinical calibration---not nABCD magnitude alone---should guide pooling decisions. The nABCD framework fills a methodological gap in ICH E17 implementation, supporting evidence-based pooling decisions from any representative population data source.}
 
 \keywords{multi-regional clinical trial; ICH E17; effect modifier; Wasserstein distance; regional pooling; distributional similarity}
 
@@ -71,6 +71,8 @@ An effect modifier is a baseline patient characteristic---such as age, disease s
 
 Despite the regulatory importance of EM distributional similarity, current practice lacks a standardized quantitative methodology. The ICH E17 guideline provides no specific metric, threshold, or statistical procedure for determining when distributions are ``similar enough.'' Recent regulatory guidance has highlighted this gap. Song et al., writing from the China NMPA perspective on ICH E17 implementation, note the challenge of operationalizing pooling criteria without quantitative tools.\cite{song2025} Long et al.\ further discuss basic considerations for consistency evaluation under ICH E17.\cite{long2025}
 
+A common operational scenario motivating quantitative tools is the small-sample region seeking pooling partners. For example, a sponsor conducting a global MRCT may enrol only 50--80 patients in a particular country---insufficient for standalone regional efficacy assessment. Regional pooling with countries sharing similar EM distributions can resolve this, but the pooling rationale requires evidence that the partner regions' patient populations are ``similar enough.'' The nABCD framework directly addresses this need by providing a quantitative basis for identifying suitable pooling partners at the planning stage.
+
 Current approaches to assessing distributional similarity have significant limitations (Table~\ref{tab:limitations}). The standardized mean difference, while widely used for baseline covariate comparisons,\cite{austin2011} fundamentally cannot detect differences in variance or distributional shape---precisely the types of differences that may drive treatment effect heterogeneity through effect modification.
 
 \begin{table}[ht]
@@ -92,7 +94,7 @@ This paper addresses the methodological gap by proposing the \emph{normalized Ar
 How can we estimate distributional similarity between regions in a scale-free manner, and translate that estimate into clinically interpretable information about potential treatment effect heterogeneity?
 \end{quote}
 
-The emphasis is on \emph{estimation and clinical interpretation}, not hypothesis testing. We seek to provide regulatory scientists with quantitative tools that inform deliberation, not with binary accept/reject rules. This design philosophy reflects the ICH E17 principle that pooling decisions require contextual judgment rather than mechanical application of thresholds.
+The emphasis is on \emph{estimation and clinical interpretation}, not hypothesis testing. We seek to provide regulatory scientists with quantitative tools that inform deliberation, not with binary accept/reject rules. This design philosophy reflects the ICH E17 principle that pooling decisions require contextual judgment rather than mechanical application of thresholds. Importantly, because nABCD operates on baseline EM distributions rather than treatment outcomes, it functions as a \emph{planning-stage} tool: the required distributional data can be sourced from prior clinical trials, disease registries, electronic health records, or other real-world evidence (RWE) databases---any data source that provides representative samples of the target population in each candidate region.
 
 The nABCD index quantifies the total area between two cumulative distribution functions, normalized by the pooled interquartile range to achieve scale-free interpretation. The framework offers four contributions:
 
@@ -105,7 +107,7 @@ The nABCD index quantifies the total area between two cumulative distribution fu
 
 We focus on continuous effect modifiers, for which the first Wasserstein distance provides a natural and theoretically grounded measure of distributional dissimilarity. Categorical or mixed-type effect modifiers (e.g., genotype, race, prior treatment history) require alternative distance measures and are beyond the scope of this work.
 
-The remainder of this paper is organized as follows. Section~\ref{sec:methods} presents the methodological framework. Section~\ref{sec:simulation} describes a comprehensive simulation study. Section~\ref{sec:application} demonstrates the framework using publicly available individual patient data from the IST-3 stroke trial, framed as a prospective planning exercise for a hypothetical thrombolytic MRCT. Section~\ref{sec:discussion} discusses implications, limitations, and future directions.
+The remainder of this paper is organized as follows. Section~\ref{sec:methods} presents the methodological framework. Section~\ref{sec:simulation} describes a comprehensive simulation study. Section~\ref{sec:application} demonstrates the framework using publicly available individual patient data from two international stroke trials as representative data sources, illustrating both EM-unknown and EM-identified planning scenarios. Section~\ref{sec:discussion} discusses implications, limitations, and future directions.
 
 %==============================================================================
 \section{Methods}\label{sec:methods}
@@ -213,6 +215,15 @@ When regulatory agencies require a formal decision rule, the estimation framewor
 
 The clinical calibration procedure is demonstrated with real clinical trial data in Section~\ref{sec:application}, where two candidate effect modifiers with contrasting levels of CATE sensitivity evidence illustrate both full calibration and planning-stage assessment workflows.
 
+\subsubsection{Sensitivity Analysis When $L$ Is Unknown}\label{sec:sensitivity}
+
+When $L$ cannot be estimated from prior data---the most common situation at the MRCT planning stage---the clinical calibration framework supports two complementary approaches. First, the reference benchmarks (Table~\ref{tab:benchmarks}) provide an initial assessment of distributional magnitude without requiring $L$. Second, a reverse sensitivity analysis asks: \emph{what value of $L$ would be required for a given nABCD to produce a clinically meaningful $\Delta_{\max}$?} Rearranging equation~(\ref{eq:delta_max}):
+\begin{equation}
+L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}},
+\label{eq:lstar}
+\end{equation}
+where $\Delta_{\text{clin}}$ is a pre-specified clinically important treatment effect difference (e.g., the overall treatment effect or the non-inferiority margin). If $L^*$ exceeds the largest plausible CATE sensitivity for the EM under consideration, the distributional difference is unlikely to produce meaningful treatment effect heterogeneity, regardless of the true $L$. This reverse calculation is demonstrated in Case~A of Section~\ref{sec:application}.
+
 \subsubsection{Reference Benchmarks}
 
 When prior knowledge of $L$ is unavailable, the benchmarks in Table~\ref{tab:benchmarks} provide a convenience reference for initial assessment. These labels describe \emph{distributional magnitude} only and should not be conflated with clinical significance: as Sections~\ref{sec:inference} and~\ref{sec:application} demonstrate, a ``large'' nABCD for a weak effect modifier may carry less clinical consequence than a ``moderate'' nABCD for a strong effect modifier, because CATE sensitivity $L$ determines how distributional distance translates into treatment effect heterogeneity.
@@ -221,12 +232,12 @@ When prior knowledge of $L$ is unavailable, the benchmarks in Table~\ref{tab:ben
 \caption{Reference benchmarks for nABCD values when CATE sensitivity $L$ is unknown.\label{tab:benchmarks}}
 \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lll@{}}
 \toprule
-\textbf{nABCD Range} & \textbf{Interpretation} & \textbf{Suggested Action} \\
+\textbf{nABCD Range} & \textbf{Distributional Magnitude} & \textbf{Calibration Guidance} \\
 \midrule
-$< 0.05$ & Negligible difference & Pooling broadly supportable \\
-$0.05$--$0.15$ & Small difference & Pooling generally acceptable \\
-$0.15$--$0.30$ & Moderate difference & Proceed with clinical calibration \\
-$> 0.30$ & Large difference & Clinical calibration essential \\
+$< 0.05$ & Negligible & Clinical calibration unlikely to reveal meaningful $\Delta_{\max}$ \\
+$0.05$--$0.15$ & Small & Calibration recommended if $L$ is available \\
+$0.15$--$0.30$ & Moderate & Calibration important; interpret in clinical context \\
+$> 0.30$ & Large & Calibration essential before pooling deliberation \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
@@ -253,7 +264,7 @@ We designed eight systematic scenarios for methodological validation, examining 
 \textbf{ID} & \textbf{Description} & \textbf{Distribution 1} & \textbf{Distribution 2} & \textbf{True nABCD} \\
 \midrule
 S1 & Null (identical) & $N(50, 10^2)$ & $N(50, 10^2)$ & 0.000 \\
-S2 & Location 0.2$\sigma$ & $N(50, 10^2)$ & $N(52, 10^2)$ & 0.074 \\
+S2 & Location 0.2$\sigma$ & $N(50, 10^2)$ & $N(52, 10^2)$ & 0.073 \\
 S3 & Location 0.5$\sigma$ & $N(50, 10^2)$ & $N(55, 10^2)$ & 0.180 \\
 S4 & Location 1.0$\sigma$ & $N(50, 10^2)$ & $N(60, 10^2)$ & 0.328 \\
 S5 & Scale 1.5$\times$ & $N(50, 10^2)$ & $N(50, 15^2)$ & 0.122 \\
@@ -392,7 +403,7 @@ Table~\ref{tab:smd} compares the sensitivity of nABCD and SMD to different types
 S3 (Location) & $0.183 \pm 0.048$ & $0.50 \pm 0.14$ & Both detect \\
 S5 (Scale only) & $0.136 \pm 0.033$ & $0.00 \pm 0.14$ & Only nABCD detects \\
 S6 (Shape only) & $0.070 \pm 0.025$ & $0.00 \pm 0.14$ & Only nABCD detects \\
-S7 (Skew only) & $0.311 \pm 0.047$ & $0.00 \pm 0.14$ & Only nABCD detects \\
+S7 (Skew only) & $0.312 \pm 0.048$ & $0.00 \pm 0.14$ & Only nABCD detects \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
@@ -407,13 +418,13 @@ S7 (Skew only) & $0.311 \pm 0.047$ & $0.00 \pm 0.14$ & Only nABCD detects \\
 
 In summary, the simulation study across eight scenarios demonstrates that the nABCD estimator provides reliable estimation with the following properties at sample sizes typical in MRCT regional subgroups:
 \begin{enumerate}[1.]
-\item \emph{Bias}: Less than 0.02 for most non-null scenarios at $n \geq 100$, with S4 showing persistent bias of $-0.04$ due to boundary effects at large true values
-\item \emph{Coverage}: 0.87--0.98 at $n \geq 100$ for most scenarios; new scenarios S7 (skew) and S8 (location + scale) achieved coverage between 0.93--0.95
+\item \emph{Bias}: Less than 0.02 for most non-null scenarios at $n \geq 100$; positive bias is largest near the boundary (S1: 0.065, S6: 0.046 at $n = 100$) and negligible for scenarios with true nABCD above 0.1 (S3: 0.003, S4: 0.003 at $n = 100$)
+\item \emph{Coverage}: 0.88--0.96 at $n \geq 100$ for scenarios with true nABCD $\geq 0.1$ (S3--S5, S7, S8); S7 (skew) and S8 (location + scale) achieved coverage between 0.93--0.95
 \item \emph{Precision}: RMSE below 0.06 and CI width below 0.19 at $n \geq 100$
 \item \emph{Sensitivity}: Captures location, scale, and shape differences where SMD is limited to location only
 \end{enumerate}
 
-Scenario S3 (0.5$\sigma$ location shift, true nABCD $= 0.186$) exemplifies the operating characteristics at clinically relevant effect sizes: bias was negligible ($-0.002$ at $n = 100$), coverage was nominal (0.949), and CI width (0.18) translated to a $\Delta_{\max}$ CI width of $2 \times 0.01 \times 11 \times 0.18 = 0.040$ (4.0\%pt) when calibrated with $L = 0.01$/pt and IQR $= 11$ (NIHSS-scale parameters)---a level of precision sufficient for informed regulatory deliberation.
+Scenario S3 (0.5$\sigma$ location shift, true nABCD $= 0.180$) exemplifies the operating characteristics at clinically relevant effect sizes: bias was negligible ($+0.003$ at $n = 100$), coverage was nominal (0.951), and CI width (0.18) translated to a $\Delta_{\max}$ CI width of $2 \times 0.01 \times 11 \times 0.18 = 0.040$ (4.0\%pt) when calibrated with $L = 0.01$/pt and IQR $= 11$ (NIHSS-scale parameters)---a level of precision sufficient for informed regulatory deliberation.
 
 These estimation properties ensure that nABCD, when combined with the clinical calibration framework, provides $\Delta_{\max}$ estimates of sufficient quality for regulatory deliberation. We recommend $n \geq 100$ per region for reliable estimation and inference.
 
@@ -421,7 +432,7 @@ These estimation properties ensure that nABCD, when combined with the clinical c
 \section{Application: Hypothetical Thrombolytic MRCT}\label{sec:application}
 %==============================================================================
 
-We illustrate the nABCD framework through a hypothetical scenario grounded in publicly available clinical trial data. A sponsor is developing a novel thrombolytic agent (drug~A) for acute ischaemic stroke and is planning a Phase~3 MRCT. Based on the Emberson et al.\cite{emberson2014} IPD meta-analysis of nine alteplase trials ($n = 6{,}756$), NIHSS baseline stroke severity (treatment $\times$ EM interaction $p = 0.06$) and age ($p = 0.53$) are identified as candidate EMs for the thrombolytic class. Because drug~A belongs to the same pharmacological class as alteplase, similar EM profiles are assumed. To characterize country-level EM distributions for the planned MRCT regions, the sponsor uses publicly available IPD from the Third International Stroke Trial (IST-3)\cite{ist3_2012} as a historical reference. We emphasize that nABCD serves as one piece of evidence supporting pooling decisions, not a standalone decision criterion.
+We illustrate the nABCD framework through a hypothetical scenario grounded in publicly available data. A sponsor is developing a novel thrombolytic agent (drug~A) for acute ischaemic stroke and is planning a Phase~3 MRCT. At this planning stage, the sponsor requires regional EM distribution data to inform pooling decisions. Such data need not come from clinical trials: disease registries (e.g., SITS-MOST for stroke), electronic health records, epidemiological databases, or any representative population data source would suffice. Here, we use publicly available individual patient data (IPD) from two international stroke trials as convenient, well-documented data sources. Based on the Emberson et al.\cite{emberson2014} IPD meta-analysis of nine alteplase trials ($n = 6{,}756$), NIHSS baseline stroke severity (treatment $\times$ EM interaction $p = 0.06$) and age ($p = 0.53$) are identified as candidate EMs for the thrombolytic class. We emphasize that nABCD serves as one piece of evidence supporting pooling decisions, not a standalone decision criterion.
 
 \subsection{Application Data and Scenario Design}\label{sec:app_scenario}
 
@@ -438,7 +449,7 @@ To illustrate both common planning scenarios, we employ two complementary histor
 \noindent
 \textbf{IST-3 (Case B)}: The Third International Stroke Trial (2000--2012) randomized 3{,}035 patients with acute ischaemic stroke to alteplase ($n = 1{,}515$) or control ($n = 1{,}520$) across 12 countries.\cite{ist3_2012} The Emberson et al.\cite{emberson2014} IPD meta-analysis identified confirmed EMs in thrombolytic trials: NIHSS (interaction $p = 0.06$), age ($p = 0.53$), and treatment delay ($p = 0.016$). IST-3 provides the necessary prior evidence to estimate CATE sensitivity and calibrate nABCD into clinically meaningful $\Delta_{\max}$ values. We included the eight IST-3 countries with $n \geq 50$ patients (Table~\ref{tab:ist3_baseline}).
 
-Both trials are now retrospectively analyzed as methodological illustrations of the nABCD framework. Neither was prospectively designed as an MRCT, yet together they exemplify the decision environment sponsors face during actual Phase~3 planning.
+Both trials serve as methodological illustrations of the nABCD framework. Neither was designed as an MRCT, but their publicly available IPD provides representative baseline EM distributions across diverse geographic regions---precisely the type of data a sponsor would assemble, from any available source, during MRCT planning. Together they exemplify the decision environment sponsors face during actual Phase~3 planning.
 
 \begin{table}[ht]
 \caption{IST-3 baseline characteristics by country.\label{tab:ist3_baseline}}
@@ -532,7 +543,7 @@ For the maximum-nABCD pair (Poland--Portugal, nABCD $= 0.240$), $\Delta_{\max}$ 
 
 \subsubsection{Distributional Assessment: Age}\label{sec:case_b_age}
 
-Age has weak evidence as an EM: Emberson et al.\cite{emberson2014} reported $p = 0.53$, and the IST-3 data confirm non-significance ($p = 0.614$). The estimated CATE sensitivity is small ($L_{\text{mean}} = 0.00065$/yr) with wide uncertainty.
+Age has weak evidence as an EM: Emberson et al.\cite{emberson2014} reported $p = 0.53$, and the IST-3 data confirm non-significance ($p = 0.614$). The estimated CATE sensitivity is small ($L_{\text{mean}} = 0.00065$/yr) with wide uncertainty. Because $L$ is not statistically distinguishable from zero, the following calibration is illustrative---demonstrating how the framework behaves for a weak EM---rather than a basis for clinical decision-making.
 
 Given the weak EM evidence, the primary assessment uses nABCD with the reference benchmarks (Table~\ref{tab:benchmarks}). The maximum pairwise nABCD for age was 0.285 (Sweden--Belgium), falling in the ``moderate'' range. Despite exhibiting the largest distributional difference of any candidate EM, the clinical calibration yields a small $\Delta_{\max}$: 0.47\%pt using $L_{\text{mean}}$, or 0.65\%pt using $L_{\max}$ (Table~\ref{tab:ist3_calibration}). Even at $2 L_{\text{mean}}$, $\Delta_{\max}$ remains 0.94\%pt---below the overall treatment effect. Age distributional differences across the planned regions are unlikely to generate clinically meaningful treatment effect heterogeneity.
 
@@ -554,20 +565,20 @@ Treatment delay exemplifies nABCD's distributional sensitivity most clearly. Tre
 
 Several limitations of this application should be noted:
 \begin{enumerate}[1.]
-\item \emph{Post-hoc analysis}: IST-3 was not designed as an MRCT; this application demonstrates methodological feasibility, not prospective use.
+\item \emph{Illustrative data sources}: IST-1 and IST-3 were not designed as MRCTs; they serve as convenient publicly available data sources for methodological demonstration. In practice, sponsors would assemble regional EM distributions from the most representative and current sources available, which may include disease registries, electronic health records, or other RWE databases.
 \item \emph{Small-sample countries}: Belgium ($n = 73$) and Portugal ($n = 82$) fall below the recommended $n \geq 100$; pairs involving these countries have wider bootstrap CIs.
 \item \emph{Transferability of $L$}: CATE sensitivity was estimated from alteplase data, not drug~A; the class-transferability assumption requires justification and sensitivity analysis as demonstrated above.
-\item \emph{Temporal generalizability}: IST-3 enrolled patients during 2000--2011; demographic shifts in stroke populations may limit applicability to current trial planning.
-\item \emph{Geographic coverage}: Countries in IST-3 may not match planned Phase~3 regions; the EM distributions serve only as historical reference.
+\item \emph{Temporal generalizability}: IST data span 1991--2011; demographic shifts in stroke populations may limit applicability to current trial planning. This limitation is specific to the illustrative datasets, not to the nABCD framework itself, which can be applied to contemporary data sources.
+\item \emph{Geographic coverage}: Countries in IST-1/IST-3 may not match planned Phase~3 regions; the EM distributions serve only as historical reference.
 \end{enumerate}
 
 %==============================================================================
 \section{Discussion}\label{sec:discussion}
 %==============================================================================
 
-We developed and validated nABCD, a normalized dissimilarity index for comparing effect modifier distributions in MRCTs. Our contributions include: (1)~the nABCD index itself, which combines Wasserstein-1 distance with IQR normalization and percentile bootstrap inference to capture full distributional differences---including scale, shape, and skewness---that conventional measures such as SMD miss; (2)~a theoretical framework connecting nABCD to treatment effect heterogeneity through the Kantorovich--Rubinstein duality and the heterogeneity bound; (3)~clinical calibration as a conditional tool that translates nABCD into context-specific $\Delta_{\max}$ assessments when CATE sensitivity $L$ is estimable; (4)~comparative demonstration with real trial data illustrating both scenarios: Case A (IST-1, 31 countries, EM unknown) demonstrating geographic heterogeneity with $L^*$ sensitivity analysis, and Case B (IST-3, 8 countries, EM identified) demonstrating clinical calibration, including the striking finding that treatment delay's highly skewed distribution produces SMD $\approx 0$ between Norway and Portugal yet nABCD $= 0.069$---a divergence driven entirely by scale and shape; and (5)~framework flexibility demonstrated through the ranking-reversal principle: age exhibited the largest distributional difference (nABCD $= 0.285$) yet smallest clinical impact ($\Delta_{\max} = 0.47$\%pt), while NIHSS showed moderate distributional difference (nABCD $= 0.240$) but substantially larger clinical impact ($\Delta_{\max} = 5.02$\%pt).
+We developed nABCD, a normalized dissimilarity index that combines Wasserstein-1 distance with IQR normalization to capture full distributional differences---including scale, shape, and skewness---that conventional measures such as SMD miss. The clinical calibration framework translates these distributional differences into context-specific $\Delta_{\max}$ assessments when CATE sensitivity $L$ is estimable. The IST-3 application demonstrated a key practical implication: rankings by distributional magnitude and clinical impact can diverge---age exhibited the largest nABCD ($0.285$) yet smallest $\Delta_{\max}$ ($0.47$\%pt), while NIHSS showed moderate nABCD ($0.240$) but substantially larger $\Delta_{\max}$ ($5.02$\%pt)---underscoring that clinical calibration, not nABCD magnitude alone, should guide pooling decisions.
 
-The nABCD index addresses limitations of current approaches. Compared to SMD, nABCD captures full distributional differences including variance and shape. Our simulation demonstrated that nABCD captured scale differences (S5), shape differences (S6), and skewness differences (S7) where SMD estimates remained near zero; the IST-3 application confirmed this pattern with real data, where treatment delay's skewed distribution produced SMD $\approx 0$ between Norway and Portugal despite nABCD $= 0.069$. Compared to the KS statistic, nABCD provides a direct connection to treatment effect heterogeneity through the heterogeneity bound (equation~\ref{eq:delta_max}), enabling clinical calibration rather than purely statistical assessment. Compared to visual inspection, nABCD is objective and reproducible. Our approach is conceptually distinct from treatment effect consistency assessment methods\cite{quan2010} which evaluate whether observed treatment effects agree across regions; nABCD operates upstream, quantifying similarity in the effect modifier distributions that may drive such heterogeneity.
+Compared to existing approaches, nABCD offers three advantages. First, it captures distributional differences invisible to SMD: our simulation confirmed that scale (S5), shape (S6), and skewness (S7) differences produced near-zero SMD but non-negligible nABCD, and the IST-3 application revealed the same pattern with real data (treatment delay: SMD $\approx 0$ between Norway and Portugal, nABCD $= 0.069$). Second, unlike the KS statistic, nABCD connects directly to treatment effect heterogeneity through the heterogeneity bound (equation~\ref{eq:delta_max}), enabling clinical calibration rather than purely statistical assessment. Third, unlike visual inspection, nABCD is objective, reproducible, and amenable to bootstrap inference. Our approach is conceptually distinct from treatment effect consistency assessment methods\cite{quan2010} which evaluate whether observed treatment effects agree across regions; nABCD operates upstream, quantifying similarity in the EM distributions that may drive such heterogeneity.
 
 The clinical calibration procedure introduced in Section~\ref{sec:inference} represents a departure from fixed-threshold approaches. Cohen's $d$ benchmarks (small = 0.2, medium = 0.5, large = 0.8) have been widely criticized for context-free application, and we deliberately avoid this pattern. Instead, the heterogeneity bound provides a principled mechanism to translate nABCD into clinically meaningful units, respecting the ICH E17 principle that ``similar enough'' is context-dependent. A natural consequence of clinical calibration is that rankings by distributional distance and clinical impact may differ---as observed in IST-3, where age had the largest nABCD yet the smallest $\Delta_{\max}$---because the same distributional difference carries different clinical weight depending on CATE sensitivity. More broadly, the IST-3 application demonstrated that the same nABCD framework serves different purposes depending on the availability of CATE sensitivity evidence: for NIHSS, where $L$ was estimable, full calibration translated distributional differences into clinically interpretable $\Delta_{\max}$ values; for age, where $L$ was uncertain, nABCD with reference benchmarks (Table~\ref{tab:benchmarks}) provided the primary assessment of distributional similarity. This connection draws on transportability theory\cite{pearl2011,bareinboim2016} to relate distributional distance to potential treatment effect heterogeneity.
 
@@ -581,6 +592,8 @@ Based on our findings, we offer the following recommendations for practitioners:
 \end{enumerate}
 
 In practice, multiple candidate EMs may be evaluated simultaneously. The nABCD framework assesses each EM separately, and we recommend reporting $\Delta_{\max}$ and its CI for every candidate EM across all region pairs. To arrive at an overall pooling recommendation, trial designers may adopt a conservative approach based on the maximum $\Delta_{\max}$ across all EMs and region pairs, or they may take a totality-of-evidence approach in which the collection of $\Delta_{\max}$ values, together with their uncertainties and the reliability of each $L$ estimate, informs a holistic judgment. The choice between these strategies depends on the regulatory context: for applications where a formal pooling criterion is required, the maximum $\Delta_{\max}$ provides a defensible worst-case assessment; for advisory settings where pooling decisions are informed by clinical deliberation, the full set of calibrated results offers a richer evidence base.
+
+A distinctive practical advantage of the nABCD framework is its compatibility with diverse data sources. Because nABCD requires only baseline EM distributions---not treatment outcomes---regional distributional data can be assembled from prior clinical trials, disease registries, electronic health records, epidemiological databases, or other real-world evidence (RWE) sources. This data-source flexibility is increasingly relevant as regulatory agencies promote the use of RWE in drug development (ICH E6(R3)). The representativeness of the data source with respect to the target trial population is a prerequisite for valid nABCD estimation, regardless of the data origin.
 
 The practical availability of CATE sensitivity $L$ varies across settings. When $L$ is estimable from prior trials or meta-analyses in the same therapeutic area, full clinical calibration is possible, as demonstrated for NIHSS in the IST-3 application. At the MRCT planning stage, however, $L$ is often uncertain---particularly for novel agents or therapeutic areas lacking subgroup analyses. In such cases, nABCD with reference benchmarks (Table~\ref{tab:benchmarks}) provides the primary assessment of distributional similarity, supplemented by sensitivity analysis over plausible $L$ ranges. Importantly, nABCD's core value as a distributional measure---capturing scale, shape, and skewness differences invisible to SMD---holds regardless of whether $L$ is available; clinical calibration enhances but does not replace this distributional assessment.
 
