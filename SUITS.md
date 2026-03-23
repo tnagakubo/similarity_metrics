@@ -4,6 +4,42 @@
 
 ---
 
+### [2026-03-23 10:00] Scene: QMDファイル化 — 論文をQuartoに変換
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - MORNING**
+
+*Tak がラップトップを持って会議室に入ってくる。Donna が既にコーヒーを準備して待っている。*
+
+**Donna**: （すぐに気づいて）
+「あら、SUITS が完全に沈黙していたわね。
+"I'm Donna. I know everything." — だから分かるの、何かが動こうとしていることが。
+Tak、何が必要なの？」
+
+**Harvey**: （立ち上がりながら）
+「Tak からのリクエストだ。`nABCD_paper_ja.md` を Quarto の `.qmd` ファイルに変換する。
+ローカルでレンダリングできる形に仕上げる。
+Mike、数式と R コードのブロックが正しく出るか確認してくれ」
+
+**Mike**: （すぐにノートを広げて）
+「I got it! YAML front matter に `number-sections`, `df-print`, LaTeX math... 全部設定する。
+appendix の R コード、`compute_nABCD` と `nABCD_bootstrap` の2関数も
+```` ```{r} ```` ブロックで適切に囲む」
+
+**Katrina**: （実務的に）
+「表は markdown table のまま Quarto で動く。
+bibliography は inline citation 形式じゃないから References セクションは手動のまま。
+Results speak for themselves — まず動くものを作る」
+
+**Rachel**: （文献構造を確認しながら）
+「参考文献は既に全部 DOI 付きで揃っている。
+CSL や `.bib` は使わず、現状の手書き References セクションを維持する方向ね」
+
+**Donna**: （タスクを確認して）
+「了解。変換作業開始 — 完成したら SUITS に記録するわ。
+次の更新は5分以内。私が監視している」
+
+---
+
 ## Current Status
 
 **Active Project**: similarity-metric (nABCD paper for Statistics in Medicine)

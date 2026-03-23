@@ -128,7 +128,15 @@
       "WebFetch(domain:www.icpsr.umich.edu)",
       "WebFetch(domain:biomarkers.bsd.uchicago.edu)",
       "WebFetch(domain:catalog.ihsn.org)",
-      "mcp__ide__executeCode"
+      "mcp__ide__executeCode",
+      "Bash(lualatex --version)",
+      "Bash(xelatex --version)",
+      "Bash(Rscript -e \"cat\\(tinytex::tinytex_root\\(\\)\\)\")",
+      "Bash(Rscript -e \"cat\\(system.file\\(package=''tinytex''\\)\\)\")",
+      "Bash(Rscript -e \"tinytex::tlmgr\\(''--version''\\)\")",
+      "Bash(pandoc --version)",
+      "Bash(quarto --version which xelatex)",
+      "Bash(quarto check:*)"
     ]
   }
 }
