@@ -129,6 +129,7 @@
       "WebFetch(domain:biomarkers.bsd.uchicago.edu)",
       "WebFetch(domain:catalog.ihsn.org)",
       "mcp__ide__executeCode",
+<<<<<<< HEAD
       "WebFetch(domain:www.vivli.org)",
       "WebFetch(domain:physionet.org)",
       "Bash(echo '{\"prompt\":\"test message\"}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/remind-suits-on-prompt.sh\" 2>&1; echo \"EXIT: $?\")",
@@ -155,6 +156,16 @@
       "WebFetch(domain:rdrr.io)",
       "WebFetch(domain:r-packages.io)",
       "Bash(cat:*)"
+=======
+      "Bash(lualatex --version)",
+      "Bash(xelatex --version)",
+      "Bash(Rscript -e \"cat\\(tinytex::tinytex_root\\(\\)\\)\")",
+      "Bash(Rscript -e \"cat\\(system.file\\(package=''tinytex''\\)\\)\")",
+      "Bash(Rscript -e \"tinytex::tlmgr\\(''--version''\\)\")",
+      "Bash(pandoc --version)",
+      "Bash(quarto --version which xelatex)",
+      "Bash(quarto check:*)"
+>>>>>>> 82f437d6deabde06fad666d92517f34fc0574bed
     ]
   }
 }
