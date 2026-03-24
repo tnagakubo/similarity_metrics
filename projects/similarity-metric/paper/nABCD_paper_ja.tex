@@ -1,0 +1,1500 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  a4paper,
+  11pt]{ltjsarticle}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\usepackage{luatexja-fontspec}
+\setmainjfont[BoldFont=Harano Aji Mincho Bold]{Harano Aji Mincho}
+\setsansjfont[BoldFont=Harano Aji Gothic Bold]{Harano Aji Gothic}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{margin=25mm}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={多地域臨床試験における地域プーリングのための効果修飾因子類似性の定量化},
+  pdfkeywords={多地域臨床試験, ICH
+E17, 効果修飾因子, Wasserstein距離, 地域プーリング, 分布類似性},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{多地域臨床試験における地域プーリングのための効果修飾因子類似性の定量化}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Quantifying Effect Modifier Similarity for Regional Pooling in
+Multi-Regional Clinical Trials}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{要旨（Abstract）}\label{ux8981ux65e8abstract}
+\addcontentsline{toc}{section}{要旨（Abstract）}
+
+ICH
+E17ガイドラインは、多地域臨床試験（MRCT）における地域プーリングを効果修飾因子（EM）分布の類似性に基づいて行うことを推奨しているが、そのような類似性を定量化する具体的な方法論は示されていない。既存のアプローチは位置差（標準化平均差;
+SMD）に焦点を当てるか、解釈可能なスケールを欠いている（Kolmogorov--Smirnov統計量）。本論文では、\textbf{正規化累積分布間面積}（normalized
+Area Between Cumulative Distributions;
+nABCD）を提案する。nABCDは、2つの分布間のWasserstein-1距離をプールされた四分位範囲の2倍で除したものとして定義される。SMDとは異なり、nABCDは分散、形状、歪度の差を捕捉する------非線形の効果修飾を通じて治療効果異質性を駆動しうる分布的特徴を余すことなく検出する。
+
+CATE感度に関する事前エビデンスが利用可能な場合、nABCDは\textbf{臨床較正}（clinical
+calibration）を可能にする：地域間の最大潜在的治療効果差（\(\Delta_{\max}\)）は、nABCD、プールIQR、およびCATE感度パラメータの関数として表現でき、ブートストラップ信頼区間が推定の不確実性を定量化する。
+
+8つのシナリオにわたるシミュレーション研究は、MRCT地域サブグループに典型的なサンプルサイズにおいて、パーセンタイルブートストラップ推定量の十分なバイアスおよびカバレッジを実証した。IST-3（Third
+International Stroke Trial;
+\(n=3{,}035\)、8ヵ国）への適用は、仮想的血栓溶解薬MRCTの前向き計画演習として構成し、nABCDがSMDでは検出できない分布差を捕捉すること、および臨床較正がCATE感度に応じて著しく異なる結論をもたらすことを実証した：NIHSSの分布差（nABCD
+= 0.240）は実質的な潜在的治療効果異質性（\(\Delta_{\max}\) =
+5.02\%pt）に変換され、年齢の分布差は、より大きな分布的隔たり（nABCD =
+0.285）にもかかわらず、限定的な臨床的影響（\(\Delta_{\max}\) =
+0.47\%pt）に留まった。
+
+nABCDフレームワークは、原理に基づく分布比較指標とオプショナルな臨床較正パスウェイを提供することにより、ICH
+E17実装における方法論的ギャップを埋め、エビデンスに基づくプーリング決定を支援する。
+
+\textbf{キーワード}: 多地域臨床試験、ICH
+E17、効果修飾因子、Wasserstein距離、地域プーリング、分布類似性
+
+\section*{略語一覧}\label{ux7565ux8a9eux4e00ux89a7}
+\addcontentsline{toc}{section}{略語一覧}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4000}}@{}}
+\caption{略語一覧}\label{tbl-abbreviations}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+略語
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+英語
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+日本語
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+略語
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+英語
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+日本語
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ABCD & Area Between Cumulative Distributions & 累積分布間面積 \\
+CATE & Conditional Average Treatment Effect & 条件付き平均治療効果 \\
+CDF & Cumulative Distribution Function & 累積分布関数 \\
+CI & Confidence Interval & 信頼区間 \\
+EM & Effect Modifier & 効果修飾因子 \\
+EU & European Union & 欧州連合 \\
+ICH & International Council for Harmonisation &
+医薬品規制調和国際会議 \\
+IPD & Individual Patient Data & 個別患者データ \\
+IQR & Interquartile Range & 四分位範囲 \\
+IST-3 & Third International Stroke Trial & 第3回国際脳卒中試験 \\
+KL & Kullback--Leibler & カルバック--ライブラー \\
+KS & Kolmogorov--Smirnov & コルモゴロフ--スミルノフ \\
+MRCT & Multi-Regional Clinical Trial & 多地域臨床試験 \\
+nABCD & Normalized Area Between Cumulative Distributions & 正規化ABCD \\
+NIHSS & National Institutes of Health Stroke Scale &
+NIH脳卒中スケール \\
+NMPA & National Medical Products Administration & 国家薬品監督管理局 \\
+OHS & Oxford Handicap Scale & オックスフォード障害スケール \\
+SMD & Standardized Mean Difference & 標準化平均差 \\
+\end{longtable}
+
+\section{序論（Introduction）}\label{ux5e8fux8ad6introduction}
+
+多地域臨床試験（MRCT）は、単一のプロトコルのもとで複数の国または規制地域にわたって実施される試験であり、グローバル医薬品開発の標準パラダイムとなっている
+(Chen et al.~2010; Quan et
+al.~2010)。このアプローチは、タイムラインの加速、より広い一般化可能性、世界中の患者への新規治療への早期アクセスという実質的な利点を提供する。2017年に採択されたICH
+E17ガイドラインは、MRCTの計画・設計の原則を確立し、治療効果がターゲット集団全体に一般化可能であるという中心的な仮定を置いた
+(ICH E17)。
+
+治療成果における地域的一貫性を評価する能力を高めるための主要戦略が、\textbf{地域プーリングアプローチ}であり、類似の患者特性を持つ地域を解析のためにグループ化する
+(ICH E17)。ICH
+E17ガイドラインは、プーリング決定を効果修飾因子（EM）分布の類似性に基づいて行うことを明示的に推奨している：
+
+\begin{quote}
+「疾患および/または研究対象薬物に関連する内因性および/または外因性因子に関して、被験者が\textbf{十分に類似している}と考えられる場合、地域はランダム化および/または解析のためにプーリングしてもよい。」（ICH
+E17, Section 2.2.5）
+\end{quote}
+
+\textbf{効果修飾因子}（effect
+modifier）とは、年齢、疾患重症度、遺伝子マーカーなどのベースライン患者特性であり、治療効果がサブグループ間で異なるものをいう。例えば、若年患者が高齢患者より治療に良好に反応する場合、年齢は効果修飾因子である。このような異質性が存在する場合、たとえ薬剤が個人レベルで同一に作用しても、異なる患者構成を持つ地域は異なる平均治療効果を観察しうる。若年患者が多い地域は高齢患者が多い地域より大きな効果を示すが、これは薬剤の作用が異なるからではなく、\textbf{患者ミックスが異なるため}である。この基本的な関係は、EM分布の類似性が地域プーリングの妥当性にとってなぜ重要であるかを強調している。
+
+EM分布の類似性の規制上の重要性にもかかわらず、現在の実務には標準化された定量的方法論が欠如している。ICH
+E17ガイドラインは分布が「十分に類似している」かどうかを判断するための特定の指標、閾値、統計的手順を提供していない。最近の規制ガイダンスはこのギャップを指摘している。Songら
+(2025)は、中国NMPAの観点からICH
+E17実装における定量的ツールなしにプーリング基準を運用する課題を指摘し、Longら
+(2025)はICH E17に基づく一貫性評価の基本的考慮事項を議論している。
+
+現行の分布類似性評価アプローチには重大な限界がある（Table~\ref{tbl-limitations}）。標準化平均差（SMD）は、ベースライン共変量比較に広く用いられている
+(Austin 2011)
+が、分散や分布形状の差を根本的に検出できない------まさに効果修飾を通じて治療効果異質性を駆動しうるタイプの差異である。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\caption{分布類似性評価における現行アプローチの限界}\label{tbl-limitations}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+方法
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+限界
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+方法
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+限界
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+目視検査 & 主観的、再現性がない \\
+標準化平均差（SMD） & 位置のみ捕捉、スケールと形状を無視 \\
+Kolmogorov--Smirnov統計量 &
+意思決定のための解釈可能なスケールを持たない \\
+\end{longtable}
+
+本論文は、この方法論的ギャップに対処するため、地域間のEM分布を比較するための指標である\textbf{正規化累積分布間面積}（nABCD）と、分布差を治療成果スケール上の潜在的治療効果異質性に変換する\textbf{臨床較正フレームワーク}を提案する。本研究の研究課題は：
+
+\begin{quote}
+\textbf{地域間の分布類似性をスケールフリーな方法で推定し、その推定値を潜在的治療効果異質性に関する臨床的に解釈可能な情報に変換するにはどうすればよいか？}
+\end{quote}
+
+重点は\textbf{推定と臨床的解釈}にあり、仮説検定ではない。二値的な受容/棄却ルールではなく、審議に情報を提供する定量的ツールを規制科学者に提供することを目指す。この設計哲学は、プーリング決定が閾値の機械的適用ではなく文脈的判断を必要とするというICH
+E17の原則を反映している。
+
+nABCD指標は、2つの累積分布関数間の総面積を、プールされた四分位範囲で正規化して、スケールフリーな解釈を実現する。nABCDフレームワークの貢献は4つである：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{完全な分布比較}:
+  Wasserstein-1距離は位置、スケール、形状の差を同時に捕捉する (Panaretos
+  \& Zemel 2019)。
+\item
+  \textbf{スケールフリーな推定}:
+  IQRによる正規化は無次元の指標を与え、異なるスケールで測定されたEM間の比較を可能にする。ブートストラップ信頼区間が推定の不確実性を定量化する。
+\item
+  \textbf{臨床較正}: 異質性バウンド（Proposition
+  2）を通じて、nABCD推定値を各EMの臨床的文脈に特異的な潜在的治療効果差（\(\Delta_{\max}\)）に変換でき、主要評価項目スケール上で表現できる
+  (Pearl \& Bareinboim 2011)。
+\item
+  \textbf{感度分析}: 較正がCATE感度パラメータ
+  \(L\)（不確実でありうる）に依存するため、フレームワークは \(L\)
+  にわたる感度分析を自然に収容し、単一の二値検定よりも豊富なエビデンス基盤を意思決定に提供する。
+\end{enumerate}
+
+本研究は連続型の効果修飾因子に焦点を当て、これに対してWasserstein距離が自然かつ理論的に根拠のある分布的非類似性の指標を提供する。カテゴリカルまたは混合型の効果修飾因子（例：遺伝子型、人種、先行治療歴）は代替的な距離指標を必要とし、本研究の範囲外である。
+
+以下の構成で述べる。第2節で方法論的フレームワーク、第3節で包括的なシミュレーション研究、第4節でIST-3脳卒中試験の公開IPDを用いた仮想的血栓溶解薬MRCTの前向き計画演習としてのフレームワーク実証、第5節で含意・限界・今後の方向を議論する。
+
+\section{方法（Methods）}\label{ux65b9ux6cd5methods}
+
+\subsection{nABCD指標}\label{nabcdux6307ux6a19}
+
+効果修飾因子（EM）は、治療効果がサブグループ間で変動するベースライン患者特性である。条件付き平均治療効果（CATE）を
+\(\tau(x) = E[Y(1) - Y(0) \mid X = x]\) と表記すると、\(X\)
+はEMである。この関数が非定数であるとき、地域 \(r\)
+で観察される平均治療効果は、その地域におけるEMの分布 \(F_r\)
+に依存する：
+
+\[\bar{\tau}_r = \int \tau(x) \, dF_r(x) \tag{1}\]
+
+分布差と治療効果異質性の関係を定式化するため、CATE関数がLipschitz定数
+\(L\)
+で有界であるとする。地域平均治療効果の差は以下のようにバウンドされる：
+
+\[|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot W_1(F_1, F_2) \tag{2}\]
+
+ここで \(W_1(F_1, F_2)\)
+は地域1と地域2におけるEM分布間のWasserstein-1距離を表す。
+
+Wasserstein-1距離（Earth Mover's
+Distanceとも呼ばれる）は、2つの累積分布関数 \(F\) と \(G\)
+の間で以下のように定義される (Villani 2009)：
+
+\[W_1(F, G) = \int_{-\infty}^{\infty} |F(x) - G(x)| \, dx \tag{3}\]
+
+幾何学的に、これは2つのCDFで囲まれた総面積に等しい（図1参照）。SMDとは異なり、Wasserstein距離は分散、歪度、その他の分布的特徴の変化に応答する
+(Panaretos \& Zemel 2019)。代替的な距離指標よりも \(W_1\)
+を選択する理由は、Kantorovich--Rubinstein双対定理 (Villani 2009)
+にあり、これが分布距離と治療効果異質性の間の理論的橋渡しを提供する。この接続は3つのステップで進む：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{\(W_1\) とCDF面積}:
+  一次元では、\(W_1(F_1, F_2) = \int |F_1(x) - F_2(x)| \, dx\)（式3）、すなわち2つのCDF間の総面積である。
+\item
+  \textbf{Kantorovich--Rubinstein双対性}:
+  \(W_1(F_1, F_2) = \sup_{\|f\|_{\text{Lip}} \leq 1} |\int f \, dF_1 - \int f \, dF_2|\)、すなわち
+  \(W_1\) はすべての1-Lipschitz関数にわたる期待値差の最大値に等しい
+  (Villani 2009)。
+\item
+  \textbf{CATEへの適用}: Lipschitz定数 \(L\) を持つ任意のCATE関数は
+  \(\tau/L\) が1-Lipschitzであることを満たすため、双対性から直ちに
+  \(|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot W_1(F_1, F_2)\)、すなわち式(2)が得られる。
+\end{enumerate}
+
+この双対性は \(W_1\) に固有のものである。\(W_2\)
+距離はガウス分布族に対する閉形式の表現を許すが、Lipschitz関数を介したこの双対的特徴づけを持たず、したがって臨床較正フレームワークの中心となる異質性バウンドを提供できない。同様に、Kullback--Leibler（KL）ダイバージェンスのような情報理論的ダイバージェンスには構造的限界がある：KLダイバージェンスは非対称（\(D_{\text{KL}}(P \| Q) \neq D_{\text{KL}}(Q \| P)\)）であり、地域プーリング決定の対称的性質と矛盾する；サポートが重複しない場合に無限大に発散し、これは経験分布でよく生じる；そして最も重要なことに、Lipschitzバウンド特性を欠いている------KLダイバージェンスにはLipschitz連続CATE関数に対する治療効果異質性への直接的な類似の結果がない
+(Gibbs \& Su
+2002)。Wasserstein距離は三角不等式を満たし弱収束を距離化する真の距離であり
+(Villani 2009)、臨床較正フレームワークにとって自然な選択となる。
+
+\textbf{正規化累積分布間面積}（nABCD）は、Wasserstein-1距離をプールされた四分位範囲の2倍で正規化したものとして定義される：
+
+\[\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}} \tag{4}\]
+
+ここでプールIQRは結合サンプルから計算される。IQRに基づく正規化は、\textbf{スケールフリーな解釈}を可能にし、外れ値に頑健であり、分布差を散布度の単位で表現する。
+
+IQRは、標準偏差やRousseeuw and Croux (1993) の \(Q_n\)
+統計量のような代替的なスケール推定量に代えて選択した。IQRはEM分布の中心50\%の散布度として直接解釈可能であり、非正規分布変数に対して中央値とIQRを日常的に報告する臨床研究者にとって馴染みのある量である。\(Q_n\)
+はより高い崩壊点（50\%
+vs.~25\%）とより高いガウス効率を提供するが、高い崩壊点はここでは不要である：EM分布は集団レベルの量であり、汚染された測定データではないため、\(Q_n\)
+の頑健性の優位性はこの設定では実現しない。
+
+\textbf{Proposition 1（非負性）}:
+有限の一次モーメントを持つ分布に対して、\(\text{IQR}_{\text{pooled}} > 0\)（すなわちプール分布が非退化）である限り、\(\text{nABCD} \geq 0\)
+であり、\(F_1 = F_2\) の場合にのみ等号が成立する。
+
+\textbf{Proposition 2（異質性との接続）}: CATE関数がLipschitz定数 \(L\)
+を持つとき、
+
+\[|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2) \tag{5}\]
+
+\textbf{証明}:
+式(4)を式(2)に代入すると、\(|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot W_1(F_1, F_2) = L \cdot 2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2) = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)\)
+が得られる。
+
+\subsection{推定}\label{ux63a8ux5b9a}
+
+地域1からのサンプル \(\{X_{1,i}\}_{i=1}^{n_1}\)
+および地域2からのサンプル \(\{X_{2,j}\}_{j=1}^{n_2}\)
+が与えられたとき、nABCDは経験分布関数を用いて推定される：
+
+\[\widehat{\text{nABCD}} = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{2 \cdot \widehat{\text{IQR}}_{\text{pooled}}} \tag{6}\]
+
+ここで \(x_{(1)} < \cdots < x_{(n_1+n_2)}\) は結合順序統計量である。
+
+\textbf{計算量}:
+\(O((n_1 + n_2) \log(n_1 + n_2))\)、ソーティングが支配的。
+
+推論にはノンパラメトリック\textbf{パーセンタイルブートストラップ}を用い
+(del Barrio et al.~1999; Sommerfeld \& Munk 2018)、\(B = 2{,}000\)
+反復を使用する。一次元では、\(W_1\) はCDF間の \(L_1\) 距離に等しく、del
+Barrio et al.~(1999) がブラウン橋の汎関数への
+\(\sqrt{n}\)-収束を確立した；二標本への拡張は
+\(\sqrt{n_1 n_2/(n_1+n_2)}\)
+のレートで標準的議論により従う。\(F_1 \neq F_2\) のとき、\(L_1\)
+汎関数のHadamard微分は線形であり------\(F_1(x)-F_2(x)\)
+の符号はほとんど至る所で一定である------したがって通常のノンパラメトリックブートストラップは一致性を持つ
+(Sommerfeld \& Munk 2018)。\(F_1 = F_2\)
+の近傍では微分が非線形（凸集合上の上限）となり、素朴なブートストラップは穏やかなアンダーカバレッジを示しうるが、これは帰無近傍シナリオで観察された有限サンプルの挙動と整合的である（第3節参照）。
+
+\subsection{解釈と臨床較正}\label{ux89e3ux91c8ux3068ux81e8ux5e8aux8f03ux6b63}
+
+nABCDの中心的特徴は、Proposition
+2を通じた治療効果異質性との接続である。この接続は、固定閾値のみに依存するのではなく、臨床的に根拠のある解釈フレームワークの基盤を提供する。
+
+\subsubsection{異質性バウンドによる臨床較正}\label{ux7570ux8ceaux6027ux30d0ux30a6ux30f3ux30c9ux306bux3088ux308bux81e8ux5e8aux8f03ux6b63}
+
+式(5)より、EM分布差に起因する地域平均治療効果の最大潜在差は：
+
+\[\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2) \tag{7}\]
+
+ここで \(L\) はCATE関数 \(\tau(x)\)
+のEMに関するLipschitz定数であり、そのEMに対する治療効果の臨床的感度を反映する。感度パラメータとしての
+\(L\) のこの使用法は、Armstrong and Kolesár (2021)
+が提案したフレームワークに従い、妥当なLipschitz定数の範囲にわたる信頼区間の報告を推奨したものである。所与のEMに対して、\(L\)
+は事前知識、パイロットデータ、または公表されたサブグループ解析から推定できる。
+
+\textbf{臨床較正の手順}：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  候補EMを特定し、各EMについて地域ペアごとにブートストラップCIつきのnABCDを計算する。
+\item
+  各EMについて、事前知識から \(L\)
+  を推定またはバウンドする（例：サブグループ解析で治療効果がEMの単位変化あたり
+  \(\Delta\tau\) 変動する場合、\(L \approx \Delta\tau / \Delta x\)）。
+\item
+  式(7)を用いて \(\Delta_{\max}\)
+  を計算する。これは分布差に起因する最悪ケースの治療効果差を表す。
+\item
+  nABCD信頼区間から \(\Delta_{\max}\)
+  のブートストラップCIを導出する：\([\Delta_{\max,L},\, \Delta_{\max,U}] = 2L \cdot \text{IQR}_{\text{pooled}} \cdot [\text{nABCD}_{L},\, \text{nABCD}_{U}]\)。これは推論的不確実性を臨床スケール上で直接表現する。
+\item
+  \(\Delta_{\max}\)
+  とそのCIを臨床的文脈------例えば全体治療効果、非劣性マージン、最小臨床的重要差------とともに報告する。この情報により、試験設計者と規制科学者は、二値的な受容/棄却決定ではなく、エビデンスの総体を考慮してプーリングに関する臨床的判断を行うことができる。
+\end{enumerate}
+
+この推定中心のアプローチは、プーリング決定を二値的仮説検定の枠組みに強制することを意図的に避けている。その理由は3つある。第一に、ICH
+E17ガイドラインは「十分に類似」を本質的に文脈依存的と記述しており、この判断を棄却閾値に還元することは単純化のリスクがある。第二に、\(L\)
+の不確実性は \(\Delta_{\max}\)
+自体が感度分析の対象であることを意味し（第4節）、二値検定はこの層状の不確実性を自然に収容できない。第三に、二分的な統計的決定を超えることへの最近の呼びかけ
+(Wasserstein 2016) と整合的に、CIつきの \(\Delta_{\max}\)
+を提示することは、p値や棄却/非棄却の結果よりも規制審議に豊富な情報を提供する。
+
+規制当局が正式な意思決定ルールを必要とする場合、推定フレームワークは適応可能である：\(\Delta_{\max}\)
+の95\% CIの上限が事前に指定された臨床マージン \(\Delta_{\text{clin}}\)
+を下回る場合にプーリングを許容可能と宣言する。ただし、これはnABCDフレームワークの補助的な使用として推奨する。
+
+臨床較正の手順は、第4節において実際の臨床試験データを用いて実証する。そこでは、CATE感度のエビデンスが対照的な2つの候補効果修飾因子が、完全な較正ワークフローと計画段階の評価ワークフローの双方を示す。
+
+\subsubsection{参照ベンチマーク}\label{ux53c2ux7167ux30d9ux30f3ux30c1ux30deux30fcux30af}
+
+\(L\) の事前知識が利用できない場合、Table~\ref{tbl-benchmarks}
+のベンチマークが初期評価のための便宜的参照を提供する。これらのラベルは\textbf{分布の大きさ}のみを記述するものであり、臨床的有意性と混同すべきではない：第2.3節および第4節が示すように、弱い効果修飾因子に対する「大きな」nABCDは、強い効果修飾因子に対する「中程度の」nABCDよりも臨床的帰結が小さいことがありうる。なぜなら、CATE感度
+\(L\) が分布距離をいかに治療効果異質性に変換するかを決定するためである。
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\(L\)
+が未知の場合のnABCD値の参照ベンチマーク。これらのベンチマークは初期参照点としてのみ機能する；臨床的解釈は常に較正フレームワークを通じて進めるべきである。}\label{tbl-benchmarks}\tabularnewline
+\toprule\noalign{}
+nABCD範囲 & 解釈 & 推奨アクション \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+nABCD範囲 & 解釈 & 推奨アクション \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textless{} 0.05 & 無視できる差 (Negligible) &
+プーリングは広く支持可能 \\
+0.05--0.15 & 小さな差 (Small) & プーリングは一般的に許容可能 \\
+0.15--0.30 & 中程度の差 (Moderate) & 臨床較正を実施 \\
+\textgreater{} 0.30 & 大きな差 (Large) & 臨床較正が必須 \\
+\end{longtable}
+
+\section{シミュレーション研究（Simulation
+Study）}\label{ux30b7ux30dfux30e5ux30ecux30fcux30b7ux30e7ux30f3ux7814ux7a76simulation-study}
+
+nABCD推定量の推定特性------バイアス、変動性、ブートストラップ信頼区間のカバレッジ確率------を評価するためにシミュレーション研究を実施した。これらの特性は臨床較正フレームワークにとって不可欠であり、nABCDの信頼性の高い推定が
+\(\Delta_{\max}\)
+推定値の質を直接決定する。MRCT応用に関連するシナリオの範囲にわたって性能を評価した。
+
+\subsection{シミュレーション設計}\label{ux30b7ux30dfux30e5ux30ecux30fcux30b7ux30e7ux30f3ux8a2dux8a08}
+
+\subsubsection{シナリオ}\label{ux30b7ux30caux30eaux30aa}
+
+方法論的検証のために8つの系統的シナリオを設計し、位置、スケール、形状、およびそれらの組み合わせにわたる制御された分布差を検討した。Table~\ref{tbl-scenarios}
+にこれらのシナリオとその真のnABCD値を要約する。
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{臨床的動機付けによるシミュレーションシナリオ。S6のガンマ分布は形状パラメータ25、レートパラメータ0.5であり、平均50、標準偏差10を与える。S7の対数正規は平均50、CV
+\(\approx\)
+53\%に合わせてパラメータ化。S8は位置とスケールの差を組み合わせ、最も現実的なMRCTパターンを表す。}\label{tbl-scenarios}\tabularnewline
+\toprule\noalign{}
+ID & 記述 & 分布1 & 分布2 & 真のnABCD \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+ID & 記述 & 分布1 & 分布2 & 真のnABCD \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+S1 & 帰無（同一） & \(N(50, 10^2)\) & \(N(50, 10^2)\) & 0.000 \\
+S2 & 位置 \(0.2\sigma\) & \(N(50, 10^2)\) & \(N(52, 10^2)\) & 0.074 \\
+S3 & 位置 \(0.5\sigma\) & \(N(50, 10^2)\) & \(N(55, 10^2)\) & 0.186 \\
+S4 & 位置 \(1.0\sigma\) & \(N(50, 10^2)\) & \(N(60, 10^2)\) & 0.372 \\
+S5 & スケール \(1.5\times\) & \(N(50, 10^2)\) & \(N(50, 15^2)\) &
+0.148 \\
+S6 & 形状（ガンマ） & \(N(50, 10^2)\) & Gamma\((25, 0.5)\) & 0.067 \\
+S7 & 歪み（対数正規） & \(N(50, 10^2)\) & LogN\((\mu, \sigma)\) &
+0.302 \\
+S8 & 位置＋スケール & \(N(50, 10^2)\) & \(N(55, 15^2)\) & 0.175 \\
+\end{longtable}
+
+\subsubsection{シミュレーションパラメータ}\label{ux30b7ux30dfux30e5ux30ecux30fcux30b7ux30e7ux30f3ux30d1ux30e9ux30e1ux30fcux30bf}
+
+各シナリオについて、各地域 \(n = 50, 100, 200\)
+のサンプルサイズで生成し、MRCT地域サブグループに典型的なサンプルサイズを反映した。シナリオ--サンプルサイズの各組み合わせについて10,000反復を実施し、操作特性の安定した推定を確保した（報告される全比率のモンテカルロ標準誤差は0.005未満）。ブートストラップ信頼区間は
+\(B = 2{,}000\) リサンプルを用いて計算した。全シミュレーションはR
+version 4.3.3で実施した。
+
+\subsubsection{評価指標}\label{ux8a55ux4fa1ux6307ux6a19}
+
+推定中心のフレームワークと整合的に、以下を評価した：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{バイアス}:
+  \(\text{Mean}(\widehat{\text{nABCD}}) - \text{nABCD}\)
+\item
+  \textbf{二乗平均平方根誤差（RMSE）}:
+  \(\sqrt{\text{Mean}[(\widehat{\text{nABCD}} - \text{nABCD})^2]}\)
+\item
+  \textbf{カバレッジ確率}: 95\%ブートストラップCIが真値を含む割合
+\item
+  \textbf{CI幅}: ブートストラップCIの平均幅（推定精度を反映）
+\end{enumerate}
+
+\subsection{結果}\label{ux7d50ux679c}
+
+\subsubsection{点推定とカバレッジ}\label{ux70b9ux63a8ux5b9aux3068ux30abux30d0ux30ecux30c3ux30b8}
+
+Table~\ref{tbl-bias}
+にnABCD推定量のバイアスをシナリオおよびサンプルサイズ別に示す。推定量は帰無仮説下（S1）で正のバイアスを示し、バイアスは
+\(n=50\) の0.093から \(n=200\)
+の0.047に減少した。この正のバイアスはWasserstein距離の非負性に起因する：真のnABCDがゼロであっても、サンプリング変動が正の推定値を生成する。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2778}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3056}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1389}}@{}}
+\caption{シナリオおよびサンプルサイズ別のnABCD推定量のバイアス。バイアスは
+\(\text{Mean}(\widehat{\text{nABCD}}) - \text{nABCD}\)
+として定義。\(B = 2{,}000\)
+ブートストラップリサンプルによる10,000反復に基づく結果。}\label{tbl-bias}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+シナリオ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+真のnABCD
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+バイアス \(n\)=50
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+バイアス \(n\)=100
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+バイアス \(n\)=200
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+シナリオ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+真のnABCD
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+バイアス \(n\)=50
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+バイアス \(n\)=100
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+バイアス \(n\)=200
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+S1（帰無） & 0.000 & +0.093 & +0.066 & +0.047 \\
+S2（\(0.2\sigma\)） & 0.074 & +0.038 & +0.018 & +0.007 \\
+S3（\(0.5\sigma\)） & 0.186 & +0.004 & −0.002 & −0.005 \\
+S4（\(1.0\sigma\)） & 0.372 & −0.039 & −0.041 & −0.042 \\
+S5（スケール） & 0.148 & +0.002 & −0.012 & −0.019 \\
+S6（形状） & 0.067 & +0.028 & +0.003 & −0.015 \\
+S7（歪み） & 0.302 & +0.019 & +0.009 & +0.005 \\
+S8（位置+スケール） & 0.175 & +0.024 & +0.011 & +0.006 \\
+\end{longtable}
+
+ほとんどの非帰無シナリオで \(n \geq 100\)
+においてバイアスの絶対値は0.02未満であり、実用的なサンプルサイズでの十分な点推定性能を示す。S4（\(1.0\sigma\)
+の位置シフト）では、nABCDの理論的上限範囲近傍での有界性を反映して、約
+−0.04
+の負のバイアスがすべてのサンプルサイズで持続した（図2参照）。新しいシナリオS7（対数正規）とS8（位置+スケール）は、中間範囲の真のnABCD値に期待されるパターンに従い、サンプルサイズの増加に伴い縮小する小さな正のバイアスを示した。
+
+Table~\ref{tbl-coverage}
+に95\%ブートストラップ信頼区間のカバレッジ確率を示す。\(n \geq 100\)
+では、ほとんどのシナリオでカバレッジは0.87--0.98の範囲内であり、S2は
+\(n = 100\) で中程度のアンダーカバレッジ（0.896）を示した。S4は \(n\)
+の増加に伴い漸進的なアンダーカバレッジを示し（\(n = 100\)
+で0.874、\(n = 200\)
+で0.740）、大きな分布差における持続的な負のバイアスに起因する。\(n = 50\)
+では、アンダーカバレッジがより顕著であり、特にS6（0.576）とS2（0.669）で、このサンプルサイズが信頼性のある推論には不十分であることを示す。
+
+カバレッジは形状シナリオ（S6）でサンプルサイズに対して非単調なパターンを示した：\(n = 50\)
+で0.576、\(n = 100\) で0.949、\(n = 200\) で0.997。\(n = 50\)
+の低いカバレッジはCI幅に対する大きな正のバイアスを反映し、\(n = 200\)
+のオーバーカバレッジは縮小するバイアス（−0.015）と、この小さな真値に対して相対的に広いまま残るCIの組み合わせを反映している。新しいシナリオS7（歪み）とS8（位置+スケール）は優れたカバレッジを示した：S7はすべてのサンプルサイズでほぼ名目どおりのカバレッジ（0.951--0.954）を達成し、S8はサンプルサイズの増加に伴い改善するわずかなアンダーカバレッジ（\(n=50\)
+で0.916から \(n=200\) で0.939）を示した。
+
+BCa（バイアス修正加速）信頼区間も評価した。BCa区間はすべてのシナリオでパーセンタイル区間より一貫して低いカバレッジを示し、最大の乖離はスケールおよび形状シナリオにあった（例：S5の
+\(n = 100\): パーセンタイル 0.979 vs.~BCa 0.841; S6の \(n = 200\):
+パーセンタイル 0.997 vs.~BCa
+0.493）。BCa修正はnABCDに対して過修正となるが、これは統計量がゼロ以下にバウンドされているため、加速パラメータが分位点調整を歪めるためである。これらの知見に基づき、\textbf{パーセンタイルブートストラップを主要推論方法として採用}した。
+
+報告されたすべてのカバレッジ確率のモンテカルロ標準誤差は10,000反復で0.005未満であり、シナリオおよびサンプルサイズ間の観察された差異がシミュレーションノイズではなく真の操作特性の差異を反映していることを保証する。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.4000}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2000}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2000}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2000}}@{}}
+\caption{95\%パーセンタイルブートストラップ信頼区間のカバレッジ確率。S1（帰無）のカバレッジは、真値0がパラメータ空間の境界上にあるため報告しない。S4（大効果）では、精度の向上が持続的な負のバイアスを明らかにすることにより、大サンプルサイズでカバレッジが低下した。}\label{tbl-coverage}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+シナリオ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+カバレッジ \(n\)=50
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+カバレッジ \(n\)=100
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+カバレッジ \(n\)=200
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+シナリオ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+カバレッジ \(n\)=50
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+カバレッジ \(n\)=100
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+カバレッジ \(n\)=200
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+S2（\(0.2\sigma\)） & 0.669 & 0.896 & 0.943 \\
+S3（\(0.5\sigma\)） & 0.950 & 0.949 & 0.951 \\
+S4（\(1.0\sigma\)） & 0.928 & 0.874 & 0.740 \\
+S5（スケール） & 0.962 & 0.979 & 0.933 \\
+S6（形状） & 0.576 & 0.949 & 0.997 \\
+S7（歪み） & 0.953 & 0.954 & 0.951 \\
+S8（位置+スケール） & 0.916 & 0.932 & 0.939 \\
+\end{longtable}
+
+\subsubsection{推定精度}\label{ux63a8ux5b9aux7cbeux5ea6}
+
+推定品質のシナリオおよびサンプルサイズにわたる要約を、カバレッジ確率と平均CI幅の両方で示す（図3参照）。
+
+Table~\ref{tbl-rmse} にRMSEと平均CI幅をシナリオ別に示す。RMSEは \(n\)
+の増加に伴い一貫して減少し、\(n = 200\)
+ですべてのシナリオで0.06未満の値に達した。平均CI幅は比例して狭まり、\(n = 100\)
+のCIは典型的に0.11--0.19
+nABCD単位にまたがる。臨床較正フレームワークでは、このCI幅は
+\(\Delta_{\max}\) に伝播する：例えば、\(L = 0.3\) かつ IQR = 1.5
+の場合、nABCDのCI幅0.13は
+\(2 \times 0.3 \times 1.5 \times 0.13 = 0.12\)\%
+HbA1cのCI幅に対応する------意味のある臨床較正に十分な精度水準である。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.3571}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1071}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1071}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1071}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1071}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1071}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1071}}@{}}
+\caption{シナリオおよびサンプルサイズ別のRMSEと平均CI幅。CI幅は10,000反復にわたる（上限
+− 下限）の平均として定義。}\label{tbl-rmse}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+シナリオ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+RMSE \(n\)=50
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+RMSE \(n\)=100
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+RMSE \(n\)=200
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+CI幅 \(n\)=50
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+CI幅 \(n\)=100
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+CI幅 \(n\)=200
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+シナリオ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+RMSE \(n\)=50
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+RMSE \(n\)=100
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+RMSE \(n\)=200
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+CI幅 \(n\)=50
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+CI幅 \(n\)=100
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+CI幅 \(n\)=200
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+S1（帰無） & 0.100 & 0.070 & 0.050 & 0.16 & 0.11 & 0.08 \\
+S2（\(0.2\sigma\)） & 0.060 & 0.043 & 0.032 & 0.18 & 0.13 & 0.11 \\
+S3（\(0.5\sigma\)） & 0.066 & 0.049 & 0.035 & 0.23 & 0.18 & 0.13 \\
+S4（\(1.0\sigma\)） & 0.073 & 0.060 & 0.052 & 0.24 & 0.17 & 0.12 \\
+S5（スケール） & 0.045 & 0.035 & 0.031 & 0.19 & 0.13 & 0.09 \\
+S6（形状） & 0.045 & 0.024 & 0.023 & 0.16 & 0.11 & 0.08 \\
+S7（歪み） & 0.070 & 0.048 & 0.034 & 0.27 & 0.19 & 0.13 \\
+S8（位置+スケール） & 0.062 & 0.043 & 0.031 & 0.22 & 0.16 & 0.12 \\
+\end{longtable}
+
+帰無仮説下（S1）では、正のバイアスによりCIがゼロから上方にシフトする。\(n = 50\)
+で平均推定値は0.093、平均CI幅は0.16であった；\(n = 200\)
+では平均推定値は0.047に減少し、平均CI幅は0.08であった。このバイアスは臨床較正に関連する：真の分布差がゼロのとき、推定量は小さな正の
+\(\Delta_{\max}\)
+を示唆する。実務者はこの保守的傾向に留意すべきであり、特に小さなサンプルサイズでは注意が必要である。
+
+\subsubsection{標準化平均差との比較}\label{ux6a19ux6e96ux5316ux5e73ux5747ux5deeux3068ux306eux6bd4ux8f03}
+
+Table~\ref{tbl-smd}
+はnABCDとSMDの異なるタイプの分布差に対する感度を比較する。両指標とも位置シフトに応答するが、SMDは分散と形状の差に鈍感である------まさに非線形CATE関数を通じて治療効果異質性を駆動しうるタイプの分布差である。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2083}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3542}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3125}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1250}}@{}}
+\caption{nABCD対SMDの感度比較（\(n=100\)）。SMDは平均の差のみに依存するため、分散・形状・歪度の差に対して鈍感である。}\label{tbl-smd}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+シナリオ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+nABCD (平均±SD)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+SMD (平均±SD)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+含意
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+シナリオ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+nABCD (平均±SD)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+SMD (平均±SD)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+含意
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+S3（位置） & \(0.184 \pm 0.049\) & \(0.50 \pm 0.14\) & 両方検出 \\
+S5（スケールのみ） & \(0.136 \pm 0.033\) & \(0.00 \pm 0.14\) &
+\textbf{nABCDのみ検出} \\
+S6（形状のみ） & \(0.070 \pm 0.024\) & \(0.00 \pm 0.14\) &
+\textbf{nABCDのみ検出} \\
+S7（歪みのみ） & \(0.311 \pm 0.047\) & \(0.00 \pm 0.14\) &
+\textbf{nABCDのみ検出} \\
+\end{longtable}
+
+（図4参照）
+
+\subsubsection{シミュレーション結果の要約}\label{ux30b7ux30dfux30e5ux30ecux30fcux30b7ux30e7ux30f3ux7d50ux679cux306eux8981ux7d04}
+
+要約すると、8つのシナリオにわたるシミュレーション研究は、nABCD推定量がMRCT地域サブグループに典型的なサンプルサイズにおいて、以下の特性で信頼性の高い推定を提供することを示した：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{バイアス}: ほとんどの非帰無シナリオで \(n \geq 100\)
+  において0.02未満。S4は大きな真値での境界効果により −0.04
+  の持続的バイアスを示す
+\item
+  \textbf{カバレッジ}: ほとんどのシナリオで \(n \geq 100\)
+  において0.87--0.98。新シナリオS7（歪み）とS8（位置+スケール）は0.93--0.95のカバレッジを達成
+\item
+  \textbf{精度}: \(n \geq 100\) でRMSEが0.06未満、CI幅が0.19未満
+\item
+  \textbf{感度}:
+  SMDが位置のみに限定されるのに対し、位置・スケール・形状の差を捕捉
+\end{enumerate}
+
+シナリオS3（\(0.5\sigma\) の位置シフト、真のnABCD =
+0.186）は、臨床的に関連する効果量での操作特性を例示する：バイアスは無視できる（\(n = 100\)
+で −0.002）、カバレッジは名目どおり（0.949）、CI幅（0.18）は
+\(L = 0.3\)、IQR = 1.5 で較正すると
+\(2 \times 0.3 \times 1.5 \times 0.18 = 0.16\)\% HbA1cの
+\(\Delta_{\max}\)
+CI幅に変換され------情報に基づく規制審議に十分な精度水準である。
+
+これらの推定特性は、nABCDが臨床較正フレームワークと組み合わされたとき、規制審議に十分な品質の
+\(\Delta_{\max}\) 推定値を提供することを保証する。\textbf{\(n \geq 100\)
+を各地域について推奨}する。
+
+\section{適用事例:
+多地域臨床試験計画における統合的シナリオ}\label{ux9069ux7528ux4e8bux4f8b-ux591aux5730ux57dfux81e8ux5e8aux8a66ux9a13ux8a08ux753bux306bux304aux3051ux308bux7d71ux5408ux7684ux30b7ux30caux30eaux30aa}
+
+nABCDフレームワークの実務的価値を示すため、同じ臨床領域（脳卒中）から得られた2つの相補的な国際共同試験データを用いた統合的なシナリオを提示する。スポンサーが急性虚血性脳卒中に対する新規血栓溶解薬の多地域臨床試験を計画する際、「どの地域のEM分布がプーリング戦略の変更を必要とするのか？」という問いに直面する。この質問への答えは、CATE感度に関する既知の情報に依存する：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{シナリオA（EM未同定）}:
+  治療×EM交互作用の事前エビデンスが不在または非有意の場合、分布異質性のみが意思決定を導く。これはMRCT計画時の最も一般的な状況である。
+\item
+  \textbf{シナリオB（EM同定）}:
+  事前エビデンスがEM状態を確認し、CATE感度が推定可能な場合、臨床較正が可能となり、分布差を臨床的影響に変換できる。
+\end{itemize}
+
+\textbf{IST-1（シナリオA）}:
+第1回国際脳卒中試験（1991--1996年）は19,435例の患者を5大陸31ヵ国にわたってアスピリン、ヘパリン、または対照群に無作為化した。本試験はEM検出を目的として設計されず；Chen
+et al.~(2000)
+は28サブグループにわたる有意な治療×EM交互作用を見つけなかった。IST-1の世界的範囲（インド、シンガポール、香港などアジア地域を含む）により、最小限の事前仮定の下での地理的分布異質性の評価が可能である。
+
+\textbf{IST-3（シナリオB）}:
+第3回国際脳卒中試験（2000--2012年）は急性虚血性脳卒中患者3,035例をアルテプラーゼまたは対照群に12ヵ国にわたって無作為化した。Emberson
+et al.~(2014)
+のIPDメタ解析は血栓溶解薬試験における確認されたEM（NIHSS、交互作用
+\(p=0.06\); 年齢 \(p=0.53\); 治療遅延
+\(p=0.016\)）を同定した。IST-3は、CATE感度の推定と、nABCDの臨床的に意味のある
+\(\Delta_{\max}\)
+値への較正に必要な事前エビデンスを提供する。私たちは\(n \geq 50\)のIST-3の8ヵ国を解析対象に含めた（Table~\ref{tbl-ist3-baseline}）。
+
+両試験は本現在、方法論的イラストレーションとして遡及的に解析される。いずれもMRCTとして前向きに設計されなかったが、実際のPhase
+3計画時にスポンサーが直面する意思決定環境を体現している。
+
+\subsection{統合シナリオとデータ:
+二層構造フレームワーク}\label{ux7d71ux5408ux30b7ux30caux30eaux30aaux3068ux30c7ux30fcux30bf-ux4e8cux5c64ux69cbux9020ux30d5ux30ecux30fcux30e0ux30efux30fcux30af}
+
+Third International Stroke
+Trial（IST-3）は、急性虚血性脳卒中患者3,035例を発症6時間以内にアルテプラーゼ（\(n=1{,}515\)）と対照群（\(n=1{,}520\)）に12ヵ国にわたって無作為化した国際共同試験である
+(IST-3 collaborative group
+2012)。IST-3はMRCTとして設計されたものではない；本論文では事後的な方法論的例示として使用し、その国レベルのデータをスポンサーがPhase
+3計画時に遭遇しうる地域EM分布の代理として扱う。\(n \geq 50\)
+の8ヵ国を解析対象に含めた（Table~\ref{tbl-ist3-baseline}）。
+
+候補EMは先行文献------特にEmberson et al.~(2014)
+のメタ解析------から同定され、薬剤AのPhase
+2データからではない。治療遅延（Emberson
+\(p=0.016\)）は3番目の候補EMとして含める；その高度に歪んだ分布（全体の歪度
+= 1.21、超過尖度 =
+20.0）は、nABCDとSMDの比較における自然なテストケースを提供する。
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{IST-3 国別ベースライン特性。UK が全体の48\%を占めた。Belgium
+(\(n=73\)) と Portugal (\(n=82\)) は推奨最小サンプルサイズ
+\(n \geq 100\) を下回る。}\label{tbl-ist3-baseline}\tabularnewline
+\toprule\noalign{}
+国 & \(n\) & 年齢, 平均 (SD) & 遅延, 平均 (SD) & NIHSS, 平均 (SD) \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+国 & \(n\) & 年齢, 平均 (SD) & 遅延, 平均 (SD) & NIHSS, 平均 (SD) \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+UK & 1,447 & 78.0 (12.2) & 4.1 (1.2) & 13.1 (6.9) \\
+Poland & 347 & 73.7 (13.1) & 4.6 (1.2) & 9.6 (6.4) \\
+Italy & 326 & 75.9 (12.2) & 4.2 (1.1) & 11.1 (6.6) \\
+Sweden & 297 & 81.0 (10.8) & 3.8 (1.3) & 10.0 (6.5) \\
+Norway & 204 & 76.1 (10.3) & 4.3 (1.8) & 11.9 (6.9) \\
+Australia & 179 & 74.7 (13.1) & 4.6 (1.1) & 14.4 (7.5) \\
+Portugal & 82 & 79.0 (11.5) & 4.3 (1.2) & 14.8 (6.0) \\
+Belgium & 73 & 76.1 (12.4) & 4.0 (1.1) & 10.9 (6.1) \\
+\end{longtable}
+
+\subsection{分布比較:
+nABCD対SMD}\label{ux5206ux5e03ux6bd4ux8f03-nabcdux5bfesmd}
+
+NIHSS、年齢、および治療遅延について全28ヵ国ペアのnABCDとSMD (Austin
+2011) を計算した。Table~\ref{tbl-nabcd-summary}
+にnABCDの結果を要約する。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1600}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1200}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1200}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1600}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1200}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1200}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2000}}@{}}
+\caption{IST-3
+における28ペアワイズ国比較のnABCD要約。歪度はプールサンプルから計算。治療遅延は最大の正の歪度と超過尖度（=
+20.0）を示す。}\label{tbl-nabcd-summary}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+EM候補
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+歪度
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+最小
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+中央値
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+平均
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+最大
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+最大ペア
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+EM候補
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+歪度
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+最小
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+中央値
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+平均
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+最大
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+最大ペア
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+年齢（歳） & \(-1.26\) & 0.039 & 0.103 & 0.123 & 0.285 &
+Sweden--Belgium \\
+NIHSS（スコア） & \(0.49\) & 0.027 & 0.101 & 0.113 & 0.240 &
+Poland--Portugal \\
+治療遅延（時間） & \(1.21\) & 0.026 & 0.098 & 0.107 & 0.195 &
+Sweden--Australia \\
+\end{longtable}
+
+治療遅延はnABCDとSMDの最も有益な比較を提供する。その高度に歪んだ重い裾の分布が、位置ベースの指標が誤解を招く状況を生み出すためである。28ペアにわたる
+\(|\text{SMD}|\)
+とnABCDのPearson相関は、治療遅延で0.91であり、年齢の0.95およびNIHSSの0.98と比較して低い------治療遅延のスケールおよび形状の国間異質性がより大きいことを反映している。
+
+Norway--Portugalペアは特に例証的である：両国はほぼ同一の平均治療遅延を持つ（4.34
+vs.~4.33時間; SMD =
+0.007）にもかかわらず、nABCDは0.069であり------SMDには見えない非自明な分布差を示す。この乖離は、Norwayの治療遅延分布が極端な右裾に支配されている（歪度
+= 6.76、範囲は最大24.3時間、SD =
+1.80）のに対し、Portugalの分布はよりコンパクトである（歪度 = −0.23、SD =
+1.21）ことに起因する。平均の差のみに依存するSMDは、これらの分布を本質的に同一と扱う。Poland--Norwayペアもこのパターンをさらに例証する：中程度のSMD
+0.151にもかかわらず、nABCDは0.115（比率0.76）に達し、両国間の大きなスケール差（SD
+= 1.16
+vs.~1.80）を反映している。これらのケースは、シミュレーションのシナリオS5（スケール）およびS7（歪み）の知見と並行する------nABCDがSMDでは完全に検出できなかった分布差を捕捉した。
+
+年齢とNIHSSでは、nABCDと \(|\text{SMD}|\)
+はより強く相関していた。国間の差が主に位置（平均）シフトに起因し、分散が比較的均質であったためである。これは予想される挙動である：分布が近似的に正規で等分散の場合、nABCDとSMDは同様の情報を伝える。nABCDの実務的優位性は、まさにEMの分布が正規性から逸脱する場合------バイオマーカー、イベントまでの時間変数、フロアまたはシーリング効果を持つ臨床スコアでよく見られるように------に発揮される。
+
+\subsection{臨床較正: NIHSS}\label{ux81e8ux5e8aux8f03ux6b63-nihss}
+
+NIHSSはEMとしての最も強い事前エビデンスを有する：Emberson et al.~(2014)
+は治療×NIHSS交互作用 \(p = 0.06\) を報告し、IST-3データでは
+\(p = 0.001\) であり、CATE感度 \(L\)
+が合理的な精度で推定可能であることを示す。薬剤Aに対する真の \(L\)
+は未知である。同じクラスの参照としてIST-3から得られたアルテプラーゼベースの推定値を借用し、感度分析を実施する。IST-3のロジスティック回帰（治療×NIHSS交互作用項、アウトカム:
+6ヵ月時OHS 0--2）に続くmarginal
+standardizationにより、\(L_{\text{mean}} = 0.00950\)/pt および
+\(L_{\max} = 0.01398\)/pt を推定した（Table~\ref{tbl-calibration}）。
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.3077}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1154}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1154}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1154}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1154}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1154}}
+  >{\centering\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1154}}@{}}
+\caption{nABCDの臨床較正: CATE感度推定と
+\(\Delta_{\max}\)。\(\Delta_{\max}\)はリスク差（\%ポイント）で表現。全体治療効果のRD
+\(\approx +1.5\)\%pt。}\label{tbl-calibration}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+EM候補
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+交互作用 \(p\) 値
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+\(L_{\max}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+\(L_{\text{mean}}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+nABCD 最大
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+\(\Delta_{\max}\) (\(L_{\max}\))
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+\(\Delta_{\max}\) (\(L_{\text{mean}}\))
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+EM候補
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+交互作用 \(p\) 値
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+\(L_{\max}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+\(L_{\text{mean}}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+nABCD 最大
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+\(\Delta_{\max}\) (\(L_{\max}\))
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+\(\Delta_{\max}\) (\(L_{\text{mean}}\))
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+NIHSS & \textbf{0.001} & 0.01398/pt & 0.00950/pt & 0.240 &
+\textbf{7.37\%pt} & \textbf{5.02\%pt} \\
+年齢 & 0.614 & 0.00090/yr & 0.00065/yr & 0.285 & 0.65\%pt & 0.47\%pt \\
+\end{longtable}
+
+最大nABCDペア（Poland--Portugal、nABCD =
+0.240）について、アルテプラーゼベースの \(L_{\text{mean}}\) による
+\(\Delta_{\max}\) は5.02\%ptであり、全体治療効果（RD
+\(\approx 1.5\)\%pt）を大幅に超える。クラス転移可能性の仮定に対する頑健性を評価するため、\(L\)
+をアルテプラーゼ推定値の \(0.5\times\) から \(2\times\)
+の範囲で変化させた：\(0.5 L_{\text{mean}}\) で
+\(\Delta_{\max} = 2.51\)\%pt; \(2 L_{\text{mean}}\) で
+\(\Delta_{\max} = 10.04\)\%pt。この範囲全体にわたり、NIHSS分布差は臨床的に意味のある潜在的治療効果異質性に変換され、薬剤Aの正確な
+\(L\) 値にかかわらず、プーリング戦略において注意が必要であることを示す。
+
+\subsection{計画段階の評価:
+年齢}\label{ux8a08ux753bux6bb5ux968eux306eux8a55ux4fa1-ux5e74ux9f62}
+
+年齢はEMとしての弱いエビデンスを有する：Emberson et al.~(2014) は
+\(p = 0.53\)
+を報告し、IST-3データも非有意性を確認した（\(p = 0.614\)）。推定されたCATE感度は小さく（\(L_{\text{mean}} = 0.00065\)/yr）、不確実性が大きい。
+
+弱いEMエビデンスを考慮し、主要評価にはnABCDと参照ベンチマーク（Table~\ref{tbl-benchmarks}）を使用する。年齢の最大ペアワイズnABCDは0.285（Sweden--Belgium）であり、「中程度の差」の範囲に位置する。いかなる候補EMの中でも最大の分布差を示すにもかかわらず、臨床較正は小さな
+\(\Delta_{\max}\) を与える：\(L_{\text{mean}}\)
+を用いて0.47\%pt、\(L_{\max}\)
+を用いて0.65\%pt（Table~\ref{tbl-calibration}）。\(2 L_{\text{mean}}\)
+としても \(\Delta_{\max}\)
+は0.94\%ptに留まり、全体治療効果を下回る。計画地域にわたる年齢分布の差は、臨床的に意味のある治療効果異質性を生成する可能性が低い。
+
+\subsection{実務的含意}\label{ux5b9fux52d9ux7684ux542bux610f}
+
+NIHSSと年齢の対比が、nABCDフレームワークの中心的原理を体現している：同じnABCDの大きさがCATE感度に応じて大きく異なる臨床的帰結を持ちうる。年齢は最大の分布差（nABCD
+=
+0.285）を示しながら最小の臨床的影響（\(\Delta_{\max} = 0.47\)\%pt）に変換され、NIHSSは中程度の分布差（nABCD
+=
+0.240）でありながら桁違いに大きな臨床的影響（\(\Delta_{\max} = 5.02\)\%pt）を持つ。このことは、nABCDの大きさのみではプーリング決定に不十分であり、臨床較正が必要な文脈を提供することを強調する。
+
+治療遅延はnABCDの分布的優位性を最も明確に例証する：確認されたEM（Emberson
+\(p = 0.016\)）であるにもかかわらず、その高度に歪んだ分布はSMDを地域間類似性の評価において信頼性の低いものにする。第4.2節で示したように、Norway--PortugalペアはSMD
+\(\approx 0\) であるにもかかわらずnABCD =
+0.069であり、この乖離はスケールおよび形状の差によって完全に駆動されている。この知見は実務的リスクを例証する：SMDのみに依拠するスポンサーは、これらの地域間で治療遅延分布が同一であると結論づけ、治療効果異質性の源泉を潜在的に見落とすことになる。IST-3データは非有意な治療×遅延交互作用（\(p = 0.567\)）を示し、\(L\)
+推定値自体の信頼性が慎重な検討を要する設定を例証している；それにもかかわらず、nABCDが検出した分布的非対称性はプーリング根拠において認識に値する。
+
+\textbf{限界と注意点}:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{事後的解析}:
+  IST-3はMRCTとして設計されたものではない；本適用事例は方法論的実現可能性を示すものであり、前向き使用ではない。
+\item
+  \textbf{小サンプル国}: Belgium (\(n = 73\)) と Portugal (\(n = 82\))
+  は推奨最小サンプルサイズ（\(n \geq 100\)）を下回り；これらの国を含むペアのブートストラップCIは相対的に広い。
+\item
+  \textbf{\(L\) の転移可能性}:
+  CATE感度はアルテプラーゼデータから推定されたものであり、薬剤Aからではない；クラス転移可能性の仮定は正当化と上記で示した感度分析を必要とする。
+\item
+  \textbf{時間的一般化可能性}:
+  IST-3は2000--2011年に患者を登録した；脳卒中集団の人口動態的変化が現在の試験計画への適用可能性を制限しうる。
+\item
+  \textbf{地理的カバレッジ}: IST-3の参加国は計画するPhase
+  3地域と一致しない可能性がある；EM分布は歴史的参照としてのみ機能する。
+\end{enumerate}
+
+\section{考察（Discussion）}\label{ux8003ux5bdfdiscussion}
+
+MRCTにおけるEM分布を比較するための正規化指標nABCDを開発・検証した。貢献は以下の通り：(1)
+nABCD指標そのもの------Wasserstein-1距離とIQR正規化およびパーセンタイルブートストラップ推論を組み合わせた、SMDが見逃す完全な分布差（スケール、形状、歪度を含む）を捕捉する指標；(2)
+Kantorovich--Rubinstein双対性と異質性バウンドを通じてnABCDと治療効果異質性を接続する理論的フレームワーク；(3)
+CATE感度 \(L\) が推定可能な場合にnABCDを文脈特異的な \(\Delta_{\max}\)
+評価に変換する条件付きツールとしての臨床較正；(4)
+nABCDがSMDでは見えない分布的特徴を捕捉することのIST-3データによる比較実証------特に高度に歪んだ治療遅延分布において、実質的なスケールおよび形状の差にもかかわらずSMD
+\(\approx 0\) であったケース；(5)
+フレームワークの柔軟性の二重実証------NIHSSの完全な較正（\(L\)
+が推定可能）と年齢の計画段階の分布評価（\(L\) が不確実）の双方を通じた。
+
+nABCD指標は現行アプローチの限界に対処する。SMDとの比較では、nABCDは分散と形状を含む完全な分布差を捕捉する。シミュレーションは、SMD推定値がゼロ近傍にとどまるスケール差（S5）、形状差（S6）、歪度差（S7）をnABCDが捕捉することを実証した；IST-3への適用は実データでこのパターンを確認し、治療遅延の歪んだ分布がNorwayとPortugal間でnABCD
+= 0.069であるにもかかわらずSMD \(\approx 0\)
+を生じた。KS統計量との比較では、nABCDは異質性バウンド（式7）を通じた治療効果異質性への直接的接続を提供し、純粋に統計的な評価ではなく臨床較正を可能にする。目視検査との比較では、nABCDは客観的かつ再現可能である。本アプローチは、観察された治療効果が地域間で一致するかどうかを評価する治療効果一貫性評価方法
+(Quan et al.~2010)
+とは概念的に異なる；nABCDはその上流で機能し、そのような異質性を駆動しうる効果修飾因子分布の類似性を定量化する。
+
+第2.3節で導入した臨床較正手順は、固定閾値アプローチからの脱却を表す。Cohenの
+\(d\) ベンチマーク（小=0.2, 中=0.5,
+大=0.8）は文脈フリーな適用に対して広く批判されており、我々はこのパターンを意図的に避ける。代わりに、異質性バウンドがnABCDを臨床的に意味のある単位に変換する原理に基づくメカニズムを提供し、「十分に類似」が文脈依存的であるというICH
+E17の原則を尊重する。臨床較正の自然な帰結として、分布距離と臨床的影響のランキングは異なりうる------IST-3では年齢が最大のnABCDながら最小の
+\(\Delta_{\max}\)
+であった------同じ分布差がCATE感度に応じて異なる臨床的重みを持つためである。より広くは、IST-3適用事例は、同じnABCDフレームワークがCATE感度エビデンスの利用可能性に応じて異なる目的に機能することを示した：NIHSSでは
+\(L\) が推定可能であり、完全な較正が分布差を臨床的に解釈可能な
+\(\Delta_{\max}\) 値に変換した；年齢では \(L\)
+が不確実であり、nABCDと参照ベンチマーク（Table~\ref{tbl-benchmarks}）が分布類似性の主要評価を提供した。この接続は、分布距離と潜在的治療効果異質性を関連づけるtransportability理論
+(Pearl \& Bareinboim 2011; Bareinboim \& Pearl 2016) に基づく。
+
+本研究の知見に基づき、実務者に以下の推奨を提供する：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  各候補EMについて、地域ペアごとにブートストラップCIつきnABCDを計算する（各地域
+  \(n \geq 100\)）。
+\item
+  式(7)を用いてnABCDを臨床アウトカムスケール上の \(\Delta_{\max}\)
+  とそのCIに変換し、CATE感度 \(L\)
+  の事前知識または推定値を組み込む。\(L\)
+  をデータから推定する場合、IST-3適用事例（第4節）のように、\(L_{\max}\)（保守的上限）と
+  \(L_{\text{mean}}\)（現実的推定）の双方を報告する。
+\item
+  \(\Delta_{\max}\)
+  とそのCIを、全体治療効果、非劣性マージン、その他の臨床的に関連するベンチマークとともに報告し、プーリングに関する情報に基づく審議を支援する。
+\item
+  事前知識が不確実な場合、\(L\) の妥当な値にわたる感度分析を実施する。
+\item
+  \(L\) が推定できない場合、Table~\ref{tbl-benchmarks}
+  の参照ベンチマークを初期ガイダンスとして使用するが、臨床較正がより厳密な意思決定基盤を提供することを認識する。
+\end{enumerate}
+
+実務では、複数の候補EMが同時に評価される場合がある。nABCDフレームワークは各EMを個別に評価し、すべての候補EMについて全地域ペアにわたる
+\(\Delta_{\max}\)
+とそのCIを報告することを推奨する。全体的なプーリング推奨に至るため、試験設計者は保守的アプローチ（すべてのEMと地域ペアにわたる最大
+\(\Delta_{\max}\)
+に基づく）を採用するか、エビデンスの総体アプローチ（\(\Delta_{\max}\)
+値のコレクション、その不確実性、各 \(L\)
+推定値の信頼性が総合的判断に情報を提供する）を採用しうる。これらの戦略間の選択は規制上の文脈に依存する：正式なプーリング基準が必要なアプリケーションでは最大
+\(\Delta_{\max}\)
+が防御可能な最悪ケース評価を提供し；臨床的審議によってプーリング決定が情報提供される助言的設定では、較正結果の完全なセットがより豊富なエビデンス基盤を提供する。
+
+CATE感度 \(L\)
+の実務的な利用可能性は場面により異なる。同じ治療領域の先行試験やメタ解析から
+\(L\)
+が推定可能な場合、IST-3適用事例のNIHSSで示したように完全な臨床較正が可能である。しかしMRCT計画段階では、\(L\)
+は不確実であることが多い------特に新規薬剤やサブグループ解析が不足する治療領域では。そのような場合、nABCDと参照ベンチマーク（Table~\ref{tbl-benchmarks}）が分布類似性の主要評価を提供し、妥当な
+\(L\)
+範囲にわたる感度分析で補完される。重要なことに、nABCDの分布指標としての中核的価値------SMDでは見えないスケール・形状・歪度の差を捕捉すること------は
+\(L\)
+が利用可能であるか否かにかかわらず成り立つ；臨床較正はこの分布評価を強化するものであり、代替するものではない。
+
+\textbf{限界}として以下を認識すべきである：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{連続EMのみ}:
+  現在の定式化は連続型EMにのみ適用可能であり、カテゴリカルまたは混合型EMへの拡張にはさらなる開発が必要である。
+\item
+  \textbf{単変量}:
+  nABCDは各EMを同時にではなく個別に評価する；多変量拡張がEM間の潜在的な交絡に対処する。
+\item
+  \textbf{バイアス特性}:
+  小サンプル（\(n < 100\)）での帰無仮説下の正のバイアスはnABCD推定値を膨張させうるし、大きな真値（S4,
+  nABCD =
+  0.372）での持続する負のバイアスは漸進的なアンダーカバレッジ（\(n = 200\)
+  で0.740）をもたらす。これらの境界効果は、Wasserstein距離の関数としてのnABCDの非負・有界の性質に固有である。真値がゼロに等しい場合、パラメータはパラメータ空間の境界上にあり、標準的なブートストラップ一致性の結果は適用されない可能性がある
+  (Andrews
+  2000)；したがって帰無シナリオのカバレッジは報告せず、ゼロ近傍のnABCD推定値は注意して解釈することを推奨する。非帰無シナリオでは、真値はパラメータ空間の内部にあり標準的なブートストラップ一致性が成り立ち、シミュレーションはほとんどのシナリオで
+  \(n \geq 100\)
+  において0.87--0.98のカバレッジで確認している；特筆すべきは、新シナリオS7（歪み）とS8（位置+スケール）がすべてのサンプルサイズで0.93--0.95のカバレッジを達成したことである。カバレッジは非単調な挙動も示しうる：形状シナリオ（S6）ではカバレッジは
+  \(n = 50\) で0.576、\(n = 100\) で0.949、\(n = 200\)
+  で0.997であり、バイアスの大きさとCI幅のバランスがサンプルサイズとともにどのように変化するかを反映している。パーセンタイルブートストラップを使用しており、これは一次精度である；BCaのようなバイアス修正法はこの有界統計量に対して劣った性能を示し（第3.2.1節）、studentized
+  bootstrapはWasserstein距離比率の分散推定を必要とし実質的な複雑性を加える。各地域
+  \(n \geq 100\)
+  を信頼性のある点推定と信頼区間に推奨し、真のnABCDが約0.3を超える場合にカバレッジが低下しうることに注意を喚起する。
+\item
+  \textbf{\(L\) の必要性}: 臨床較正にはCATE感度 \(L\)
+  の推定が必要であり、事前データから常に利用可能とは限らない。参照ベンチマークを代替手段として提供するが、文脈特異的な較正に代わるべきではない。
+\item
+  \textbf{複数のEM}:
+  複数の効果修飾因子が関連する場合、現在のフレームワークは各EMを個別に評価する。効果修飾因子間でnABCD値を統合する集約戦略------臨床的重要性を反映した重み付け組み合わせや高次元最適輸送を用いた多変量拡張など------は今後の研究課題である。
+\item
+  \textbf{測定されたEMのみ}:
+  共変量に基づくアプローチ全般と同様に、nABCDは測定された効果修飾因子に関してのみ類似性を評価する。測定されていない、または未知の効果修飾因子が、指標が捕捉する範囲を超えて治療効果異質性に寄与しうる。
+\item
+  \textbf{\(L\) の転移可能性}:
+  IST-3適用事例で示した臨床較正はアルテプラーゼからのCATE感度推定値を使用した；同じ薬理クラスの他の薬剤への
+  \(L\)
+  の転移可能性は臨床的判断を必要とする仮定であり、感度分析が有益でありうる。
+\item
+  \textbf{IST-3の時間的制約}:
+  IST-3のデータは2000--2011年に収集された；人口動態的および臨床実践の変化が、これらの国レベルEM分布の現代の試験計画への適用可能性を制限しうる。
+\end{enumerate}
+
+今後の研究は、多変量拡張、小サンプル用バイアス修正法、実際のMRCTデータを用いたCATE感度パラメータの経験的較正に取り組むべきである。歴史的試験データベースからの
+\(L\)
+の推定方法は臨床較正フレームワークを強化するであろう。nABCDフレームワークは縦断的EMプロファイルにも拡張可能であり、時間経過にわたる分布類似性の動的評価を可能にする。
+
+nABCD指標をブートストラップ推論および本論文で述べた臨床較正フレームワークとともに実装するRパッケージが開発中である。
+
+nABCDは、「十分に類似」を固定閾値に還元するのではなく、原理に基づく分布類似性評価のフレームワークを提供することにより、ICH
+E17実装における方法論的ギャップを埋める。臨床較正手順は、分布差を潜在的治療効果異質性の文脈特異的な評価に変換し、エビデンスに基づき臨床的に根拠のあるプーリング決定を可能にする。オープンソースRコードが採用促進のために利用可能である。
+
+\section*{付録}\label{ux4ed8ux9332}
+\addcontentsline{toc}{section}{付録}
+
+\subsection*{付録A:
+証明と数学的詳細}\label{ux4ed8ux9332a-ux8a3cux660eux3068ux6570ux5b66ux7684ux8a73ux7d30}
+\addcontentsline{toc}{subsection}{付録A: 証明と数学的詳細}
+
+\subsubsection*{A.1 Proposition
+1の証明（非負性）}\label{a.1-proposition-1ux306eux8a3cux660eux975eux8ca0ux6027}
+\addcontentsline{toc}{subsubsection}{A.1 Proposition 1の証明（非負性）}
+
+非負性はWasserstein-1距離の非負性から直接従う：\(W_1(F_1, F_2) = \int |F_1(x) - F_2(x)| \, dx \geq 0\)
+であり、すべての \(x\) について \(F_1(x) = F_2(x)\)
+の場合にのみ等号が成立する。非退化分布に対して
+\(\text{IQR}_{\text{pooled}} > 0\) であるから、比率
+\(\text{nABCD} = W_1 / (2 \cdot \text{IQR}_{\text{pooled}}) \geq 0\)
+である。
+
+\subsubsection*{A.2
+漸近的性質}\label{a.2-ux6f38ux8fd1ux7684ux6027ux8cea}
+\addcontentsline{toc}{subsubsection}{A.2 漸近的性質}
+
+標準的な正則条件のもとで、経験的Wasserstein-1距離
+\(W_1(\hat{F}_1, \hat{F}_2)\) は \(W_1(F_1, F_2)\) の一致推定量である
+(del Barrio et
+al.~1999)。経験的IQRの一致性と合わせて、\(\widehat{\text{nABCD}}\) は
+\(\text{nABCD}(F_1, F_2)\) の一致推定量である。
+
+一次元では、経験的 \(W_1\) 距離は対数修正なしに \(O(n^{-1/2})\)
+のレートで収束する (del Barrio et al.~1999)。\(F_1 \neq F_2\)
+の二標本推定で有限二次モーメントのもと、\(\sqrt{n}(W_1(\hat{F}_{1,n_1}, \hat{F}_{2,n_2}) - W_1(F_1, F_2))\)
+は平均ゼロのガウス分布に分布収束する（\(n = n_1 + n_2\)、\(n_1/n \to \lambda \in (0,1)\)）。経験的IQRも標準的な密度条件のもとで
+\(O(n^{-1/2})\) のレートで収束するため、比率 \(g(w, q) = w/(2q)\)
+に対するデルタ法により \(\widehat{\text{nABCD}}\)
+の漸近正規性が得られる：
+
+\[\sqrt{n}\bigl(\widehat{\text{nABCD}} - \text{nABCD}(F_1, F_2)\bigr) \xrightarrow{d} N(0, \sigma^2_{\text{nABCD}})\]
+
+ここで \(\sigma^2_{\text{nABCD}}\) は \(W_1\)
+とIQR推定量の漸近分散と共分散に依存する。この結果は
+\(\text{nABCD} > 0\)（すなわち \(F_1 \neq F_2\)）を要求する；境界
+\(F_1 = F_2\)
+では、パラメータがパラメータ空間の端にあり、標準的漸近論は適用されない（第5節参照）。
+
+ブートストラップは緩い条件のもとでWasserstein距離に対する妥当な推論を提供する
+(Sommerfeld \& Munk
+2018)。パーセンタイルブートストラップ信頼区間は、非退化分布に対して漸近的に正しいカバレッジを達成する。
+
+\subsection*{付録B:
+nABCD計算のRコード}\label{ux4ed8ux9332b-nabcdux8a08ux7b97ux306erux30b3ux30fcux30c9}
+\addcontentsline{toc}{subsection}{付録B: nABCD計算のRコード}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{compute\_nABCD }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x1, x2) \{}
+\NormalTok{  pooled }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(x1, x2)}
+\NormalTok{  iqr\_pooled }\OtherTok{\textless{}{-}} \FunctionTok{IQR}\NormalTok{(pooled)}
+  \ControlFlowTok{if}\NormalTok{ (iqr\_pooled }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) }\FunctionTok{return}\NormalTok{(}\ConstantTok{NA}\NormalTok{)}
+\NormalTok{  all\_vals }\OtherTok{\textless{}{-}} \FunctionTok{sort}\NormalTok{(}\FunctionTok{unique}\NormalTok{(pooled))}
+\NormalTok{  F1 }\OtherTok{\textless{}{-}} \FunctionTok{ecdf}\NormalTok{(x1); F2 }\OtherTok{\textless{}{-}} \FunctionTok{ecdf}\NormalTok{(x2)}
+\NormalTok{  w1 }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(}\FunctionTok{diff}\NormalTok{(all\_vals) }\SpecialCharTok{*}
+    \FunctionTok{abs}\NormalTok{(}\FunctionTok{F1}\NormalTok{(all\_vals[}\SpecialCharTok{{-}}\FunctionTok{length}\NormalTok{(all\_vals)]) }\SpecialCharTok{{-}}
+        \FunctionTok{F2}\NormalTok{(all\_vals[}\SpecialCharTok{{-}}\FunctionTok{length}\NormalTok{(all\_vals)])))}
+\NormalTok{  w1 }\SpecialCharTok{/}\NormalTok{ (}\DecValTok{2} \SpecialCharTok{*}\NormalTok{ iqr\_pooled)}
+\NormalTok{\}}
+
+\NormalTok{nABCD\_bootstrap }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x1, x2,}
+    \AttributeTok{B =} \DecValTok{2000}\NormalTok{, }\AttributeTok{conf =} \FloatTok{0.95}\NormalTok{) \{}
+\NormalTok{  obs }\OtherTok{\textless{}{-}} \FunctionTok{compute\_nABCD}\NormalTok{(x1, x2)}
+\NormalTok{  boot\_vals }\OtherTok{\textless{}{-}} \FunctionTok{replicate}\NormalTok{(B, \{}
+\NormalTok{    b1 }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(x1, }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    b2 }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(x2, }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+    \FunctionTok{compute\_nABCD}\NormalTok{(b1, b2)}
+\NormalTok{  \})}
+\NormalTok{  alpha }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ conf}
+\NormalTok{  ci }\OtherTok{\textless{}{-}} \FunctionTok{quantile}\NormalTok{(boot\_vals,}
+    \FunctionTok{c}\NormalTok{(alpha}\SpecialCharTok{/}\DecValTok{2}\NormalTok{, }\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ alpha}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{estimate =}\NormalTok{ obs,}
+       \AttributeTok{ci\_lower =}\NormalTok{ ci[}\DecValTok{1}\NormalTok{], }\AttributeTok{ci\_upper =}\NormalTok{ ci[}\DecValTok{2}\NormalTok{])}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\section*{参考文献}\label{ux53c2ux8003ux6587ux732e}
+\addcontentsline{toc}{section}{参考文献}
+
+\begin{itemize}
+\tightlist
+\item
+  Andrews DWK (2000) ``Inconsistency of the Bootstrap when a Parameter
+  is on the Boundary of the Parameter Space'' \emph{Econometrica} 68(2):
+  399--405. DOI:
+  \href{https://doi.org/10.1111/1468-0262.00114}{10.1111/1468-0262.00114}
+\item
+  Armstrong TB, Kolesár M (2021) ``Finite-Sample Optimal Estimation and
+  Inference on Average Treatment Effects Under Unconfoundedness''
+  \emph{Econometrica} 89(3): 1141--1177. DOI:
+  \href{https://doi.org/10.3982/ECTA16907}{10.3982/ECTA16907}
+\item
+  Austin PC (2011) ``An Introduction to Propensity Score Methods for
+  Reducing the Effects of Confounding in Observational Studies''
+  \emph{Multivariate Behav Res} 46(3): 399--424. DOI:
+  \href{https://doi.org/10.1080/00273171.2011.568786}{10.1080/00273171.2011.568786}
+\item
+  Bareinboim E, Pearl J (2016) ``Causal Inference and the Data-Fusion
+  Problem'' \emph{Proc Natl Acad Sci USA} 113(27): 7345--7352. DOI:
+  \href{https://doi.org/10.1073/pnas.1510507113}{10.1073/pnas.1510507113}
+\item
+  Chen J, Quan H, Binkowitz B, Ouyang SP, Tanaka Y, Li G, Menjoge S,
+  Ibia E (2010) ``Assessing Consistent Treatment Effect in a
+  Multi-Regional Clinical Trial: A Systematic Review'' \emph{Pharm Stat}
+  9(3): 242--253. DOI:
+  \href{https://doi.org/10.1002/pst.438}{10.1002/pst.438}
+\item
+  del Barrio E, Giné E, Matrán C (1999) ``Central Limit Theorems for the
+  Wasserstein Distance Between the Empirical and the True
+  Distributions'' \emph{Ann Probab} 27(2): 1009--1071. DOI:
+  \href{https://doi.org/10.1214/aop/1022677394}{10.1214/aop/1022677394}
+\item
+  Emberson J, Lees KR, Lyden P, et al.~(2014) ``Effect of Treatment
+  Delay, Age, and Stroke Severity on the Effects of Intravenous
+  Thrombolysis with Alteplase for Acute Ischaemic Stroke: A
+  Meta-Analysis of Individual Patient Data from Randomised Trials''
+  \emph{Lancet} 384(9958): 1929--1935. DOI:
+  \href{https://doi.org/10.1016/S0140-6736(14)60584-5}{10.1016/S0140-6736(14)60584-5}
+\item
+  Gibbs AL, Su FE (2002) ``On Choosing and Bounding Probability
+  Metrics'' \emph{Int Stat Rev} 70(3): 419--435. DOI:
+  \href{https://doi.org/10.1111/j.1751-5823.2002.tb00178.x}{10.1111/j.1751-5823.2002.tb00178.x}
+\item
+  ICH E17 Expert Working Group (2017) ``General Principles for Planning
+  and Design of Multi-Regional Clinical Trials (E17)'' International
+  Council for Harmonisation, Geneva, Switzerland.
+\item
+  IST-3 collaborative group (2012) ``The Benefits and Harms of
+  Intravenous Thrombolysis with Recombinant Tissue Plasminogen Activator
+  Within 6 h of Acute Ischaemic Stroke (IST-3): A Randomised Controlled
+  Trial'' \emph{Lancet} 379(9834): 2352--2363. DOI:
+  \href{https://doi.org/10.1016/S0140-6736(12)60768-5}{10.1016/S0140-6736(12)60768-5}
+\item
+  Long M, Wu H, Liu X, Chen J (2025) ``Basic Considerations for the
+  Consistency Evaluation Based on ICH E17 Guideline'' \emph{Ther Innov
+  Regul Sci} 59(2): 328--336. DOI:
+  \href{https://doi.org/10.1007/s43441-024-00737-z}{10.1007/s43441-024-00737-z}
+\item
+  Panaretos VM, Zemel Y (2019) ``Statistical Aspects of Wasserstein
+  Distances'' \emph{Annu Rev Stat Appl} 6: 405--431. DOI:
+  \href{https://doi.org/10.1146/annurev-statistics-030718-104938}{10.1146/annurev-statistics-030718-104938}
+\item
+  Pearl J, Bareinboim E (2011) ``Transportability of Causal and
+  Statistical Relations: A Formal Approach'' \emph{Proc AAAI Conf Artif
+  Intell} 25: 247--254.
+\item
+  Quan H, Li M, Chen J, Gallo P, Binkowitz B, Ibia E, Tanaka Y, Ouyang
+  SP, Luo X, Li G, Menjoge S, Talerico S, Ikeda K (2010) ``Assessment of
+  Consistency of Treatment Effects in Multiregional Clinical Trials''
+  \emph{Drug Inf J} 44(5): 617--632. DOI:
+  \href{https://doi.org/10.1177/009286151004400515}{10.1177/009286151004400515}
+\item
+  Rousseeuw PJ, Croux C (1993) ``Alternatives to the Median Absolute
+  Deviation'' \emph{J Am Stat Assoc} 88(424): 1273--1283. DOI:
+  \href{https://doi.org/10.1080/01621459.1993.10476408}{10.1080/01621459.1993.10476408}
+\item
+  Sommerfeld M, Munk A (2018) ``Inference for Empirical Wasserstein
+  Distances on Finite Spaces'' \emph{J R Stat Soc Series B} 80(1):
+  219--238. DOI:
+  \href{https://doi.org/10.1111/rssb.12236}{10.1111/rssb.12236}
+\item
+  Song J, Ji C, Chen M, Luo X, Quan H, Chen J (2025) ``Basic
+  Considerations for Data Pooling Strategy in Multi-Regional Clinical
+  Trials (MRCTs)'' \emph{Ther Innov Regul Sci} 59(2): 359--364. DOI:
+  \href{https://doi.org/10.1007/s43441-025-00744-8}{10.1007/s43441-025-00744-8}
+\item
+  Villani C (2009) \emph{Optimal Transport: Old and New} Springer. DOI:
+  \href{https://doi.org/10.1007/978-3-540-71050-9}{10.1007/978-3-540-71050-9}
+\item
+  Wasserstein RL, Lazar NA (2016) ``The ASA Statement on p-Values:
+  Context, Process, and Purpose'' \emph{Am Stat} 70(2): 129--133. DOI:
+  \href{https://doi.org/10.1080/00031305.2016.1154108}{10.1080/00031305.2016.1154108}
+\end{itemize}
+
+
+
+\end{document}

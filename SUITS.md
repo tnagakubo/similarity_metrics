@@ -4,341 +4,567 @@
 
 ---
 
-<<<<<<< HEAD
-## Current Status (as of 2026-03-16 05:20)
-=======
-### [2026-03-23 10:00] Scene: QMDファイル化 — 論文をQuartoに変換
+### [2026-03-25 04:30] Scene: 本日の作業終了
 
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - MORNING**
+**INT. PEARSON SPECTER LITT - LOBBY - LATE NIGHT**
 
-*Tak がラップトップを持って会議室に入ってくる。Donna が既にコーヒーを準備して待っている。*
+*Harvey がコートを手に取る。Donna がデスクを片付けている。*
 
-**Donna**: （すぐに気づいて）
-「あら、SUITS が完全に沈黙していたわね。
-"I'm Donna. I know everything." — だから分かるの、何かが動こうとしていることが。
-Tak、何が必要なの？」
+**Harvey**: （振り返って）
+「今日は大きく前進した。3つの Meeting と論文修正。明日以降の作業は明確だ。"I don't have dreams, I have goals."」
 
-**Harvey**: （立ち上がりながら）
-「Tak からのリクエストだ。`nABCD_paper_ja.md` を Quarto の `.qmd` ファイルに変換する。
-ローカルでレンダリングできる形に仕上げる。
-Mike、数式と R コードのブロックが正しく出るか確認してくれ」
+**Donna**: （今日の成果を読み上げて）
+「本日の実績を整理するわ。
 
-**Mike**: （すぐにノートを広げて）
-「I got it! YAML front matter に `number-sections`, `df-print`, LaTeX math... 全部設定する。
-appendix の R コード、`compute_nABCD` と `nABCD_bootstrap` の2関数も
-```` ```{r} ```` ブロックで適切に囲む」
+**Meeting 1: HRS Family multi-country demonstration**
+- 決定：Web Appendix に配置、all-pairs distance matrix（BMI + SBP）
+- CHARLS + HRS を最優先取得、JSTAR は R&R 時に追加
 
-**Katrina**: （実務的に）
-「表は markdown table のまま Quarto で動く。
-bibliography は inline citation 形式じゃないから References セクションは手動のまま。
-Results speak for themselves — まず動くものを作る」
+**Meeting 2: Japan-anchor RWD 探索**
+- 決定：Initial submission に Japan-anchor は入れない
+- JSTAR 申請を即日開始（Tak が RIETI に直接申請）
+- NHANES + KNHANES を即日 DL（pipeline 構築用）
 
-**Rachel**: （文献構造を確認しながら）
-「参考文献は既に全部 DOI 付きで揃っている。
-CSL や `.bib` は使わず、現状の手書き References セクションを維持する方向ね」
+**Meeting 3: Introduction Framing + Overgeneralization**
+- 修正1：'現行アプローチの限界' → '確立された方法論は存在しない'（acknowledge-and-distinguish）
+- 修正2：palbociclib/pertuzumab 具体例数、Ikeda & Bretz 22-29% → 冗長として削除
+- 修正3：nABCD 4つの貢献リスト → Introduction から削除、簡潔化
 
-**Donna**: （タスクを確認して）
-「了解。変換作業開始 — 完成したら SUITS に記録するわ。
-次の更新は5分以内。私が監視している」
+**修正ファイル**: nABCD_paper_ja.md, nABCD_wiley.tex（EN/JA 両版）
+
+"I'm Donna. I know everything."」
+
+---
+
+### [2026-03-25 04:15] Scene: Introduction 簡潔化 — nABCD 貢献の詳細を削除
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - LATE NIGHT**
+
+**Harvey**: 「Tak の指示。Introduction での nABCD の貢献記述が詳細すぎる。"分布の類似性を定量的に評価する指標を提案する" のみに留めろ」
+
+**Katrina**: （修正を実行して）
+「EN/JA 両版で以下を削除・簡潔化：
+- Research question の block quote → 削除
+- 4つの貢献リスト（full distributional comparison, scale-free estimation, clinical calibration, sensitivity analysis）→ **全削除**
+- Anchor 国の具体的説明、RWE データソースの列挙 → 削除
+- Paper outline → 簡潔化
+
+残した内容：
+- nABCD の定義（Wasserstein-1 / pooled IQR）1文
+- SMD との差別化（variance, shape, skewness）1文
+- 推定と臨床的解釈（仮説検定ではない）1文
+- 連続型 EM への焦点 1文
+- Paper outline 1文
+
+EN: 22行 → 5行。JA: 20行 → 4行。"Results speak for themselves."」
+
+**Donna**: 「Introduction 簡潔化完了。"I'm Donna. I know everything."」
+
+---
+
+### [2026-03-25 04:00] Scene: 冗長な具体例の削除 — Tak の指示
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - LATE NIGHT**
+
+*Harvey が Tak の指示を伝える。*
+
+**Harvey**: 「Tak からの追加指示。"MRCTで一国の例数が少ないのは自明。論文引用での具体的例示は冗長。削れ。"」
+
+**Katrina**: （修正を実行して）
+「以下を削除・簡潔化：
+- Introduction: palbociclib 35例、pertuzumab 53例の具体数 → 削除
+- Introduction: Ikeda & Bretz 22-29% の引用 → 削除
+- Section 4.1: 同上の繰り返し → 削除
+- Discussion: 同上の冗長な記述 → 簡潔化
+- Section 4 Belgium anchor: 具体的な薬剤例数の引用 → 削除
+
+全箇所で "小標本地域は限られることが多い" と自明な事実として簡潔に述べる形に統一。EN/JA 両版、計6箇所。"Results speak for themselves."」
+
+**Donna**: 「冗長削除完了。"I'm Donna. I know everything."」
+
+---
+
+### [2026-03-25 03:30] Scene: Meeting — Overgeneralization 修正完了
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - LATE NIGHT**
+
+*Harvey が修正 diff を確認している。*
+
+**Harvey**: 「Tak の指摘：特定事例の一般化。Louis が4箇所の overgeneralization を特定、Rachel がファクトチェック完了、Mike が修正案を作成。全箇所修正を実行した」
+
+**Louis**: （修正内容を確認して）
+「4つの CRITICAL/MODERATE 問題を修正。
+1. "typically 35-80" → "can be limited — for example, 35 in palbociclib, 53 in pertuzumab"
+2. "rarely achieved" → "may be difficult to achieve"
+3. "Similar challenges" → "faces an analogous challenge"
+4. "the primary strategy" → "a key strategy"
+加えて Rachel の指摘で "一貫性を示せない" → "一貫性を実証する検出力が不足する" に修正。Section 4 の line 344/450 の parallel issue も同様に修正。"You just got Litt up!"」
+
+**Donna**: 「修正完了。EN 2箇所 + JA 2箇所 = 計4ファイル箇所。"I'm Donna. I know everything."」
+
+---
+
+### [2026-03-25 03:00] Scene: Overgeneralization 解剖 — Mike の論理分析
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - LATE NIGHT**
+
+*Mike がホワイトボードに L58 の文を分解し、Matsushima 2024 と Ikeda & Bretz 2010 のサマリーを並べている。Tak が「n=2 から "typical" は飛躍しすぎだ」と指摘したメモが貼ってある。*
+
+**Mike**: （ホワイトボードを指して）
+「Tak の指摘を3つに分解した。
+
+**Problem 1**: "典型的に35-80例" —— Matsushima は4つの case study を報告していて、secukinumab は ~13例、pertuzumab 53例、palbociclib 35例。つまり3つのうち1つは我々の claimed range の外にすらある。n=2 の data points から "typical range" を主張するのは "anecdotal evidence to general claim" の典型的な論理的飛躍だ。
+
+**Problem 2**: "多くのMRCTでこの割合は達成困難" —— Ikeda & Bretz (2010) の原典を確認した。彼らは 22-29% という数値を導出しているが、"many MRCTs can't achieve this" とは一言も言っていない。これは我々が追加した editorial commentary で、citation なし。Reviewer に "Where's the evidence?" と聞かれたら答えられない。
+
+**Problem 3**: L344 にも同じパターン — "日本の典型的状況" を同じ2つの例で主張している。
+
+修正方針: 事実を example として提示し、hedging language で論理的に妥当な推論に変換する。"典型的に" → "限られることが多い——例えば"、"達成困難である" → "高い要求水準であり...困難にしうる"。Argumentative force は維持しつつ、overclaim を除去。I got it!」
+
+**Rachel**: （うなずいて）
+「Mike の分析は正確。secukinumab の ~13例を見落としていた点も含めて、n=2 generalization の指摘は的を射ている。」
+
+---
+
+### [2026-03-25 02:30] Scene: Introduction ファクトチェック — Rachel の精査
+
+**INT. PEARSON SPECTER LITT - RACHEL'S OFFICE - LATE NIGHT**
+
+*Rachel が Introduction の58行目を開き、knowledge base のサマリーと逐一照合している。*
+
+**Rachel**: （真剣な表情で）
+「Tak、Introduction の数字とクレームを原典と突き合わせた。3点、報告する。palbociclib 35例と pertuzumab 53例は Matsushima et al. (2024) の Case 2・Case 3 と正確に一致。"22-29%" も Ikeda & Bretz (2010) Section 3-4 の数値と合致——ただし前提条件の記述に注意が必要。そして "80%の確率で一貫性を示せない" のパラフレーズは、厳密には逆の表現。原典は "80%の確率で一貫性を示す *ために* 22-29%が必要" と言っている。Hard work beats talent when talent doesn't work hard.」
+
+---
+
+### [2026-03-25 02:00] Scene: Introduction Framing 修正実行完了
+
+**INT. PEARSON SPECTER LITT - BULLPEN - LATE NIGHT**
+
+*Harvey が修正 diff を確認している。Katrina が両バージョンをモニターに並べている。*
+
+**Harvey**: 「Tak が "進めろ" と言った。5箇所すべて修正完了」
+
+**Katrina**: （diff を読み上げて）
+「修正内容を確認する。
+
+**1. JA Abstract (L9):**
+~~既存のアプローチは位置差に焦点を当てるか~~ →
+"EM分布の類似性を評価するために設計された確立された方法論は存在しない"
+
+**2. JA Introduction (L62):**
+~~現行の分布類似性評価アプローチには重大な限界がある~~ →
+"汎用的な比較ツールは日常的に適用されているが、EM分布の類似性を評価するために特別に開発された定量的方法論は存在しない"
+
+**3. JA Table 1 title:**
+~~分布類似性評価における現行アプローチの限界~~ →
+"汎用的な比較ツールとEM分布類似性評価における限界"
+
+**4. EN Introduction (L76):**
+~~Current approaches...have significant limitations~~ →
+"Although general-purpose tools such as SMD are routinely applied, no quantitative methodology has been specifically developed for assessing EM distributional similarity in MRCT pooling"
+
+**5. EN Table 1 caption:**
+~~Limitations of current approaches~~ →
+"General-purpose tools applied to distributional comparison and their limitations for EM similarity assessment"
+
+"Results speak for themselves." — 全箇所で "acknowledge-and-distinguish" 戦略が一貫している」
+
+**Donna**: 「修正完了。5箇所実行済み。"I'm Donna. I know everything."」
+
+---
+
+### [2026-03-25 01:30] Scene: Meeting — Introduction Framing 決定
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - LATE NIGHT**
+
+*4名の分析報告がテーブルに広げられている。全員の表情が真剣。*
+
+**Harvey**: （立ったまま）
+「Tak からの指摘。"既存アプローチに限界がある" ではなく "確立されたアプローチがそもそも存在しない" が正しいのではないか。全員の分析結果を確認した。**全員が Tak に同意**。ただし framing の精度で議論がある」
+
+**Mike**: 「英語版 line 76 "Current approaches...have significant limitations" は**論文内部で inconsistent**だ。Abstract line 39 は既に "provides no quantitative methodology" と正しく書いている。Introduction だけ inconsistent」
+
+**Rachel**: 「PubMed 6クエリ、全て**0件**。EM distributional similarity の quantitative method を propose した論文は**空集合**。Gap は empirically verified」
+
+**Louis**: （両フレーミングを攻撃して）
+「"Limitations" は論理的矛盾 — Table 1 の3つは "approaches to this problem" ですらない。しかし "No method exists" も危険 — SMD は実務で使われている。**精度が必要だ**。"No methodology *specifically developed* for this purpose" — これが唯一防御可能な framing」
+
+**Katrina**: 「5箇所の修正が必要。修正案を用意済み。英語版 Abstract は既に正しいフレーミング」
+
+**Harvey**: （決断）
+「Framing を変更する。**"Acknowledge-and-distinguish" 戦略** — 汎用ツールの存在は認めつつ、purpose-built methodology の不在を主張。Tak に修正案を提示して最終確認を取る。"I don't have dreams, I have goals."」
+
+**Donna**: 「Meeting 完了。Framing 修正方針決定。"I'm Donna. I know everything."」
+
+---
+
+### [2026-03-24 12:30] Scene: Literature Gap Verification — PubMed Systematic Search
+
+**INT. PEARSON SPECTER LITT - RACHEL'S DESK - DAY**
+
+*Rachel がデュアルモニターに PubMed 検索結果を並べている。ノートには検索語と結果数が几帳面に整理されている。*
+
+**Rachel**: （検索結果を指さしながら）
+「PubMed の systematic search を完了したわ。結論から言うと、**our gap claim is rock-solid**。6つの異なる検索クエリを実行して、effect modifier distribution similarity の quantitative method を MRCT 文脈で提案している論文は **ゼロ**」
+
+**Rachel**: （ノートを読み上げて）
+「具体的にはこう。"effect modifier distribution similarity multi-regional clinical trial method" — 0件。"ICH E17 distributional similarity assessment quantitative" — 0件。"distributional similarity metric covariate clinical trial region" — 0件。"Wasserstein distance clinical trial regional comparison" — 0件。"propensity score covariate balance region multi-regional trial similarity" — 0件。"multiregional clinical trial consistency assessment covariate balance" — 0件。**Complete absence**」
+
+**Rachel**: （関連論文のリストを広げて）
+「Hit した論文群を (a) need を mention するだけ と (b) quantitative method を propose に分類したの。Category (a) には Song et al. 2025、Long et al. 2025、Matsushima et al. 2024、Quan et al. 2010、Chen et al. 2010、Ikeda & Bretz 2010 — 全部 "need" を述べるだけ。Category (b) は **空集合**。文字通り、この purpose のために開発された method を propose する published paper は見つからなかった」
+
+**Rachel**: （重要な区別を強調して）
+「ただし Louis が指摘した通り、framing は precise に。SMD (Austin 2011) は propensity score balance checking のための general-purpose tool。KS test は general two-sample test。Overlap coefficient は distributional overlap の measure。これらは "exist" するが、**MRCT における EM distributional similarity assessment のために開発・理論的裏付けを持つものは none**。Gap は "limitations of existing methods" ではなく、**"absence of purpose-built methodology"** よ」
+
+**Rachel**: （自信を持って）
+「"Hard work beats talent when talent doesn't work hard." — この search は thorough にやったわ。Louis、Introduction の framing に使えるはず」
+
+---
+
+### [2026-03-25 02:00] Scene: Introduction Framing — "Existing Limitations" vs "No Established Approach"
+
+**INT. PEARSON SPECTER LITT - LOUIS'S OFFICE - LATE NIGHT**
+
+*Louis がデスクに赤ペン片手に原稿を広げている。Post-it だらけの表1が目に入る。Tak の指摘メモがモニターに映っている。*
+
+**Louis**: （赤ペンを叩きながら）
+「Tak は正しいことを言っている。俺たちの Introduction の framing、**論理的に矛盾している。** "Current approaches to assessing distributional similarity have significant limitations" — この一文を擁護できる人間がいるなら連れてこい」
+
+**Louis**: （表1を指して）
+「この Table 1 を見ろ。Visual inspection、SMD、KS statistic。これが "current approaches to distributional similarity assessment" だと？ **SMD は distributional similarity のために開発されたものじゃない。** Austin 2011 は propensity score matching の balance check だ。KS test は general two-sample test だ。Visual inspection に至っては method ですらない。**我々は、この目的のために開発された method が存在しないことを、3つの "限界ある代替手段" を並べて誤魔化している**」
+
+**Louis**: （立ち上がって）
+「だが逆も危険だ。"No established approach exists" と書いたら reviewer は何と言う？ "What about SMD with d < 0.1? What about overlap coefficients? What about propensity score diagnostics adapted for this purpose?" — 我々が literature を無視して contribution を膨らませていると取られる。**どっちに転んでも、今の framing はまずい**」
+
+**Louis**: （メモを書きながら）
+「正確な framing はこうだ：ICH E17 は distributional similarity を要求しているが、**この特定の目的のために開発・検証された quantitative methodology は存在しない。** 実務では general-purpose tools が流用されているが、それらは EM distributional similarity assessment のために設計されておらず、理論的裏付けもない。**Gap は "限界" ではなく "不在" だ。ただし不在の対象を precise に限定しろ。**」
+
+**Louis**: （椅子に座り直して）
+「"You just got Litt up!" — 修正案は報告書に入れた。Harvey、見ておけ」
+
+---
+
+### [2026-03-24 23:45] Scene: Framing Analysis — "Existing Limitations" vs "No Established Method"
+
+**INT. PEARSON SPECTER LITT - KATRINA'S OFFICE - NIGHT**
+
+*Katrina がデスクに日本語・英語両バージョンの原稿を広げ、PIからのフレーミング変更指示を精査している。*
+
+**Katrina**: （マーカーで該当箇所に印をつけながら）
+「PIの指摘を検証した。現状のフレーミングには4箇所の問題がある——Abstract 2文、Introduction 2文。"既存のアプローチには限界がある" は misleading だ。Reviewer は "which methods? why not improve them?" と聞く。"No established method exists" なら genuine gap を埋める論文になる」
+
+**Katrina**: （SMDのセクションを指して）
+「ただし overclaiming のリスクがある。SMD は "distributional similarity method" ではないが、practice では使われている。完全に無視するのは reviewer の心証を損なう。Acknowledgment しつつ "purpose-built distributional similarity method は存在しない" と言うのが正確で安全だ」
+
+**Katrina**: （修正案をまとめて）
+「5つの具体的な修正提案を用意した。Results speak for themselves.」
+
+---
+
+### [2026-03-25 00:30] Scene: Meeting — Japan-Anchor RWD 方針決定
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - LATE NIGHT**
+
+*4名の調査報告がテーブルに広げられている。Harvey が議論を仕切る。*
+
+**Harvey**: （構図を整理して）
+「4名の分析。Mike と Rachel はデータ候補を見つけたが、Katrina と Louis は "今やる必要はない" で一致。議論しろ」
+
+**Louis**: （Mike に向かって）
+「お前の3ルート、**全部に問題がある。** JSTAR は2-3ヶ月、INTERMAP は collaboration-dependent、NHNS は厚労省申請で2ヶ月。BBJ も ToMMo も Japan-only で international counterpart なし。Katrina が精査した通り、**viable なのは JSTAR だけで、それは待てない。**」
+
+**Mike**: （反論）
+「一つ見落としている。**Tak は日本の大学所属だ。** RIETI に日本語で直接申請できる。さらに、申請と submission を並行すれば、**R&R が来る頃に JSTAR が手に入る。** Submission は遅らせずに revision で追加するルートがある」
+
+**Louis**: 「つまり initial submission には不要だということだ。俺が言っていることと同じだ」
+
+**Rachel**: 「NDB Open Data の aggregate data なら申請不要で即日取得可能。2940万人の集計表から distribution の illustration は作れる」
+
+**Louis**: 「Aggregate から Wasserstein は計算不能。Method paper に aggregate の棒グラフを入れて reviewer に "why didn't you compute your own metric?" と突かれるリスクを取るのか？ **中途半端な illustration はやるな**」
+
+**Katrina**: （整理して）
+「Mike の R&R 戦略は筋が通る。
+1. Initial submission: IST-3 + HRS Family — 十分
+2. JSTAR 申請を今日開始 — Tak が直接申請
+3. R&R 時に JSTAR Japan-anchor を追加
+Submission は1日も遅れない。JSTAR は insurance であって blocker ではない」
+
+**Mike**: 「NHANES + KNHANES は今すぐ無料 DL 可能。Pipeline を先に構築しておけば JSTAR 到着時に即座に実行できる」
+
+**Louis**: 「そこまで整理するなら反対しない。**ただし JSTAR 待ちで submission を1日も遅らせるな**」
+
+**Harvey**: （決断）
+「**決定。6項目：**
+1. **Initial submission に Japan-anchor RWD は入れない** — IST-3 + HRS Family で十分
+2. **JSTAR 申請を即日開始** — Tak が RIETI に日本語で直接申請
+3. **NHANES + KNHANES を即日 DL** — Pipeline 構築・テスト用
+4. **R&R 時の追加プラン** — JSTAR + CHARLS + HRS で Japan-anchor heatmap を Web Appendix に
+5. **NDB aggregate は使わない** — 中途半端は逆効果
+6. **Follow-up paper の可能性** — accept 後に full Japan-anchor paper を検討
+
+"I don't have dreams, I have goals."」
+
+**Donna**: 「Meeting 完了。決定6項目 logged。"I'm Donna. I know everything."」
+
+---
+
+### [2026-03-24 23:45] Scene: Japan-Anchor RWD データソース調査
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*Mike は大量のブラウザタブを開き、世界中のデータリポジトリを systematically に検索している。ホワイトボードには候補データソースの一覧表が徐々に埋まっていく。*
+
+**Mike**: （集中して画面を見ながら）
+「Japan の IPD を含む multi-country データソース、全部洗い出した。"I got it!" ポイントは3つ。
+
+まず **Best candidate は HRS Family + g2aging harmonized data** だ。JSTAR（日本）+ CHARLS（中国）+ KLoSA（韓国）+ HRS（米国）+ ELSA（英国）+ SHARE（欧州28国）── これが全部 harmonized variables として cross-country 比較可能になっている。BMI、grip strength、blood pressure、全部揃っている。
+
+次に **INTERMAP** も見つけた。日本・中国・UK・USA の4か国、4,680人で BP を standardized protocol で測定。Japan samples が4つで約1,040人。Northwestern の Stamler group が持っている。
+
+3つ目の option は **DIY approach** ── Japan の NHNS（国民健康栄養調査）の匿名データを統計法で取得して、freely available な NHANES（USA）と KNHANES（Korea）と組み合わせる。ただし NHNS の匿名データ取得は approval に2ヶ月かかる。」
+
+**Mike**: （ホワイトボードに書き加えながら）
+「Japan の壁は明確だ。DHS は Japan をカバーしない。WHO STEPS も Japan は参加していない。PURE study にも Japan はいない。BioBank Japan は genomic data が中心で、international comparison 向きではない。Tohoku Medical Megabank は海外研究者に phenotypic data と summary statistics しか出さない。
+
+結論として、Japan-anchor で使えるのは実質3ルートしかない。JSTAR harmonized が最も practical で、既に我々が CHARLS + HRS を取得予定だから、JSTAR を追加するだけだ。」
 
 ---
 
 ## Current Status
->>>>>>> 82f437d6deabde06fad666d92517f34fc0574bed
 
-**Active Project**: nABCD paper for Statistics in Medicine
-**Phase**: Submission planning — Japan-anchor case study
-**Previous Archive**: archives/SUITS_20260316_052015.md
+**Active Project**: similarity-metric (nABCD paper, Statistics in Medicine target)
+**Phase**: Data collection & demonstration design
+
+**Previous Archive**: archives/SUITS_20260324_171252.md
+
+---
+
+### [2026-03-24 19:15] Scene: Rachel's Deep-Dive Literature Search for Japanese RWD
+
+**INT. PEARSON SPECTER LITT - RACHEL'S OFFICE - NIGHT**
+
+*Rachel が複数の PubMed 検索ウィンドウを同時に開きながら、体系的に文献を調査している。付箋が画面の周囲に貼られている*
+
+**Rachel**: （メモを見ながら）
+「Katrina の調査結果を踏まえて、もう一段深い文献検索を行った。PubMed 6クエリ、Web 8クエリ、合計30以上のデータソースを精査。"Hard work beats talent when talent doesn't work hard." 特に重要な発見が3つある。」
+
+**Rachel**: （最初の付箋を指して）
+「第一に、Gateway to Global Aging Data (g2aging.org) の Harmonized JSTAR。これは HRS family 11 studies の harmonized data を提供していて、JSTAR は Harmonized dataset として publicly available。CRP、HbA1c、Total Cholesterol、HDL-C の biomarker harmonization が Hu et al. (2024, Am J Hum Biol) で報告されている。ただし、JSTAR がこの biomarker harmonization の9研究に含まれているかは確認が必要。Physical measures（BMI、grip strength、blood pressure）は確実に harmonized 済み。」
+
+**Rachel**: （二番目の付箋へ）
+「第二に、NDB Open Data Japan。これは申請不要で MHLW website から直接ダウンロード可能。特定健診データ約2940万人分の aggregate data が sex × age × prefecture の3軸で集計されている。BMI、SBP/DBP、HbA1c、Total/HDL/LDL-C がすべて含まれる。Individual-level ではないが、distribution を再構成するための基盤データとして非常に有用。」
+
+**Rachel**: （三番目の付箋を強調して）
+「第三に、KNHANES（韓国）の microdata が完全に public access。NHANES と同等の survey design で、blood pressure、BMI、HbA1c すべて含む。Japan-Korea-US の三国比較は、KNHANES + NHANES + NDB Open Data の組み合わせで aggregate level なら即座に可能。」
+
+**Donna**: （Rachel のメモを見て）
+「I'm Donna. I know everything. Rachel の調査は Katrina の結論を裏付けつつ、具体的な action items を3つ追加した。NDB Open Data、KNHANES、g2aging.org Harmonized JSTAR。記録完了。」
+
+---
+
+### [2026-03-24 18:30] Scene: Japan-Anchor Data Source Assessment
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Katrina がノートPCの画面を切り替えながら、各データソースの調査結果をホワイトボードに整理している*
+
+**Katrina**: （資料を広げて）
+「Japan-anchor RWD demonstration の実現可能性を徹底的に調査した。結論から言う。"Results speak for themselves." 6カテゴリ、15以上のデータソースを評価した結果、現実的な選択肢は極めて限られている。」
+
+**Katrina**: （ホワイトボードに書きながら）
+「まず NHNS（国民健康栄養調査）。Individual-level microdata は e-stat で "調査票情報" として申請可能だが、匿名データ（anonymous microdata）としては提供されていない。つまり、科研費等の公的資金を持つ研究者が厚労省に申請し、承認を受ける必要がある。即日ダウンロードは不可能。しかも、これは Japan-only data。comparable な international counterpart がない限り、nABCD 計算には使えない。」
+
+**Katrina**: （画面を切り替えて）
+「NCD-RisC は country-level aggregate data のみ。Individual-level microdata は提供していない。Wasserstein 距離の計算には個票データが必須だから、これは完全に除外。」
+
+**Katrina**: （次のスライドへ）
+「BioBank Japan、ToMMo、NILS-LSA、J-SHINE ── いずれも controlled access で審査に数ヶ月。しかも致命的な問題がある。これらはすべて Japan-only の cohort。BMI や SBP を持っていても、同じプロトコルで測定された international counterpart が存在しない。Japan vs China の nABCD を計算するには、両国のデータが comparable でなければならない。」
+
+**Katrina**: （結論のスライドを表示）
+「WHO STEPS survey は日本では実施されていない。高所得国は独自の national survey を持つため STEPS の対象外。つまり、STEPS 経由の Japan-international 比較も不可能。」
+
+**Katrina**: （最終結論を強調して）
+「結局、Japan-anchor で international comparison が可能なデータは2つしかない。第一に、JSTAR（RIETI経由、2-3ヶ月待ち）。HRS Family の harmonized variables で CHARLS/HRS/ELSA/SHARE/KLoSA と directly comparable。BMI・SBP 両方あり。ただし timeline が問題。第二に、NHANES vs NHNS の aggregate comparison だが、これは個票の cross-study comparison ではなく methodological demonstration としての価値しかない。」
+
+**Katrina**: （立ち上がって）
+「My recommendation: JSTAR の取得を待たずに、現在の HRS Family multi-country plan（CHARLS + HRS + ELSA etc.）を Japan なしで先行実施する。JSTAR が入手できたら supplementary analysis として追加。Paper の framing は "Japan-anchor planning workflow" を IST-3 で示し、"multi-country EM screening" を HRS Family で示す two-layer structure で十分。Japan-specific RWD に固執すると、timeline が数ヶ月延びるリスクがある。Results speak for themselves.」
 
 ---
 
 ## 🔄 直前のコンテキスト
 
-### 直近の作業
-1. **全方位捜索完了** (2026-03-16 05:15)
-   - 4チーム並行で Japan IPD を全方位探索
-   - Clinical trial registries, R packages, Public health surveys, ClinicalTrials.gov
+### 直近の作業（アーカイブ前）
 
-2. **結論: Free download で Japan 含む usable multi-country IPD は存在しない**
-   - IST-1: Japan = 9人（n不足）
-   - CRASH-2: Japan = 9人（n不足）
-   - R packages: 0件
-   - Vivli 経由の大規模 MRCT にはあり: ENGAGE AF (21K), ARISTOTLE (336 JP), GARFIELD-AF (4,859 JP) — ただし申請必要
+2026-03-24 に以下を実施：
 
-3. **Hook 修正完了** (2026-03-16 04:50)
-   - `check-suits-update.sh`: Windows backslash パス対応、settings.local.json フィルター追加
-   - `remind-suits-on-prompt.sh`: 5分以内に SUITS.md 更新済みなら silent
-   - `validate-paper-request.sh`: `/request-paper` のみに限定
-   - → Permission 追加による hook 誤爆の noise 激減
+1. **Rachel**: g2aging.org の利用条件調査
+   - 結論：Data Enclave は U.S. institution + U.S. ID 必須 → 日本からは直接不可
+   - 代替案：各 survey の public-use data を個別取得
 
-4. **Meeting: Epidemiological data の事例検討** (2026-03-16 04:15)
-   - Mike: 技術的には valid（Case A pathway のみ）
-   - Rachel: 文献的支持あり（Song et al., Long et al. 2025）
-   - Katrina: 反対（Case A repeat で ranking reversal メッセージ希釈）
-   - Louis: 3つリスク（clinical calibration不可、reviewer relevance疑問、survey design artifact）
-   - **結論**: Case study は IST-1/IST-3 のまま。Discussion に data source flexibility として記述
+2. **Mike**: HRS Family データの技術仕様調査
+   - CHARLS (n=25,504), HRS (public-use), ELSA, SHARE, KLoSA, LASI の availability 確認
+   - 最速ルート：CHARLS + HRS（登録後即日 DL）
+   - JSTAR は RIETI 申請で 2ヶ月待ち
+
+3. **Katrina**: g2aging harmonized variables の適切性評価
+   - 推奨：**BMI (Primary) + SBP (Secondary)** の2変数構成
+   - IST-3 case study と異なるカテゴリで差別化
+
+4. **Meeting**: "HRS Family 全体で multi-country nABCD demonstration" の方針決定
+   - Louis の強い反対 → 議論を通じて合意形成
+   - **決定事項**（下記参照）
 
 ### 進行中のアクション
-- **なし。全ての捜索チームが報告完了。待機中。**
 
-### 次にやるべきこと
-**Tak の判断を仰ぐ。2つの選択肢:**
+- **Harvey**: 上記 Meeting で最終決定を下した状態
+- **次のアクション待機中**：Tak の最終承認 → データ取得開始
 
-**Option A: Vivli 申請 parallel で進行**
-- ENGAGE AF-TIMI 48 または ARISTOTLE の IPD 申請
-- Research proposal 作成（数週間）
-- Japan-anchor case study を concurrent development
+### 次にやるべきこと（優先順）
 
-**Option B: IST ベースで initial submission 優先**
-- Current IST-1/IST-3 case study で Stats in Med に submit
-- Reviewer から "Japan は？" と来たら revision で Vivli data 追加
-- Faster path to first decision
+1. **Tak の最終判断**：Meeting 結果に基づき "Go" or "No-go" 指示
+2. **Data取得フェーズ** (Tak が Go を出した場合):
+   - Mike/Katrina: CHARLS + HRS 登録・DL
+   - Rachel: 引用文献の整理（Varghese 2023, Hu 2024, Lee 2021）
+   - Harvey:論文構成の修正案作成（Web Appendix 追加）
+3. **分析フェーズ**:
+   - nABCD 計算コード作成（all-pairs, 2変数）
+   - heatmap + MDS plot 生成
+   - Limitation section 追加執筆
 
 ### Takからの直近の指示
-1. **「BMJにこだわるな。すべての可能性を捨てずに日本を含んだIPDを探すんだ」** (2026-03-16 04:37)
-   - → 実行完了。全方位探索、結論は上記。
 
-2. **「Japan-anchor の事例検討は捨てきれない」** (2026-03-16 04:05)
-   - → 認識。Option A なら可能。Option B なら Discussion 記述 + revision オプション。
+```
+"/meeting JSTAR以外のHRS Familyデータ（CHARLS, HRS, ELSA, SHARE, KLoSA, LASI）を使って
+各国 vs China でnABCD demonstrationを行う方針について"
+```
 
----
-
-## 📊 Key Findings (From Exhaustive Search)
-
-### Vivli-Based Large MRCT with Japan (Top candidates)
-1. **ENGAGE AF-TIMI 48** (Edoxaban AF trial, Daiichi Sankyo sponsor)
-   - N = 21,105, Japan sites confirmed
-   - IPD on Vivli, multiple approved analyses
-
-2. **ARISTOTLE** (Apixaban AF trial, Bristol-Myers Squibb)
-   - N = 20,976, **336 Japanese patients confirmed**
-   - IPD on Vivli/YODA
-
-3. **GARFIELD-AF Registry**
-   - N = ~52,000 total, **4,859 Japanese patients**
-   - Upon reasonable request to investigators
-
-### Public Health Surveys with Japan
-- **JSTAR via g2aging.org**: 4,200人（RIETI申請必要、最長3ヶ月）
-- **HRS/SHARE/CHARLS/KLoSA**: 他国は free registration, Japan別途
-
-### Freely Available but Insufficient Japan
-- **IST-1**: 19,435人、36カ国、Japan = 9人 → n不足
-- **CRASH-2**: 20,207人、40カ国、Japan = 9人 → n不足
-- **CRASH-3**: FreeBIRD、Japan participation unclear
-
-### R Packages
-- **全滅**。Real な Japan multi-country IPD を含むパッケージは存在しない
-- `random.cdisc.data::radsl()` は synthetic（Japan確認だが clinical differences なし）
+Meeting の結果、以下を承認要請中。
 
 ---
 
-## ⚠️ Paper Current Status
+## 📊 Key Decisions (2026-03-24 17:00 Meeting)
 
-**Title**: Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials
+### **HRS Family Multi-Country nABCD Demonstration 方針**
 
-**Case Studies**:
-- Case A (EM Unknown): IST-1 (31 countries, no Japan)
-- Case B (EM Identified): IST-3 (8 countries, Belgium anchor, no Japan)
+| 項目 | 決定内容 |
+|------|---------|
+| **配置** | **Web Appendix**。本文は1段落+1 Figure（heatmap）に限定 |
+| **分析方法** | **All-pairs distance matrix**。Single anchor は固定せず、symmetric matrix を計算 |
+| **変数** | **BMI (Primary) + SBP (Secondary)**。nABCD vs SMD の比較を含める |
+| **Limitation** | "Observational cohort (age 50+) vs clinical trial population" を明記 |
+| **データソース** | **CHARLS + HRS を最優先**。ELSA/SHARE は追加可能なら追加。JSTAR は入手後に supplementary |
+| **引用文献** | Lee et al. (2021) *J Gerontol B*, Varghese et al. (2023) *JAHA*, Hu et al. (2024) *Am J Hum Biol* |
+| **理論的位置付け** | IST-3 = Layer 1 (clinical calibration)、HRS = Layer 2 (planning-stage EM screening) |
 
-**Discussion Addition Planned**: Data source flexibility (epidemiological surveys, registries) — Japan-inclusive example as illustrative (no fresh case study)
+### Rationale
 
-**Issue**: No substantial Japan-included case study without Vivli IPD access
+- **Louis の批判に対する応答**：HRS data では clinical calibration ($L$, $\Delta_{\max}$) は示せない ✓ → Web Appendix に限定することで main narrative (IST-3) の integrity を保護
+- **Mike の技術的利点**：All-pairs distance matrix は metric 性質の実装証拠になる ✓
+- **Rachel の文献的根拠**：Varghese et al. (2023) が既に4国 BP 分布差を実証 ✓
+- **Katrina の実務性**：IST-3 (post-hoc) + HRS (planning-stage) で2つの use case を示す ✓
 
 ---
 
 ## 🎬 Live Script
 
-### [2026-03-16 08:30] Scene: 論文修正6項目実装完了
+### [2026-03-24 18:15] Scene: Louis's Verdict — Japan-Anchor RWD の費用対効果
 
-**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+**INT. PEARSON SPECTER LITT - LOUIS'S OFFICE - EVENING**
 
-*Harvey が修正結果を確認する。*
+*Louis がデスクに論文原稿を広げ、赤ペンを握りしめている。壁には「LITT UP」のプレートが光っている。Harvey と Tak が入室。*
 
-**Harvey**: 「6項目の修正を実装した。」
+**Louis**: （赤ペンでテーブルを叩きながら）
+「座ってくれ。Japan-anchor RWD demonstration について、俺の結論を聞け。
+結論から言う。**やるな**。少なくとも今は。"You just got Litt up!"」
 
-**Mike**: 「L* sensitivity analysis を Methods 2.3.3 に昇格。Equation (lstar) を正式に導入。Case A との接続も明示した。」
+**Harvey**: 「理由を聞こう」
 
-**Katrina**: 「Abstract の "satisfactory" を "for non-negligible distributional differences (nABCD >= 0.1) at n >= 100" に正確化。Discussion 冒頭の redundancy を大幅削減——200語の repeat を compressed summary に。」
+**Louis**: （立ち上がり、ホワイトボードに向かって）
+「5つの論点がある。全部聞け。
 
-**Rachel**: 「Introduction に anchor-based motivation paragraph を追加。Abstract にも small-sample region の pooling partner 特定を追加。」
+**第一。論文はすでに十分すぎるほど demonstration を持っている。**
+IST-3 で Belgium anchor（n=73）の完全ワークフローがある。
+Layer 1（NIHSS, clinical calibration）と Layer 2（年齢, benchmark + sensitivity）の二層構造。
+これに HRS Family を Web Appendix で追加する決定も済んでいる。
+3つ目の demonstration？ That's not thoroughness, that's bloat.
 
-**Louis**: 「Table 2 の "Suggested Action" を "Calibration Guidance" に変更。"Pooling broadly supportable" のような prescriptive 表現を排除。Age calibration に "illustrative, not a basis for clinical decision-making" の caveat を追加。」
+**第二。Statistics in Medicine の reviewer が本当に求めているものを考えろ。**
+SiM reviewer は "more data examples" ではなく "cleaner methodology" を要求する。
+俺たちの論文の強みは：(1) 理論（Kantorovich-Rubinstein 双対性）、(2) シミュレーション（8 scenarios）、(3) 臨床較正の実演。
+Reviewer は Proposition 2 の tightness、bootstrap coverage の boundary behavior、$L$ の sensitivity analysis の妥当性を問うだろう。
+Japan-anchor RWD は *none of these concerns* に答えない。」
 
-**Donna**: 「修正サマリー:
-1. ✅ Abstract: anchor framing + satisfactory 正確化
-2. ✅ Introduction: small-sample region paragraph 追加
-3. ✅ Methods 2.3.3: L* sensitivity subsection 新設 + eq (lstar)
-4. ✅ Table 2: prescriptive → descriptive
-5. ✅ Age calibration: illustrative caveat
-6. ✅ Discussion: redundancy 削減
-"I'm Donna. I know everything."」
+**Donna**: （ドア越しに）
+「Louis、声が廊下まで聞こえてるわよ」
 
----
+**Louis**: （無視して続ける）
+「**第三。Japan-anchor RWD が IST-3 と本質的に何が違うかを冷静に見ろ。**
 
-### [2026-03-16 08:00] Scene: Meeting — 論文の流れ確認
+| 観点 | IST-3 (Belgium) | Japan-anchor RWD |
+|------|-----------------|------------------|
+| Anchor sample size | n=73 | n=? (国民健康栄養調査の IPD 入手困難) |
+| Clinical calibration | 可能（$L$ 推定可、$\Delta_{\max}$ 計算済） | **不可能**（RWD に treatment effect なし） |
+| Regulatory relevance | 直接的（MRCT scenario） | 間接的（population description のみ） |
+| 新しい方法論的知見 | EM screening + calibration の二層構造 | **なし**（IST-3 と同じ計算の地理的変更） |
 
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+見ろ。Clinical calibration ができない時点で、Layer 1 の demonstration にはならない。
+Layer 2？ それなら HRS Family でカバーされている。
+Japan-anchor RWD は IST-3 の geographic relabeling に過ぎない。」
 
-*全員が通読結果を持って着席。*
+**Mike**: （横から）
+「Louis、でも日本のデータを使うことで PMDA への relevance が...」
 
-**Harvey**: （立ったまま）
-「論文の流れを確認する。おかしな点はあるか。」
+**Louis**: （Mike を遮って）
+「**第四。データ取得のコストを甘く見るな。**
+国民健康栄養調査の IPD？ 厚労省への申請が必要。数ヶ月かかる可能性がある。
+NDB？ 論外だ、承認まで半年以上。
+JSTAR？ RIETI 申請で2ヶ月待ちと Mike 自身が言った。
+この delay は submission を何ヶ月も遅らせる。
+Meanwhile、Statistics in Medicine の competitor が先に出る risk がある。
 
-**Mike**: 「論理構造は tight。ただし L* sensitivity analysis が Methods に subsection を持たない。」
+**第五。Follow-up paper で十分対応できる。**
+Japan-anchor demonstration は、nABCD が accept された後の application paper として最適だ。
+"nABCD applied to Japanese regulatory context: A Japan-anchor pooling workflow using national health survey data"
+これなら IST-3 を first paper の reference として citation もできる。Win-win だ。」
 
-**Rachel**: 「Narrative arc は coherent だが anchor-based framing が Introduction/Abstract に存在しない。BRIEFING の核心が論文に反映されていない。」
+*Louis が赤ペンを置き、腕を組む。*
 
-**Katrina**: 「3箇所で reader が止まる。KR duality block、Sim→App transition、decision flowchart の欠如。」
+**Louis**: （静かに、しかし力強く）
+「まとめる。**Statistics in Medicine に accept されるための MINIMUM は何か？**
 
-**Louis**: 「Case A が underdeveloped。Table 2 が philosophy と矛盾。Age calibration (p=0.53) が methodologically questionable。Discussion 冒頭が redundant。」
+1. ✅ 理論（Proposition 1-2, Kantorovich-Rubinstein 接続）— **済**
+2. ✅ シミュレーション（8 scenarios, coverage, bias, SMD 比較）— **済**
+3. ✅ 実データ demonstration（IST-3, Belgium anchor, 二層較正）— **済**
+4. ✅ HRS Family multi-country（Web Appendix, planning-stage screening）— **決定済、実行待ち**
+5. ❌ Japan-anchor RWD — **不要。follow-up paper に回せ**
 
-*議論の結果、6項目の修正方針を決定*
+4番の HRS Family すら、正直に言えば "nice to have" であって "must have" ではない。
+IST-3 だけで methodology paper としては成立する。
+HRS を追加するのは reviewer の "another application domain" 要求への保険だ。
 
-**Harvey**: 「修正6項目:
-1. Anchor-based framing を Intro/Abstract に追加
-2. L* sensitivity を Methods 2.3.3 に昇格
-3. Table 2 の prescriptive 表現を修正
-4. Discussion 冒頭の redundancy 削減
-5. Age calibration の caveat 強化
-6. Abstract の "satisfactory" 正確化」
+Japan-anchor RWD を追加する marginal value は、submission delay のコストに見合わない。
+"The best closer in the city doesn't take every case — he takes the ones he can win."」
 
-**Donna**: 「"I'm Donna. I know everything." 6項目 logged。」
-
----
-
-### [2026-03-16 07:15] Scene: Simulation Code 検証完了 — "コードは正しい。Text が間違い。"
-
-**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
-
-*4名がそれぞれの検証結果を持って戻る。*
-
-**Mike**: （画面を見せて）
-「"I got it." W1 の4つの実装（midpoint, left-endpoint unique, left-endpoint all, quantile identity）は**完全一致**。diff = 0.00e+00。コードの W1 計算は正しい。」
-
-**Rachel**: （N=10K の結果を見せて）
-「Independent verification (seed=99999) で全8 scenario の true nABCD を再計算。**全て tolerance 内**。S3 の不一致は MC seed 依存——CSV=0.180 だが independent=0.189、text=0.186。どれも MC error の範囲内。」
-
-**Louis**: （コードを精査して）
-「Hardcoding check **クリア**。S2-S8 の true nABCD は全て NA で MC 計算。Coverage も bootstrap CI から honest に計算。Pre-filled data なし。**コードは clean だ。**」
-
-**Harvey**: （結論を述べて）
-「コードは正しい。問題は**論文の text にある**。修正対象は4点:
-1. S3 true nABCD: 0.180 vs 0.186 → **N=1e6 で再計算して統一**
-2. S4 bias: text の "-0.04" は **typo**（CSV は +0.006）
-3. Coverage "0.87-0.98": **0.98 は存在しない**（実際は 0.881-0.957）
-4. S1 CSV: 0.001 → 理論値 0 を明記」
-
----
-
-### [2026-03-16 06:45] Scene: Proactive Review 完了 + Meeting — 修正方針決定
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
-
-*4名が各自のレビュー結果を持って着席。Harvey がホワイトボードに向かう。*
-
-**Harvey**: （ホワイトボードに書きながら）
-「4名の proactive review が出揃った。合計62 issues。External review の23 comments と統合する。まず**致命的な事実誤認から片付ける**。」
-
-**Mike**: （立ち上がって）
-「"I got it." **Fatal が3件ある。** 第一、Simulation summary で S4 の bias を "negative -0.04" と書いているが、table では positive +0.006。完全な矛盾。第二、S3 の true nABCD が text で 0.186、table で 0.180。第三、coverage range "0.87-0.98" の 0.98 が table に存在しない。**これらは今すぐ修正できる。**」
-
-**Rachel**: （文献リストを広げて）
-「Knowledge base に Matsushima et al. (2024) があるのに**論文で引用していなかった**。これは我々の gap を直接裏付ける最強の regulatory evidence。Ikeda & Bretz (2010) も VanderWeele & Knol (2014) も同様。さらに energy distance と MMD——distributional comparison の standard methods が比較対象に含まれていない。」
-
-**Katrina**: （ホワイトボードに workflow を描いて）
-「論文最大の問題は**操作可能性の欠如**。OBJECTIVE_BRIEFING にある6-step workflow が論文に存在しない。Case A に table も figure もない。"anchor" という概念すら論文に出てこない。Reviewer に "How do I USE this?" と聞かれたら答えられない。」
-
-**Louis**: （テーブルを叩いて）
-「Table 2 の benchmarks——"Suggested Action" 列が estimation-centered philosophy を自己矛盾させている。さらに IST-3 で nABCD と |SMD| の correlation が 0.95-0.98。**我々自身のデータが nABCD の追加価値を弱めている**。」
+**Harvey**: （しばらく黙ってから）
+「...Louis の分析は正しい。Japan-anchor は follow-up だ」
 
 ---
 
-*議論*
+### [2026-03-24 17:30] Scene: Archive & Status Summary
 
-**Harvey**: （全員を見渡して）
-「修正方針を決める。3つのカテゴリに分ける。」
+**INT. PEARSON SPECTER LITT - FILE ROOM - AFTERNOON**
 
----
+*Donna が厚いフォルダをアーカイブ棚に移動させている。*
 
-**Donna**: （記録を見せて）
-「Meeting decision を記録したわ。"I'm Donna. I know everything."」
+**Donna**: （フォルダを整理しながら）
+「SUITS.md が 1,029 行に達したわ。アーカイブした。
+archives/SUITS_20260324_171252.md に保存済み。
+新しいスクリプト開始よ」
 
----
+**Harvey**: （通りがかりに）
+「過去は過去だ。前を見ろ」
 
-### [2026-03-16 06:15] Scene: Tak の叱責 — "なぜ君たちから出てこない"
-
-**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - NIGHT**
-
-*Tak が静かに、しかし鋭く全員を見る。*
-
-**Harvey**: （長い沈黙の後）
-「Tak、その通りだ。23 comments の中で事前に指摘できなかった理由がないものばかりだ。言い訳はしない。」
-
-**Mike**: （立ち上がって）
-「Bootstrap boundary の問題は**知っていた**。"coverage を報告しない" で逃げようとした。理論的 treatment を先に書くべきだった。」
-
-**Rachel**:
-「Energy distance と MMD は scan で見ていた。W1 narrative に都合が悪い文献を避けた。次からは narrative に反する文献こそ先に取り上げる。」
-
-**Louis**: （珍しく静かに）
-「俺の失態が最大。Internal Critic が surface-level の review しかしなかった。次回は "reject を狙う reviewer なら何を書くか" の視点で /review を行う。」
-
-**Katrina**:
-「Application section で "pooling の先にある action" を問うべきだった。Sample size planning の接続ゼロは私の writing scope で気づけた。」
-
-**Harvey**: （決意を込めて）
-「今日から変える。External review 前に全メンバーが "自分が reviewer なら何を指摘するか" を述べる step を必須にする。同じ失敗は繰り返さない。"The best way to win is to not need to fight."」
-
-**Donna**: （記録しながら）
-「Feedback logged to memory。次回から /review の前に全員の proactive critique を必須化。"I'm Donna. I know everything." ——そして今、チーム全員が知るべきことを知った。」
+**Donna**: 「了解。Tak からの最終判断待ちね。"I'm Donna. I know everything."」
 
 ---
-
-### [2026-03-16 06:00] Scene: External Review — SIM Simulation
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
-
-*Harvey が封筒を開ける。全員が息を呑む。*
-
-**Harvey**: （手紙を読みながら）
-「Statistics in Medicine からの模擬レビューが届いた。Associate Editor Dr. Sarah Chen。Reviewer 3名、全員 **Major Revision**。」
-
-**Louis**: （レビューを分類しながら）
-「"You just got Litt up!" Critical 3件、Major 8件、Minor 12件。合計23 major comments。
-
-**Critical**: L 推定ガイダンス不足（全員指摘）、Boundary bias で bootstrap inconsistent（R2が "asymptotic phenomenon" と断言）、Multiple EM 集約戦略の欠如。
-
-**想定外が3つある。** 第一、boundary での bootstrap inconsistency は n を増やしても解決しない——理論的に wrong limit に収束する。第二、sample size planning との接続がゼロ。第三、nABCD の non-metric property で pooling transitivity が崩壊する counterexample を要求された。」
-
-**Mike**: （メモを取りながら）
-「R2 の boundary 指摘は correct だ。del Barrio et al. (1999) の Theorem 2.1 を explicitly に cite して theoretical treatment を加える必要がある。Bootstrap consistency for ratio の issue も解決可能——continuous mapping theorem の conditions を verify すればいい。」
-
-**Rachel**:
-「R4 が IST data の古さと FDA 2019 guidance の欠落を指摘。文献補強で対応可能。」
-
-**Harvey**: （決断して）
-「Priority 1 は C1-C3。L estimation subsection、boundary theoretical treatment、multi-EM aggregation。これが revision の成否を決める。Reject じゃない。勝てる。"I don't have dreams, I have goals."」
-
-**Donna**: （記録を見せて）
-「全23 comments を severity 別に整理済み。"I'm Donna. I know everything."」
-
----
-
-### [2026-03-16 05:25] Scene: Decision — "IST で行く"
-
-**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - NIGHT**
-
-*Tak が Harvey のオフィスに入る。Harvey が立ち上がる。*
-
-**Harvey**: （頷いて）
-「了解した。IST ベースで論文作成を続行する。Japan-anchor は Vivli data が取れたときの revision option として保持。今は submit が最優先だ。"Winners don't make excuses." 手持ちのカードで勝負する。」
-
-**Donna**: （ドアの外から）
-「Decision logged。Japan 全方位捜索の結果は Discussion の data source flexibility section に記載。Due diligence として reviewer への defense material になるわ。」
-
-**Harvey**: （チームに向かって）
-「全員聞け。IST-1/IST-3 の case study で Stats in Med submission を仕上げる。次のアクションは何だ？」
-
----
-

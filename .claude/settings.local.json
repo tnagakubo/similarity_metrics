@@ -129,21 +129,8 @@
       "WebFetch(domain:biomarkers.bsd.uchicago.edu)",
       "WebFetch(domain:catalog.ihsn.org)",
       "mcp__ide__executeCode",
-<<<<<<< HEAD
       "WebFetch(domain:www.vivli.org)",
       "WebFetch(domain:physionet.org)",
-      "Bash(echo '{\"prompt\":\"test message\"}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/remind-suits-on-prompt.sh\" 2>&1; echo \"EXIT: $?\")",
-      "Bash(echo '{\"prompt\":\"request-paper DOI 10.1234\"}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/validate-paper-request.sh\" 2>&1; echo \"EXIT: $?\")",
-      "Bash(echo '{\"tool_input\":{\"file_path\":\"/some/file.R\"}}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/check-suits-update.sh\" 2>&1; echo \"EXIT: $?\")",
-      "Bash(echo '{\"tool_input\":{\"command\":\"ls -la\"}}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/pre-bash-safety.sh\" 2>&1; echo \"EXIT: $?\")",
-      "Bash(bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/check-suits-lines.sh\" 2>&1; echo \"EXIT: $?\")",
-      "Bash(bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/session-start-context.sh\" 2>&1; echo \"EXIT: $?\")",
-      "Bash(echo \"=== 1. remind-suits-on-prompt.sh \\(UserPromptSubmit\\) ===\" && echo '{\"prompt\":\"test\"}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/remind-suits-on-prompt.sh\" 2>&1; echo \"EXIT: $?\")",
-      "Bash(echo \"=== 2a. validate-paper-request.sh \\(non-paper request\\) ===\" && echo '{\"prompt\":\"hello\"}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/validate-paper-request.sh\" 2>&1; echo \"EXIT: $?\" && echo \"=== 2b. validate-paper-request.sh \\(paper request WITH DOI\\) ===\" && echo '{\"prompt\":\"/request-paper DOI 10.1234/test\"}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/validate-paper-request.sh\" 2>&1; echo \"EXIT: $?\" && echo \"=== 2c. validate-paper-request.sh \\(paper request WITHOUT DOI\\) ===\" && echo '{\"prompt\":\"/request-paper some paper\"}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/validate-paper-request.sh\" 2>&1; echo \"EXIT: $?\")",
-      "Bash(echo \"=== 3a. check-suits-update.sh \\(non-SUITS file\\) ===\" && echo '{\"tool_input\":{\"file_path\":\"/some/file.R\"}}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/check-suits-update.sh\" 2>&1; echo \"EXIT: $?\" && echo \"=== 3b. check-suits-update.sh \\(SUITS.md itself\\) ===\" && echo '{\"tool_input\":{\"file_path\":\"/project/SUITS.md\"}}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/check-suits-update.sh\" 2>&1; echo \"EXIT: $?\" && echo \"=== 3c. check-suits-update.sh \\(settings file\\) ===\" && echo '{\"tool_input\":{\"file_path\":\".claude/settings.json\"}}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/check-suits-update.sh\" 2>&1; echo \"EXIT: $?\")",
-      "Bash(echo \"=== 4a. pre-bash-safety.sh \\(safe command\\) ===\" && echo '{\"tool_input\":{\"command\":\"ls -la\"}}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/pre-bash-safety.sh\" 2>&1; echo \"EXIT: $?\" && echo \"=== 4b. pre-bash-safety.sh \\(dangerous rm -rf\\) ===\" && echo '{\"tool_input\":{\"command\":\"rm -rf /c/Users\"}}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/pre-bash-safety.sh\" 2>&1; echo \"EXIT: $?\" && echo \"=== 4c. pre-bash-safety.sh \\(force push\\) ===\" && echo '{\"tool_input\":{\"command\":\"git push --force origin main\"}}' | bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/pre-bash-safety.sh\" 2>&1; echo \"EXIT: $?\")",
-      "Bash(echo \"=== 5. check-suits-lines.sh ===\" && bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/check-suits-lines.sh\" 2>&1; echo \"EXIT: $?\")",
-      "Bash(echo \"=== 6. session-start-context.sh ===\" && bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/session-start-context.sh\" 2>&1; echo \"EXIT: $?\" && echo \"=== 7. post-compact-remind.sh ===\" && bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/.claude/hooks/post-compact-remind.sh\" 2>&1; echo \"EXIT: $?\")",
       "WebFetch(domain:datadryad.org)",
       "WebFetch(domain:scholar.google.com)",
       "WebFetch(domain:search.datacite.org)",
@@ -155,17 +142,18 @@
       "WebFetch(domain:www.projectdatasphere.org)",
       "WebFetch(domain:rdrr.io)",
       "WebFetch(domain:r-packages.io)",
-      "Bash(cat:*)"
-=======
+      "Bash(cat:*)",
       "Bash(lualatex --version)",
       "Bash(xelatex --version)",
-      "Bash(Rscript -e \"cat\\(tinytex::tinytex_root\\(\\)\\)\")",
-      "Bash(Rscript -e \"cat\\(system.file\\(package=''tinytex''\\)\\)\")",
-      "Bash(Rscript -e \"tinytex::tlmgr\\(''--version''\\)\")",
       "Bash(pandoc --version)",
-      "Bash(quarto --version which xelatex)",
-      "Bash(quarto check:*)"
->>>>>>> 82f437d6deabde06fad666d92517f34fc0574bed
+      "Bash(quarto check:*)",
+      "WebFetch(domain:hrsdata.isr.umich.edu)",
+      "WebFetch(domain:www.rieti.go.jp)",
+      "WebFetch(domain:charls.pku.edu.cn)",
+      "WebFetch(domain:hrs.isr.umich.edu)",
+      "WebFetch(domain:charls.charlsdata.com)",
+      "Read(//c/c/**)",
+      "Read(//c/Users/hrd13/AppData/Local/Programs/Python/**)"
     ]
   }
 }
