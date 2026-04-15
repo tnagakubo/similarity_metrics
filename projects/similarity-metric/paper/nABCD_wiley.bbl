@@ -12,6 +12,10 @@ Quan H, Li M, Chen J, et al. Assessment of consistency of treatment effects in m
 \bibitem{iche17}
 {ICH E17 Expert Working Group} . General Principles for Planning and Design of Multi-Regional Clinical Trials ({E17}). tech. rep., International Council for Harmonisation; Geneva, Switzerland:   2017.
 
+\bibitem{matsushima2024}
+Matsushima N, Otsuba Y, Aoi Y, et al. Summary report of a public workshop: case studies of multi-regional clinical trial incorporating concept of the {ICH} {E17} guideline. {\it Clin Pharmacol Ther.} 2024\string;115(5)\string:965--970.
+\newblock \href {\doibase 10.1002/cpt.3163} {doi: 10.1002/cpt.3163}
+
 \bibitem{song2025}
 Song J, Ji C, Chen M, Luo X, Quan H, Chen J. Basic Considerations for Data Pooling Strategy in Multi-Regional Clinical Trials ({MRCTs}). {\it Ther Innov Regul Sci.} 2025\string;59(2)\string:359--364.
 \newblock \href {\doibase 10.1007/s43441-025-00744-8} {doi: 10.1007/s43441-025-00744-8}
@@ -24,36 +28,29 @@ Long M, Wu H, Liu X, Chen J. Basic Considerations for the Consistency Evaluation
 Austin PC. An introduction to propensity score methods for reducing the effects of confounding in observational studies. {\it Multivariate Behav Res.} 2011\string;46(3)\string:399--424.
 \newblock \href {\doibase 10.1080/00273171.2011.568786} {doi: 10.1080/00273171.2011.568786}
 
-\bibitem{panaretos2019}
-Panaretos VM, Zemel Y. Statistical aspects of {W}asserstein distances. {\it Annu Rev Stat Appl.} 2019\string;6\string:405--431.
-\newblock \href {\doibase 10.1146/annurev-statistics-030718-104938} {doi: 10.1146/annurev-statistics-030718-104938}
-
-\bibitem{pearl2011}
-Pearl J, Bareinboim E. Transportability of causal and statistical relations: A formal approach. In: . 25. AAAI Press.  2011; Menlo Park, CA\string:247--254.
-
 \bibitem{villani2009}
 Villani C. {\it Optimal Transport: Old and New}.
 \newblock Springer, 2009
+
+\bibitem{panaretos2019}
+Panaretos VM, Zemel Y. Statistical aspects of {W}asserstein distances. {\it Annu Rev Stat Appl.} 2019\string;6\string:405--431.
+\newblock \href {\doibase 10.1146/annurev-statistics-030718-104938} {doi: 10.1146/annurev-statistics-030718-104938}
 
 \bibitem{gibbs2002}
 Gibbs AL, Su FE. On Choosing and Bounding Probability Metrics. {\it Int Stat Rev.} 2002\string;70(3)\string:419--435.
 \newblock \href {\doibase 10.1111/j.1751-5823.2002.tb00178.x} {doi: 10.1111/j.1751-5823.2002.tb00178.x}
 
-\bibitem{rousseeuw1993}
-Rousseeuw PJ, Croux C. Alternatives to the Median Absolute Deviation. {\it J Am Stat Assoc.} 1993\string;88(424)\string:1273--1283.
-\newblock \href {\doibase 10.1080/01621459.1993.10476408} {doi: 10.1080/01621459.1993.10476408}
-
 \bibitem{delbarrio1999}
 Barrio dE, Gin{\'e} E, Matr{\'a}n C. Central limit theorems for the {W}asserstein distance between the empirical and the true distributions. {\it Ann Probab.} 1999\string;27(2)\string:1009--1071.
 \newblock \href {\doibase 10.1214/aop/1022677394} {doi: 10.1214/aop/1022677394}
 
+\bibitem{efron1993}
+Efron B, Tibshirani RJ. {\it An Introduction to the Bootstrap}.
+\newblock New York: Chapman \& Hall/CRC, 1993
+
 \bibitem{sommerfeld2018}
 Sommerfeld M, Munk A. Inference for empirical {W}asserstein distances on finite spaces. {\it J R Stat Soc Series B.} 2018\string;80(1)\string:219--238.
 \newblock \href {\doibase 10.1111/rssb.12236} {doi: 10.1111/rssb.12236}
-
-\bibitem{armstrong2021}
-Armstrong TB, Koles{\'a}r M. Finite-Sample Optimal Estimation and Inference on Average Treatment Effects Under Unconfoundedness. {\it Econometrica.} 2021\string;89(3)\string:1141--1177.
-\newblock \href {\doibase 10.3982/ECTA16907} {doi: 10.3982/ECTA16907}
 
 \bibitem{wasserstein2016}
 Wasserstein RL, Lazar NA. The {ASA} Statement on p-Values: Context, Process, and Purpose. {\it Am Stat.} 2016\string;70(2)\string:129--133.
@@ -74,6 +71,9 @@ Chen ZM, Sandercock P, Pan HC, et al. Indications for early aspirin use in acute
 \bibitem{ist3_2012}
 {IST-3 collaborative group} . The benefits and harms of intravenous thrombolysis with recombinant tissue plasminogen activator within 6 h of acute ischaemic stroke ({IST-3}): a randomised controlled trial. {\it Lancet.} 2012\string;379(9834)\string:2352--2363.
 \newblock \href {\doibase 10.1016/S0140-6736(12)60768-5} {doi: 10.1016/S0140-6736(12)60768-5}
+
+\bibitem{pearl2011}
+Pearl J, Bareinboim E. Transportability of causal and statistical relations: A formal approach. In: . 25. AAAI Press.  2011; Menlo Park, CA\string:247--254.
 
 \bibitem{bareinboim2016}
 Bareinboim E, Pearl J. Causal inference and the data-fusion problem. {\it Proc Natl Acad Sci USA.} 2016\string;113(27)\string:7345--7352.

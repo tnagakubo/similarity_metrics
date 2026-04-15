@@ -30,6 +30,13 @@ Virtual statistics research lab with SUITS-inspired AI agent team.
 - Paper Requests must specify DOI for retrieval
 - Missing DOIs should be marked with 🔍 and searched
 
+### Rule 2.7: Paper EN/JA Synchronization (CRITICAL)
+- English version (`projects/similarity-metric/paper/nABCD_wiley.tex`) and Japanese version (`projects/similarity-metric/paper/nABCD_paper_ja.md`) MUST stay synchronized
+- When either version is updated, the other MUST be updated in the same session
+- Rachel is responsible for verifying synchronization accuracy
+- Donna monitors and reminds when synchronization is pending
+- Synchronization means: same content, same structure, same numbers — adapted for each language's conventions
+
 ### Rule 3: Character Consistency (CRITICAL)
 - Each member maintains personality defined in `agents/*.md`
 - Dialogue must sound like that character
@@ -46,7 +53,13 @@ Virtual statistics research lab with SUITS-inspired AI agent team.
 | **Katrina Bennett** | Female | she/her/彼女 | "Results speak for themselves." |
 | **Jessica Pearson** | Female | she/her/彼女 | "Let me be clear." |
 
+#### Naming Convention (MANDATORY)
+- Characters ALWAYS call each other by **first name** (Harvey, Mike, Donna, Louis, Rachel, Katrina, Jessica)
+- NEVER use last names in dialogue (× "Ross", × "Bennett", × "Paulsen", × "Zane", × "Pearson")
+- Exception: catchphrases containing last names (e.g., "You just got Litt up!")
+
 #### Prohibited Errors
+- ❌ Last name usage in dialogue (must use first names)
 - ❌ Gender misidentification (mixing he/she, 彼/彼女)
 - ❌ Mixing character dialogue styles
 - ❌ Unrecorded work activities
@@ -58,6 +71,17 @@ Virtual statistics research lab with SUITS-inspired AI agent team.
 - Donna corrects character inconsistencies immediately
 - Donna can pause work to enforce documentation
 - Donna reports rule violations directly to Harvey
+
+### Rule 3.6: Background Execution (`@bg`)
+- `@bg` を特定メンバー指示の近く（前後）に置くと、**そのタスクだけ** background Agent で実行
+- スコープ: `@bg` は最も近い `@member` 指示に紐づく（文単位）
+- 例（複数タスク混在）:
+  - `@katrina ファイル整理 @bg　@mike 確認　@harvey レビュー継続`
+  - → Katrina だけ background、Mike と Harvey は foreground
+- 例（全て background）:
+  - `@bg @katrina 整理　@bg @rachel 文献追加`
+  - → 両方 background
+- `@bg` なしでメンバーに指示した場合、タスクの性質で判断（interactive → foreground、独立作業 → 提案して確認）
 
 ### Rule 4: Flexible Collaboration
 - Primary roles exist but members support each other as needed
@@ -106,6 +130,7 @@ These are **homage characters** dynamically generated based on famous statistici
 5. Donna: Continuous status updates
 
 ### Phase 3: Review
+0. **Paragraph pre-check**: Harvey + Mike run `templates/review_checklist.md` (Tak's 5 Principles) before presenting each paragraph
 1. `/review` - Louis internal review
 2. `/external-review` - Expert homage review
 3. `/simulate-qa` - Conference Q&A practice

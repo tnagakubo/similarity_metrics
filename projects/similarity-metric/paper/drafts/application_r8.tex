@@ -1,0 +1,119 @@
+%==============================================================================
+\section{Application: Hypothetical Thrombolytic MRCT Using GUSTO-I Data}\label{sec:application}
+%==============================================================================
+
+We illustrate the nABCD framework through a hypothetical scenario grounded in publicly available data from GUSTO-I, a large international trial in acute myocardial infarction (AMI). A sponsor is developing a novel thrombolytic agent (Drug~T) for AMI and is planning a Phase~3 MRCT across multiple regions. At the planning stage, the sponsor uses publicly available individual patient data (IPD) from GUSTO-I ($N = 40{,}830$; 16 anonymized regions)\cite{gusto1993} to assess distributional similarity of candidate effect modifiers across regions and to identify suitable pooling partners for a designated anchor region.
+
+\subsection{Scenario Design and Effect Modifier Selection}\label{sec:app_scenario}
+
+The FTT Collaborative Group\cite{ftt1994} meta-analysis of fibrinolytic therapy trials established age as a confirmed effect modifier for thrombolytic efficacy in AMI: the absolute mortality reduction varied from approximately 1\%pt in patients aged $<55$ to 3.4\%pt in those aged 55--74, declining to non-significant in patients aged $\geq75$. From these published subgroup-specific treatment effects, CATE sensitivity is estimable: $L_{\text{mean}} = 0.0003$/yr and $L_{\max} = 0.0005$/yr. Systolic blood pressure (SBP) was also examined in FTT as a candidate effect modifier, but the treatment $\times$ SBP interaction evidence is weaker and $L$ is not directly estimable from the published data. These two candidate effect modifiers represent complementary planning scenarios: age permits clinical calibration via $\Delta_{\max}$ (equation~\ref{eq:delta_max}), while SBP requires $L^*$ sensitivity analysis (equation~\ref{eq:lstar}).
+
+The sponsor selects Region~8 as the anchor region---representing, for instance, a regulatory market where local efficacy evidence is required but sample size is limited. Region~8 enrolled $n = 2{,}916$ patients, with baseline characteristics summarized in Table~\ref{tab:gusto_r8}. The exercise of identifying Region~8's suitable pooling partners simulates the decision a sponsor would face when seeking regional efficacy assessment through pooling under ICH E17.\cite{iche17}
+
+\begin{table}[ht]
+\caption{Region~8 baseline characteristics (GUSTO-I).\label{tab:gusto_r8}}
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccc@{}}
+\toprule
+\textbf{Effect modifier} & \textbf{Mean} & \textbf{SD} & \textbf{Skewness} & \textbf{IQR\textsubscript{pooled}} \\
+\midrule
+Age (years) & 60.2 & 12.1 & $-0.17$ & $\approx 18$ \\
+SBP (mmHg) & 132.4 & 22.9 & 0.20 & $\approx 30$ \\
+\bottomrule
+\end{tabular*}
+\begin{tablenotes}
+\item $n = 2{,}916$. IQR\textsubscript{pooled} computed over combined samples across all region pairs; representative values shown.
+\end{tablenotes}
+\end{table}
+
+\subsection{Distributional Assessment: nABCD Across 15 Partner Regions}\label{sec:app_nabcd}
+
+We computed nABCD between Region~8 and each of the remaining 15 regions for both candidate effect modifiers. Table~\ref{tab:gusto_nabcd} presents the results, ranked by nABCD for age.
+
+\begin{table}[ht]
+\caption{nABCD values for Region~8 versus each partner region (GUSTO-I).\label{tab:gusto_nabcd}}
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcclcc@{}}
+\toprule
+ & \multicolumn{2}{c}{\textbf{Age}} & & \multicolumn{2}{c}{\textbf{SBP}} \\
+\cmidrule{2-3} \cmidrule{5-6}
+\textbf{Partner} & \textbf{nABCD} & \textbf{Pool?} & & \textbf{nABCD} & \textbf{Pool?} \\
+\midrule
+R5  & 0.011 & Y & & 0.056 & N \\
+R9  & 0.014 & Y & & 0.110 & N \\
+R4  & 0.016 & Y & & 0.042 & Y \\
+R7  & 0.016 & Y & & 0.082 & N \\
+R1  & 0.018 & Y & & 0.058 & N \\
+R6  & 0.019 & Y & & 0.050 & Y \\
+R14 & 0.019 & Y & & 0.064 & N \\
+R15 & 0.022 & Y & & 0.074 & N \\
+R12 & 0.024 & Y & & 0.097 & N \\
+R10 & 0.024 & Y & & 0.063 & N \\
+R13 & 0.025 & Y & & 0.038 & Y \\
+R11 & 0.035 & Y & & 0.104 & N \\
+R16 & 0.044 & Y & & 0.071 & N \\
+R2  & 0.061 & N & & 0.015 & Y \\
+R3  & 0.076 & N & & 0.051 & N \\
+\bottomrule
+\end{tabular*}
+\begin{tablenotes}
+\item Poolability determined by nABCD $< 0.05$. Y = poolable; N = not poolable. Regions ranked by age nABCD (ascending).
+\end{tablenotes}
+\end{table}
+
+The two effect modifiers produce strikingly different poolability patterns. For age, 13 of 15 partner regions satisfy the $\text{nABCD} < 0.05$ threshold, with values ranging from 0.011 (R5) to 0.044 (R16). Only R2 (0.061) and R3 (0.076) exceed the threshold. For SBP, only 3 of 15 regions are poolable: R2 (0.015), R13 (0.038), and R4 (0.042), with R6 (0.050) at the exact boundary. The higher SBP nABCD values across most regions reflect greater geographic heterogeneity in blood pressure distributions compared to age.
+
+An instructive contrast emerges between R2 and R9: R2 has the second-largest age nABCD (0.061) but the smallest SBP nABCD (0.015), while R9 has the second-smallest age nABCD (0.014) but the largest SBP nABCD (0.110). A pooling decision based on either effect modifier alone would reach opposite conclusions for these regions. This underscores the necessity of evaluating all candidate effect modifiers jointly.
+
+\subsection{Clinical Calibration: Age}\label{sec:app_age}
+
+Because age is a confirmed effect modifier with estimable CATE sensitivity, clinical calibration translates the observed nABCD values into treatment effect heterogeneity on the clinical outcome scale. Using the FTT-derived estimates ($L_{\text{mean}} = 0.0003$/yr, $L_{\max} = 0.0005$/yr) and equation~(\ref{eq:delta_max}):
+\[
+\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}.
+\]
+
+For the maximum-nABCD pair (Region~8--R3, $\text{nABCD} = 0.076$):
+\begin{itemize}
+  \item Using $L_{\max} = 0.0005$/yr: $\Delta_{\max} = 2 \times 0.0005 \times 18 \times 0.076 = 0.14$\%pt.
+  \item Using $L_{\text{mean}} = 0.0003$/yr: $\Delta_{\max} = 2 \times 0.0003 \times 18 \times 0.076 = 0.08$\%pt.
+\end{itemize}
+These values are negligible relative to the overall treatment effect of thrombolytic therapy in AMI (approximately 2--3\%pt absolute mortality reduction in FTT). Even the non-poolable pair with the largest distributional difference produces a worst-case treatment effect heterogeneity below 0.15\%pt. For the poolable regions, $\Delta_{\max}$ values are smaller still: the borderline R16 ($\text{nABCD} = 0.044$) yields $\Delta_{\max} = 0.08$\%pt under $L_{\max}$.
+
+The clinical calibration confirms that age distributional differences across GUSTO-I regions are unlikely to generate clinically meaningful treatment effect heterogeneity for Drug~T, even under conservative assumptions about CATE sensitivity.
+
+\subsection{Sensitivity Analysis: SBP}\label{sec:app_sbp}
+
+Because $L$ for SBP is not estimable from published data, we conduct $L^*$ reverse-calculation analysis (equation~\ref{eq:lstar}) to determine what CATE sensitivity would be required for the observed distributional differences to produce clinically meaningful heterogeneity. Using $\text{IQR}_{\text{pooled}} \approx 30$~mmHg:
+\[
+L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}.
+\]
+
+For the maximum-nABCD pair (Region~8--R9, $\text{nABCD} = 0.110$):
+\begin{itemize}
+  \item At $\Delta_{\text{clin}} = 1$\%pt: $L^* = 0.01 / (2 \times 30 \times 0.110) = 0.0015$/mmHg.
+  \item At $\Delta_{\text{clin}} = 2$\%pt: $L^* = 0.02 / (2 \times 30 \times 0.110) = 0.0030$/mmHg.
+\end{itemize}
+
+A CATE sensitivity of $L = 0.0015$/mmHg means that the treatment effect changes by 0.15\%pt for every 1~mmHg change in baseline SBP---a modest value that cannot be ruled out based on published evidence. This suggests that SBP distributional differences between Region~8 and non-poolable partners could plausibly translate into clinically meaningful heterogeneity if a treatment $\times$ SBP interaction exists for Drug~T. Even for pairs closer to the threshold (e.g., R1 with $\text{nABCD} = 0.058$), $L^* = 0.0029$/mmHg at $\Delta_{\text{clin}} = 1$\%pt---still within a plausible range.
+
+This sensitivity analysis does not prove that SBP distributional differences will produce treatment effect heterogeneity; rather, it quantifies the conditions under which they would. The modest $L^*$ values indicate that the distributional heterogeneity detected by nABCD warrants explicit consideration in the pooling strategy, even without confirmed effect modifier evidence for SBP.
+
+\subsection{Pooling Recommendation}\label{sec:app_pooling}
+
+When multiple candidate effect modifiers are evaluated, a region qualifies as a pooling partner only if it satisfies the similarity criterion for every effect modifier---the most restrictive condition governs. Combining the age and SBP assessments:
+
+\begin{itemize}
+  \item \textbf{Age}: 13 of 15 regions poolable ($\text{nABCD} < 0.05$).
+  \item \textbf{SBP}: 3 of 15 regions poolable ($\text{nABCD} < 0.05$): R2 (0.015), R13 (0.038), R4 (0.042); R6 (0.050) is at the boundary.
+  \item \textbf{Both effect modifiers}: 3 regions satisfy both criteria---R4, R6, and R13.
+\end{itemize}
+
+R2 is poolable for SBP ($\text{nABCD} = 0.015$) but not for age ($\text{nABCD} = 0.061$); conversely, many regions poolable for age (e.g., R9 with $\text{nABCD}_{\text{age}} = 0.014$) are excluded by SBP ($\text{nABCD}_{\text{SBP}} = 0.110$). This pattern illustrates a central practical implication: the number of eligible pooling partners depends critically on how many effect modifiers are assessed and on the distributional heterogeneity specific to each. In this scenario, SBP---the effect modifier with weaker prior evidence but greater geographic heterogeneity---is the binding constraint.
+
+The practical consequence for the sponsor is threefold. First, the three confirmed partners (R4, R6, R13) can be designated as Region~8's pooling group for regulatory assessment. Second, the clinical calibration for age demonstrates that the age-based exclusions (R2, R3) have negligible clinical impact ($\Delta_{\max} < 0.15$\%pt); the substantive pooling constraint arises from SBP distributional differences. Third, if the sponsor obtains additional evidence on SBP---for example, from a Phase~2 interaction analysis or an external database---that evidence can be incorporated through the clinical calibration framework: estimating $L$ for SBP would allow direct $\Delta_{\max}$ computation, potentially expanding or narrowing the pooling set with clinical justification.
+
+Several limitations of this application should be noted:
+\begin{enumerate}[1.]
+\item \emph{Illustrative data source}: GUSTO-I was not designed as an MRCT; it serves as a convenient publicly available data source for methodological demonstration. In practice, sponsors would assemble regional effect modifier distributions from the most representative and current sources available.
+\item \emph{Anonymized regions}: GUSTO-I regions are anonymized, precluding demographic or geographic interpretation of the distributional patterns. This limitation is specific to the dataset, not the framework.
+\item \emph{Transferability of $L$}: CATE sensitivity for age was estimated from the FTT meta-analysis of first-generation thrombolytics; the class-transferability assumption to Drug~T requires justification and sensitivity analysis.
+\item \emph{Threshold choice}: The $\text{nABCD} < 0.05$ threshold used here is illustrative. In practice, threshold selection should reflect clinical context, regulatory requirements, and the clinical calibration results. The estimation-centered approach (reporting $\Delta_{\max}$ with CIs) provides richer information than a binary poolable/not-poolable determination.
+\end{enumerate}

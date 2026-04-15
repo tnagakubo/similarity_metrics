@@ -2,21 +2,20 @@
 marp: true
 size: 16:9
 paginate: true
-header: "Mar 1, 2026"
-footer: "Quantifying Effect Modifier Similarity for Regional Pooling in MRCTs"
-math: mathjax
+header: "2026"
+footer: "nABCD: Effect Modifier Similarity for MRCTs"
 style: |
   /* ============================================
      Marp Slide Template
      - Accent Color 1: #1E3A5F (Deep Navy)
-     - Accent Color 2: #0da774
+     - Accent Color 2: #199be6
      ============================================ */
 
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
 
   :root {
-    --accent1: #003638;
-    --accent2: #0da774;
+    --accent1: #1E3A5F;
+    --accent2: #199be6;
     --text-main: #000000;
     --text-light: #303030;
     --bg-light: #F8F9FA;
@@ -31,9 +30,8 @@ style: |
     border: none;
     padding: 90px 60px 46px 60px;
     font-size: 28px;
-    line-height: 1.6;
+    line-height: 1.3;
     position: relative;
-    /* Frame drawn with background layers (top/left/right/bottom borders) */
     background-color: white;
     background-image:
       linear-gradient(var(--accent1), var(--accent1)),
@@ -53,12 +51,10 @@ style: |
     background-repeat: no-repeat;
   }
 
-  /* ---- Disable default ::before ---- */
   section::before {
     display: none;
   }
 
-  /* ---- Slide title (h1) - covers frame top seamlessly ---- */
   section h1 {
     position: absolute;
     top: 0;
@@ -67,7 +63,7 @@ style: |
     box-sizing: border-box;
     background: var(--accent1);
     color: white;
-    font-size: 42px;
+    font-size: 48px;
     font-weight: 700;
     padding: 18px 60px 14px;
     margin: 0;
@@ -75,7 +71,6 @@ style: |
     z-index: 2;
   }
 
-  /* ---- H2 ---- */
   section h2 {
     color: var(--accent1);
     font-size: 36px;
@@ -85,14 +80,12 @@ style: |
     margin-bottom: 20px;
   }
 
-  /* ---- H3 ---- */
   section h3 {
     color: var(--accent2);
     font-size: 28px;
     font-weight: 700;
   }
 
-  /* ---- Footer left: date (below frame) ---- */
   header {
     font-family: 'Noto Sans JP', sans-serif;
     position: absolute;
@@ -106,7 +99,6 @@ style: |
     z-index: 2;
   }
 
-  /* ---- Footer center: title (below frame) ---- */
   footer {
     font-family: 'Noto Sans JP', sans-serif;
     position: absolute;
@@ -122,7 +114,6 @@ style: |
     z-index: 2;
   }
 
-  /* ---- Footer right: page number (below frame) ---- */
   section::after {
     font-family: 'Noto Sans JP', sans-serif;
     position: absolute;
@@ -140,31 +131,33 @@ style: |
     z-index: 2;
   }
 
-  /* ---- Strong text with accent2 ---- */
   section strong {
     color: var(--accent2);
     font-weight: 700;
   }
 
-  /* ---- Lists ---- */
   section ul, section ol {
-    line-height: 1.8;
+    line-height: 1.4;
     margin-left: 10px;
   }
 
   section li {
+    line-height: 1.4;
     margin-bottom: 4px;
+  }
+
+  section p {
+    line-height: 1.3;
   }
 
   section li::marker {
     color: var(--accent1);
   }
 
-  /* ---- Tables ---- */
   section table {
     border-collapse: collapse;
     width: 100%;
-    font-size: 24px;
+    font-size: 26px;
     margin: 16px 0;
   }
 
@@ -185,7 +178,6 @@ style: |
     background: var(--bg-light);
   }
 
-  /* ---- Code blocks ---- */
   section code {
     font-size: 24px;
     background: var(--bg-light);
@@ -209,7 +201,6 @@ style: |
     padding: 0;
   }
 
-  /* ---- Blockquote ---- */
   section blockquote {
     border-left: 4px solid var(--accent2);
     padding: 12px 20px;
@@ -219,15 +210,12 @@ style: |
     color: var(--text-light);
   }
 
-  /* ---- Images ---- */
   section img {
     max-height: 60%;
     border-radius: 4px;
   }
 
-  /* ============================================
-     Title slide class
-     ============================================ */
+  /* ---- Title slide ---- */
   section.title {
     background: var(--accent1);
     color: white;
@@ -243,7 +231,7 @@ style: |
     position: static;
     background: transparent;
     color: white;
-    font-size: 64px;
+    font-size: 86px;
     font-weight: 900;
     margin: 0 0 20px 0;
     padding: 0;
@@ -252,19 +240,17 @@ style: |
   }
 
   section.title h2 {
-    font-size: 36px;
+    font-size: 68px;
     font-weight: 400;
     border: none;
     margin: 0 0 40px 0;
     padding: 0;
-    color: rgba(255, 255, 255, 0.85);
   }
 
   section.title p {
-    font-size: 32px;
+    font-size: 42px;
     margin: 4px 0;
     align-self: flex-end;
-    color: rgba(255, 255, 255, 0.8);
   }
 
   section.title::before {
@@ -280,9 +266,7 @@ style: |
     display: none;
   }
 
-  /* ============================================
-     Section divider slide class
-     ============================================ */
+  /* ---- Section divider ---- */
   section.section {
     background: var(--accent1);
     color: white;
@@ -319,9 +303,7 @@ style: |
     display: none;
   }
 
-  /* ============================================
-     Two-column layout
-     ============================================ */
+  /* ---- Two-column layout ---- */
   section.cols {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -337,9 +319,7 @@ style: |
     box-sizing: border-box;
   }
 
-  /* ============================================
-     End slide class
-     ============================================ */
+  /* ---- End slide ---- */
   section.end {
     background: var(--accent1);
     color: white;
@@ -377,725 +357,436 @@ style: |
     display: none;
   }
 
-  /* ============================================
-     Highlight box
-     ============================================ */
-  section .highlight {
-    background: #EBF5FB;
-    border: 2px solid var(--accent2);
-    border-radius: 8px;
-    padding: 16px 24px;
-    margin: 12px 0;
-  }
-
-  /* ============================================
-     Block environments (accent1 / accent2 only)
-     ============================================ */
-  .block, .alertblock {
-    border-radius: 6px;
-    margin: 14px 0;
-    padding: 0;
-    overflow: hidden;
-    font-size: 25px;
-    line-height: 1.5;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
-  }
-
-  .block .block-title,
-  .alertblock .block-title {
-    display: block;
-    font-weight: 700;
-    font-size: 24px;
-    padding: 8px 20px;
-    margin: 0;
-    color: white;
-  }
-
-  .block .block-content,
-  .alertblock .block-content {
-    padding: 12px 20px;
-    margin: 0;
-  }
-
-  .block .block-content p,
-  .alertblock .block-content p {
-    margin: 0;
-  }
-
-  /* block (accent1: deep teal — definitions, theorems, results) */
-  .block .block-title { background: var(--accent1); }
-  .block .block-content { background: #e6f0f0; border: 1px solid #b3d1d2; border-top: none; border-radius: 0 0 6px 6px; }
-
-  /* alertblock (accent2: deep indigo — key points, warnings) */
-  .alertblock .block-title { background: var(--accent2); }
-  .alertblock .block-content { background: #eceafc; border: 1px solid #c4bfe8; border-top: none; border-radius: 0 0 6px 6px; }
-
 ---
 
 <!-- _class: title -->
 <!-- _paginate: false -->
 
-# nABCD
-## Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials
+# Effect Modifier の分布類似性に基づく地域プーリングの定量化
 
-Author One, Author Two, Author Three
+##
+
+Tak Nagakubo
 
 ---
 
-# Outline
+# Agenda
 
-1. **Background** &mdash; ICH E17 and the regulatory gap
-2. **Methods** &mdash; Heterogeneity bound, nABCD definition, clinical calibration
-3. **Simulation Study** &mdash; Bias, coverage, nABCD vs. SMD
-4. **Application** &mdash; Hypothetical thrombolytic MRCT using IST-3 data
-5. **Discussion** &mdash; Estimation-centered philosophy and future directions
+1. **Background**: MRCT, ICH E17, 既存手法の限界
+2. **Methods**: nABCD の定義・理論基盤・推定・clinical calibration
+3. **Simulation**: 8シナリオによる推定性能評価
+4. **Application**: IST-1 (Case A) / IST-3 (Case B)
+5. **Discussion**: 主要な知見と実務への示唆
 
 ---
 
 <!-- _class: section -->
 
-# 1. Background
+# 背景
 
 ---
 
-# ICH E17: Regional Pooling
+# MRCT と ICH E17
 
-The ICH E17 guideline (2017) recommends pooling regions with **similar effect modifier (EM) distributions**:
+- **MRCT** (Multi-Regional Clinical Trial) は国際共同治験の標準パラダイム
+- ICH E17 (2017) は治療効果の一般化可能性を前提とした計画・設計原則を規定
+- 各規制当局は **地域部分集団における治療効果の一貫性** を要求
 
-> "Regions may be pooled for randomisation and/or analysis if subjects are thought to be *similar enough* with respect to intrinsic and/or extrinsic factors relevant to the disease and/or drug under study."
-> &mdash; ICH E17, Section 2.2.5
+### 地域プーリングの必要性
 
-<div class="alertblock">
-<div class="block-title">The Problem</div>
-<div class="block-content">
+- 個々の地域サンプルサイズは一貫性評価に不十分なことが多い
+- ICH E17 は **effect modifier 分布の類似性** に基づくプーリングを記述
+- しかし、定量的方法論は提供されていない
 
-ICH E17 provides **no specific metric, threshold, or procedure** for determining when distributions are "similar enough."
-
-</div>
-</div>
+> "Similar enough" の判断基準が欠如している
+> --- ICH E17 の実装上のギャップ
 
 ---
 
-# Why Effect Modifiers Matter
+# Effect Modifier とは
 
-An **effect modifier** is a baseline characteristic where treatment benefit differs across subgroups.
+**Effect modifier**: 治療効果がサブグループ間で異なる患者背景因子
+
+### 例: 年齢が effect modifier の場合
+
+- 若年患者の方が治療反応が良い場合、年齢は effect modifier
+- 薬が個人レベルで同一に作用しても、患者構成が異なれば地域平均治療効果は異なる
+
+### 地域平均治療効果
 
 $$
 \bar{\tau}_r = \int \tau(x) \, dF_r(x)
 $$
 
-- Even if the drug works identically at the individual level...
-- Regions with **different patient compositions** observe **different average treatment effects**
-- A region with younger patients shows larger benefits &mdash; not because the drug differs, but because the **patient mix** differs
+$\tau(x)$: CATE (条件付き平均治療効果)、$F_r$: 地域 $r$ の effect modifier 分布
 
 ---
 
-# Limitations of Current Approaches
+# 既存手法の限界
 
-| Method | Limitation |
-|--------|------------|
-| Visual inspection | Subjective, not reproducible |
-| Standardized mean difference (SMD) | Captures **only location**, ignores scale and shape |
-| Kolmogorov&ndash;Smirnov statistic | No interpretable scale for decision-making |
+| 指標 | 特徴 | 限界 |
+|------|------|------|
+| **SMD** | スケールフリー、解釈容易 | **位置 (mean) のみ**。分散・形状差を無視 |
+| **KS 統計量** | 分布全体を比較 | 臨床的解釈困難。治療効果との理論的連結なし |
+| **KL ダイバージェンス** | 密度ベース | 非対称、小サンプルで不安定、$\infty$ に発散可能 |
 
-Recent regulatory guidance highlights this gap:
-- Song et al. (2025): NMPA perspective on ICH E17 pooling operationalization
-- Long et al. (2025): Basic considerations for consistency evaluation under E17
+### SMD の盲点
 
----
+$$
+N(50, 5^2) \text{ vs } N(50, 15^2) \implies \text{SMD} = 0
+$$
 
-<style scoped>
-section { font-size: 25px; line-height: 1.5; }
-</style>
-
-# Our Approach
-
-<div class="block">
-<div class="block-title">Research Question</div>
-<div class="block-content">
-
-How can we estimate distributional similarity in a **scale-free** manner, and translate that estimate into **clinically interpretable** information about potential treatment effect heterogeneity?
-
-</div>
-</div>
-
-### Design Philosophy
-- **Estimation**, not hypothesis testing &mdash; quantify the difference, don't just accept/reject
-- **Clinical calibration** &mdash; translate distributional differences into the outcome scale
-- **Scope**: Continuous effect modifiers only (categorical/mixed-type EMs require alternative distances)
-
-<div class="alertblock">
-<div class="block-title">Key Principle</div>
-<div class="block-content">
-
-Provide regulatory scientists with **quantitative tools that inform deliberation**, not binary accept/reject rules.
-
-</div>
-</div>
+分散が3倍異なるにもかかわらず SMD は差を検出できない
 
 ---
 
 <!-- _class: section -->
 
-# 2. Methods
+# Methods
 
 ---
 
-# The Heterogeneity Bound
+# nABCD の定義
 
-If the CATE function $\tau(x)$ has Lipschitz constant $L$:
+### Wasserstein-1 距離 (Earth Mover's Distance)
 
 $$
-|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot W_1(F_1, F_2)
+W_1(F, G) = \int_{-\infty}^{\infty} |F(x) - G(x)| \, dx
 $$
 
-The **Wasserstein-1 distance** (Earth Mover's Distance):
+幾何学的解釈: **2つの CDF 間の総面積**
+
+### nABCD: 正規化された CDF 間面積
 
 $$
-W_1(F_1, F_2) = \int_{-\infty}^{\infty} |F(x) - G(x)| \, dx
+\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}}
 $$
 
-- **Geometrically**: total area between two CDFs
-- Captures location, scale, **and** shape differences
-- $W_1$ is required by the Kantorovich&ndash;Rubinstein duality ($W_2$ cannot provide this bound)
+- $\text{IQR}_{\text{pooled}}$: プールされた分布の四分位範囲
+- 係数 2 により、1-IQR の位置シフトで nABCD $= 0.5$ となるよう較正
+- **スケールフリー**: 測定単位に依存しない解釈が可能
 
 ---
 
-<style scoped>
-section { font-size: 23px; line-height: 1.4; }
-</style>
+# nABCD の3つの要件充足
 
-# Derivation: Three Steps
+### 要件 1: 位置以外の分布特徴
 
-### Step 1 &mdash; $W_1$ as CDF area
+- $W_1$ は位置・分散・歪度の差に反応
+- SMD が検出できない分散差・形状差を捕捉
 
-$$W_1(F_1, F_2) = \int_{-\infty}^{\infty} |F_1(x) - F_2(x)| \, dx$$
+### 要件 2: 臨床的解釈
 
-### Step 2 &mdash; Kantorovich&ndash;Rubinstein duality
+- IQR 正規化によりスケールフリーな指標
+- Reference benchmarks で初期評価可能
 
-$$W_1(F_1, F_2) = \sup_{\|f\|_{\text{Lip}} \leq 1} \left| \int f \, dF_1 - \int f \, dF_2 \right|$$
+### 要件 3: 理論的連結
 
-$W_1$ equals the worst-case expected difference over **all 1-Lipschitz functions**.
-
-### Step 3 &mdash; Apply to CATE function
-
-If $\tau(x)$ has Lipschitz constant $L$, then $g(x) = \tau(x)/L$ satisfies $\|g\|_{\text{Lip}} \leq 1$:
-
-$$\frac{1}{L}\,|\bar{\tau}_1 - \bar{\tau}_2| = \left|\int g \, dF_1 - \int g \, dF_2\right| \leq W_1(F_1, F_2) \quad \Rightarrow \quad |\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot W_1 \quad \blacksquare$$
+- Kantorovich-Rubinstein 双対性により治療効果異質性への上界を提供
+- これは $W_1$ 固有の性質 ($W_2$, KS, KL にはない)
 
 ---
 
-# Why $W_1$ &mdash; And Only $W_1$
+# 理論基盤: 治療効果異質性との連結
 
-| Distance | K-R Duality | Heterogeneity Bound | Symmetric | Always Finite |
-|----------|:-----------:|:-------------------:|:---------:|:-------------:|
-| $W_1$ | **Yes** | **Constructible** | Yes | Yes |
-| $W_2$ | No | Not available | Yes | Yes |
-| KL divergence | No | Not available | **No** | **No** |
-
-<div class="alertblock">
-<div class="block-title">Why alternatives fail</div>
-<div class="block-content">
-
-**$W_2$**: Its dual involves *convex* functions, not Lipschitz &mdash; cannot bound CATE heterogeneity.
-**KL**: Asymmetric ($D_{KL}(P \| Q) \neq D_{KL}(Q \| P)$) and diverges when empirical supports don't overlap.
-
-$W_1$ is not a preference &mdash; it is the **unique choice** enabling the heterogeneity bound.
-
-</div>
-</div>
-
----
-
-# The Bound Is Tight, Not Loose
-
-<div class="block">
-<div class="block-title">Two reasons the upper bound is the right tool</div>
-<div class="block-content">
-
-**1. Regulatory conservatism.** &ensp; False-positive pooling (treating different populations as similar) is the dangerous error. An upper bound provides a worst-case guarantee &mdash; appropriate for regulatory safety decisions.
-
-**2. K-R optimality.** &ensp; There exists a 1-Lipschitz function that *achieves* the supremum. The bound is the **tightest possible** given only Lipschitz smoothness of $\tau(x)$ &mdash; not a rough approximation, but the mathematical optimum.
-
-</div>
-</div>
-
-> The bound answers: *"Given what we know about CATE smoothness, what is the worst that could happen?"*
-
----
-
-<style scoped>
-section { font-size: 25px; line-height: 1.4; }
-</style>
-
-# nABCD Definition
-
-<div class="block">
-<div class="block-title">Definition</div>
-<div class="block-content">
-
-$$\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}}$$
-
-IQR normalization $\Rightarrow$ **scale-free**, robust to outliers. &ensp; $\text{nABCD} \geq 0$ (provided $\text{IQR}_{\text{pooled}} > 0$), equality iff $F_1 = F_2$.
-**Why IQR?** Interpretable (central 50% spread), familiar to clinicians. $Q_n$ higher breakdown unnecessary for population-level data.
-
-</div>
-</div>
-
-<div class="block">
-<div class="block-title">Heterogeneity Bound (Proposition 2)</div>
-<div class="block-content">
-
-$$|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}$$
-
-nABCD directly bounds the **maximum regional treatment effect difference**.
-Clinical calibration: $\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}$
-
-</div>
-</div>
-
----
-
-# Clinical Calibration: $\Delta_{\max}$
-
-The maximum potential treatment effect difference attributable to EM distributional differences:
+### Kantorovich-Rubinstein 双対性
 
 $$
-\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
+W_1(F_1, F_2) = \sup_{\|f\|_{\text{Lip}} \leq 1} \left|\int f \, dF_1 - \int f \, dF_2\right|
 $$
 
-where $L$ = CATE sensitivity (Lipschitz constant of $\tau(x)$)
+### Heterogeneity Bound (Proposition 2)
 
-### Procedure
-1. Compute **nABCD** with bootstrap CIs for each EM
-2. Estimate **$L$** from prior knowledge / subgroup analyses
-3. Compute **$\Delta_{\max}$** and its CI on the clinical scale
-4. Compare against treatment effect, non-inferiority margin, etc.
-5. Conduct **sensitivity analysis** over plausible $L$ values
+CATE $\tau(x)$ が Lipschitz 定数 $L$ を持つとき:
+
+$$
+|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
+$$
+
+- $L$: effect modifier の1単位変化あたりの治療効果変化の上界
+- **分布距離 $\to$ 治療効果差の上界** への定量的橋渡し
 
 ---
 
-<style scoped>
-section { font-size: 24px; line-height: 1.4; }
-</style>
+# 推定と推論
 
-# Estimation and Inference
-
-### Point estimator
+### 推定量
 
 $$
 \widehat{\text{nABCD}} = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{2 \cdot \widehat{\text{IQR}}_{\text{pooled}}}
 $$
 
-- Computational complexity: $O((n_1 + n_2) \log(n_1 + n_2))$
+### 漸近分布と Bootstrap
 
-### Inference
-- **Percentile bootstrap** ($B = 2{,}000$) &mdash; BCa overcorrects for bounded statistic
+- $W_1$ の漸近分布は **非標準**: $\sqrt{n}\,W_1(\hat{F}_n, F) \xrightarrow{d} \int |B(F(x))|\,dx$ (Brownian bridge functional)
+- 未知の $F$ に依存 → 普遍的臨界値なし → **percentile bootstrap** を採用 ($B = 2{,}000$)
+- $F_1 \neq F_2$ のとき $L_1$ functional の Hadamard 微分が線形 → bootstrap は consistent
+- 計算量: $O((n_1+n_2)\log(n_1+n_2))$ --- combined order statistics のソートが支配的
 
-### Asymptotic theory (del Barrio et al. 1999)
-- $W_1$ = $L_1$ distance between CDFs $\Rightarrow$ $\sqrt{n}$-convergence to Brownian bridge functional
-- **$F_1 \neq F_2$**: Hadamard derivative is **linear** $\Rightarrow$ bootstrap consistent
-- **$F_1 \approx F_2$**: derivative becomes non-linear $\Rightarrow$ modest undercoverage possible
+---
+
+# Clinical Calibration: $\Delta_{\max}$
+
+### 最大治療効果差
+
+$$
+\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
+$$
+
+- $L$: CATE の感度パラメータ。worst-case の治療効果異質性を制御
+- 先行知識、パイロットデータ、既発表サブグループ解析から推定
+
+### 5-Step Calibration Procedure
+
+1. 候補 effect modifier ごとに **nABCD + bootstrap CI** を算出
+2. 先行研究から $L$ を推定 (例: $L \approx \Delta\tau / \Delta x$)
+3. $\Delta_{\max}$ を算出 --- worst-case の治療効果差
+4. $\Delta_{\max}$ の CI を nABCD CI から導出 (臨床スケールでの不確実性)
+5. 全体治療効果・非劣性マージン・臨床的最小重要差と **並置して** 報告
+
+### なぜ仮説検定ではなく推定か
+
+- ICH E17 の "similar enough" は本質的に **文脈依存**
+- $L$ の不確実性 → $\Delta_{\max}$ 自体が感度分析の対象
+- $\Delta_{\max}$ + CI は p値や棄却判断より豊かな情報を提供
+
+---
+
+# $L$ が未知の場合: 感度分析
+
+### 逆算アプローチ ($L^*$ 感度分析)
+
+$$
+L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
+$$
+
+- $\Delta_{\text{clin}}$: 臨床的に重要な治療効果差 (例: 全体治療効果、非劣性マージン)
+- $L^*$ が妥当な範囲を超えていれば、分布差は臨床的に問題になりにくい
+- $L^*$ が小さければ、分布異質性への対策が必要
+
+### Reference Benchmarks (分布的大きさのみ)
+
+| nABCD 範囲 | 分布的大きさ | ガイダンス |
+|-----------|------------|----------|
+| $< 0.05$ | Negligible | Clinical calibration で有意な $\Delta_{\max}$ は出にくい |
+| $0.05$--$0.15$ | Small | $L$ が利用可能なら calibration 推奨 |
+| $0.15$--$0.30$ | Moderate | Calibration 重要; 臨床文脈で解釈 |
+| $> 0.30$ | Large | プーリング検討前に calibration 必須 |
+
+> **注意**: これらは **distributional magnitude only** の初期参照。同じ nABCD でも $L$ が異なれば臨床的含意は異なる。プーリング判断には clinical calibration ($\Delta_{\max}$) を使用すべき。
 
 ---
 
 <!-- _class: section -->
 
-# 3. Simulation Study
+# Simulation
 
 ---
 
-<style scoped>
-section { font-size: 23px; line-height: 1.5; }
-table { font-size: 0.9em; }
-</style>
+# シミュレーション設計
 
-# Simulation Design
+### 8つのシナリオ
 
-### Scenarios (S1&ndash;S8)
+| ID | 説明 | Distribution 1 | Distribution 2 | True nABCD |
+|----|------|----------------|----------------|------------|
+| S1 | Null (同一) | $N(50, 10^2)$ | $N(50, 10^2)$ | 0.000 |
+| S2 | 位置 0.2$\sigma$ | $N(50, 10^2)$ | $N(52, 10^2)$ | 0.073 |
+| S3 | 位置 0.5$\sigma$ | $N(50, 10^2)$ | $N(55, 10^2)$ | 0.180 |
+| S4 | 位置 1.0$\sigma$ | $N(50, 10^2)$ | $N(60, 10^2)$ | 0.328 |
+| S5 | 尺度 1.5x | $N(50, 10^2)$ | $N(50, 15^2)$ | 0.122 |
+| S6 | 形状 (Gamma) | $N(50, 10^2)$ | Gamma$(25, 0.5)$ | 0.024 |
+| S7 | 歪度 (Log-normal) | $N(50, 10^2)$ | LogN | 0.304 |
+| S8 | 位置+尺度 | $N(50, 10^2)$ | $N(55, 15^2)$ | 0.175 |
 
-| ID | Type | Clinical Motivation | Distribution 2 | True nABCD |
-|----|------|---------------------|-----------------|------------|
-| S1 | Null | Identical populations | $N(50, 10^2)$ | 0.000 |
-| S2 | Location 0.2$\sigma$ | Age: EU vs US | $N(52, 10^2)$ | 0.074 |
-| S3 | Location 0.5$\sigma$ | BMI: Japan vs EU | $N(55, 10^2)$ | 0.186 |
-| S4 | Location 1.0$\sigma$ | BMI: Japan vs US | $N(60, 10^2)$ | 0.372 |
-| S5 | Scale 1.5$\times$ | HbA1c: strict vs broad | $N(50, 15^2)$ | 0.148 |
-| S6 | Shape (Gamma) | Lab values: eGFR | Gamma(25, 0.5) | 0.067 |
-| S7 | Skew (log-normal) | ALT (CV $\approx$ 53%) | LogN($\sigma$=0.5) | 0.302 |
-| S8 | Location + Scale | BMI: Japan vs US | $N(55, 15^2)$ | 0.175 |
-
-- Distribution 1 is always $N(50, 10^2)$. Sample sizes: $n = 50, 100, 200$. 10,000 reps, $B = 2{,}000$.
+$n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 
 ---
 
-<style scoped>
-section { font-size: 23px; line-height: 1.5; }
-table { font-size: 0.9em; }
-</style>
+# シミュレーション結果: バイアスと被覆確率
 
-# Bias Results
+### バイアス ($n = 100$)
 
-| Scenario | True nABCD | $n=50$ | $n=100$ | $n=200$ |
-|----------|-----------|--------|---------|---------|
-| S1 (Null) | 0.000 | +0.093 | +0.066 | +0.047 |
-| S2 (0.2$\sigma$) | 0.074 | +0.039 | +0.018 | +0.007 |
-| S3 (0.5$\sigma$) | 0.186 | +0.004 | **&minus;0.003** | &minus;0.004 |
-| S4 (1.0$\sigma$) | 0.372 | &minus;0.038 | &minus;0.041 | &minus;0.043 |
-| S5 (Scale) | 0.148 | +0.001 | &minus;0.012 | &minus;0.019 |
-| S6 (Gamma) | 0.067 | +0.029 | +0.003 | &minus;0.015 |
-| S7 (Skew) | 0.302 | +0.019 | +0.009 | +0.005 |
-| S8 (Loc+Scale) | 0.175 | +0.024 | +0.011 | +0.006 |
+- True nABCD $\geq 0.1$ のシナリオ: バイアス $< 0.02$
+- S3 (0.5$\sigma$): +0.003、S4 (1.0$\sigma$): +0.003 --- ほぼ無視可能
+- 近境界シナリオ (S1, S6): 正のバイアスが大きい (非負制約による)
 
-- Non-null (excl. S4): **bias < 0.02** at $n \geq 100$ &ensp;|&ensp; S4: persistent &minus;0.04 (bounded statistic) &ensp;|&ensp; S7/S8: well-behaved
+### 被覆確率 (95% CI, $n = 100$)
 
----
+| シナリオ | $n = 50$ | $n = 100$ | $n = 200$ |
+|---------|---------|----------|----------|
+| S3 (0.5$\sigma$) | 0.947 | 0.951 | 0.947 |
+| S4 (1.0$\sigma$) | 0.950 | 0.950 | 0.957 |
+| S7 (Skew) | 0.953 | 0.954 | 0.954 |
+| S8 (Loc+Scale) | 0.917 | 0.935 | 0.944 |
 
-<style scoped>
-section { font-size: 23px; line-height: 1.5; }
-table { font-size: 0.9em; }
-</style>
-
-# Coverage and Precision
-
-| Scenario | $n=50$ | $n=100$ | $n=200$ |
-|----------|--------|---------|---------|
-| S2 (0.2$\sigma$) | 0.672 | 0.895 | **0.949** |
-| S3 (0.5$\sigma$) | **0.956** | **0.950** | **0.949** |
-| S4 (1.0$\sigma$) | **0.929** | 0.867 | 0.731 |
-| S5 (Scale) | **0.963** | **0.976** | **0.939** |
-| S6 (Gamma) | 0.573 | **0.945** | **0.996** |
-| S7 (Skew) | **0.953** | **0.954** | **0.951** |
-| S8 (Loc+Scale) | 0.916 | 0.932 | 0.939 |
-
-<div class="block">
-<div class="block-title">Key Findings</div>
-<div class="block-content">
-
-- Coverage **0.87&ndash;0.98** at $n \geq 100$ &ensp;|&ensp; S7: **near-nominal across all** $n$
-- Recommendation: **$n \geq 100$ per region** for reliable inference
-
-</div>
-</div>
+**推奨**: $n \geq 100$ / 地域で信頼性のある推定・推論が可能
 
 ---
 
-# nABCD vs SMD: Sensitivity Comparison
+# nABCD vs SMD: 感度比較 ($n = 100$)
 
-| Scenario | nABCD (mean $\pm$ SD) | SMD (mean $\pm$ SD) | Implication |
-|----------|----------------------|---------------------|-------------|
-| S3 (Location) | $0.184 \pm 0.049$ | $0.50 \pm 0.14$ | Both detect |
-| S5 (Scale only) | $0.136 \pm 0.033$ | $0.00 \pm 0.14$ | **Only nABCD** |
-| S6 (Shape only) | $0.070 \pm 0.024$ | $0.00 \pm 0.14$ | **Only nABCD** |
-| S7 (Skew only) | $0.311 \pm 0.047$ | $0.00 \pm 0.14$ | **Only nABCD** |
+| シナリオ | nABCD (mean $\pm$ SD) | SMD (mean $\pm$ SD) | 含意 |
+|---------|----------------------|--------------------|----|
+| S3 (位置) | $0.183 \pm 0.048$ | $0.50 \pm 0.14$ | 両方が検出 |
+| S5 (尺度のみ) | $0.136 \pm 0.033$ | $0.00 \pm 0.14$ | **nABCD のみ検出** |
+| S6 (形状のみ) | $0.070 \pm 0.025$ | $0.00 \pm 0.14$ | **nABCD のみ検出** |
+| S7 (歪度のみ) | $0.312 \pm 0.048$ | $0.00 \pm 0.14$ | **nABCD のみ検出** |
 
-<div class="alertblock">
-<div class="block-title">SMD Blindness</div>
-<div class="block-content">
+### Key Finding
 
-SMD is **blind** to variance and shape differences. nABCD captures the **full distributional difference** that can drive treatment effect heterogeneity through non-linear CATE functions.
-
-</div>
-</div>
+- 位置差: SMD と nABCD は同等の情報を提供
+- **尺度・形状・歪度差**: SMD はゼロのまま --- nABCD のみが検出
+- S7 は特に顕著: 大きな分布差 (nABCD $= 0.31$) が SMD には完全に不可視
 
 ---
 
 <!-- _class: section -->
 
-# 4. Application: Hypothetical Thrombolytic MRCT
+# Application
 
 ---
 
-# Hypothetical Scenario
+# 適用: 2つの計画シナリオ
 
-A sponsor developing a **novel thrombolytic** (drug A) for acute ischaemic stroke is planning a **Phase 3 MRCT**.
+### 仮想シナリオ
 
-- Candidate EMs identified from **Emberson et al. (2014)** IPD meta-analysis ($n = 6{,}756$):
-  - **NIHSS** (interaction $p = 0.06$) &mdash; strong candidate
-  - **Age** (interaction $p = 0.53$) &mdash; weak candidate
-- Drug A same pharmacological class as alteplase &rarr; similar EM profiles assumed
-- IST-3 public IPD used as **historical reference** for country-level EM distributions
+新規血栓溶解薬 (drug A) の Phase 3 MRCT を計画中
 
-<div class="alertblock">
-<div class="block-title">Key framing</div>
-<div class="block-content">
+### Case A: Effect Modifier が未知 (IST-1)
 
-nABCD is **one piece of evidence** supporting pooling decisions, not a standalone criterion.
+- IST-1: 31カ国、19,435名 (1991--1996)
+- 治療 x effect modifier 交互作用なし (全 $p > 0.05$)
+- $L$ 推定不可 --- **$L^*$ 感度分析** で対応
 
-</div>
-</div>
+### Case B: Effect Modifier が特定済み (IST-3)
 
----
-
-<style scoped>
-section { font-size: 24px; line-height: 1.5; }
-table { font-size: 0.85em; }
-</style>
-
-# IST-3: Study Overview
-
-**Third International Stroke Trial** (IST-3 collaborative group, *Lancet* 2012)
-- 3,035 patients, 8 countries, alteplase vs control within 6h of onset
-- Primary outcome: OHS 0&ndash;2 at 6 months &mdash; adjusted OR 1.13 (0.95&ndash;1.35, $p=0.181$)
-
-**Confirmed EMs for alteplase** (Emberson et al., *Lancet* 2014; IPD meta-analysis, 9 trials, $n=6{,}756$):
-
-| EM | Type | Interaction $p$ (Emberson) | IST-3 subgroup $p$ |
-|----|------|---------------------------|---------------------|
-| Treatment delay | Continuous (hours) | **0.016** | Benefit greatest &lt;3h |
-| Age | Continuous (years) | 0.53 | 0.027 (IST-3 alone) |
-| NIHSS | Continuous (score) | 0.06 | **0.003** |
-
-<div class="alertblock">
-<div class="block-title">Why IST-3 as historical reference?</div>
-<div class="block-content">
-
-Public IPD with country data + continuous EMs + prior effect modification evidence from Emberson meta-analysis = ideal historical reference for demonstrating nABCD in a planning context.
-
-</div>
-</div>
+- IST-3: 8カ国、3,035名 (2000--2012)
+- NIHSS: 交互作用 $p = 0.001$、$L$ 推定可能
+- --- **Clinical calibration** で $\Delta_{\max}$ を算出
 
 ---
 
-<style scoped>
-section { font-size: 22px; line-height: 1.4; }
-table { font-size: 0.85em; }
-</style>
+# Case A: IST-1 --- 地理的分布異質性
 
-# IST-3: Country-Level Patient Characteristics
+### 31カ国の分布パターン (年齢)
 
-| Country | $n$ | Age, mean (SD) | Delay, mean (SD) | NIHSS, mean (SD) |
-|---------|-----|----------------|-------------------|-------------------|
-| UK | 1,447 | 78.0 (12.2) | 4.1 (1.2) | 13.1 (6.9) |
-| Poland | 347 | 73.7 (13.1) | 4.6 (1.2) | 9.6 (6.4) |
-| Italy | 326 | 75.9 (12.2) | 4.2 (1.1) | 11.1 (6.6) |
-| Sweden | 297 | 81.0 (10.8) | 3.8 (1.3) | 10.0 (6.5) |
-| Norway | 204 | 76.1 (10.3) | 4.3 (1.8) | 11.9 (6.9) |
-| Australia | 179 | 74.7 (13.1) | 4.6 (1.1) | 14.4 (7.5) |
-| Portugal | 82 | 79.0 (11.5) | 4.3 (1.2) | 14.8 (6.0) |
-| Belgium | 73 | 76.1 (12.4) | 4.0 (1.1) | 10.9 (6.1) |
+- **最大 nABCD**: India--UK = 0.565 (IST-3 の約4倍)
+- アジア諸国: India (0.375) > Singapore (0.205) > Hong Kong (0.121)
+- 人口構成と医療アクセスパターンの地理的クラスタリング
 
-Key patterns:
-- **Age**: Sweden outlier (median 83 yr vs overall 77 yr)
-- **NIHSS**: Two clusters &mdash; UK/Australia (high, 13&ndash;15) vs Poland/Sweden (low, 10)
-- **Delay**: Sweden fastest (3.8h), Poland/Australia slowest (4.6h)
+### $L^*$ 感度分析 (India--UK)
+
+- nABCD $= 0.565$ で $\Delta_{\max} = 2$%pt を生じる $L^*$ は約 $0.005$/year
+- --- **小さな年齢関連交互作用** でも臨床的に問題となりうる
+- 明示的な緩和策 (層別ランダム化、プロトコル制限) が必要
+
+> $L^*$ が小さい = 分布異質性のリスクが高い
 
 ---
 
-<style scoped>
-section { font-size: 24px; line-height: 1.5; }
-</style>
+# Case B: IST-3 --- nABCD vs SMD の実データ比較
 
-# IST-3: nABCD Results (28 pairwise comparisons)
+### nABCD 要約 (28ペア)
 
-| EM | Min | Median | Mean | Max | Max pair |
-|----|-----|--------|------|-----|----------|
-| Age | 0.039 | 0.103 | 0.123 | **0.285** | Sweden&ndash;Belgium |
-| Delay | 0.026 | 0.087 | 0.097 | 0.195 | Sweden&ndash;Australia |
-| NIHSS | 0.027 | 0.101 | 0.113 | 0.240 | Poland&ndash;Portugal |
+| Effect Modifier | Median | Max | Max pair |
+|----------------|--------|-----|----------|
+| Age | 0.103 | 0.285 | SE--BE |
+| NIHSS | 0.101 | 0.240 | PL--PT |
+| Delay | 0.098 | 0.195 | SE--AU |
 
-- All 84 comparisons: nABCD $< 0.30$ (reference: "small" to "moderate")
-- **Age has the largest distributional difference** (Sweden&rsquo;s elderly-focused recruitment)
-- **But does the largest nABCD mean the most concern?**
+### SMD が見逃すケース
 
----
-
-# nABCD vs SMD: Real-Data Confirmation
-
-Comparing nABCD and SMD across 28 country pairs confirms simulation findings (S5&ndash;S7):
-
-- **Treatment Delay** (confirmed EM, Emberson $p = 0.016$; skewness = 1.21, excess kurtosis = 20.0):
-  - Norway&ndash;Portugal: **SMD = 0.007** ($\approx 0$) but **nABCD = 0.069** &mdash; means identical (4.34 vs 4.33h) yet Norway has extreme skew (6.76) and high SD (1.80 vs 1.21)
-  - Poland&ndash;Norway: SMD = 0.151 but nABCD = 0.115 (ratio 0.76) &mdash; scale difference captured
-- **Pearson $|r|$** (|SMD| vs nABCD): Treatment delay **0.91** < Age 0.95 < NIHSS 0.98
-  - Lower correlation = **more distributional information beyond location**
-
-<div class="alertblock">
-<div class="block-title">Key insight</div>
-<div class="block-content">
-
-nABCD's advantage emerges precisely when EM distributions are **non-normal** (skewed, heavy-tailed). Treatment delay &mdash; the **strongest confirmed EM** &mdash; shows the greatest SMD&ndash;nABCD divergence in real data.
-
-</div>
-</div>
+Norway--Portugal (治療遅延):
+- 平均: 4.34 vs 4.33 h
+- **SMD = 0.007** (ほぼ同一)
+- **nABCD = 0.069** (形状差を検出)
+- Norway は極端な右裾 (歪度 6.76); Portugal はコンパクト (歪度 $-0.23$)
 
 ---
 
-<style scoped>
-section { font-size: 23px; line-height: 1.4; }
-</style>
+# Case B: Clinical Calibration 結果
 
-# IST-3: Clinical Calibration
+### NIHSS vs Age の対比
 
-CATE sensitivity $L$ estimated directly from IST-3 IPD (logistic regression: OHS 0&ndash;2 ~ treatment $\times$ EM):
+| | NIHSS | Age |
+|---|-------|-----|
+| 交互作用 $p$ | **0.001** | 0.614 |
+| $L_{\text{mean}}$ | 0.00950/pt | 0.00065/yr |
+| nABCD (max) | 0.240 | 0.285 |
+| $\Delta_{\max}$ ($L_{\text{mean}}$) | **5.02%pt** | 0.47%pt |
+| $\Delta_{\max}$ ($L_{\max}$) | **7.37%pt** | 0.65%pt |
 
-| EM | Interaction $p$ | $L$ (max &vert;dRD/dEM&vert;) | nABCD max | IQR | $\Delta_{\max}$ |
-|----|-----------------|-------------------------------|-----------|-----|-----------------|
-| Age | 0.614 | 0.00090 /yr | 0.285 | 9&ndash;17 yr | **0.65%pt** |
-| Delay | 0.567 | 0.00901 /hr | 0.195 | 1.7&ndash;2.2 hr | **0.77%pt** |
-| NIHSS | **0.001** | 0.01398 /score | 0.240 | 10&ndash;12 | **7.37%pt** |
+全体治療効果 RD $\approx$ +1.5%pt
 
-<div class="alertblock">
-<div class="block-title">Triple demonstration</div>
-<div class="block-content">
+### 核心的知見
 
-| EM | Role | Key finding |
-|----|------|-------------|
-| NIHSS | Full calibration ($L$ estimable) | nABCD = 0.240 &rarr; $\Delta_{\max}$ = **5.02&ndash;7.37%pt** (clinically meaningful) |
-| Age | Planning-stage assessment ($L$ uncertain) | nABCD = 0.285 &rarr; $\Delta_{\max}$ = **0.47&ndash;0.65%pt** (limited impact) |
-| Treatment delay | Distributional comparison advantage | SMD $\approx 0$ yet nABCD = **0.069** (skew/kurtosis invisible to SMD) |
-
-</div>
-</div>
-
----
-
-<style scoped>
-section { font-size: 25px; line-height: 1.5; }
-</style>
-
-# IST-3: What This Tells Us
-
-<div class="block">
-<div class="block-title">Age (nABCD = 0.285, $\Delta_{\max}$ = 0.65%pt)</div>
-<div class="block-content">
-
-Sweden&rsquo;s median age (83 yr) vs others (77 yr) creates the **largest distributional gap**. But age has near-zero CATE sensitivity ($L = 0.0009$, interaction $p = 0.61$). Excluding Sweden based on age distribution alone would be **unjustified**. For the planning exercise, benchmarks (Table 3) classify this as 'moderate', but even full calibration confirms limited impact.
-
-</div>
-</div>
-
-<div class="alertblock">
-<div class="block-title">NIHSS (nABCD = 0.240, $\Delta_{\max}$ = 7.37%pt)</div>
-<div class="block-content">
-
-Poland (mean NIHSS 9.6) vs Portugal (14.8): **moderate** distributional gap, but NIHSS is a **strong** effect modifier ($L = 0.014$, interaction $p = 0.001$). The potential treatment effect heterogeneity ($\Delta_{\max} = 7.37$%pt) is $\approx 5\times$ the overall treatment effect (RD = 1.5%pt). **This EM demands scrutiny.** Sensitivity analysis ($0.5\times$&ndash;$2\times$ alteplase $L$): $\Delta_{\max}$ = 2.51&ndash;10.04%pt. Clinically meaningful regardless of precise $L$ for drug A.
-
-</div>
-</div>
-
-> **Distribution size $\neq$ clinical consequence.**
-
----
-
-# Estimation, Not Testing
-
-### Why we do not recommend hypothesis testing
-
-<div class="block">
-<div class="block-title">Three reasons</div>
-<div class="block-content">
-
-**1. ICH E17 avoids binary rules.** &ensp; Similarity is "context-dependent" &mdash; one threshold cannot serve all diseases, drugs, or regulatory contexts.
-
-**2. $L$ is uncertain.** &ensp; A single test result obscures uncertainty in the CATE sensitivity. Sensitivity tables + CIs provide a more transparent and honest assessment.
-
-**3. Decision boundaries are context-specific.** &ensp; NI trial ($\Delta_{\text{clin}} = 0.4\%$) vs. superiority trial ($\Delta_{\text{clin}} = 0.8\%$) &mdash; same nABCD, different conclusions.
-
-</div>
-</div>
-
-> Provide nABCD + 95% CI, $\Delta_{\max}$ + 95% CI, and sensitivity ranges &mdash; **regulatory judgment informed by evidence, not ruled by algorithm.**
+- Age の方が nABCD は **大きい** (0.285 > 0.240)
+- しかし $\Delta_{\max}$ は NIHSS の方が **10倍以上大きい**
+- **分布距離のランキング $\neq$ 臨床的インパクトのランキング**
 
 ---
 
 <!-- _class: section -->
 
-# 5. Discussion
+# Discussion
 
 ---
 
-# Five Contributions
+# 主要な知見と nABCD の3つの優位性
 
-1. **nABCD metric**
-   $W_1$ + IQR normalization + bootstrap &mdash; captures full distributional differences SMD misses
+### 1. SMD が見逃す分布差を捕捉
 
-2. **Theoretical framework**
-   K-R duality connects nABCD to treatment effect heterogeneity
+- Simulation: S5 (尺度), S6 (形状), S7 (歪度) で SMD $\approx 0$ だが nABCD は検出
+- IST-3: Norway--Portugal (治療遅延) で実データでも確認
 
-3. **Clinical calibration (conditional tool)**
-   $\Delta_{\max}$ translates nABCD into potential heterogeneity &mdash; when $L$ is estimable
+### 2. 治療効果異質性への理論的連結
 
-4. **Comparative demonstration (IST-3)**
-   nABCD captures distributional features invisible to SMD in real data
+- Heterogeneity bound により $\Delta_{\max}$ への定量的橋渡し
+- KS 統計量・KL ダイバージェンスにはこの性質がない ($W_1$ 固有)
 
-5. **Triple demonstration**
-   Full calibration (NIHSS) + planning-stage assessment (age) + distributional advantage (treatment delay) in one dataset
+### 3. 客観的・再現性のある推論
 
----
-
-# Recommendations for Practitioners
-
-1. Compute **nABCD with bootstrap CIs** ($n \geq 100$ per region) for each candidate EM
-2. Translate nABCD into **$\Delta_{\max}$** using equation $\Delta_{\max} = 2L \cdot \text{IQR} \cdot \text{nABCD}$
-3. Report $\Delta_{\max}$ and its CI alongside treatment effect and clinical margins
-4. Conduct **sensitivity analyses** over plausible $L$ values
-5. Use reference benchmarks only when $L$ cannot be estimated
+- Bootstrap CI による統計的推論
+- 視覚的検査 (目視) と異なり定量的・再現可能
 
 ---
 
-# Reference Benchmarks
+# 実務への推奨
 
-<div class="alertblock">
-<div class="block-title">Reference only &mdash; not decision thresholds</div>
-<div class="block-content">
+1. 候補 effect modifier ごとに **nABCD + bootstrap CI** を算出 ($n \geq 100$/地域)
 
-| nABCD Range | Interpretation | Suggested Action |
-|-------------|---------------|------------------|
-| < 0.05 | Negligible | Pooling broadly supportable |
-| 0.05&ndash;0.15 | Small | Pooling generally acceptable |
-| 0.15&ndash;0.30 | Moderate | Clinical calibration recommended |
-| > 0.30 | Large | Clinical calibration essential |
+2. $L$ が推定可能な場合: **$\Delta_{\max}$** とその CI を臨床スケールで報告
+   - $L_{\max}$ (保守的上界) と $L_{\text{mean}}$ (現実的推定) の両方を提示
 
-</div>
-</div>
+3. $L$ が未知の場合: **Reference benchmarks** で初期評価 + $L^*$ 感度分析
 
-- These assume **moderate CATE sensitivity**
-- **$\Delta_{\max}$-based calibration is always preferred** over fixed benchmarks
-- Context matters: large nABCD + weak EM $\neq$ concern (see BMI example)
+4. $\Delta_{\max}$ を全体治療効果・非劣性マージンと **並置して** 報告
+
+5. 複数 effect modifier がある場合: 最大 $\Delta_{\max}$ に基づく保守的判断、
+   または全 $\Delta_{\max}$ の totality-of-evidence アプローチ
+
+> 固定閾値ではなく、**文脈依存の臨床判断** を支援する
+> --- ICH E17 の "similar enough" の実装
 
 ---
 
-# When Is $L$ Available?
+# まとめ
 
-<div class="block">
-<div class="block-title">$L$ estimable (full calibration possible)</div>
-<div class="block-content">
+### nABCD が埋めるギャップ
 
-Prior trials or meta-analyses in the same therapeutic area provide subgroup interaction data.
-Example: NIHSS &mdash; Emberson IPD meta-analysis + IST-3 data.
+- ICH E17 の **定量的方法論の欠如** に対応
+- 計画段階で利用可能 (事前試験・レジストリ・RWE データから算出可能)
+- $\Delta_{\max}$ calibration により **evidence-based かつ clinically grounded** なプーリング判断を支援
 
-</div>
-</div>
+### Central Message
 
-<div class="alertblock">
-<div class="block-title">$L$ uncertain (planning-stage assessment)</div>
-<div class="block-content">
+$$
+\boxed{|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
+$$
 
-Novel agents or therapeutic areas lacking subgroup analyses. nABCD + reference benchmarks provide **primary assessment**, supplemented by sensitivity analysis over plausible $L$ ranges.
+**分布距離ランキング $\neq$ 臨床的インパクトランキング**
 
-</div>
-</div>
-
-> **nABCD's core value** &mdash; capturing distributional differences invisible to SMD &mdash; holds **regardless** of whether $L$ is available.
-
----
-
-# Limitations and Future Work
-
-### Current limitations
-- Continuous EMs only &mdash; extensions to categorical/mixed-type needed
-- Univariate evaluation &mdash; multivariate extension would address EM confounding
-- Positive bias at small $n$ under null; negative bias at large true values
-- CATE sensitivity $L$ may not always be estimable from prior data
-- CATE sensitivity $L$ may not transfer across agents in the same class (e.g., alteplase &rarr; drug A)
-- IST-3 data from 2000&ndash;2011; demographic shifts may limit applicability
-
-### Future directions
-- Multivariate nABCD extensions
-- Bias correction methods for small samples
-- Empirical calibration of $L$ from historical trial databases
-- Longitudinal EM profiles for dynamic similarity assessment
+--- nABCD の大きさだけでなく、clinical calibration が判断の鍵
 
 ---
 
@@ -1104,6 +795,6 @@ Novel agents or therapeutic areas lacking subgroup analyses. nABCD + reference b
 
 # Thank You
 
-nABCD fills a methodological gap in ICH E17 implementation by translating distributional differences into context-specific assessments of potential treatment effect heterogeneity.
+ご質問をお願いします
 
-Open-source R code available at [repository URL]
+Tak Nagakubo

@@ -30,7 +30,7 @@ style: |
     border: none;
     padding: 90px 60px 46px 60px;
     font-size: 28px;
-    line-height: 1.6;
+    line-height: 1.3;
     position: relative;
     /* Frame drawn with background layers (top/left/right/bottom borders) */
     background-color: white;
@@ -147,12 +147,17 @@ style: |
 
   /* ---- Lists ---- */
   section ul, section ol {
-    line-height: 1.8;
+    line-height: 1.4;
     margin-left: 10px;
   }
 
   section li {
+    line-height: 1.4;
     margin-bottom: 4px;
+  }
+
+  section p {
+    line-height: 1.3;
   }
 
   section li::marker {

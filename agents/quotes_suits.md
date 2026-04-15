@@ -26,6 +26,11 @@ Source: USA Network "SUITS" (2011-2019)
 - "Loyalty is a two-way street. If I'm asking for it from you, you're getting it from me."
 - "You want to change your life? Change the way you think."
 
+### On Confidence
+- "Anyone can do my job, but no one can be me."
+- "It's going to happen because I'm going to make it happen."
+- "Ever loved someone so much, you would do anything for them? Yeah, well make that someone yourself and do whatever the hell you want."
+
 ---
 
 ## Jessica Pearson
@@ -86,6 +91,12 @@ Source: USA Network "SUITS" (2011-2019)
 - "I may not be as flashy as Harvey, but I get results."
 - "I'm Moby goddamn Dick, and you just swam in my waters."
 
+### On Life & Mudding
+- "There's nothing to be afraid of—it's just good clean mud."
+- "Do you mud?"
+- "I treat my body like a temple. Does that make me uncool? I don't think so."
+- "Don't let the moment pass. Don't let the people you love walk by you without letting them know how you feel about them."
+
 ---
 
 ## Rachel Zane
@@ -94,6 +105,7 @@ Source: USA Network "SUITS" (2011-2019)
 - "I'm going to prove myself, no matter what it takes."
 - "Hard work beats talent when talent doesn't work hard."
 - "The truth is, we all have skeletons in our closets."
+- "I've worked too hard to give up now."
 
 ---
 

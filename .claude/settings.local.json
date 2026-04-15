@@ -153,7 +153,25 @@
       "WebFetch(domain:hrs.isr.umich.edu)",
       "WebFetch(domain:charls.charlsdata.com)",
       "Read(//c/c/**)",
-      "Read(//c/Users/hrd13/AppData/Local/Programs/Python/**)"
+      "Read(//c/Users/hrd13/AppData/Local/Programs/Python/**)",
+      "Bash(file .claude/hooks/*.sh)",
+      "Bash(bash .claude/hooks/check-paper-sync.sh)",
+      "Bash(bash .claude/hooks/pre-bash-safety.sh)",
+      "Bash(bash .claude/hooks/remind-suits-on-prompt.sh)",
+      "Bash(bash .claude/hooks/validate-paper-request.sh)",
+      "Bash(RET=$?)",
+      "Read(//c/Users/hrd13/AppData/Local/Temp/claude/C--Users-hrd13-Documents-Gak-0-Study-800Claude-20260210-SIM-similarity-metrics/e1680889-b135-43da-87a6-5b3a9f6b5f07/tasks/**)",
+      "Read(//c/Users/hrd13/AppData/Local/Temp/claude/C--Users-hrd13-Documents-Gak-0-Study-800Claude-20260210-SIM-similarity-metrics/e1680889-b135-43da-87a6-5b3a9f6b5f07/tasks//**)",
+      "Bash(rm -f nABCD_wiley.aux nABCD_wiley.log nABCD_wiley.blg nABCD_wiley.pag)",
+      "Bash(mv nABCD_wiley.pdf output/nABCD_wiley.pdf)",
+      "Bash(rm -f LETTERSP.STY NJDnatbib.sty WileyNJDv5.cls algorithm.sty algorithmicx.sty algpseudocode.sty cuted.sty floatpag.sty wileyNJD-AMA.bst)",
+      "Bash(rmdir figures:*)",
+      "Bash(rm -f nABCD_wiley.aux nABCD_wiley.log nABCD_wiley.fls nABCD_wiley.fdb_latexmk nABCD_wiley.synctex.gz)",
+      "Bash(latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf nABCD_wiley.tex)",
+      "Bash(bash \"C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/paper/build.sh\")",
+      "Bash(cp wiley-template/WileyNJDv5.cls .)",
+      "Bash(cp wiley-template/NJDnatbib.sty .)",
+      "Bash(cp wiley-template/wileyNJD-AMA.bst .)"
     ]
   }
 }

@@ -2,11 +2,19 @@
   "hooks": {
     "SessionStart": [
       {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/session-start-context.sh'"
+          }
+        ]
+      },
+      {
         "matcher": "compact",
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/post-compact-remind.sh"
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/post-compact-remind.sh'"
           }
         ]
       }
@@ -16,11 +24,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/remind-suits-on-prompt.sh"
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/remind-suits-on-prompt.sh'"
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/validate-paper-request.sh"
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/validate-paper-request.sh'"
           }
         ]
       }
@@ -31,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/pre-bash-safety.sh"
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/pre-bash-safety.sh'"
           }
         ]
       }
@@ -42,11 +50,15 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/check-suits-update.sh"
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/check-suits-update.sh'"
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/check-suits-lines.sh"
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/check-suits-lines.sh'"
+          },
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/check-paper-sync.sh'"
           }
         ]
       }
@@ -56,7 +68,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/check-suits-lines.sh"
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/check-suits-lines.sh'"
           }
         ]
       }

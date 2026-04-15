@@ -3,7 +3,7 @@
 # Fires on PreToolUse for Bash — blocks dangerous commands
 # No jq dependency — checks raw input for dangerous patterns
 
-INPUT=$(cat)
+INPUT=$(cat 2>/dev/null || echo "")
 
 # If input is empty, pass through
 if [ -z "$INPUT" ]; then

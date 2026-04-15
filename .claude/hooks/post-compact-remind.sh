@@ -2,6 +2,8 @@
 # Donna: Post-compaction role reminder
 # Fires on SessionStart with matcher "compact"
 # After context compression, remind Claude of team identity and rules
+# Consume stdin (hook framework may send JSON)
+cat > /dev/null 2>&1 || true
 
 cat <<'REMINDER'
 Donna: Compaction detected. Role reminder:

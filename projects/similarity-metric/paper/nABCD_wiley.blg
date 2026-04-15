@@ -1,0 +1,47 @@
+This is upBibTeX, Version 0.99d-j0.36-u1.30 (utf8.uptex) (TeX Live 2024)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: nABCD_wiley.aux
+The style file: WileyNJD-AMA.bst
+Database file #1: nABCD_wiley.bib
+You've used 21 entries,
+            2086 wiz_defined-function locations,
+            679 strings with 8589 characters,
+and the built_in function-call counts, 4062 in all, are:
+= -- 352
+> -- 159
+< -- 0
++ -- 69
+- -- 48
+* -- 499
+:= -- 696
+add.period$ -- 24
+call.type$ -- 21
+change.case$ -- 1
+chr.to.int$ -- 0
+cite$ -- 21
+duplicate$ -- 222
+empty$ -- 416
+format.name$ -- 48
+if$ -- 901
+int.to.chr$ -- 0
+int.to.str$ -- 21
+missing$ -- 22
+newline$ -- 86
+num.names$ -- 21
+pop$ -- 35
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 22
+stack$ -- 0
+substring$ -- 0
+swap$ -- 70
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 21
+width$ -- 23
+write$ -- 263
+is.kanji.str$ -- 0
