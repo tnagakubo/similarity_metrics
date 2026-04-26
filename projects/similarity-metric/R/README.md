@@ -22,7 +22,7 @@ Rscript R/run_sim_500.R      # quick check (~2.5 h with Rcpp)
 
 | Script | Author | Description |
 |--------|--------|-------------|
-| `simulation_manuscript_v2.R` | Mike Ross | Main simulation engine. Scenarios S1--S8, percentile bootstrap CI, estimation metrics (Bias, RMSE, Coverage, CI Width). Supports Rcpp/Rfast acceleration. |
+| `simulation_manuscript_v2.R` | Mike Ross | Main simulation engine. Scenarios S1--S7, percentile bootstrap CI, estimation metrics (Bias, RMSE, Coverage, CI Width). Supports Rcpp/Rfast acceleration. |
 | `nABCD_rcpp.cpp` | Mike Ross | C++ bootstrap implementation via Rcpp. ~50--100x faster than pure R. Includes sort-based W1 for equal-n samples and optional BCa. |
 | `figures_paper.R` | Katrina Bennett | Generates all manuscript figures. Reads `data/simulation_results_v2.csv`, writes to `figures/`. Colorblind-friendly palette, SiM style. |
 
@@ -41,7 +41,7 @@ Series of scripts investigating whether nABCD satisfies the triangle inequality 
 
 | Script | Author | Description |
 |--------|--------|-------------|
-| `verify_all.R` | Rachel + Louis + Mike | Comprehensive verification: independent nABCD implementation (no sourcing), true value checks for S1--S8. |
+| `verify_all.R` | Rachel + Louis + Mike | Comprehensive verification: independent nABCD implementation (no sourcing), true value checks for S1--S7. |
 | `verify_true_values.R` | Mike Ross | Monte Carlo true nABCD values (n=10^6) compared to old hard-coded values. Confirms S4 coverage fix. |
 | `louis_independent_replication.R` | Louis Litt | Clean-room independent replication. All functions from scratch, no project code sourced. |
 | `w1_verify_louis.R` | Louis Litt | Verifies W1 implementations: midpoint method (simulation) vs left-endpoint method (paper appendix) produce identical results. |

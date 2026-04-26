@@ -91,7 +91,7 @@ cat(sprintf("  W1 (n=10^6): %.4f (expected: 5.0000)\n\n", w1_big))
 
 cat("=== PART 2: Scenario Definitions ===\n\n")
 
-# S7 log-normal parametrization derivation:
+# S6 log-normal parametrization derivation:
 # LogNormal(mu_ln, sigma_ln): mean = exp(mu_ln + sigma_ln^2/2)
 # CV = sqrt(exp(sigma_ln^2) - 1)
 # For CV ~ 0.53: sigma_ln^2 = log(1 + CV^2) = log(1 + 0.53^2) = log(1.2809) ~ 0.2476
@@ -99,18 +99,14 @@ cat("=== PART 2: Scenario Definitions ===\n\n")
 # With sigma_ln = 0.5: CV = sqrt(exp(0.25) - 1) = sqrt(0.2840) = 0.5331
 # For mean = 50: mu_ln = log(50) - sigma_ln^2/2 = log(50) - 0.125
 
-sigma_ln_s7 <- 0.5
-mu_ln_s7 <- log(50) - sigma_ln_s7^2 / 2
-cv_s7 <- sqrt(exp(sigma_ln_s7^2) - 1)
+sigma_ln_s6 <- 0.5
+mu_ln_s6 <- log(50) - sigma_ln_s6^2 / 2
+cv_s6 <- sqrt(exp(sigma_ln_s6^2) - 1)
 
-cat(sprintf("  S7 LogNormal params: mu_ln = %.6f, sigma_ln = %.4f\n", mu_ln_s7, sigma_ln_s7))
-cat(sprintf("  S7 E[X] = exp(mu_ln + sigma_ln^2/2) = exp(%.6f) = %.4f\n",
-            mu_ln_s7 + sigma_ln_s7^2/2, exp(mu_ln_s7 + sigma_ln_s7^2/2)))
-cat(sprintf("  S7 CV = %.4f (target: ~0.53)\n\n", cv_s7))
-
-# S6 Gamma check:
-# Gamma(shape=25, rate=0.5): mean = 25/0.5 = 50, var = 25/0.25 = 100, sd = 10
-cat(sprintf("  S6 Gamma(25,0.5): mean = %.1f, sd = %.1f\n\n", 25/0.5, sqrt(25/0.5^2)))
+cat(sprintf("  S6 LogNormal params: mu_ln = %.6f, sigma_ln = %.4f\n", mu_ln_s6, sigma_ln_s6))
+cat(sprintf("  S6 E[X] = exp(mu_ln + sigma_ln^2/2) = exp(%.6f) = %.4f\n",
+            mu_ln_s6 + sigma_ln_s6^2/2, exp(mu_ln_s6 + sigma_ln_s6^2/2)))
+cat(sprintf("  S6 CV = %.4f (target: ~0.53)\n\n", cv_s6))
 
 # Define all scenario generators
 louis_scenarios <- list(
@@ -140,16 +136,11 @@ louis_scenarios <- list(
     gen2 = function(n) rnorm(n, 50, 15)
   ),
   S6 = list(
-    label = "Shape (Gamma)",
-    gen1 = function(n) rnorm(n, 50, 10),
-    gen2 = function(n) rgamma(n, shape = 25, rate = 0.5)
-  ),
-  S7 = list(
     label = "Skew (LogNormal, CV~53%)",
     gen1 = function(n) rnorm(n, 50, 10),
-    gen2 = function(n) rlnorm(n, meanlog = mu_ln_s7, sdlog = sigma_ln_s7)
+    gen2 = function(n) rlnorm(n, meanlog = mu_ln_s6, sdlog = sigma_ln_s6)
   ),
-  S8 = list(
+  S7 = list(
     label = "Location + Scale",
     gen1 = function(n) rnorm(n, 50, 10),
     gen2 = function(n) rnorm(n, 55, 15)
@@ -167,8 +158,9 @@ n_MC <- 1e6
 # Run MC computation with MULTIPLE seeds for robustness
 seeds <- c(12345, 54321, 99999, 77777, 42)
 
-all_mc_results <- matrix(NA, nrow = length(seeds), ncol = 8)
-colnames(all_mc_results) <- paste0("S", 1:8)
+n_sc <- length(louis_scenarios)
+all_mc_results <- matrix(NA, nrow = length(seeds), ncol = n_sc)
+colnames(all_mc_results) <- names(louis_scenarios)
 
 for (s_idx in seq_along(seeds)) {
   set.seed(seeds[s_idx])
@@ -188,7 +180,7 @@ cat("\n")
 
 for (s_idx in seq_along(seeds)) {
   cat(sprintf("  %-6d", seeds[s_idx]))
-  for (sc_idx in 1:8) {
+  for (sc_idx in seq_len(n_sc)) {
     cat(sprintf(" %8.4f", all_mc_results[s_idx, sc_idx]))
   }
   cat("\n")
@@ -215,8 +207,8 @@ cat("\n\n")
 
 cat("=== PART 4: Comparison with Paper Values ===\n\n")
 
-en_values <- c(S1=0.000, S2=0.073, S3=0.180, S4=0.328, S5=0.122, S6=0.024, S7=0.304, S8=0.175)
-ja_values <- c(S1=0.000, S2=0.074, S3=0.186, S4=0.372, S5=0.148, S6=0.067, S7=0.302, S8=0.175)
+en_values <- c(S1=0.000, S2=0.073, S3=0.180, S4=0.328, S5=0.122, S6=0.304, S7=0.175)
+ja_values <- c(S1=0.000, S2=0.074, S3=0.186, S4=0.372, S5=0.148, S6=0.302, S7=0.175)
 
 cat(sprintf("  %-4s  %8s  %8s  %8s  %10s  %10s  %s\n",
             "ID", "Louis", "EN", "JA", "Diff_EN", "Diff_JA", "Match"))
@@ -224,7 +216,7 @@ cat(sprintf("  %-4s  %8s  %8s  %8s  %10s  %10s  %s\n",
 match_en <- 0
 match_ja <- 0
 
-for (i in 1:8) {
+for (i in seq_len(n_sc)) {
   sc_name <- paste0("S", i)
   louis_val <- mc_rounded[i]
   en_val <- en_values[i]
@@ -256,8 +248,8 @@ for (i in 1:8) {
               sc_name, louis_val, en_val, ja_val, diff_en, diff_ja, verdict))
 }
 
-cat(sprintf("\n  EN matches: %d/8\n", match_en))
-cat(sprintf("  JA matches: %d/8\n\n", match_ja))
+cat(sprintf("\n  EN matches: %d/%d\n", match_en, n_sc))
+cat(sprintf("  JA matches: %d/%d\n\n", match_ja, n_sc))
 
 # =============================================================================
 # PART 5: Investigate the EN-vs-JA Discrepancy Mechanism
@@ -274,7 +266,7 @@ cat("  Testing hypothesis: JA uses mean of component IQRs, EN uses mixture IQR\n
 cat(sprintf("  %-4s  %10s  %10s  %10s  %10s  %10s\n",
             "ID", "W1", "IQR_mix", "IQR_comp", "nABCD_mix", "nABCD_comp"))
 
-for (i in 1:8) {
+for (i in seq_len(n_sc)) {
   sc <- louis_scenarios[[i]]
   x <- sc$gen1(n_MC)
   y <- sc$gen2(n_MC)
@@ -377,7 +369,7 @@ sim_results <- data.frame(
 
 set.seed(2026)
 
-for (sc_idx in 1:8) {
+for (sc_idx in seq_len(n_sc)) {
   sc_name <- paste0("S", sc_idx)
   sc <- louis_scenarios[[sc_idx]]
   true_val <- true_vals[sc_idx]
@@ -450,7 +442,7 @@ cat("============================================================\n\n")
 
 # Restate comparison
 cat("True nABCD values (Louis MC mean of 5 seeds, n=10^6 each):\n")
-for (i in 1:8) {
+for (i in seq_len(n_sc)) {
   sc_name <- paste0("S", i)
   cat(sprintf("  %s: %.4f (rounded: %.3f)\n", sc_name, mc_mean[i], mc_rounded[i]))
 }
@@ -466,7 +458,7 @@ cat("\n")
 # Final determination
 cat("\n--- DETERMINATION ---\n\n")
 
-for (i in 1:8) {
+for (i in seq_len(n_sc)) {
   sc_name <- paste0("S", i)
   en_match <- abs(mc_rounded[i] - en_values[i]) <= 0.002
   ja_match <- abs(mc_rounded[i] - ja_values[i]) <= 0.002
@@ -491,7 +483,7 @@ for (i in 1:nrow(sim_results)) {
               ifelse(bias_ok, "OK", "NOTABLE")))
 }
 
-cat("\n  Coverage check (expect ~0.95 for S2-S8):\n")
+cat("\n  Coverage check (expect ~0.95 for S2-S7):\n")
 for (i in 1:nrow(sim_results)) {
   if (!is.na(sim_results$Coverage[i])) {
     cov_ok <- sim_results$Coverage[i] >= 0.90 && sim_results$Coverage[i] <= 0.99

@@ -39,6 +39,44 @@
 - [ ] ICH E17 等のガイドラインに対して overclaim していないか?（recommends → describes）
 - [ ] シミュレーション結果を "proves" や "demonstrates" と表現していないか?
 - [ ] 比較表現（better, superior, optimal）に根拠が伴っているか?
+- [ ] **証拠が削除/縮小された場合、対応する claim 文言も narrow したか?**（例: S6 削除 → "scale, shape, skewness" を "scale and skewness" に）
+- [ ] **証拠範囲外の moment/property を claim していないか?**（例: shape/kurtosis evidence がないのに "captures distributional shape"）
+
+---
+
+## C1: Cross-Section Cascade Check（セクション書き換え時）
+
+**適用条件**: 段落ではなくセクション全体（§ 単位）の書き換え、または primary case study 入れ替え（例: IST-3 → GUSTO-I）、または scenario/figure の削除。
+
+- [ ] **Abstract** の数値・名称・case study reference は更新が必要か?（→ Tak 指示で paper 完成後の最終 polish に保留可）
+- [ ] **Abbreviations / 略語表** の追加・削除は必要か?（→ 同上、最終 polish に保留可）
+- [ ] **Discussion** で対応セクションを参照している記述（key findings, limitations, recommendations）は更新済か?
+- [ ] **Methods / Simulation の calibration 例** で当該 case study の数値を引いていないか?
+- [ ] **Data availability** statement の citation は対応しているか?
+- [ ] 削除した scenario / figure / table を参照している残存 reference は grep で確認したか?
+- [ ] **作業順序**: 本体（§1-§5 本文）→ Discussion 整合 → 最後に Abstract / 略語（Tak 標準 practice）
+
+**Tak の実例**: §4 を IST-3 → GUSTO-I に書き換えた際、Discussion 4段落（Para 1, 2, 5, 8）に IST-3 数値が残存。さらに §3 calibration 例（L334, L393）と Data availability（L586）にも波及。Abstract と略語は paper 完成後に同期する判断（"Abstract と略語は最後でいい — 通常の論文の書き方"）。
+
+## C2: Section Opening Abstraction Level（Discussion / 各 § の冒頭段落）
+
+- [ ] Discussion / 各 section の opening paragraph は **high-level summary** になっているか?
+- [ ] specific numbers（CI, region IDs, exact nABCD values）は opening ではなく後続段落で再登場させているか?
+- [ ] 読者が opening だけで「この章の message」を一行で要約できるか?
+
+**Tak の実例**: §5 Discussion Para 1 で R2/R9 / R4/R6/R13 等の specific region IDs を入れすぎ → opening は abstract level に保ち、具体は Para 2 以降で展開。
+
+---
+
+## Option Presentation Pattern（修正提案フォーマット）
+
+Tak への修正提案は **3 軸** で options を並べると判断が早い:
+
+- **Option A**: 最小修正（現状維持 or 局所 wording 変更）
+- **Option B**: 構造改変（段落再構成 / 削除 / 移設）
+- **Option C**: 折衷（A と B のハイブリッド、部分的 restructuring）
+
+各 option は **(1) 変更内容 / (2) 影響範囲 / (3) trade-off** を 1-2 行で記述。Tak は典型的に B または C を選ぶが、議論の前提として A が必要。
 
 ---
 

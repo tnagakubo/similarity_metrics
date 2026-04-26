@@ -32,12 +32,11 @@ results <- list(
   S3 = my_nABCD(rnorm(N,50,10), rnorm(N,55,10)),
   S4 = my_nABCD(rnorm(N,50,10), rnorm(N,60,10)),
   S5 = my_nABCD(rnorm(N,50,10), rnorm(N,50,15)),
-  S6 = my_nABCD(rnorm(N,50,10), rgamma(N,25,0.5)),
-  S7 = my_nABCD(rnorm(N,50,10), rlnorm(N,mu_ln,sigma_ln)),
-  S8 = my_nABCD(rnorm(N,50,10), rnorm(N,55,15))
+  S6 = my_nABCD(rnorm(N,50,10), rlnorm(N,mu_ln,sigma_ln)),
+  S7 = my_nABCD(rnorm(N,50,10), rnorm(N,55,15))
 )
 
-csv_vals <- c(S1=0.001, S2=0.073, S3=0.18, S4=0.328, S5=0.122, S6=0.024, S7=0.304, S8=0.175)
+csv_vals <- c(S1=0.001, S2=0.073, S3=0.18, S4=0.328, S5=0.122, S6=0.304, S7=0.175)
 
 cat(sprintf("%-4s %8s %8s %8s %s\n", "ID", "CSV", "Indep", "Diff", "Status"))
 for (id in names(results)) {

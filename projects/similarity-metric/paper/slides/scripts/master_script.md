@@ -2,7 +2,7 @@
 
 **Total slides**: 29 (+ 5 section dividers = 34 pages)
 **Estimated time**: ~36 minutes (target: compress to 25 min for JSM)
-**Date**: 2026-03-03
+**Date**: 2026-03-03 (updated 2026-04-25 to align with §5 Discussion redesign and GUSTO-I application)
 
 | Act | Presenter | Slides | Time |
 |-----|-----------|:------:|:----:|
@@ -10,9 +10,9 @@
 | Act 1: Background | Rachel | 4 | ~6.5 min |
 | Act 2: Methods | Mike | 7 | ~14 min |
 | Act 3: Simulation | Katrina | 4 | ~6 min |
-| Act 4: Application | Katrina | 7 | ~9.5 min |
-| Act 5: Discussion | Harvey | 5 | ~6 min |
-| **Total** | | **29** | **~43.5 min** |
+| Act 4: Application (GUSTO-I) | Katrina | 6 | ~9 min |
+| Act 5: Discussion | Harvey | 6 | ~7.5 min |
+| **Total** | | **29** | **~44.5 min** |
 
 ---
 
@@ -49,13 +49,13 @@ This paper introduces nABCD — a normalized, Wasserstein-based coefficient for 
 
 Here is the architecture of the talk.
 
-We begin with the regulatory gap — what ICH E17 requires and what it does not provide. We then develop the methodology: the heterogeneity bound, the nABCD definition, and clinical calibration through Delta-max. The simulation study follows, covering bias, coverage, and a direct comparison with the standardized mean difference. We then work through a Type 2 diabetes MRCT application, where the ranking of effect modifiers by distributional distance is reversed by clinical calibration. And we close with discussion — what we delivered, what remains, and what practitioners should do with this framework starting now.
+We begin with the regulatory gap — what ICH E17 requires and what it does not provide. We then develop the methodology: the heterogeneity bound, the nABCD definition, and dual-pathway clinical calibration through Delta-max and the L-star reverse calculation. The simulation study follows, covering bias, coverage, and a direct comparison with the standardized mean difference. We then work through a hypothetical thrombolytic MRCT grounded in publicly available GUSTO-I individual patient data, where two candidate effect modifiers — age and systolic blood pressure — produce markedly different partner rankings, demonstrating that all candidate modifiers must be evaluated jointly. And we close with discussion — what we delivered, what remains, and what practitioners should do with this framework starting now.
 
 Thirty-two slides. Let's move.
 
 **Key points to emphasize**:
 - Strictly functional — no motivational commentary
-- "Ranking reversal" preview plants a hook for Section 4
+- "Ranking divergence + leading candidates" preview plants a hook for Section 4
 - "Let's move" signals pace and confidence
 
 ---
@@ -95,7 +95,7 @@ The problem, as you can see on this slide, is that ICH E17 stops there. It artic
 
 So why does the distribution of patient characteristics matter at all for treatment effect comparison across regions? Let me be precise about the mechanism.
 
-The key concept is the **effect modifier** — a baseline characteristic where the treatment benefit differs systematically across subgroups. Mathematically, if we denote the conditional average treatment effect as tau of x, where x is the patient characteristic, then the *regional* average treatment effect is simply the integral of tau(x) against the distribution of x in that region.
+The key concept is the **effect modifier** — a baseline characteristic where the treatment benefit differs systematically across subgroups. Mathematically, if we denote the conditional average treatment effect as tau of x, where x is the baseline characteristic, then the *regional* average treatment effect is simply the integral of tau(x) against the distribution of x in that region.
 
 This equation tells us something important: even if the drug's biological effect is identical at the individual patient level — same tau(x) for any given patient — two regions with **different patient distributions** will observe **different average treatment effects**. Not because the drug behaves differently, but because the *patient mix* differs.
 
@@ -148,7 +148,7 @@ First, we take an **estimation-centered** approach, not a testing approach. We d
 
 Second, we insist on **clinical calibration**. A pure distributional metric is still abstract to a regulatory audience. We want to translate whatever similarity score we compute back into the clinical outcome scale — into the same units as the treatment effect and the non-inferiority margin. That is what makes the tool actionable.
 
-I should also be clear about scope: our method is designed for **continuous effect modifiers**. Categorical or mixed-type EMs require different distance structures, and we note that as a direction for future work.
+I should also be clear about scope: our method is designed for **continuous effect modifiers**. Categorical effect modifiers require different distance structures, and we note that as a direction for future work.
 
 The goal is to provide regulatory scientists with quantitative tools that *inform* deliberation, not replace it with an algorithm. With that philosophy in mind, let me turn to the Methods section, where Mike will walk you through the mathematical foundations.
 
@@ -172,7 +172,7 @@ The goal is to provide regulatory scientists with quantitative tools that *infor
 
 So let me start by showing you the central result that motivates everything we're going to do. The entire nABCD framework rests on a single inequality.
 
-We have two regions. Each region has a patient population described by the distribution F_r of some baseline effect modifier — age, BMI, HbA1c, whatever the relevant characteristic is. The average treatment effect in region r is the integral of the CATE function tau(x) against that distribution. Even if the drug works identically at the individual level — tau(x) is the same everywhere — if the patient compositions F_1 and F_2 differ, the regional averages tau-bar_1 and tau-bar_2 can diverge.
+We have two regions. Each region has a patient population described by the distribution F_r of some baseline effect modifier — age, systolic blood pressure, lab biomarkers, whatever the relevant characteristic is. The average treatment effect in region r is the integral of the CATE function tau(x) against that distribution. Even if the drug works identically at the individual level — tau(x) is the same everywhere — if the patient compositions F_1 and F_2 differ, the regional averages tau-bar_1 and tau-bar_2 can diverge.
 
 The bound says: if the CATE function tau(x) is Lipschitz continuous with constant L, then the difference in regional average treatment effects is bounded above by L times W_1 of F_1 and F_2.
 
@@ -273,7 +273,7 @@ Now that we have the bound, let me show you the normalized statistic we actually
 
 The nABCD is W_1 divided by twice the pooled IQR. Each design choice here is deliberate.
 
-Why normalize at all? W_1 is in the original units of the covariate — years for age, kilograms per square meter for BMI, percent for HbA1c. If you want to compare the degree of distributional difference across different effect modifiers in a single trial, you need a dimensionless number.
+Why normalize at all? W_1 is in the original units of the covariate — years for age, mmHg for systolic blood pressure, units of any continuous biomarker. If you want to compare the degree of distributional difference across different effect modifiers in a single trial, you need a dimensionless number.
 
 Why IQR and not standard deviation? Two reasons. First, IQR is robust to outliers and heavy tails — it measures the spread of the central 50% of the distribution. We reviewed the robustness literature, including Rousseeuw and Croux (1993) who established that Q_n has higher breakdown point than IQR, but Q_n is less familiar to clinical reviewers and the higher breakdown protection is not necessary for population-level regulatory data. IQR has the right balance of robustness and interpretability. Second, IQR is already familiar to clinicians.
 
@@ -298,7 +298,7 @@ This is, in my view, the genuinely unique contribution of our framework. Every m
 
 The question that regulators actually need to answer is not "are the distributions different?" — we can see from the baseline tables that they are always somewhat different. The question is "does the distributional difference matter for this drug in this disease?" And that requires translating from the covariate space into the outcome space.
 
-Delta-max does exactly that. It is equal to 2L times IQR_pooled times nABCD, and it lives in the units of the clinical endpoint — percentage points of HbA1c reduction, millimeters of mercury for blood pressure, whatever the trial is measuring.
+Delta-max does exactly that. It is equal to 2L times IQR_pooled times nABCD, and it lives in the units of the clinical endpoint — percentage points of risk difference, hazard ratio on the log scale, whatever the trial is measuring.
 
 The procedure has five steps. First, compute nABCD with bootstrap confidence intervals for each candidate effect modifier. Second, estimate L from prior knowledge: published subgroup analyses, dose-response data, meta-analyses, or pharmacokinetic reasoning. Third, compute Delta-max and propagate the confidence interval linearly. Fourth, compare against clinically meaningful thresholds — the treatment effect, the non-inferiority margin, a minimum clinically important difference. Fifth, conduct sensitivity analysis over a plausible range of L values.
 
@@ -347,16 +347,16 @@ With those foundations in place, let me show you what the simulations reveal.
 
 Before we see how the estimator performs, let me orient you to what we actually tested.
 
-We designed eight scenarios anchored to clinical reality. Scenarios S1 through S4 test pure location shifts — identical to the kind of mean differences you would capture with a standardized mean difference. S1 is the null: perfectly identical populations. S2 represents a small real-world gap, like age differences between the EU and US. S4 represents a large one — nearly one full standard deviation, like BMI between Japan and the United States.
+We designed seven scenarios anchored to clinical reality. Scenarios S1 through S4 test pure location shifts — identical to the kind of mean differences you would capture with a standardized mean difference. S1 is the null: perfectly identical populations. S2 represents a small real-world gap. S4 represents a large one — nearly one full standard deviation.
 
-Then we add what SMD cannot see. S5 tests a pure scale difference: same mean, 50% wider spread. S6 tests a shape shift to a skewed Gamma distribution, modeling lab values like eGFR. S7 models high-skew data with a log-normal, mimicking ALT with coefficient of variation around 53%. S8 combines location and scale shifts simultaneously.
+Then we add what SMD cannot see. S5 tests a pure scale difference: same mean, 50% wider spread. S6 models high-skew data with a log-normal, mimicking biomarkers with a coefficient of variation around 53%. S7 combines location and scale shifts simultaneously.
 
 Each scenario ran 10,000 replications at three sample sizes: 50, 100, and 200 per region. Bootstrap confidence intervals used 2,000 replications. The true nABCD values span from zero to 0.37, giving us a representative range of what practitioners would encounter in real MRCTs.
 
 **Key points to emphasize**:
-- S5, S6, S7 are the critical SMD-blind scenarios
+- S5 and S6 are the critical SMD-blind scenarios
 - True nABCD range 0.000–0.372 covers the practical range
-- 10,000 reps × 3 sample sizes × 8 scenarios = comprehensive evaluation
+- 10,000 reps × 3 sample sizes × 7 scenarios = comprehensive evaluation
 
 ---
 
@@ -368,7 +368,7 @@ Each scenario ran 10,000 replications at three sample sizes: 50, 100, and 200 pe
 
 Let's look at bias first. The general pattern is encouraging: as sample size increases, bias decreases toward zero for most scenarios.
 
-At n=100, the most important threshold for practice, non-null scenarios excluding S4 all show bias below 0.02 in absolute terms. To put that in context, that is smaller than the width of a typical bootstrap confidence interval. For S3, S5, S7, and S8 — the practically relevant range — the estimator is essentially unbiased by n=100.
+At n=100, the most important threshold for practice, non-null scenarios excluding S4 all show bias below 0.02 in absolute terms. To put that in context, that is smaller than the width of a typical bootstrap confidence interval. For S3, S5, S6, and S7 — the practically relevant range — the estimator is essentially unbiased by n=100.
 
 S4 deserves special attention. With a true nABCD of 0.37, we see persistent negative bias around minus 0.04 even at n=200. This is a known property of empirical process estimators for the L1 distance. It means that for large distributional differences, nABCD is slightly conservative — it understates the gap.
 
@@ -389,17 +389,17 @@ The null scenario S1 shows the most striking positive bias, particularly at n=50
 
 Now coverage — the probability that the 95% percentile bootstrap interval actually contains the true nABCD.
 
-The headline result: at n≥100, coverage is between 0.87 and 0.98 across all eight scenarios. That is adequate for regulatory submissions.
+The headline result: at n≥100, coverage is between 0.87 and 0.98 across all seven scenarios. That is adequate for regulatory submissions.
 
 S2, the small location shift with true nABCD of 0.07, shows coverage of only 0.67 at n=50 and 0.90 at n=100. This near-null behavior reflects the theoretical prediction from del Barrio's asymptotic theory: when distributions are very close, the Hadamard derivative becomes non-linear. Coverage recovers to nominal by n=200.
 
 S4 shows the reverse problem: coverage degrades from 0.93 at n=50 to 0.73 at n=200. This reflects the persistent negative bias — as n grows, the confidence interval tightens around the biased estimate.
 
-The standout performer is S7, the log-normal skew scenario: near-nominal coverage of 0.95 across all three sample sizes. Given that skewed lab values are the distributions where shape differences matter most clinically, this is the result that matters most for practice.
+The standout performer is S6, the log-normal skew scenario: near-nominal coverage of 0.95 across all three sample sizes. Given that skewed lab values are the distributions where shape differences matter most clinically, this is the result that matters most for practice.
 
 **Key points to emphasize**:
 - At n≥100: coverage 0.87–0.98 — adequate for regulatory inference
-- S7 achieves near-nominal even at n=50 — best practical news
+- S6 achieves near-nominal even at n=50 — best practical news
 - Recommendation: n≥100 per region
 
 ---
@@ -416,15 +416,13 @@ Look at S3: a half-standard-deviation location shift. Both nABCD and SMD detect 
 
 Now look at S5: a pure scale difference. The two populations have identical means but the spread in region 2 is 50% wider. SMD is 0.00. It sees nothing. nABCD is 0.14. It detects a clinically meaningful distributional gap.
 
-S6 is a Gamma shape shift, same mean and approximately same spread. SMD is again 0.00. nABCD is 0.07.
-
-S7 is the log-normal skew scenario. SMD is 0.00. nABCD is 0.31 — large. This is a high-skew distribution with CV of 53%. For a drug whose CATE function is non-linear, this level of shape difference could drive substantial regional heterogeneity. SMD would give you no warning.
+S6 is the log-normal skew scenario. SMD is 0.00. nABCD is 0.31 — large. This is a high-skew distribution with CV of 53%. For a drug whose CATE function is non-linear, this level of shape difference could drive substantial regional heterogeneity. SMD would give you no warning.
 
 The conclusion is structural. SMD is a summary of location. nABCD is a summary of the full distributional difference — the exact quantity that bounds treatment effect heterogeneity. For regulatory decision-making under ICH E17, SMD is insufficient.
 
 **Key points to emphasize**:
-- SMD = 0.00 for S5, S6, S7 — structurally blind, not a sampling artifact
-- S7 is the most striking: nABCD = 0.31, SMD = 0.00
+- SMD = 0.00 for S5 and S6 — structurally blind, not a sampling artifact
+- S6 is the most striking: nABCD = 0.31, SMD = 0.00
 - nABCD captures the quantity that bounds heterogeneity; SMD does not
 
 ---
@@ -433,166 +431,133 @@ The conclusion is structural. SMD is a summary of location. nABCD is a summary o
 
 ---
 
-## Slide 18: Type 2 Diabetes MRCT
+## Slide 18: Hypothetical Thrombolytic MRCT (GUSTO-I)
 
 **Duration**: ~1 minute
 
 **Script**:
 
-Now let us apply these ideas to a concrete MRCT scenario.
+Now let us apply these ideas to a concrete planning scenario.
 
-Consider a hypothetical three-region trial in type 2 diabetes: Japan with 150 patients, the US with 200, and the EU with 180. The primary endpoint is change in HbA1c at 24 weeks. The overall treatment effect is minus 0.8 percentage points. The non-inferiority margin is 0.4%.
+We are planning a Phase 3 MRCT for a novel thrombolytic agent — call it Drug T — in acute myocardial infarction. We need a distributional source for our regional populations, and we use GUSTO-I: a 40,830-patient public IPD dataset with 16 anonymized regions. GUSTO-I is not itself an MRCT and the regions carry no geographic labels, so this is a methodological illustration, not an endorsement of GUSTO-I-era distributions as current references.
 
-Look at the baseline characteristics. The three effect modifiers we will analyze are age, BMI, and baseline HbA1c. The Japan-US contrast is immediately striking: mean BMI 24.8 in Japan versus 32.1 in the US — a gap of 7.3 kg/m². Mean baseline HbA1c 7.6 in Japan versus 8.4 in the US — a smaller gap of 0.8 percentage points.
-
-The clinical question is: do these baseline differences matter for treatment effect comparability? This is exactly what nABCD and clinical calibration are designed to answer.
+We designate Region 8 — sample size 2,916 — as the small-sample anchor. The remaining 15 regions are evaluated as pooling partners. The two candidate effect modifiers are age and systolic blood pressure. Per-unit CATE slope, our L parameter, is unavailable a priori for either: the FTT meta-analysis reports only "irrespective of age," and no quantitative class-level CATE sensitivity exists for SBP. So we apply the L-star reverse-calculation pathway for both.
 
 **Key points to emphasize**:
-- Japan-US is the most divergent pair
-- BMI gap looks large (7.3 kg/m²); HbA1c gap looks smaller (0.8%)
-- NI margin of 0.4% is the clinical yardstick throughout
+- GUSTO-I is a public IPD source, not a real MRCT
+- Two candidate effect modifiers: age and SBP
+- L unavailable a priori → L-star pathway is the primary calibration tool
 
 ---
 
-## Slide 19: Pairwise nABCD Values
+## Slide 19: nABCD Results — Region 8 vs 15 Partners
 
 **Duration**: ~1.5 minutes
 
 **Script**:
 
-Here are the pairwise nABCD values with 95% bootstrap confidence intervals.
+Here are the nABCD point estimates and 95% percentile bootstrap CIs for all 15 partner regions, on both candidate effect modifiers.
 
-The Japan-US comparison dominates. Age: 0.12 — small, well within the acceptable range. BMI: 0.51 — large, with a tight confidence interval from 0.44 to 0.58. HbA1c: 0.27 — moderate, interval from 0.20 to 0.34.
+For age, the range is narrow: 0.011 at the lowest pair to 0.076 at the highest. Eleven of the fifteen partners sit below 0.040.
 
-Now here is the question that motivates the next two slides. Looking at Japan versus the US, BMI has nABCD of 0.51 and HbA1c has nABCD of 0.27. On the nABCD scale alone, BMI looks like the larger concern. It is large by any benchmark. HbA1c is moderate.
+For SBP, the range is wider: 0.015 to 0.110. Most partners cluster between 0.050 and 0.110.
 
-But does a larger nABCD automatically mean a larger regulatory concern?
-
-The answer is no. And the reason is that nABCD measures distributional distance — it does not yet account for how strongly each effect modifier actually influences the treatment effect. That is the role of the clinical calibration step. Let us see what happens when we bring in the CATE sensitivity parameter L.
+Note the role of the bootstrap confidence intervals. At mid-rank, partner CIs overlap, which means the ranking carries genuine uncertainty. We report point estimates with CI widths so the audience knows exactly how confident the ordering can be at each position. This is what an estimation-centered framework looks like in practice.
 
 **Key points to emphasize**:
-- BMI nABCD = 0.51 (large); HbA1c nABCD = 0.27 (moderate)
-- On nABCD alone, BMI looks like the primary concern
-- Build anticipation: the answer involves L, and it reverses the ranking
+- Age range narrower than SBP range
+- Mid-rank CIs overlap — ranking confidence varies
+- The framework reports uncertainty honestly rather than producing false rankings
 
 ---
 
-## Slide 20: Clinical Calibration: Japan vs. US
-
-**Duration**: ~1.5 minutes
-
-**Script**:
-
-Now we apply the clinical calibration formula. Delta-max equals two times L times IQR-pooled times nABCD.
-
-For Age: nABCD is 0.12, but L is 0.01 — age has almost no influence on treatment effect for this drug class. Delta-max comes out to 0.03%. Negligible. Well under 10% of the non-inferiority margin.
-
-For BMI: nABCD is 0.51 — the largest in the table. But L is 0.02. BMI is a weak effect modifier. Even with the enormous distributional gap, Delta-max is only 0.16%. That is 40% of the non-inferiority margin. Below the threshold of clinical concern.
-
-For HbA1c: nABCD is 0.27 — smaller than BMI. But L is 0.30. Baseline HbA1c is a strong predictor of treatment response to glucose-lowering therapy. Delta-max is 0.24%. That is 30% of the overall treatment effect, and 60% of the non-inferiority margin.
-
-So the ranking has reversed. The variable that looked smaller by nABCD — HbA1c — produces the larger Delta-max. The variable that looked largest — BMI — turns out to be the lesser concern.
-
-**Key points to emphasize**:
-- Age: Δ_max = 0.03% — negligible
-- BMI: nABCD = 0.51 but L = 0.02 → Δ_max = 0.16% — manageable
-- HbA1c: nABCD = 0.27 but L = 0.30 → Δ_max = 0.24% — 60% of margin
-- The reversal is caused entirely by L
-
----
-
-## Slide 21: Key Insight: Same nABCD, Different Impact
-
-**Duration**: ~1 minute
-
-**Script**:
-
-Let me make this contrast explicit.
-
-BMI has nABCD of 0.51 and L of 0.02. The distribution of BMI is dramatically different between Japan and the US. But for this drug class, BMI has almost no causal influence on how much the treatment works. The large distributional gap multiplies against a near-zero sensitivity, and the result is a Delta-max of only 0.16%.
-
-HbA1c has nABCD of 0.27 and L of 0.30. The distribution is moderately different. But baseline HbA1c is the defining predictor of glycemic treatment response. A moderate distributional gap multiplied by a large sensitivity yields Delta-max of 0.24% — 60% of the non-inferiority margin.
-
-This is the core message. The clinical meaning of nABCD is not intrinsic to the number. It depends entirely on the treatment context — specifically, how sensitively the drug's effect responds to that particular characteristic. nABCD is necessary for the assessment, but L is the translation key.
-
-**Key points to emphasize**:
-- Two dimensions: distributional distance × CATE sensitivity
-- Delta-max is the clinically interpretable quantity; nABCD alone is not sufficient
-- This is by design, matching ICH E17's context-dependent philosophy
-
----
-
-## Slide 22: Why the Ranking Reverses
+## Slide 20: R2 vs R9 — Why Joint Evaluation Is Essential
 
 **Duration**: ~2 minutes
 
 **Script**:
 
-Let us slow down and understand the mechanism, because it has important implications.
+This is the first of two slides that contain the central application message. Look at R2 versus R9.
 
-L is a multiplier. It is the Lipschitz constant of the conditional average treatment effect function — roughly speaking, how many units of treatment effect change per unit change in the effect modifier. A large L means the drug is highly sensitive to that characteristic. A small L means relatively insensitive.
+R2 has age nABCD of 0.061 — the second largest age value in the table. But R2 has SBP nABCD of 0.015 — the smallest in the table.
 
-For BMI: the physical gap between Japan and the US is enormous. Average BMI of 24.8 versus 32.1. The nABCD of 0.51 reflects not just this location difference but also the difference in spread and shape. By any distributional measure, Japan and the US are very different on BMI. But the L for BMI here is 0.02 — meaning that for every 1 kg/m² difference in BMI, the treatment effect changes by only 0.02 percentage points. Multiply 0.51 times 0.02 times the IQR, and the clinical signal is small.
+R9 inverts this. Age nABCD is 0.017 — fourth smallest. SBP nABCD is 0.110 — the largest.
 
-For HbA1c: the distributional gap is moderate — nABCD of 0.27. The mean difference is only 0.8%. But the L of 0.30 tells us that for every 1% difference in baseline HbA1c, the expected treatment effect changes by 0.30%. That is a strong sensitivity. Despite the smaller nABCD, the clinical consequence is larger.
+If we ranked partners by age alone, R9 looks attractive and R2 looks like one to avoid. If we ranked by SBP alone, R2 looks ideal and R9 looks worst. A single effect modifier produces opposite conclusions.
 
-The breakeven point is when Delta-max equals the non-inferiority margin. For HbA1c with nABCD of 0.27 and IQR of 1.5%, that breakeven — L-star — occurs at 0.49. Below that value, pooling is compatible with the non-inferiority criterion. Above it, caution is warranted.
+The implication is direct. When multiple candidate effect modifiers are under consideration, all candidates must be evaluated jointly. Restricting evaluation to a subset risks selecting partners whose distributional differences on the omitted modifiers would later compromise regional consistency.
 
 **Key points to emphasize**:
-- L is the multiplier: large L means the drug "cares about" that characteristic
-- BMI: huge gap × tiny L = small impact
-- HbA1c: moderate gap × large L = the primary concern
-- L* = 0.49 is the breakeven — interpretable and communicable
+- R2 and R9 produce opposite rankings depending on which modifier you privilege
+- This is not an artifact — it is what real GUSTO-I data show
+- Practical rule: evaluate all candidate effect modifiers jointly, not in isolation
 
 ---
 
-## Slide 23: Sensitivity Analysis: HbA1c (Japan vs. US)
+## Slide 21: Leading Pooling Candidates — R4, R6, R13
 
 **Duration**: ~1.5 minutes
 
 **Script**:
 
-Because L is estimated — not known precisely — we present a sensitivity table showing Delta-max as a function of L for HbA1c Japan versus the US.
+When we apply the joint criterion, three regions emerge: R4, R6, and R13.
 
-nABCD is fixed at 0.27 and IQR at 1.5% for all rows.
+These three rank low on both candidate effect modifiers. All six of their nABCD values — three regions times two modifiers — sit in the lower portions of the observed ranges. Age range 0.011 to 0.076: R4, R6, R13 are in the lower portion. SBP range 0.015 to 0.110: R4, R6, R13 are again in the lower portion.
 
-At L equals 0.10, Delta-max is 0.08%, just 10% of the treatment effect. No concern. At L equals 0.20, Delta-max is 0.16%, still well below the margin. At our point estimate of L equals 0.30, Delta-max is 0.24%.
+The required L-star values for these three regions also fall near the lower end of what would reasonably be considered clinically plausible for thrombolysis in AMI, given the available class evidence.
 
-As L increases to 0.40, Delta-max reaches 0.32% — 80% of the non-inferiority margin. At L equals 0.50, Delta-max is 0.41%, which exceeds the 0.4% margin.
-
-The breakeven is at L-star equals 0.49. This is the answer to the regulator's question: "At what level of CATE sensitivity does the Japan-US HbA1c difference become incompatible with pooling under the non-inferiority criterion?"
-
-The answer is 0.49. Whether L actually reaches that level is a scientific question that prior data and pharmacological reasoning can inform. The framework does not answer that question for the regulator — it provides the exact context in which they need to answer it.
+The conclusion the paper draws is deliberately calibrated. In its exact language: "the sponsor may reasonably prioritize R4, R6, and R13 as the leading candidates for pooling with Region 8." This is not a binary verdict. It is a quantitative basis for prioritization, which the sponsor combines with clinical and regulatory judgment to arrive at a final decision.
 
 **Key points to emphasize**:
-- L* = 0.49: the breakeven where Δ_max equals the NI margin
-- The table is transparent: regulators can substitute their own L estimate
-- Sensitivity analysis as a communication tool, not just a robustness check
+- Joint criterion: low nABCD on both candidate effect modifiers
+- L-star plausibility provides the second confirmatory check
+- "Reasonably prioritize" — soft prioritization, not binary poolable/not-poolable
 
 ---
 
-## Slide 24: Estimation, Not Testing
+## Slide 22: Sponsor Judgment, Not Algorithmic Verdict
 
 **Duration**: ~1.5 minutes
 
 **Script**:
 
-I want to close the results section with an explanation of why we deliberately chose estimation over hypothesis testing.
+I want to be precise about what the framework does and does not do.
 
-There are three specific reasons.
+The framework does not assign poolable or not poolable labels to nABCD values. It does not impose a fixed cutoff. It does not replace sponsor judgment.
 
-First, ICH E17 explicitly avoids binary rules on similarity. The guideline says similarity is context-dependent. A single threshold cannot serve all diseases, all drug classes, and all regulatory contexts simultaneously. An estimation framework naturally accommodates this.
+What the framework does provide: nABCD point estimates, bootstrap confidence intervals, L-star sensitivities, and joint visualizations of all candidate modifiers. These are quantitative inputs that support deliberation between the sponsor, the clinical advisor, and the regulatory advisor.
 
-Second, L is uncertain. A test result collapses all of this uncertainty into a p-value, hiding the fact that the conclusion could change substantially if L were different. The sensitivity table makes that uncertainty explicit and visible.
+For partners outside the leading three — R4, R6, R13 — sponsors who want to consider them can examine partner-specific L-star values and CI widths to evaluate the precision and plausibility of pooling on each candidate effect modifier. The framework supports that exploration without prescribing the answer.
 
-Third, the decision boundary is context-specific. A non-inferiority trial with margin 0.4% and a superiority trial with expected effect 0.8% face fundamentally different clinical stakes — even with identical nABCD values. Estimation, by reporting Delta-max against the clinical margin, handles this naturally. Testing cannot.
+**Key points to emphasize**:
+- The framework supplies quantitative inputs, not verdicts
+- Sponsor judgment remains the locus of the pooling decision
+- Partners outside the leading set are not excluded — their L-star and CI widths are available
 
-The recommended reporting is: nABCD with 95% confidence interval, Delta-max with 95% confidence interval, and the full sensitivity range. Regulatory judgment informed by evidence — not ruled by algorithm.
+---
+
+## Slide 23: Estimation, Not Testing
+
+**Duration**: ~1.5 minutes
+
+**Script**:
+
+I want to close the results section with an explanation of why we chose estimation over hypothesis testing.
+
+There are three reasons.
+
+First, ICH E17 explicitly avoids binary rules on similarity. The guideline language is context-dependent. A single threshold cannot serve all diseases, all drug classes, and all regulatory contexts simultaneously. An estimation framework naturally accommodates this.
+
+Second, L is uncertain. A test result collapses that uncertainty into a p-value. The L-star sensitivity calculation makes the uncertainty explicit and clinically interpretable.
+
+Third, the decision boundary is context-specific. A non-inferiority trial and a superiority trial face fundamentally different clinical stakes even with identical nABCD values. Estimation handles this naturally by reporting on the clinical scale. Testing cannot.
+
+The recommended reporting is: nABCD with 95% confidence interval, plus Delta-max with 95% confidence interval when L is available, plus L-star at pre-specified Delta-clin values when L is unknown. Regulatory judgment informed by evidence, not ruled by algorithm.
 
 **Key points to emphasize**:
 - Testing = binary; estimation = quantified + uncertainty-aware
 - ICH E17's context-dependence is incompatible with universal test thresholds
-- Same nABCD, different implications in NI vs superiority trials
+- Reporting bundle: nABCD CI + Delta-max or L-star + clinical benchmarks
 
 ---
 
@@ -600,130 +565,133 @@ The recommended reporting is: nABCD with 95% confidence interval, Delta-max with
 
 ---
 
-## Slide 25: Four Contributions
+## Slide 24: Summary of Findings
 
 **Duration**: ~90 seconds
 
 **Script**:
 
-Let me be direct about what this paper delivers. Four things.
+Let me summarize what this paper actually shows.
 
-First: full distributional comparison. The standardized mean difference is blind to variance and shape. In three of our simulation scenarios — pure scale, gamma shape, log-normal skew — SMD returns exactly zero. nABCD, grounded in the Wasserstein-1 distance, captures location, scale, and shape in a single number. That is not a refinement of SMD. It is a replacement.
+On the simulation side: the percentile bootstrap is reliable at moderate sample sizes for non-negligible distributional differences. Positive bias and zero coverage at the null and near-boundary cases define a lower limit of reliable inference. We recommend n at least 100 per region, and we are explicit that estimates near zero must be interpreted with caution.
 
-Second: scale-free estimation. The IQR normalization means nABCD is dimensionless — you can compare BMI against HbA1c against age in the same framework, with bootstrap confidence intervals reliable at n=100 and above.
+On the application side: in GUSTO-I, the two candidate effect modifiers — age and SBP — produced markedly different partner rankings. Some partners ranked similar on one but dissimilar on the other. Three regions, R4, R6, and R13, ranked low on both candidate effect modifiers and emerged as the leading pooling candidates because their L-star values also fell near the lower end of the clinically plausible range for the thrombolysis class.
 
-Third: clinical calibration. This is the contribution that changes the conversation. nABCD alone tells you how different the distributions are. Delta-max tells you what that difference means for treatment effects — in the same units as your primary endpoint, measured against your non-inferiority margin.
-
-Fourth: sensitivity analysis. Because L is not always known precisely, the framework naturally accommodates that uncertainty. You answer the question: at what value of L does this distributional difference begin to matter?
-
-Four contributions. Each stands on its own. Together they operationalize what ICH E17 has been asking for since 2017.
+These are the empirical anchors for everything else we will say.
 
 **Key points to emphasize**:
-- "Replacement, not refinement" for SMD — position at the frontier
-- Clinical calibration is the contribution that changes the conversation
-- ICH E17 callback closes the loop from the introduction
+- Simulation: reliable for non-negligible nABCD at moderate n; null/boundary needs caution
+- Application: ranking divergence between age and SBP is the empirical hook
+- R4, R6, R13: the joint low-nABCD plus plausible L-star result
 
 ---
 
-## Slide 26: Recommendations for Practitioners
+## Slide 25: Two Implications for Pooling Decisions
 
 **Duration**: ~90 seconds
 
 **Script**:
 
-This is the practical section. What do you actually do with this framework?
+These observations carry two implications.
+
+First: when multiple candidate effect modifiers are under consideration, all candidates must be evaluated jointly. The R2 versus R9 contrast is the proof. Restricting evaluation to a subset of candidates risks selecting partners whose distributional differences on the omitted modifiers would later compromise consistency.
+
+Second: partner selection cannot rest on nABCD ranking alone. The required CATE sensitivity L-star that would translate a given nABCD into a clinically meaningful Delta-max varies markedly across partners and across candidate effect modifiers. The same nABCD value carries different clinical weight depending on the partner-specific distributional differences. R4, R6, and R13 emerged as leading candidates not solely because their nABCD values were low on both modifiers, but also because the corresponding L-star values fell within ranges that could be defended as clinically plausible.
+
+Pooling judgments therefore require both distributional ranking and clinical calibration, applied across the full set of candidate effect modifiers.
+
+**Key points to emphasize**:
+- Implication 1: evaluate all candidate modifiers jointly
+- Implication 2: nABCD ranking alone is insufficient — clinical calibration is required
+- Both implications come directly from the GUSTO-I data, not from pre-commitment
+
+---
+
+## Slide 26: Strengths — Dual-Pathway Calibration
+
+**Duration**: ~90 seconds
+
+**Script**:
+
+Two principal strengths follow from the dual-pathway calibration.
+
+First: the framework adapts to where the trial sits on the spectrum of CATE sensitivity evidence. At the planning stage, where L is typically unavailable for novel agents, the L-star reverse calculation is the primary calibration tool. When L becomes available — from prior subgroup analyses, class-level meta-analyses, pharmacological reasoning — the Delta-max pathway provides a complementary calibration on the clinical scale. The framework does not impose a fixed nABCD cutoff, and it does not require L to function.
+
+Second: nABCD's value as a distributional measure — capturing scale and skewness differences invisible to the standardized mean difference — holds regardless of whether L is available. Clinical calibration enhances the distributional assessment. It does not replace it. So even at the earliest planning stage, before any clinical sensitivity evidence exists, nABCD with its bootstrap CI delivers usable information about distributional similarity.
+
+**Key points to emphasize**:
+- Pathway adaptivity: planning vs confirmatory stages
+- Distributional measure invariance: nABCD value persists with or without L
+- "Enhances, not replaces" — clinical calibration is additive
+
+---
+
+## Slide 27: Practical Recommendations
+
+**Duration**: ~90 seconds
+
+**Script**:
 
 Five steps.
 
-Step one: compute nABCD with bootstrap confidence intervals for each candidate effect modifier. You need at least 100 observations per region. Below that, positive bias is material and confidence intervals are not trustworthy.
+Step one: compute nABCD with bootstrap CI for every candidate effect modifier across region pairs. Use n at least 100 per region for reliable estimation.
 
-Step two: do not stop at the nABCD value. Translate it. Use the Delta-max formula to put the distributional difference on your clinical scale. A large nABCD is not inherently alarming. A large Delta-max relative to your non-inferiority margin is.
+Step two: when L is estimable, translate nABCD into Delta-max with bootstrap CI on the clinical scale.
 
-Step three: report Delta-max and its confidence interval alongside your treatment effect and clinical margins. This is what belongs in your submission package.
+Step three: when L is unknown — typical at the planning stage — compute L-star at pre-specified Delta-clin values, comparing against clinical class evidence.
 
-Step four: run sensitivity analyses across a plausible range of L values. Identify the breakeven L*. That number is the anchor for your regulatory argument.
+Step four: report alongside the overall treatment effect and the non-inferiority margin to support deliberation rather than binary decisions.
 
-Step five: use the reference benchmarks only when you cannot estimate L from prior data. The benchmarks are a fallback, not a first choice.
+Step five: when multiple candidate effect modifiers are evaluated, sponsors may adopt a conservative approach based on the maximum Delta-max — or smallest L-star — across all modifiers and pairs. Alternatively, a totality-of-evidence approach in which the full collection, together with bootstrap uncertainty and the reliability of each L estimate, informs holistic judgment. The choice depends on regulatory context.
 
-The bottom line: on Monday morning, pick your most important effect modifiers, compute their nABCD values, and run the Delta-max calibration. You will know more about your pooling decision in two hours than you would from a week of visual inspection.
+The framework is particularly relevant for regulatory submissions requiring regional subpopulation consistency. It also offers a distinctive policy advantage: nABCD requires only baseline distributions, so regional data can be assembled from prior trials, registries, electronic health records, or other RWE sources — increasingly relevant as regulatory agencies promote RWE use under ICH E6(R3).
 
 **Key points to emphasize**:
-- Five-step workflow they can reproduce
-- "Monday morning" framing makes it immediately actionable
-- Benchmarks are a fallback, not the primary tool
+- Five-step workflow that is reproducible
+- Conservative versus totality-of-evidence options for multiple modifiers
+- Policy advantage: compatibility with diverse data sources including RWE
 
 ---
 
-## Slide 27: Reference Benchmarks
+## Slide 28: Limitations
 
 **Duration**: ~75 seconds
 
 **Script**:
 
-Now about those benchmarks.
+The paper is explicit about limitations. Eight items, condensed here to the practical core.
 
-The table — negligible below 0.05, small up to 0.15, moderate up to 0.30, large above 0.30 — these are reference points, not thresholds. This distinction is not a disclaimer. It is the core design principle.
+Continuous effect modifiers only. Categorical extensions require further development. Each modifier evaluated separately — multivariate extensions are pending. Positive bias under the null and near-boundary scenarios — true nABCD below approximately 0.05 — inflates estimates and prevents nominal coverage; this is inherent to the non-negative parameter space. We use percentile bootstrap, which is first-order accurate; bias-corrected methods showed inferior performance for this bounded statistic. Clinical calibration requires L estimation — sponsor judgment is needed when L is unknown. The framework provides quantitative inputs but does not prescribe cutoffs. nABCD assesses similarity only with respect to measured effect modifiers — unmeasured heterogeneity drivers are out of scope. When L is carried forward from prior evidence, transferability is a clinical judgment that may benefit from sensitivity analysis. The GUSTO-I data are from 1990 to 1993; the application is methodological illustration, not an endorsement of those distributions as current references.
 
-Here is why a fixed threshold would be wrong. Take the BMI example. Japan versus the US: nABCD equals 0.51 — by any benchmark, that is large, alarming, a reason to pause pooling. But BMI is a weak effect modifier. When you apply Delta-max with L equal to 0.02, the implied treatment effect difference is 0.16 percent — less than half the margin. There is no clinical concern.
-
-A fixed threshold rule would have generated a false alarm. Delta-max tells the truth.
-
-The hierarchy is this: Delta-max first, always. Benchmarks only when Delta-max cannot be computed.
+These are the precisely defined boundaries within which the framework operates.
 
 **Key points to emphasize**:
-- Benchmarks are references, not thresholds — core design principle
-- BMI reversal example is the strongest illustration
-- "Delta-max first, always" — memorable one-liner
+- Continuous EMs, univariate, near-null bias — the three big methodological limits
+- L transferability and unmeasured EMs — the clinical interpretation limits
+- GUSTO-I era caveat: methodological illustration, not endorsement
 
 ---
 
-## Slide 28: Limitations and Future Work
+## Slide 29: Future Work and Closing
 
 **Duration**: ~75 seconds
 
 **Script**:
 
-We will be honest about the boundaries of this work, because knowing them precisely is what enables the next step.
+Future work has three directions.
 
-Three limitations that matter in practice.
+The current framework applies to continuous effect modifiers; extension to categorical effect modifiers is the first methodological challenge. The upstream identification of which baseline characteristics constitute relevant effect modifiers in a given trial is itself a non-trivial problem and deserves dedicated investigation — out of scope here, important next. Multivariate extensions for joint evaluation, and bias correction methods for small samples, complete the agenda.
 
-First: continuous effect modifiers only. The Wasserstein-1 framework requires continuous distributions. Categorical covariates need a different distance. That extension is tractable and is the first item on the research agenda.
+The principal contribution of this paper is to supply a quantitative tool where one was previously absent. nABCD, combined with bootstrap confidence intervals and clinical calibration via Delta-max or L-star, transforms the previously qualitative judgment of "similar enough" into a reproducible, quantitative basis for sponsor judgment. That is what fills the methodological gap left by ICH E17 and enables evidence-based, clinically grounded pooling decisions.
 
-Second: univariate evaluation. We assess each effect modifier independently. A multivariate distributional comparison would capture joint structure that pairwise analysis misses. Multivariate Wasserstein distances exist and are computationally feasible — this is the natural generalization.
-
-Third: positive bias at small n under the null. The bias is material below n equals 100. Bias correction methods for bounded statistics are directly applicable.
-
-None of these are fatal. They are precisely defined. And precisely defined limitations are the raw material for the next set of results.
-
-The field has waited eight years for a quantitative answer to ICH E17's pooling question. This framework provides a rigorous foundation for that answer, and an explicit map of what remains.
-
-**Key points to emphasize**:
-- "Precisely defined boundaries" — intellectual honesty without apology
-- "Eight years" callback to ICH E17 (2017)
-- Forward-looking: limitations = research map
-
----
-
-## Slide 29: Thank You
-
-**Duration**: ~45 seconds
-
-**Script**:
-
-Let me leave you with one sentence.
-
-nABCD measures the distance between effect modifier distributions and translates that distance into clinical scale — an estimation-centered framework that closes the implementation gap ICH E17 left open.
-
-That is what this is. Not a test. Not a binary verdict. A measurement, calibrated to the problem at hand.
-
-The R package is open source. The methodology is fully reproducible. If you work on multi-regional trials — as a biostatistician, a regulatory scientist, or a clinical pharmacologist — this framework is ready to use.
+The field has waited eight years for an answer to ICH E17's pooling question. This framework is the answer — rigorous, calibrated, and ready for use.
 
 Thank you. I am happy to take your questions.
 
 **Key points to emphasize**:
-- One sentence. Say it slowly. Let it land.
-- "Not a test. Not a binary verdict. A measurement." — three-part rhythm
-- Open source call to action is the last thing before questions
+- Future work: categorical EMs, EM identification methodology, multivariate extensions
+- Closing: previously qualitative → reproducible quantitative basis (the core message)
+- Eight-year ICH E17 callback closes the loop from the introduction
 
 ---
 

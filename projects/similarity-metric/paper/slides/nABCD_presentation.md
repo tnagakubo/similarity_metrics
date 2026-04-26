@@ -375,7 +375,7 @@ Tak Nagakubo
 1. **Background**: MRCT, ICH E17, 既存手法の限界
 2. **Methods**: nABCD の定義・理論基盤・推定・clinical calibration
 3. **Simulation**: 8シナリオによる推定性能評価
-4. **Application**: IST-1 (Case A) / IST-3 (Case B)
+4. **Application**: GUSTO-I を用いた仮想血栓溶解薬 MRCT
 5. **Discussion**: 主要な知見と実務への示唆
 
 ---
@@ -475,10 +475,10 @@ $$
 - $W_1$ は位置・分散・歪度の差に反応
 - SMD が検出できない分散差・形状差を捕捉
 
-### 要件 2: 臨床的解釈
+### 要件 2: スケールフリーな解釈
 
-- IQR 正規化によりスケールフリーな指標
-- Reference benchmarks で初期評価可能
+- IQR 正規化により測定単位に依存しない指標
+- 推定中心 (estimation-centered): 固定閾値ではなく CI と感度分析で判断
 
 ### 要件 3: 理論的連結
 
@@ -525,55 +525,60 @@ $$
 
 ---
 
-# Clinical Calibration: $\Delta_{\max}$
+# Clinical Calibration: 2つの経路
 
-### 最大治療効果差
+### 経路 1: $L$ が利用可能な場合 — $\Delta_{\max}$
 
 $$
 \Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
 $$
 
-- $L$: CATE の感度パラメータ。worst-case の治療効果異質性を制御
-- 先行知識、パイロットデータ、既発表サブグループ解析から推定
+- 観測された分布差から生じうる **最大治療効果差** を臨床スケールで表現
+- $L_{\max}$ (保守的) と $L_{\text{mean}}$ (現実的) の両方を提示
 
-### 5-Step Calibration Procedure
-
-1. 候補 effect modifier ごとに **nABCD + bootstrap CI** を算出
-2. 先行研究から $L$ を推定 (例: $L \approx \Delta\tau / \Delta x$)
-3. $\Delta_{\max}$ を算出 --- worst-case の治療効果差
-4. $\Delta_{\max}$ の CI を nABCD CI から導出 (臨床スケールでの不確実性)
-5. 全体治療効果・非劣性マージン・臨床的最小重要差と **並置して** 報告
-
-### なぜ仮説検定ではなく推定か
-
-- ICH E17 の "similar enough" は本質的に **文脈依存**
-- $L$ の不確実性 → $\Delta_{\max}$ 自体が感度分析の対象
-- $\Delta_{\max}$ + CI は p値や棄却判断より豊かな情報を提供
-
----
-
-# $L$ が未知の場合: 感度分析
-
-### 逆算アプローチ ($L^*$ 感度分析)
+### 経路 2: $L$ が未知の場合 — $L^*$ 逆算
 
 $$
 L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
 $$
 
-- $\Delta_{\text{clin}}$: 臨床的に重要な治療効果差 (例: 全体治療効果、非劣性マージン)
-- $L^*$ が妥当な範囲を超えていれば、分布差は臨床的に問題になりにくい
-- $L^*$ が小さければ、分布異質性への対策が必要
+- $\Delta_{\text{clin}}$: 臨床的に重要な治療効果差 (例: 非劣性マージン)
+- $L^*$ が臨床的に妥当な範囲を超えていれば、分布差は臨床的に問題になりにくい
 
-### Reference Benchmarks (分布的大きさのみ)
+---
 
-| nABCD 範囲 | 分布的大きさ | ガイダンス |
-|-----------|------------|----------|
-| $< 0.05$ | Negligible | Clinical calibration で有意な $\Delta_{\max}$ は出にくい |
-| $0.05$--$0.15$ | Small | $L$ が利用可能なら calibration 推奨 |
-| $0.15$--$0.30$ | Moderate | Calibration 重要; 臨床文脈で解釈 |
-| $> 0.30$ | Large | プーリング検討前に calibration 必須 |
+# MRCT 計画段階の現実: なぜ $L^*$ が主要経路か
 
-> **注意**: これらは **distributional magnitude only** の初期参照。同じ nABCD でも $L$ が異なれば臨床的含意は異なる。プーリング判断には clinical calibration ($\Delta_{\max}$) を使用すべき。
+### 計画段階で $L$ は通常利用不可
+
+- 発表済みサブグループ解析は **方向と有意性** を報告するが、per-unit slope は通常未報告
+- クラス内他剤のメタ解析も、絶対アウトカムスケール上の per-year / per-mmHg 勾配を明示しないことが多い
+- 数値的 prior として使える情報が存在しないケースが典型的
+
+### $L^*$ 逆算の位置づけ
+
+- 計画段階の **主要な calibration ツール**
+- 観測された nABCD が臨床的に意味を持つために必要な CATE 感度 $L^*$ を算出
+- Sponsor は $L^*$ が分野知識に照らして妥当か判断
+- $L$ が後に判明した場合に $\Delta_{\max}$ 経路で補完可能
+
+---
+
+# 推定中心の設計思想
+
+### 固定閾値を置かない
+
+- nABCD 値そのものに「poolable / not poolable」の二値判定を割り当てない
+- ICH E17 の "similar enough" は **本質的に文脈依存**
+- 同じ nABCD でも partner と effect modifier ごとに $L^*$ が異なる → 普遍的カットオフは避ける
+
+### 枠組みが提供するもの
+
+- **nABCD 点推定値 + bootstrap CI** — 分布距離の不確実性
+- **$L^*$ 逆算値** (または $\Delta_{\max}$ + CI) — 臨床スケールでの感度
+- これらを並置して報告し、sponsor + 臨床・規制 advisor が判断
+
+> 枠組みは **定量的インプット** を提供する。判断は sponsor が行う。
 
 ---
 
@@ -585,7 +590,7 @@ $$
 
 # シミュレーション設計
 
-### 8つのシナリオ
+### 7つのシナリオ
 
 | ID | 説明 | Distribution 1 | Distribution 2 | True nABCD |
 |----|------|----------------|----------------|------------|
@@ -594,9 +599,8 @@ $$
 | S3 | 位置 0.5$\sigma$ | $N(50, 10^2)$ | $N(55, 10^2)$ | 0.180 |
 | S4 | 位置 1.0$\sigma$ | $N(50, 10^2)$ | $N(60, 10^2)$ | 0.328 |
 | S5 | 尺度 1.5x | $N(50, 10^2)$ | $N(50, 15^2)$ | 0.122 |
-| S6 | 形状 (Gamma) | $N(50, 10^2)$ | Gamma$(25, 0.5)$ | 0.024 |
-| S7 | 歪度 (Log-normal) | $N(50, 10^2)$ | LogN | 0.304 |
-| S8 | 位置+尺度 | $N(50, 10^2)$ | $N(55, 15^2)$ | 0.175 |
+| S6 | 歪度 (Log-normal $\sigma_{\ln}=0.5$) | $N(50, 10^2)$ | LogN | 0.304 |
+| S7 | 位置+尺度 | $N(50, 10^2)$ | $N(55, 15^2)$ | 0.175 |
 
 $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 
@@ -608,7 +612,7 @@ $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 
 - True nABCD $\geq 0.1$ のシナリオ: バイアス $< 0.02$
 - S3 (0.5$\sigma$): +0.003、S4 (1.0$\sigma$): +0.003 --- ほぼ無視可能
-- 近境界シナリオ (S1, S6): 正のバイアスが大きい (非負制約による)
+- 近境界シナリオ (S1): 正のバイアスが大きい (非負制約による)
 
 ### 被覆確率 (95% CI, $n = 100$)
 
@@ -616,8 +620,8 @@ $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 |---------|---------|----------|----------|
 | S3 (0.5$\sigma$) | 0.947 | 0.951 | 0.947 |
 | S4 (1.0$\sigma$) | 0.950 | 0.950 | 0.957 |
-| S7 (Skew) | 0.953 | 0.954 | 0.954 |
-| S8 (Loc+Scale) | 0.917 | 0.935 | 0.944 |
+| S6 (Skew) | 0.953 | 0.954 | 0.954 |
+| S7 (Loc+Scale) | 0.917 | 0.935 | 0.944 |
 
 **推奨**: $n \geq 100$ / 地域で信頼性のある推定・推論が可能
 
@@ -629,14 +633,13 @@ $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 |---------|----------------------|--------------------|----|
 | S3 (位置) | $0.183 \pm 0.048$ | $0.50 \pm 0.14$ | 両方が検出 |
 | S5 (尺度のみ) | $0.136 \pm 0.033$ | $0.00 \pm 0.14$ | **nABCD のみ検出** |
-| S6 (形状のみ) | $0.070 \pm 0.025$ | $0.00 \pm 0.14$ | **nABCD のみ検出** |
-| S7 (歪度のみ) | $0.312 \pm 0.048$ | $0.00 \pm 0.14$ | **nABCD のみ検出** |
+| S6 (歪度のみ) | $0.312 \pm 0.048$ | $0.00 \pm 0.14$ | **nABCD のみ検出** |
 
 ### Key Finding
 
 - 位置差: SMD と nABCD は同等の情報を提供
-- **尺度・形状・歪度差**: SMD はゼロのまま --- nABCD のみが検出
-- S7 は特に顕著: 大きな分布差 (nABCD $= 0.31$) が SMD には完全に不可視
+- **尺度・歪度差**: SMD はゼロのまま --- nABCD のみが検出
+- S6 は特に顕著: 大きな分布差 (nABCD $= 0.31$) が SMD には完全に不可視
 
 ---
 
@@ -646,83 +649,142 @@ $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 
 ---
 
-# 適用: 2つの計画シナリオ
+# 適用例: GUSTO-I を用いた仮想 MRCT 計画
 
-### 仮想シナリオ
+### 設定
 
-新規血栓溶解薬 (drug A) の Phase 3 MRCT を計画中
+- 新規血栓溶解薬 **Drug T** の急性心筋梗塞 (AMI) Phase 3 MRCT を計画
+- GUSTO-I (公開データ; $N = 40{,}830$、16 anonymized regions) を分布情報源として利用
+- GUSTO-I 自体は MRCT ではなく、regions は anonymize 済み → 地理解釈は不可
+- あくまで **方法論デモンストレーション** としての利用
 
-### Case A: Effect Modifier が未知 (IST-1)
+### Anchor region
 
-- IST-1: 31カ国、19,435名 (1991--1996)
-- 治療 x effect modifier 交互作用なし (全 $p > 0.05$)
-- $L$ 推定不可 --- **$L^*$ 感度分析** で対応
-
-### Case B: Effect Modifier が特定済み (IST-3)
-
-- IST-3: 8カ国、3,035名 (2000--2012)
-- NIHSS: 交互作用 $p = 0.001$、$L$ 推定可能
-- --- **Clinical calibration** で $\Delta_{\max}$ を算出
+- **Region 8** ($n = 2{,}916$) を anchor として設定
+- 想定: 地域特異的な有効性エビデンスが要求されるが、サンプルサイズが限定的な市場
+- 残り 15 partner regions との分布類似性を評価し、プーリング候補を同定
 
 ---
 
-# Case A: IST-1 --- 地理的分布異質性
+# 候補 Effect Modifier の選定と $L$ の状況
 
-### 31カ国の分布パターン (年齢)
+### 2つの **候補 effect modifier**
 
-- **最大 nABCD**: India--UK = 0.565 (IST-3 の約4倍)
-- アジア諸国: India (0.375) > Singapore (0.205) > Hong Kong (0.121)
-- 人口構成と医療アクセスパターンの地理的クラスタリング
+- **Age** (年齢): 生物学的妥当性とクラスエビデンスから候補
+- **SBP** (収縮期血圧): 同様に候補
 
-### $L^*$ 感度分析 (India--UK)
+### $L$ は両方とも a priori に数値未知
 
-- nABCD $= 0.565$ で $\Delta_{\max} = 2$%pt を生じる $L^*$ は約 $0.005$/year
-- --- **小さな年齢関連交互作用** でも臨床的に問題となりうる
-- 明示的な緩和策 (層別ランダム化、プロトコル制限) が必要
+- **Age**: FTT collaborative meta-analysis (1994) は "irrespective of age" としか述べず、per-year CATE slope は未報告
+- **SBP**: クラスレベルの定量的 CATE 感度推定は存在しない
+- 両変数とも **$L^*$ 逆算経路** を適用
 
-> $L^*$ が小さい = 分布異質性のリスクが高い
+### Region 8 ベースライン
 
----
-
-# Case B: IST-3 --- nABCD vs SMD の実データ比較
-
-### nABCD 要約 (28ペア)
-
-| Effect Modifier | Median | Max | Max pair |
-|----------------|--------|-----|----------|
-| Age | 0.103 | 0.285 | SE--BE |
-| NIHSS | 0.101 | 0.240 | PL--PT |
-| Delay | 0.098 | 0.195 | SE--AU |
-
-### SMD が見逃すケース
-
-Norway--Portugal (治療遅延):
-- 平均: 4.34 vs 4.33 h
-- **SMD = 0.007** (ほぼ同一)
-- **nABCD = 0.069** (形状差を検出)
-- Norway は極端な右裾 (歪度 6.76); Portugal はコンパクト (歪度 $-0.23$)
+| 候補 effect modifier | Mean | SD | Skewness | IQR$_{\text{pooled}}$ |
+|---------------------|------|-----|----------|----------------------|
+| Age (years) | 60.2 | 12.1 | $-0.17$ | 17--18 |
+| SBP (mmHg) | 132.4 | 22.9 | 0.20 | 30--34 |
 
 ---
 
-# Case B: Clinical Calibration 結果
+# nABCD 結果: Region 8 vs 15 partners (Age)
 
-### NIHSS vs Age の対比
+### Age nABCD のレンジ
 
-| | NIHSS | Age |
-|---|-------|-----|
-| 交互作用 $p$ | **0.001** | 0.614 |
-| $L_{\text{mean}}$ | 0.00950/pt | 0.00065/yr |
-| nABCD (max) | 0.240 | 0.285 |
-| $\Delta_{\max}$ ($L_{\text{mean}}$) | **5.02%pt** | 0.47%pt |
-| $\Delta_{\max}$ ($L_{\max}$) | **7.37%pt** | 0.65%pt |
+- 点推定値: **0.011 (R5, R7) -- 0.076 (R3)** — 狭いレンジ
+- 15 partners のうち 11 が $< 0.040$
 
-全体治療効果 RD $\approx$ +1.5%pt
+| Rank | Partner | $n$ | nABCD$_{\text{age}}$ [95% CI] |
+|------|---------|-----|-------------------------------|
+| 1 | R5 | 1909 | 0.011 [0.010, 0.026] |
+| 2 | R7 | 3150 | 0.011 [0.008, 0.026] |
+| 3 | R4 | 2876 | 0.016 [0.010, 0.032] |
+| 4 | R9 | 3123 | 0.017 [0.011, 0.032] |
+| ... | ... | ... | ... |
+| 14 | R2 | 2952 | 0.061 [0.044, 0.079] |
+| 15 | R3 | 2030 | 0.076 [0.057, 0.095] |
 
-### 核心的知見
+Percentile bootstrap, $B = 2{,}000$
 
-- Age の方が nABCD は **大きい** (0.285 > 0.240)
-- しかし $\Delta_{\max}$ は NIHSS の方が **10倍以上大きい**
-- **分布距離のランキング $\neq$ 臨床的インパクトのランキング**
+---
+
+# nABCD 結果: SBP
+
+### SBP nABCD のレンジ
+
+- 点推定値: **0.015 (R2) -- 0.110 (R9)** — Age より広いレンジ
+- 多くの partner は 0.050--0.110 区間に集中
+
+### Age と SBP でランキングが異なる
+
+- GUSTO-I データにおいて **SBP の地域間異質性は age より大きい**
+- 単一の effect modifier だけでランキングすると結論が変わる
+
+### Bootstrap CI の役割
+
+- mid-rank 付近では CI が overlap → ランキングの確度に不確実性
+- 例: R16 (age 13位, nABCD 0.050, CI [0.034, 0.071]) は上位複数 partners とオーバーラップ
+- **CI 幅を併記することで「どの程度自信を持って順位を示せるか」を伝達**
+
+---
+
+# R2 vs R9: なぜ両変数を同時に評価すべきか
+
+### 対照的なパターン
+
+| | R2 | R9 |
+|---|----|----|
+| nABCD$_{\text{age}}$ | **0.061** (2番目に大) | 0.017 (4番目に小) |
+| nABCD$_{\text{SBP}}$ | **0.015** (最小) | **0.110** (最大) |
+
+### 含意
+
+- 単一 effect modifier のランキングでは **逆の結論** に至る
+- R2: SBP で最良だが age で最悪近く
+- R9: age で良好だが SBP で最悪
+- **両候補 effect modifier を joint に評価することが必須**
+- Figure: age--SBP nABCD の scatter で視覚化 (lower-left quadrant が同時に低い)
+
+---
+
+# プーリング候補の同定: R4, R6, R13
+
+### 主要な知見
+
+- **R4, R6, R13** が両候補 effect modifier で低い nABCD を示す
+- 6つの nABCD 値すべてが observed range の下側:
+  - Age: 0.011--0.076 の範囲 → R4, R6, R13 は下位
+  - SBP: 0.015--0.110 の範囲 → R4, R6, R13 は下位
+- 必要な $L^*$ 値も、クラスエビデンスから推定される臨床的妥当範囲の下端近く
+
+### Sponsor への示唆 (弱い推奨)
+
+> "the sponsor may reasonably prioritize R4, R6, and R13 as the leading candidates for pooling with Region 8"
+
+- 断定ではなく **priorization** の根拠を提供
+- Sponsor は clinical / regulatory advisor と協議のうえ最終判断
+
+---
+
+# 枠組みの哲学: 判断は sponsor が行う
+
+### 枠組みが **しない** こと
+
+- 二値の "poolable / not poolable" 指定を与えない
+- nABCD 値に固定カットオフを設けない
+- Sponsor の判断を代替しない
+
+### 枠組みが **提供する** もの
+
+- nABCD 点推定値 + bootstrap 95% CI
+- $L^*$ 感度 (必要な CATE 感度)
+- 複数候補 effect modifier の joint 評価 (scatter, forest)
+
+### 判断主体
+
+- Sponsor が clinical advisor、regulatory advisor と協議のうえ判断
+- 追加 partner を検討する場合も、各 partner の $L^*$ と CI 幅を精査すれば評価可能
 
 ---
 
@@ -732,22 +794,50 @@ Norway--Portugal (治療遅延):
 
 ---
 
-# 主要な知見と nABCD の3つの優位性
+# 主要な知見のサマリー
 
-### 1. SMD が見逃す分布差を捕捉
+### Simulation
 
-- Simulation: S5 (尺度), S6 (形状), S7 (歪度) で SMD $\approx 0$ だが nABCD は検出
-- IST-3: Norway--Portugal (治療遅延) で実データでも確認
+- 中規模サンプル + non-negligible 分布差で **percentile bootstrap は信頼できる**
+- Null 近傍・境界では正のバイアスとゼロ被覆 → reliable inference の下限を画定
 
-### 2. 治療効果異質性への理論的連結
+### GUSTO-I Application
 
-- Heterogeneity bound により $\Delta_{\max}$ への定量的橋渡し
-- KS 統計量・KL ダイバージェンスにはこの性質がない ($W_1$ 固有)
+- Age と SBP で partner ranking が大きく異なる
+- 一方の候補で類似でも、もう一方では非類似なケースあり
+- 両候補で低 nABCD の **R4, R6, R13** が leading pooling candidates として浮上
 
-### 3. 客観的・再現性のある推論
+---
 
-- Bootstrap CI による統計的推論
-- 視覚的検査 (目視) と異なり定量的・再現可能
+# Interpretation: 2つの実務的含意
+
+### 含意 1: 全候補 effect modifier を同時に評価
+
+- 単一候補だけでランキングすると **R2 vs R9 の対比** のような逆転が起きうる
+- 省略された候補の分布差が後段で consistency を毀損するリスク
+- 候補の subset に絞らず、**全候補を joint に評価**
+
+### 含意 2: nABCD ランキング単独では partner 選定不能
+
+- 同じ nABCD でも partner / candidate ごとに $L^*$ が大きく変動
+- R4, R6, R13 が leading に浮上したのは、低 nABCD **かつ** $L^*$ が臨床的妥当範囲だったから
+- **分布距離ランキング + 臨床 calibration** の両方が必要
+
+---
+
+# Strengths: Dual-Pathway Calibration
+
+### Strength 1: Adaptation to evidence state
+
+- $L$ 既知 (confirmatory): $\Delta_{\max}$ で worst-case を臨床スケールで報告
+- $L$ 未知 (planning): $L^*$ 逆算で必要感度を算出し分野知識と対照
+- **固定 nABCD カットオフを課さず**、エビデンス状況に応じて経路を選択
+
+### Strength 2: Distributional value is invariant
+
+- nABCD 自体は **scale + skewness の差** を SMD と独立に捕捉
+- $L$ の有無に依存せず distributional measure としての価値を保つ
+- Clinical calibration は分布評価を **強化**するもので、置換するものではない
 
 ---
 
@@ -756,37 +846,52 @@ Norway--Portugal (治療遅延):
 1. 候補 effect modifier ごとに **nABCD + bootstrap CI** を算出 ($n \geq 100$/地域)
 
 2. $L$ が推定可能な場合: **$\Delta_{\max}$** とその CI を臨床スケールで報告
-   - $L_{\max}$ (保守的上界) と $L_{\text{mean}}$ (現実的推定) の両方を提示
 
-3. $L$ が未知の場合: **Reference benchmarks** で初期評価 + $L^*$ 感度分析
+3. $L$ が未知の場合 (計画段階の典型): **$L^*$ を pre-specified $\Delta_{\text{clin}}$ で算出** → 分野知識と対照
 
-4. $\Delta_{\max}$ を全体治療効果・非劣性マージンと **並置して** 報告
+4. $\Delta_{\max}$ または $L^*$ を全体治療効果・非劣性マージンと **並置して** 報告
 
-5. 複数 effect modifier がある場合: 最大 $\Delta_{\max}$ に基づく保守的判断、
-   または全 $\Delta_{\max}$ の totality-of-evidence アプローチ
+5. 複数候補がある場合: 最大 $\Delta_{\max}$ (最小 $L^*$) による保守判断、
+   または totality-of-evidence アプローチ
 
-> 固定閾値ではなく、**文脈依存の臨床判断** を支援する
-> --- ICH E17 の "similar enough" の実装
+> 固定閾値ではなく、**文脈依存の sponsor 判断** を支援する
 
 ---
 
-# まとめ
+# 政策と限界
 
-### nABCD が埋めるギャップ
+### Policy: 多様なデータソースとの互換性
 
-- ICH E17 の **定量的方法論の欠如** に対応
-- 計画段階で利用可能 (事前試験・レジストリ・RWE データから算出可能)
-- $\Delta_{\max}$ calibration により **evidence-based かつ clinically grounded** なプーリング判断を支援
+- nABCD はベースライン分布のみで計算可能 → prior trials / registries / EHR / RWE
+- ICH E6(R3) の RWE 推進と整合
+- PMDA workshop (Matsushima et al. 2024) で示された地域不均衡の事前評価が可能
 
-### Central Message
+### 主な限界
+
+- 連続 effect modifier のみ — 離散 EM は将来課題
+- 各 EM を個別評価 — 多変量拡張は研究課題
+- True nABCD $\lesssim 0.05$ の境界域では正バイアス・低被覆
+- $L$ の transfer assumption (clinical judgment + 感度分析が必要)
+
+---
+
+# Future Work と結語
+
+### Future Work
+
+- **Categorical effect modifiers** への拡張
+- 関連する baseline characteristic を **どう effect modifier として同定するか** という上流課題
+- 多変量拡張、small-sample bias correction
+
+### 本研究の本質的貢献
 
 $$
 \boxed{|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
 $$
 
-**分布距離ランキング $\neq$ 臨床的インパクトランキング**
-
---- nABCD の大きさだけでなく、clinical calibration が判断の鍵
+- これまで **qualitative judgment** に留まっていた "similar enough" を、
+- **再現可能な quantitative basis** に変換
+- ICH E17 実装ギャップを埋め、evidence-based pooling 判断を支援
 
 ---
 

@@ -56,28 +56,13 @@ Sommerfeld M, Munk A. Inference for empirical {W}asserstein distances on finite 
 Wasserstein RL, Lazar NA. The {ASA} Statement on p-Values: Context, Process, and Purpose. {\it Am Stat.} 2016\string;70(2)\string:129--133.
 \newblock \href {\doibase 10.1080/00031305.2016.1154108} {doi: 10.1080/00031305.2016.1154108}
 
-\bibitem{emberson2014}
-Emberson J, Lees KR, Lyden P, et al. Effect of treatment delay, age, and stroke severity on the effects of intravenous thrombolysis with alteplase for acute ischaemic stroke: a meta-analysis of individual patient data from randomised trials. {\it Lancet.} 2014\string;384(9958)\string:1929--1935.
-\newblock \href {\doibase 10.1016/S0140-6736(14)60584-5} {doi: 10.1016/S0140-6736(14)60584-5}
+\bibitem{gusto1993}
+{The GUSTO Investigators} . An international randomized trial comparing four thrombolytic strategies for acute myocardial infarction. {\it N Engl J Med.} 1993\string;329(10)\string:673--682.
+\newblock \href {\doibase 10.1056/NEJM199309023291001} {doi: 10.1056/NEJM199309023291001}
 
-\bibitem{ist1_2000}
-Group ISTC. The International Stroke Trial ({IST}): a randomised trial of aspirin, subcutaneous heparin, both, or neither among 19{,}185 patients with acute ischaemic stroke. {IST} Collaborative Group. {\it Lancet.} 1997\string;349(9065)\string:1569--1581.
-\newblock \href {\doibase 10.1016/S0140-6736(97)04011-7} {doi: 10.1016/S0140-6736(97)04011-7}
-
-\bibitem{chen2000}
-Chen ZM, Sandercock P, Pan HC, et al. Indications for early aspirin use in acute ischemic stroke: {A} systematic review and meta-analysis. {\it Stroke.} 2000\string;31(6)\string:1240--1249.
-\newblock \href {\doibase 10.1161/01.STR.31.6.1240} {doi: 10.1161/01.STR.31.6.1240}
-
-\bibitem{ist3_2012}
-{IST-3 collaborative group} . The benefits and harms of intravenous thrombolysis with recombinant tissue plasminogen activator within 6 h of acute ischaemic stroke ({IST-3}): a randomised controlled trial. {\it Lancet.} 2012\string;379(9834)\string:2352--2363.
-\newblock \href {\doibase 10.1016/S0140-6736(12)60768-5} {doi: 10.1016/S0140-6736(12)60768-5}
-
-\bibitem{pearl2011}
-Pearl J, Bareinboim E. Transportability of causal and statistical relations: A formal approach. In: . 25. AAAI Press.  2011; Menlo Park, CA\string:247--254.
-
-\bibitem{bareinboim2016}
-Bareinboim E, Pearl J. Causal inference and the data-fusion problem. {\it Proc Natl Acad Sci USA.} 2016\string;113(27)\string:7345--7352.
-\newblock \href {\doibase 10.1073/pnas.1510507113} {doi: 10.1073/pnas.1510507113}
+\bibitem{ftt1994}
+{Fibrinolytic Therapy Trialists' (FTT) Collaborative Group} . Indications for fibrinolytic therapy in suspected acute myocardial infarction: collaborative overview of early mortality and major morbidity results from all randomised trials of more than 1000 patients. {\it Lancet.} 1994\string;343(8893)\string:311--322.
+\newblock \href {\doibase 10.1016/S0140-6736(94)91161-4} {doi: 10.1016/S0140-6736(94)91161-4}
 
 \bibitem{andrews2000}
 Andrews DWK. Inconsistency of the Bootstrap when a Parameter is on the Boundary of the Parameter Space. {\it Econometrica.} 2000\string;68(2)\string:399--405.

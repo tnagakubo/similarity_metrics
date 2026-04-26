@@ -43,8 +43,11 @@ theme_set(theme_bw(base_size = 11) +
   ))
 
 # Color palette (colorblind-friendly)
+# Region: qualitative 3-level, Okabe-Ito (CVD-safe)
 COLORS_REGION <- c("Japan" = "#E69F00", "US" = "#56B4E9", "EU" = "#009E73")
-COLORS_SAMPLE <- c("n=50" = "#CC79A7", "n=100" = "#0072B2", "n=200" = "#D55E00")
+# SampleSize: ordered / sequential 3-level — single-hue blue light -> dark
+# (ColorBrewer "Blues" anchors; monotone luminance keeps grayscale order)
+COLORS_SAMPLE <- c("n=50" = "#9ECAE1", "n=100" = "#4292C6", "n=200" = "#08519C")
 
 # =============================================================================
 # Data Loading Functions
@@ -75,7 +78,7 @@ load_application_params <- function(data_dir = DATA_DIR) {
 }
 
 # =============================================================================
-# Figure 1: Scenario Overview — Density plots for all 8 scenarios
+# Figure 1: Scenario Overview — Density plots for all 7 scenarios
 # =============================================================================
 
 fig1_scenario_overview <- function(n_plot = 5000, seed = 42) {
@@ -93,12 +96,10 @@ fig1_scenario_overview <- function(n_plot = 5000, seed = 42) {
          d1 = rnorm(n_plot, 50, 10), d2 = rnorm(n_plot, 60, 10)),
     list(id = "S5", name = "Scale (1.5x)",
          d1 = rnorm(n_plot, 50, 10), d2 = rnorm(n_plot, 50, 15)),
-    list(id = "S6", name = "Shape (Gamma)",
-         d1 = rnorm(n_plot, 50, 10), d2 = rgamma(n_plot, shape = 25, rate = 0.5)),
-    list(id = "S7", name = "Skew (log-normal)",
+    list(id = "S6", name = "Skew (log-normal)",
          d1 = rnorm(n_plot, 50, 10),
          d2 = rlnorm(n_plot, meanlog = log(50) - 0.5^2/2, sdlog = 0.5)),
-    list(id = "S8", name = "Location + Scale",
+    list(id = "S7", name = "Location + Scale",
          d1 = rnorm(n_plot, 50, 10), d2 = rnorm(n_plot, 55, 15))
   )
 
@@ -176,9 +177,8 @@ fig3_bias <- function(data_dir = DATA_DIR) {
     "S3" = "S3\n(0.5s)",
     "S4" = "S4\n(1.0s)",
     "S5" = "S5\n(Scale)",
-    "S6" = "S6\n(Gamma)",
-    "S7" = "S7\n(LogN)",
-    "S8" = "S8\n(Loc+Sc)"
+    "S6" = "S6\n(LogN)",
+    "S7" = "S7\n(Loc+Sc)"
   )
 
   bias_data <- sim_results %>%
@@ -194,22 +194,27 @@ fig3_bias <- function(data_dir = DATA_DIR) {
     geom_col(position = position_dodge(0.8), width = 0.7) +
     geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
     geom_hline(yintercept = c(-0.02, 0.02), linetype = "dotted",
-               color = "red", alpha = 0.5) +
+               color = "grey40", alpha = 0.7) +
     scale_fill_manual(values = COLORS_SAMPLE) +
     labs(
       x = "Scenario",
       y = "Bias",
       fill = "Sample Size"
     ) +
-    annotate("text", x = 6.3, y = 0.02, label = "+/-0.02", color = "red", size = 3)
+    annotate("text", x = 5.3, y = 0.02, label = "+/-0.02", color = "grey30", size = 3)
 }
 
 # =============================================================================
 # Figure 4: Estimation Quality - Coverage + CI Width (Estimation-Centered)
 # Replaces old power figure per Jessica Phase 8 directive
+#
+# Current scenario set: S1 (Null), S2-S4 (Location), S5 (Scale),
+#   S6 = log-normal (TrueNABCD ~= 0.304), S7 = Location + Scale (~= 0.175).
+# All scenarios have healthy coverage near the nominal 0.95 level.
 # =============================================================================
 
-fig4_estimation_quality <- function(data_dir = DATA_DIR) {
+# Helper: prepare shared estimation-quality plot data
+.prep_estimation_plot_data <- function(data_dir = DATA_DIR) {
   sim_results <- load_simulation_v2(data_dir)
 
   # If MeanCIWidth not present (old CSV), approximate from RMSE
@@ -218,8 +223,8 @@ fig4_estimation_quality <- function(data_dir = DATA_DIR) {
       mutate(MeanCIWidth = 2 * 1.96 * SD)
   }
 
-  # Exclude null scenario (coverage undefined at boundary)
-  plot_data <- sim_results %>%
+  # Exclude null scenario (coverage undefined at boundary).
+  sim_results %>%
     filter(Scenario != "S1") %>%
     mutate(
       ScenarioLabel = factor(
@@ -228,48 +233,71 @@ fig4_estimation_quality <- function(data_dir = DATA_DIR) {
           Scenario == "S3" ~ "S3 (0.5s)",
           Scenario == "S4" ~ "S4 (1.0s)",
           Scenario == "S5" ~ "S5 (Scale)",
-          Scenario == "S6" ~ "S6 (Gamma)",
-          Scenario == "S7" ~ "S7 (LogN)",
-          Scenario == "S8" ~ "S8 (Loc+Sc)",
+          Scenario == "S6" ~ "S6 (LogN)",
+          Scenario == "S7" ~ "S7 (Loc+Sc)",
           TRUE ~ Scenario
         ),
         levels = c("S2 (0.2s)", "S3 (0.5s)", "S4 (1.0s)",
-                    "S5 (Scale)", "S6 (Gamma)", "S7 (LogN)", "S8 (Loc+Sc)")
+                    "S5 (Scale)", "S6 (LogN)", "S7 (Loc+Sc)")
       ),
       SampleSizeLabel = factor(paste0("n=", SampleSize),
                                levels = c("n=50", "n=100", "n=200"))
     )
+}
 
-  # Panel A: Coverage probability
-  p1 <- ggplot(plot_data, aes(x = ScenarioLabel, y = Coverage_Pct,
-                               fill = SampleSizeLabel)) +
+# --- Figure 4a: Coverage only ------------------------------------------------
+fig4a_coverage <- function(data_dir = DATA_DIR) {
+  plot_data <- .prep_estimation_plot_data(data_dir)
+
+  # Label for any zero-coverage bars (defensive — kept in case future
+  # scenarios produce zero coverage; currently no S2-S7 scenario has Cov=0)
+  zero_cov <- plot_data %>%
+    filter(Coverage_Pct == 0)
+
+  ggplot(plot_data, aes(x = ScenarioLabel, y = Coverage_Pct,
+                        fill = SampleSizeLabel)) +
     geom_col(position = position_dodge(0.8), width = 0.7) +
-    geom_hline(yintercept = 0.95, linetype = "dashed", color = "red", alpha = 0.7) +
-    geom_hline(yintercept = 0.90, linetype = "dotted", color = "orange", alpha = 0.7) +
+    # Zero-coverage marker: small tick at baseline + numeric label "0"
+    geom_text(data = zero_cov,
+              aes(label = "0"),
+              position = position_dodge(0.8),
+              vjust = -0.3, size = 2.6, color = "grey30") +
+    geom_hline(yintercept = 0.95, linetype = "dashed", color = "grey30", alpha = 0.8) +
+    geom_hline(yintercept = 0.90, linetype = "dotted", color = "grey50", alpha = 0.8) +
     scale_fill_manual(values = COLORS_SAMPLE) +
     scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1)) +
     labs(
-      x = NULL,
+      x = "Scenario",
       y = "Coverage Probability",
-      fill = "Sample Size",
-      subtitle = "A) Bootstrap 95% CI Coverage"
+      fill = "Sample Size"
     ) +
-    annotate("text", x = 5.4, y = 0.95, label = "0.95", color = "red",
+    annotate("text", x = 4.8, y = 0.95, label = "0.95", color = "grey30",
              size = 3, hjust = 0) +
     theme(axis.text.x = element_text(angle = 30, hjust = 1))
+}
 
-  # Panel B: Mean CI Width
-  p2 <- ggplot(plot_data, aes(x = ScenarioLabel, y = MeanCIWidth,
-                               fill = SampleSizeLabel)) +
+# --- Figure 4b: Precision (CI width) only -----------------------------------
+fig4b_precision <- function(data_dir = DATA_DIR) {
+  plot_data <- .prep_estimation_plot_data(data_dir)
+
+  ggplot(plot_data, aes(x = ScenarioLabel, y = MeanCIWidth,
+                        fill = SampleSizeLabel)) +
     geom_col(position = position_dodge(0.8), width = 0.7) +
     scale_fill_manual(values = COLORS_SAMPLE) +
     labs(
-      x = NULL,
+      x = "Scenario",
       y = "Mean CI Width (nABCD units)",
-      fill = "Sample Size",
-      subtitle = "B) Estimation Precision"
+      fill = "Sample Size"
     ) +
     theme(axis.text.x = element_text(angle = 30, hjust = 1))
+}
+
+# --- Figure 4: backward-compatible combined panel ---------------------------
+fig4_estimation_quality <- function(data_dir = DATA_DIR) {
+  p1 <- fig4a_coverage(data_dir) +
+    labs(x = NULL, subtitle = "A) Bootstrap 95% CI Coverage")
+  p2 <- fig4b_precision(data_dir) +
+    labs(x = NULL, subtitle = "B) Estimation Precision")
 
   p1 + p2 +
     plot_layout(guides = "collect") &
@@ -328,7 +356,9 @@ fig5_smd_comparison <- function(n = 500, mu = 50, sd1 = 10, sd2 = 15, seed = 123
   p2 <- ggplot(metrics, aes(x = Metric, y = Value, fill = Detection)) +
     geom_col(width = 0.6) +
     geom_text(aes(label = Value), vjust = -0.5, size = 4) +
-    scale_fill_manual(values = c("No" = "#999999", "Yes" = "#009E73")) +
+    # Binary detection encoded as neutral grey (No) vs lab-default blue (Yes)
+    # Avoids red/green significance encoding (accessibility.md S1, fig guide S5).
+    scale_fill_manual(values = c("No" = "#999999", "Yes" = "#0072B2")) +
     scale_y_continuous(limits = c(0, max(metrics$Value) * 1.3)) +
     labs(
       x = NULL,
@@ -429,12 +459,26 @@ generate_all_figures <- function(data_dir = DATA_DIR, output_dir = OUTPUT_DIR) {
          fig3_bias(data_dir), width = 10, height = 5)
   message("  Figure 3: Done")
 
-  # Figure 4 (Estimation Quality: Coverage + CI Width)
+  # Figure 4 (Estimation Quality: Coverage + CI Width) — combined (legacy)
   ggsave(file.path(output_dir, "fig4_estimation_quality.png"),
          fig4_estimation_quality(data_dir), width = 12, height = 5, dpi = 300)
   ggsave(file.path(output_dir, "fig4_estimation_quality.pdf"),
          fig4_estimation_quality(data_dir), width = 12, height = 5)
-  message("  Figure 4: Done")
+  message("  Figure 4 (combined): Done")
+
+  # Figure 4a (Coverage only) — split version
+  ggsave(file.path(output_dir, "fig4a_coverage.png"),
+         fig4a_coverage(data_dir), width = 8, height = 5, dpi = 300)
+  ggsave(file.path(output_dir, "fig4a_coverage.pdf"),
+         fig4a_coverage(data_dir), width = 8, height = 5)
+  message("  Figure 4a (coverage): Done")
+
+  # Figure 4b (Precision / CI Width only) — split version
+  ggsave(file.path(output_dir, "fig4b_precision.png"),
+         fig4b_precision(data_dir), width = 8, height = 5, dpi = 300)
+  ggsave(file.path(output_dir, "fig4b_precision.pdf"),
+         fig4b_precision(data_dir), width = 8, height = 5)
+  message("  Figure 4b (precision): Done")
 
   # Figure 5
   ggsave(file.path(output_dir, "fig5_smd_comparison.png"),

@@ -20,7 +20,8 @@ for (id in names(scenarios)) {
 }
 
 # Compare with old hardcoded values
-old_vals <- c(S1=0, S2=0.074, S3=0.186, S4=0.372, S5=0.148, S6=0.067, S7=NA, S8=NA)
+# (Legacy hardcoded values from the pre-Monte-Carlo era, kept for history.)
+old_vals <- c(S1=0, S2=0.074, S3=0.186, S4=0.372, S5=0.148, S6=NA, S7=NA)
 cat("\n--- Comparison with old hardcoded values ---\n")
 cat(sprintf("  %-4s  %-10s  %-10s  %-10s\n", "ID", "Old", "New(MC)", "Diff"))
 for (id in names(scenarios)) {

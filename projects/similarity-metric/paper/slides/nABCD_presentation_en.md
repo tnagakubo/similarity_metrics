@@ -374,8 +374,8 @@ Tak Nagakubo
 
 1. **Background**: MRCTs, ICH E17, and limitations of existing measures
 2. **Methods**: nABCD definition, theoretical foundation, and clinical calibration
-3. **Simulation**: Estimation performance across 8 scenarios
-4. **Application**: IST-1 (Case A) / IST-3 (Case B)
+3. **Simulation**: Estimation performance across 7 scenarios
+4. **Application**: Hypothetical thrombolytic MRCT using GUSTO-I
 5. **Discussion**: Key findings and practical recommendations
 
 ---
@@ -473,12 +473,12 @@ $$
 ### Req. 1: Beyond location differences
 
 - $W_1$ responds to differences in location, variance, and skewness
-- Captures scale and shape differences that SMD misses
+- Captures scale and skewness differences that SMD misses
 
-### Req. 2: Clinical interpretability
+### Req. 2: Scale-free interpretation
 
-- IQR normalization yields a scale-free index
-- Reference benchmarks enable initial assessment
+- IQR normalization yields a unit-independent index
+- Estimation-centered: bootstrap CI + sensitivity, not fixed thresholds
 
 ### Req. 3: Theoretical link to treatment effects
 
@@ -508,46 +508,31 @@ $$
 
 ---
 
-# Clinical Calibration: $\Delta_{\max}$
+# Clinical Calibration: Two Pathways
 
-### Maximum Potential Treatment Effect Difference
+### Pathway 1: $L$ available — $\Delta_{\max}$
 
 $$
 \Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
 $$
 
-### Calibration Procedure
+- Worst-case regional treatment effect difference on the **clinical scale**
+- Confirmatory or post-hoc evaluation when $L$ is estimable
 
-1. Compute nABCD + bootstrap CI for each candidate effect modifier
-2. Estimate $L$ from prior evidence (e.g., subgroup analyses)
-3. Compute $\Delta_{\max}$ --- the worst-case treatment effect difference
-4. Derive bootstrap CI for $\Delta_{\max}$ from the nABCD CI
-5. Report alongside overall treatment effect and non-inferiority margin
-
-> Not a fixed threshold, but an **estimation-centered approach** supporting context-dependent clinical judgment
-
----
-
-# When $L$ Is Unknown: Sensitivity Analysis
-
-### Reverse Calculation ($L^*$ Sensitivity Analysis)
+### Pathway 2: $L$ unknown — $L^*$ reverse calculation
 
 $$
 L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
 $$
 
-- $\Delta_{\text{clin}}$: clinically important treatment effect difference (e.g., overall effect, NI margin)
-- If $L^*$ exceeds plausible range, the distributional difference is unlikely to be clinically concerning
-- If $L^*$ is small, mitigation strategies for distributional heterogeneity are warranted
+- $\Delta_{\text{clin}}$: clinically important difference (e.g., NI margin)
+- $L^*$ above plausible range: distributional difference unlikely to be clinically concerning
+- **Primary calibration tool at the planning stage**, where $L$ is typically unavailable
 
-### Reference Benchmarks
+### Estimation-Centered Design
 
-| nABCD Range | Distributional Magnitude | Guidance |
-|-------------|--------------------------|----------|
-| $< 0.05$ | Negligible | Clinical calibration unlikely to reveal meaningful $\Delta_{\max}$ |
-| $0.05$--$0.15$ | Small | Calibration recommended if $L$ is available |
-| $0.15$--$0.30$ | Moderate | Calibration important; interpret in clinical context |
-| $> 0.30$ | Large | Calibration essential before pooling deliberation |
+- No fixed nABCD cutoff
+- Quantitative inputs (point estimate + bootstrap CI + $L^*$) support sponsor judgment
 
 ---
 
@@ -559,7 +544,7 @@ $$
 
 # Simulation Design
 
-### Eight Scenarios
+### Seven Scenarios
 
 | ID | Description | Distribution 1 | Distribution 2 | True nABCD |
 |----|-------------|-----------------|-----------------|------------|
@@ -568,9 +553,8 @@ $$
 | S3 | Location 0.5$\sigma$ | $N(50, 10^2)$ | $N(55, 10^2)$ | 0.180 |
 | S4 | Location 1.0$\sigma$ | $N(50, 10^2)$ | $N(60, 10^2)$ | 0.328 |
 | S5 | Scale 1.5x | $N(50, 10^2)$ | $N(50, 15^2)$ | 0.122 |
-| S6 | Shape (Gamma) | $N(50, 10^2)$ | Gamma$(25, 0.5)$ | 0.024 |
-| S7 | Skew (Log-normal) | $N(50, 10^2)$ | LogN | 0.304 |
-| S8 | Location + Scale | $N(50, 10^2)$ | $N(55, 15^2)$ | 0.175 |
+| S6 | Skew (Log-normal) | $N(50, 10^2)$ | LogN | 0.304 |
+| S7 | Location + Scale | $N(50, 10^2)$ | $N(55, 15^2)$ | 0.175 |
 
 $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resamples
 
@@ -582,7 +566,7 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 - True nABCD $\geq 0.1$: bias $< 0.02$
 - S3 (0.5$\sigma$): +0.003, S4 (1.0$\sigma$): +0.003 --- negligible
-- Near-boundary scenarios (S1, S6): larger positive bias (non-negativity constraint)
+- Near-boundary scenarios (S1): larger positive bias (non-negativity constraint)
 
 ### Coverage Probability (95% CI, $n = 100$)
 
@@ -590,8 +574,8 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 |----------|----------|-----------|-----------|
 | S3 (0.5$\sigma$) | 0.947 | 0.951 | 0.947 |
 | S4 (1.0$\sigma$) | 0.950 | 0.950 | 0.957 |
-| S7 (Skew) | 0.953 | 0.954 | 0.954 |
-| S8 (Loc+Scale) | 0.917 | 0.935 | 0.944 |
+| S6 (Skew) | 0.953 | 0.954 | 0.954 |
+| S7 (Loc+Scale) | 0.917 | 0.935 | 0.944 |
 
 **Recommendation**: $n \geq 100$ per region for reliable estimation and inference
 
@@ -603,14 +587,13 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 |----------|----------------------|--------------------|----|
 | S3 (Location) | $0.183 \pm 0.048$ | $0.50 \pm 0.14$ | Both detect |
 | S5 (Scale only) | $0.136 \pm 0.033$ | $0.00 \pm 0.14$ | **Only nABCD detects** |
-| S6 (Shape only) | $0.070 \pm 0.025$ | $0.00 \pm 0.14$ | **Only nABCD detects** |
-| S7 (Skew only) | $0.312 \pm 0.048$ | $0.00 \pm 0.14$ | **Only nABCD detects** |
+| S6 (Skew only) | $0.312 \pm 0.048$ | $0.00 \pm 0.14$ | **Only nABCD detects** |
 
 ### Key Finding
 
 - Location shift: SMD and nABCD provide equivalent information
-- **Scale, shape, skewness**: SMD remains at zero --- only nABCD detects
-- S7 is particularly striking: a large distributional difference (nABCD $= 0.31$) is entirely invisible to SMD
+- **Scale and skewness**: SMD remains at zero --- only nABCD detects
+- S6 is particularly striking: a large distributional difference (nABCD $= 0.31$) is entirely invisible to SMD
 
 ---
 
@@ -620,83 +603,82 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 ---
 
-# Application: Two Planning Scenarios
+# Application: Hypothetical Thrombolytic MRCT (GUSTO-I)
 
-### Hypothetical Scenario
+### Setting
 
-Planning a Phase 3 MRCT for a novel thrombolytic agent (drug A)
+- Phase 3 MRCT for a novel thrombolytic agent (Drug T) in AMI
+- GUSTO-I (public IPD; $N = 40{,}830$, 16 anonymized regions) used as a distributional source
+- GUSTO-I is not an MRCT and regions are anonymized — methodological illustration only
 
-### Case A: Effect Modifier Unknown (IST-1)
+### Anchor Region
 
-- IST-1: 31 countries, 19,435 patients (1991--1996)
-- No significant treatment x effect modifier interaction (all $p > 0.05$)
-- $L$ not estimable --- use **$L^*$ sensitivity analysis**
+- **Region 8** ($n = 2{,}916$) designated as the small-sample anchor
+- Remaining 15 partner regions evaluated as pooling candidates
 
-### Case B: Effect Modifier Identified (IST-3)
+### Two Candidate Effect Modifiers
 
-- IST-3: 8 countries, 3,035 patients (2000--2012)
-- NIHSS: interaction $p = 0.001$, $L$ estimable
-- Use **clinical calibration** to compute $\Delta_{\max}$
-
----
-
-# Case A: IST-1 --- Geographic Distributional Heterogeneity
-
-### Distribution Patterns Across 31 Countries (Age)
-
-- **Maximum nABCD**: India--UK = 0.565 (approx. 4x the IST-3 maximum)
-- Asian countries: India (0.375) > Singapore (0.205) > Hong Kong (0.121)
-- Geographic clustering reflects demographic and healthcare access patterns
-
-### $L^*$ Sensitivity Analysis (India--UK)
-
-- nABCD $= 0.565$: the $L^*$ needed to produce $\Delta_{\max} = 2$%pt is approx. $0.005$/year
-- A **small age-related interaction** could produce clinically meaningful heterogeneity
-- Explicit mitigation strategies (stratified randomization, protocol restrictions) are warranted
-
-> Small $L^*$ = high risk from distributional heterogeneity
+- **Age** and **SBP** (systolic blood pressure)
+- Per-unit CATE slope ($L$) unavailable a priori for either
+  - Age: FTT meta-analysis (1994) reports only "irrespective of age"
+  - SBP: no quantitative class-level CATE sensitivity
+- **$L^*$ reverse calculation** applied for both
 
 ---
 
-# Case B: IST-3 --- nABCD vs SMD in Real Data
+# nABCD Results: Region 8 vs 15 Partners
 
-### nABCD Summary (28 pairs)
+### Age nABCD
 
-| Effect Modifier | Median | Max | Max pair |
-|----------------|--------|-----|----------|
-| Age | 0.103 | 0.285 | SE--BE |
-| NIHSS | 0.101 | 0.240 | PL--PT |
-| Delay | 0.098 | 0.195 | SE--AU |
+- Range: **0.011 (R5, R7) -- 0.076 (R3)** — narrow
+- 11 of 15 partners $< 0.040$
 
-### SMD Misses This Case
+### SBP nABCD
 
-Norway--Portugal (treatment delay):
-- Means: 4.34 vs 4.33 h
-- **SMD = 0.007** (nearly identical)
-- **nABCD = 0.069** (detects shape difference)
-- Norway: extreme right tail (skewness 6.76); Portugal: compact distribution (skewness $-0.23$)
+- Range: **0.015 (R2) -- 0.110 (R9)** — wider than Age
+- Most partners cluster in 0.050--0.110
+
+### Bootstrap CIs
+
+- Mid-rank CIs overlap → ranking confidence varies
+- CI widths reported alongside point estimates to convey precision
 
 ---
 
-# Case B: Clinical Calibration Results
+# R2 vs R9: Why Joint Evaluation Is Essential
 
-### NIHSS vs Age: A Critical Contrast
+### Contrasting Pattern
 
-| | NIHSS | Age |
-|---|-------|-----|
-| Interaction $p$ | **0.001** | 0.614 |
-| $L_{\text{mean}}$ | 0.00950/pt | 0.00065/yr |
-| nABCD (max) | 0.240 | 0.285 |
-| $\Delta_{\max}$ ($L_{\text{mean}}$) | **5.02%pt** | 0.47%pt |
-| $\Delta_{\max}$ ($L_{\max}$) | **7.37%pt** | 0.65%pt |
+| | R2 | R9 |
+|---|----|----|
+| nABCD$_{\text{age}}$ | **0.061** (2nd largest) | 0.017 (4th smallest) |
+| nABCD$_{\text{SBP}}$ | **0.015** (smallest) | **0.110** (largest) |
 
-Overall treatment effect RD $\approx$ +1.5%pt
+### Implication
 
-### Core Finding
+- A single effect modifier produces **opposite conclusions**
+- R2: best on SBP, near-worst on Age
+- R9: good on Age, worst on SBP
+- **All candidate effect modifiers must be evaluated jointly**
 
-- Age has the **larger** nABCD (0.285 > 0.240)
-- Yet $\Delta_{\max}$ for NIHSS is **more than 10x larger**
-- **Distributional distance ranking $\neq$ clinical impact ranking**
+---
+
+# Leading Pooling Candidates: R4, R6, R13
+
+### Joint Assessment
+
+- **R4, R6, R13** rank low on both candidate effect modifiers
+- All six nABCD values lie in lower portions of observed ranges
+  - Age: 0.011--0.076 → R4, R6, R13 in lower portion
+  - SBP: 0.015--0.110 → R4, R6, R13 in lower portion
+- Required $L^*$ values fall near lower end of clinically plausible range for thrombolysis class evidence
+
+### Sponsor Implication (soft prioritization)
+
+> "the sponsor may reasonably prioritize R4, R6, and R13 as the leading candidates for pooling with Region 8"
+
+- Quantitative inputs supporting prioritization, not a binary verdict
+- Final judgment rests with sponsor in consultation with clinical / regulatory advisors
 
 ---
 
@@ -706,61 +688,91 @@ Overall treatment effect RD $\approx$ +1.5%pt
 
 ---
 
-# Key Findings: Three Advantages of nABCD
+# Summary of Findings
 
-### 1. Captures Distributional Differences That SMD Misses
+### Simulation
 
-- Simulation: S5 (scale), S6 (shape), S7 (skew) --- SMD $\approx 0$ but nABCD detects
-- IST-3: Norway--Portugal (treatment delay) confirms the same pattern in real data
+- Percentile bootstrap is **reliable** at moderate sample sizes for non-negligible distributional differences
+- Positive bias and zero coverage at the null / near-boundary define the **lower limit of reliable inference**
 
-### 2. Theoretical Link to Treatment Effect Heterogeneity
+### GUSTO-I Application
 
-- Heterogeneity bound provides a quantitative bridge to $\Delta_{\max}$
-- This property is unique to $W_1$ (unavailable for KS statistic, KL divergence)
+- Two candidate effect modifiers (Age, SBP) produced **markedly different partner rankings**
+- Some partners ranked similar on one but dissimilar on the other
+- **R4, R6, R13** emerged as leading candidates — low on both modifiers, plausible $L^*$
 
-### 3. Objective, Reproducible Inference
+---
 
-- Bootstrap CI enables formal statistical inference
-- Quantitative and reproducible, unlike visual inspection
+# Interpretation: Two Implications
+
+### Implication 1: Evaluate all candidate effect modifiers jointly
+
+- R2 vs R9 contrast: a partner similar on one modifier may not be on another
+- Restricting to a subset risks omitting modifiers that later compromise consistency
+
+### Implication 2: Partner selection cannot rest on nABCD alone
+
+- $L^*$ varies markedly across partners and modifiers
+- Same nABCD carries different clinical weight depending on partner-specific differences
+- R4, R6, R13 emerged as leading candidates because of **both** low nABCD **and** clinically plausible $L^*$
+
+> Pooling judgments require **distributional ranking + clinical calibration** across all candidates
+
+---
+
+# Strengths: Dual-Pathway Calibration
+
+### Strength 1: Adapts to the evidence state
+
+- Planning stage with $L$ unknown: $L^*$ reverse-calculation as primary calibration
+- Confirmatory stage with $L$ available: $\Delta_{\max}$ provides complementary clinical-scale calibration
+- No fixed nABCD cutoff imposed
+
+### Strength 2: Distributional value is invariant
+
+- nABCD captures **scale and skewness** differences invisible to SMD
+- This property holds **regardless of whether $L$ is available**
+- Clinical calibration **enhances**, not replaces, the distributional assessment
 
 ---
 
 # Practical Recommendations
 
-1. Compute **nABCD + bootstrap CI** for each candidate effect modifier ($n \geq 100$ per region)
+1. Compute **nABCD + bootstrap CI** for every candidate effect modifier ($n \geq 100$ per region)
 
-2. When $L$ is estimable: report **$\Delta_{\max}$** and its CI on the clinical scale
-   - Present both $L_{\max}$ (conservative bound) and $L_{\text{mean}}$ (realistic estimate)
+2. When $L$ is estimable: translate to **$\Delta_{\max}$** with bootstrap CI
 
-3. When $L$ is unknown: use **reference benchmarks** for initial assessment + $L^*$ sensitivity analysis
+3. When $L$ is unknown: compute **$L^*$** at pre-specified $\Delta_{\text{clin}}$ values
 
-4. Report $\Delta_{\max}$ **alongside** the overall treatment effect and non-inferiority margin
+4. Report alongside **overall treatment effect and non-inferiority margin** to support deliberation
 
-5. For multiple effect modifiers: conservative judgment based on maximum $\Delta_{\max}$,
-   or a totality-of-evidence approach across all $\Delta_{\max}$ values
+5. Multiple effect modifiers: conservative (maximum $\Delta_{\max}$, smallest $L^*$) or totality-of-evidence approach
 
-> Not a fixed threshold, but **context-dependent clinical judgment**
-> --- Implementing ICH E17's "similar enough"
+### Policy Advantage
+
+- nABCD requires only baseline distributions → applicable to **trials, registries, EHR, RWE**
+- Aligns with ICH E6(R3) RWE promotion
 
 ---
 
-# Summary
+# Future Work and Closing
 
-### The Gap Filled by nABCD
+### Future Work
 
-- Addresses the **lack of quantitative methodology** in ICH E17
-- Applicable at the planning stage (computable from prior trials, registries, RWE data)
-- $\Delta_{\max}$ calibration supports **evidence-based and clinically grounded** pooling decisions
+- Extension to **categorical effect modifiers**
+- Upstream identification of which baseline characteristics constitute relevant effect modifiers — a non-trivial problem deserving dedicated investigation
+- Multivariate extensions and small-sample bias correction
 
-### Central Message
+### The Principal Contribution
 
 $$
 \boxed{|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
 $$
 
-**Distributional distance ranking $\neq$ clinical impact ranking**
-
---- nABCD magnitude alone is not sufficient; clinical calibration is the key to pooling decisions
+- nABCD + bootstrap CI + clinical calibration ($\Delta_{\max}$ or $L^*$)
+- Transforms the **previously qualitative** judgment of "similar enough"
+- Into a **reproducible quantitative basis** for sponsor judgment
+- Filling the methodological gap left by ICH E17
 
 ---
 

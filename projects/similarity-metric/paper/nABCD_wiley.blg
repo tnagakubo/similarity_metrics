@@ -3,45 +3,45 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: nABCD_wiley.aux
 The style file: WileyNJD-AMA.bst
 Database file #1: nABCD_wiley.bib
-You've used 21 entries,
+You've used 17 entries,
             2086 wiz_defined-function locations,
-            679 strings with 8589 characters,
-and the built_in function-call counts, 4062 in all, are:
-= -- 352
-> -- 159
+            649 strings with 7258 characters,
+and the built_in function-call counts, 3259 in all, are:
+= -- 283
+> -- 127
 < -- 0
-+ -- 69
-- -- 48
-* -- 499
-:= -- 696
-add.period$ -- 24
-call.type$ -- 21
++ -- 55
+- -- 38
+* -- 400
+:= -- 558
+add.period$ -- 17
+call.type$ -- 17
 change.case$ -- 1
 chr.to.int$ -- 0
-cite$ -- 21
-duplicate$ -- 222
-empty$ -- 416
-format.name$ -- 48
-if$ -- 901
+cite$ -- 17
+duplicate$ -- 178
+empty$ -- 333
+format.name$ -- 38
+if$ -- 723
 int.to.chr$ -- 0
-int.to.str$ -- 21
-missing$ -- 22
-newline$ -- 86
-num.names$ -- 21
-pop$ -- 35
+int.to.str$ -- 17
+missing$ -- 18
+newline$ -- 71
+num.names$ -- 17
+pop$ -- 28
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 22
+skip$ -- 16
 stack$ -- 0
 substring$ -- 0
-swap$ -- 70
+swap$ -- 58
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 21
-width$ -- 23
-write$ -- 263
+while$ -- 17
+width$ -- 19
+write$ -- 212
 is.kanji.str$ -- 0

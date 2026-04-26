@@ -1,5 +1,5 @@
 # Full simulation re-run with corrected true values
-# All S1-S6 now use Monte Carlo (mixture IQR), not hardcoded (component IQR)
+# All S1-S7 now use Monte Carlo (mixture IQR), not hardcoded (component IQR)
 # Usage: Rscript run_full_sim.R
 
 SKIP_SIMULATION <- TRUE

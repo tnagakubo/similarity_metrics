@@ -21,9 +21,13 @@ style: |
     --bg-light: #F8F9FA;
     --bw: 10px;
     --footer-space: 24px;
+    --overflow-warn: #D7263D;
   }
 
   /* ---- Base slide ---- */
+  /* overflow:hidden clips stray content so exports never silently
+     leak off the slide. Pair with scripts/check_marp_overflow.js
+     (see templates/MARP_README.md) to surface clipped slides. */
   section {
     font-family: 'Noto Sans JP', sans-serif;
     color: var(--text-main);
@@ -32,6 +36,7 @@ style: |
     font-size: 28px;
     line-height: 1.3;
     position: relative;
+    overflow: hidden;
     /* Frame drawn with background layers (top/left/right/bottom borders) */
     background-color: white;
     background-image:
@@ -55,6 +60,27 @@ style: |
   /* ---- Disable default ::before ---- */
   section::before {
     display: none;
+  }
+
+  /* ---- Overflow warning ----
+     Author OR validation script can add `<!-- _class: overflow -->`
+     to a slide; a red outline + ribbon make the problem visible. */
+  section.overflow {
+    outline: 6px solid var(--overflow-warn);
+    outline-offset: -6px;
+  }
+  section.overflow::after {
+    content: "\26A0  OVERFLOW — content exceeds slide bounds";
+    position: absolute;
+    top: 4px;
+    right: 20px;
+    background: var(--overflow-warn);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 3px;
+    z-index: 99;
   }
 
   /* ---- Slide title (h1) - covers frame top seamlessly ---- */
@@ -203,6 +229,8 @@ style: |
     border-radius: 8px;
     padding: 20px;
     border-left: 4px solid var(--accent2);
+    max-height: calc(100% - 140px);
+    overflow: hidden;
   }
 
   section pre code {
@@ -226,6 +254,7 @@ style: |
   /* ---- Images ---- */
   section img {
     max-height: 60%;
+    max-width: 100%;
     border-radius: 4px;
   }
 
@@ -500,3 +529,32 @@ $$
 # ありがとうございました
 
 ご質問をお願いします
+
+<!--
+  ========================================================
+  Overflow handling (see templates/MARP_README.md)
+  ========================================================
+  1. Default behavior: long content is CLIPPED to the slide
+     box (overflow:hidden on section). Nothing leaks off-page.
+  2. To flag a known-oversized slide, add the directive
+         <!-- _class: overflow -->
+     at the top of that slide. It renders with a red outline
+     and an "OVERFLOW" ribbon so the issue is visible at export.
+  3. Run the validation script before publishing:
+         node scripts/check_marp_overflow.js <path-to-deck.md>
+     It auto-flags slides whose rendered content exceeds the
+     slide box and exits non-zero in CI.
+
+  Uncomment the slide below to see the warning style:
+
+  ---
+  <!-- _class: overflow -->
+  # Overflow demo
+  - deliberately long bullet list line one
+  - line two
+  - line three
+  - line four
+  - line five
+  - line six (this slide would overflow without clipping)
+-->
+

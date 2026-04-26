@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2026.3.24)  13 APR 2026 18:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2026.3.24)  25 APR 2026 22:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1081,7 +1081,7 @@ Package hyperref Warning: Ignoring empty anchor on input line 53.
 
 Overfull \vbox (29.44482pt too high) has occurred while \output is active []
 
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 65.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 63.
  (c:/texlive/2024/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [1{c:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc}
@@ -1091,7 +1091,7 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ]
 
 [2]
-<../figures/fig2_nabcd_definition.pdf, id=55, 578.16pt x 361.35pt>
+<../figures/fig2_nabcd_definition.pdf, id=50, 578.16pt x 361.35pt>
 File: ../figures/fig2_nabcd_definition.pdf Graphic file (type pdf)
 <use ../figures/fig2_nabcd_definition.pdf>
 Package pdftex.def Info: ../figures/fig2_nabcd_definition.pdf  used on input line 117.
@@ -1116,107 +1116,119 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 203.
 
 
-Underfull \hbox (badness 10000) detected at line 217
-[]
- []
-
-
-Underfull \hbox (badness 10000) detected at line 246
-[]
- []
-
-
 
 [6]
+Underfull \hbox (badness 10000) detected at line 231
+[]
+ []
+
+
 
 [7]
-Underfull \hbox (badness 10000) detected at line 287
+Underfull \hbox (badness 10000) detected at line 271
 []
  []
 
-<../figures/fig3_bias.pdf, id=170, 722.7pt x 361.35pt>
+<../figures/fig3_bias.pdf, id=163, 722.7pt x 361.35pt>
 File: ../figures/fig3_bias.pdf Graphic file (type pdf)
 <use ../figures/fig3_bias.pdf>
-Package pdftex.def Info: ../figures/fig3_bias.pdf  used on input line 310.
+Package pdftex.def Info: ../figures/fig3_bias.pdf  used on input line 293.
 (pdftex.def)             Requested size: 504.50787pt x 252.25406pt.
-
-Underfull \hbox (badness 10000) detected at line 323
-[]
- []
-
-<../figures/fig4_estimation_quality.pdf, id=173, 867.24pt x 361.35pt>
-File: ../figures/fig4_estimation_quality.pdf Graphic file (type pdf)
-<use ../figures/fig4_estimation_quality.pdf>
-Package pdftex.def Info: ../figures/fig4_estimation_quality.pdf  used on input line 347.
-(pdftex.def)             Requested size: 504.50787pt x 210.21172pt.
 
 
 [8]
-Underfull \hbox (badness 10000) detected at line 354
+Underfull \hbox (badness 10000) detected at line 306
 []
  []
 
-
-Underfull \hbox (badness 10000) detected at line 383
-[]
- []
-
+<../figures/fig4_estimation_quality.pdf, id=182, 867.24pt x 361.35pt>
+File: ../figures/fig4_estimation_quality.pdf Graphic file (type pdf)
+<use ../figures/fig4_estimation_quality.pdf>
+Package pdftex.def Info: ../figures/fig4_estimation_quality.pdf  used on input line 330.
+(pdftex.def)             Requested size: 504.50787pt x 210.21172pt.
 
 
 [9 <../figures/fig3_bias.pdf>]
-<../figures/fig5_smd_comparison.pdf, id=202, 722.7pt x 361.35pt>
-File: ../figures/fig5_smd_comparison.pdf Graphic file (type pdf)
-<use ../figures/fig5_smd_comparison.pdf>
-Package pdftex.def Info: ../figures/fig5_smd_comparison.pdf  used on input line 400.
-(pdftex.def)             Requested size: 504.50787pt x 252.25406pt.
+Underfull \hbox (badness 10000) detected at line 337
+[]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 365
+[]
+ []
+
 
 
 [10 <../figures/fig4_estimation_quality.pdf>]
+<../figures/fig5_smd_comparison.pdf, id=212, 722.7pt x 361.35pt>
+File: ../figures/fig5_smd_comparison.pdf Graphic file (type pdf)
+<use ../figures/fig5_smd_comparison.pdf>
+Package pdftex.def Info: ../figures/fig5_smd_comparison.pdf  used on input line 381.
+(pdftex.def)             Requested size: 504.50787pt x 252.25406pt.
+
 
 [11 <../figures/fig5_smd_comparison.pdf>]
-Underfull \hbox (badness 10000) detected at line 440
+Underfull \hbox (badness 10000) detected at line 410
 []
  []
 
+
+Underfull \hbox (badness 10000) detected at line 429
+[]
+ []
+
+
+
+pdfTeX warning: pdflatex.exe (file ../figures/fig_gusto_r8_forest.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<../figures/fig_gusto_r8_forest.pdf, id=239, 505.89pt x 433.62pt>
+File: ../figures/fig_gusto_r8_forest.pdf Graphic file (type pdf)
+<use ../figures/fig_gusto_r8_forest.pdf>
+Package pdftex.def Info: ../figures/fig_gusto_r8_forest.pdf  used on input line 458.
+(pdftex.def)             Requested size: 504.50787pt x 432.4412pt.
 
 
 [12]
-Underfull \hbox (badness 10000) detected at line 487
-[]
- []
 
+pdfTeX warning: pdflatex.exe (file ../figures/fig_gusto_r8_scatter.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<../figures/fig_gusto_r8_scatter.pdf, id=254, 505.89pt x 433.62pt>
+File: ../figures/fig_gusto_r8_scatter.pdf Graphic file (type pdf)
+<use ../figures/fig_gusto_r8_scatter.pdf>
+Package pdftex.def Info: ../figures/fig_gusto_r8_scatter.pdf  used on input line 471.
+(pdftex.def)             Requested size: 504.50787pt x 432.4412pt.
+
+
+pdfTeX warning: pdflatex.exe (file ../figures/fig_gusto_r8_calibration.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<../figures/fig_gusto_r8_calibration.pdf, id=258, 505.89pt x 578.16pt>
+File: ../figures/fig_gusto_r8_calibration.pdf Graphic file (type pdf)
+<use ../figures/fig_gusto_r8_calibration.pdf>
+Package pdftex.def Info: ../figures/fig_gusto_r8_calibration.pdf  used on input line 510.
+(pdftex.def)             Requested size: 504.50787pt x 576.58826pt.
 
 
 [13]
-Underfull \hbox (badness 10000) detected at line 513
-[]
- []
 
+[14 <../figures/fig_gusto_r8_forest.pdf>]
 
-
-[14]
-
-[15]
+[15 <../figures/fig_gusto_r8_scatter.pdf>]
 
 [16]
 
-[17] (./nABCD_wiley.bbl
-
-[18])
-Overfull \hbox (9.0pt too wide) in paragraph at lines 636--636
+[17] (./nABCD_wiley.bbl)
+Overfull \hbox (9.0pt too wide) in paragraph at lines 578--578
 [] [] 
  []
 
 
 
-[19]
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 662.
+[18]
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 604.
 
-Underfull \hbox (badness 10000) detected at line 662
+Underfull \hbox (badness 10000) detected at line 604
 []
  []
 
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 662.
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 604.
 (c:/texlive/2024/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
@@ -1226,7 +1238,9 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
 
 
-[20] (./nABCD_wiley.aux)
+[19]
+
+[20 <../figures/fig_gusto_r8_calibration.pdf>] (./nABCD_wiley.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-09-10>
@@ -1242,18 +1256,18 @@ L3 programming layer <2024-09-10>
 (\end occurred when \iftrue on line 4740 was incomplete)
 (\end occurred when \ifx on line 2 was incomplete) 
 Here is how much of TeX's memory you used:
- 23893 strings out of 475496
- 371908 string characters out of 5776763
- 844919 words of memory out of 5000000
- 45434 multiletter control sequences out of 15000+600000
- 674906 words of font info for 462 fonts, out of 8000000 for 9000
+ 23895 strings out of 475496
+ 372613 string characters out of 5776763
+ 850266 words of memory out of 5000000
+ 45438 multiletter control sequences out of 15000+600000
+ 675380 words of font info for 471 fonts, out of 8000000 for 9000
  62 hyphenation exceptions out of 8191
- 90i,17n,93p,2339b,1117s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on nABCD_wiley.pdf (20 pages, 320936 bytes).
+ 90i,16n,93p,2819b,1117s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on nABCD_wiley.pdf (20 pages, 383878 bytes).
 PDF statistics:
- 647 PDF objects out of 1000 (max. 8388607)
- 575 compressed objects within 6 object streams
- 162 named destinations out of 1000 (max. 500000)
- 114029 words of extra memory for PDF output out of 128383 (max. 10000000)
+ 635 PDF objects out of 1000 (max. 8388607)
+ 551 compressed objects within 6 object streams
+ 144 named destinations out of 1000 (max. 500000)
+ 113996 words of extra memory for PDF output out of 128383 (max. 10000000)
 

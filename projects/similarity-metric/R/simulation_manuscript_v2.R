@@ -5,8 +5,8 @@
 #
 # Scenario Design Principles:
 #   - Each scenario motivated by real MRCT distributional patterns
-#   - Contiguous IDs (S1-S8), no gaps
-#   - New: S7 (log-normal skew), S8 (location + scale combined)
+#   - Contiguous IDs (S1-S7), no gaps
+#   - S6 (log-normal skew), S7 (location + scale combined)
 #   - Power-normal/log-normal captures biomarker skewness
 #
 # Estimation-centered: Bias, RMSE, Coverage, CI Width (primary)
@@ -288,7 +288,7 @@ nABCD_bootstrap_bca <- function(x, y, B = 2000, conf = 0.95) {
 }
 
 # =============================================================================
-# Scenario Definitions (Refreshed: S1-S8, no gaps)
+# Scenario Definitions (Refreshed: S1-S7, no gaps)
 # =============================================================================
 #
 # Design principles:
@@ -303,9 +303,8 @@ nABCD_bootstrap_bca <- function(x, y, B = 2000, conf = 0.95) {
 #   S3: Moderate BMI difference (Japan vs EU, 0.5 SD)
 #   S4: Large BMI difference (Japan vs US, 1.0 SD)
 #   S5: Variance difference from inclusion criteria heterogeneity
-#   S6: Right-skewed lab values (eGFR, creatinine) — Gamma
-#   S7: Log-normal biomarkers (ALT) — moderate right skew
-#   S8: Combined location + scale (most realistic MRCT pattern)
+#   S6: Log-normal biomarkers (ALT) — moderate right skew
+#   S7: Combined location + scale (most realistic MRCT pattern)
 # =============================================================================
 
 scenarios <- list(
@@ -350,13 +349,6 @@ scenarios <- list(
     true_nABCD = NA  # Computed via Monte Carlo below (~0.123)
   ),
   S6 = list(
-    name     = "Shape (Gamma)",
-    clinical = "Lab values: eGFR, creatinine (right-skewed)",
-    dist1    = function(n) rnorm(n, 50, 10),
-    dist2    = function(n) rgamma(n, shape = 25, rate = 0.5),
-    true_nABCD = NA  # Computed via Monte Carlo below (~0.024)
-  ),
-  S7 = list(
     name     = "Skew (log-normal)",
     clinical = "ALT: liver function marker (log-normally distributed, CV ~ 53%)",
     dist1    = function(n) rnorm(n, 50, 10),
@@ -368,14 +360,14 @@ scenarios <- list(
       mu_ln <- log(50) - sigma_ln^2 / 2
       rlnorm(n, meanlog = mu_ln, sdlog = sigma_ln)
     },
-    true_nABCD = NA  # Computed via Monte Carlo below
+    true_nABCD = NA  # Computed via Monte Carlo below (~0.304)
   ),
-  S8 = list(
+  S7 = list(
     name     = "Location + Scale",
     clinical = "BMI: Japan (narrow) vs US (wide, shifted) — most realistic",
     dist1    = function(n) rnorm(n, 50, 10),
     dist2    = function(n) rnorm(n, 55, 15),
-    true_nABCD = NA  # Computed via Monte Carlo below
+    true_nABCD = NA  # Computed via Monte Carlo below (~0.175)
   )
 )
 
@@ -495,18 +487,18 @@ run_full_simulation_v2 <- function(n_reps = 500, B = 2000, seed = 42,
 
   set.seed(seed)
 
-  # Compute true values for S7, S8
+  # Compute true values for S6, S7
   cat("=== Computing true nABCD values (Monte Carlo) ===\n")
   scenarios <<- compute_true_values(scenarios)
 
   summary_table <- data.frame()
 
-  cat("\n=== nABCD Simulation v2 (Refreshed Scenarios S1-S8) ===\n")
+  cat("\n=== nABCD Simulation v2 (Refreshed Scenarios S1-S7) ===\n")
   cat("Reps:", n_reps, "| B:", B, "| Workers:", nbrOfWorkers(), "\n")
   cat("BCa:", ifelse(compute_bca, "ON", "OFF (Percentile only — faster)"), "\n")
   accel <- if (USE_RCPP) "Rcpp (C++)" else if (USE_RFAST) "Rfast" else "base R"
   cat("Accel:", accel, "\n")
-  cat("Scenarios: S1-S8 (Null, Location x3, Scale, Gamma, LogNormal, Combined)\n")
+  cat("Scenarios: S1-S7 (Null, Location x3, Scale, LogNormal, Location+Scale)\n")
 
   # --- Timing calibration (10 reps on first scenario) ---
   cat("Calibrating... ")

@@ -8,6 +8,7 @@
 | summaries/ | Paper summaries |
 | methods/ | Mathematical methods |
 | quotes/ | Quotable passages |
+| visualization/ | Figure design / color usage reference ([INDEX](visualization/INDEX.md)) |
 
 ## Commands
 
@@ -44,6 +45,7 @@
 | 15 | Song et al. (2025) "Basic Considerations for Data Pooling Strategy in MRCTs" | [10.1007/s43441-025-00744-8](https://doi.org/10.1007/s43441-025-00744-8) | ✅ | ✅ | MRCT Pooling/China |
 | 16 | Matsushima et al. (2024) "Summary Report of a Public Workshop: Case Studies of MRCT Incorporating Concept of the ICH E17 Guideline" | [10.1002/cpt.3163](https://doi.org/10.1002/cpt.3163) | ✅ | ✅ | MRCT/ICH E17/Case Studies |
 | 17 | Deodhar et al. (2021) "Improvement of Signs and Symptoms of Nonradiographic Axial SpA Treated With Secukinumab: PREVENT Trial" | [10.1002/art.41477](https://doi.org/10.1002/art.41477) | ✅ | ✅ | Clinical Trial/MRCT/Effect Modifier |
+| 18 | FTT Collaborative Group (1994) "Indications for fibrinolytic therapy in suspected acute myocardial infarction" | [10.1016/S0140-6736(94)91161-4](https://doi.org/10.1016/S0140-6736(94)91161-4) | ✅ | ✅ | AMI/Thrombolysis/Effect Modifier/GUSTO Application |
 
 ## Papers Pending
 
@@ -77,6 +79,7 @@
 | `summaries/Song_2025.md` | Song et al. (2025) | China NMPA perspective, pooling flowchart, East Asia pooling, EM identification |
 | `summaries/Matsushima_2024.md` | Matsushima et al. (2024) | PMDA workshop, 3-layer consistency approach, 4 MRCT case studies, 5-dimensional assessment framework |
 | `summaries/Deodhar_2020.md` | Deodhar et al. (2021) | PREVENT trial, secukinumab nr-axSpA, ASAS40, CRP/MRI subgroup as EM, 24-country MRCT |
+| `summaries/FTT_1994.md` | FTT Collaborative Group (1994) | Fibrinolytic therapy in AMI, age/SBP subgroup analysis, "irrespective of age/BP" conclusion, CATE sensitivity implications |
 
 ---
 
