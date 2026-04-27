@@ -32,10 +32,10 @@ Series of scripts investigating whether nABCD satisfies the triangle inequality 
 
 | Script | Description |
 |--------|-------------|
-| `triangle_inequality_analysis.R` | Initial investigation with analytical helpers for W1 and mixture IQR of normal pairs. |
 | `triangle_inequality_check.R` | Definitive five-part analysis: targeted counterexamples, systematic random search, dense grid, asymptotic argument, formal proof. |
-| `triangle_inequality_diagnose.R` | Diagnostic follow-up on violations found in random search (88/1000). Distinguishes real violations from Monte Carlo noise. |
 | `triangle_verify.R` | Clean, minimal counterexample script confirming the definitive result. |
+
+Earlier exploratory scripts (`triangle_inequality_analysis.R`, `triangle_inequality_diagnose.R`) were archived to `archive/20260426/triangle_exploratory/` after being superseded by `triangle_inequality_check.R`.
 
 ## Verification and Replication
 
