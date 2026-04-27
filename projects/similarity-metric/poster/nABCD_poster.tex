@@ -1,16 +1,19 @@
 %==============================================================================
-% nABCD Conference Poster v2  (38 in x 48 in, portrait)
+% nABCD Conference Poster v3  (38 in x 48 in, portrait)
+% Layout: Inverted-N reading flow (3 columns, vertical stack per column)
+%   Left col   (top->bottom): Motivation -> Objective -> nABCD definition + fig2
+%   Middle col (top->bottom): Simulation design (fig1) -> Estimation (fig3,fig4)
+%                             -> Comparison vs SMD (fig5)
+%   Right col  (top->bottom): GUSTO-I case study (fig6, fig_gusto_r8_*)
+%                             -> Conclusions -> References & Contact
 % Format: beamer (single giant frame + columns + blocks), NO beamerposter
-% Scope: Methodological content + GUSTO-I case study INCLUDED.
-%
-% Compile: pdflatex -interaction=nonstopmode nABCD_poster.tex
+% Compile: pdflatex -interaction=nonstopmode nABCD_poster.tex   (4 passes)
 % Figures path: ../figures/
 %==============================================================================
 \documentclass[final]{beamer}
 
 % --- Custom paper size: 38 in x 48 in (portrait) --------------------------
 % 38 in = 965.2 mm (width),  48 in = 1219.2 mm (height)
-% Beamer already loads geometry, so we use \geometry{...} (not \usepackage).
 \usepackage{geometry}
 \geometry{paperwidth=965.2mm, paperheight=1219.2mm,
           left=20mm, right=20mm, top=20mm, bottom=20mm}
@@ -108,7 +111,7 @@
 \begin{frame}[t]{}
 
 %==============================================================================
-% TITLE BAR (full width)
+% TITLE BAR (full width, spans all 3 columns)
 %==============================================================================
 \begin{tikzpicture}[remember picture, overlay]
   \fill[navy] ([yshift=-8mm]current page.north west)
@@ -130,16 +133,18 @@
 \vspace{135mm}
 
 %==============================================================================
-% THREE-COLUMN LAYOUT
+% THREE-COLUMN LAYOUT (Inverted-N: read each column top-to-bottom,
+% then move to the next column to the right)
 %==============================================================================
 \begin{columns}[t, onlytextwidth]
 
 %------------------------------------------------------------------------------
-% COLUMN 1
+% COLUMN 1 (LEFT) -- Background, Objective, Method Definition
+% Read order: 1 -> 2 -> 3 -> 4
 %------------------------------------------------------------------------------
 \begin{column}{0.325\textwidth}
 
-\begin{block}{1.\ Motivation}
+\begin{block}{1.\ Background \& Motivation}
 \textbf{Multi-regional clinical trials (MRCTs)} are the standard paradigm for
 global drug development. ICH~E17 describes pooling decisions in terms of
 \emph{similarity of effect modifier distributions} but gives
@@ -156,15 +161,21 @@ level.
 \textbf{Gap.} The standardized mean difference (SMD) only detects
 \emph{location} shifts. $N(50,5^2)$ vs.\ $N(50,15^2)$ yields SMD$=0$ despite a
 3-fold difference in spread; scale and shape differences are invisible.
+\end{block}
 
-\medskip
+\begin{block}{2.\ Research Question \& Objective}
 \textbf{Objective.} A distributional dissimilarity index that
 (i)~captures features beyond location, (ii)~has a clinically interpretable
 scale, and (iii)~carries a theoretical link to treatment-effect
 heterogeneity.
+
+\medskip
+\textbf{Approach.} Build the index on Wasserstein-1 distance, normalize by
+a robust scale, and translate distributional distance to a clinical-scale
+heterogeneity bound. Validate via simulation; demonstrate via GUSTO-I IPD.
 \end{block}
 
-\begin{block}{2.\ The nABCD Dissimilarity Index}
+\begin{block}{3.\ The nABCD Dissimilarity Index}
 Wasserstein-1 distance between CDFs:
 \[W_1(F, G) = \int_{-\infty}^{\infty}\!|F(x)-G(x)|\,dx,\]
 normalized by a robust scale:
@@ -192,79 +203,51 @@ $\mathrm{nABCD}=0.5$.
 \end{itemize}
 \end{block}
 
-\begin{block}{3.\ Heterogeneity Bound \& Clinical Calibration}
-By Kantorovich--Rubinstein duality,
-\[W_1(F_1,F_2)=\sup_{\|f\|_{\mathrm{Lip}}\leq 1}
-  \left|\int f\,dF_1-\int f\,dF_2\right|.\]
-If $\tau(x)$ is Lipschitz with constant $L$, then $\tau/L$ is 1-Lipschitz and
-\[|\bar\tau_1 - \bar\tau_2| \;\leq\; L\cdot W_1(F_1, F_2).\]
-Substituting gives the \textbf{clinical heterogeneity bound}:
+\begin{block}{4.\ Heterogeneity Bound \& $L^{*}$ Calibration}
+By Kantorovich--Rubinstein duality, if $\tau(x)$ is Lipschitz with constant
+$L$,
+\[|\bar\tau_1 - \bar\tau_2| \;\leq\; L\cdot W_1(F_1, F_2),\]
+giving the \textbf{clinical heterogeneity bound}
 \[\boxed{\;\Delta_{\max}
    = 2\,L \cdot \mathrm{IQR}_{\text{pooled}} \cdot \mathrm{nABCD}(F_1, F_2)\;}\]
-with bootstrap CI by linear mapping of the nABCD percentile interval.
-$L$ is the per-unit CATE slope from Phase~2 interaction analysis or
-subgroup-specific meta-analyses.
+with bootstrap CI by linear mapping. $L$ is the per-unit CATE slope from
+Phase~2 interaction analysis or subgroup meta-analyses.
 
 \medskip
-\textit{A $W_1$-specific property:} $W_2$ and KS admit no analogous
-heterogeneity bound (Gibbs \& Su, 2002).
-\end{block}
-
-\begin{block}{4.\ $L^{*}$ Reverse Calculation (unknown $L$)}
-At the planning stage, $L$ is rarely numerically available. Rearranging the
-heterogeneity bound:
+When $L$ is unknown, rearrange to obtain the \textbf{required CATE
+sensitivity}:
 \[\boxed{\;L^{*} \;=\; \dfrac{\Delta_{\text{clin}}}
   {2 \cdot \mathrm{IQR}_{\text{pooled}} \cdot \mathrm{nABCD}}\;}\]
-$L^{*}$ is the \textbf{CATE sensitivity required} for the observed
-distributional difference to yield a clinically meaningful
-$\Delta_{\text{clin}}$.
+$L^{*}$ is the slope at which the observed distributional difference would
+produce a clinically meaningful $\Delta_{\text{clin}}$. The sponsor judges
+plausibility of $L^{*}$ for the effect modifier and drug class.
 
 \medskip
-\textbf{Decision workflow.}
-\begin{enumerate}
-  \item Rank candidate partners by $\hnABCD$ with bootstrap CIs.
-  \item Report $L^{*}$ at pre-specified $\Delta_{\text{clin}}$.
-  \item Sponsor judges plausibility of $L^{*}$ for the effect modifier and
-        drug class.
-\end{enumerate}
-This \emph{estimation-centered} framework deliberately avoids binary
-accept/reject testing and fixed nABCD cutoffs.
-\end{block}
-
-\begin{block}{5.\ Implementation \& Data Requirements}
-\textbf{Inference.} Percentile bootstrap ($B \geq 2{,}000$) for $\hnABCD$ CIs;
-$L^{*}$ CI obtained by the same linear percentile mapping. BCa showed inferior
-coverage for this bounded statistic. Recommended $n \geq 100$ per region.
-
-\medskip
-\textbf{Data source flexibility.} nABCD requires only \emph{baseline} effect
-modifier distributions -- not treatment outcomes. Regional data may be drawn
-from prior trials, disease registries, electronic health records, or other
-real-world evidence (RWE) sources, aligning with ICH~E6(R3). Representativeness
-of each region's data with respect to the target trial population is the sole
-prerequisite.
-
-\medskip
-\textbf{Bridge to validation.} The next column quantifies how reliably
-$\hnABCD$ recovers the true index and how it compares with SMD across
-systematic distributional alterations.
-
-\medskip
-\textbf{Software.} Reference R implementation available; an R package with
-bootstrap inference and clinical calibration is under development.
+\textit{A $W_1$-specific property:} $W_2$ and KS admit no analogous bound
+(Gibbs \& Su, 2002). \textbf{Inference.} Percentile bootstrap
+($B \geq 2{,}000$); BCa rejected for boundary behavior. Recommended
+$n \geq 100$ per region.
 \end{block}
 
 \end{column}
 
 %------------------------------------------------------------------------------
-% COLUMN 2
+% COLUMN 2 (MIDDLE) -- Simulation design, estimation quality, SMD comparison
+% Read order: 5 -> 6 -> 7
 %------------------------------------------------------------------------------
 \begin{column}{0.325\textwidth}
 
-\begin{block}{6.\ Simulation Design (7 Scenarios)}
+\begin{block}{5.\ Simulation Design (7 Scenarios)}
 Systematic scenarios isolating location, scale, and skew.
 10{,}000 replications each; $n\in\{50,100,200\}$ per region;
 $B=2{,}000$ bootstrap resamples.
+
+\medskip
+\begin{center}
+\includegraphics[width=0.95\linewidth]{fig1_scenario_overview.pdf}\\[2pt]
+{\small\textit{Scenario overview: location, scale, and skew alterations
+relative to the null reference.}}
+\end{center}
 
 \medskip
 \centering\small
@@ -289,9 +272,14 @@ S7 & Loc.\ + Scale    & vs.\ $N(55,15^2)$              & 0.175 \\
 CV$\approx 53\%$.}
 \end{block}
 
-\begin{block}{7.\ Estimation Quality: Bias \& Coverage}
-Bias $=\text{Mean}(\hnABCD)-\mathrm{nABCD}$ and coverage of 95\% percentile
-bootstrap CIs at $n=100$ per region:
+\begin{block}{6.\ Estimation Quality: Bias \& Coverage}
+Bias and 95\% percentile bootstrap CI coverage at $n=100$ per region:
+
+\medskip
+\begin{center}
+\includegraphics[width=0.95\linewidth]{fig3_bias.pdf}\\[2pt]
+{\small\textit{Bias of $\hnABCD$ across scenarios and sample sizes.}}
+\end{center}
 
 \medskip
 \centering\small
@@ -310,24 +298,25 @@ S7 (Loc+Scale)   & 0.175 & 0.011 & \textbf{0.935}              \\
 \end{tabular}
 
 \medskip
+\begin{center}
+\includegraphics[width=0.95\linewidth]{fig4_estimation_quality.pdf}\\[2pt]
+{\small\textit{Coverage and precision summary across scenarios.}}
+\end{center}
+
+\medskip
 \raggedright\footnotesize
 \textsuperscript{\dag}Near-boundary true value; non-negativity constraint
-induces positive bias that prevents meaningful coverage at these sample
-sizes (Andrews, 2000).
+induces positive bias (Andrews, 2000).
 
 \medskip
 \raggedright\normalsize
-\textbf{Take-aways.}
-\begin{itemize}
-  \item True $\mathrm{nABCD}\geq 0.1$: bias $<0.02$, coverage $0.88$--$0.96$
-        at $n\geq 100$.
-  \item \textbf{Percentile} bootstrap preferred over BCa (boundary).
-  \item Recommended: $n\geq 100$ per region.
-\end{itemize}
+\textbf{Take-aways.} True $\mathrm{nABCD}\geq 0.1$: bias $<0.02$, coverage
+$0.88$--$0.96$ at $n\geq 100$. \textbf{Percentile} bootstrap preferred over
+BCa.
 \end{block}
 
-\begin{block}{8.\ nABCD vs.\ SMD: Beyond Location}
-At $n=100$ per region, SMD is blind to precisely the features that can drive
+\begin{block}{7.\ nABCD vs.\ SMD: Beyond Location}
+At $n=100$ per region, SMD is blind to precisely the features that drive
 non-linear effect-modifier heterogeneity:
 
 \medskip
@@ -347,38 +336,24 @@ S6 Skew     & $0.312\pm 0.048$ & $0.00\pm 0.14$ & \textbf{Only nABCD}        \\
 \includegraphics[width=0.95\linewidth]{fig5_smd_comparison.pdf}\\[2pt]
 {\small\textit{nABCD detects scale and skew where SMD stays flat.}}
 \end{center}
-\end{block}
-
-\begin{block}{9.\ Framework Philosophy}
-\begin{itemize}
-  \item \textbf{Estimation-centered, not testing.} Report $\hnABCD$, bootstrap
-        CI, and $\Delta_{\max}$ or $L^{*}$ -- never a binary verdict.
-  \item \textbf{No universal cutoff.} Cohen's-$d$-style benchmarks are
-        context-free; nABCD's clinical weight depends on $L$, which is
-        external to the distributional comparison.
-  \item \textbf{Ranking + calibration.} Rank partners by $\hnABCD$; translate
-        to clinical scale via $\Delta_{\max}$ ($L$ known) or $L^{*}$
-        ($L$ unknown).
-  \item \textbf{Two-pathway calibration.} Same framework for confirmatory
-        (Phase~2 $L$) and planning (sensitivity via $L^{*}$) settings.
-  \item \textbf{ICH~E17 aligned.} ``Similar enough'' remains with sponsor and
-        regulators, informed by transparent quantitative inputs.
-\end{itemize}
 
 \medskip
-\textbf{Limitations.} Continuous effect modifiers only; univariate
-(multivariate OT extension is future work); near-boundary positive bias for
-true $\mathrm{nABCD}\lesssim 0.05$; requires representative baseline data.
+\raggedright
+\textbf{Framework philosophy.} Estimation-centered, not testing. Report
+$\hnABCD$, bootstrap CI, and $\Delta_{\max}$ or $L^{*}$ -- never a binary
+verdict. No universal cutoff: clinical weight depends on $L$, external to
+the distributional comparison. ICH~E17 aligned.
 \end{block}
 
 \end{column}
 
 %------------------------------------------------------------------------------
-% COLUMN 3 -- CASE STUDY + CONCLUSIONS + REFERENCES
+% COLUMN 3 (RIGHT) -- GUSTO-I application, conclusions, references
+% Read order: 8 -> 9 -> 10 -> 11
 %------------------------------------------------------------------------------
 \begin{column}{0.325\textwidth}
 
-\begin{block}{10.\ Case Study: Hypothetical Drug T MRCT}
+\begin{block}{8.\ GUSTO-I Application: Drug T MRCT Planning}
 A sponsor develops \textbf{Drug T}, a novel thrombolytic for acute myocardial
 infarction, and plans a Phase~3 MRCT. At the planning stage the sponsor uses
 IPD from \textbf{GUSTO-I} ($N=40{,}830$; 16 anonymized regions) to assess
@@ -388,43 +363,27 @@ identify pooling partners for a designated anchor region.
 \medskip
 \textbf{Candidate effect modifiers.} Age and systolic blood pressure (SBP),
 flagged by Drug~T's Phase~2 exploratory analyses; class-level numerical CATE
-slopes are unavailable (FTT meta-analysis reports benefit ``irrespective of
-age'' without per-year slope). $L$ is therefore treated as unknown and the
-$L^{*}$ pathway applies to both.
+slopes are unavailable. $L$ is therefore treated as unknown and the
+$L^{*}$ pathway applies. \textbf{Region 8} is the anchor ($n=2{,}916$).
 
 \medskip
-\textbf{Region 8 as anchor} ($n=2{,}916$).
-\centering\small
-\renewcommand{\arraystretch}{1.05}
-\begin{tabular}{@{}lcccc@{}}
-\toprule
-\textbf{Candidate EM} & \textbf{Mean} & \textbf{SD} & \textbf{Skew} & \textbf{IQR\textsubscript{pooled}}\\
-\midrule
-Age (yr)   & 60.2  & 12.1 & $-0.17$ & 17--18 \\
-SBP (mmHg) & 132.4 & 22.9 & 0.20    & 30--34 \\
-\bottomrule
-\end{tabular}
+\begin{center}
+\includegraphics[width=0.95\linewidth]{fig6_application.pdf}\\[2pt]
+{\small\textit{GUSTO-I anchor (R8) vs.\ partner regions: distributional
+overview.}}
+\end{center}
 
 \medskip
-\raggedright\footnotesize
-\textit{GUSTO-I was not designed as an MRCT; regions are anonymized, which
-precludes demographic or geographic interpretation. The dataset serves here
-purely as a publicly available vehicle for methodological demonstration.}
-\end{block}
-
-\begin{block}{11.\ nABCD Across 15 Partner Regions}
 \centering\small
 \renewcommand{\arraystretch}{1.05}
 \begin{tabular}{@{}clrll@{}}
 \toprule
-\textbf{Rank} & \textbf{Partner} & $n$ & \textbf{nABCD\textsubscript{age} [95\% CI]} & \textbf{nABCD\textsubscript{SBP} [95\% CI]}\\
+\textbf{Rank} & \textbf{Partner} & $n$ & \textbf{nABCD\textsubscript{age}} & \textbf{nABCD\textsubscript{SBP}}\\
 \midrule
 1  & R5 & 1909 & 0.011 [0.010, 0.026] & 0.056 [0.038, 0.077] \\
 2  & R7 & 3150 & 0.011 [0.008, 0.026] & 0.082 [0.064, 0.098] \\
 3  & R4 & 2876 & 0.016 [0.010, 0.032] & 0.042 [0.029, 0.060] \\
 4  & R9 & 3123 & 0.017 [0.011, 0.032] & 0.110 [0.091, 0.130] \\
-5  & R15& 2576 & 0.017 [0.011, 0.034] & 0.074 [0.057, 0.093] \\
-\midrule
 14 & R2 & 2952 & 0.061 [0.044, 0.079] & 0.015 [0.012, 0.030] \\
 15 & R3 & 2030 & 0.076 [0.057, 0.095] & 0.051 [0.035, 0.074] \\
 \bottomrule
@@ -438,39 +397,30 @@ purely as a publicly available vehicle for methodological demonstration.}
 \end{center}
 
 \medskip
-\raggedright
-\textbf{Age vs.\ SBP patterns differ.} Age nABCD spans 0.011--0.076
-(11/15 partners $<0.04$); SBP nABCD spans 0.015--0.110 with most partners in
-0.050--0.110 -- SBP distributions are more heterogeneous across GUSTO-I.
-
-\medskip
-\textbf{R2 vs.\ R9 asymmetry.} R2 has the smallest SBP nABCD (0.015) but the
-2nd-largest age nABCD (0.061); R9 shows the opposite (age 0.017; SBP 0.110).
-A single-modifier ranking would draw opposite conclusions.
-
-\medskip
 \begin{center}
 \includegraphics[width=0.95\linewidth]{fig_gusto_r8_scatter.pdf}\\[1pt]
-{\small\textit{Joint view: lower-left corner favors pooling on both EMs.}}
+{\small\textit{Joint view: lower-left favors pooling on both EMs.}}
 \end{center}
-\end{block}
-
-\begin{block}{12.\ Clinical Interpretation via $L^{*}$}
-$L^{*}$ at $\Delta_{\text{clin}}=1$\%pt (absolute 30-day mortality), selected
-rows:
 
 \medskip
+\raggedright
+\textbf{R2 vs.\ R9 asymmetry.} R2 has the smallest SBP nABCD (0.015) but the
+2nd-largest age nABCD (0.061); R9 shows the opposite. A single-modifier
+ranking would draw opposite conclusions.
+
+\medskip
+\textbf{$L^{*}$ at $\Delta_{\text{clin}}=1$\%pt} (absolute 30-day mortality):
 \centering\small
 \renewcommand{\arraystretch}{1.05}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-\textbf{Partner} & \textbf{nABCD\textsubscript{age}} & \textbf{nABCD\textsubscript{SBP}} & \textbf{$L^{*}$ age (/yr)} & \textbf{$L^{*}$ SBP (/mmHg)}\\
+\textbf{Partner} & \textbf{nABCD\textsubscript{age}} & \textbf{nABCD\textsubscript{SBP}} & \textbf{$L^{*}$ age} & \textbf{$L^{*}$ SBP}\\
 \midrule
-R2  & 0.061 & 0.015 & 0.0047 & 0.0105 \\
 R4  & 0.016 & 0.042 & \textbf{0.0180} & \textbf{0.0038} \\
 R6  & 0.026 & 0.050 & \textbf{0.0110} & \textbf{0.0030} \\
-R9  & 0.017 & 0.110 & 0.0171 & 0.0015 \\
 R13 & 0.034 & 0.037 & \textbf{0.0087} & \textbf{0.0042} \\
+R9  & 0.017 & 0.110 & 0.0171 & 0.0015 \\
+R2  & 0.061 & 0.015 & 0.0047 & 0.0105 \\
 \bottomrule
 \end{tabular}
 
@@ -482,47 +432,41 @@ R13 & 0.034 & 0.037 & \textbf{0.0087} & \textbf{0.0042} \\
 
 \medskip
 \raggedright
-\textbf{Leading pooling candidates.} Three regions -- \textbf{R4, R6, R13} --
-rank low on both candidate effect modifiers (lower-left in the scatter), and
-their required $L^{*}$ values sit near the lower end of the clinically
-plausible CATE-sensitivity range for thrombolysis in AMI.
-\emph{The sponsor may reasonably prioritize R4, R6, and R13 as leading
-candidates for pooling with Region~8.}
-
-\medskip
-\textbf{Framework philosophy in practice.} No binary ``poolable / not
-poolable'' verdict. nABCD values, bootstrap CIs, and $L^{*}$ sensitivities
-are supplied as transparent quantitative inputs for sponsor judgment in
-consultation with clinical and regulatory advisors.
+\textbf{Leading pooling candidates: R4, R6, R13.} They rank low on both
+candidate EMs and their required $L^{*}$ values sit near the lower end of
+the clinically plausible CATE-sensitivity range for thrombolysis in AMI.
+The sponsor may reasonably prioritize these regions for pooling with R8.
 \end{block}
 
-\begin{block}{13.\ Conclusions}
+\begin{block}{9.\ Conclusions \& Implications}
 \begin{enumerate}
-  \item \textbf{nABCD} -- a normalized Wasserstein-1 index -- captures full
-        distributional differences (location, scale, shape, skew) that SMD
-        misses by construction.
+  \item \textbf{nABCD} captures full distributional differences (location,
+        scale, shape, skew) that SMD misses by construction.
   \item The heterogeneity bound
         $|\bar\tau_1-\bar\tau_2|\leq 2L\cdot\mathrm{IQR}_{\text{pooled}}\cdot\mathrm{nABCD}$
         translates distributional distance into a clinical-scale bound --
         a property unique to $W_1$.
-  \item Seven-scenario simulation shows satisfactory percentile bootstrap
-        performance (bias $<0.02$; coverage $0.88$--$0.96$) for true
-        $\mathrm{nABCD}\geq 0.1$ at $n\geq 100$.
-  \item The GUSTO-I illustration shows the framework in action: ranking,
-        CIs, and $L^{*}$ identify R4/R6/R13 as leading pooling candidates for
-        Region~8, while highlighting the R2 vs.\ R9 asymmetry that
-        single-modifier rankings would obscure.
+  \item Seven-scenario simulation: bias $<0.02$, coverage $0.88$--$0.96$ for
+        true $\mathrm{nABCD}\geq 0.1$ at $n\geq 100$.
+  \item GUSTO-I illustration: ranking + CIs + $L^{*}$ identify R4/R6/R13 as
+        leading pooling candidates for R8, while exposing the R2 vs.\ R9
+        asymmetry that single-modifier rankings would obscure.
   \item Fills a methodological gap in ICH~E17 implementation by supplying
         \emph{transparent quantitative inputs} without imposing a universal
         cutoff.
 \end{enumerate}
 
 \medskip
-\textbf{Available.} R code for nABCD and bootstrap inference; an R package is
-under development.
+\textbf{Limitations.} Continuous, univariate effect modifiers (multivariate
+OT extension is future work); near-boundary positive bias for true
+$\mathrm{nABCD}\lesssim 0.05$; requires representative baseline data.
+
+\medskip
+\textbf{Available.} R code for nABCD and bootstrap inference; an R package
+is under development.
 \end{block}
 
-\begin{block}{14.\ Key References}
+\begin{block}{10.\ Key References}
 \footnotesize
 \begin{list}{[\arabic{enumi}]}{\usecounter{enumi}\setlength{\leftmargin}{2em}\setlength{\itemsep}{1pt}\setlength{\parsep}{0pt}\setlength{\topsep}{2pt}}
   \item ICH~E17 EWG (2017). \textit{General Principles for Planning and
@@ -550,6 +494,13 @@ under development.
   \item Wasserstein RL, Lazar NA (2016) \textit{Am Stat} 70:129--133.
         doi:10.1080/00031305.2016.1154108.
 \end{list}
+\end{block}
+
+\begin{block}{11.\ Acknowledgments \& Contact}
+\small
+The authors thank colleagues for methodological discussions and the GUSTO-I
+investigators for making de-identified IPD available for methodological
+research.
 
 \medskip
 \centering\small\color{midgray}
