@@ -438,6 +438,10 @@ $$
 
 分散が3倍異なるにもかかわらず SMD は差を検出できない
 
+![w:55% h:auto](../../figures/fig5_smd_comparison.png)
+
+*Figure: SMD vs nABCD --- 尺度・歪度差では SMD はゼロのまま*
+
 ---
 
 <!-- _class: section -->
@@ -465,6 +469,10 @@ $$
 - $\text{IQR}_{\text{pooled}}$: プールされた分布の四分位範囲
 - 係数 2 により、1-IQR の位置シフトで nABCD $= 0.5$ となるよう較正
 - **スケールフリー**: 測定単位に依存しない解釈が可能
+
+![w:50% h:auto](../../figures/fig2_nabcd_definition.png)
+
+*Figure: 2つの CDF 間の正規化面積として定義される nABCD*
 
 ---
 
@@ -604,6 +612,10 @@ $$
 
 $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 
+![w:60% h:auto](../../figures/fig1_scenario_overview.png)
+
+*Figure: シナリオ S1--S7 の分布対の overview*
+
 ---
 
 # シミュレーション結果: バイアスと被覆確率
@@ -625,6 +637,10 @@ $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 
 **推奨**: $n \geq 100$ / 地域で信頼性のある推定・推論が可能
 
+![w:55% h:auto](../../figures/fig4_estimation_quality.png)
+
+*Figure: バイアス・被覆・精度を統合した推定品質サマリー*
+
 ---
 
 # nABCD vs SMD: 感度比較 ($n = 100$)
@@ -640,6 +656,10 @@ $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 - 位置差: SMD と nABCD は同等の情報を提供
 - **尺度・歪度差**: SMD はゼロのまま --- nABCD のみが検出
 - S6 は特に顕著: 大きな分布差 (nABCD $= 0.31$) が SMD には完全に不可視
+
+![w:55% h:auto](../../figures/fig5_smd_comparison.png)
+
+*Figure: シナリオ別 nABCD vs SMD 散布 --- S5/S6 で SMD は 0 に張り付く*
 
 ---
 
@@ -663,6 +683,10 @@ $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 - **Region 8** ($n = 2{,}916$) を anchor として設定
 - 想定: 地域特異的な有効性エビデンスが要求されるが、サンプルサイズが限定的な市場
 - 残り 15 partner regions との分布類似性を評価し、プーリング候補を同定
+
+![w:50% h:auto](../../figures/fig6_application.png)
+
+*Figure: GUSTO-I 16 region overview --- Region 8 を anchor として配置*
 
 ---
 
@@ -707,6 +731,10 @@ $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 
 Percentile bootstrap, $B = 2{,}000$
 
+![w:55% h:auto](../../figures/fig_gusto_r8_forest.png)
+
+*Figure: Age nABCD forest plot --- Region 8 vs 15 partners (95% bootstrap CI)*
+
 ---
 
 # nABCD 結果: SBP
@@ -727,6 +755,10 @@ Percentile bootstrap, $B = 2{,}000$
 - 例: R16 (age 13位, nABCD 0.050, CI [0.034, 0.071]) は上位複数 partners とオーバーラップ
 - **CI 幅を併記することで「どの程度自信を持って順位を示せるか」を伝達**
 
+![w:50% h:auto](../../figures/fig_gusto_r8_density_dissimilar.png)
+
+*Figure: SBP 分布 --- Region 8 (anchor) vs dissimilar partners*
+
 ---
 
 # R2 vs R9: なぜ両変数を同時に評価すべきか
@@ -744,7 +776,10 @@ Percentile bootstrap, $B = 2{,}000$
 - R2: SBP で最良だが age で最悪近く
 - R9: age で良好だが SBP で最悪
 - **両候補 effect modifier を joint に評価することが必須**
-- Figure: age--SBP nABCD の scatter で視覚化 (lower-left quadrant が同時に低い)
+
+![w:55% h:auto](../../figures/fig_gusto_r8_scatter.png)
+
+*Figure: Age vs SBP nABCD scatter --- lower-left quadrant が同時に低い候補*
 
 ---
 
@@ -764,6 +799,10 @@ Percentile bootstrap, $B = 2{,}000$
 
 - 断定ではなく **priorization** の根拠を提供
 - Sponsor は clinical / regulatory advisor と協議のうえ最終判断
+
+![w:55% h:auto](../../figures/fig_gusto_r8_calibration.png)
+
+*Figure: $L^*$ calibration --- 各 partner の必要 CATE 感度を臨床的妥当範囲と対照*
 
 ---
 

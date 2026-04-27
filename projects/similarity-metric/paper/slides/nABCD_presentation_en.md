@@ -438,6 +438,10 @@ $$
 
 A threefold difference in variance is completely invisible to SMD
 
+![w:55% h:auto](../../figures/fig5_smd_comparison.png)
+
+*Figure: SMD vs nABCD --- SMD remains zero under scale and skewness differences*
+
 ---
 
 <!-- _class: section -->
@@ -465,6 +469,10 @@ $$
 - $\text{IQR}_{\text{pooled}}$: interquartile range of the pooled distribution
 - Factor of 2 calibrates so that a 1-IQR location shift yields nABCD $= 0.5$
 - **Scale-free**: interpretation does not depend on measurement units
+
+![w:50% h:auto](../../figures/fig2_nabcd_definition.png)
+
+*Figure: nABCD as the normalized area between two CDFs*
 
 ---
 
@@ -558,6 +566,10 @@ $$
 
 $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resamples
 
+![w:60% h:auto](../../figures/fig1_scenario_overview.png)
+
+*Figure: Overview of distribution pairs for scenarios S1--S7*
+
 ---
 
 # Simulation Results: Bias and Coverage
@@ -579,6 +591,10 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 **Recommendation**: $n \geq 100$ per region for reliable estimation and inference
 
+![w:55% h:auto](../../figures/fig4_estimation_quality.png)
+
+*Figure: Estimation quality summary --- bias, coverage, and precision*
+
 ---
 
 # nABCD vs SMD: Sensitivity Comparison ($n = 100$)
@@ -594,6 +610,10 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 - Location shift: SMD and nABCD provide equivalent information
 - **Scale and skewness**: SMD remains at zero --- only nABCD detects
 - S6 is particularly striking: a large distributional difference (nABCD $= 0.31$) is entirely invisible to SMD
+
+![w:55% h:auto](../../figures/fig5_smd_comparison.png)
+
+*Figure: nABCD vs SMD across scenarios --- SMD pinned to zero in S5/S6*
 
 ---
 
@@ -624,6 +644,10 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
   - SBP: no quantitative class-level CATE sensitivity
 - **$L^*$ reverse calculation** applied for both
 
+![w:50% h:auto](../../figures/fig6_application.png)
+
+*Figure: GUSTO-I 16-region overview with Region 8 as anchor*
+
 ---
 
 # nABCD Results: Region 8 vs 15 Partners
@@ -643,6 +667,10 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 - Mid-rank CIs overlap → ranking confidence varies
 - CI widths reported alongside point estimates to convey precision
 
+![w:55% h:auto](../../figures/fig_gusto_r8_forest.png)
+
+*Figure: Age nABCD forest plot --- Region 8 vs 15 partners (95% bootstrap CI)*
+
 ---
 
 # R2 vs R9: Why Joint Evaluation Is Essential
@@ -660,6 +688,10 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 - R2: best on SBP, near-worst on Age
 - R9: good on Age, worst on SBP
 - **All candidate effect modifiers must be evaluated jointly**
+
+![w:55% h:auto](../../figures/fig_gusto_r8_scatter.png)
+
+*Figure: Age vs SBP nABCD scatter --- lower-left quadrant: jointly low candidates*
 
 ---
 
@@ -679,6 +711,10 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 - Quantitative inputs supporting prioritization, not a binary verdict
 - Final judgment rests with sponsor in consultation with clinical / regulatory advisors
+
+![w:55% h:auto](../../figures/fig_gusto_r8_calibration.png)
+
+*Figure: $L^*$ calibration --- required CATE sensitivity per partner against plausible range*
 
 ---
 
