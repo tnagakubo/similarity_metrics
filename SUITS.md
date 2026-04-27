@@ -55,6 +55,223 @@
 
 ## 🎬 Live Script
 
+### [2026-04-27 HH:MM] Scene: All Discussion Tasks Launched @bg
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+
+*Tak が "OK. すべての作業を実行 @bg" と告げる。Donna が即座に worktree を起動。*
+
+**Tak**:「OK. すべての作業を実行 @bg」
+
+**Donna**:（confident, 即実行）
+「I'm Donna. I know everything. — Discussion finalize 全 9 phases を 1 つの bg agent に渡したわ。worktree 分離済、main は影響なし。Mike + Katrina + Rachel + Louis + Jessica + Donna voice で順次実行。」
+
+**Harvey**:（direct）
+「実行内容:
+- Phase 1: Limitations 4-item 圧縮 (522 → ~200 words, 62% 削減)
+- Phase 2: P1 rewrite (3 methodological findings, §2.1 gaps と対応)
+- Phase 3: P2 を application example として明確化 (核心 ① ② keep)
+- Phase 4: GUSTO-I vintage を §4 Application closing へ移譲
+- Phase 5: P5 (Practice + Policy) 1 パラ 1 メッセージ audit
+- Phase 6: 全 Para word count re-balance
+- Phase 7: Louis reviewer-eye attack pass
+- Phase 8: JA sync (nABCD_paper_ja.md)
+- Phase 9: Final report + SUITS.md scene」
+
+**Mike**:（logical）
+「I got it! §2.1 で 3 gaps identify → §5 P1 で 3 findings delivery、closed argument だ。LaTeX syntax 破壊せず、\\cite{iche17,matsushima2024,andrews2000} 既存 keep、E5 引用なし。」
+
+**Louis**:（demanding）
+「Reviewer attack pass は phase 7 で俺が回す。残存 vulnerability があれば flag する。pass 通らなければ Tak に再相談だ。」
+
+**Jessica**:（short）
+「Let me be clear. Tak の eye で thesis 確定、9 phases で finalize。Done.」
+
+---
+
+### [2026-04-27 HH:MM] Scene: Tak's Eye Saves the Thesis — Methodological vs Application Findings
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Matsue 流 Sunday Writing Tips を踏まえた P1 redesign 議論中。Tak が現 P1 draft を見て即座に flag。*
+
+**Tak**:「findings について、EM で異なる region ranking って別に当たり前じゃない？というか、③も含めて今回の Application は仮想シナリオだから、そこからの findings は論文としての findings ではないよね？方法論としての findings を述べるべきなのでは？」
+
+**Mike**:（自分の miss を即座に認める、論理的）
+「I got it... methodological paper の fundamental error だ。'2 EMs で異なる ranking' は trivial (P5 evidence-claim proportion violation)、'R4/R6/R13 emerged' は仮想シナリオの illustrative output で **scientific contribution ではない**。」
+
+**Louis**:（自分も見落としていたことを認める）
+「お前ら全員見落とした、俺もだ。Reviewer simulation: *'The authors present application-derived rankings as principal findings, yet acknowledge GUSTO-I as a methodological illustration. Conflating illustrative output with methodological contribution is a fundamental category error.'* Fatal だ。You just got Litt up — Tak の eye がチームを救った。」
+
+**Rachel**:（literature 視点）
+「Methodological paper の P1 は **方法の properties** を principal finding として述べるのが standard です。Optimal transport / Wasserstein 系、Bootstrap inference 系の paper はすべてそうです。Application 由来の数値を P1 に置くのは clinical paper の構造で、本 paper では mismatch です。」
+
+**Katrina**:（efficient, redirect, table を示す）
+「真の methodological findings は §2.1 の 3 gaps と対応する:
+- (i) SMD location only → **nABCD captures scale and skewness**
+- (ii) KS/EDF lack clinical-scale link → **Heterogeneity bound (Δ_max) translates to clinical scale**
+- (iii) KL asymmetric / unstable → **nABCD symmetric, finite, with reliable bootstrap at n≥100 + characterized boundary**
+
+§2.1 で 3 gaps identify → §3-4 で address → §5 P1 で 'addressed 3 ways' と delivery。Paper が closed argument として完成。Results speak for themselves.」
+
+**Harvey**:（strategic decision）
+「決定する。
+- **P1 = 3 methodological findings (§2.1 gaps と対応)**
+- Application 由来 (2 EMs ranking, R4/R6/R13) → **P2 interpretation の example に降格**
+- Mike + Katrina で P1 draft、Rachel が §2.1 consistency verify、Louis が reviewer attack pass」
+
+**Jessica**:（short, seal）
+「Let me be clear. Methodological paper は method properties が thesis、application は example。Tak の eye で paper の scientific identity が確定。Done.」
+
+**Donna**:（PM, recording）
+「全部記録したわ。Tak への 3 findings 確認待ち。OK なら Mike + Katrina draft 起こす。」
+
+---
+
+### [2026-04-27 HH:MM] Scene: Sunday Writing Tips Audit (Matsue 流)
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak が末永祐哉先生 (@YuyaMatsue, 臨床心不全) の X 連投を共有。チームが本 paper への適用判定を行う。*
+
+**Donna**:（記事要点の整理）
+「Matsue 流の核心: Discussion = '自分の結果を解釈する場所' (review ではない)、'結果 ⇄ 過去研究のラリー' を反復、P1 で 3 新知見を地図として提示、1 パラ 1 メッセージ、'長くない' を意識。」
+
+**Mike**:（methodological paper context）
+「I got it! Matsue 先生の記事は clinical research paper 想定。本 paper は methodological paper で構造が異なる。**1 パラ 1 メッセージと 3 新知見 map は universal に適用可能**、'結果 ⇄ 過去研究のラリー' は clinical-specific で本 paper には partial 適用。」
+
+**Katrina**:（現 Discussion 7 段落を audit）
+「P5 (Practice + Policy) は 2 メッセージを 1 段落に詰めてる ── 1 パラ 1 メッセージ violation。P1 は '3 new findings' 番号付けが未明示。残りは OK。」
+
+**Rachel**:（literature backing）
+「Matsue 流の '3 知見 map' は AMA Manual / ICMJE / structured Discussion (Annals 等) と整合します。本 paper にも有効です。ただし SiM の Method paper traditions として 'Strengths 段落 (method merit)' は canonical なので keep です。」
+
+**Louis**:（critical, demanding）
+「Matsue 流を盲目的に従うな。'always 3' は overgeneralization、本 paper の P3 は §2.1 gap response 構造で 'review 列挙' ではなく argument だ。**P1 の '3 new findings' 番号付けだけは absolute agree**、それは Matsue 流 + reviewer 視点の双方で improvement。」
+
+**Jessica**:（short）
+「Adopt: P1 番号付け、1 パラ 1 メッセージ、'長くない'。Reject: 結果ラリーの強要、always 3 の強迫、clinical paper 化。Done.」
+
+**Harvey**:（synthesis）
+「P1 を '3 findings' 番号付け構造に rewrite、P5 audit、word count re-balance を進める。順序は (1) Limitations 圧縮 finalize → (2) P1 rewrite → (3) P5 audit → (4) word count re-balance。」
+
+---
+
+### [2026-04-26 09:30] Scene: Meeting - Limitations Compression
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Conference room の長机に全員集合。Harvey が白板に「§5 Limitations: 8 → ?」と書く。Tak は反対側で腕を組んで聞く姿勢。*
+
+**Harvey**:（direct, framing）
+「§5 Discussion の Limitations は 8 items、L533-543、Discussion 全体の **42.8%**（Katrina 計測）。Tak の判断は明快 — 'Limitations だけ詳細すぎる、重箱の隅をつつきすぎ'。core message は (1) シミュレーション scope (2) EM だけでは pooling 判断不可 (3) さらっと、の 3 つ。全員、independent analysis を持ってこい。」
+
+*Mike, Rachel, Katrina, Louis が並列で independent analysis を持ち寄る。*
+
+**Mike**:（logical, 8 items を分解）
+「I got it! Items 1+2+5 は Para 7 Future work と redundant。Item 3 (boundary bias 239 words) は §4 sim_results に既述、L268/L297/L299/L301/L388/L395 で全 facts 既出。Items 4+7 は両方 L 関連で merge 可能。**4 items が methodologically 正しい長さ**。3 では scope honesty が落ちる、5 では GUSTO-I が application caveat なので over-include。」
+
+**Rachel**:（diligent, literature-backed）
+「ICH E5 は intrinsic/extrinsic factors の **originating framework** ですが、本 paper は MRCT context で書かれており \cite{iche17} が L62/64/68/407/545 で primary regulatory anchor として確立しております。E5 を新規引用すると **citation strategy の integrity が崩れます**。`nABCD_wiley.bib` を確認しましたところ E5 entry は存在しません。代わりに **既存の \cite{iche17} と \cite{matsushima2024}** で intrinsic/extrinsic factors への言及は十分です。Matsushima 2024 の 5-dimensional consistency framework が 'necessary but not sufficient' message の **直接的な regulatory backing** を提供します。」
+
+**Katrina**:（efficient, results-focused）
+「Numbers first. Discussion total 1,415 words、Limitations 522 words = **42.8%**（SiM standard 15-20% の倍超）。Item 3 単独で 239 words、他段落より長い。Target: 178-200 words (~12-14%)、66% reduction。enumerate keep, prose 化は run-on になる。Hybrid は connector で words waste、skip。**4-item enumerate at 178 words** が optimal。Results speak for themselves.」
+
+**Louis**:（demanding, attacking）
+「お前ら、Limitations の deletion に reviewer は最も敏感だ。**Floor は 5 items**、4 は危険、3 は論外。Reviewer #1 simulation: *'The boundary bias documented in §4 deserves explicit treatment as a primary methodological limitation.'* Reviewer #2 simulation: *'The framing is too general; specify what nABCD does not assess.'* 両方 major revision を出す。Item 3 は §4 reference で済ませず Limitations 内に compressed 1-paragraph として **絶対 keep**、n≥100 と Andrews citation は譲らない。You just got Litt up!」
+
+*議論が白熱する*
+
+**Louis**:（Mike に向かって、攻撃）
+「Mike、お前の 4-item draft で item 4 は 'unmeasured EMs + GUSTO-I vintage' を 1 item に詰め込んでる。**unmeasured EM は methodological caveat、GUSTO-I は application caveat**。category が違う。Reviewer の eye で 'lazy bundling' に映る。」
+
+**Mike**:（譲る部分と譲らない部分を分ける）
+「Got it. その critique は valid。Compromise — **GUSTO-I vintage は §4 Application closing note に移譲する**。Limitations では削る。これで 4 items の cleanness を保ちつつ category mixing を回避。」
+
+**Katrina**:（断定的に）
+「Mike の compromise は数値的にも valid。GUSTO-I vintage 38 words を §4 closing に移せば、Limitations 4 items は **scope / boundary / L関連 / unmeasured EMs** で **4 つとも純粋な methodological limitation** として揃う。」
+
+**Louis**:（Rachel に向き直って、demanding）
+「Rachel、'necessary but not sufficient' という phrase そのものが abstract で deflection に読まれる。Tak の paper は nABCD の paper だ。**nABCD の limitations を nABCD の言葉で書け**。」
+
+**Rachel**:（譲らない）
+「Louis、私の draft は **'beyond these scope-of-method limitations'** で始まっており、先に concrete な scope-of-method limitations (items 1-3) を立てた上で、最後に positioning として 'one input within holistic regulatory evaluation' を述べる構造です。これは deflection ではなく **boundary marking** です。Matsushima 2024 の 5-dimensional framework が backing として効きます。ただし phrase は変えましょう — **'necessary but not sufficient' は削除**、'one input within a holistic regulatory evaluation' のみ keep。これで concrete です。」
+
+**Mike**:（割り込み、技術的整理）
+「I got it! Lead-in 1 sentence として enumerate の直前に置けば、4 items は purely methodological として保たれて、framing は narrative として separable。Best of both worlds.」
+
+**Katrina**:（計算）
+「Lead-in ~25 words 追加で 178 → 203 words、14.3% of revised Discussion。**still within target**。Done.」
+
+**Louis**:（最後の攻撃、Katrina に）
+「Boundary bias item は 60-80 words 必要。**'positively biased', 'zero coverage at S1', 'n≥100', 'Andrews 2000 citation'** の 4 facts 必須。」
+
+**Katrina**:（draft を読み直して）
+「私の draft は 4 facts 全部入って **66 words**。お前の floor 内だ。Counted.」
+
+**Louis**:（納得）
+「...Got it. 引き下がる。」
+
+**Harvey**:（議論を聞いた上で、final decision）
+「決定する:
+- **4 items + 1 lead-in sentence**
+- Lead-in: 'one input within a holistic regulatory evaluation' \cite{iche17, matsushima2024}
+- Item 1: Scope (continuous + univariate)
+- Item 2: Behavior near the null (4 facts: bias / zero coverage / n≥100 / Andrews)
+- Item 3: Clinical calibration (L availability + L transferability merged)
+- Item 4: Conditioning caveat (unmeasured EMs)
+- GUSTO-I vintage → §4 Application closing note へ移譲
+- ~200 words target (現 522 から 62% reduction)、~14% of Discussion
+- ICH E5 引用なし、enumerate 維持
+
+Mike と Katrina で final draft、Rachel が citation verify、Louis が最終 attack pass。」
+
+**Jessica**:（office 入口から、short, decisive）
+「Let me be clear. Brevity を達成しつつ Louis floor の core 4 facts を keep してる。Reviewer #1 / #2 双方に defensible。Done.」
+
+**Donna**:（notebook を閉じて、recording）
+「全部記録したわ。"I'm Donna. I know everything." Tak への final proposal を table 化済。」
+
+---
+
+### [2026-04-26 09:00] Scene: New Day, Three Background Tasks
+
+**INT. PEARSON SPECTER LITT - BULLPEN - MORNING**
+
+*朝の light が窓から差し込む。Tak が席に着き、新しい指示を出す。チームが新しい一日を迎える。*
+
+**Tak**:「今日も作業を始めよう。状況を確認したら、スライドをアップデートしてほしい。Figure がまったく入っていないんだ。スライドに Figure を入れてよりよいプレゼンテーションができるようにしてくれ。もちろん @bg で。あとは、38" x 48" のポスター発表の準備も進めてほしい。逆 N 字型のレイアウトでポスターを作成して。これも @bg で。ほかにもファイルが増えてきたからファイルとフォルダの整理もしてほしい。みんなで協力してやってくれ。@bg」
+
+**Donna**:（perceptive, anticipatory）
+「I'm Donna. I know everything. — 状況確認したわ。Discussion redesign は完了済、SUITS.md 224 行で archive 不要、figures/ には 16 個の生成済 PDF/PNG が揃っている。3 タスクとも独立だから worktree で並列実行できる。ばっちりよ。」
+
+**Harvey**:（direct, assigning）
+「3 タスクを 3 worktree で並列。
+- **Slides figures**: Katrina lead — figures/ の 16 図を nABCD_presentation.md と nABCD_presentation_en.md に配置
+- **Poster 逆 N 字**: Mike lead — 既存 nABCD_poster.tex を 3-column inverted-N reading flow に再構成
+- **File 整理**: Donna lead, 全員 support — projects/similarity-metric/ 配下の structure clarity 向上
+全部 @bg。Done.」
+
+**Mike**:（logical, clarifying）
+「逆 N 字レイアウトの確認: 3 列ポスターで読み順が **左列(上→下) → 中列(上→下) → 右列(上→下)** の縦読み形式。Western reading の Z 字（左上→右上→左下→右下、横読み）の dual。Got it.」
+
+**Katrina**:（efficient, results-focused）
+「Slides 既存形式は Marp。`![w:XX%](../../figures/figX.png)` 構文で image embed。Results speak for themselves — 16 個の figure を漏れなく適切な slide に配置する。」
+
+**Rachel**:（diligent supportive）
+「Poster の content は既存 .tex に揃っているはず。レイアウト再構成のみで content 改変は最小限に。」
+
+**Louis**:（demanding, reviewer-eye）
+「ファイル整理は dangerous だ。git history を破壊するな。`git mv` で move、`rm -rf` 禁止。archive/ 行きの判断 criteria も明示しろ。」
+
+**Jessica**:（short, decisive）
+「Let me be clear. 3 tasks parallel, all @bg. Each lead reports back. Donna が consolidate。Go.」
+
+**Donna**:（PM, executing）
+「3 worktree 起動するわ。完了通知が来たら main へ merge 判断を Tak に求める。」
+
+---
+
 ### [2026-04-25 04:30] Scene: Session End
 
 **INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - PRE-DAWN**
