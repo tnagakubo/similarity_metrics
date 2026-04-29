@@ -177,7 +177,10 @@
       "Bash(node scripts/check_marp_overflow.js scripts/test/marp_overflow_test.md --verbose)",
       "Bash(npx --yes @marp-team/marp-cli --no-stdin scripts/test/marp_overflow_test.md --html -o scripts/test/marp_overflow_test.html)",
       "Bash(pdflatex -interaction=nonstopmode -halt-on-error nABCD_poster.tex)",
-      "Bash(/c/Program Files/R/R-4.5.2/bin/Rscript.exe *)"
+      "Bash(/c/Program Files/R/R-4.5.2/bin/Rscript.exe *)",
+      "Bash(bibtex nABCD_wiley)",
+      "Bash(pdflatex -interaction=nonstopmode nABCD_wiley.tex)",
+      "Read(//c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/paper/**)"
     ]
   }
 }
