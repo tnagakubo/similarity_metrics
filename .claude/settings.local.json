@@ -180,7 +180,16 @@
       "Bash(/c/Program Files/R/R-4.5.2/bin/Rscript.exe *)",
       "Bash(bibtex nABCD_wiley)",
       "Bash(pdflatex -interaction=nonstopmode nABCD_wiley.tex)",
-      "Read(//c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/paper/**)"
+      "Read(//c/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric/paper/**)",
+      "Bash(sed -i 's|fig3_estimation_quality_color\\\\.png|slide_estimation_quality_color.png|g; s|fig4_gusto_r8_forest_color\\\\.png|fig3_gusto_r8_forest_color.png|g; s|fig5_gusto_r8_scatter_color\\\\.png|slide_gusto_r8_scatter_color.png|g' projects/similarity-metric/paper/slides/nABCD_presentation_en.md)",
+      "Bash(sed -i 's|fig3_estimation_quality\\\\.png|slide_estimation_quality.png|g; s|fig4_gusto_r8_forest\\\\.png|fig3_gusto_r8_forest.png|g; s|fig5_gusto_r8_scatter\\\\.png|slide_gusto_r8_scatter.png|g' projects/similarity-metric/paper/slides/nABCD_presentation.md)",
+      "Bash(sed -i 's|fig3_estimation_quality\\\\.pdf|slide_estimation_quality.pdf|g; s|fig4_gusto_r8_forest\\\\.pdf|fig3_gusto_r8_forest.pdf|g; s|fig5_gusto_r8_scatter\\\\.pdf|slide_gusto_r8_scatter.pdf|g' projects/similarity-metric/poster/nABCD_poster.tex)",
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(gunzip -c \"C:\\\\Users\\\\hrd13\\\\.claude\\\\projects\\\\C--Users-hrd13-Documents-Gak-0-Study-800Claude-20260210-SIM-similarity-metrics\\\\d6e2e3e7-f5f6-40cf-af86-eaf892d8ba43\\\\tool-results\\\\webfetch-1777712226932-0qsziu.bin\")",
+      "Bash(mkdir -p \"/tmp/poster-design\")",
+      "Bash(tar -xzf \"C:\\\\Users\\\\hrd13\\\\.claude\\\\projects\\\\C--Users-hrd13-Documents-Gak-0-Study-800Claude-20260210-SIM-similarity-metrics\\\\d6e2e3e7-f5f6-40cf-af86-eaf892d8ba43\\\\tool-results\\\\webfetch-1777712226932-0qsziu.bin\" -C /tmp/poster-design)",
+      "Bash(mkdir -p /tmp/poster-design)",
+      "Bash(tar -xzf \"/c/Users/hrd13/.claude/projects/C--Users-hrd13-Documents-Gak-0-Study-800Claude-20260210-SIM-similarity-metrics/d6e2e3e7-f5f6-40cf-af86-eaf892d8ba43/tool-results/webfetch-1777712226932-0qsziu.bin\" -C /tmp/poster-design)"
     ]
   }
 }

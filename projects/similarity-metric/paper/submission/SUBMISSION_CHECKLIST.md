@@ -17,12 +17,13 @@
 | Main manuscript | .tex + .pdf | ✅ Done | `nABCD_wiley.tex` + compiled PDF |
 | Title page | .tex or .pdf | 🟡 Draft | `submission/title_page.md` → integrate into .tex |
 | Cover letter | .pdf | 🟡 Draft | `submission/cover_letter.md` → convert to PDF |
-| Figure 1 | .eps, .pdf, or .tiff | ✅ Done | fig1_scenario_overview.pdf/.png |
-| Figure 2 | .eps, .pdf, or .tiff | ✅ Done | fig2_nabcd_definition.pdf/.png |
-| Figure 3 | .eps, .pdf, or .tiff | ✅ Done | fig3_bias.pdf/.png |
-| Figure 4 | .eps, .pdf, or .tiff | ✅ Done | fig4_estimation_quality.pdf/.png |
-| Figure 5 | .eps, .pdf, or .tiff | ✅ Done | fig5_smd_comparison.pdf/.png |
-| Figure 6 | .eps, .pdf, or .tiff | ✅ Done | fig6_application.pdf/.png |
+| Figure 1 | .eps, .pdf, or .tiff | ✅ Done | fig1_nabcd_definition.pdf/.png |
+| Figure 2 | .eps, .pdf, or .tiff | ✅ Done | fig2_bias.pdf/.png |
+| Figure 3 | .eps, .pdf, or .tiff | ✅ Done | fig3_estimation_quality.pdf/.png |
+| Figure 4 | .eps, .pdf, or .tiff | ✅ Done | fig4_gusto_r8_forest.pdf/.png |
+| Figure 5 | .eps, .pdf, or .tiff | ✅ Done | fig5_gusto_r8_scatter.pdf/.png |
+| Slides-only figure | .pdf/.png | ✅ Done | slide_scenario_overview.pdf/.png (paper omits) |
+| Calibration / density figures | .pdf/.png | ✅ Done | fig_gusto_r8_{calibration,density_similar,density_dissimilar}.pdf/.png (slides only) |
 | Supplementary material | .zip | 🔴 TODO | R code package |
 
 ### Manuscript Requirements

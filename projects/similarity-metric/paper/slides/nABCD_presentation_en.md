@@ -14,8 +14,8 @@ style: |
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
 
   :root {
-    --accent1: #003818;
-    --accent2: #008539;
+    --accent1: #D52B1E;
+    --accent2: #d47e78;
     --text-main: #000000;
     --text-light: #505050;
     --bg-light: #F8F9FA;
@@ -63,7 +63,7 @@ style: |
     box-sizing: border-box;
     background: var(--accent1);
     color: white;
-    font-size: 48px;
+    font-size: 44px;
     font-weight: 700;
     padding: 18px 60px 14px;
     margin: 0;
@@ -438,10 +438,6 @@ $$
 
 A threefold difference in variance is completely invisible to SMD
 
-![w:55% h:auto](../../figures/fig5_smd_comparison.png)
-
-*Figure: SMD vs nABCD --- SMD remains zero under scale and skewness differences*
-
 ---
 
 <!-- _class: section -->
@@ -450,29 +446,31 @@ A threefold difference in variance is completely invisible to SMD
 
 ---
 
-# Definition of nABCD
+# Wasserstein-1 Distance and nABCD
 
-### Wasserstein-1 Distance (Earth Mover's Distance)
-
-$$
-W_1(F, G) = \int_{-\infty}^{\infty} |F(x) - G(x)| \, dx
-$$
-
-Geometric interpretation: **total area between two CDFs**
-
-### nABCD: Normalized Area Between Cumulative Distributions
+### Wasserstein-1 Distance
 
 $$
-\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}}
+W_1(F, G) = \int |F(x) - G(x)| \, dx
 $$
 
-- $\text{IQR}_{\text{pooled}}$: interquartile range of the pooled distribution
-- Factor of 2 calibrates so that a 1-IQR location shift yields nABCD $= 0.5$
-- **Scale-free**: interpretation does not depend on measurement units
+Geometric: **total area between two CDFs**
 
-![w:50% h:auto](../../figures/fig2_nabcd_definition.png)
+### nABCD
 
-*Figure: nABCD as the normalized area between two CDFs*
+$$
+\text{nABCD} = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}}
+$$
+
+- 1-IQR location shift → nABCD $= 0.5$; **scale-free** (unit-independent)
+
+---
+
+# nABCD: Visual Definition
+
+![h:480px](../../figures/fig1_nabcd_definition_color.png)
+
+*Normalized area between two CDFs, divided by $2 \cdot \text{IQR}_{\text{pooled}}$*
 
 ---
 
@@ -495,7 +493,7 @@ $$
 
 ---
 
-# Theoretical Foundation: Link to Treatment Effect Heterogeneity
+# Theoretical Foundation: Heterogeneity Bound
 
 ### Kantorovich-Rubinstein Duality
 
@@ -550,9 +548,7 @@ $$
 
 ---
 
-# Simulation Design
-
-### Seven Scenarios
+# Simulation Design: Seven Scenarios
 
 | ID | Description | Distribution 1 | Distribution 2 | True nABCD |
 |----|-------------|-----------------|-----------------|------------|
@@ -566,9 +562,13 @@ $$
 
 $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resamples
 
-![w:60% h:auto](../../figures/fig1_scenario_overview.png)
+---
 
-*Figure: Overview of distribution pairs for scenarios S1--S7*
+# Simulation Design: Scenario Overview
+
+![h:480px](../../figures/slide_scenario_overview_color.png)
+
+*Distribution pairs for scenarios S1--S7 — covering null, pure location shifts, scale-only, skewness, and combined location+scale differences*
 
 ---
 
@@ -576,11 +576,10 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 ### Bias ($n = 100$)
 
-- True nABCD $\geq 0.1$: bias $< 0.02$
-- S3 (0.5$\sigma$): +0.003, S4 (1.0$\sigma$): +0.003 --- negligible
-- Near-boundary scenarios (S1): larger positive bias (non-negativity constraint)
+- True nABCD $\geq 0.1$: bias $< 0.02$ (S3, S4: +0.003 — negligible)
+- Near-boundary (S1): larger positive bias from non-negativity constraint
 
-### Coverage Probability (95% CI, $n = 100$)
+### Coverage Probability (95% CI)
 
 | Scenario | $n = 50$ | $n = 100$ | $n = 200$ |
 |----------|----------|-----------|-----------|
@@ -591,13 +590,17 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 **Recommendation**: $n \geq 100$ per region for reliable estimation and inference
 
-![w:55% h:auto](../../figures/fig4_estimation_quality.png)
+---
 
-*Figure: Estimation quality summary --- bias, coverage, and precision*
+# Estimation Properties: Visual Summary
+
+![h:380px](../../figures/fig2_simulation_results_color.png)
+
+*Bias (A), coverage (B), and CI width (C) across scenarios S1--S7 and sample sizes $n = 50, 100, 200$*
 
 ---
 
-# nABCD vs SMD: Sensitivity Comparison ($n = 100$)
+# nABCD vs SMD: Sensitivity ($n = 100$)
 
 | Scenario | nABCD (mean $\pm$ SD) | SMD (mean $\pm$ SD) | Implication |
 |----------|----------------------|--------------------|----|
@@ -611,10 +614,6 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 - **Scale and skewness**: SMD remains at zero --- only nABCD detects
 - S6 is particularly striking: a large distributional difference (nABCD $= 0.31$) is entirely invisible to SMD
 
-![w:55% h:auto](../../figures/fig5_smd_comparison.png)
-
-*Figure: nABCD vs SMD across scenarios --- SMD pinned to zero in S5/S6*
-
 ---
 
 <!-- _class: section -->
@@ -623,7 +622,7 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 ---
 
-# Application: Hypothetical Thrombolytic MRCT (GUSTO-I)
+# Application: Thrombolytic MRCT (GUSTO-I)
 
 ### Setting
 
@@ -644,38 +643,33 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
   - SBP: no quantitative class-level CATE sensitivity
 - **$L^*$ reverse calculation** applied for both
 
-![w:50% h:auto](../../figures/fig6_application.png)
-
-*Figure: GUSTO-I 16-region overview with Region 8 as anchor*
-
 ---
 
-# nABCD Results: Region 8 vs 15 Partners
+# nABCD Results: R8 vs Partners
 
 ### Age nABCD
 
-- Range: **0.011 (R5, R7) -- 0.076 (R3)** — narrow
-- 11 of 15 partners $< 0.040$
+- Range: **0.011 (R5, R7) -- 0.076 (R3)** — narrow; 11 of 15 partners $< 0.040$
 
 ### SBP nABCD
 
-- Range: **0.015 (R2) -- 0.110 (R9)** — wider than Age
-- Most partners cluster in 0.050--0.110
+- Range: **0.015 (R2) -- 0.110 (R9)** — wider; most cluster in 0.050--0.110
 
 ### Bootstrap CIs
 
-- Mid-rank CIs overlap → ranking confidence varies
-- CI widths reported alongside point estimates to convey precision
-
-![w:55% h:auto](../../figures/fig_gusto_r8_forest.png)
-
-*Figure: Age nABCD forest plot --- Region 8 vs 15 partners (95% bootstrap CI)*
+- Mid-rank CIs overlap → varying ranking confidence; widths reported alongside point estimates
 
 ---
 
-# R2 vs R9: Why Joint Evaluation Is Essential
+# Region 8 vs Partners: Forest Plot
 
-### Contrasting Pattern
+![h:480px](../../figures/fig3_gusto_r8_forest_color.png)
+
+*Forest plots of nABCD with 95% bootstrap CIs — age (A) and SBP (B)*
+
+---
+
+# R2 vs R9: Why Evaluate Jointly
 
 | | R2 | R9 |
 |---|----|----|
@@ -684,37 +678,25 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 ### Implication
 
-- A single effect modifier produces **opposite conclusions**
-- R2: best on SBP, near-worst on Age
-- R9: good on Age, worst on SBP
-- **All candidate effect modifiers must be evaluated jointly**
-
-![w:55% h:auto](../../figures/fig_gusto_r8_scatter.png)
-
-*Figure: Age vs SBP nABCD scatter --- lower-left quadrant: jointly low candidates*
+- A single effect modifier → **opposite conclusions**; R2 best on SBP, near-worst on Age; R9 good on Age, worst on SBP
+- **Evaluate all candidate effect modifiers jointly**
 
 ---
 
-# Leading Pooling Candidates: R4, R6, R13
+# Leading Candidate: R4 (Six Eligible)
 
-### Joint Assessment
+### Plausible Upper Bounds for $L$
 
-- **R4, R6, R13** rank low on both candidate effect modifiers
-- All six nABCD values lie in lower portions of observed ranges
-  - Age: 0.011--0.076 → R4, R6, R13 in lower portion
-  - SBP: 0.015--0.110 → R4, R6, R13 in lower portion
-- Required $L^*$ values fall near lower end of clinically plausible range for thrombolysis class evidence
+- $L_{\text{age,UB}} = 1\times10^{-2}$ /yr; $L_{\text{SBP,UB}} = 2\times10^{-3}$ /mmHg (class-level evidence; GUSTO-I, FTT 1994)
+- A partner is **eligible** on a modifier if $L^* > L_{\text{UB}}$
 
-### Sponsor Implication (soft prioritization)
+### Joint Eligibility
 
-> "the sponsor may reasonably prioritize R4, R6, and R13 as the leading candidates for pooling with Region 8"
+- **Six partners jointly eligible** on both modifiers: **R1, R4, R5, R6, R14, R15**
+- **R4** is the **leading single-pool candidate** — 3rd-lowest age (0.016) and 4th-lowest SBP (0.042); balanced across both modifiers
+- R5 has lowest age nABCD (0.011) but only 6th-lowest on SBP — asymmetric profile
 
-- Quantitative inputs supporting prioritization, not a binary verdict
-- Final judgment rests with sponsor in consultation with clinical / regulatory advisors
-
-![w:55% h:auto](../../figures/fig_gusto_r8_calibration.png)
-
-*Figure: $L^*$ calibration --- required CATE sensitivity per partner against plausible range*
+> Quantitative inputs; final judgment with clinical/regulatory advisors
 
 ---
 
@@ -735,7 +717,7 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 - Two candidate effect modifiers (Age, SBP) produced **markedly different partner rankings**
 - Some partners ranked similar on one but dissimilar on the other
-- **R4, R6, R13** emerged as leading candidates — low on both modifiers, plausible $L^*$
+- **Six partners** (R1, R4, R5, R6, R14, R15) emerged as **jointly eligible**; **R4** is the leading single-pool candidate
 
 ---
 
@@ -750,7 +732,7 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 - $L^*$ varies markedly across partners and modifiers
 - Same nABCD carries different clinical weight depending on partner-specific differences
-- R4, R6, R13 emerged as leading candidates because of **both** low nABCD **and** clinically plausible $L^*$
+- Six partners (R1, R4, R5, R6, R14, R15) emerged as **jointly eligible**; **R4** stood out as leading single-pool candidate due to balanced ranking on both modifiers
 
 > Pooling judgments require **distributional ranking + clinical calibration** across all candidates
 

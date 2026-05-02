@@ -15,6 +15,8 @@ library(predtools)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
+library(patchwork)
+library(ggrepel)
 
 set.seed(2026)
 
@@ -172,83 +174,109 @@ cat("\nResults saved to gusto_r8_results.csv\n")
 # Color palette (colorblind-friendly)
 col_point  <- "#0072B2"  # single neutral blue for all points (no threshold colouring)
 
-# --- Figure A: Forest plot ---
-# No threshold line, no threshold-based coloring. Partners are ranked by
-# ascending age nABCD (same order on both facets for visual consistency).
+# --- Figure A: Forest plot (two panels, independently sorted) ---
+# Panel (A) Age: partners sorted by ascending age nABCD.
+# Panel (B) Systolic BP: partners sorted by ascending SBP nABCD.
+# Partner ordering therefore differs between panels — this difference is
+# itself a substantive observation (the ranking of partners by candidate
+# effect modifier is not the same). Dual palette: greyscale (paper) +
+# vivid red (slides).
 forest_data <- results %>%
   mutate(partner_label = paste0("R", partner))
 
-age_order <- forest_data %>%
-  filter(variable == "age") %>%
-  arrange(nABCD) %>%
-  pull(partner_label)
-forest_data$partner_label <- factor(forest_data$partner_label, levels = rev(age_order))
+.build_forest_panel <- function(data, var_name, var_title, panel_letter, palette) {
+  d <- data %>% filter(variable == var_name)
+  ord <- d %>% arrange(nABCD) %>% pull(partner_label)
+  d$partner_label <- factor(d$partner_label, levels = rev(ord))
 
-forest_data$variable_label <- ifelse(forest_data$variable == "age", "Age", "Systolic BP")
+  if (palette == "color") {
+    col_pt <- "#D52B1E"; col_ci <- "#D52B1E"
+  } else {
+    col_pt <- "#1A1A1A"; col_ci <- "#555555"
+  }
 
-p_forest <- ggplot(forest_data, aes(x = nABCD, y = partner_label)) +
-  geom_errorbarh(aes(xmin = ci_lower, xmax = ci_upper),
-                 height = 0.3, linewidth = 0.4, color = col_point) +
-  geom_point(size = 2, color = col_point) +
-  facet_wrap(~ variable_label, scales = "free_x") +
-  labs(
-    x = "nABCD  (95% percentile bootstrap CI)",
-    y = "Partner region (ordered by ascending age nABCD)",
-    title = NULL
-  ) +
-  theme_minimal(base_size = 11) +
-  theme(
-    legend.position = "none",
-    panel.grid.minor = element_blank(),
-    strip.text = element_text(face = "bold", size = 12)
-  )
+  ggplot(d, aes(x = nABCD, y = partner_label)) +
+    geom_errorbarh(aes(xmin = ci_lower, xmax = ci_upper),
+                   height = 0.3, linewidth = 0.4, color = col_ci) +
+    geom_point(size = 2, color = col_pt) +
+    labs(
+      x = "nABCD",
+      y = "Partner region",
+      title = sprintf("(%s) %s", panel_letter, var_title)
+    ) +
+    theme_minimal(base_size = 11) +
+    theme(
+      legend.position = "none",
+      panel.grid.minor = element_blank(),
+      plot.title       = element_text(size = rel(0.9), hjust = 0),
+      axis.title       = element_text(size = rel(0.9)),
+      axis.text        = element_text(size = rel(0.8), color = "black"),
+      axis.text.y      = element_text(size = rel(0.8), color = "black", hjust = 0),
+      legend.text      = element_text(size = rel(0.8)),
+      plot.background  = element_rect(fill = "white", color = NA),
+      panel.background = element_rect(fill = "white", color = NA)
+    )
+}
 
-ggsave(file.path(fig_dir, "fig_gusto_r8_forest.pdf"), p_forest,
-       width = 7, height = 6, device = cairo_pdf)
-ggsave(file.path(fig_dir, "fig_gusto_r8_forest.png"), p_forest,
-       width = 7, height = 6, dpi = 300)
-cat("Figure A (forest) saved.\n")
+build_forest <- function(palette = c("greyscale", "color")) {
+  palette <- match.arg(palette)
+  pA <- .build_forest_panel(forest_data, "age",   "Age",         "A", palette)
+  pB <- .build_forest_panel(forest_data, "sysbp", "Systolic blood pressure", "B", palette)
+  pA + pB
+}
+
+# Paper standard: width = 7 in, white background. Two-panel forest needs
+# slight extra height to accommodate per-panel y-axis labels.
+ggsave(file.path(fig_dir, "fig3_gusto_r8_forest.pdf"),       build_forest("greyscale"),
+       width = 7, height = 3.5, device = cairo_pdf, bg = "white")
+ggsave(file.path(fig_dir, "fig3_gusto_r8_forest.png"),       build_forest("greyscale"),
+       width = 7, height = 3.5, dpi = 300, bg = "white")
+ggsave(file.path(fig_dir, "fig3_gusto_r8_forest_color.pdf"), build_forest("color"),
+       width = 7, height = 3.5, device = cairo_pdf, bg = "white")
+ggsave(file.path(fig_dir, "fig3_gusto_r8_forest_color.png"), build_forest("color"),
+       width = 7, height = 3.5, dpi = 300, bg = "white")
+cat("Figure A (forest, greyscale + color) saved.\n")
 
 # --- Figure B: Joint distributional assessment (continuum) ---
-# No threshold lines, no quadrant shading, no quadrant labels. Partner regions
-# are plotted as points in the (nABCD_age, nABCD_sysbp) plane. R4, R6, R13 --
-# the joint-ranking leaders (low on both EMs) -- are highlighted with a
-# distinct marker shape for legibility, but there is no binary classification.
-leaders <- c(4, 6, 13)
-scatter_data <- res_wide %>%
-  mutate(
-    partner_label = paste0("R", partner),
-    is_leader = partner %in% leaders
-  )
+# Partner regions plotted in the (nABCD_age, nABCD_sysbp) plane. No
+# threshold-based classification: all points share one shape, equal x/y
+# scale, and labels use collision-avoidance (ggrepel). Dual palette:
+# greyscale (paper) + vivid red (slides). Paper standard: width = 7 in,
+# white background.
+scatter_data <- res_wide %>% mutate(partner_label = paste0("R", partner))
 
-p_scatter <- ggplot(scatter_data, aes(x = nABCD_age, y = nABCD_sysbp)) +
-  geom_point(aes(shape = is_leader, size = is_leader), color = col_point) +
-  geom_text(aes(label = partner_label), vjust = -0.9, hjust = 0.5, size = 3) +
-  scale_shape_manual(
-    values = c(`TRUE` = 17, `FALSE` = 16),
-    labels = c(`TRUE` = "Low nABCD on both EMs (R4, R6, R13)", `FALSE` = "Other partners"),
-    name = NULL
-  ) +
-  scale_size_manual(
-    values = c(`TRUE` = 3.2, `FALSE` = 2.6),
-    guide = "none"
-  ) +
-  labs(
-    x = "nABCD (Age)",
-    y = "nABCD (Systolic BP)",
-    title = NULL
-  ) +
-  theme_minimal(base_size = 11) +
-  theme(
-    legend.position = "bottom",
-    panel.grid.minor = element_blank()
-  )
+build_scatter <- function(palette = c("greyscale", "color")) {
+  palette <- match.arg(palette)
+  col_pt <- if (palette == "color") "#D52B1E" else "#1A1A1A"
 
-ggsave(file.path(fig_dir, "fig_gusto_r8_scatter.pdf"), p_scatter,
-       width = 7, height = 6, device = cairo_pdf)
-ggsave(file.path(fig_dir, "fig_gusto_r8_scatter.png"), p_scatter,
-       width = 7, height = 6, dpi = 300)
-cat("Figure B (scatter) saved.\n")
+  ggplot(scatter_data, aes(x = nABCD_age, y = nABCD_sysbp)) +
+    geom_point(size = 2.6, color = col_pt) +
+    geom_text_repel(aes(label = partner_label), size = 3, color = col_pt,
+                    box.padding = 0.35, point.padding = 0.3,
+                    segment.color = "#888888", segment.size = 0.3,
+                    max.overlaps = Inf, seed = 1) +
+    coord_fixed(xlim = c(0, 0.12), ylim = c(0, 0.12)) +
+    labs(x = "nABCD (Age)", y = "nABCD (Systolic blood pressure)", title = NULL) +
+    theme_minimal(base_size = 11) +
+    theme(
+      panel.grid.minor = element_blank(),
+      axis.title       = element_text(size = rel(0.9)),
+      axis.text        = element_text(size = rel(0.8), color = "black"),
+      legend.text      = element_text(size = rel(0.8)),
+      plot.background  = element_rect(fill = "white", color = NA),
+      panel.background = element_rect(fill = "white", color = NA)
+    )
+}
+
+ggsave(file.path(fig_dir, "slide_gusto_r8_scatter.pdf"),       build_scatter("greyscale"),
+       width = 5, height = 5, device = cairo_pdf, bg = "white")
+ggsave(file.path(fig_dir, "slide_gusto_r8_scatter.png"),       build_scatter("greyscale"),
+       width = 5, height = 5, dpi = 300, bg = "white")
+ggsave(file.path(fig_dir, "slide_gusto_r8_scatter_color.pdf"), build_scatter("color"),
+       width = 5, height = 5, device = cairo_pdf, bg = "white")
+ggsave(file.path(fig_dir, "slide_gusto_r8_scatter_color.png"), build_scatter("color"),
+       width = 5, height = 5, dpi = 300, bg = "white")
+cat("Figure B (scatter, greyscale + color) saved.\n")
 
 # --- Figure C: L* sensitivity analysis (age & sysbp) ---
 # Panels show L* for the partners with the largest nABCD on each EM --
@@ -328,7 +356,6 @@ p_cal_sbp <- ggplot(cal_sbp, aes(x = partner_label, y = Lstar, fill = delta_labe
   )
 
 # Combine panels
-library(patchwork)
 p_calibration <- p_cal_age / p_cal_sbp
 
 ggsave(file.path(fig_dir, "fig_gusto_r8_calibration.pdf"), p_calibration,

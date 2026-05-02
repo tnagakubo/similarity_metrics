@@ -13,6 +13,7 @@
 \raggedbottom
 
 \usepackage{mathtools}
+\usepackage{amssymb}
 \newcommand{\hnABCD}{\mathrlap{\widehat{\phantom{\text{nA}}}}\text{nABCD}}
 
 \graphicspath{{../figures/}}
@@ -114,8 +115,8 @@ W_1(F, G) = \int_{-\infty}^{\infty} |F(x) - G(x)| \, dx.
 Geometrically, this equals the total area between the two CDFs (Figure~\ref{fig:nabcd_definition}). Unlike the standardized mean difference, the Wasserstein distance responds to changes in variance, skewness, and other distributional features.\cite{panaretos2019}
 
 \begin{figure}[t]
-\centerline{\includegraphics[width=\textwidth]{fig2_nabcd_definition.pdf}}
-\caption{nABCD as the area between cumulative distribution functions. The shaded region represents the Wasserstein-1 distance $W_1(F_1, F_2)$, which equals the total area between the two CDFs. nABCD normalizes this area by twice the pooled IQR to achieve scale-free interpretation.\label{fig:nabcd_definition}}
+\centerline{\includegraphics[width=0.8\textwidth]{fig1_nabcd_definition.pdf}}
+\caption{nABCD as the area between cumulative distribution functions, illustrated with a right-skewed Region~1 (gamma distribution) and a symmetric Region~2 (normal distribution). Panel~(A): probability densities. Panel~(B): cumulative distribution functions; the shaded area equals the Wasserstein-1 distance $W_1(F_1, F_2)$.\label{fig:nabcd_definition}}
 \end{figure}
 
 The \emph{normalized Area Between Cumulative Distributions} (nABCD) is defined as the Wasserstein-1 distance normalized by twice the pooled interquartile range:
@@ -228,8 +229,9 @@ We conducted simulation studies to evaluate the estimation properties of the nAB
 We designed seven systematic scenarios for methodological validation, examining controlled distributional differences across location, scale, and combinations thereof. Table~\ref{tab:scenarios} summarizes these scenarios with their true nABCD values.
 
 \begin{table}[ht]
+\centering
 \caption{Simulation scenarios with clinical motivations.\label{tab:scenarios}}
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lllll@{}}
+\begin{tabular}{lllll}
 \toprule
 \textbf{ID} & \textbf{Description} & \textbf{Distribution 1} & \textbf{Distribution 2} & \textbf{True nABCD} \\
 \midrule
@@ -241,7 +243,7 @@ S5 & Scale 1.5$\times$ & $N(50, 10^2)$ & $N(50, 15^2)$ & 0.122 \\
 S6 & Skew (Log-normal) & $N(50, 10^2)$ & LogN$(\mu, \sigma)$ & 0.304 \\
 S7 & Location + Scale & $N(50, 10^2)$ & $N(55, 15^2)$ & 0.175 \\
 \bottomrule
-\end{tabular*}
+\end{tabular}
 \begin{tablenotes}
 \item The Log-normal in S6 is parameterized to match mean 50 with CV $\approx$ 53\%, typical of clinical biomarkers such as ALT. S7 combines location and scale differences, representing the most realistic MRCT pattern.
 \end{tablenotes}
@@ -265,11 +267,12 @@ Consistent with the estimation-centered framework, we evaluated:
 
 \subsubsection{Point Estimation and Coverage}
 
-Table~\ref{tab:bias} presents the bias of the nABCD estimator across scenarios and sample sizes. The estimator showed positive bias under the null hypothesis (S1), with bias decreasing from 0.093 at $n=50$ to 0.047 at $n=200$. This positive bias is attributable to the non-negative nature of the Wasserstein distance. Even when true nABCD equals zero, sampling variability produces positive estimates.
+Table~\ref{tab:bias} presents the bias of the nABCD estimator across scenarios and sample sizes. The estimator showed positive bias under the null hypothesis (S1), with bias decreasing from 0.093 at $n=50$ to 0.047 at $n=200$. This positive bias arises because the non-negativity constraint inherited from the Wasserstein distance yields $\widehat{\text{nABCD}} > 0$ with probability 1 in finite samples, even when the true value equals zero ($F_1 = F_2$ almost everywhere). The estimator remains consistent ($\widehat{\text{nABCD}} \to 0$ as $n \to \infty$), but the convergence is slow near the parameter space boundary.
 
 \begin{table}[ht]
+\centering
 \caption{Bias of nABCD estimator by scenario and sample size.\label{tab:bias}}
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccc@{}}
+\begin{tabular}{lcccc}
 \toprule
 \textbf{Scenario} & \textbf{True nABCD} & $\boldsymbol{n=50}$ & $\boldsymbol{n=100}$ & $\boldsymbol{n=200}$ \\
 \midrule
@@ -281,30 +284,31 @@ S5 (Scale) & 0.122 & 0.028 & 0.014 & 0.007 \\
 S6 (Skew) & 0.304 & 0.015 & 0.008 & 0.003 \\
 S7 (Loc+Scale) & 0.175 & 0.023 & 0.011 & 0.006 \\
 \bottomrule
-\end{tabular*}
+\end{tabular}
 \begin{tablenotes}
 \item Bias is defined as $\text{Mean}(\hnABCD) - \text{nABCD}$. Results based on 10{,}000 replications with $B = 2{,}000$ bootstrap resamples.
 \end{tablenotes}
 \end{table}
 
-For scenarios with true nABCD above approximately 0.1, bias was less than 0.02 in absolute value at $n \geq 100$, indicating satisfactory point estimation performance at practical sample sizes (Figure~\ref{fig:bias}). For S4 (1.0$\sigma$ location shift), bias was negligible (0.006 at $n=50$, 0.001 at $n=200$), confirming accurate estimation even for large distributional differences. For scenarios near the boundary (S1, S2), positive bias was more pronounced and diminished slowly with sample size---a well-known phenomenon for non-negative statistics where sampling variability inflates estimates when the true value is close to zero.
+For scenarios with true nABCD above approximately 0.1, bias was less than 0.02 in absolute value at $n \geq 100$, indicating satisfactory point estimation performance at practical sample sizes (Figure~\ref{fig:simulation}(A)). For S4 (1.0$\sigma$ location shift), bias was negligible (0.006 at $n=50$, 0.001 at $n=200$), confirming accurate estimation even for large distributional differences. For scenarios near the boundary (S1, S2), positive bias was more pronounced and diminished slowly with sample size---a well-known phenomenon for non-negative statistics where sampling variability inflates estimates when the true value is close to zero.
 
-\begin{figure}[t]
-\centerline{\includegraphics[width=\textwidth]{fig3_bias.pdf}}
-\caption{Bias of nABCD estimator by scenario and sample size. Horizontal dashed lines indicate $\pm 0.02$ bias threshold. For scenarios with true nABCD above 0.1, bias is less than 0.02 at $n \geq 100$. Near-boundary scenarios (S1, S2) show larger positive bias due to the non-negativity constraint.\label{fig:bias}}
-\end{figure}
+\begin{figure*}[t]
+\centerline{\includegraphics[width=\textwidth]{fig2_simulation_results.pdf}}
+\caption{Estimation properties of the nABCD estimator across scenarios (S1--S7) and sample sizes ($n = 50, 100, 200$). Panel~(A): bias, with dashed horizontal line at zero. Panel~(B): coverage probability of 95\% percentile bootstrap CIs, with dashed line at the nominal 0.95 level; S1 coverage is structurally zero because the true value lies at the parameter space boundary (see Section~\ref{sec:sim_results}). Panel~(C): mean CI width in nABCD units.\label{fig:simulation}}
+\end{figure*}
 
 Table~\ref{tab:coverage} presents coverage probabilities of the 95\% bootstrap confidence intervals. For scenarios with true nABCD above approximately 0.1, coverage was near-nominal at $n \geq 100$: S3 (0.947--0.951), S4 (0.950--0.957), S6 (0.953--0.954), and S7 (0.935--0.944). S4 (1.0$\sigma$ location shift) showed particularly stable coverage across all sample sizes, with no degradation at larger $n$, confirming satisfactory bootstrap performance even for large distributional differences. S5 (scale) showed moderate undercoverage at $n=50$ (0.856) that improved to near-nominal at $n=200$ (0.933). S2 (small location shift) showed undercoverage at $n=50$ (0.652) due to its near-boundary true value, improving to 0.941 at $n=200$.
 
-Coverage for S1 (null) is not reported because its true nABCD (0.000) lies at the parameter space boundary, where the non-negativity constraint on nABCD produces persistent positive bias that prevents the confidence interval from containing the true value. This does not indicate estimator failure---the estimator is consistent---but rather that sample sizes well beyond 200 per region would be needed for reliable inference when the true distributional difference is negligible.
+Coverage for S1 (null) is shown as zero in Figure~\ref{fig:simulation}(B) because its true nABCD lies at the parameter space boundary. The non-negativity constraint produces persistent positive bias that prevents the finite-sample confidence interval from containing the true value of zero. This does not indicate estimator failure---the estimator is consistent---but rather that sample sizes well beyond 200 per region would be needed for reliable inference when the true distributional difference is negligible.
 
 We also evaluated BCa (bias-corrected and accelerated) confidence intervals in preliminary experiments. BCa intervals showed consistently lower coverage than percentile intervals across all scenarios, particularly for near-boundary scenarios. The BCa correction overcorrects for nABCD because the statistic is bounded below by zero, causing the acceleration parameter to distort the quantile adjustment. Based on these findings, we adopt percentile bootstrap as the primary inference method.
 
 Monte Carlo standard errors for all reported coverage probabilities were below 0.005 at 10{,}000 replications, ensuring that observed differences across scenarios and sample sizes reflect genuine operating characteristic differences rather than simulation noise.
 
 \begin{table}[ht]
+\centering
 \caption{Coverage probability of 95\% percentile bootstrap confidence intervals.\label{tab:coverage}}
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccc@{}}
+\begin{tabular}{lccc}
 \toprule
 \textbf{Scenario} & $\boldsymbol{n=50}$ & $\boldsymbol{n=100}$ & $\boldsymbol{n=200}$ \\
 \midrule
@@ -315,27 +319,21 @@ S5 (Scale) & 0.856 & 0.910 & 0.933 \\
 S6 (Skew) & 0.953 & 0.954 & 0.954 \\
 S7 (Loc+Scale) & 0.917 & 0.935 & 0.944 \\
 \bottomrule
-\end{tabular*}
+\end{tabular}
 \begin{tablenotes}
-\item Coverage under S1 (Null) is not reported because the true nABCD lies at the boundary of the parameter space (0), where positive bias from the non-negativity constraint prevents meaningful coverage assessment.
+\item Coverage under S1 (Null) is shown as zero in Figure~\ref{fig:simulation}(B) but omitted from this table for brevity; the structural zero arises from the non-negativity constraint at the parameter space boundary.
 \item For S4, coverage was near-nominal across all sample sizes (0.950--0.957), confirming satisfactory performance even for large distributional differences. The undercoverage for S2 at small sample sizes (0.652 at $n=50$) and S5 (0.856 at $n=50$) reflects boundary proximity effects that diminish with increasing $n$.
 \end{tablenotes}
 \end{table}
 
 \subsubsection{Estimation Precision}
 
-Figure~\ref{fig:estimation_quality} summarizes the estimation quality across scenarios and sample sizes, presenting both coverage probabilities and mean CI widths.
-
-\begin{figure*}[t]
-\centerline{\includegraphics[width=\textwidth]{fig4_estimation_quality.pdf}}
-\caption{Estimation quality of nABCD bootstrap inference. Panel~(A) shows coverage probability of 95\% bootstrap confidence intervals, with dashed and dotted lines indicating the nominal 0.95 and minimum acceptable 0.90 levels. Panel~(B) shows mean CI width in nABCD units. Coverage exceeds 0.90 for most scenarios at $n \geq 100$, and CI width narrows consistently with increasing $n$.\label{fig:estimation_quality}}
-\end{figure*}
-
-Table~\ref{tab:precision} presents the RMSE and mean CI width across scenarios. RMSE decreased consistently with increasing $n$, reaching values below 0.05 for all scenarios at $n = 200$. Mean CI width narrowed proportionally, with CIs at $n = 100$ typically spanning 0.11--0.19 in nABCD units. In the clinical calibration framework, this CI width propagates to $\Delta_{\max}$. For example, with $L = 0.01$/yr and IQR $= 17$ (values representative of age in the GUSTO-I application), a CI width of 0.13 in nABCD corresponds to a $\Delta_{\max}$ CI width of $2 \times 0.01 \times 17 \times 0.13 = 0.044$ (4.4\%pt)---a level of precision sufficient for meaningful clinical calibration.
+The mean CI width pattern across scenarios and sample sizes is shown in Figure~\ref{fig:simulation}(C). Table~\ref{tab:precision} presents the RMSE and mean CI width across scenarios. RMSE decreased consistently with increasing $n$, reaching values below 0.05 for all scenarios at $n = 200$. Mean CI width narrowed proportionally, with CIs at $n = 100$ typically spanning 0.11--0.19 in nABCD units. In the clinical calibration framework, this CI width propagates to $\Delta_{\max}$. For example, with $L = 0.01$/yr and IQR $= 17$ (values representative of age in the GUSTO-I application), a CI width of 0.13 in nABCD corresponds to a $\Delta_{\max}$ CI width of $2 \times 0.01 \times 17 \times 0.13 = 0.044$ (4.4\%pt)---a level of precision sufficient for meaningful clinical calibration.
 
 \begin{table}[ht]
+\centering
 \caption{RMSE and mean CI width by scenario and sample size.\label{tab:precision}}
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc@{}}
+\begin{tabular}{lcccccc}
 \toprule
 & \multicolumn{3}{c}{\textbf{RMSE}} & \multicolumn{3}{c}{\textbf{Mean CI Width}} \\
 \cmidrule(lr){2-4}\cmidrule(lr){5-7}
@@ -349,7 +347,7 @@ S5 (Scale) & 0.053 & 0.036 & 0.025 & 0.19 & 0.13 & 0.09 \\
 S6 (Skew) & 0.070 & 0.049 & 0.034 & 0.27 & 0.19 & 0.13 \\
 S7 (Loc+Scale) & 0.062 & 0.043 & 0.030 & 0.22 & 0.16 & 0.12 \\
 \bottomrule
-\end{tabular*}
+\end{tabular}
 \begin{tablenotes}
 \item CI width is defined as mean of (upper $-$ lower) across 10{,}000 replications.
 \end{tablenotes}
@@ -362,8 +360,9 @@ Under the null hypothesis (S1), the positive bias produces CIs that are shifted 
 Table~\ref{tab:smd} compares the sensitivity of nABCD and SMD to different types of distributional differences. While both metrics respond to location shifts, SMD is insensitive to differences in variance and shape---the very types of distributional differences that may drive treatment effect heterogeneity through non-linear CATE functions.
 
 \begin{table}[ht]
+\centering
 \caption{Sensitivity comparison: nABCD versus SMD at $n=100$.\label{tab:smd}}
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccc@{}}
+\begin{tabular}{lccc}
 \toprule
 \textbf{Scenario} & \textbf{nABCD (mean $\pm$ SD)} & \textbf{SMD (mean $\pm$ SD)} & \textbf{Implication} \\
 \midrule
@@ -371,16 +370,11 @@ S3 (Location) & $0.183 \pm 0.048$ & $0.50 \pm 0.14$ & Both detect \\
 S5 (Scale only) & $0.136 \pm 0.033$ & $0.00 \pm 0.14$ & Only nABCD detects \\
 S6 (Skew only) & $0.312 \pm 0.048$ & $0.00 \pm 0.14$ & Only nABCD detects \\
 \bottomrule
-\end{tabular*}
+\end{tabular}
 \begin{tablenotes}
 \item SMD depends only on the difference in means, making it insensitive to differences in variance and skewness. nABCD captures the full distributional difference. S6 is particularly informative because a large distributional difference (nABCD $= 0.31$) is entirely invisible to SMD.
 \end{tablenotes}
 \end{table}
-
-\begin{figure*}[t]
-\centerline{\includegraphics[width=\textwidth]{fig5_smd_comparison.pdf}}
-\caption{Comparison of nABCD and SMD across distributional difference types. nABCD responds to scale (S5) and skew (S6) differences where SMD remains near zero, demonstrating its advantage for full distributional comparison.\label{fig:smd}}
-\end{figure*}
 
 In summary, the simulation study across seven scenarios demonstrates that the nABCD estimator provides reliable estimation with the following properties at sample sizes typical in MRCT regional subgroups:
 \begin{enumerate}[1.]
@@ -398,7 +392,7 @@ These estimation properties ensure that nABCD, when combined with the clinical c
 \section{Application: Hypothetical Thrombolytic MRCT Using GUSTO-I Data}\label{sec:application}
 %==============================================================================
 
-We illustrate the nABCD framework through a hypothetical scenario grounded in publicly available data from GUSTO-I, a large international trial in acute myocardial infarction (AMI). A sponsor is developing a novel thrombolytic agent (Drug~T) for AMI and is planning a Phase~3 MRCT across multiple regions. At the planning stage, the sponsor uses IPD from GUSTO-I ($N = 40{,}830$; 16 regions)\cite{gusto1993} to assess distributional similarity of candidate effect modifiers across regions and to identify suitable pooling partners for a designated anchor region. GUSTO-I was not designed as an MRCT and its regions are anonymized. It serves as a convenient publicly available data source for methodological demonstration, and the anonymization precludes demographic or geographic interpretation of the distributional patterns. In practice, sponsors would assemble regional effect modifier distributions from the most representative and current sources available.
+We illustrate the nABCD framework through a hypothetical scenario grounded in publicly available data from GUSTO-I, a large international trial in acute myocardial infarction (AMI). A sponsor is developing a novel thrombolytic agent (Drug~T) for AMI and is planning a Phase~3 MRCT across multiple regions. At the planning stage, the sponsor uses IPD from GUSTO-I ($N = 40{,}830$; 16 regions)\cite{gusto1993} to assess distributional similarity of candidate effect modifiers across regions and to identify suitable pooling partners for a designated anchor region. GUSTO-I was not designed as an MRCT and its regions are anonymized.
 
 \subsection{Scenario Design and Effect Modifier Selection}\label{sec:app_scenario}
 
@@ -407,15 +401,16 @@ For this illustrative exercise, the sponsor identifies two candidate effect modi
 The sponsor selects Region~8 as the anchor region---representing, for instance, a regulatory market where local efficacy evidence is required but sample size is limited. Region~8 comprises $n = 2{,}916$ patients in GUSTO-I, with baseline characteristics summarized in Table~\ref{tab:gusto_r8}. The exercise of identifying Region~8's suitable pooling partners simulates the decision a sponsor would face when seeking regional efficacy assessment through pooling as described in ICH E17.\cite{iche17}
 
 \begin{table}[ht]
+\centering
 \caption{Region~8 baseline characteristics (GUSTO-I).\label{tab:gusto_r8}}
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccc@{}}
+\begin{tabular}{lcccc}
 \toprule
 \textbf{Candidate effect modifier} & \textbf{Mean} & \textbf{SD} & \textbf{Skewness} & \textbf{IQR\textsubscript{pooled}} \\
 \midrule
 Age (years) & 60.2 & 12.1 & $-0.17$ & 17--18 \\
 SBP (mmHg) & 132.4 & 22.9 & 0.20 & 30--34 \\
 \bottomrule
-\end{tabular*}
+\end{tabular}
 \begin{tablenotes}
 \item $n = 2{,}916$. IQR\textsubscript{pooled} ranges reflect variation across the 15 partner-region pairs.
 \end{tablenotes}
@@ -426,8 +421,9 @@ SBP (mmHg) & 132.4 & 22.9 & 0.20 & 30--34 \\
 We computed nABCD between Region~8 and each of the remaining 15 regions for both candidate effect modifiers, with percentile bootstrap 95\% confidence intervals ($B = 2{,}000$). Table~\ref{tab:gusto_nabcd} presents the results. Figure~\ref{fig:gusto_forest} displays these results as a forest plot with bootstrap CIs, with partners ordered by ascending age nABCD to aid visual comparison.
 
 \begin{table}[ht]
+\centering
 \caption{nABCD values (with 95\% percentile bootstrap CIs) for Region~8 versus each partner region (GUSTO-I), listed by region number.\label{tab:gusto_nabcd}}
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lrll@{}}
+\begin{tabular}{lrll}
 \toprule
 \textbf{Partner} & $n$ & \textbf{nABCD\textsubscript{age} [95\% CI]} & \textbf{nABCD\textsubscript{SBP} [95\% CI]} \\
 \midrule
@@ -447,7 +443,7 @@ R14 & 3437 & 0.020 [0.012, 0.036] & 0.064 [0.052, 0.082] \\
 R15 & 2576 & 0.017 [0.011, 0.034] & 0.074 [0.057, 0.093] \\
 R16 & 1231 & 0.050 [0.034, 0.071] & 0.071 [0.051, 0.095] \\
 \bottomrule
-\end{tabular*}
+\end{tabular}
 \begin{tablenotes}
 \item Point estimates with 95\% percentile bootstrap CIs ($B = 2{,}000$, seed = 2026). Regions are listed by region number, and ordering carries no implicit ranking. Bootstrap CIs quantify estimation uncertainty. Narrow CIs lend greater confidence to individual nABCD values, while overlapping CIs indicate partners whose relative position is not sharply resolved by the data.
 \end{tablenotes}
@@ -455,8 +451,8 @@ R16 & 1231 & 0.050 [0.034, 0.071] & 0.071 [0.051, 0.095] \\
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=\textwidth]{fig_gusto_r8_forest.pdf}
-\caption{Forest plot of nABCD point estimates with 95\% percentile bootstrap CIs for Region~8 versus each partner region, for age (left) and systolic blood pressure (right). Partners are ordered by ascending age nABCD to aid visual comparison. See Table~\ref{tab:gusto_nabcd} for values listed by region number. The bootstrap CI widths indicate the precision of each partner's estimated nABCD.}
+\includegraphics[width=0.8\textwidth]{fig3_gusto_r8_forest.pdf}
+\caption{Forest plots of nABCD point estimates with 95\% percentile bootstrap CIs for age (A) and systolic blood pressure (B). Partners are ordered by ascending nABCD within each panel; ordering and horizontal scale differ between panels.}
 \label{fig:gusto_forest}
 \end{figure}
 
@@ -464,57 +460,46 @@ The two candidate effect modifiers produce different patterns of distributional 
 
 Several partners fall in the middle of each ranking where uncertainty intervals overlap substantially. R16's age nABCD ($0.050$) is the 13th-smallest value with 95\% CI $[0.034, 0.071]$, placing it in a region where its relative position is not sharply determined by the data---the CI spans the range covered by several partners with smaller point estimates. R6's age nABCD ($0.026$) is the 9th-smallest value but its SBP nABCD of $0.050$ sits near the lower end of the SBP-nABCD distribution with 95\% CI $[0.032, 0.076]$, similarly spanning a broad region of the SBP ranking. These mid-rank cases illustrate the value of reporting bootstrap CIs alongside point estimates. The ranking itself is accompanied by an uncertainty interval that informs how confidently one partner can be placed above or below another.
 
-An instructive contrast emerges between R2 and R9. R2 has the second-largest age nABCD (0.061) but the smallest SBP nABCD (0.015), while R9 has the 4th-smallest age nABCD (0.017) but the largest SBP nABCD (0.110). A ranking based on either candidate effect modifier alone would reach opposite conclusions about these two regions. This asymmetry underscores the necessity of evaluating all candidate effect modifiers jointly, as visualized in Figure~\ref{fig:gusto_scatter}.
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=\textwidth]{fig_gusto_r8_scatter.pdf}
-\caption{Joint distributional assessment for Region~8. Each point represents a partner region, positioned by nABCD for age (horizontal axis) and SBP (vertical axis). The plot presents distributional similarity as a continuum: partners closer to the lower-left corner rank low on both candidate effect modifiers (R4, R6, R13), partners further along one axis rank low on one but high on the other (R2, R9), and partners further on both axes rank high on both (R3).}
-\label{fig:gusto_scatter}
-\end{figure}
+An instructive contrast emerges between R2 and R9. R2 has the second-largest age nABCD (0.061) but the smallest SBP nABCD (0.015), while R9 has the 4th-smallest age nABCD (0.017) but the largest SBP nABCD (0.110). A ranking based on either candidate effect modifier alone would reach opposite conclusions about these two regions. This asymmetry underscores the necessity of evaluating all candidate effect modifiers jointly.
 
 \subsection{Clinical Interpretation and Pooling Candidates}\label{sec:app_clinical}
 
-For both candidate effect modifiers, $L$ is not quantified at the planning stage, so we apply the $L^*$ reverse-calculation (equation~\ref{eq:lstar}) to determine the CATE sensitivity required for the observed distributional differences to produce clinically meaningful heterogeneity ($\Delta_{\text{clin}} = 1$\%pt and $2$\%pt on the absolute 30-day mortality scale). Table~\ref{tab:gusto_lstar_joint} presents the full results for all 15 partner regions, and the joint distributional pattern is visualized in Figure~\ref{fig:gusto_scatter}.
+We require an upper bound on the CATE sensitivity $L$ for each candidate effect modifier; recall that $L$ governs how strongly treatment effect varies with the modifier. For thrombolysis in acute myocardial infarction, class-level meta-analytic evidence (GUSTO-I,\cite{gusto1993} FTT collaborative meta-analysis\cite{ftt1994}) suggests that age-related and SBP-related treatment effect modification on 30-day mortality falls within approximately 10\%pt per decade and 2\%pt per 10~mmHg, respectively. These are intended as upper plausibility envelopes rather than central effect estimates. We adopt them as illustrative bounds: $L_{\text{age}} = 1\times10^{-2}$ /yr and $L_{\text{SBP}} = 2\times10^{-3}$ /mmHg.
+
+For each partner region, we compare the region-specific $L^*$ value (Table~\ref{tab:gusto_lstar_joint}) with the corresponding plausible upper bound (denoted $L_{\text{UB}}$). A region is judged eligible for pooling on a given effect modifier if $L^* > L_{\text{UB}}$, meaning the CATE sensitivity required for the observed distributional difference to produce $\Delta_{\text{clin}} = 1$\%pt exceeds the plausible bound. On age, the eligible partners are R1, R4, R5, R6, R7, R9, R12, R14, R15 (nine regions with $L^*_{\text{age}} > 0.01$). On SBP, the eligible partners are R1, R4, R5, R6, R13, R14, R15 (seven regions with $L^*_{\text{SBP}} > 0.002$); R7 ($L^*_{\text{SBP}} = 0.0020 = L_{\text{UB}}$) is excluded.
 
 \begin{table}[ht]
-\caption{Clinical interpretation ($L^*$ at $\Delta_{\text{clin}} = 1$\%pt) for all 15 partner regions, listed by region number. $L^*$ is the minimum CATE sensitivity (per year for age, per mmHg for SBP) required for the observed distributional difference to produce a treatment effect difference of $1$\%pt on the absolute 30-day mortality scale.\label{tab:gusto_lstar_joint}}
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lrrrr@{}}
+\centering
+\caption{Clinical interpretation ($L^*$ at $\Delta_{\text{clin}} = 1$\%pt) and joint eligibility for all 15 partner regions, listed by region number. $L^*$ is the minimum CATE sensitivity (per year for age, per mmHg for SBP) required for the observed distributional difference to produce a treatment effect difference of $1$\%pt on the absolute 30-day mortality scale. Eligibility is judged $L^* > L_{\text{UB}}$ with $L_{\text{age},\text{UB}} = 1\times10^{-2}$ /yr and $L_{\text{SBP},\text{UB}} = 2\times10^{-3}$ /mmHg.\label{tab:gusto_lstar_joint}}
+\begin{tabular}{lrrrrccc}
 \toprule
-\textbf{Partner} & \textbf{nABCD\textsubscript{age}} & \textbf{nABCD\textsubscript{SBP}} & \textbf{$L^*$ age (/yr)} & \textbf{$L^*$ SBP (/mmHg)} \\
+\textbf{Partner} & \textbf{nABCD\textsubscript{age}} & \textbf{nABCD\textsubscript{SBP}} & \textbf{$L^*$ age (/yr)} & \textbf{$L^*$ SBP (/mmHg)} & \textbf{Age elig.} & \textbf{SBP elig.} & \textbf{Joint} \\
 \midrule
-R1  & 0.018 & 0.058 & 0.0155 & 0.0028 \\
-R2  & 0.061 & 0.015 & 0.0047 & 0.0105 \\
-R3  & 0.076 & 0.051 & 0.0038 & 0.0030 \\
-R4  & 0.016 & 0.042 & 0.0180 & 0.0038 \\
-R5  & 0.011 & 0.056 & 0.0256 & 0.0030 \\
-R6  & 0.026 & 0.050 & 0.0110 & 0.0030 \\
-R7  & 0.011 & 0.082 & 0.0247 & 0.0020 \\
-R9  & 0.017 & 0.110 & 0.0171 & 0.0015 \\
-R10 & 0.038 & 0.062 & 0.0072 & 0.0025 \\
-R11 & 0.035 & 0.104 & 0.0079 & 0.0016 \\
-R12 & 0.024 & 0.097 & 0.0116 & 0.0016 \\
-R13 & 0.034 & 0.037 & 0.0087 & 0.0042 \\
-R14 & 0.020 & 0.064 & 0.0142 & 0.0023 \\
-R15 & 0.017 & 0.074 & 0.0164 & 0.0021 \\
-R16 & 0.050 & 0.071 & 0.0057 & 0.0023 \\
+R1  & 0.018 & 0.058 & 0.0155 & 0.0028 & \checkmark & \checkmark & \checkmark \\
+R2  & 0.061 & 0.015 & 0.0047 & 0.0105 & --- & \checkmark & --- \\
+R3  & 0.076 & 0.051 & 0.0038 & 0.0030 & --- & \checkmark & --- \\
+R4  & 0.016 & 0.042 & 0.0180 & 0.0038 & \checkmark & \checkmark & \checkmark \\
+R5  & 0.011 & 0.056 & 0.0256 & 0.0030 & \checkmark & \checkmark & \checkmark \\
+R6  & 0.026 & 0.050 & 0.0110 & 0.0030 & \checkmark & \checkmark & \checkmark \\
+R7  & 0.011 & 0.082 & 0.0247 & 0.0020 & \checkmark & --- & --- \\
+R9  & 0.017 & 0.110 & 0.0171 & 0.0015 & \checkmark & --- & --- \\
+R10 & 0.038 & 0.062 & 0.0072 & 0.0025 & --- & \checkmark & --- \\
+R11 & 0.035 & 0.104 & 0.0079 & 0.0016 & --- & --- & --- \\
+R12 & 0.024 & 0.097 & 0.0116 & 0.0016 & \checkmark & --- & --- \\
+R13 & 0.034 & 0.037 & 0.0087 & 0.0042 & --- & \checkmark & --- \\
+R14 & 0.020 & 0.064 & 0.0142 & 0.0023 & \checkmark & \checkmark & \checkmark \\
+R15 & 0.017 & 0.074 & 0.0164 & 0.0021 & \checkmark & \checkmark & \checkmark \\
+R16 & 0.050 & 0.071 & 0.0057 & 0.0023 & --- & \checkmark & --- \\
 \bottomrule
-\end{tabular*}
+\end{tabular}
 \begin{tablenotes}
-\item Regions are listed by region number, and ordering carries no implicit ranking. The $L^*$ values quantify the CATE sensitivities at which these distributional differences would translate into clinically meaningful treatment effect heterogeneity.
+\item Regions are listed by region number, and ordering carries no implicit ranking. \checkmark{} indicates eligibility ($L^* > L_{\text{UB}}$); --- indicates ineligibility.
 \end{tablenotes}
 \end{table}
 
-\begin{figure}[ht]
-\centering
-\includegraphics[width=\textwidth]{fig_gusto_r8_calibration.pdf}
-\caption{Clinical interpretation ($L^*$) for Region~8. Both panels show $L^*$---the minimum CATE sensitivity that would translate the observed distributional difference into a clinically meaningful treatment effect difference---at two clinical margin values ($\Delta_{\text{clin}} = 1$\%pt, $2$\%pt). (a)~Age: $L^*$ (per year) for the partners with the largest age nABCD (R16, R2, R3). (b)~SBP: $L^*$ (per mmHg) for the partners with the largest SBP nABCD values.}
-\label{fig:gusto_calibration}
-\end{figure}
+A region is jointly eligible if it satisfies the criterion on both candidate effect modifiers, since pooling requires distributional compatibility across all evaluated modifiers. Six regions meet this AND condition: R1, R4, R5, R6, R14, R15. The remaining nine partners fail on at least one effect modifier---for example, R2 fails on age ($L^*_{\text{age}} = 0.0047$), R9 fails on SBP ($L^*_{\text{SBP}} = 0.0015$)---and are not recommended for pooling under these clinical assumptions.
 
-The joint assessment identifies three regions---R4, R6, and R13---that rank low on both candidate effect modifiers, with all six nABCD values lying in the lower portions of the observed ranges (age: 0.011--0.076; SBP: 0.015--0.110) (Table~\ref{tab:gusto_lstar_joint}; Figure~\ref{fig:gusto_scatter}, lower-left quadrant). These three regions exhibit low nABCD on both modifiers, and their required $L^*$ values (Table~\ref{tab:gusto_lstar_joint}; Figure~\ref{fig:gusto_calibration}) lie near the lower end of the range that could reasonably be considered clinically plausible for thrombolysis in AMI based on the available class evidence. Accordingly, \emph{the sponsor may reasonably prioritize R4, R6, and R13 as the leading candidates for pooling with Region~8}.
-
-The framework does not assert binary ``poolable'' or ``not poolable'' designations. Rather, it supplies quantitative inputs---nABCD values, bootstrap confidence intervals (Table~\ref{tab:gusto_nabcd}), and $L^*$ sensitivities (Table~\ref{tab:gusto_lstar_joint})---that support the sponsor's judgment in consultation with clinical and regulatory advisors. Sponsors considering partners outside these leading candidates (R4, R6, R13) may examine the partner-specific $L^*$ values and bootstrap CI widths to evaluate the precision and plausibility of pooling on each candidate effect modifier. We note that the GUSTO-I data were collected during 1990--1993, and demographic and clinical practice changes since then may limit the contemporary relevance of these specific region-level distributions; the application here serves strictly as a methodological illustration using publicly available IPD, not as an endorsement of GUSTO-I-era distributions as current references for thrombolytic-trial planning.
+Among the jointly eligible partners, R4 emerges as the leading single-pool candidate. R4 ranks 3rd-lowest on age (0.016) and 4th-lowest on SBP (0.042), balanced across both modifiers. R5 has the lowest age nABCD (0.011) but the 6th-lowest SBP nABCD (0.056), an asymmetric profile. The framework supplies the quantitative inputs (nABCD with bootstrap CIs in Table~\ref{tab:gusto_nabcd}, partner-specific $L^*$ in Table~\ref{tab:gusto_lstar_joint}, and joint eligibility under the assumed bounds) to support sponsor judgment in consultation with clinical and regulatory advisors. Note that the GUSTO-I data were collected during 1990--1993; the application here serves as methodological illustration using publicly available IPD, not as an endorsement of these specific distributions for contemporary thrombolytic-trial planning.
 
 %==============================================================================
 \section{Discussion}\label{sec:discussion}
@@ -522,7 +507,7 @@ The framework does not assert binary ``poolable'' or ``not poolable'' designatio
 
 This paper addresses three methodological gaps identified in Section~\ref{sec:existing}, demonstrating that nABCD: (i) captures scale and skewness differences in regional effect modifier distributions that are invisible to standardized mean differences, as confirmed by simulation scenarios with location-preserving variance and shape contrasts (S5, S6); (ii) translates distributional distance into a clinically interpretable scale via the heterogeneity bound \(\Delta_{\max}\) (equation~\ref{eq:delta_max}), providing a theoretical link to regional treatment effect heterogeneity that is absent in empirical-distribution-function tests such as the Kolmogorov--Smirnov statistic; and (iii) admits reliable percentile bootstrap inference for non-negligible distributional differences at moderate sample sizes (\(n \geq 100\) per region, coverage 0.88--0.96 across S2--S7), while exhibiting characterized boundary behavior near the null that delimits the operational range of inference.
 
-These methodological findings carry two interpretive implications for pooling decisions, illustrated by the GUSTO-I application as a worked example of the framework's operation rather than a substantive epidemiological claim. First, when multiple candidate effect modifiers are under consideration, all candidates must be evaluated jointly. A partner ranked similar on one effect modifier may not be similar on another, as exemplified by the contrast between R2 and R9. Restricting evaluation to a subset of candidates risks selecting partners whose distributional differences on the omitted modifiers would later compromise consistency. Second, partner selection cannot rest on nABCD ranking alone. The required CATE sensitivity $L^*$ that would translate a given nABCD into a clinically meaningful $\Delta_{\max}$ varies markedly across partners and across candidate effect modifiers, so the same nABCD value carries different clinical weight depending on the partner-specific distributional differences. In the GUSTO-I example, R4, R6, and R13 emerged as leading pooling candidates not solely because their nABCD values were low on both candidate effect modifiers, but also because the corresponding $L^*$ values fell within ranges considered clinically plausible given the class-level evidence reviewed in Section~\ref{sec:application}. Pooling judgments therefore require both distributional ranking and clinical calibration, applied across the full set of candidate effect modifiers.
+These methodological findings carry two interpretive implications for pooling decisions, illustrated by the GUSTO-I application as a worked example of the framework's operation rather than a substantive epidemiological claim. First, when multiple candidate effect modifiers are under consideration, all candidates must be evaluated jointly. A partner ranked similar on one effect modifier may not be similar on another, as exemplified by the contrast between R2 and R9. Restricting evaluation to a subset of candidates risks selecting partners whose distributional differences on the omitted modifiers would later compromise consistency. Second, partner selection cannot rest on nABCD ranking alone. The required CATE sensitivity $L^*$ that would translate a given nABCD into a clinically meaningful $\Delta_{\max}$ varies markedly across partners and across candidate effect modifiers, so the same nABCD value carries different clinical weight depending on the partner-specific distributional differences. In the GUSTO-I example, six partners (R1, R4, R5, R6, R14, R15) emerged as jointly eligible because their $L^*$ values exceeded the plausible bounds reviewed in Section~\ref{sec:application}; R4 stood out as the leading single-pool candidate due to its balanced ranking on both modifiers. Pooling judgments therefore require both distributional ranking and clinical calibration, applied across the full set of candidate effect modifiers.
 
 Section~\ref{sec:existing} identified three gaps in existing distributional measures. SMD captures only location. The KS statistic and related EDF tests lack a clinically interpretable scale and a theoretical link to treatment effect heterogeneity. KL divergence is asymmetric, can diverge under non-overlapping support, and requires density estimation impractical at small regional samples. nABCD addresses all three. Where SMD captures only the mean, our simulation confirmed that scale (S5) and skewness (S6) differences produced near-zero SMD yet non-negligible nABCD. Where the KS statistic offers no clinical-scale translation, the IQR normalization and the heterogeneity bound (equation~\ref{eq:delta_max}) translate distributional distance into clinically meaningful units. Where KL divergence is asymmetric and prone to instability under limited sample overlap, nABCD is symmetric, finite for any pair of empirical distributions, and computable directly from CDFs without density estimation, while remaining amenable to bootstrap inference.
 
