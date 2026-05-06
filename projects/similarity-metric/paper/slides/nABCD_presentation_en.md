@@ -509,10 +509,10 @@ $$
 <div class="block-title">nABCD: scale-free dissimilarity</div>
 <div class="block-body">
 
-Normalized by the pooled IQR — a one-IQR location shift yields nABCD = 0.5.
+Normalized by the pooled IQR — a one-IQR location shift yields nABCD = 1.0.
 
 $$
-\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}}
+\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{\text{IQR}_{\text{pooled}}}
 $$
 
 </div>
@@ -537,7 +537,7 @@ $$
 If the CATE $\tau(x)$ is Lipschitz continuous with constant $L$:
 
 $$
-|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
+|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
 $$
 
 - $L$: upper bound on treatment effect change per unit change in the effect modifier
@@ -555,7 +555,7 @@ $$
 <div class="block-body">
 
 $$
-\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
+\Delta_{\max} = L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
 $$
 
 - Worst-case regional treatment effect difference on the **clinical scale**
@@ -569,7 +569,7 @@ $$
 <div class="block-body">
 
 $$
-L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
+L^* = \frac{\Delta_{\text{clin}}}{\text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
 $$
 
 - $\Delta_{\text{clin}}$: clinically important difference (e.g., NI margin)
@@ -828,7 +828,7 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 ### The Principal Contribution
 
 $$
-\boxed{|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
+\boxed{|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
 $$
 
 - nABCD + bootstrap CI + clinical calibration ($\Delta_{\max}$ or $L^*$)

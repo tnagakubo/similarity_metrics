@@ -459,11 +459,11 @@ $$
 ### nABCD: 正規化された CDF 間面積
 
 $$
-\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}}
+\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{\text{IQR}_{\text{pooled}}}
 $$
 
 - $\text{IQR}_{\text{pooled}}$: プールされた分布の四分位範囲
-- 係数 2 により、1-IQR の位置シフトで nABCD $= 0.5$ となるよう較正
+- 1-IQR の位置シフトで nABCD $= 1.0$ となるよう較正
 - **スケールフリー**: 測定単位に依存しない解釈が可能
 
 ![w:50% h:auto](../../figures/fig1_nabcd_definition.png)
@@ -504,7 +504,7 @@ $$
 CATE $\tau(x)$ が Lipschitz 定数 $L$ を持つとき:
 
 $$
-|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
+|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
 $$
 
 - $L$: effect modifier の1単位変化あたりの治療効果変化の上界
@@ -517,7 +517,7 @@ $$
 ### 推定量
 
 $$
-\widehat{\text{nABCD}} = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{2 \cdot \widehat{\text{IQR}}_{\text{pooled}}}
+\widehat{\text{nABCD}} = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{\widehat{\text{IQR}}_{\text{pooled}}}
 $$
 
 ### 漸近分布と Bootstrap
@@ -534,7 +534,7 @@ $$
 ### 経路 1: $L$ が利用可能な場合 — $\Delta_{\max}$
 
 $$
-\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
+\Delta_{\max} = L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
 $$
 
 - 観測された分布差から生じうる **最大治療効果差** を臨床スケールで表現
@@ -543,7 +543,7 @@ $$
 ### 経路 2: $L$ が未知の場合 — $L^*$ 逆算
 
 $$
-L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
+L^* = \frac{\Delta_{\text{clin}}}{\text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
 $$
 
 - $\Delta_{\text{clin}}$: 臨床的に重要な治療効果差 (例: 非劣性マージン)
@@ -899,7 +899,7 @@ Percentile bootstrap, $B = 2{,}000$
 ### 本研究の本質的貢献
 
 $$
-\boxed{|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
+\boxed{|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
 $$
 
 - これまで **qualitative judgment** に留まっていた "similar enough" を、

@@ -104,7 +104,7 @@ European countries ── smaller
 ```
 India-UK Age (nABCD = 0.565):
 
-  Δ_max = 2 × L × IQR_pooled × nABCD
+  Δ_max = L × IQR_pooled × nABCD
 
   Δ_max = 2%pt を達成するのに必要な L* ≈ 0.005/年
 
@@ -194,7 +194,7 @@ IST-3 の logistic regression（outcome: OHS 0-2 at 6 months）+ marginal standa
 ### Δ_max の計算
 
 ```
-Δ_max = 2 × L × IQR_pooled × nABCD
+Δ_max = L × IQR_pooled × nABCD
 ```
 
 ### ★ RANKING REVERSAL ★
@@ -266,7 +266,7 @@ L の範囲:     0.5×L_mean   L_mean    2×L_mean
     │              │              │              │
     │ L* 感度分析  │              │ 臨床較正     │
     │ "L がいくつ  │              │ Δ_max 算出   │
-    │  なら問題？" │              │ (= 2L·IQR·   │
+    │  なら問題？" │              │ (= L·IQR·    │
     │              │              │    nABCD)    │
     └──────┬───────┘              └──────┬───────┘
            ▼                             ▼

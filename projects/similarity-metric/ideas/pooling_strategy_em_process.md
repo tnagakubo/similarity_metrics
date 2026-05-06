@@ -36,7 +36,7 @@
 
 - 各候補変数についてnABCDとブートストラップCIを計算
 - CATE感度 $L$ が未知のため、**L*逆算（breakeven analysis）** を実施
-  - $L^* = \Delta_{\text{clin}} / (2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD})$
+  - $L^* = \Delta_{\text{clin}} / (\text{IQR}_{\text{pooled}} \cdot \text{nABCD})$
   - 「この分布差が臨床的に問題になるのは、$L$ が $L^*$ を超える場合」
 - $L$ の複数値に対する**感度分析テーブル**で $\Delta_{\max}$ を報告
 - 参照ベンチマーク（表2）による初期評価
@@ -66,7 +66,7 @@
 
 1. **EM分布の比較**: 特定されたEMについて地域間の分布を定量比較
 2. **CATE感度の推定**: 先行試験や文献からLipschitz定数 $L$ を推定
-3. **臨床較正**: $\Delta_{\max} = 2L \cdot \text{IQR} \cdot \text{nABCD}$ を計算
+3. **臨床較正**: $\Delta_{\max} = L \cdot \text{IQR} \cdot \text{nABCD}$ を計算
 4. **臨床的判断**: $\Delta_{\max}$ を全体治療効果、非劣性マージン等と比較
 
 ### 3.3 nABCDフレームワークの適用

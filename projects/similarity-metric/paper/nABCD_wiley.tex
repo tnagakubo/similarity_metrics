@@ -38,7 +38,7 @@
 \corres{Corresponding Author, Department Name, Institution Name, Address. \email{corresponding@institution.edu}}
 
 \abstract[Abstract]{%
-The ICH E17 guideline describes regional pooling in multi-regional clinical trials (MRCTs) in terms of the similarity of effect modifier distributions, but provides no quantitative methodology. We propose the normalized Area Between Cumulative Distributions (nABCD), a planning-stage dissimilarity index defined as the Wasserstein-1 distance divided by twice the pooled interquartile range. Unlike the standardized mean difference (SMD), nABCD captures differences in scale and skewness in addition to location---distributional features that may drive treatment effect heterogeneity through non-linear effect modification. Because nABCD requires only baseline effect modifier distributions, it can be computed from any representative data source, including prior trials, disease registries, and real-world evidence (RWE) databases---enabling a common planning scenario in which a small-sample region identifies suitable pooling partners before the trial begins. We develop a dual-pathway clinical calibration: when prior evidence on conditional average treatment effect (CATE) sensitivity ($L$) is available, nABCD is translated into a maximum potential regional treatment effect difference ($\Delta_{\max}$) with bootstrap confidence intervals; when $L$ is unknown, the framework reverse-calculates the required CATE sensitivity ($L^*$) at pre-specified clinical margins. Simulation studies across seven systematic scenarios demonstrated satisfactory bias and coverage of the percentile bootstrap estimator for non-negligible distributional differences at moderate sample sizes per region. We illustrate the framework through a hypothetical thrombolytic MRCT grounded in publicly available GUSTO-I individual patient data, with one region designated as a small-sample anchor and the remaining regions evaluated as pooling partners on two candidate effect modifiers (age and systolic blood pressure). Partner rankings differed markedly between the two effect modifiers, with several partners ranked similar on one but dissimilar on the other, demonstrating that all candidate effect modifiers must be evaluated jointly. A small subset of partners emerged as leading pooling candidates because they ranked low on both candidate effect modifiers and required clinically implausible CATE sensitivity to produce a meaningful treatment effect difference. The principal contribution of this work is to transform the previously qualitative judgment of ``similar enough'' into a reproducible quantitative basis for sponsor judgment, filling the methodological gap in ICH E17 implementation and supporting evidence-based regional pooling decisions from any representative population data source.}
+The ICH E17 guideline describes regional pooling in multi-regional clinical trials (MRCTs) in terms of the similarity of effect modifier distributions, but provides no quantitative methodology. We propose the normalized Area Between Cumulative Distributions (nABCD), a planning-stage dissimilarity index defined as the Wasserstein-1 distance divided by the pooled interquartile range. Unlike the standardized mean difference (SMD), nABCD captures differences in scale and skewness in addition to location---distributional features that may drive treatment effect heterogeneity through non-linear effect modification. Because nABCD requires only baseline effect modifier distributions, it can be computed from any representative data source, including prior trials, disease registries, and real-world evidence (RWE) databases---enabling a common planning scenario in which a small-sample region identifies suitable pooling partners before the trial begins. We develop a dual-pathway clinical calibration: when prior evidence on conditional average treatment effect (CATE) sensitivity ($L$) is available, nABCD is translated into a maximum potential regional treatment effect difference ($\Delta_{\max}$) with bootstrap confidence intervals; when $L$ is unknown, the framework reverse-calculates the required CATE sensitivity ($L^*$) at pre-specified clinical margins. Simulation studies across seven systematic scenarios demonstrated satisfactory bias and coverage of the percentile bootstrap estimator for non-negligible distributional differences at moderate sample sizes per region. We illustrate the framework through a hypothetical thrombolytic MRCT grounded in publicly available GUSTO-I individual patient data, with one region designated as a small-sample anchor and the remaining regions evaluated as pooling partners on two candidate effect modifiers (age and systolic blood pressure). Partner rankings differed markedly between the two effect modifiers, with several partners ranked similar on one but dissimilar on the other, demonstrating that all candidate effect modifiers must be evaluated jointly. A small subset of partners emerged as leading pooling candidates because they ranked low on both candidate effect modifiers and required clinically implausible CATE sensitivity to produce a meaningful treatment effect difference. The principal contribution of this work is to transform the previously qualitative judgment of ``similar enough'' into a reproducible quantitative basis for sponsor judgment, filling the methodological gap in ICH E17 implementation and supporting evidence-based regional pooling decisions from any representative population data source.}
 
 \keywords{multi-regional clinical trial; ICH E17; effect modifier; Wasserstein distance; regional pooling; distributional similarity}
 
@@ -119,12 +119,12 @@ Geometrically, this equals the total area between the two CDFs (Figure~\ref{fig:
 \caption{nABCD as the area between cumulative distribution functions, illustrated with a right-skewed Region~1 (gamma distribution) and a symmetric Region~2 (normal distribution). Panel~(A): probability densities. Panel~(B): cumulative distribution functions; the shaded area equals the Wasserstein-1 distance $W_1(F_1, F_2)$.\label{fig:nabcd_definition}}
 \end{figure}
 
-The \emph{normalized Area Between Cumulative Distributions} (nABCD) is defined as the Wasserstein-1 distance normalized by twice the pooled interquartile range:
+The \emph{normalized Area Between Cumulative Distributions} (nABCD) is defined as the Wasserstein-1 distance normalized by the pooled interquartile range:
 \begin{equation}
-\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}},
+\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{\text{IQR}_{\text{pooled}}},
 \label{eq:nabcd}
 \end{equation}
-where $\text{IQR}_{\text{pooled}} = Q_{0.75}(F_{\text{pool}}) - Q_{0.25}(F_{\text{pool}})$ with $F_{\text{pool}} = \lambda F_1 + (1-\lambda) F_2$ and $\lambda = n_1/(n_1+n_2)$. The denominator normalizes $W_1$ by a scale estimator to achieve scale-free interpretation. We adopt the interquartile range (IQR) for its direct interpretability as the central 50\% spread of the effect modifier distribution. The factor of 2 calibrates nABCD so that a one-IQR location shift yields nABCD $= 0.5$.
+where $\text{IQR}_{\text{pooled}} = Q_{0.75}(F_{\text{pool}}) - Q_{0.25}(F_{\text{pool}})$ with $F_{\text{pool}} = \lambda F_1 + (1-\lambda) F_2$ and $\lambda = n_1/(n_1+n_2)$. The denominator normalizes $W_1$ by a scale estimator to achieve scale-free interpretation. We adopt the interquartile range (IQR) for its direct interpretability as the central 50\% spread of the effect modifier distribution. nABCD is calibrated so that a one-IQR location shift yields nABCD $= 1.0$.
 
 $W_1$ is a proper distance satisfying the triangle inequality.\cite{villani2009} Normalization by the pair-dependent pooled IQR does not preserve this property, but it enables comparison of distributional similarity across effect modifiers measured on different scales---a practical necessity when assessing multiple covariates simultaneously. nABCD thus serves as a dissimilarity index retaining non-negativity, symmetry, and identity of indiscernibles (Proposition~\ref{prop:nonnegativity}).
 
@@ -153,13 +153,13 @@ Combining the bound above with the nABCD definition (equation~\ref{eq:nabcd}) yi
 \begin{proposition}\label{prop:heterogeneity}
 \textup{(Connection to heterogeneity).} If the CATE function is Lipschitz continuous with constant $L$, then
 \begin{equation}
-|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\textup{pooled}} \cdot \text{nABCD}(F_1, F_2).
+|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot \text{IQR}_{\textup{pooled}} \cdot \text{nABCD}(F_1, F_2).
 \label{eq:heterogeneity_nabcd}
 \end{equation}
 \end{proposition}
 
 \begin{proof}
-Substituting (\ref{eq:nabcd}) into (\ref{eq:heterogeneity_bound}) yields $|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot W_1(F_1, F_2) = L \cdot 2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2) = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)$.
+Substituting (\ref{eq:nabcd}) into (\ref{eq:heterogeneity_bound}) yields $|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot W_1(F_1, F_2) = L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)$.
 \end{proof}
 
 \noindent The Lipschitz assumption is appropriate when the CATE function varies smoothly with the effect modifier. For threshold or step-function CATEs, $L$ can be arbitrarily large and the bound becomes conservative. In such cases the clinical calibration should be interpreted as a worst-case bound rather than a tight estimate (see Section~\ref{sec:discussion}).
@@ -168,7 +168,7 @@ Substituting (\ref{eq:nabcd}) into (\ref{eq:heterogeneity_bound}) yields $|\bar{
 
 Given samples $\{X_{1,i}\}_{i=1}^{n_1}$ from region 1 and $\{X_{2,j}\}_{j=1}^{n_2}$ from region 2, nABCD is estimated using empirical distribution functions. Since $\hat{F}_1$ and $\hat{F}_2$ are piecewise constant (right-continuous step functions), the integral in equation~(\ref{eq:wasserstein}) reduces to a finite sum over the intervals defined by the combined order statistics:
 \begin{equation}
-\hnABCD = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{2 \cdot \widehat{\text{IQR}}_{\text{pooled}}},
+\hnABCD = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{\widehat{\text{IQR}}_{\text{pooled}}},
 \label{eq:estimator}
 \end{equation}
 where $\hat{F}_r$ denotes the empirical CDF (right-continuous) of region $r$, and $x_{(1)} < \cdots < x_{(n_1+n_2)}$ are the combined order statistics. The asymptotic distribution of $W_1$ is non-standard. del Barrio et al.\cite{delbarrio1999} showed that $\sqrt{n}\,W_1(\hat{F}_n, F) \xrightarrow{d} \int |B(F(x))|\,dx$, where $B$ is a standard Brownian bridge. Because the quantiles of this limiting distribution depend on the unknown $F$, no universal critical values are available and direct construction of asymptotic confidence intervals is impractical. We therefore employ the nonparametric percentile bootstrap with $B = 2{,}000$ replicates.\cite{efron1993} In the two-sample setting, when $F_1 \neq F_2$ the Hadamard derivative of the $L_1$ functional is linear, so the ordinary nonparametric bootstrap is consistent.\cite{sommerfeld2018} Convergence occurs at rate $\sqrt{n_1 n_2/(n_1+n_2)}$ (see Appendix~\ref{app:asymptotic} for details). The estimator~(\ref{eq:estimator}) is computed in $O((n_1 + n_2) \log(n_1 + n_2))$ time, dominated by sorting the combined order statistics.
@@ -181,7 +181,7 @@ A central feature of nABCD is its connection to treatment effect heterogeneity t
 
 From equation~(\ref{eq:heterogeneity_nabcd}), the maximum potential difference in regional average treatment effects attributable to effect modifier distributional differences is:
 \begin{equation}
-\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2),
+\Delta_{\max} = L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2),
 \label{eq:delta_max}
 \end{equation}
 where $L$ is the Lipschitz constant of the CATE function $\tau(x)$ with respect to the effect modifier. $L$ serves as a sensitivity parameter controlling the worst-case treatment effect heterogeneity. When CATE sensitivity $L$ has been independently estimated---for example, from a prior Phase~2 interaction analysis or a meta-analysis reporting explicit per-unit subgroup-specific treatment effects on the outcome scale---equation~(\ref{eq:delta_max}) provides a direct clinical-scale translation of the observed distributional difference. In practice at the MRCT planning stage, a numerical $L$ is often unavailable even when prior subgroup evidence exists. Published subgroup reports typically document direction and significance of interaction rather than a per-unit slope, and estimates are sensitive to model choice and the reporting scale. The $L^*$ reverse-calculation introduced next (Section~\ref{sec:sensitivity}) is therefore the more commonly applicable planning-stage pathway, while equation~(\ref{eq:delta_max}) becomes applicable once $L$ is available in confirmatory or post-Phase-2 settings.
@@ -191,7 +191,7 @@ The clinical calibration procedure is as follows:
 \item Identify candidate effect modifiers and compute nABCD with bootstrap CIs for each effect modifier across region pairs.
 \item For each effect modifier, estimate or bound $L$ from prior knowledge (e.g., subgroup analyses showing treatment effect varies by $\Delta\tau$ per unit change in the effect modifier, giving $L \approx \Delta\tau / \Delta x$).
 \item Compute $\Delta_{\max}$ using equation~(\ref{eq:delta_max}). This represents the worst-case treatment effect difference attributable to the distributional difference.
-\item Derive the bootstrap CI for $\Delta_{\max}$ from the nABCD confidence interval: $[\Delta_{\max,L},\, \Delta_{\max,U}] = 2L \cdot \text{IQR}_{\text{pooled}} \cdot [\text{nABCD}_{L},\, \text{nABCD}_{U}]$. This expresses inferential uncertainty directly on the clinical scale.
+\item Derive the bootstrap CI for $\Delta_{\max}$ from the nABCD confidence interval: $[\Delta_{\max,L},\, \Delta_{\max,U}] = L \cdot \text{IQR}_{\text{pooled}} \cdot [\text{nABCD}_{L},\, \text{nABCD}_{U}]$. This expresses inferential uncertainty directly on the clinical scale.
 \item Report $\Delta_{\max}$ and its CI alongside the clinical context---for example, the overall treatment effect size, the non-inferiority margin, or the minimal clinically important difference. This information enables trial designers and regulatory scientists to exercise clinical judgment about pooling, considering the totality of evidence rather than a binary accept/reject decision.
 \end{enumerate}
 
@@ -205,7 +205,7 @@ The clinical calibration procedure is demonstrated with real clinical trial data
 
 When $L$ cannot be estimated from prior data---the most common situation at the MRCT planning stage---a reverse sensitivity analysis asks \emph{what value of $L$ would be required for a given nABCD to produce a clinically meaningful $\Delta_{\max}$.} Rearranging equation~(\ref{eq:delta_max}):
 \begin{equation}
-L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}},
+L^* = \frac{\Delta_{\text{clin}}}{\text{IQR}_{\text{pooled}} \cdot \text{nABCD}},
 \label{eq:lstar}
 \end{equation}
 where $\Delta_{\text{clin}}$ is a pre-specified clinically important treatment effect difference (e.g., the overall treatment effect or the non-inferiority margin). If the required $L^*$ exceeds the largest plausible CATE sensitivity for the effect modifier under consideration, the distributional difference is unlikely to produce meaningful treatment effect heterogeneity, regardless of the true $L$. This reverse calculation is demonstrated in Section~\ref{sec:application}.
@@ -328,7 +328,7 @@ S7 (Loc+Scale) & 0.917 & 0.935 & 0.944 \\
 
 \subsubsection{Estimation Precision}
 
-The mean CI width pattern across scenarios and sample sizes is shown in Figure~\ref{fig:simulation}(C). Table~\ref{tab:precision} presents the RMSE and mean CI width across scenarios. RMSE decreased consistently with increasing $n$, reaching values below 0.05 for all scenarios at $n = 200$. Mean CI width narrowed proportionally, with CIs at $n = 100$ typically spanning 0.11--0.19 in nABCD units. In the clinical calibration framework, this CI width propagates to $\Delta_{\max}$. For example, with $L = 0.01$/yr and IQR $= 17$ (values representative of age in the GUSTO-I application), a CI width of 0.13 in nABCD corresponds to a $\Delta_{\max}$ CI width of $2 \times 0.01 \times 17 \times 0.13 = 0.044$ (4.4\%pt)---a level of precision sufficient for meaningful clinical calibration.
+The mean CI width pattern across scenarios and sample sizes is shown in Figure~\ref{fig:simulation}(C). Table~\ref{tab:precision} presents the RMSE and mean CI width across scenarios. RMSE decreased consistently with increasing $n$, reaching values below 0.05 for all scenarios at $n = 200$. Mean CI width narrowed proportionally, with CIs at $n = 100$ typically spanning 0.11--0.19 in nABCD units. In the clinical calibration framework, this CI width propagates to $\Delta_{\max}$. For example, with $L = 0.01$/yr and IQR $= 17$ (values representative of age in the GUSTO-I application), a CI width of 0.13 in nABCD corresponds to a $\Delta_{\max}$ CI width of $0.01 \times 17 \times 0.13 = 0.044$ (4.4\%pt)---a level of precision sufficient for meaningful clinical calibration.
 
 \begin{table}[ht]
 \centering
@@ -384,7 +384,7 @@ In summary, the simulation study across seven scenarios demonstrates that the nA
 \item \emph{Sensitivity}: Captures location, scale, and skewness differences where SMD is limited to location only
 \end{enumerate}
 
-Scenario S3 (0.5$\sigma$ location shift, true nABCD $= 0.180$) exemplifies the operating characteristics at clinically relevant effect sizes. Bias was negligible ($+0.003$ at $n = 100$), coverage was nominal (0.951), and CI width (0.18) translated to a $\Delta_{\max}$ CI width of $2 \times 0.01 \times 17 \times 0.18 = 0.061$ (6.1\%pt) when calibrated with $L = 0.01$/yr and IQR $= 17$ (age-scale parameters representative of the GUSTO-I application)---a level of precision sufficient for informed regulatory deliberation.
+Scenario S3 (0.5$\sigma$ location shift, true nABCD $= 0.180$) exemplifies the operating characteristics at clinically relevant effect sizes. Bias was negligible ($+0.003$ at $n = 100$), coverage was nominal (0.951), and CI width (0.18) translated to a $\Delta_{\max}$ CI width of $0.01 \times 17 \times 0.18 = 0.061$ (6.1\%pt) when calibrated with $L = 0.01$/yr and IQR $= 17$ (age-scale parameters representative of the GUSTO-I application)---a level of precision sufficient for informed regulatory deliberation.
 
 These estimation properties ensure that nABCD, when combined with the clinical calibration framework, provides $\Delta_{\max}$ estimates of sufficient quality for regulatory deliberation. We recommend $n \geq 100$ per region for reliable estimation and inference.
 
@@ -559,7 +559,7 @@ Additional supporting information may be found in the online version of the arti
 
 \bmsubsection{Proof of Proposition~\ref{prop:nonnegativity}\label{app:proof1}}
 
-Non-negativity follows directly from the non-negativity of the Wasserstein-1 distance: $W_1(F_1, F_2) = \int |F_1(x) - F_2(x)| \, dx \geq 0$. Since $\text{IQR}_{\text{pooled}} > 0$ for non-degenerate distributions, the ratio $\text{nABCD} = W_1 / (2 \cdot \text{IQR}_{\text{pooled}}) \geq 0$.
+Non-negativity follows directly from the non-negativity of the Wasserstein-1 distance: $W_1(F_1, F_2) = \int |F_1(x) - F_2(x)| \, dx \geq 0$. Since $\text{IQR}_{\text{pooled}} > 0$ for non-degenerate distributions, the ratio $\text{nABCD} = W_1 / \text{IQR}_{\text{pooled}} \geq 0$.
 
 For the identity of indiscernibles, we show both directions. If $F_1 = F_2$, then $|F_1(x) - F_2(x)| = 0$ for all $x$, so $W_1(F_1, F_2) = 0$ and hence $\text{nABCD} = 0$. Conversely, if $\text{nABCD} = 0$, then $W_1(F_1, F_2) = \int |F_1(x) - F_2(x)| \, dx = 0$. Since $|F_1(x) - F_2(x)| \geq 0$ and is right-continuous, $\int |F_1(x) - F_2(x)| \, dx = 0$ implies $F_1(x) = F_2(x)$ almost everywhere, and by right-continuity of CDFs, $F_1 = F_2$ everywhere.
 
@@ -567,7 +567,7 @@ For the identity of indiscernibles, we show both directions. If $F_1 = F_2$, the
 
 Under standard regularity conditions, the empirical Wasserstein-1 distance $W_1(\hat{F}_1, \hat{F}_2)$ is a consistent estimator of $W_1(F_1, F_2)$.\cite{delbarrio1999} Combined with the consistency of the empirical IQR, $\hnABCD$ is a consistent estimator of $\text{nABCD}(F_1, F_2)$.
 
-In one dimension, the empirical $W_1$ distance converges at rate $O(n^{-1/2})$ without logarithmic correction.\cite{delbarrio1999} For two-sample estimation with $F_1 \neq F_2$ and finite second moments, $\sqrt{n}(W_1(\hat{F}_{1,n_1}, \hat{F}_{2,n_2}) - W_1(F_1, F_2))$ converges in distribution to a mean-zero Gaussian, where $n = n_1 + n_2$ with $n_1/n \to \lambda \in (0,1)$. Since the empirical IQR also converges at rate $O(n^{-1/2})$ under standard density conditions, the delta method applied to the ratio $g(w, q) = w/(2q)$ yields asymptotic normality of $\hnABCD$:
+In one dimension, the empirical $W_1$ distance converges at rate $O(n^{-1/2})$ without logarithmic correction.\cite{delbarrio1999} For two-sample estimation with $F_1 \neq F_2$ and finite second moments, $\sqrt{n}(W_1(\hat{F}_{1,n_1}, \hat{F}_{2,n_2}) - W_1(F_1, F_2))$ converges in distribution to a mean-zero Gaussian, where $n = n_1 + n_2$ with $n_1/n \to \lambda \in (0,1)$. Since the empirical IQR also converges at rate $O(n^{-1/2})$ under standard density conditions, the delta method applied to the ratio $g(w, q) = w/q$ yields asymptotic normality of $\hnABCD$:
 \begin{equation}
 \sqrt{n}\bigl(\hnABCD - \text{nABCD}(F_1, F_2)\bigr) \xrightarrow{d} N(0,\, \sigma^2_{\text{nABCD}}),
 \label{eq:asymptotic_normality}
@@ -588,7 +588,7 @@ compute_nABCD <- function(x1, x2) {
   w1 <- sum(diff(all_vals) *
     abs(F1(all_vals[-length(all_vals)]) -
         F2(all_vals[-length(all_vals)])))
-  w1 / (2 * iqr_pooled)
+  w1 / iqr_pooled
 }
 
 nABCD_bootstrap <- function(x1, x2,

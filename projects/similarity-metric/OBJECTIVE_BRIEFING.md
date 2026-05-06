@@ -52,7 +52,7 @@ Step 3: 日本と各候補国の nABCD を計算
         データソース: 先行試験、RWE、レジストリ等
 
 Step 4: 臨床較正（Clinical Calibration）
-        Δ_max = 2 × L × IQR_pooled × nABCD
+        Δ_max = L × IQR_pooled × nABCD
         → 各ペアの Δ_max を治療効果と比較
 
 Step 5: 併合相手を選定
