@@ -189,7 +189,10 @@
       "Bash(mkdir -p \"/tmp/poster-design\")",
       "Bash(tar -xzf \"C:\\\\Users\\\\hrd13\\\\.claude\\\\projects\\\\C--Users-hrd13-Documents-Gak-0-Study-800Claude-20260210-SIM-similarity-metrics\\\\d6e2e3e7-f5f6-40cf-af86-eaf892d8ba43\\\\tool-results\\\\webfetch-1777712226932-0qsziu.bin\" -C /tmp/poster-design)",
       "Bash(mkdir -p /tmp/poster-design)",
-      "Bash(tar -xzf \"/c/Users/hrd13/.claude/projects/C--Users-hrd13-Documents-Gak-0-Study-800Claude-20260210-SIM-similarity-metrics/d6e2e3e7-f5f6-40cf-af86-eaf892d8ba43/tool-results/webfetch-1777712226932-0qsziu.bin\" -C /tmp/poster-design)"
+      "Bash(tar -xzf \"/c/Users/hrd13/.claude/projects/C--Users-hrd13-Documents-Gak-0-Study-800Claude-20260210-SIM-similarity-metrics/d6e2e3e7-f5f6-40cf-af86-eaf892d8ba43/tool-results/webfetch-1777712226932-0qsziu.bin\" -C /tmp/poster-design)",
+      "Bash(py --version)",
+      "Bash(where.exe python *)",
+      "Bash(py *)"
     ]
   }
 }

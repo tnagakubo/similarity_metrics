@@ -18,7 +18,7 @@ style: |
     --accent2: #d47e78;
     --text-main: #000000;
     --text-light: #505050;
-    --bg-light: #F8F9FA;
+    --bg-light: #E8ECF0;
     --bw: 10px;
     --footer-space: 24px;
   }
@@ -29,7 +29,7 @@ style: |
     color: var(--text-main);
     border: none;
     padding: 90px 60px 46px 60px;
-    font-size: 28px;
+    font-size: 22px;
     line-height: 1.3;
     position: relative;
     background-color: white;
@@ -213,6 +213,46 @@ style: |
   section img {
     max-height: 60%;
     border-radius: 4px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* ---- Density variants (per-slide override) ---- */
+  section.compact { font-size: 18px; }
+  section.relaxed { font-size: 26px; }
+
+  /* ---- Beamer-style block (generic callout) ---- */
+  section .block {
+    margin: 12px 0 0 0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #E0E0E0;
+  }
+
+  section .block + p,
+  section .block + .block {
+    margin-top: 0;
+  }
+
+  section .block-title {
+    background: var(--accent2);
+    color: white;
+    padding: 6px 14px;
+    font-weight: 700;
+    font-size: 22px;
+  }
+
+  section .block-body {
+    padding: 8px 14px;
+    background: var(--bg-light);
+  }
+
+  section .block-body > *:first-child {
+    margin-top: 0;
+  }
+
+  section .block-body > *:last-child {
+    margin-bottom: 0;
   }
 
   /* ---- Title slide ---- */
@@ -362,7 +402,7 @@ style: |
 <!-- _class: title -->
 <!-- _paginate: false -->
 
-# Quantifying Effect Modifier Similarity for Regional Pooling in MRCTs
+# Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials
 
 ##
 
@@ -372,7 +412,7 @@ Tak Nagakubo
 
 # Agenda
 
-1. **Background**: MRCTs, ICH E17, and limitations of existing measures
+1. **Introduction**: Regional pooling, methodological gap, and our aim
 2. **Methods**: nABCD definition, theoretical foundation, and clinical calibration
 3. **Simulation**: Estimation performance across 7 scenarios
 4. **Application**: Hypothetical thrombolytic MRCT using GUSTO-I
@@ -382,61 +422,47 @@ Tak Nagakubo
 
 <!-- _class: section -->
 
-# Background
+# Introduction
 
 ---
 
-# MRCTs and ICH E17
+# Regional Pooling: A Practical Challenge
 
-- **MRCTs** (Multi-Regional Clinical Trials) are the standard paradigm for global drug development
-- ICH E17 (2017) established principles for planning MRCTs, assuming generalizable treatment effects
-- Regulatory authorities expect demonstration of **treatment effect consistency** in regional subpopulations
+### Why pooling is needed
 
-### The Need for Regional Pooling
+- MRCTs assess treatment effect consistency across regions
+- Individual regional sample sizes are often too small alone
+- ICH E17 strategy: pool regions with similar **effect modifier** distributions
+  (effect modifier = baseline characteristic for which treatment benefit differs across subgroups)
+- This paper focuses on **continuous effect modifiers** (e.g., age, baseline severity, laboratory values)
 
-- Individual regional sample sizes are often insufficient for consistency assessment
-- ICH E17 describes pooling based on **effect modifier distributional similarity**
-- However, no quantitative methodology is provided
+### The challenge for sponsors
 
-> The criterion for "similar enough" is absent
-> --- Implementation gap in ICH E17
+- At the **planning stage**, sponsors must select pooling partners with evidence that two regions are "similar enough"
 
----
+<div class="block">
+<div class="block-title">Cautionary example: Secukinumab MRCT (Matsushima 2024)</div>
+<div class="block-body">
 
-# What Is an Effect Modifier?
+Unassessed regional imbalance in CRP+/MRI- status → apparent treatment effect inconsistency at analysis.
 
-**Effect modifier**: a baseline patient characteristic for which treatment benefit differs across subgroups
-
-### Example: Age as an effect modifier
-
-- If younger patients respond better, age is an effect modifier
-- Even if the drug works identically at the individual level, different patient compositions yield different regional average treatment effects
-
-### Regional Average Treatment Effect
-
-$$
-\bar{\tau}_r = \int \tau(x) \, dF_r(x)
-$$
-
-$\tau(x)$: CATE (conditional average treatment effect), $F_r$: effect modifier distribution in region $r$
+</div>
+</div>
 
 ---
 
-# Limitations of Existing Measures
+# Methodological Gap and Research Objectives
 
-| Measure | Strength | Limitation |
-|---------|----------|------------|
-| **SMD** | Scale-free, easy to interpret | **Location (mean) only**. Ignores variance and shape |
-| **KS statistic** | Compares full distribution | Lacks clinical interpretability; no link to treatment effects |
-| **KL divergence** | Density-based | Asymmetric, unstable with small samples, can diverge to $\infty$ |
+### The gap
 
-### The Blind Spot of SMD
+- ICH E17 provides no specific metric, threshold, or procedure for "similar enough"
+- The standard tool for **continuous covariates** is the Standardized Mean Difference (SMD), which is **blind** to differences in variance and shape
+- → No quantitative evidence base for partner selection
 
-$$
-N(50, 5^2) \text{ vs } N(50, 15^2) \implies \text{SMD} = 0
-$$
+### Objectives
 
-A threefold difference in variance is completely invisible to SMD
+- Develop a quantitative index that captures distributional similarity beyond means
+- Deliver a practitioner-facing tool for the **planning stage** of an MRCT
 
 ---
 
@@ -446,50 +472,53 @@ A threefold difference in variance is completely invisible to SMD
 
 ---
 
-# Wasserstein-1 Distance and nABCD
+# Existing Approaches and Their Limitations
 
-### Wasserstein-1 Distance
+### Three families of distributional measures
+
+| Measure | Approach | Limitation |
+|---------|----------|-----------|
+| **SMD** | Mean difference / pooled SD | Blind to variance and shape |
+| **Kolmogorov–Smirnov** | Maximum gap between CDFs | No clinically interpretable scale, no link to treatment effects |
+| **KL divergence** | Density-based ratio | Asymmetric, requires density estimation, can diverge to ∞ with non-overlapping supports |
+
+### What we need: three requirements
+
+1. Capture distributional features **beyond location** (variance, shape)
+2. Provide a **clinically interpretable scale**
+3. Offer a **theoretical link to treatment effect heterogeneity**
+
+---
+
+# Defining nABCD: Wasserstein-1 over IQR
+
+<div class="block">
+<div class="block-title">Wasserstein-1 distance</div>
+<div class="block-body">
+
+The total area between two CDFs — captures differences in **location, variance, and shape**.
 
 $$
 W_1(F, G) = \int |F(x) - G(x)| \, dx
 $$
 
-Geometric: **total area between two CDFs**
+</div>
+</div>
 
-### nABCD
+<div class="block">
+<div class="block-title">nABCD: scale-free dissimilarity</div>
+<div class="block-body">
+
+Normalized by the pooled IQR — a one-IQR location shift yields nABCD = 0.5.
 
 $$
-\text{nABCD} = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}}
+\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}}
 $$
 
-- 1-IQR location shift → nABCD $= 0.5$; **scale-free** (unit-independent)
+</div>
+</div>
 
----
-
-# nABCD: Visual Definition
-
-![h:480px](../../figures/fig1_nabcd_definition_color.png)
-
-*Normalized area between two CDFs, divided by $2 \cdot \text{IQR}_{\text{pooled}}$*
-
----
-
-# Three Requirements Satisfied by nABCD
-
-### Req. 1: Beyond location differences
-
-- $W_1$ responds to differences in location, variance, and skewness
-- Captures scale and skewness differences that SMD misses
-
-### Req. 2: Scale-free interpretation
-
-- IQR normalization yields a unit-independent index
-- Estimation-centered: bootstrap CI + sensitivity, not fixed thresholds
-
-### Req. 3: Theoretical link to treatment effects
-
-- Kantorovich-Rubinstein duality provides an upper bound on treatment effect heterogeneity
-- This property is unique to $W_1$ (not available for $W_2$, KS, or KL)
+![h:250px](../../figures/fig1_nabcd_definition_color.png)
 
 ---
 
@@ -501,7 +530,9 @@ $$
 W_1(F_1, F_2) = \sup_{\|f\|_{\text{Lip}} \leq 1} \left|\int f \, dF_1 - \int f \, dF_2\right|
 $$
 
-### Heterogeneity Bound (Proposition 2)
+<div class="block">
+<div class="block-title">Heterogeneity Bound (Proposition 2)</div>
+<div class="block-body">
 
 If the CATE $\tau(x)$ is Lipschitz continuous with constant $L$:
 
@@ -512,11 +543,16 @@ $$
 - $L$: upper bound on treatment effect change per unit change in the effect modifier
 - **A quantitative bridge from distributional distance to treatment effect differences**
 
+</div>
+</div>
+
 ---
 
 # Clinical Calibration: Two Pathways
 
-### Pathway 1: $L$ available — $\Delta_{\max}$
+<div class="block">
+<div class="block-title">Pathway 1: When L is available — Δmax</div>
+<div class="block-body">
 
 $$
 \Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
@@ -525,7 +561,12 @@ $$
 - Worst-case regional treatment effect difference on the **clinical scale**
 - Confirmatory or post-hoc evaluation when $L$ is estimable
 
-### Pathway 2: $L$ unknown — $L^*$ reverse calculation
+</div>
+</div>
+
+<div class="block">
+<div class="block-title">Pathway 2: When L is unknown — L* reverse calculation</div>
+<div class="block-body">
 
 $$
 L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
@@ -534,6 +575,9 @@ $$
 - $\Delta_{\text{clin}}$: clinically important difference (e.g., NI margin)
 - $L^*$ above plausible range: distributional difference unlikely to be clinically concerning
 - **Primary calibration tool at the planning stage**, where $L$ is typically unavailable
+
+</div>
+</div>
 
 ### Estimation-Centered Design
 

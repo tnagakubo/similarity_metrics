@@ -297,32 +297,36 @@ This linkage from distributional metric to clinical scale is specific to
 $W_1$ --- $W_2$ and KS admit no analog (Gibbs \& Su, 2002).
 
 %------------------------------------------------------------------------------
-% LEFT.3  SIMULATION DESIGN + RESULTS (with fig2 at \linewidth)
-%         Calibration moved to RIGHT col (after Application) for balance.
+% LEFT.3  CLINICAL CALIBRATION (placed after Methods per Tak's directive)
 %------------------------------------------------------------------------------
-\colsectionbanner{Simulation: Design \& Results}
+\colsectionbanner{Clinical Calibration}
 
 \posterbody
-\textbf{Design.} Seven scenarios (S1--S7) isolate null, location-shift,
+nABCD is a distance; to translate it into a clinical claim, two pathways
+are offered depending on what is known about CATE sensitivity.
+\begin{itemize}
+  \item \textit{Pathway 1 ($L$ known):} $\Delta_{\max}$ is the worst-case
+        regional treatment-effect difference on the clinical scale.
+  \item \textit{Pathway 2 ($L$ unknown):} solve
+        $L^{*} = \Delta_{\text{clin}} / (2\cdot\IQRpool\cdot\mathrm{nABCD})$;
+        sponsor judges plausibility for the modifier and drug class.
+\end{itemize}
+
+%------------------------------------------------------------------------------
+% LEFT.4  SIMULATION: DESIGN  (Results moved to top of RIGHT col)
+%------------------------------------------------------------------------------
+\colsectionbanner{Simulation: Design}
+
+\posterbody
+\textbf{Scenarios.} Seven scenarios (S1--S7) isolate null, location-shift,
 scale-shift, skewness, and combined location+scale; $10{,}000$ replications
 per scenario--$n$ cell, $n\in\{50,100,200\}$; bootstrap $B=2{,}000$,
 percentile 95\% CIs.
 
 \begin{center}
-\includegraphics[width=0.75\linewidth]{slide_scenario_overview_color.pdf}\\[3pt]
+\includegraphics[width=0.78\linewidth]{slide_scenario_overview_color.pdf}\\[3pt]
 \postercap{Scenarios S1--S7: Region 1 (red) vs.\ Region 2 (blue) densities;
 S1 null, S2--S4 location, S5 scale, S6 skew, S7 location+scale.}
-\end{center}
-
-\posterbody
-\textbf{Results.} Bias $<0.02$ and coverage $0.88$--$0.96$ across S2--S7 at
-$n\geq 100$ (S3, S4, S6, S7 reach nominal $0.95$). \textbf{Recommendation:
-$n\geq 100$ per region}; $n=50$ unreliable near the boundary.
-
-\begin{center}
-\includegraphics[width=0.95\linewidth]{fig2_simulation_results_color.pdf}\\[3pt]
-\postercap{Bias (A), coverage (B), CI width (C) of $\hnABCD$ across S1--S7
-and $n\in\{50,100,200\}$.}
 \end{center}
 
 \end{minipage}%
@@ -330,7 +334,24 @@ and $n\in\{50,100,200\}$.}
 \begin{minipage}[t]{\colw}
 
 %---------------------------------------------------------------- RIGHT COL ---
-% RIGHT.1  APPLICATION: GUSTO-I (with fig3 at \linewidth)
+% RIGHT.1  SIMULATION: RESULTS (continues from LEFT col Simulation: Design)
+%------------------------------------------------------------------------------
+\colsectionbanner{Simulation: Results}
+
+\posterbody
+\textbf{Estimation quality.} Bias $<0.02$ and coverage $0.88$--$0.96$ across
+S2--S7 at $n\geq 100$ (S3, S4, S6, S7 reach nominal $0.95$).
+\textbf{Recommendation: $n\geq 100$ per region}; $n=50$ unreliable near the
+boundary.
+
+\begin{center}
+\includegraphics[width=\linewidth]{fig2_simulation_results_color.pdf}\\[3pt]
+\postercap{Bias (A), coverage (B), CI width (C) of $\hnABCD$ across S1--S7
+and $n\in\{50,100,200\}$.}
+\end{center}
+
+%------------------------------------------------------------------------------
+% RIGHT.2  APPLICATION: GUSTO-I (with fig3 at \linewidth)
 %------------------------------------------------------------------------------
 \colsectionbanner{Application: GUSTO-I}
 
@@ -371,22 +392,6 @@ eligible if $L^{*} > L^{\text{UB}}$ at $\Delta_{\text{clin}}=1\%\text{pt}$
 R5, R6, R14, R15.} \textbf{R4} is balanced across both modifiers
 (3rd-lowest age $=0.016$; 4th-lowest systolic blood pressure $=0.042$)
 and is selected as the leading pooling partner for R8.
-
-%------------------------------------------------------------------------------
-% RIGHT.2  CLINICAL CALIBRATION (moved from LEFT col for balance)
-%------------------------------------------------------------------------------
-\colsectionbanner{Clinical Calibration}
-
-\posterbody
-nABCD is a distance; to translate it into a clinical claim, two pathways
-are offered depending on what is known about CATE sensitivity.
-\begin{itemize}
-  \item \textit{Pathway 1 ($L$ known):} $\Delta_{\max}$ is the worst-case
-        regional treatment-effect difference on the clinical scale.
-  \item \textit{Pathway 2 ($L$ unknown):} solve
-        $L^{*} = \Delta_{\text{clin}} / (2\cdot\IQRpool\cdot\mathrm{nABCD})$;
-        sponsor judges plausibility for the modifier and drug class.
-\end{itemize}
 
 %------------------------------------------------------------------------------
 % RIGHT.3  DISCUSSION (Implications + Strengths + Practical Recommendations)
