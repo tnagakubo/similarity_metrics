@@ -59,6 +59,7 @@ static double wasserstein1_general(const std::vector<double>& xs,
 }
 
 // nABCD from two sorted samples (general, for jackknife)
+// Definition (2026-05-03): nABCD = W_1 / IQR_pooled (no factor of 2)
 static double compute_nABCD_sorted(const std::vector<double>& xs,
                                    const std::vector<double>& ys) {
   int n = xs.size() + ys.size();
@@ -67,7 +68,7 @@ static double compute_nABCD_sorted(const std::vector<double>& xs,
 
   double iqr = iqr_sorted(pooled.data(), n);
   if (iqr <= 0) return NA_REAL;
-  return wasserstein1_general(xs, ys) / (2 * iqr);
+  return wasserstein1_general(xs, ys) / iqr;
 }
 
 // Remove element at position `pos` from sorted vector (O(n) copy)
@@ -126,7 +127,7 @@ List nABCD_bootstrap_cpp(NumericVector x, NumericVector y,
   } else {
     w1 = wasserstein1_general(xs, ys);
   }
-  double est = w1 / (2 * iqr_p);
+  double est = w1 / iqr_p;
 
   // --- Bootstrap (all B iterations in C++, no R overhead) ---
   std::vector<double> boot_vals;
@@ -171,7 +172,7 @@ List nABCD_bootstrap_cpp(NumericVector x, NumericVector y,
     double iqr_b = q3b - q1b;
 
     if (iqr_b > 0) {
-      boot_vals.push_back(w1b / (2 * iqr_b));
+      boot_vals.push_back(w1b / iqr_b);
     }
   }
 

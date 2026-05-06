@@ -143,7 +143,7 @@ for (em in em_vars) {
 
       w1 <- compute_w1(x, y)
       iqr_p <- IQR(c(x, y), na.rm = TRUE)
-      nab <- if (iqr_p > 0) w1 / (2 * iqr_p) else NA
+      nab <- if (iqr_p > 0) w1 / iqr_p else NA
       dmax <- 2 * L * iqr_p * nab
       dmax_pct <- 100 * dmax / abs(rd_overall)
 

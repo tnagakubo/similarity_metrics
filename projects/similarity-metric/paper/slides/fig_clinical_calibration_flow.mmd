@@ -11,7 +11,7 @@ flowchart TD
     subgraph COMPUTE["<b>Step 1: Compute nABCD</b>"]
         W1["Wasserstein-1 Distance<br/><i>W</i>₁(<i>F</i>₁, <i>F</i>₂) = ∫|<i>F</i>₁(x) − <i>F</i>₂(x)| dx"]
         IQR["Pooled IQR<br/>from combined sample"]
-        NABCD["<b>nABCD</b> = <i>W</i>₁ / (2 × IQR<sub>pooled</sub>)<br/>+ Bootstrap 95% CI"]
+        NABCD["<b>nABCD</b> = <i>W</i>₁ / IQR<sub>pooled</sub><br/>+ Bootstrap 95% CI"]
     end
 
     %% ===== CATE Sensitivity =====
@@ -23,7 +23,7 @@ flowchart TD
 
     %% ===== Clinical Calibration =====
     subgraph CALIB["<b>Step 3: Compute Δ<sub>max</sub></b>"]
-        DELTA["<b>Δ<sub>max</sub> = 2<i>L</i> × IQR<sub>pooled</sub> × nABCD</b><br/>Maximum potential treatment effect difference<br/>+ Propagated CI"]
+        DELTA["<b>Δ<sub>max</sub> = <i>L</i> × IQR<sub>pooled</sub> × nABCD</b><br/>Maximum potential treatment effect difference<br/>+ Propagated CI"]
     end
 
     %% ===== Clinical Context =====

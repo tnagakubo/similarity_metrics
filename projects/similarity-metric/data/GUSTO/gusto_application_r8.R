@@ -42,8 +42,10 @@ compute_w1 <- function(x, y) {
 }
 
 compute_nABCD <- function(x, y) {
+  # Definition (2026-05-03 redefinition by Tak):
+  #   nABCD = W_1 / IQR_pooled  (no factor of 2)
   iqr_p <- IQR(c(x, y)); if (iqr_p == 0) return(NA_real_)
-  compute_w1(x, y) / (2 * iqr_p)
+  compute_w1(x, y) / iqr_p
 }
 
 nABCD_bootstrap_ci <- function(x, y, B = 2000, conf = 0.95) {
@@ -121,8 +123,11 @@ cat("\nAge IQR_pooled range:", round(range(age_iqr_vals), 1), "\n")
 res_wide$iqr_age <- age_iqr_vals[match(res_wide$partner, partners)]
 
 # L* for age at Delta_clin = 1%pt and 2%pt
-res_wide$Lstar_age_1pct <- 0.01 / (2 * res_wide$iqr_age * res_wide$nABCD_age)
-res_wide$Lstar_age_2pct <- 0.02 / (2 * res_wide$iqr_age * res_wide$nABCD_age)
+# Under the redefined nABCD = W_1 / IQR_pooled (no factor of 2), the L*
+# formula becomes Lstar = Delta_clin / (IQR_pooled * nABCD); L* itself is
+# invariant because nABCD doubled while the factor of 2 was removed.
+res_wide$Lstar_age_1pct <- 0.01 / (res_wide$iqr_age * res_wide$nABCD_age)
+res_wide$Lstar_age_2pct <- 0.02 / (res_wide$iqr_age * res_wide$nABCD_age)
 
 # IQR_pooled for sysbp
 sysbp_iqr_vals <- numeric(length(partners))
@@ -135,9 +140,9 @@ cat("SBP IQR_pooled range:", round(range(sysbp_iqr_vals), 1), "\n")
 
 res_wide$iqr_sysbp <- sysbp_iqr_vals[match(res_wide$partner, partners)]
 
-# L* = Delta_clin / (2 * IQR_pooled * nABCD)
-res_wide$Lstar_sysbp_1pct <- 0.01 / (2 * res_wide$iqr_sysbp * res_wide$nABCD_sysbp)
-res_wide$Lstar_sysbp_2pct <- 0.02 / (2 * res_wide$iqr_sysbp * res_wide$nABCD_sysbp)
+# L* = Delta_clin / (IQR_pooled * nABCD) under nABCD = W_1 / IQR_pooled
+res_wide$Lstar_sysbp_1pct <- 0.01 / (res_wide$iqr_sysbp * res_wide$nABCD_sysbp)
+res_wide$Lstar_sysbp_2pct <- 0.02 / (res_wide$iqr_sysbp * res_wide$nABCD_sysbp)
 
 # --- Ranking summaries (no threshold-based poolability) ---
 # Order partners by each effect modifier's nABCD and by a simple combined rank,
@@ -199,6 +204,8 @@ forest_data <- results %>%
     geom_errorbarh(aes(xmin = ci_lower, xmax = ci_upper),
                    height = 0.3, linewidth = 0.4, color = col_ci) +
     geom_point(size = 2, color = col_pt) +
+    scale_x_continuous(limits = c(0, NA),
+                       labels = function(x) sprintf("%.2f", x)) +
     labs(
       x = "nABCD",
       y = "Partner region",

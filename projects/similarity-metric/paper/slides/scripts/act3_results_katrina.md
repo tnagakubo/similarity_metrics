@@ -17,7 +17,7 @@ We designed seven scenarios anchored to clinical reality. Scenarios S1 through S
 
 Then we add what SMD cannot see. S5 tests a pure scale difference: same mean, 50% wider spread. S6 models high-skew data with a log-normal, mimicking biomarkers with a coefficient of variation around 53%. S7 combines location and scale shifts simultaneously.
 
-Each scenario ran 10,000 replications at three sample sizes: 50, 100, and 200 per region. Bootstrap confidence intervals used 2,000 replications. The true nABCD values span from zero to 0.37, giving us a representative range of what practitioners would encounter in real MRCTs.
+Each scenario ran 10,000 replications at three sample sizes: 50, 100, and 200 per region. Bootstrap confidence intervals used 2,000 replications. The true nABCD values span from zero to 0.66, giving us a representative range of what practitioners would encounter in real MRCTs.
 
 **Key points to emphasize**:
 - Seven scenarios cover the full space: location, scale, skew, combined
@@ -34,14 +34,14 @@ Each scenario ran 10,000 replications at three sample sizes: 50, 100, and 200 pe
 **Script**:
 Let's look at bias first. The general pattern is encouraging: as sample size increases, bias decreases toward zero for most scenarios.
 
-At n=100, the most important threshold for practice, non-null scenarios excluding S4 all show bias below 0.02 in absolute terms. To put that in context, that is smaller than the width of a typical bootstrap confidence interval for these settings. For S3, S5, S6, and S7 — which represent the practically relevant range — the estimator is essentially unbiased by n=100.
+At n=100, the most important threshold for practice, non-null scenarios excluding S4 all show bias below 0.04 in absolute terms. To put that in context, that is smaller than the width of a typical bootstrap confidence interval for these settings. For S3, S5, S6, and S7 — which represent the practically relevant range — the estimator is essentially unbiased by n=100.
 
-S4 deserves special attention. With a true nABCD of 0.37 — the large location shift — we see persistent negative bias around minus 0.04 even at n=200. This is a known property of empirical process estimators for the L1 distance: when the true value is far from the boundary at zero, the bounded nature of the statistic introduces a modest downward pull. It does not invalidate inference; it means that for large distributional differences, nABCD is slightly conservative — it understates the gap.
+S4 deserves special attention. With a true nABCD of 0.66 — the large location shift — we see persistent negative bias around minus 0.08 even at n=200. This is a known property of empirical process estimators for the L1 distance: when the true value is far from the boundary at zero, the bounded nature of the statistic introduces a modest downward pull. It does not invalidate inference; it means that for large distributional differences, nABCD is slightly conservative — it understates the gap.
 
-The null scenario S1 shows the most striking positive bias, particularly at n=50: plus 0.09. This is expected. When the true value is zero, the estimator can only overestimate. The practical implication is that small samples near the null will produce inflated estimates. This is the primary motivation for our n≥100 recommendation.
+The null scenario S1 shows the most striking positive bias, particularly at n=50: plus 0.18. This is expected. When the true value is zero, the estimator can only overestimate. The practical implication is that small samples near the null will produce inflated estimates. This is the primary motivation for our n≥100 recommendation.
 
 **Key points to emphasize**:
-- n≥100 is the practical threshold for bias below 0.02 in non-null scenarios
+- n≥100 is the practical threshold for bias below 0.04 in non-null scenarios
 - S4 negative bias is a conservative property: nABCD understates large differences
 - Null positive bias at small n is structural, not a flaw — it motivates the n≥100 recommendation
 - S6 (skew/log-normal) is well-behaved across all sample sizes — important for real-world lab values
@@ -57,7 +57,7 @@ Now coverage — the probability that the 95% percentile bootstrap interval actu
 
 The headline result: at n≥100, coverage is between 0.87 and 0.98 across all seven scenarios. That is adequate for the inferential goals of a regulatory submission.
 
-Two scenarios require explanation. S2, the small location shift with true nABCD of 0.07, shows coverage of only 0.67 at n=50 and 0.90 at n=100. This near-null behavior reflects the theoretical prediction from del Barrio's asymptotic theory: when the two distributions are very close, the Hadamard derivative of the W1 functional becomes non-linear, and standard bootstrap consistency does not fully apply. Coverage recovers to nominal by n=200.
+Two scenarios require explanation. S2, the small location shift with true nABCD of 0.15, shows coverage of only 0.67 at n=50 and 0.90 at n=100. This near-null behavior reflects the theoretical prediction from del Barrio's asymptotic theory: when the two distributions are very close, the Hadamard derivative of the W1 functional becomes non-linear, and standard bootstrap consistency does not fully apply. Coverage recovers to nominal by n=200.
 
 S4, the large location shift, shows the reverse problem: coverage degrades from 0.93 at n=50 to 0.73 at n=200. This is not a failure of the bootstrap — it reflects the persistent negative bias we just saw. As n grows, the confidence interval tightens around the biased estimate, pulling coverage down.
 
@@ -78,18 +78,18 @@ The standout performer is S6, the log-normal skew scenario: near-nominal coverag
 **Script**:
 This slide is perhaps the most direct argument for why nABCD exists.
 
-Look at S3: a half-standard-deviation location shift. Both nABCD and SMD detect it. SMD gives 0.50, nABCD gives 0.18. They disagree on magnitude because they measure different things — SMD is purely a location metric, while nABCD measures the full distributional mass displacement. But at least both flag the scenario. So for pure location differences, SMD works.
+Look at S3: a half-standard-deviation location shift. Both nABCD and SMD detect it. SMD gives 0.50, nABCD gives 0.37. They disagree on magnitude because they measure different things — SMD is purely a location metric, while nABCD measures the full distributional mass displacement. But at least both flag the scenario. So for pure location differences, SMD works.
 
-Now look at S5: a pure scale difference. The two populations have identical means but the spread in region 2 is 50% wider. SMD is 0.00. It sees nothing. nABCD is 0.14. It detects a clinically meaningful distributional gap that would affect any drug whose treatment effect depends on the patient's baseline variability.
+Now look at S5: a pure scale difference. The two populations have identical means but the spread in region 2 is 50% wider. SMD is 0.00. It sees nothing. nABCD is 0.27. It detects a clinically meaningful distributional gap that would affect any drug whose treatment effect depends on the patient's baseline variability.
 
-S6 is the log-normal skew scenario. SMD is 0.00. nABCD is 0.31 — large. This is a high-skew distribution with CV of 53%. For a drug whose CATE function is non-linear, this level of shape difference could drive substantial regional heterogeneity in average treatment effects. SMD would give you no warning.
+S6 is the log-normal skew scenario. SMD is 0.00. nABCD is 0.62 — very large. This is a high-skew distribution with CV of 53%. For a drug whose CATE function is non-linear, this level of shape difference could drive substantial regional heterogeneity in average treatment effects. SMD would give you no warning.
 
 The conclusion is structural. SMD is a summary of location. nABCD is a summary of the full distributional difference — the exact quantity that bounds treatment effect heterogeneity. For regulatory decision-making under ICH E17, SMD is insufficient.
 
 **Key points to emphasize**:
 - SMD is blind to variance and shape: 0.00 for S5 and S6
 - nABCD captures the full distributional difference relevant to the heterogeneity bound
-- S6 is the most striking case: log-normal skew, nABCD=0.31, SMD=0.00
+- S6 is the most striking case: log-normal skew, nABCD=0.62, SMD=0.00
 - The blindness of SMD is not a sampling artifact — it is structural
 
 ---
@@ -120,9 +120,9 @@ We designate Region 8 — sample size 2,916 — as the small-sample anchor. The 
 **Script**:
 Here are the nABCD point estimates and 95% percentile bootstrap CIs for all 15 partner regions, on both candidate effect modifiers.
 
-For age, the range is narrow: 0.011 at the lowest pair to 0.076 at the highest. Eleven of the fifteen partners sit below 0.040.
+For age, the range is narrow: 0.022 at the lowest pair to 0.151 at the highest. Eleven of the fifteen partners sit below 0.080.
 
-For SBP, the range is wider: 0.015 to 0.110. Most partners cluster between 0.050 and 0.110.
+For SBP, the range is wider: 0.030 to 0.219. Most partners cluster between 0.100 and 0.220.
 
 I want to note the role of the bootstrap confidence intervals. At mid-rank, partner CIs overlap, which means the ranking carries genuine uncertainty. We report point estimates with CI widths so the audience knows exactly how confident the ordering can be at each position. This is what an estimation-centered framework looks like in practice.
 
@@ -140,9 +140,9 @@ I want to note the role of the bootstrap confidence intervals. At mid-rank, part
 **Script**:
 This is the first of two slides containing the central application message. Look at R2 versus R9.
 
-R2 has age nABCD of 0.061 — the second largest age value in the table. But R2 has SBP nABCD of 0.015 — the smallest in the table.
+R2 has age nABCD of 0.122 — the second largest age value in the table. But R2 has SBP nABCD of 0.030 — the smallest in the table.
 
-R9 inverts this. Age nABCD is 0.017 — fourth smallest. SBP nABCD is 0.110 — the largest.
+R9 inverts this. Age nABCD is 0.033 — fourth smallest. SBP nABCD is 0.219 — the largest.
 
 If we ranked partners by age alone, R9 looks attractive and R2 looks like one to avoid. If we ranked by SBP alone, R2 looks ideal and R9 looks worst. A single effect modifier produces opposite conclusions.
 
@@ -162,7 +162,7 @@ The implication is direct. When multiple candidate effect modifiers are under co
 **Script**:
 When we apply the joint criterion, three regions emerge: R4, R6, and R13.
 
-These three rank low on both candidate effect modifiers. All six of their nABCD values — three regions times two modifiers — sit in the lower portions of the observed ranges. Age range 0.011 to 0.076: R4, R6, R13 are in the lower portion. SBP range 0.015 to 0.110: R4, R6, R13 are again in the lower portion.
+These three rank low on both candidate effect modifiers. All six of their nABCD values — three regions times two modifiers — sit in the lower portions of the observed ranges. Age range 0.022 to 0.151: R4, R6, R13 are in the lower portion. SBP range 0.030 to 0.219: R4, R6, R13 are again in the lower portion.
 
 The required L-star values for these three regions also fall near the lower end of what would reasonably be considered clinically plausible for thrombolysis in AMI given the available class evidence.
 

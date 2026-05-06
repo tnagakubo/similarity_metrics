@@ -34,13 +34,13 @@ compute_w1 <- function(x, y) {
   sum(abs_cdf_diff * diffs)
 }
 
-# --- nABCD = W1 / (2 * IQR_pooled) ---
+# --- nABCD = W1 / IQR_pooled ---
 compute_nABCD <- function(x, y) {
   w1 <- compute_w1(x, y)
   pooled <- c(x, y)
   iqr_pooled <- IQR(pooled, na.rm = TRUE)
   if (iqr_pooled == 0) return(NA)
-  w1 / (2 * iqr_pooled)
+  w1 / iqr_pooled
 }
 
 # --- All pairwise nABCD for Age ---
@@ -70,7 +70,7 @@ for (i in 1:(length(countries) - 1)) {
     y <- ist3$age[ist3$country == countries[j]]
     w1 <- compute_w1(x, y)
     iqr_p <- IQR(c(x, y), na.rm = TRUE)
-    nab <- if (iqr_p > 0) w1 / (2 * iqr_p) else NA
+    nab <- if (iqr_p > 0) w1 / iqr_p else NA
     results <- rbind(results, data.frame(
       Country1 = countries[i], Country2 = countries[j],
       n1 = length(x), n2 = length(y),

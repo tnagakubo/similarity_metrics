@@ -47,7 +47,7 @@ for (triple in triples) {
     si <- pairs[[k]][1]; sj <- pairs[[k]][2]
     w1s[k] <- compute_w1(si, sj)
     iqrs[k] <- mean(c(get_iqr_mix(si,sj), get_iqr_mix(si,sj), get_iqr_mix(si,sj)))
-    nabcds[k] <- w1s[k] / (2 * iqrs[k])
+    nabcds[k] <- w1s[k] / iqrs[k]
   }
 
   ratio <- nabcds[3] / (nabcds[1] + nabcds[2])
@@ -119,7 +119,7 @@ for (case in clinical_triples) {
     si <- pairs[[k]][1]; sj <- pairs[[k]][2]
     w1s[k] <- compute_w1(si, sj)
     iqrs[k] <- mean(c(get_iqr_mix(si,sj), get_iqr_mix(si,sj)))
-    nabcds[k] <- w1s[k] / (2 * iqrs[k])
+    nabcds[k] <- w1s[k] / iqrs[k]
   }
   ratio <- nabcds[3] / (nabcds[1] + nabcds[2])
   cat(sprintf("  %-35s s=(%s): ratio=%.4f [%s]\n",

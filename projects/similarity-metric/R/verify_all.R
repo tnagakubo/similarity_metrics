@@ -17,7 +17,7 @@ my_nABCD <- function(x, y) {
   pooled <- c(x, y)
   iqr_p <- IQR(pooled)
   if (iqr_p == 0) return(NA)
-  my_w1(x, y) / (2 * iqr_p)
+  my_w1(x, y) / iqr_p
 }
 
 # ---- 1. True nABCD verification (N=10000, seed=99999) ----

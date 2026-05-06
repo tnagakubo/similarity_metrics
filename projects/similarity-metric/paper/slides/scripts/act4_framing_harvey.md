@@ -85,7 +85,7 @@ Five steps.
 
 Step one: compute nABCD with bootstrap confidence intervals for each candidate effect modifier. You need at least 100 observations per region for reliable coverage. Below that, positive bias is material and confidence intervals are not trustworthy. Plan your sample sizes accordingly.
 
-Step two: do not stop at the nABCD value. Translate it. Use the Delta-max formula — two times L times the pooled IQR times nABCD — to put the distributional difference on your clinical scale. A large nABCD is not inherently alarming. A large Delta-max relative to your non-inferiority margin is.
+Step two: do not stop at the nABCD value. Translate it. Use the Delta-max formula — L times the pooled IQR times nABCD — to put the distributional difference on your clinical scale. A large nABCD is not inherently alarming. A large Delta-max relative to your non-inferiority margin is.
 
 Step three: report Delta-max and its confidence interval alongside your treatment effect and clinical margins. This is what belongs in your submission package, in your clinical study report, in your regulatory briefing document.
 
@@ -110,9 +110,9 @@ The bottom line: on Monday morning, pick your most important effect modifiers, c
 
 Now about those benchmarks.
 
-The table you see — negligible below 0.05, small up to 0.15, moderate up to 0.30, large above 0.30 — these are reference points, not thresholds. This distinction is not a disclaimer. It is the core design principle.
+The table you see — negligible below 0.10, small up to 0.30, moderate up to 0.60, large above 0.60 — these are reference points, not thresholds. This distinction is not a disclaimer. It is the core design principle.
 
-Here is why a fixed threshold would be wrong. Take the BMI example from our application. Japan versus the US: nABCD equals 0.51 — by any benchmark table, that is large, alarming, a reason to pause pooling. But BMI is a weak effect modifier for this drug class. When you apply Delta-max with L equal to 0.02, the implied treatment effect difference is 0.16 percent — less than half the non-inferiority margin. There is no clinical concern.
+Here is why a fixed threshold would be wrong. Take the BMI example from our application. Japan versus the US: nABCD equals 1.02 — by any benchmark table, that is large, alarming, a reason to pause pooling. But BMI is a weak effect modifier for this drug class. When you apply Delta-max with L equal to 0.02, the implied treatment effect difference is 0.16 percent — less than half the non-inferiority margin. There is no clinical concern.
 
 A fixed threshold rule would have generated a false alarm. Delta-max tells the truth.
 

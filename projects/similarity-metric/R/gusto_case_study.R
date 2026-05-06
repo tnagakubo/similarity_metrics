@@ -64,7 +64,7 @@ compute_nABCD <- function(x, y) {
   pooled <- c(x, y)
   iqr_p <- IQR(pooled, na.rm = TRUE)
   if (iqr_p == 0) return(NA_real_)
-  compute_w1(x, y) / (2 * iqr_p)
+  compute_w1(x, y) / iqr_p
 }
 
 compute_smd <- function(x, y) {
@@ -104,9 +104,9 @@ compute_delta_max <- function(nABCD_val, iqr_pooled, L) {
   2 * L * iqr_pooled * nABCD_val
 }
 
-# L* reverse calculation: L* = Delta_clin / (2 * IQR_pooled * nABCD)
+# L* reverse calculation: L* = Delta_clin / (IQR_pooled * nABCD)
 compute_lstar <- function(nABCD_val, iqr_pooled, delta_clin) {
-  delta_clin / (2 * iqr_pooled * nABCD_val)
+  delta_clin / (iqr_pooled * nABCD_val)
 }
 
 

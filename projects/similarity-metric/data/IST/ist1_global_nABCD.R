@@ -40,13 +40,13 @@ compute_w1 <- function(x, y) {
   sum(abs_cdf_diff * diffs)
 }
 
-# nABCD = W1 / (2 * IQR_pooled)
+# nABCD = W1 / IQR_pooled
 compute_nABCD <- function(x, y) {
   w1 <- compute_w1(x, y)
   pooled <- c(x, y)
   iqr_pooled <- IQR(pooled, na.rm = TRUE)
   if (iqr_pooled == 0) return(NA_real_)
-  w1 / (2 * iqr_pooled)
+  w1 / iqr_pooled
 }
 
 # SMD = (mean1 - mean2) / pooled_SD

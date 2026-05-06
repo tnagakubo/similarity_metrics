@@ -96,11 +96,18 @@ wasserstein1 <- function(x, y) {
 }
 
 #' Compute nABCD
+#' Definition (2026-05-03 redefinition by Tak):
+#'   nABCD = W_1(F_1, F_2) / IQR_pooled(F_1, F_2)
+#' Previously was W_1 / (2 * IQR_pooled); the factor-of-2 is now removed so
+#' that a 1-IQR location shift on equal scales corresponds to nABCD = 1
+#' (instead of 0.5). Delta_max and L* formulas absorb the change of factor
+#' (now Delta_max = L * IQR * nABCD; L* = Delta_clin / (IQR * nABCD)) so the
+#' clinical-calibration outputs are invariant under this redefinition.
 compute_nABCD <- function(x, y) {
   pooled <- c(x, y)
   iqr_pooled <- IQR(pooled)
   if (iqr_pooled == 0) return(NA_real_)
-  wasserstein1(x, y) / (2 * iqr_pooled)
+  wasserstein1(x, y) / iqr_pooled
 }
 
 # =============================================================================
@@ -148,9 +155,9 @@ nABCD_bootstrap_fast <- function(x, y, B = 2000, conf = 0.95,
   if (iqr_p == 0) return(null_res)
 
   if (equal_n) {
-    est <- wasserstein1_equal(sort(x), sort(y)) / (2 * iqr_p)
+    est <- wasserstein1_equal(sort(x), sort(y)) / iqr_p
   } else {
-    est <- wasserstein1(x, y) / (2 * iqr_p)
+    est <- wasserstein1(x, y) / iqr_p
   }
 
   # --- Vectorized bootstrap (matrix ops, no R loop) ---
@@ -183,7 +190,7 @@ nABCD_bootstrap_fast <- function(x, y, B = 2000, conf = 0.95,
   # nABCD per bootstrap
   valid <- iqr_boot > 0
   boot_vals <- rep(NA_real_, B)
-  boot_vals[valid] <- w1_boot[valid] / (2 * iqr_boot[valid])
+  boot_vals[valid] <- w1_boot[valid] / iqr_boot[valid]
   boot_vals <- boot_vals[!is.na(boot_vals)]
   B_valid <- length(boot_vals)
 

@@ -52,7 +52,7 @@ Step 3: 日本と各候補国の nABCD を計算
         データソース: 先行試験、RWE、レジストリ等
 
 Step 4: 臨床較正（Clinical Calibration）
-        Δ_max = 2 × L × IQR_pooled × nABCD
+        Δ_max = L × IQR_pooled × nABCD
         → 各ペアの Δ_max を治療効果と比較
 
 Step 5: 併合相手を選定
@@ -78,7 +78,7 @@ Step 6: Pooling 計画を策定・正当化
 |---|---|---|
 | **EM サブグループ解析** | post-hoc。試験後にしかできない。計画段階では使えない | nABCD は **planning stage** で使える |
 | **SMD** | 平均差のみ。分散・形状の差を検出できない | nABCD は **全分布差**（variance, shape, skewness）を検出 |
-| **SMD ベースの併合判断** | Norway-Portugal で SMD≈0 だが分布は異なる → 見逃す | nABCD は分布差を検出（nABCD=0.069） |
+| **SMD ベースの併合判断** | Norway-Portugal で SMD≈0 だが分布は異なる → 見逃す | nABCD は分布差を検出（nABCD=0.138） |
 | **固定閾値** | Context-free。EM の臨床的重要性を考慮しない | 臨床較正で **Δ_max** を治療効果スケールに変換 |
 
 **核心**: nABCD の存在意義は「計画段階で、治療データなしに、分布全体を考慮して、臨床的に解釈可能な形で併合相手を特定できる」こと。

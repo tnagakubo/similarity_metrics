@@ -121,20 +121,20 @@ But — and this is crucial for the regulatory context — the appropriate error
 
 Now that we have the bound, let me show you the normalized statistic we actually compute and report.
 
-The nABCD is W_1 divided by twice the pooled IQR. Each design choice here is deliberate.
+The nABCD is W_1 divided by the pooled IQR. Each design choice here is deliberate.
 
 Why normalize at all? W_1 is in the original units of the covariate — years for age, kilograms per square meter for BMI, percent for HbA1c. If you want to compare the degree of distributional difference across different effect modifiers in a single trial, or across trials in different disease areas, you need a dimensionless number. Normalization by a spread measure gives you that.
 
 Why IQR and not standard deviation? Two reasons. First, IQR is robust to outliers and heavy tails — it measures the spread of the central 50% of the distribution. In clinical populations where extreme values are common, this matters. We reviewed the robustness literature, including Rousseeuw and Croux (1993) who established that Q_n has higher breakdown point than IQR, but Q_n is less familiar to clinical reviewers and the higher breakdown protection is not necessary for population-level regulatory data. IQR has the right balance of robustness and interpretability. Second, IQR is already familiar to clinicians — they think in terms of the interquartile range routinely.
 
-Why factor of 2 in the denominator? With the factor of 2, when both distributions are normal and differ only in location by delta standard deviations, nABCD is approximately 0.37 times the standardized mean difference. This creates a useful calibration relationship between nABCD and the SMD that practitioners already understand.
+Why divide by IQR (without an extra factor)? This calibrates nABCD so that a one-IQR pure location shift yields nABCD = 1.0 — a direct and intuitive scale anchor for clinical reviewers.
 
-The resulting nABCD is dimensionless, always non-negative, and equals zero if and only if the two distributions are identical. And by substituting W_1 = 2 IQR times nABCD back into the heterogeneity bound, we get the clean form: Delta-max equals 2L times IQR times nABCD.
+The resulting nABCD is dimensionless, always non-negative, and equals zero if and only if the two distributions are identical. And by substituting W_1 = IQR times nABCD back into the heterogeneity bound, we get the clean form: Delta-max equals L times IQR times nABCD.
 
 **Key points to emphasize**:
 - Normalization is necessary to compare across effect modifiers with different units
 - IQR chosen for interpretability and robustness; Q_n has higher breakdown but is unnecessary and less familiar for this context
-- Factor of 2 creates calibration with SMD for normal location-shift case (nABCD ≈ 0.37 × SMD)
+- Calibration: 1-IQR location shift yields nABCD = 1.0
 - The definition makes nABCD the natural unit for expressing regulatory similarity
 
 ---
@@ -149,7 +149,7 @@ This is, in my view, the genuinely unique contribution of our framework. Every m
 
 The question that regulators and clinical teams actually need to answer is not "are the distributions different?" — we can see from the baseline tables that they are always somewhat different. The question is "does the distributional difference matter for this drug in this disease?" And that requires translating from the covariate space into the outcome space.
 
-Delta-max does exactly that. It is equal to 2L times IQR_pooled times nABCD, and it lives in the units of the clinical endpoint — percentage points of HbA1c reduction, millimeters of mercury for blood pressure, whatever the trial is measuring.
+Delta-max does exactly that. It is equal to L times IQR_pooled times nABCD, and it lives in the units of the clinical endpoint — percentage points of HbA1c reduction, millimeters of mercury for blood pressure, whatever the trial is measuring.
 
 The procedure has five steps. First, compute nABCD with bootstrap confidence intervals for each candidate effect modifier — and I will say more about the bootstrap in a moment. Second, estimate L from prior knowledge: published subgroup analyses, dose-response data, meta-analyses, or pharmacokinetic reasoning about why the drug's effect would vary with this particular covariate. Third, compute Delta-max and propagate the confidence interval from nABCD linearly through. Fourth, compare Delta-max against clinically meaningful thresholds — the overall treatment effect, the non-inferiority margin, a minimum clinically important difference. Fifth, conduct sensitivity analysis over a plausible range of L values, particularly when L is uncertain.
 
@@ -171,7 +171,7 @@ That fifth step is important. If you cannot pin down L precisely, you can instea
 
 Let me now describe how we compute nABCD and attach an uncertainty interval to it.
 
-The point estimator is a Riemann sum of the empirical CDF differences, divided by twice the pooled empirical IQR. You sort all pooled observations, evaluate the jump in each empirical CDF at each order statistic, and sum the products of absolute CDF differences and interval widths. This converges to the true W_1 and runs in O(n_1 + n_2) log time after sorting.
+The point estimator is a Riemann sum of the empirical CDF differences, divided by the pooled empirical IQR. You sort all pooled observations, evaluate the jump in each empirical CDF at each order statistic, and sum the products of absolute CDF differences and interval widths. This converges to the true W_1 and runs in O(n_1 + n_2) log time after sorting.
 
 For inference, we use the percentile bootstrap with B equals 2,000 resamples. I want to be explicit about why we chose the percentile bootstrap over BCa — the bias-corrected and accelerated bootstrap. BCa applies an acceleration correction that is designed for statistics with standard-normal limiting distributions. But nABCD is bounded below at zero, and near the null where both distributions are nearly identical, the sampling distribution of the estimator is right-skewed. BCa overcorrects in this regime, producing systematically too-wide intervals. The percentile bootstrap, despite having less theoretical sophistication, outperforms BCa for bounded statistics near the boundary in simulation. This is documented in our simulation results.
 

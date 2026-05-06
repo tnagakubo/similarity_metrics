@@ -271,20 +271,20 @@ But — and this is crucial for the regulatory context — the appropriate error
 
 Now that we have the bound, let me show you the normalized statistic we actually compute and report.
 
-The nABCD is W_1 divided by twice the pooled IQR. Each design choice here is deliberate.
+The nABCD is W_1 divided by the pooled IQR. Each design choice here is deliberate.
 
 Why normalize at all? W_1 is in the original units of the covariate — years for age, mmHg for systolic blood pressure, units of any continuous biomarker. If you want to compare the degree of distributional difference across different effect modifiers in a single trial, you need a dimensionless number.
 
 Why IQR and not standard deviation? Two reasons. First, IQR is robust to outliers and heavy tails — it measures the spread of the central 50% of the distribution. We reviewed the robustness literature, including Rousseeuw and Croux (1993) who established that Q_n has higher breakdown point than IQR, but Q_n is less familiar to clinical reviewers and the higher breakdown protection is not necessary for population-level regulatory data. IQR has the right balance of robustness and interpretability. Second, IQR is already familiar to clinicians.
 
-Why factor of 2 in the denominator? With the factor of 2, when both distributions are normal and differ only in location by delta standard deviations, nABCD is approximately 0.37 times the standardized mean difference. This creates a useful calibration relationship with a metric practitioners already understand.
+Why divide by IQR (without an extra factor)? This calibrates nABCD so that a one-IQR pure location shift yields nABCD = 1.0 — a direct and intuitive scale anchor for clinical reviewers.
 
-The resulting nABCD is dimensionless, always non-negative, and equals zero if and only if the two distributions are identical. And by substituting back into the heterogeneity bound, we get: Delta-max equals 2L times IQR times nABCD.
+The resulting nABCD is dimensionless, always non-negative, and equals zero if and only if the two distributions are identical. And by substituting back into the heterogeneity bound, we get: Delta-max equals L times IQR times nABCD.
 
 **Key points to emphasize**:
 - Normalization needed for cross-EM comparability
 - IQR: robust + familiar (Q_n has higher breakdown but unnecessary here)
-- Factor of 2: calibrates nABCD ≈ 0.37 × SMD for normal location-shift
+- Calibration: 1-IQR location shift yields nABCD = 1.0
 
 ---
 
@@ -298,7 +298,7 @@ This is, in my view, the genuinely unique contribution of our framework. Every m
 
 The question that regulators actually need to answer is not "are the distributions different?" — we can see from the baseline tables that they are always somewhat different. The question is "does the distributional difference matter for this drug in this disease?" And that requires translating from the covariate space into the outcome space.
 
-Delta-max does exactly that. It is equal to 2L times IQR_pooled times nABCD, and it lives in the units of the clinical endpoint — percentage points of risk difference, hazard ratio on the log scale, whatever the trial is measuring.
+Delta-max does exactly that. It is equal to L times IQR_pooled times nABCD, and it lives in the units of the clinical endpoint — percentage points of risk difference, hazard ratio on the log scale, whatever the trial is measuring.
 
 The procedure has five steps. First, compute nABCD with bootstrap confidence intervals for each candidate effect modifier. Second, estimate L from prior knowledge: published subgroup analyses, dose-response data, meta-analyses, or pharmacokinetic reasoning. Third, compute Delta-max and propagate the confidence interval linearly. Fourth, compare against clinically meaningful thresholds — the treatment effect, the non-inferiority margin, a minimum clinically important difference. Fifth, conduct sensitivity analysis over a plausible range of L values.
 
@@ -319,7 +319,7 @@ That fifth step is important. If you cannot pin down L precisely, you can comput
 
 Let me now describe how we compute nABCD and attach an uncertainty interval to it.
 
-The point estimator is a Riemann sum of the empirical CDF differences, divided by twice the pooled empirical IQR. You sort all pooled observations, evaluate the jump in each empirical CDF at each order statistic, and sum the products of absolute CDF differences and interval widths. This runs in O(n log n) time after sorting.
+The point estimator is a Riemann sum of the empirical CDF differences, divided by the pooled empirical IQR. You sort all pooled observations, evaluate the jump in each empirical CDF at each order statistic, and sum the products of absolute CDF differences and interval widths. This runs in O(n log n) time after sorting.
 
 For inference, we use the percentile bootstrap with B equals 2,000 resamples. I want to be explicit about why we chose percentile over BCa. BCa applies an acceleration correction designed for statistics with standard-normal limiting distributions. But nABCD is bounded below at zero, and near the null, the sampling distribution is right-skewed. BCa overcorrects in this regime, producing systematically too-wide intervals. The percentile bootstrap outperforms BCa for bounded statistics near the boundary.
 
@@ -351,11 +351,11 @@ We designed seven scenarios anchored to clinical reality. Scenarios S1 through S
 
 Then we add what SMD cannot see. S5 tests a pure scale difference: same mean, 50% wider spread. S6 models high-skew data with a log-normal, mimicking biomarkers with a coefficient of variation around 53%. S7 combines location and scale shifts simultaneously.
 
-Each scenario ran 10,000 replications at three sample sizes: 50, 100, and 200 per region. Bootstrap confidence intervals used 2,000 replications. The true nABCD values span from zero to 0.37, giving us a representative range of what practitioners would encounter in real MRCTs.
+Each scenario ran 10,000 replications at three sample sizes: 50, 100, and 200 per region. Bootstrap confidence intervals used 2,000 replications. The true nABCD values span from zero to 0.66, giving us a representative range of what practitioners would encounter in real MRCTs.
 
 **Key points to emphasize**:
 - S5 and S6 are the critical SMD-blind scenarios
-- True nABCD range 0.000–0.372 covers the practical range
+- True nABCD range 0.000–0.656 covers the practical range
 - 10,000 reps × 3 sample sizes × 7 scenarios = comprehensive evaluation
 
 ---
@@ -368,14 +368,14 @@ Each scenario ran 10,000 replications at three sample sizes: 50, 100, and 200 pe
 
 Let's look at bias first. The general pattern is encouraging: as sample size increases, bias decreases toward zero for most scenarios.
 
-At n=100, the most important threshold for practice, non-null scenarios excluding S4 all show bias below 0.02 in absolute terms. To put that in context, that is smaller than the width of a typical bootstrap confidence interval. For S3, S5, S6, and S7 — the practically relevant range — the estimator is essentially unbiased by n=100.
+At n=100, the most important threshold for practice, non-null scenarios excluding S4 all show bias below 0.04 in absolute terms. To put that in context, that is smaller than the width of a typical bootstrap confidence interval. For S3, S5, S6, and S7 — the practically relevant range — the estimator is essentially unbiased by n=100.
 
-S4 deserves special attention. With a true nABCD of 0.37, we see persistent negative bias around minus 0.04 even at n=200. This is a known property of empirical process estimators for the L1 distance. It means that for large distributional differences, nABCD is slightly conservative — it understates the gap.
+S4 deserves special attention. With a true nABCD of 0.66, we see persistent negative bias around minus 0.08 even at n=200. This is a known property of empirical process estimators for the L1 distance. It means that for large distributional differences, nABCD is slightly conservative — it understates the gap.
 
-The null scenario S1 shows the most striking positive bias, particularly at n=50: plus 0.09. When the true value is zero, the estimator can only overestimate. This is the primary motivation for our n≥100 recommendation.
+The null scenario S1 shows the most striking positive bias, particularly at n=50: plus 0.18. When the true value is zero, the estimator can only overestimate. This is the primary motivation for our n≥100 recommendation.
 
 **Key points to emphasize**:
-- n≥100: bias < 0.02 for non-null scenarios
+- n≥100: bias < 0.04 for non-null scenarios
 - S4 negative bias is conservative (understates large differences)
 - Null positive bias at small n motivates n≥100 recommendation
 
@@ -391,7 +391,7 @@ Now coverage — the probability that the 95% percentile bootstrap interval actu
 
 The headline result: at n≥100, coverage is between 0.87 and 0.98 across all seven scenarios. That is adequate for regulatory submissions.
 
-S2, the small location shift with true nABCD of 0.07, shows coverage of only 0.67 at n=50 and 0.90 at n=100. This near-null behavior reflects the theoretical prediction from del Barrio's asymptotic theory: when distributions are very close, the Hadamard derivative becomes non-linear. Coverage recovers to nominal by n=200.
+S2, the small location shift with true nABCD of 0.15, shows coverage of only 0.67 at n=50 and 0.90 at n=100. This near-null behavior reflects the theoretical prediction from del Barrio's asymptotic theory: when distributions are very close, the Hadamard derivative becomes non-linear. Coverage recovers to nominal by n=200.
 
 S4 shows the reverse problem: coverage degrades from 0.93 at n=50 to 0.73 at n=200. This reflects the persistent negative bias — as n grows, the confidence interval tightens around the biased estimate.
 
@@ -412,17 +412,17 @@ The standout performer is S6, the log-normal skew scenario: near-nominal coverag
 
 This slide is perhaps the most direct argument for why nABCD exists.
 
-Look at S3: a half-standard-deviation location shift. Both nABCD and SMD detect it. SMD gives 0.50, nABCD gives 0.18. They disagree on magnitude because they measure different things. But at least both flag the scenario.
+Look at S3: a half-standard-deviation location shift. Both nABCD and SMD detect it. SMD gives 0.50, nABCD gives 0.37. They disagree on magnitude because they measure different things. But at least both flag the scenario.
 
-Now look at S5: a pure scale difference. The two populations have identical means but the spread in region 2 is 50% wider. SMD is 0.00. It sees nothing. nABCD is 0.14. It detects a clinically meaningful distributional gap.
+Now look at S5: a pure scale difference. The two populations have identical means but the spread in region 2 is 50% wider. SMD is 0.00. It sees nothing. nABCD is 0.27. It detects a clinically meaningful distributional gap.
 
-S6 is the log-normal skew scenario. SMD is 0.00. nABCD is 0.31 — large. This is a high-skew distribution with CV of 53%. For a drug whose CATE function is non-linear, this level of shape difference could drive substantial regional heterogeneity. SMD would give you no warning.
+S6 is the log-normal skew scenario. SMD is 0.00. nABCD is 0.62 — very large. This is a high-skew distribution with CV of 53%. For a drug whose CATE function is non-linear, this level of shape difference could drive substantial regional heterogeneity. SMD would give you no warning.
 
 The conclusion is structural. SMD is a summary of location. nABCD is a summary of the full distributional difference — the exact quantity that bounds treatment effect heterogeneity. For regulatory decision-making under ICH E17, SMD is insufficient.
 
 **Key points to emphasize**:
 - SMD = 0.00 for S5 and S6 — structurally blind, not a sampling artifact
-- S6 is the most striking: nABCD = 0.31, SMD = 0.00
+- S6 is the most striking: nABCD = 0.62, SMD = 0.00
 - nABCD captures the quantity that bounds heterogeneity; SMD does not
 
 ---
@@ -458,9 +458,9 @@ We designate Region 8 — sample size 2,916 — as the small-sample anchor. The 
 
 Here are the nABCD point estimates and 95% percentile bootstrap CIs for all 15 partner regions, on both candidate effect modifiers.
 
-For age, the range is narrow: 0.011 at the lowest pair to 0.076 at the highest. Eleven of the fifteen partners sit below 0.040.
+For age, the range is narrow: 0.022 at the lowest pair to 0.151 at the highest. Eleven of the fifteen partners sit below 0.080.
 
-For SBP, the range is wider: 0.015 to 0.110. Most partners cluster between 0.050 and 0.110.
+For SBP, the range is wider: 0.030 to 0.219. Most partners cluster between 0.100 and 0.220.
 
 Note the role of the bootstrap confidence intervals. At mid-rank, partner CIs overlap, which means the ranking carries genuine uncertainty. We report point estimates with CI widths so the audience knows exactly how confident the ordering can be at each position. This is what an estimation-centered framework looks like in practice.
 
@@ -479,9 +479,9 @@ Note the role of the bootstrap confidence intervals. At mid-rank, partner CIs ov
 
 This is the first of two slides that contain the central application message. Look at R2 versus R9.
 
-R2 has age nABCD of 0.061 — the second largest age value in the table. But R2 has SBP nABCD of 0.015 — the smallest in the table.
+R2 has age nABCD of 0.122 — the second largest age value in the table. But R2 has SBP nABCD of 0.030 — the smallest in the table.
 
-R9 inverts this. Age nABCD is 0.017 — fourth smallest. SBP nABCD is 0.110 — the largest.
+R9 inverts this. Age nABCD is 0.033 — fourth smallest. SBP nABCD is 0.219 — the largest.
 
 If we ranked partners by age alone, R9 looks attractive and R2 looks like one to avoid. If we ranked by SBP alone, R2 looks ideal and R9 looks worst. A single effect modifier produces opposite conclusions.
 
@@ -502,7 +502,7 @@ The implication is direct. When multiple candidate effect modifiers are under co
 
 When we apply the joint criterion, three regions emerge: R4, R6, and R13.
 
-These three rank low on both candidate effect modifiers. All six of their nABCD values — three regions times two modifiers — sit in the lower portions of the observed ranges. Age range 0.011 to 0.076: R4, R6, R13 are in the lower portion. SBP range 0.015 to 0.110: R4, R6, R13 are again in the lower portion.
+These three rank low on both candidate effect modifiers. All six of their nABCD values — three regions times two modifiers — sit in the lower portions of the observed ranges. Age range 0.022 to 0.151: R4, R6, R13 are in the lower portion. SBP range 0.030 to 0.219: R4, R6, R13 are again in the lower portion.
 
 The required L-star values for these three regions also fall near the lower end of what would reasonably be considered clinically plausible for thrombolysis in AMI, given the available class evidence.
 
@@ -661,7 +661,7 @@ The framework is particularly relevant for regulatory submissions requiring regi
 
 The paper is explicit about limitations. Eight items, condensed here to the practical core.
 
-Continuous effect modifiers only. Categorical extensions require further development. Each modifier evaluated separately — multivariate extensions are pending. Positive bias under the null and near-boundary scenarios — true nABCD below approximately 0.05 — inflates estimates and prevents nominal coverage; this is inherent to the non-negative parameter space. We use percentile bootstrap, which is first-order accurate; bias-corrected methods showed inferior performance for this bounded statistic. Clinical calibration requires L estimation — sponsor judgment is needed when L is unknown. The framework provides quantitative inputs but does not prescribe cutoffs. nABCD assesses similarity only with respect to measured effect modifiers — unmeasured heterogeneity drivers are out of scope. When L is carried forward from prior evidence, transferability is a clinical judgment that may benefit from sensitivity analysis. The GUSTO-I data are from 1990 to 1993; the application is methodological illustration, not an endorsement of those distributions as current references.
+Continuous effect modifiers only. Categorical extensions require further development. Each modifier evaluated separately — multivariate extensions are pending. Positive bias under the null and near-boundary scenarios — true nABCD below approximately 0.10 — inflates estimates and prevents nominal coverage; this is inherent to the non-negative parameter space. We use percentile bootstrap, which is first-order accurate; bias-corrected methods showed inferior performance for this bounded statistic. Clinical calibration requires L estimation — sponsor judgment is needed when L is unknown. The framework provides quantitative inputs but does not prescribe cutoffs. nABCD assesses similarity only with respect to measured effect modifiers — unmeasured heterogeneity drivers are out of scope. When L is carried forward from prior evidence, transferability is a clinical judgment that may benefit from sensitivity analysis. The GUSTO-I data are from 1990 to 1993; the application is methodological illustration, not an endorsement of those distributions as current references.
 
 These are the precisely defined boundaries within which the framework operates.
 

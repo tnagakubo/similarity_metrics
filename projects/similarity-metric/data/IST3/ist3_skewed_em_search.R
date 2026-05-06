@@ -20,7 +20,7 @@ compute_nABCD <- function(x, y) {
   w1 <- compute_w1(x, y)
   iqr_p <- IQR(c(x, y), na.rm = TRUE)
   if (iqr_p == 0) return(NA)
-  w1 / (2 * iqr_p)
+  w1 / iqr_p
 }
 
 compute_smd <- function(x, y) {

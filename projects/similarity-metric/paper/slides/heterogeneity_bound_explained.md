@@ -540,28 +540,28 @@ Kantorovich-Rubinstein 双対性により、W₁ は **Lipschitz 連続な CATE 
 ### nABCD の定義
 
 $$
-\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}}
+\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{\text{IQR}_{\text{pooled}}}
 $$
 
 ### なぜ正規化するか
 
 - **無次元化**：年齢（歳）、BMI（kg/m²）、HbA1c（%）を同じスケールで比較可能
 - **IQR で割る理由**：外れ値に頑健（SD より安定）
-- **分母の 2**：正規分布の場合に $\text{nABCD} \approx \text{SMD} \times 0.37$ となるような較正
+- **較正**：1-IQR の純粋な位置シフトで $\text{nABCD} = 1.0$ となるよう設計
 
-→ $W_1$ を逆に解くと $W_1 = 2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}$
+→ $W_1$ を逆に解くと $W_1 = \text{IQR}_{\text{pooled}} \cdot \text{nABCD}$
 
 ---
 
 # Heterogeneity Bound の nABCD 形式
 
-$W_1 = 2 \cdot \text{IQR} \cdot \text{nABCD}$ を代入：
+$W_1 = \text{IQR} \cdot \text{nABCD}$ を代入：
 
 <div class="block">
 <div class="block-title">$\Delta_{\max}$ の定義</div>
 <div class="block-content">
 
-$$\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)$$
+$$\Delta_{\max} = L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)$$
 
 = EM 分布差に起因する**治療効果差の最大値**（臨床アウトカムの単位）
 
@@ -625,27 +625,27 @@ $$\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_
 
 | EM | nABCD | $L$ | IQR |
 |----|-------|-----|-----|
-| Age | 0.12 | 0.01 | 14.2 yr |
-| BMI | 0.51 | 0.02 | 7.8 kg/m² |
-| HbA1c | 0.27 | 0.30 | 1.5% |
+| Age | 0.24 | 0.01 | 14.2 yr |
+| BMI | 1.02 | 0.02 | 7.8 kg/m² |
+| HbA1c | 0.54 | 0.30 | 1.5% |
 
 ---
 
 # $\Delta_{\max}$ の計算
 
-$\Delta_{\max} = 2L \cdot \text{IQR} \cdot \text{nABCD}$
+$\Delta_{\max} = L \cdot \text{IQR} \cdot \text{nABCD}$
 
 | EM | 計算式 | $\Delta_{\max}$ | 対マージン |
 |----|--------|:-----------:|:------:|
-| **Age** | $2 \times 0.01 \times 14.2 \times 0.12$ | **0.03%** | 8% |
-| **BMI** | $2 \times 0.02 \times 7.8 \times 0.51$ | **0.16%** | 40% |
-| **HbA1c** | $2 \times 0.30 \times 1.5 \times 0.27$ | **0.24%** | 60% |
+| **Age** | $0.01 \times 14.2 \times 0.24$ | **0.03%** | 8% |
+| **BMI** | $0.02 \times 7.8 \times 1.02$ | **0.16%** | 40% |
+| **HbA1c** | $0.30 \times 1.5 \times 0.54$ | **0.24%** | 60% |
 
 <div class="alertblock">
 <div class="block-title">注目</div>
 <div class="block-content">
 
-BMI は nABCD が**最大**（0.51）だが、$\Delta_{\max}$ は HbA1c より**小さい**。
+BMI は nABCD が**最大**（1.02）だが、$\Delta_{\max}$ は HbA1c より**小さい**。
 nABCD の大きさだけでは判断できない！
 
 </div>
@@ -655,13 +655,13 @@ nABCD の大きさだけでは判断できない！
 
 # なぜ BMI > HbA1c にならないのか？
 
-### BMI（nABCD = 0.51）
+### BMI（nABCD = 1.02）
 
 - 日米の BMI 分布差は**大きい**（日本 24.8 vs 米国 32.1）
 - しかし $L = 0.02$ → BMI が 1 kg/m² 違っても治療効果は **0.02%** しか変わらない
 - **弱い効果修飾因子** → 大きな分布差も臨床的影響は限定的
 
-### ベースライン HbA1c（nABCD = 0.27）
+### ベースライン HbA1c（nABCD = 0.54）
 
 - 日米の HbA1c 分布差は**中程度**（日本 7.6% vs 米国 8.4%）
 - しかし $L = 0.30$ → HbA1c が 1% 違うと治療効果が **0.30%** 変わる
@@ -709,7 +709,7 @@ $\Delta_{\max}$ の大きさを決めるのは nABCD と $L$ の**積**。どち
 
 ### Sensitivity Analysis（Table 7 アプローチ）
 
-nABCD = 0.27, IQR = 1.5% の場合：
+nABCD = 0.54, IQR = 1.5% の場合：
 
 | $L$（仮定） | $\Delta_{\max}$ | 治療効果の何%？ | マージンの何%？ |
 |:---:|:---:|:---:|:---:|
@@ -731,7 +731,7 @@ $L$ の正確な推定が難しい場合、**逆方向**から考える：
 <div class="block-title">Breakeven Point の定義</div>
 <div class="block-content">
 
-$$L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR} \cdot \text{nABCD}}$$
+$$L^* = \frac{\Delta_{\text{clin}}}{\text{IQR} \cdot \text{nABCD}}$$
 
 = $\Delta_{\max}$ が臨床的に問題になる閾値（$\Delta_{\text{clin}}$）に達する $L$ の値
 
@@ -741,7 +741,7 @@ $$L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR} \cdot \text{nABCD}}$$
 ### HbA1c の例
 
 $$
-L^* = \frac{0.4\%}{2 \times 1.5\% \times 0.27} = 0.49
+L^* = \frac{0.4\%}{1.5\% \times 0.54} = 0.49
 $$
 
 > 「ベースライン HbA1c が 1% 違うと、治療効果が **0.49% 以上** 変わると思いますか？」
@@ -762,7 +762,7 @@ $$
 | レベル | 内容 | 核心 |
 |:---:|------|------|
 | 1 | **理論的基盤** | K-R 双対性が W₁ と Lipschitz 関数を結ぶ |
-| 2 | **数学的構造** | $\Delta_{\max} = 2L \cdot \text{IQR} \cdot \text{nABCD}$（3要素の積） |
+| 2 | **数学的構造** | $\Delta_{\max} = L \cdot \text{IQR} \cdot \text{nABCD}$（3要素の積） |
 | 3 | **臨床的翻訳** | 抽象的な分布指標 → 臨床アウトカム単位 |
 | 4 | **規制的正当性** | 保守的上界が ICH E17 に適合 |
 
@@ -784,8 +784,8 @@ $$
 |:---:|----------|
 | 1 | 候補 EM を選び、nABCD と Bootstrap CI を計算 |
 | 2 | $L$ を推定（事前知識 / サブグループ解析 / 感度分析） |
-| 3 | $\Delta_{\max} = 2L \cdot \text{IQR} \cdot \text{nABCD}$ を計算 |
-| 4 | CI を伝播：$[\Delta_{\max,L},\, \Delta_{\max,U}] = 2L \cdot \text{IQR} \cdot [\text{nABCD}_L,\, \text{nABCD}_U]$ |
+| 3 | $\Delta_{\max} = L \cdot \text{IQR} \cdot \text{nABCD}$ を計算 |
+| 4 | CI を伝播：$[\Delta_{\max,L},\, \Delta_{\max,U}] = L \cdot \text{IQR} \cdot [\text{nABCD}_L,\, \text{nABCD}_U]$ |
 | 5 | 治療効果・非劣性マージンと比較して判断 |
 
 ### $L$ の推定が難しい場合
@@ -801,7 +801,7 @@ $$
 |------|------|
 | 分布が違うとき治療効果はどれだけ異なり得る？ | $\|\bar{\tau}_1 - \bar{\tau}_2\| \leq L \cdot W_1$ |
 | なぜ $W_1$ か？ | K-R 双対性（Lipschitz 関数との対応） |
-| nABCD の臨床的意味は？ | $\Delta_{\max} = 2L \cdot \text{IQR} \cdot \text{nABCD}$ |
+| nABCD の臨床的意味は？ | $\Delta_{\max} = L \cdot \text{IQR} \cdot \text{nABCD}$ |
 | nABCD が大きければ必ず問題か？ | **No** &mdash; $L$ が小さければ影響は限定的 |
 | $L$ が分からないときは？ | $L^*$（breakeven point）で逆算 |
 | この bound は loose か？ | **No** &mdash; K-R 双対性により tight（最適） |
@@ -815,4 +815,4 @@ $$
 
 分布の違い → 治療効果の違いへの**理論的橋渡し**
 
-$$|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR} \cdot \text{nABCD}$$
+$$|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot \text{IQR} \cdot \text{nABCD}$$

@@ -274,11 +274,10 @@
 Wasserstein-1 distance between region CDFs $F_1$ and $F_2$, normalized by a
 robust pooled scale:
 \[\boxed{\;\mathrm{nABCD}(F_1, F_2)
-   \;=\; \dfrac{W_1(F_1, F_2)}{2 \cdot \IQRpool}\;}\]
+   \;=\; \dfrac{W_1(F_1, F_2)}{\IQRpool}\;}\]
 where $W_1(F,G)=\int|F(x)-G(x)|\,dx$ is the area between the two CDFs and
-$\IQRpool$ is the IQR of the pooled distribution. The factor of $2$
-calibrates the scale so that a 1-IQR pure location shift yields exactly
-$\mathrm{nABCD}=0.5$.
+$\IQRpool$ is the IQR of the pooled distribution. nABCD is calibrated so
+that a 1-IQR pure location shift yields $\mathrm{nABCD}=1.0$.
 
 \textbf{Properties.} Symmetric, scale-free, sensitive to location/scale/shape
 (unlike SMD, location only); baseline-only --- no outcome data needed.
@@ -286,13 +285,13 @@ $\mathrm{nABCD}=0.5$.
 \begin{center}
 \includegraphics[width=0.80\linewidth]{fig1_nabcd_definition_color.pdf}\\[3pt]
 \postercap{Shaded area between two CDFs equals $W_1(F_1,F_2)$;
-nABCD divides by $2\cdot\IQRpool$.}
+nABCD divides by $\IQRpool$.}
 \end{center}
 
 \posterbody
 \textbf{Heterogeneity bound.} By Kantorovich--Rubinstein duality, if the CATE
 $\tau(x)$ is $L$-Lipschitz, the between-region effect difference is bounded:
-$|\bar\tau_1 - \bar\tau_2| \leq \Delta_{\max} = 2L\cdot\IQRpool\cdot\mathrm{nABCD}$.
+$|\bar\tau_1 - \bar\tau_2| \leq \Delta_{\max} = L\cdot\IQRpool\cdot\mathrm{nABCD}$.
 This linkage from distributional metric to clinical scale is specific to
 $W_1$ --- $W_2$ and KS admit no analog (Gibbs \& Su, 2002).
 
@@ -308,7 +307,7 @@ are offered depending on what is known about CATE sensitivity.
   \item \textit{Pathway 1 ($L$ known):} $\Delta_{\max}$ is the worst-case
         regional treatment-effect difference on the clinical scale.
   \item \textit{Pathway 2 ($L$ unknown):} solve
-        $L^{*} = \Delta_{\text{clin}} / (2\cdot\IQRpool\cdot\mathrm{nABCD})$;
+        $L^{*} = \Delta_{\text{clin}} / (\IQRpool\cdot\mathrm{nABCD})$;
         sponsor judges plausibility for the modifier and drug class.
 \end{itemize}
 
@@ -375,9 +374,9 @@ nABCD.}
 \vspace{2mm}
 
 \posterbody
-\textbf{Joint evaluation is essential.} R2 is 2nd-worst on age ($0.061$)
-yet best on systolic blood pressure ($0.015$); R9 is nearly best on age
-($0.017$) yet worst on systolic blood pressure ($0.110$). Single-modifier
+\textbf{Joint evaluation is essential.} R2 is 2nd-worst on age ($0.122$)
+yet best on systolic blood pressure ($0.030$); R9 is nearly best on age
+($0.033$) yet worst on systolic blood pressure ($0.219$). Single-modifier
 rankings give opposite conclusions --- candidates must be evaluated
 jointly.
 
@@ -390,7 +389,7 @@ $L_{\text{SBP}}^{\text{UB}} = 2{\times}10^{-3}/\text{mmHg}$. A region is
 eligible if $L^{*} > L^{\text{UB}}$ at $\Delta_{\text{clin}}=1\%\text{pt}$
 (30-day mortality). \textbf{Six regions are jointly eligible: R1, R4,
 R5, R6, R14, R15.} \textbf{R4} is balanced across both modifiers
-(3rd-lowest age $=0.016$; 4th-lowest systolic blood pressure $=0.042$)
+(3rd-lowest age $=0.031$; 4th-lowest systolic blood pressure $=0.084$)
 and is selected as the leading pooling partner for R8.
 
 %------------------------------------------------------------------------------
@@ -403,7 +402,7 @@ and is selected as the leading pooling partner for R8.
 \posterbody
 \begin{itemize}
   \item \textbf{Distributional + clinical scale.} The bound
-        $|\bar\tau_1-\bar\tau_2|\leq 2L\cdot\IQRpool\cdot\mathrm{nABCD}$
+        $|\bar\tau_1-\bar\tau_2|\leq L\cdot\IQRpool\cdot\mathrm{nABCD}$
         is unique to $W_1$; $W_2$ and KS admit no analog.
   \item \textbf{Beyond SMD.} Captures location, scale, and shape on a
         clinically interpretable scale; estimation-centered (report

@@ -459,11 +459,11 @@ $$
 ### nABCD: 正規化された CDF 間面積
 
 $$
-\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{2 \cdot \text{IQR}_{\text{pooled}}}
+\text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{\text{IQR}_{\text{pooled}}}
 $$
 
 - $\text{IQR}_{\text{pooled}}$: プールされた分布の四分位範囲
-- 係数 2 により、1-IQR の位置シフトで nABCD $= 0.5$ となるよう較正
+- 1-IQR の位置シフトで nABCD $= 1.0$ となるよう較正
 - **スケールフリー**: 測定単位に依存しない解釈が可能
 
 ![w:50% h:auto](../../figures/fig1_nabcd_definition.png)
@@ -504,7 +504,7 @@ $$
 CATE $\tau(x)$ が Lipschitz 定数 $L$ を持つとき:
 
 $$
-|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
+|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
 $$
 
 - $L$: effect modifier の1単位変化あたりの治療効果変化の上界
@@ -517,7 +517,7 @@ $$
 ### 推定量
 
 $$
-\widehat{\text{nABCD}} = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{2 \cdot \widehat{\text{IQR}}_{\text{pooled}}}
+\widehat{\text{nABCD}} = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{\widehat{\text{IQR}}_{\text{pooled}}}
 $$
 
 ### 漸近分布と Bootstrap
@@ -534,7 +534,7 @@ $$
 ### 経路 1: $L$ が利用可能な場合 — $\Delta_{\max}$
 
 $$
-\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
+\Delta_{\max} = L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
 $$
 
 - 観測された分布差から生じうる **最大治療効果差** を臨床スケールで表現
@@ -543,7 +543,7 @@ $$
 ### 経路 2: $L$ が未知の場合 — $L^*$ 逆算
 
 $$
-L^* = \frac{\Delta_{\text{clin}}}{2 \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
+L^* = \frac{\Delta_{\text{clin}}}{\text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
 $$
 
 - $\Delta_{\text{clin}}$: 臨床的に重要な治療効果差 (例: 非劣性マージン)
@@ -599,12 +599,12 @@ $$
 | ID | 説明 | Distribution 1 | Distribution 2 | True nABCD |
 |----|------|----------------|----------------|------------|
 | S1 | Null (同一) | $N(50, 10^2)$ | $N(50, 10^2)$ | 0.000 |
-| S2 | 位置 0.2$\sigma$ | $N(50, 10^2)$ | $N(52, 10^2)$ | 0.073 |
-| S3 | 位置 0.5$\sigma$ | $N(50, 10^2)$ | $N(55, 10^2)$ | 0.180 |
-| S4 | 位置 1.0$\sigma$ | $N(50, 10^2)$ | $N(60, 10^2)$ | 0.328 |
-| S5 | 尺度 1.5x | $N(50, 10^2)$ | $N(50, 15^2)$ | 0.122 |
-| S6 | 歪度 (Log-normal $\sigma_{\ln}=0.5$) | $N(50, 10^2)$ | LogN | 0.304 |
-| S7 | 位置+尺度 | $N(50, 10^2)$ | $N(55, 15^2)$ | 0.175 |
+| S2 | 位置 0.2$\sigma$ | $N(50, 10^2)$ | $N(52, 10^2)$ | 0.146 |
+| S3 | 位置 0.5$\sigma$ | $N(50, 10^2)$ | $N(55, 10^2)$ | 0.358 |
+| S4 | 位置 1.0$\sigma$ | $N(50, 10^2)$ | $N(60, 10^2)$ | 0.656 |
+| S5 | 尺度 1.5x | $N(50, 10^2)$ | $N(50, 15^2)$ | 0.244 |
+| S6 | 歪度 (Log-normal $\sigma_{\ln}=0.5$) | $N(50, 10^2)$ | LogN | 0.606 |
+| S7 | 位置+尺度 | $N(50, 10^2)$ | $N(55, 15^2)$ | 0.347 |
 
 $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 
@@ -643,15 +643,15 @@ $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 
 | シナリオ | nABCD (mean $\pm$ SD) | SMD (mean $\pm$ SD) | 含意 |
 |---------|----------------------|--------------------|----|
-| S3 (位置) | $0.183 \pm 0.048$ | $0.50 \pm 0.14$ | 両方が検出 |
-| S5 (尺度のみ) | $0.136 \pm 0.033$ | $0.00 \pm 0.14$ | **nABCD のみ検出** |
-| S6 (歪度のみ) | $0.312 \pm 0.048$ | $0.00 \pm 0.14$ | **nABCD のみ検出** |
+| S3 (位置) | $0.366 \pm 0.096$ | $0.50 \pm 0.14$ | 両方が検出 |
+| S5 (尺度のみ) | $0.272 \pm 0.066$ | $0.00 \pm 0.14$ | **nABCD のみ検出** |
+| S6 (歪度のみ) | $0.624 \pm 0.096$ | $0.00 \pm 0.14$ | **nABCD のみ検出** |
 
 ### Key Finding
 
 - 位置差: SMD と nABCD は同等の情報を提供
 - **尺度・歪度差**: SMD はゼロのまま --- nABCD のみが検出
-- S6 は特に顕著: 大きな分布差 (nABCD $= 0.31$) が SMD には完全に不可視
+- S6 は特に顕著: 大きな分布差 (nABCD $= 0.62$) が SMD には完全に不可視
 
 ---
 
@@ -704,18 +704,18 @@ $n = 50, 100, 200$ / 地域、10,000反復、$B = 2{,}000$ bootstrap resamples
 
 ### Age nABCD のレンジ
 
-- 点推定値: **0.011 (R5, R7) -- 0.076 (R3)** — 狭いレンジ
-- 15 partners のうち 11 が $< 0.040$
+- 点推定値: **0.022 (R5, R7) -- 0.151 (R3)** — 狭いレンジ
+- 15 partners のうち 11 が $< 0.080$
 
 | Rank | Partner | $n$ | nABCD$_{\text{age}}$ [95% CI] |
 |------|---------|-----|-------------------------------|
-| 1 | R5 | 1909 | 0.011 [0.010, 0.026] |
-| 2 | R7 | 3150 | 0.011 [0.008, 0.026] |
-| 3 | R4 | 2876 | 0.016 [0.010, 0.032] |
-| 4 | R9 | 3123 | 0.017 [0.011, 0.032] |
+| 1 | R5 | 1909 | 0.022 [0.020, 0.052] |
+| 2 | R7 | 3150 | 0.022 [0.016, 0.052] |
+| 3 | R4 | 2876 | 0.031 [0.021, 0.065] |
+| 4 | R9 | 3123 | 0.033 [0.023, 0.064] |
 | ... | ... | ... | ... |
-| 14 | R2 | 2952 | 0.061 [0.044, 0.079] |
-| 15 | R3 | 2030 | 0.076 [0.057, 0.095] |
+| 14 | R2 | 2952 | 0.122 [0.089, 0.157] |
+| 15 | R3 | 2030 | 0.151 [0.114, 0.191] |
 
 Percentile bootstrap, $B = 2{,}000$
 
@@ -729,8 +729,8 @@ Percentile bootstrap, $B = 2{,}000$
 
 ### SBP nABCD のレンジ
 
-- 点推定値: **0.015 (R2) -- 0.110 (R9)** — Age より広いレンジ
-- 多くの partner は 0.050--0.110 区間に集中
+- 点推定値: **0.030 (R2) -- 0.219 (R9)** — Age より広いレンジ
+- 多くの partner は 0.100--0.220 区間に集中
 
 ### Age と SBP でランキングが異なる
 
@@ -740,7 +740,7 @@ Percentile bootstrap, $B = 2{,}000$
 ### Bootstrap CI の役割
 
 - mid-rank 付近では CI が overlap → ランキングの確度に不確実性
-- 例: R16 (age 13位, nABCD 0.050, CI [0.034, 0.071]) は上位複数 partners とオーバーラップ
+- 例: R16 (age 13位, nABCD 0.101, CI [0.067, 0.143]) は上位複数 partners とオーバーラップ
 - **CI 幅を併記することで「どの程度自信を持って順位を示せるか」を伝達**
 
 ---
@@ -751,8 +751,8 @@ Percentile bootstrap, $B = 2{,}000$
 
 | | R2 | R9 |
 |---|----|----|
-| nABCD$_{\text{age}}$ | **0.061** (2番目に大) | 0.017 (4番目に小) |
-| nABCD$_{\text{SBP}}$ | **0.015** (最小) | **0.110** (最大) |
+| nABCD$_{\text{age}}$ | **0.122** (2番目に大) | 0.033 (4番目に小) |
+| nABCD$_{\text{SBP}}$ | **0.030** (最小) | **0.219** (最大) |
 
 ### 含意
 
@@ -773,8 +773,8 @@ Percentile bootstrap, $B = 2{,}000$
 ### Joint Eligibility (両 EM で eligible)
 
 - **6 partners が両 EM で eligible**: **R1, R4, R5, R6, R14, R15**
-- **R4** が **主単一プール候補** — age 3位 (0.016)、SBP 4位 (0.042)、両 modifier で balanced
-- R5 は age で最低 nABCD (0.011) だが SBP は 6位 — asymmetric profile
+- **R4** が **主単一プール候補** — age 3位 (0.031)、SBP 4位 (0.084)、両 modifier で balanced
+- R5 は age で最低 nABCD (0.022) だが SBP は 6位 — asymmetric profile
 
 > 定量的 input、最終判断は clinical / regulatory advisor と協議
 
@@ -883,7 +883,7 @@ Percentile bootstrap, $B = 2{,}000$
 
 - 連続 effect modifier のみ — 離散 EM は将来課題
 - 各 EM を個別評価 — 多変量拡張は研究課題
-- True nABCD $\lesssim 0.05$ の境界域では正バイアス・低被覆
+- True nABCD $\lesssim 0.10$ の境界域では正バイアス・低被覆
 - $L$ の transfer assumption (clinical judgment + 感度分析が必要)
 
 ---
@@ -899,7 +899,7 @@ Percentile bootstrap, $B = 2{,}000$
 ### 本研究の本質的貢献
 
 $$
-\boxed{|\bar{\tau}_1 - \bar{\tau}_2| \leq 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
+\boxed{|\bar{\tau}_1 - \bar{\tau}_2| \leq L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
 $$
 
 - これまで **qualitative judgment** に留まっていた "similar enough" を、
