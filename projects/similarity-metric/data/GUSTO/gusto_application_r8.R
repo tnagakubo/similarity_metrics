@@ -204,6 +204,8 @@ forest_data <- results %>%
     geom_errorbarh(aes(xmin = ci_lower, xmax = ci_upper),
                    height = 0.3, linewidth = 0.4, color = col_ci) +
     geom_point(size = 2, color = col_pt) +
+    scale_x_continuous(limits = c(0, NA),
+                       labels = function(x) sprintf("%.2f", x)) +
     labs(
       x = "nABCD",
       y = "Partner region",

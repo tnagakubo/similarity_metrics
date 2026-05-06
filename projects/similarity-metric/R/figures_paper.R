@@ -271,7 +271,7 @@ fig3_bias <- function(palette = c("greyscale", "color"), data_dir = DATA_DIR) {
     geom_col(position = position_dodge(0.8), width = 0.7) +
     geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
     scale_fill_manual(values = fill_vals) +
-    coord_cartesian(ylim = c(0, 0.10)) +
+    coord_cartesian(ylim = c(0, 0.20)) +
     labs(x = "Scenario", y = "Bias", fill = "Sample Size") +
     theme(legend.position = "inside",
           legend.position.inside = c(0.98, 0.98),
@@ -397,7 +397,7 @@ fig_combo_simulation <- function(palette = c("greyscale", "color"),
     geom_col(position = position_dodge(0.8), width = 0.7) +
     geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
     scale_fill_manual(values = pal) +
-    coord_cartesian(ylim = c(0, 0.10)) +
+    coord_cartesian(ylim = c(0, 0.20)) +
     labs(x = "Scenario", y = "Bias", fill = "Sample Size",
          subtitle = "(A) Bias")
 
