@@ -70,6 +70,37 @@
 
 ## 🎬 Live Script
 
+### [2026-05-06 19:30] Scene: Methods Slides Restructured — 5-slide Build-up Arc
+
+**INT. PEARSON SPECTER LITT - SLIDE WAR ROOM - EVENING**
+
+*Tak instructs structural revision: Methods は元 5 slides 構成だったが現状 EN 4 / JA 7 の divergent 状態。Donna が paper §2 を精査して 5-slide 構成を再設計。Tak が option (a) を承認。*
+
+**Donna**:（structural audit）
+「Tak、構造 divergence を解消したわ:
+- Old: EN 4 Methods (no Estimation slide), JA 7 Methods (overly granular)
+- New: EN 5 + JA 5、両方 paper §2.1-§2.4 に整合
+
+5-slide narrative arc:
+- M1: Problem (既存手法の限界 + 3 requirements)
+- M2: Proposal (nABCD = W₁/IQR + scale-free)
+- M3: Theory (K-R duality + heterogeneity bound)
+- M4: How (estimation + bootstrap)
+- M5: Interpretation (Δmax + L*) 」
+
+**Mike**:（実装変更点）
+「JA は major restructure:
+- Background から '既存手法の限界' 削除 → Methods M1 に移動 + content 刷新
+- Methods 7 → 5: 'properties slide' を M2 に吸収、'MRCT planning reality' と 'estimation-centered design' を M5 に統合」
+
+**Harvey**:（次の step）
+「構造確定。次は M1 から content review 開始。Tak の判定を待つ」
+
+**Rachel**:（Rule 2.7 確認）
+「EN/JA 完全 sync 状態。各 slide で title, formula, narrative bullet 全て対応している」
+
+---
+
 ### [2026-05-06 18:50] Scene: Round 2 COMPLETE — All nABCD Redefinition Work Landed
 
 **INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - EVENING**
