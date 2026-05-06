@@ -548,6 +548,26 @@ $$
 
 ---
 
+# Estimation
+
+### Empirical estimator
+
+$$
+\widehat{\text{nABCD}} = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{\widehat{\text{IQR}}_{\text{pooled}}}
+$$
+
+- Computation: $O((n_1+n_2) \log(n_1+n_2))$ — sort dominates
+
+### Inference: Percentile bootstrap
+
+- Asymptotic distribution non-standard: $\sqrt{n}\, W_1(\hat{F}_n, F) \xrightarrow{d} \int |B(F)|\, dx$ — Brownian bridge (del Barrio 1999)
+- No universal critical values → **percentile bootstrap** ($B = 2{,}000$ resamples)
+- Consistent for $F_1 \neq F_2$ via Hadamard derivative linearity (Sommerfeld 2018)
+- Convergence rate $\sqrt{n_1 n_2 / (n_1 + n_2)}$
+- Boundary case $F_1 = F_2$: parameter space edge — addressed in simulation
+
+---
+
 # Clinical Calibration: Two Pathways
 
 <div class="block">

@@ -422,72 +422,59 @@ $\tau(x)$: CATE (条件付き平均治療効果)、$F_r$: 地域 $r$ の effect 
 
 ---
 
-# 既存手法の限界
-
-| 指標 | 特徴 | 限界 |
-|------|------|------|
-| **SMD** | スケールフリー、解釈容易 | **位置 (mean) のみ**。分散・形状差を無視 |
-| **KS 統計量** | 分布全体を比較 | 臨床的解釈困難。治療効果との理論的連結なし |
-| **KL ダイバージェンス** | 密度ベース | 非対称、小サンプルで不安定、$\infty$ に発散可能 |
-
-### SMD の盲点
-
-$$
-N(50, 5^2) \text{ vs } N(50, 15^2) \implies \text{SMD} = 0
-$$
-
-分散が3倍異なるにもかかわらず SMD は差を検出できない
-
----
-
 <!-- _class: section -->
 
 # Methods
 
 ---
 
-# nABCD の定義
+# 既存手法とその限界
 
-### Wasserstein-1 距離 (Earth Mover's Distance)
+### 3 つの分布距離指標
+
+| 指標 | 手法 | 限界 |
+|------|------|------|
+| **SMD** | 平均差 / プール SD | 分散・形状差に盲目 |
+| **Kolmogorov-Smirnov** | CDF 間の最大乖離 | 臨床的解釈不能、治療効果との連結なし |
+| **KL ダイバージェンス** | 密度比 | 非対称、密度推定必要、非重複支持で $\infty$ に発散可能 |
+
+### 必要な要件 — 3 つ
+
+1. 位置以外の分布特徴 (**分散・形状**) を捕捉
+2. **臨床的に解釈可能なスケール** を提供
+3. 治療効果異質性への **理論的連結** を提供
+
+---
+
+# nABCD の定義 — Wasserstein-1 を IQR で正規化
+
+<div class="block">
+<div class="block-title">Wasserstein-1 距離</div>
+<div class="block-body">
+
+2 つの CDF 間の総面積 — **位置・分散・形状** の差を捕捉
 
 $$
-W_1(F, G) = \int_{-\infty}^{\infty} |F(x) - G(x)| \, dx
+W_1(F, G) = \int |F(x) - G(x)| \, dx
 $$
 
-幾何学的解釈: **2つの CDF 間の総面積**
+</div>
+</div>
 
-### nABCD: 正規化された CDF 間面積
+<div class="block">
+<div class="block-title">nABCD: スケールフリーな非類似性指標</div>
+<div class="block-body">
+
+プールされた IQR で正規化 — 1-IQR の位置シフトで nABCD = 1.0
 
 $$
 \text{nABCD}(F_1, F_2) = \frac{W_1(F_1, F_2)}{\text{IQR}_{\text{pooled}}}
 $$
 
-- $\text{IQR}_{\text{pooled}}$: プールされた分布の四分位範囲
-- 1-IQR の位置シフトで nABCD $= 1.0$ となるよう較正
-- **スケールフリー**: 測定単位に依存しない解釈が可能
+</div>
+</div>
 
-![w:50% h:auto](../../figures/fig1_nabcd_definition.png)
-
-*Figure: 2つの CDF 間の正規化面積として定義される nABCD*
-
----
-
-# nABCD の3つの要件充足
-
-### 要件 1: 位置以外の分布特徴
-
-- $W_1$ は位置・分散・歪度の差に反応
-- SMD が検出できない分散差・形状差を捕捉
-
-### 要件 2: スケールフリーな解釈
-
-- IQR 正規化により測定単位に依存しない指標
-- 推定中心 (estimation-centered): 固定閾値ではなく CI と感度分析で判断
-
-### 要件 3: 理論的連結
-
-- Kantorovich-Rubinstein 双対性により治療効果異質性への上界を提供
-- これは $W_1$ 固有の性質 ($W_2$, KS, KL にはない)
+![h:250px](../../figures/fig1_nabcd_definition_color.png)
 
 ---
 
@@ -499,7 +486,9 @@ $$
 W_1(F_1, F_2) = \sup_{\|f\|_{\text{Lip}} \leq 1} \left|\int f \, dF_1 - \int f \, dF_2\right|
 $$
 
-### Heterogeneity Bound (Proposition 2)
+<div class="block">
+<div class="block-title">Heterogeneity Bound (Proposition 2)</div>
+<div class="block-body">
 
 CATE $\tau(x)$ が Lipschitz 定数 $L$ を持つとき:
 
@@ -510,79 +499,66 @@ $$
 - $L$: effect modifier の1単位変化あたりの治療効果変化の上界
 - **分布距離 $\to$ 治療効果差の上界** への定量的橋渡し
 
+</div>
+</div>
+
 ---
 
-# 推定と推論
+# 推定
 
-### 推定量
+### 経験推定量
 
 $$
 \widehat{\text{nABCD}} = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{\widehat{\text{IQR}}_{\text{pooled}}}
 $$
 
-### 漸近分布と Bootstrap
+- 計算量: $O((n_1+n_2) \log(n_1+n_2))$ — ソートが支配的
 
-- $W_1$ の漸近分布は **非標準**: $\sqrt{n}\,W_1(\hat{F}_n, F) \xrightarrow{d} \int |B(F(x))|\,dx$ (Brownian bridge functional)
-- 未知の $F$ に依存 → 普遍的臨界値なし → **percentile bootstrap** を採用 ($B = 2{,}000$)
-- $F_1 \neq F_2$ のとき $L_1$ functional の Hadamard 微分が線形 → bootstrap は consistent
-- 計算量: $O((n_1+n_2)\log(n_1+n_2))$ --- combined order statistics のソートが支配的
+### 推論: Percentile bootstrap
+
+- 漸近分布は非標準: $\sqrt{n}\, W_1(\hat{F}_n, F) \xrightarrow{d} \int |B(F)|\, dx$ — Brownian bridge (del Barrio 1999)
+- 普遍的臨界値なし → **percentile bootstrap** ($B = 2{,}000$ resamples)
+- $F_1 \neq F_2$ で Hadamard 微分の線形性により一致 (Sommerfeld 2018)
+- 収束率: $\sqrt{n_1 n_2 / (n_1 + n_2)}$
+- 境界ケース $F_1 = F_2$: パラメータ空間端 — シミュレーションで検討
 
 ---
 
-# Clinical Calibration: 2つの経路
+# 臨床的較正の二経路
 
-### 経路 1: $L$ が利用可能な場合 — $\Delta_{\max}$
+<div class="block">
+<div class="block-title">経路 1: L が利用可能 — Δmax</div>
+<div class="block-body">
 
 $$
 \Delta_{\max} = L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2)
 $$
 
 - 観測された分布差から生じうる **最大治療効果差** を臨床スケールで表現
-- $L_{\max}$ (保守的) と $L_{\text{mean}}$ (現実的) の両方を提示
+- $L$ が推定可能な confirmatory または post-hoc 評価で適用
 
-### 経路 2: $L$ が未知の場合 — $L^*$ 逆算
+</div>
+</div>
+
+<div class="block">
+<div class="block-title">経路 2: L が未知 — L* 逆算</div>
+<div class="block-body">
 
 $$
 L^* = \frac{\Delta_{\text{clin}}}{\text{IQR}_{\text{pooled}} \cdot \text{nABCD}}
 $$
 
-- $\Delta_{\text{clin}}$: 臨床的に重要な治療効果差 (例: 非劣性マージン)
-- $L^*$ が臨床的に妥当な範囲を超えていれば、分布差は臨床的に問題になりにくい
+- $\Delta_{\text{clin}}$: 臨床的に重要な差 (例: 非劣性マージン)
+- $L^*$ が妥当範囲を超える: 分布差は臨床的に問題となりにくい
+- **計画段階の主要 calibration ツール** ($L$ が通常未知)
 
----
+</div>
+</div>
 
-# MRCT 計画段階の現実: なぜ $L^*$ が主要経路か
+### 推定中心の設計思想
 
-### 計画段階で $L$ は通常利用不可
-
-- 発表済みサブグループ解析は **方向と有意性** を報告するが、per-unit slope は通常未報告
-- クラス内他剤のメタ解析も、絶対アウトカムスケール上の per-year / per-mmHg 勾配を明示しないことが多い
-- 数値的 prior として使える情報が存在しないケースが典型的
-
-### $L^*$ 逆算の位置づけ
-
-- 計画段階の **主要な calibration ツール**
-- 観測された nABCD が臨床的に意味を持つために必要な CATE 感度 $L^*$ を算出
-- Sponsor は $L^*$ が分野知識に照らして妥当か判断
-- $L$ が後に判明した場合に $\Delta_{\max}$ 経路で補完可能
-
----
-
-# 推定中心の設計思想
-
-### 固定閾値を置かない
-
-- nABCD 値そのものに「poolable / not poolable」の二値判定を割り当てない
-- ICH E17 の "similar enough" は **本質的に文脈依存**
-- 同じ nABCD でも partner と effect modifier ごとに $L^*$ が異なる → 普遍的カットオフは避ける
-
-### 枠組みが提供するもの
-
-- **nABCD 点推定値 + bootstrap CI** — 分布距離の不確実性
-- **$L^*$ 逆算値** (または $\Delta_{\max}$ + CI) — 臨床スケールでの感度
-- これらを並置して報告し、sponsor + 臨床・規制 advisor が判断
-
-> 枠組みは **定量的インプット** を提供する。判断は sponsor が行う。
+- nABCD に固定カットオフなし
+- 定量的インプット (点推定値 + bootstrap CI + $L^*$) で sponsor 判断を支援
 
 ---
 
