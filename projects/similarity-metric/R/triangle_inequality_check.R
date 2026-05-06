@@ -4,7 +4,7 @@
 # Author: Mike Ross (Methodologist)
 # Date: 2026-03-10
 #
-# Question: Does nABCD(F1, F2) = W1(F1, F2) / (2 * IQR_pooled(F1, F2))
+# Question: Does nABCD(F1, F2) = W1(F1, F2) / IQR_pooled(F1, F2)
 #           satisfy the triangle inequality?
 #
 # nABCD(F1, F3) <= nABCD(F1, F2) + nABCD(F2, F3)  for all F1, F2, F3?
@@ -59,7 +59,7 @@ compute_nabcd <- function(qfun1, qfun2, rfun1, rfun2) {
   w1 <- compute_w1(qfun1, qfun2)
   iqr_mix <- compute_mixture_iqr(rfun1, rfun2)
   if (iqr_mix < 1e-12) return(list(nabcd = Inf, w1 = w1, iqr = iqr_mix))
-  list(nabcd = w1 / (2 * iqr_mix), w1 = w1, iqr = iqr_mix)
+  list(nabcd = w1 / iqr_mix, w1 = w1, iqr = iqr_mix)
 }
 
 # =============================================================================
@@ -360,9 +360,9 @@ for (i in seq_len(n_random)) {
 
   if (iqr12 < 1e-10 || iqr23 < 1e-10 || iqr13 < 1e-10) next
 
-  dd12 <- w12 / (2 * iqr12)
-  dd23 <- w23 / (2 * iqr23)
-  dd13 <- w13 / (2 * iqr13)
+  dd12 <- w12 / iqr12
+  dd23 <- w23 / iqr23
+  dd13 <- w13 / iqr13
 
   if (is.finite(dd12) && is.finite(dd23) && is.finite(dd13)) {
     ratio <- dd13 / (dd12 + dd23)
@@ -434,9 +434,9 @@ for (D in c(1, 5, 10, 50, 100)) {
 
       if (min(iqr12, iqr23, iqr13) < 1e-10) next
 
-      d12 <- w12 / (2 * iqr12)
-      d23 <- w23 / (2 * iqr23)
-      d13 <- w13 / (2 * iqr13)
+      d12 <- w12 / iqr12
+      d23 <- w23 / iqr23
+      d13 <- w13 / iqr13
       ratio <- d13 / (d12 + d23)
 
       max_ratio_adv <- max(max_ratio_adv, ratio)
@@ -489,9 +489,9 @@ cat(sprintf("  %-10s %-10s %-10s %-10s %-10s\n", "S", "d12", "d23", "d13", "rati
 for (S in c(10, 100, 1000, 10000, 100000)) {
   f1 <- make_normal(0, eps); f2 <- make_normal(D/2, S); f3 <- make_normal(D, eps)
   u <- seq(1/200001, 200000/200001, length.out = 200000)
-  d12 <- mean(abs(f1$q(u) - f2$q(u))) / (2 * IQR(c(f1$r(1e6), f2$r(1e6))))
-  d23 <- mean(abs(f2$q(u) - f3$q(u))) / (2 * IQR(c(f2$r(1e6), f3$r(1e6))))
-  d13 <- mean(abs(f1$q(u) - f3$q(u))) / (2 * IQR(c(f1$r(1e6), f3$r(1e6))))
+  d12 <- mean(abs(f1$q(u) - f2$q(u))) / IQR(c(f1$r(1e6), f2$r(1e6)))
+  d23 <- mean(abs(f2$q(u) - f3$q(u))) / IQR(c(f2$r(1e6), f3$r(1e6)))
+  d13 <- mean(abs(f1$q(u) - f3$q(u))) / IQR(c(f1$r(1e6), f3$r(1e6)))
   cat(sprintf("  %-10.0f %-10.4f %-10.4f %-10.4f %-10.6f\n",
               S, d12, d23, d13, d13/(d12+d23)))
 }
@@ -515,13 +515,13 @@ cat("  W1(F_i, F_j) = |mu_i - mu_j| for any F with finite mean.\n\n")
 cat("  IQR_pool(F_i, F_j) = IQR of 0.5*F(. - mu_i) + 0.5*F(. - mu_j)\n")
 cat("  This depends only on |mu_i - mu_j| and IQR(F).\n")
 cat("  Write IQR_pool(F_i, F_j) = h(|mu_i - mu_j|) for some function h.\n\n")
-cat("  Then nABCD(F_i, F_j) = |mu_i - mu_j| / (2 * h(|mu_i - mu_j|))\n")
-cat("  = g(|mu_i - mu_j|) where g(d) = d / (2*h(d))\n\n")
+cat("  Then nABCD(F_i, F_j) = |mu_i - mu_j| / h(|mu_i - mu_j|)\n")
+cat("  = g(|mu_i - mu_j|) where g(d) = d / h(d)\n\n")
 cat("  Key: For the bimodal mixture, h(d) is approximately:\n")
 cat("    h(d) ~ IQR(F)        when d << IQR(F)   (components overlap)\n")
 cat("    h(d) ~ d             when d >> IQR(F)   (components separated)\n\n")
-cat("  So g(d) ~ d/(2*IQR(F)) for small d, and g(d) ~ 1/2 for large d.\n")
-cat("  g is concave (increases then flattens at 0.5).\n\n")
+cat("  So g(d) ~ d/IQR(F) for small d, and g(d) ~ 1 for large d.\n")
+cat("  g is concave (increases then flattens at 1).\n\n")
 cat("  For a concave function g: g(a+b) <= g(a) + g(b) always holds\n")
 cat("  since g(a+b) <= g(a) + g(b) for concave g with g(0) = 0.\n")
 cat("  Combined with |mu1-mu3| <= |mu1-mu2| + |mu2-mu3| (W1 triangle),\n")
@@ -530,7 +530,7 @@ cat("  by subadditivity of concave functions. QED\n\n")
 
 # Verify concavity of g numerically for normal location family
 cat("Numerical verification of concavity for Normal location family:\n")
-cat("  g(d) = nABCD(N(0,1), N(d,1)) = d / (2 * IQR_mix)\n\n")
+cat("  g(d) = nABCD(N(0,1), N(d,1)) = d / IQR_mix\n\n")
 ds <- seq(0.1, 20, by = 0.5)
 gs <- numeric(length(ds))
 for (k in seq_along(ds)) {
@@ -540,7 +540,7 @@ for (k in seq_along(ds)) {
   u <- seq(1/100001, 100000/100001, length.out = 100000)
   w1 <- mean(abs(f1$q(u) - f2$q(u)))
   iqr <- IQR(c(f1$r(500000), f2$r(500000)))
-  gs[k] <- w1 / (2 * iqr)
+  gs[k] <- w1 / iqr
 }
 
 cat(sprintf("  %-8s %-10s %-10s\n", "d", "g(d)", "g''(approx)"))
@@ -589,9 +589,9 @@ for (s1 in sigmas) {
 
       if (min(iqr12, iqr23, iqr13) < 1e-10) next
 
-      d12 <- w12 / (2 * iqr12)
-      d23 <- w23 / (2 * iqr23)
-      d13 <- w13 / (2 * iqr13)
+      d12 <- w12 / iqr12
+      d23 <- w23 / iqr23
+      d13 <- w13 / iqr13
       ratio <- d13 / (d12 + d23)
       max_ratio_scale <- max(max_ratio_scale, ratio)
 
@@ -643,9 +643,9 @@ for (m1 in mus) for (s1 in sigmas_grid) {
 
       if (min(iqr12, iqr23, iqr13) < 1e-10) next
 
-      d12 <- w12 / (2 * iqr12)
-      d23 <- w23 / (2 * iqr23)
-      d13 <- w13 / (2 * iqr13)
+      d12 <- w12 / iqr12
+      d23 <- w23 / iqr23
+      d13 <- w13 / iqr13
       ratio <- d13 / (d12 + d23)
 
       if (ratio > worst_ratio_grid) {
@@ -677,12 +677,12 @@ cat("=======================================================================\n\n
 
 cat("CLAIM: nABCD(F1, F2) <= 0.5 for 'well-behaved' distributions.\n\n")
 cat("Heuristic argument:\n")
-cat("  nABCD = W1(F1,F2) / (2 * IQR_pool)\n")
+cat("  nABCD = W1(F1,F2) / IQR_pool\n")
 cat("  W1 = int_0^1 |F1^{-1}(u) - F2^{-1}(u)| du\n")
 cat("  IQR_pool = Q3(mix) - Q1(mix)\n\n")
 cat("  For the 50:50 mixture, the central 50% interval (Q1 to Q3)\n")
 cat("  captures much of the 'mass' of |F1^{-1} - F2^{-1}|.\n")
-cat("  The ratio W1/(2*IQR_pool) rarely exceeds 0.5.\n\n")
+cat("  The ratio W1/IQR_pool rarely exceeds 1.0.\n\n")
 
 cat("Numerical survey of max nABCD values:\n")
 max_nabcds <- numeric(0)
@@ -759,7 +759,7 @@ if (overall_worst <= 1) {
   cat("The worst ratio is well below 1.0, suggesting substantial margin.\n\n")
   cat("KEY INSIGHTS:\n")
   cat("  1. For location-only families, nABCD is subadditive (proven analytically\n")
-  cat("     via concavity of g(d) = d/(2*IQR_mix(d))).\n")
+  cat("     via concavity of g(d) = d/IQR_mix(d)).\n")
   cat("  2. For scale-only families, the ratio stays below ~0.85.\n")
   cat("  3. For general location+scale+shape combinations, the ratio stays\n")
   cat("     well below 1.0 across thousands of tests.\n")

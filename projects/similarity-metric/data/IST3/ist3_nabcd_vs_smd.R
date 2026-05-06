@@ -20,7 +20,7 @@ compute_nABCD <- function(x, y) {
   pooled <- c(x, y)
   iqr_pooled <- IQR(pooled, na.rm = TRUE)
   if (iqr_pooled == 0) return(NA)
-  w1 / (2 * iqr_pooled)
+  w1 / iqr_pooled
 }
 
 compute_smd <- function(x, y) {

@@ -53,11 +53,11 @@ louis_mixture_IQR <- function(x, y) {
   IQR(pooled)  # R default: type=7
 }
 
-# nABCD = W1(F1, F2) / (2 * IQR_mixture)
+# nABCD = W1(F1, F2) / IQR_mixture
 louis_nABCD <- function(x, y) {
   iqr_mix <- louis_mixture_IQR(x, y)
   if (iqr_mix == 0) return(NA_real_)
-  louis_W1(x, y) / (2 * iqr_mix)
+  louis_W1(x, y) / iqr_mix
 }
 
 # =============================================================================
@@ -275,8 +275,8 @@ for (i in seq_len(n_sc)) {
   iqr_mix <- IQR(c(x, y))
   iqr_comp <- (IQR(x) + IQR(y)) / 2
 
-  nabcd_mix <- w1 / (2 * iqr_mix)
-  nabcd_comp <- w1 / (2 * iqr_comp)
+  nabcd_mix <- w1 / iqr_mix
+  nabcd_comp <- w1 / iqr_comp
 
   cat(sprintf("  S%-3d  %10.4f  %10.4f  %10.4f  %10.4f  %10.4f\n",
               i, w1, iqr_mix, iqr_comp, nabcd_mix, nabcd_comp))
@@ -333,7 +333,7 @@ louis_bootstrap_vec <- function(x, y, B = 1000, conf = 0.95) {
   # nABCD per bootstrap
   valid <- iqr_boot > 0
   boot_nabcd <- rep(NA_real_, B)
-  boot_nabcd[valid] <- w1_boot[valid] / (2 * iqr_boot[valid])
+  boot_nabcd[valid] <- w1_boot[valid] / iqr_boot[valid]
   bv <- boot_nabcd[!is.na(boot_nabcd)]
 
   if (length(bv) < 10) return(list(estimate = est, lower = NA, upper = NA))
