@@ -75,7 +75,7 @@ ICH E17 Section 2.2.5 は "at the planning stage" でのプーリング判断を
 
 ```
                 Age           RSBP          Treatment Delay
-Max nABCD:      0.565         ---           ---
+Max nABCD:      1.130         ---           ---
 Max pair:       India-UK      ---           ---
 
 |SMD| vs nABCD
@@ -86,11 +86,11 @@ correlation:    high          0.906(最低)    variable
 
 ### Geographic gradient（Age）
 ```
-India ──── mean nABCD = 0.375 ──── 大きな分布差
+India ──── mean nABCD = 0.750 ──── 大きな分布差
   │
-Singapore ── mean nABCD = 0.205
+Singapore ── mean nABCD = 0.410
   │
-Hong Kong ── mean nABCD = 0.121
+Hong Kong ── mean nABCD = 0.242
   │
 European countries ── smaller
 ```
@@ -102,7 +102,7 @@ European countries ── smaller
 **問い**: 「この分布差が臨床的に重要になるには、CATE 感度 L がどの程度必要か？」
 
 ```
-India-UK Age (nABCD = 0.565):
+India-UK Age (nABCD = 1.130):
 
   Δ_max = L × IQR_pooled × nABCD
 
@@ -140,11 +140,11 @@ L* が大きい（implausible）→ 「非現実的に大きな interaction が�
 
 | Candidate EM | Skewness | Min | Median | Mean | **Max** | Max pair |
 |---|---|---|---|---|---|---|
-| Age | -1.26 | 0.039 | 0.103 | 0.123 | **0.285** | Sweden-Belgium |
-| NIHSS | 0.49 | 0.027 | 0.101 | 0.113 | **0.240** | Poland-Portugal |
-| Treatment delay | 1.21 | 0.026 | 0.098 | 0.107 | **0.195** | Sweden-Australia |
+| Age | -1.26 | 0.078 | 0.206 | 0.246 | **0.570** | Sweden-Belgium |
+| NIHSS | 0.49 | 0.054 | 0.202 | 0.226 | **0.480** | Poland-Portugal |
+| Treatment delay | 1.21 | 0.052 | 0.196 | 0.214 | **0.390** | Sweden-Australia |
 
-**注目**: Age が最大の nABCD (0.285) を持つ。直感的には Age が最も "問題" に見える。
+**注目**: Age が最大の nABCD (0.570) を持つ。直感的には Age が最も "問題" に見える。
 
 ### Step 2: nABCD vs SMD — Treatment Delay の教訓
 
@@ -158,7 +158,7 @@ Norway vs Portugal (Treatment Delay):
   Norway:   skewness = 6.76, SD = 1.80, range up to 24.3h
   Portugal: skewness = -0.23, SD = 1.21
 
-  nABCD = 0.069                                      → 分布差を検出！
+  nABCD = 0.138                                      → 分布差を検出！
 
   ┌─── Norway ───┐          ┌─── Portugal ───┐
   │   ▓          │          │  ▓▓▓▓          │
@@ -203,8 +203,8 @@ IST-3 の logistic regression（outcome: OHS 0-2 at 6 months）+ marginal standa
                     nABCD        ×  L_mean        =  Δ_max
                     (分布差)        (CATE感度)        (臨床的影響)
                     ─────────       ──────────       ──────────
-  Age:              0.285  ◄─大     0.00065/yr       0.47%pt ◄─小
-  NIHSS:            0.240  ◄─中     0.00950/pt       5.02%pt ◄─大!!
+  Age:              0.570  ◄─大     0.00065/yr       0.47%pt ◄─小
+  NIHSS:            0.480  ◄─中     0.00950/pt       5.02%pt ◄─大!!
 
   Overall treatment effect: RD ≈ 1.5%pt
 
@@ -287,12 +287,12 @@ L の範囲:     0.5×L_mean   L_mean    2×L_mean
 ## Slide 7: この Case Study が Prove すること（5点）
 
 ### 1. nABCD は SMD では見えない分布差を検出する
-- Norway-Portugal treatment delay: SMD ≈ 0 だが nABCD = 0.069
+- Norway-Portugal treatment delay: SMD ≈ 0 だが nABCD = 0.138
 - Scale と shape の差が非線形 EM を通じて heterogeneity を生みうる
 
 ### 2. 臨床較正が ranking reversal を明らかにする
-- Age: 大きい nABCD (0.285) → 小さい Δ_max (0.47%pt)
-- NIHSS: 中程度の nABCD (0.240) → 大きい Δ_max (5.02%pt)
+- Age: 大きい nABCD (0.570) → 小さい Δ_max (0.47%pt)
+- NIHSS: 中程度の nABCD (0.480) → 大きい Δ_max (5.02%pt)
 - **nABCD magnitude alone is insufficient — clinical calibration is essential**
 
 ### 3. Framework は EM-unknown と EM-identified の両方で機能する

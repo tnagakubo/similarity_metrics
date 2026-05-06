@@ -597,12 +597,12 @@ $$
 | ID | Description | Distribution 1 | Distribution 2 | True nABCD |
 |----|-------------|-----------------|-----------------|------------|
 | S1 | Null (identical) | $N(50, 10^2)$ | $N(50, 10^2)$ | 0.000 |
-| S2 | Location 0.2$\sigma$ | $N(50, 10^2)$ | $N(52, 10^2)$ | 0.073 |
-| S3 | Location 0.5$\sigma$ | $N(50, 10^2)$ | $N(55, 10^2)$ | 0.180 |
-| S4 | Location 1.0$\sigma$ | $N(50, 10^2)$ | $N(60, 10^2)$ | 0.328 |
-| S5 | Scale 1.5x | $N(50, 10^2)$ | $N(50, 15^2)$ | 0.122 |
-| S6 | Skew (Log-normal) | $N(50, 10^2)$ | LogN | 0.304 |
-| S7 | Location + Scale | $N(50, 10^2)$ | $N(55, 15^2)$ | 0.175 |
+| S2 | Location 0.2$\sigma$ | $N(50, 10^2)$ | $N(52, 10^2)$ | 0.146 |
+| S3 | Location 0.5$\sigma$ | $N(50, 10^2)$ | $N(55, 10^2)$ | 0.358 |
+| S4 | Location 1.0$\sigma$ | $N(50, 10^2)$ | $N(60, 10^2)$ | 0.656 |
+| S5 | Scale 1.5x | $N(50, 10^2)$ | $N(50, 15^2)$ | 0.244 |
+| S6 | Skew (Log-normal) | $N(50, 10^2)$ | LogN | 0.606 |
+| S7 | Location + Scale | $N(50, 10^2)$ | $N(55, 15^2)$ | 0.347 |
 
 $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resamples
 
@@ -648,15 +648,15 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 | Scenario | nABCD (mean $\pm$ SD) | SMD (mean $\pm$ SD) | Implication |
 |----------|----------------------|--------------------|----|
-| S3 (Location) | $0.183 \pm 0.048$ | $0.50 \pm 0.14$ | Both detect |
-| S5 (Scale only) | $0.136 \pm 0.033$ | $0.00 \pm 0.14$ | **Only nABCD detects** |
-| S6 (Skew only) | $0.312 \pm 0.048$ | $0.00 \pm 0.14$ | **Only nABCD detects** |
+| S3 (Location) | $0.366 \pm 0.096$ | $0.50 \pm 0.14$ | Both detect |
+| S5 (Scale only) | $0.272 \pm 0.066$ | $0.00 \pm 0.14$ | **Only nABCD detects** |
+| S6 (Skew only) | $0.624 \pm 0.096$ | $0.00 \pm 0.14$ | **Only nABCD detects** |
 
 ### Key Finding
 
 - Location shift: SMD and nABCD provide equivalent information
 - **Scale and skewness**: SMD remains at zero --- only nABCD detects
-- S6 is particularly striking: a large distributional difference (nABCD $= 0.31$) is entirely invisible to SMD
+- S6 is particularly striking: a large distributional difference (nABCD $= 0.62$) is entirely invisible to SMD
 
 ---
 
@@ -693,11 +693,11 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 ### Age nABCD
 
-- Range: **0.011 (R5, R7) -- 0.076 (R3)** — narrow; 11 of 15 partners $< 0.040$
+- Range: **0.022 (R5, R7) -- 0.151 (R3)** — narrow; 11 of 15 partners $< 0.080$
 
 ### SBP nABCD
 
-- Range: **0.015 (R2) -- 0.110 (R9)** — wider; most cluster in 0.050--0.110
+- Range: **0.030 (R2) -- 0.219 (R9)** — wider; most cluster in 0.100--0.220
 
 ### Bootstrap CIs
 
@@ -717,8 +717,8 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 
 | | R2 | R9 |
 |---|----|----|
-| nABCD$_{\text{age}}$ | **0.061** (2nd largest) | 0.017 (4th smallest) |
-| nABCD$_{\text{SBP}}$ | **0.015** (smallest) | **0.110** (largest) |
+| nABCD$_{\text{age}}$ | **0.122** (2nd largest) | 0.033 (4th smallest) |
+| nABCD$_{\text{SBP}}$ | **0.030** (smallest) | **0.219** (largest) |
 
 ### Implication
 
@@ -737,8 +737,8 @@ $n = 50, 100, 200$ per region; 10,000 replications; $B = 2{,}000$ bootstrap resa
 ### Joint Eligibility
 
 - **Six partners jointly eligible** on both modifiers: **R1, R4, R5, R6, R14, R15**
-- **R4** is the **leading single-pool candidate** — 3rd-lowest age (0.016) and 4th-lowest SBP (0.042); balanced across both modifiers
-- R5 has lowest age nABCD (0.011) but only 6th-lowest on SBP — asymmetric profile
+- **R4** is the **leading single-pool candidate** — 3rd-lowest age (0.031) and 4th-lowest SBP (0.084); balanced across both modifiers
+- R5 has lowest age nABCD (0.022) but only 6th-lowest on SBP — asymmetric profile
 
 > Quantitative inputs; final judgment with clinical/regulatory advisors
 

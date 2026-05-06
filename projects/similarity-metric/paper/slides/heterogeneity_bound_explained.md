@@ -625,9 +625,9 @@ $$\Delta_{\max} = L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}(F_1, F_2
 
 | EM | nABCD | $L$ | IQR |
 |----|-------|-----|-----|
-| Age | 0.12 | 0.01 | 14.2 yr |
-| BMI | 0.51 | 0.02 | 7.8 kg/m² |
-| HbA1c | 0.27 | 0.30 | 1.5% |
+| Age | 0.24 | 0.01 | 14.2 yr |
+| BMI | 1.02 | 0.02 | 7.8 kg/m² |
+| HbA1c | 0.54 | 0.30 | 1.5% |
 
 ---
 
@@ -637,15 +637,15 @@ $\Delta_{\max} = L \cdot \text{IQR} \cdot \text{nABCD}$
 
 | EM | 計算式 | $\Delta_{\max}$ | 対マージン |
 |----|--------|:-----------:|:------:|
-| **Age** | $0.01 \times 14.2 \times 0.12$ | **0.03%** | 8% |
-| **BMI** | $0.02 \times 7.8 \times 0.51$ | **0.16%** | 40% |
-| **HbA1c** | $0.30 \times 1.5 \times 0.27$ | **0.24%** | 60% |
+| **Age** | $0.01 \times 14.2 \times 0.24$ | **0.03%** | 8% |
+| **BMI** | $0.02 \times 7.8 \times 1.02$ | **0.16%** | 40% |
+| **HbA1c** | $0.30 \times 1.5 \times 0.54$ | **0.24%** | 60% |
 
 <div class="alertblock">
 <div class="block-title">注目</div>
 <div class="block-content">
 
-BMI は nABCD が**最大**（0.51）だが、$\Delta_{\max}$ は HbA1c より**小さい**。
+BMI は nABCD が**最大**（1.02）だが、$\Delta_{\max}$ は HbA1c より**小さい**。
 nABCD の大きさだけでは判断できない！
 
 </div>
@@ -655,13 +655,13 @@ nABCD の大きさだけでは判断できない！
 
 # なぜ BMI > HbA1c にならないのか？
 
-### BMI（nABCD = 0.51）
+### BMI（nABCD = 1.02）
 
 - 日米の BMI 分布差は**大きい**（日本 24.8 vs 米国 32.1）
 - しかし $L = 0.02$ → BMI が 1 kg/m² 違っても治療効果は **0.02%** しか変わらない
 - **弱い効果修飾因子** → 大きな分布差も臨床的影響は限定的
 
-### ベースライン HbA1c（nABCD = 0.27）
+### ベースライン HbA1c（nABCD = 0.54）
 
 - 日米の HbA1c 分布差は**中程度**（日本 7.6% vs 米国 8.4%）
 - しかし $L = 0.30$ → HbA1c が 1% 違うと治療効果が **0.30%** 変わる
@@ -709,7 +709,7 @@ $\Delta_{\max}$ の大きさを決めるのは nABCD と $L$ の**積**。どち
 
 ### Sensitivity Analysis（Table 7 アプローチ）
 
-nABCD = 0.27, IQR = 1.5% の場合：
+nABCD = 0.54, IQR = 1.5% の場合：
 
 | $L$（仮定） | $\Delta_{\max}$ | 治療効果の何%？ | マージンの何%？ |
 |:---:|:---:|:---:|:---:|
@@ -741,7 +741,7 @@ $$L^* = \frac{\Delta_{\text{clin}}}{\text{IQR} \cdot \text{nABCD}}$$
 ### HbA1c の例
 
 $$
-L^* = \frac{0.4\%}{1.5\% \times 0.27} = 0.49
+L^* = \frac{0.4\%}{1.5\% \times 0.54} = 0.49
 $$
 
 > 「ベースライン HbA1c が 1% 違うと、治療効果が **0.49% 以上** 変わると思いますか？」

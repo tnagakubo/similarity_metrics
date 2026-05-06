@@ -45,7 +45,7 @@
         <mxCell id="w1_calc" value="&lt;b&gt;Wasserstein-1 Distance&lt;/b&gt;&lt;br&gt;&lt;i&gt;W&lt;/i&gt;₁ = ∫|&lt;i&gt;F&lt;/i&gt;₁(x) − &lt;i&gt;F&lt;/i&gt;₂(x)| d&lt;i&gt;x&lt;/i&gt;&lt;br&gt;= Area between CDFs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#90CAF9;strokeColor=#1565C0;strokeWidth=1;fontSize=11;fontFamily=Noto Sans JP;" vertex="1" parent="1">
           <mxGeometry x="395" y="150" width="250" height="55" as="geometry"/>
         </mxCell>
-        <mxCell id="nabcd_formula" value="$$\text{nABCD} = \frac{W_1}{2 \cdot \text{IQR}_{\text{pooled}}}$$&lt;br&gt;+ Bootstrap 95% CI (&lt;i&gt;B&lt;/i&gt; = 2000)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1E3A5F;strokeColor=#0D1B2A;strokeWidth=2;fontSize=12;fontColor=#FFFFFF;fontFamily=Noto Sans JP;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="nabcd_formula" value="$$\text{nABCD} = \frac{W_1}{\text{IQR}_{\text{pooled}}}$$&lt;br&gt;+ Bootstrap 95% CI (&lt;i&gt;B&lt;/i&gt; = 2000)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1E3A5F;strokeColor=#0D1B2A;strokeWidth=2;fontSize=12;fontColor=#FFFFFF;fontFamily=Noto Sans JP;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="395" y="218" width="250" height="65" as="geometry"/>
         </mxCell>
 
@@ -83,13 +83,13 @@
         <mxCell id="step3_label" value="&lt;b&gt;Step 3: Clinical Calibration — Heterogeneity Bound&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=14;fontColor=#1B5E20;fontFamily=Noto Sans JP;" vertex="1" parent="1">
           <mxGeometry x="380" y="375" width="620" height="25" as="geometry"/>
         </mxCell>
-        <mxCell id="delta_formula" value="$$\Delta_{\max} = 2L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}$$" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A5D6A7;strokeColor=#1B5E20;strokeWidth=2;fontSize=16;fontColor=#1B5E20;fontFamily=Noto Sans JP;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="delta_formula" value="$$\Delta_{\max} = L \cdot \text{IQR}_{\text{pooled}} \cdot \text{nABCD}$$" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A5D6A7;strokeColor=#1B5E20;strokeWidth=2;fontSize=16;fontColor=#1B5E20;fontFamily=Noto Sans JP;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="395" y="408" width="310" height="40" as="geometry"/>
         </mxCell>
         <mxCell id="delta_meaning" value="= &lt;b&gt;Maximum potential difference&lt;/b&gt;&lt;br&gt;in regional average treatment effects&lt;br&gt;attributable to EM distributional difference" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#2E7D32;fontFamily=Noto Sans JP;" vertex="1" parent="1">
           <mxGeometry x="720" y="400" width="260" height="55" as="geometry"/>
         </mxCell>
-        <mxCell id="ci_prop" value="CI: [Δ&lt;sub&gt;max,L&lt;/sub&gt;, Δ&lt;sub&gt;max,U&lt;/sub&gt;] = 2&lt;i&gt;L&lt;/i&gt; × IQR × [nABCD&lt;sub&gt;L&lt;/sub&gt;, nABCD&lt;sub&gt;U&lt;/sub&gt;]" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#1B5E20;fontStyle=2;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+        <mxCell id="ci_prop" value="CI: [Δ&lt;sub&gt;max,L&lt;/sub&gt;, Δ&lt;sub&gt;max,U&lt;/sub&gt;] = &lt;i&gt;L&lt;/i&gt; × IQR × [nABCD&lt;sub&gt;L&lt;/sub&gt;, nABCD&lt;sub&gt;U&lt;/sub&gt;]" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#1B5E20;fontStyle=2;fontFamily=Noto Sans JP;" vertex="1" parent="1">
           <mxGeometry x="395" y="458" width="590" height="25" as="geometry"/>
         </mxCell>
 
@@ -118,7 +118,7 @@
         </mxCell>
 
         <!-- BMI column -->
-        <mxCell id="rev_bmi_nabcd" value="&lt;b&gt;BMI&lt;/b&gt;&lt;br&gt;nABCD = &lt;b&gt;0.51&lt;/b&gt;&lt;br&gt;&lt;font color='#C62828'&gt;■ Large&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCDD2;strokeColor=#C62828;strokeWidth=2;fontSize=12;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+        <mxCell id="rev_bmi_nabcd" value="&lt;b&gt;BMI&lt;/b&gt;&lt;br&gt;nABCD = &lt;b&gt;1.02&lt;/b&gt;&lt;br&gt;&lt;font color='#C62828'&gt;■ Large&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCDD2;strokeColor=#C62828;strokeWidth=2;fontSize=12;fontFamily=Noto Sans JP;" vertex="1" parent="1">
           <mxGeometry x="60" y="590" width="130" height="60" as="geometry"/>
         </mxCell>
         <mxCell id="rev_bmi_l" value="&lt;i&gt;L&lt;/i&gt; = 0.02&lt;br&gt;Weak EM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0E0E0;strokeColor=#9E9E9E;strokeWidth=1;fontSize=11;fontFamily=Noto Sans JP;" vertex="1" parent="1">
@@ -129,7 +129,7 @@
         </mxCell>
 
         <!-- HbA1c column -->
-        <mxCell id="rev_hba_nabcd" value="&lt;b&gt;HbA1c&lt;/b&gt;&lt;br&gt;nABCD = &lt;b&gt;0.27&lt;/b&gt;&lt;br&gt;&lt;font color='#F9A825'&gt;■ Moderate&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F9A825;strokeWidth=2;fontSize=12;fontFamily=Noto Sans JP;" vertex="1" parent="1">
+        <mxCell id="rev_hba_nabcd" value="&lt;b&gt;HbA1c&lt;/b&gt;&lt;br&gt;nABCD = &lt;b&gt;0.54&lt;/b&gt;&lt;br&gt;&lt;font color='#F9A825'&gt;■ Moderate&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F9A825;strokeWidth=2;fontSize=12;fontFamily=Noto Sans JP;" vertex="1" parent="1">
           <mxGeometry x="60" y="665" width="130" height="60" as="geometry"/>
         </mxCell>
         <mxCell id="rev_hba_l" value="&lt;i&gt;L&lt;/i&gt; = 0.30&lt;br&gt;&lt;b&gt;Strong EM&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E65100;strokeWidth=2;fontSize=11;fontFamily=Noto Sans JP;fontStyle=1;" vertex="1" parent="1">
@@ -172,7 +172,7 @@
         </mxCell>
 
         <!-- Proposition box -->
-        <mxCell id="prop2" value="&lt;b&gt;Proposition 2&lt;/b&gt;&lt;br&gt;|τ̄₁ − τ̄₂| ≤ 2&lt;i&gt;L&lt;/i&gt; · IQR · nABCD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1B5E20;strokeColor=#0D1B2A;strokeWidth=2;fontSize=12;fontColor=#FFFFFF;fontFamily=Noto Sans JP;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="prop2" value="&lt;b&gt;Proposition 2&lt;/b&gt;&lt;br&gt;|τ̄₁ − τ̄₂| ≤ &lt;i&gt;L&lt;/i&gt; · IQR · nABCD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1B5E20;strokeColor=#0D1B2A;strokeWidth=2;fontSize=12;fontColor=#FFFFFF;fontFamily=Noto Sans JP;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="1060" y="370" width="230" height="50" as="geometry"/>
         </mxCell>
 
