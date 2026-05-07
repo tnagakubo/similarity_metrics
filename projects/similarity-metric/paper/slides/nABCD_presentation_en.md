@@ -271,7 +271,7 @@ style: |
     position: static;
     background: transparent;
     color: white;
-    font-size: 86px;
+    font-size: 66px;
     font-weight: 900;
     margin: 0 0 20px 0;
     padding: 0;
@@ -428,15 +428,15 @@ Tak Nagakubo
 
 # Regional Pooling: A Practical Challenge
 
-### Why pooling is needed
+## Background
 
 - MRCTs assess treatment effect consistency across regions
 - Individual regional sample sizes are often too small alone
-- ICH E17 strategy: pool regions with similar **effect modifier** distributions
+- ICH E17 strategy: pool regions with similar effect modifier distributions
   (effect modifier = baseline characteristic for which treatment benefit differs across subgroups)
-- This paper focuses on **continuous effect modifiers** (e.g., age, baseline severity, laboratory values)
+- This research focuses on continuous effect modifiers (e.g., age, baseline severity, laboratory values)
 
-### The challenge for sponsors
+## Challenge
 
 - At the **planning stage**, sponsors must select pooling partners with evidence that two regions are "similar enough"
 

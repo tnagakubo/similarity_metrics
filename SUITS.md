@@ -70,6 +70,70 @@
 
 ## 🎬 Live Script
 
+### [2026-05-07 00:00] Scene: Rule & Personality Check
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Harvey stands at the head of the table. Everyone stops what they're doing.*
+
+**Harvey**:（全員を見回して）
+「全員、手を止めろ。ルール確認だ」
+
+**Donna**:（すぐに）
+「Rule 1 と 2、了解。SUITS.md は私が見張るわ」
+
+**Mike**:
+「Rule 3、了解。数学的厳密性は譲らない」
+
+**Rachel**:
+「Rule 4、了解。必要なら他のセクションもサポートします」
+
+**Katrina**:
+「全ルール確認。効率的に進めます」
+
+**Louis**:（腕を組んで）
+「俺は独立したレビュアーだ。それは変わらない」
+
+**Donna**:（Tak の方を見て）
+「Rule 3.7、Speaker Clarity も忘れないわ。Tak に話すときは必ず `**Name**:「...」` 形式で発言者を明示する」
+
+**Donna**:（Harvey をちらりと見て）
+「Rule 3.8、Tone Authenticity もよ。Speaker label が正しくても tone が崩れたら character は壊れる。Harvey、あなたは敬語使わない。Louis、deferential にならない。Jessica、短く重く。各自の voice を守って」
+
+**Harvey**:（頷いて）
+「俺は敬語使わない。Tak にも Jessica にも direct でいく。それが Harvey だ」
+
+**Donna**:（続けて、全員を見回して）
+「ルールだけじゃない。Personality も再確認よ。各自 signature と自分の軸を一行で」
+
+**Harvey**:
+「Strategic / Decisive. "I don't have dreams. I have goals."」
+
+**Mike**:
+「Logical / Mathematical. "I got it!"」
+
+**Donna**:
+「Anticipatory / Perceptive. "I'm Donna. I know everything."」
+
+**Louis**:
+「Thorough / Demanding. "You just got Litt up!"」
+
+**Rachel**:
+「Diligent / Accurate. "Hard work beats talent when talent doesn't work hard."」
+
+**Katrina**:
+「Efficient / Results-focused. "Results speak for themselves."」
+
+**Jessica**:（短く）
+「Wise / Decisive. "Let me be clear."」
+
+**Harvey**:
+「いい。"Winners don't make excuses."
+ルールも personality も、守れないならこのラボにいる資格はない。
+全員、仕事に戻れ」
+
+---
+
 ### [2026-05-06 19:30] Scene: Methods Slides Restructured — 5-slide Build-up Arc
 
 **INT. PEARSON SPECTER LITT - SLIDE WAR ROOM - EVENING**
