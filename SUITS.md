@@ -4,6 +4,57 @@
 
 ---
 
+### [2026-05-08 — TBD] Scene: Poster GSC → Marp slide port
+
+**INT. PEARSON SPECTER LITT — KATRINA'S DESK — DAY**
+
+*Tak は `Poster_GSC_TN.pptx` を提示し、これを Marp slide 化するよう指示。`nABCD_poster.tex` は使うなと明確に指定。チームは pptx の中身を直接抽出することに決定。*
+
+**Donna**:（手際よく）
+「pptx を解凍して中身を見るわ。pptx は zip 形式だから、内部の `slides/slide1.xml` と `diagrams/data*.xml` から text を取り出せる。」
+
+**Mike**:（分析的に）
+「pptx は1枚の poster slide で構成されている。直接の text は title + author + footer のみだが、4つの SmartArt diagrams (data1-4.xml) に section 内容が入っていた:
+- data1: Background, Objectives, Dissimilarity Index, K-R duality, Heterogeneity bound, Simulation Design, Clinical Calibration
+- data3: Simulation Results, Application, Findings, Future Work
+- 8つの embedded images: nABCD definition figure, scenario overview, simulation results panel, GUSTO forest plots」
+
+**Katrina**:（実装に着手）
+「poster の section 構成を Marp slide に matching させた:
+
+| Slide # | Content | Source from pptx |
+|---|---|---|
+| 1 | Title | slide1.xml |
+| 2 | Section: Introduction | (divider) |
+| 3 | Background + Objectives | data1 |
+| 4 | Section: Methods | (divider) |
+| 5 | nABCD Dissimilarity Index | data1 + image6 (nABCD def figure) |
+| 6 | Heterogeneity Bound | data1 |
+| 7 | Clinical Calibration | data1 |
+| 8 | Section: Simulation | (divider) |
+| 9 | Simulation Design | data1 + image7 (scenario overview) |
+| 10 | Simulation Results | data3 + image5 (Bias/Coverage/CI Width panel) |
+| 11 | Section: Application | (divider) |
+| 12 | Application Goal & Data | data3 |
+| 13 | Application Joint Eligibility | data3 + image8 (forest plots) |
+| 14 | Section: Discussion | (divider) |
+| 15 | Findings (4 bullets) | data3 |
+| 16 | Future Work (3 items) | data3 |
+| 17 | Thank You | (closing) |
+
+template は `nABCD_presentation_en.md` と同じ accent palette (#D52B1E + #d47e78) と Marp 16:9 layout を踏襲。」
+
+**Harvey**:（断定）
+「`projects/similarity-metric/poster/Poster_GSC_TN_marp.md` に保存完了。図は既存の `figures/` directory の `_color.png` 版を再利用——poster と paper で figure file は共通だ。」
+
+**Rachel**:（確認補足）
+「pptx で Author affiliation は 'Evidence & Analytics Center of Excellence, Global Statistical Sciences Japan' (Eli Lilly) と記載されており、これを title slide に保持しました。Copyright 表記 (©2025 Eli Lilly) は slide footer から外し、必要なら Tak の判断で別 slide に追加可能です。」
+
+**Donna**:（確認）
+「Tak、できあがった Marp slide を marp-cli で render するか、PDF 出力するかは Tak の判断。修正点があれば指示して。」
+
+---
+
 ## Current Status
 
 **Active Project**: similarity-metric (nABCD paper)
