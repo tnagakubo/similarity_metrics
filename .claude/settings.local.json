@@ -192,7 +192,19 @@
       "Bash(tar -xzf \"/c/Users/hrd13/.claude/projects/C--Users-hrd13-Documents-Gak-0-Study-800Claude-20260210-SIM-similarity-metrics/d6e2e3e7-f5f6-40cf-af86-eaf892d8ba43/tool-results/webfetch-1777712226932-0qsziu.bin\" -C /tmp/poster-design)",
       "Bash(py --version)",
       "Bash(where.exe python *)",
-      "Bash(py *)"
+      "Bash(py *)",
+      "Bash(npx marp *)",
+      "Bash(npx -y @marp-team/marp-cli --version)",
+      "Bash(npx -y @marp-team/marp-cli --images png --image-scale 1 projects/similarity-metric/paper/slides/m1_options_test.md)",
+      "Bash(npx -y @marp-team/marp-cli --pptx projects/similarity-metric/paper/slides/nABCD_presentation_en.md)",
+      "Bash(npx -y @marp-team/marp-cli --pptx --allow-local-files projects/similarity-metric/paper/slides/nABCD_presentation_en.md)",
+      "Bash(npx -y @marp-team/marp-cli --pptx --allow-local-files projects/similarity-metric/paper/slides/nABCD_presentation.md)",
+      "Read(//c/Program Files/LibreOffice/program/**)",
+      "Read(//c/Program Files \\(x86\\)/LibreOffice/program/**)",
+      "Bash(winget install *)",
+      "Bash(export PATH=\"/c/Program Files/LibreOffice/program:$PATH\")",
+      "Bash(npx -y @marp-team/marp-cli --pptx --pptx-editable --allow-local-files projects/similarity-metric/paper/slides/nABCD_presentation_en.md)",
+      "Bash(npx -y @marp-team/marp-cli --pptx --pptx-editable --allow-local-files projects/similarity-metric/paper/slides/nABCD_presentation.md)"
     ]
   }
 }
