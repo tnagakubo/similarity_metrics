@@ -430,6 +430,7 @@ Tak Nagakubo
 
 ## Background
 
+<<<<<<< HEAD
 - MRCTs assess treatment effect consistency across regions
 - Individual regional sample sizes are often too small alone
 - ICH E17 strategy: pool regions with similar effect modifier distributions
@@ -439,30 +440,47 @@ Tak Nagakubo
 ## Challenge
 
 - At the **planning stage**, sponsors must select pooling partners with evidence that two regions are "similar enough"
+=======
+- Treatment effect consistency across regions is assessed in MRCTs
+- Individual regional sample sizes are too small alone for the consistency assessment
+- ICH E17 strategy: pool regions with similar effect modifier distributions
+  (effect modifier = baseline characteristic for which treatment benefit differs across subgroups)
+>>>>>>> d7699b88f3bfacb321644adf2255cd7ca57dd114
 
+## Practical Challenge
 <div class="block">
-<div class="block-title">Cautionary example: Secukinumab MRCT (Matsushima 2024)</div>
+<div class="block-title">Cautionary example: Secukinumab (Matsushima 2024)</div>
 <div class="block-body">
 
-Unassessed regional imbalance in CRP+/MRI- status → apparent treatment effect inconsistency at analysis.
+Regional imbalance in effect modifiers (CRP/MRI biomarker status) caused apparent treatment effect inconsistency, reconciled only post-hoc by analyzing pooled regions. 
 
 </div>
 </div>
+
+- At the planning stage, sponsors must select pooling partners with evidence that two regions are "similar enough"
+- Pre-specifying pooling partners requires a quantitative similarity metric
 
 ---
 
 # Methodological Gap and Research Objectives
 
-### The gap
+## Gap for Similarity Assessment
+<div class="block">
+<div class="block-title">ICH E17</div>
+<div class="block-body">
 
+"Regions may be pooled for randomization and/or analysis if subjects are considered to be sufficiently similar with respect to intrinsi
+
+</div>
+</div>
 - ICH E17 provides no specific metric, threshold, or procedure for "similar enough"
-- The standard tool for **continuous covariates** is the Standardized Mean Difference (SMD), which is **blind** to differences in variance and shape
+- The standard tool for continuous covariates is the Standardized Mean Difference (SMD), which is blind to differences in variance and shape
 - → No quantitative evidence base for partner selection
 
-### Objectives
+## Objectives
 
 - Develop a quantitative index that captures distributional similarity beyond means
-- Deliver a practitioner-facing tool for the **planning stage** of an MRCT
+- Deliver a practitioner-facing tool for the planning stage of an MRCT
 
 ---
 
