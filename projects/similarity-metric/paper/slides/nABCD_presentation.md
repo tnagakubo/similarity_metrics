@@ -430,19 +430,38 @@ $\tau(x)$: CATE (条件付き平均治療効果)、$F_r$: 地域 $r$ の effect 
 
 # 既存手法とその限界
 
-### 3 つの分布距離指標
+<div class="block">
+<div class="block-title">SMD — 分散・形状差に盲目</div>
+<div class="block-body">
 
-| 指標 | 手法 | 限界 |
-|------|------|------|
-| **SMD** | 平均差 / プール SD | 分散・形状差に盲目 |
-| **Kolmogorov-Smirnov** | CDF 間の最大乖離 | 臨床的解釈不能、治療効果との連結なし |
-| **KL ダイバージェンス** | 密度比 | 非対称、密度推定必要、非重複支持で $\infty$ に発散可能 |
+平均差 / プール SD。$N(50, 5^2)$ vs $N(50, 15^2)$ → 3× の分散差にも関わらず SMD = 0。
+
+</div>
+</div>
+
+<div class="block">
+<div class="block-title">Kolmogorov–Smirnov — 治療効果との連結なし</div>
+<div class="block-body">
+
+$\sup_x |F_1(x) - F_2(x)|$ は分布全体を捕捉するが、臨床スケールへの理論的橋渡しがない。
+
+</div>
+</div>
+
+<div class="block">
+<div class="block-title">KL ダイバージェンス — 非対称、発散可能</div>
+<div class="block-body">
+
+$\int p \log(p/q)\,dx$ は密度推定が必要、非重複支持で発散する。
+
+</div>
+</div>
 
 ### 必要な要件 — 3 つ
 
-1. 位置以外の分布特徴 (**分散・形状**) を捕捉
-2. **臨床的に解釈可能なスケール** を提供
-3. 治療効果異質性への **理論的連結** を提供
+1. **位置以外** (分散・形状) を捕捉
+2. **臨床的に解釈可能なスケール**
+3. **治療効果異質性への理論的連結**
 
 ---
 

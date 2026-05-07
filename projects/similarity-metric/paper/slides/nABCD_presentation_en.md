@@ -474,19 +474,38 @@ Unassessed regional imbalance in CRP+/MRI- status → apparent treatment effect 
 
 # Existing Approaches and Their Limitations
 
-### Three families of distributional measures
+<div class="block">
+<div class="block-title">SMD — blind to variance and shape</div>
+<div class="block-body">
 
-| Measure | Approach | Limitation |
-|---------|----------|-----------|
-| **SMD** | Mean difference / pooled SD | Blind to variance and shape |
-| **Kolmogorov–Smirnov** | Maximum gap between CDFs | No clinically interpretable scale, no link to treatment effects |
-| **KL divergence** | Density-based ratio | Asymmetric, requires density estimation, can diverge to ∞ with non-overlapping supports |
+Mean difference / pooled SD. $N(50, 5^2)$ vs $N(50, 15^2)$ → SMD = 0 despite a 3× difference in spread.
 
-### What we need: three requirements
+</div>
+</div>
 
-1. Capture distributional features **beyond location** (variance, shape)
-2. Provide a **clinically interpretable scale**
-3. Offer a **theoretical link to treatment effect heterogeneity**
+<div class="block">
+<div class="block-title">Kolmogorov–Smirnov — no link to treatment effects</div>
+<div class="block-body">
+
+$\sup_x |F_1(x) - F_2(x)|$ captures full shape, but no theoretical bridge to clinical scale.
+
+</div>
+</div>
+
+<div class="block">
+<div class="block-title">KL divergence — asymmetric, can diverge</div>
+<div class="block-body">
+
+$\int p \log(p/q)\,dx$ requires density estimation; diverges with non-overlapping supports.
+
+</div>
+</div>
+
+### Three requirements
+
+1. **Beyond location** (variance, shape)
+2. **Clinically interpretable scale**
+3. **Theoretical link to treatment effect heterogeneity**
 
 ---
 
