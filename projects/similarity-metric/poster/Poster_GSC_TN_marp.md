@@ -2,8 +2,8 @@
 marp: true
 size: 16:9
 paginate: true
-header: "GSC 2025"
-footer: "nABCD: Effect Modifier Similarity for MRCTs"
+header: "May 8, 2026"
+footer: ""
 style: |
   /* ============================================
      Marp Slide Template — Poster_GSC_TN port
@@ -175,6 +175,14 @@ style: |
     border: none;
   }
 
+  section.title h2 {
+    font-size: 68px;
+    font-weight: 400;
+    border: none;
+    margin: 0 0 40px 0;
+    padding: 0;
+  }
+
   section.title p {
     font-size: 28px;
     margin: 6px 0;
@@ -258,18 +266,20 @@ style: |
 
 # Quantifying Effect Modifiers Similarity for Regional Pooling Strategy in Multi-Regional Clinical Trials
 
+## 
 Takashi Nagakubo
 
-<p class="affil">Evidence & Analytics Center of Excellence, Global Statistical Sciences Japan</p>
-
 ---
 
-<!-- _class: section -->
+# Outline
 
-# Introduction
+1. **Introduction**: Background and objectives
+2. **Methods**: nABCD definition, theoretical foundation, and clinical calibration
+3. **Simulation**: Estimation performance across 7 scenarios
+4. **Application**: Hypothetical thrombolytic MRCT using GUSTO-I
+5. **Discussion**: Key findings and future work
 
 ---
-
 # Background and Objectives
 
 ## Background
@@ -350,6 +360,24 @@ $$
 
 ---
 
+# Estimation
+
+### Empirical estimator
+
+$$
+\widehat{\text{nABCD}} = \frac{\sum_{k=1}^{n_1+n_2-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)})}{\widehat{\text{IQR}}_{\text{pooled}}}
+$$
+
+
+### Inference: Percentile bootstrap
+
+- Asymptotic distribution non-standard: $\sqrt{n}\, W_1(\hat{F}_n, F) \xrightarrow{d} \int |B(F)|\, dx$ — Brownian bridge (del Barrio 1999)
+- No universal critical values → **percentile bootstrap** ($B = 2{,}000$ resamples)
+- Boundary case $F_1 = F_2$: parameter space edge — addressed in simulation
+
+---
+
+
 # Clinical Calibration
 
 <div class="block">
@@ -381,11 +409,6 @@ $$
 
 ---
 
-<!-- _class: section -->
-
-# Simulation
-
----
 
 # Simulation Design
 
@@ -430,11 +453,6 @@ CI width **shrinks with sample size** as expected.
 
 ![h:240px](../figures/fig2_simulation_results_color.png)
 
----
-
-<!-- _class: section -->
-
-# Application
 
 ---
 
@@ -458,11 +476,6 @@ A sponsor planning a Phase 3 MRCT for a novel **thrombolytic** in acute myocardi
 - **Joint eligibility** at $\Delta_{\text{clin}} = 1\%\text{pt}$ with class-level upper bounds ($L_{\text{UB,age}} = 10^{-2}$/yr; $L_{\text{UB,SBP}} = 2{\times}10^{-3}$/mmHg): **6 partners (R1, R4, R5, R6, R14, R15)** emerge as jointly eligible on both EMs
 - **R4** is the leading candidate — balanced ranking on both EMs
 
----
-
-<!-- _class: section -->
-
-# Discussion
 
 ---
 
@@ -489,13 +502,4 @@ A sponsor planning a Phase 3 MRCT for a novel **thrombolytic** in acute myocardi
 3. **Upstream EM identification**
    Which baseline characteristics constitute relevant EMs is a non-trivial pre-step assumed solved in this work; formal methodology deserves dedicated investigation.
 
----
 
-<!-- _class: end -->
-<!-- _paginate: false -->
-
-# Thank You
-
-Questions welcome
-
-Takashi Nagakubo
