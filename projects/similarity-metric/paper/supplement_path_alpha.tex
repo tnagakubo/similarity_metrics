@@ -1,0 +1,89 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\title{Supplement A: Mathematical Equivalence of Clinical Calibration Across Within-Effect-Modifier Normalizers}
+\date{}
+
+\begin{document}
+\maketitle
+
+This supplement establishes that the clinical-scale quantity $\Delta_{\max}$, used as the calibration output of the methodology in the main paper, does not depend on the choice of within-effect-modifier scale normalizer applied to the Wasserstein-1 distance. This invariance result is referenced at Section~3.2 (Per-EM Wasserstein-1 Distance) and Section~3.4 (Interpretation and Clinical Calibration) of the main paper and provides the mathematical basis for our adoption of $W_1$ in its original measurement units as the primary similarity metric.
+
+\section{Setup and Definitions}\label{sec:supA_setup}
+
+Let $F_1$ and $F_2$ denote probability distributions on $\mathbb{R}$ representing the marginal distribution of an effect modifier in two regions of a multi-regional clinical trial. Let $\bar{F}$ denote a pooled distribution constructed from $F_1$ and $F_2$ (for example, the equal-weight mixture $\tfrac{1}{2} F_1 + \tfrac{1}{2} F_2$ or a sample-size-weighted mixture). Let $W_1(F_1, F_2)$ denote the Wasserstein-1 distance between $F_1$ and $F_2$, expressed in the original measurement units of the effect modifier.
+
+A within-effect-modifier scale functional is any map $X : \mathcal{P}(\mathbb{R}) \to \mathbb{R}_+$ that returns a strictly positive scalar carrying the units of the input distribution. Common choices considered in the prior literature on distributional similarity include
+\begin{itemize}
+\item the interquartile range $X_{\text{IQR}}(F) = F^{-1}(0.75) - F^{-1}(0.25)$,
+\item the standard deviation $X_{\text{SD}}(F) = \sqrt{\operatorname{Var}_F(X)}$,
+\item the median absolute deviation about the median, $X_{\text{MAD}}(F)$,
+\item the inter-decile range $X_{\text{Q95-Q5}}(F) = F^{-1}(0.95) - F^{-1}(0.05)$,
+\item the range $X_{\text{rng}}(F)$ (when finite).
+\end{itemize}
+For any such functional with $X(\bar{F}) > 0$, a dimensionless normalized similarity index can be defined as
+\begin{equation}
+\text{nABCD}_X(F_1, F_2) = \frac{W_1(F_1, F_2)}{X(\bar{F})}.
+\label{eq:supA_nabcd}
+\end{equation}
+
+The clinical calibration formula in the main paper (Section~3.4, equation for $\Delta_{\max}$) translates a similarity index into a maximum potential regional treatment effect difference. Expressed via a normalizer-dependent index, this calibration takes the form
+\begin{equation}
+\Delta_{\max}^{(X)} = L_{\text{clinical}} \cdot X(\bar{F}) \cdot \text{nABCD}_X(F_1, F_2),
+\label{eq:supA_dmaxX}
+\end{equation}
+where $L_{\text{clinical}}$ is the Lipschitz constant of the conditional average treatment effect function with respect to the effect modifier (the clinical slope).
+
+\section{Equivalence Result}\label{sec:supA_main}
+
+\begin{proposition}\label{prop:supA_equivalence}
+For any within-effect-modifier scale functional $X$ such that $X(\bar{F}) > 0$,
+\begin{equation}
+\Delta_{\max}^{(X)} \;=\; L_{\text{clinical}} \cdot W_1(F_1, F_2),
+\label{eq:supA_invariance}
+\end{equation}
+and the right-hand side of equation~(\ref{eq:supA_invariance}) does not depend on the choice of $X$.
+\end{proposition}
+
+\begin{proof}
+Substituting equation~(\ref{eq:supA_nabcd}) into equation~(\ref{eq:supA_dmaxX}),
+\[
+\Delta_{\max}^{(X)} = L_{\text{clinical}} \cdot X(\bar{F}) \cdot \frac{W_1(F_1, F_2)}{X(\bar{F})} = L_{\text{clinical}} \cdot W_1(F_1, F_2).
+\]
+The two factors of $X(\bar{F})$ cancel identically. Because the right-hand side contains no reference to $X$, the value of $\Delta_{\max}^{(X)}$ is the same for every admissible choice of $X$.
+\end{proof}
+
+\begin{remark}[Estimator-level invariance]\label{rem:supA_estimator}
+The invariance extends to plug-in estimators. When $W_1$ is estimated by $\widehat{W}_1$ and the normalizer is estimated by $\widehat{X(\bar{F})}$ from the same sample, the corresponding estimator of $\Delta_{\max}^{(X)}$ is
+\[
+\widehat{\Delta_{\max}^{(X)}} = L_{\text{clinical}} \cdot \widehat{X(\bar{F})} \cdot \frac{\widehat{W}_1}{\widehat{X(\bar{F})}} = L_{\text{clinical}} \cdot \widehat{W}_1.
+\]
+Consequently, the nonparametric bootstrap distribution of $\widehat{\Delta_{\max}^{(X)}}$ coincides with that of $L_{\text{clinical}} \cdot \widehat{W}_1$ for every choice of $X$. Percentile bootstrap confidence intervals for $\Delta_{\max}$ are therefore numerically identical regardless of whether one routes the computation through a normalized intermediate quantity or directly through raw $\widehat{W}_1$.
+\end{remark}
+
+\section{Connection to the Reverse Pathway}\label{sec:supA_reverse}
+
+The reverse calculation introduced in the main paper (Section~3.4) defines the required clinical slope as $L^* = \Delta_{\text{clin}} / W_1(F_1, F_2)$, where $\Delta_{\text{clin}}$ is a pre-specified clinical margin. Substituting any normalized form via $W_1 = X(\bar{F}) \cdot \text{nABCD}_X$ yields
+\[
+L^* = \frac{\Delta_{\text{clin}}}{X(\bar{F}) \cdot \text{nABCD}_X(F_1, F_2)},
+\]
+which simplifies to the same $L^* = \Delta_{\text{clin}} / W_1$. The reverse pathway is therefore invariant to normalizer choice on the same grounds as the forward pathway.
+
+\section{Implications for Methodology Choice}\label{sec:supA_implications}
+
+Proposition~\ref{prop:supA_equivalence} and Remark~\ref{rem:supA_estimator} together establish three operational consequences for methodology design:
+
+\begin{enumerate}
+\item Adopting $W_1$ in its original measurement units produces the same clinical calibration as adopting any normalized form $\text{nABCD}_X$ followed by multiplication by $X(\bar{F})$. There is no methodological loss from routing the calibration directly through raw $W_1$.
+\item The choice of $X$ (interquartile range, standard deviation, median absolute deviation, and so on) affects only the value of an intermediate dimensionless display quantity. Empirical sensitivity studies comparing $\text{nABCD}_X$ across different choices of $X$ measure the sensitivity of the intermediate display, not of the clinical conclusion.
+\item Because the normalizer choice is mathematically inert at the clinical-scale layer but introduces an arbitrary scientific convention at the dimensionless layer, the principle of statistical appropriateness favors adopting $W_1$ in its original measurement units as the primary similarity metric. Within-effect-modifier normalization is unnecessary once clinical calibration is applied.
+\end{enumerate}
+
+The main paper adopts this approach throughout. Where prior literature has introduced normalized variants of $W_1$ for cross-effect-modifier comparison, the present supplement clarifies that such normalization is unnecessary within the per-effect-modifier methodology presented in the main text. Cross-effect-modifier comparison, which would require navigating the dimensional heterogeneity across variables measured in different units, is explicitly outside the scope of the methodology (Section~5 Discussion of the main paper).
+
+\end{document}

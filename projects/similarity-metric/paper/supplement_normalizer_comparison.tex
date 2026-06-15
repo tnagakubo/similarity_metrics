@@ -1,0 +1,57 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{booktabs}
+\geometry{margin=1in}
+
+\title{Supplement B: Empirical Illustration of the Normalizer Invariance of Clinical Calibration}
+\date{}
+
+\begin{document}
+\maketitle
+
+This supplement provides an empirical illustration to accompany the mathematical equivalence proved in Supplement~A: clinical-scale quantities $\Delta_{\max}$ and $L^*$ are invariant to the choice of within-effect-modifier scale normalizer applied to the Wasserstein-1 distance, even though intermediate dimensionless ratios vary substantially across normalizer choices.
+
+\section{Setup}\label{sec:supB_setup}
+
+We evaluated five within-effect-modifier scale functionals in a controlled simulation: the interquartile range $X_{\text{IQR}}$, the standard deviation $X_{\text{SD}}$, the median absolute deviation $X_{\text{MAD}}$, the inter-decile range $X_{\text{Q95-Q5}}$, and the range $X_{\text{rng}}$. For each functional, the corresponding normalized similarity index was computed as
+\[
+\hat{\rho}_X = \frac{\widehat{W}_1}{\widehat{X(\bar{F})}}
+\]
+across eight stylized distributional scenarios (N1--N8 of the design table in the simulation supplement) covering location shifts, scale changes, contamination, skew, and combinations thereof. Sample sizes were $n = 200$ per region with $10{,}000$ Monte Carlo replications. The same simulated samples enter all five computations; the only difference across the five normalizers is the value of $\widehat{X(\bar{F})}$ used in the denominator.
+
+\section{Variation of the Intermediate Dimensionless Ratio}\label{sec:supB_variation}
+
+Across the eight scenarios, the dimensionless ratios $\hat{\rho}_X$ differ substantially across the five normalizer choices. The variation reflects two sources. First, the population scale functionals themselves differ even for the same distribution: for the standard normal, $X_{\text{IQR}} \approx 1.349$, $X_{\text{SD}} = 1$, $X_{\text{MAD}} \approx 0.674$, and $X_{\text{Q95-Q5}} \approx 3.290$, so the corresponding dimensionless ratios are reciprocally rescaled. Second, the scale functionals respond differently to departures from normality: the range-based normalizer is unbounded for distributions with infinite support and exhibits very high variability under heavy-tailed and contaminated scenarios, whereas quantile-based normalizers (IQR, Q95--Q5, MAD) remain stable.
+
+A practical consequence is that a partner-region ``similarity ranking'' based on $\hat{\rho}_X$ depends on the choice of $X$. Two regions $A$ and $B$ may satisfy $\hat{\rho}_{X_{\text{IQR}}}(A) < \hat{\rho}_{X_{\text{IQR}}}(B)$ while simultaneously $\hat{\rho}_{X_{\text{SD}}}(A) > \hat{\rho}_{X_{\text{SD}}}(B)$ if the two populations differ in tail-heaviness, even with the same underlying $\widehat{W}_1$ values for both pairs. The dimensionless ranking is, in this sense, a function of both the data and the normalizer convention.
+
+\section{Invariance of the Clinical-Scale Quantities}\label{sec:supB_invariance}
+
+In contrast to the dimensionless ratios, the clinical-scale quantity
+\[
+\Delta_{\max} = L_{\text{clinical}} \cdot \widehat{X(\bar{F})} \cdot \hat{\rho}_X = L_{\text{clinical}} \cdot \widehat{W}_1
+\]
+is identical for all five normalizer choices, as guaranteed by the identity proved in Supplement~A: $\widehat{X(\bar{F})} \cdot \widehat{W}_1 / \widehat{X(\bar{F})} = \widehat{W}_1$. For every Monte Carlo replication in the simulation, the products are exactly equal because the same $\widehat{W}_1$ enters the numerator of $\hat{\rho}_X$ and cancels with the multiplicative $\widehat{X(\bar{F})}$ used to translate to the clinical scale.
+
+The same identity applies to the reverse-pathway quantity:
+\[
+L^* = \frac{\Delta_{\text{clin}}}{\widehat{X(\bar{F})} \cdot \hat{\rho}_X} = \frac{\Delta_{\text{clin}}}{\widehat{W}_1},
+\]
+so $L^*$ is also numerically invariant to the choice of normalizer.
+
+Hence the bootstrap distribution of $\Delta_{\max}$ (and of $L^*$) computed via any of the five normalizer choices is identical to the bootstrap distribution computed via $\widehat{W}_1$ directly. Percentile bootstrap confidence intervals on the clinical scale therefore do not depend on the within-effect-modifier normalizer.
+
+\section{Implications}\label{sec:supB_implications}
+
+The empirical illustration confirms two practical points:
+
+\begin{enumerate}
+\item The within-effect-modifier normalizer choice (interquartile range, standard deviation, median absolute deviation, inter-decile range, or range) materially affects only the intermediate dimensionless display $\hat{\rho}_X$. Reports of similarity rankings or magnitudes that depend on a specific normalizer choice are, in this sense, conventions of presentation rather than substantive scientific claims about the underlying distributional difference.
+
+\item The clinical decision quantities $\Delta_{\max}$ and $L^*$ used by the methodology in the main paper carry no information that depends on the within-effect-modifier normalizer. Sponsors and regulators can therefore make pooling decisions without specifying or defending a particular within-effect-modifier normalization, removing one source of methodological arbitrariness.
+\end{enumerate}
+
+These observations motivate the main paper's adoption of $W_1$ in its original measurement units as the primary similarity metric, with clinical calibration handled directly via $\Delta_{\max} = L_{\text{clinical}} \cdot W_1$.
+
+\end{document}
