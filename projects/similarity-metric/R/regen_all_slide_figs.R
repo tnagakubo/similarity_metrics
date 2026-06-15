@@ -3,15 +3,15 @@ out <- OUTPUT_DIR
 
 # Slide-only figures (greyscale + color)
 
-# scenario overview
+# scenario overview (9 scenarios in 3x3 layout)
 ggsave(file.path(out, "slide_scenario_overview.png"),
-       fig1_scenario_overview("greyscale"), width = 10, height = 5, dpi = 300, bg = "white")
+       fig1_scenario_overview("greyscale"), width = 10, height = 8, dpi = 300, bg = "white")
 ggsave(file.path(out, "slide_scenario_overview.pdf"),
-       fig1_scenario_overview("greyscale"), width = 10, height = 5, bg = "white")
+       fig1_scenario_overview("greyscale"), width = 10, height = 8, bg = "white")
 ggsave(file.path(out, "slide_scenario_overview_color.png"),
-       fig1_scenario_overview("color"), width = 10, height = 5, dpi = 300, bg = "white")
+       fig1_scenario_overview("color"), width = 10, height = 8, dpi = 300, bg = "white")
 ggsave(file.path(out, "slide_scenario_overview_color.pdf"),
-       fig1_scenario_overview("color"), width = 10, height = 5, bg = "white")
+       fig1_scenario_overview("color"), width = 10, height = 8, bg = "white")
 
 # bias panel
 ggsave(file.path(out, "slide_bias.png"),

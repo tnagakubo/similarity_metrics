@@ -85,14 +85,16 @@ load_application_params <- function(data_dir = DATA_DIR) {
 }
 
 # =============================================================================
-# Figure 1: Scenario Overview — Density plots for all 7 scenarios
+# Figure 1: Scenario Overview — Density plots for all 9 scenarios (S1-S9)
+# S8 (Outlier) and S9 (Gamma) added 2026-05-10 for normalizer comparison study
 # =============================================================================
 
 fig1_scenario_overview <- function(palette = c("greyscale", "color")) {
   palette <- match.arg(palette)
 
   # Theoretical density definitions (closed-form, no simulation)
-  # Matched to simulation_manuscript_v2.R parametric specifications
+  # Matched to simulation_manuscript_v2.R + scenarios_extended.R specs
+  # All in mean=50, sd=10 scaled space for visualization parity
   sc_defs <- list(
     list(id = "S1", name = "Null (identical)",
          pdf1 = function(x) dnorm(x, 50, 10),
@@ -121,6 +123,27 @@ fig1_scenario_overview <- function(palette = c("greyscale", "color")) {
     list(id = "S7", name = "Location + Scale",
          pdf1 = function(x) dnorm(x, 50, 10),
          pdf2 = function(x) dnorm(x, 55, 15),
+         xrange = c(0, 100)),
+    # S8: 0.99·N(μ, σ) + 0.01·{point masses at μ±5σ} mixture
+    # F1: μ=50; F2: shifted 0.5σ → μ=55. Outliers shift with bulk.
+    # Visualization: narrow normals (sd=1) approximate point masses
+    list(id = "S8", name = "Outlier mixture",
+         pdf1 = function(x) {
+           0.99 * dnorm(x, 50, 10) +
+             0.005 * dnorm(x,   0, 1) +    # μ − 5σ = 0
+             0.005 * dnorm(x, 100, 1)      # μ + 5σ = 100
+         },
+         pdf2 = function(x) {
+           0.99 * dnorm(x, 55, 10) +
+             0.005 * dnorm(x,   5, 1) +    # μ − 5σ = 5
+             0.005 * dnorm(x, 105, 1)      # μ + 5σ = 105
+         },
+         xrange = c(-10, 115)),
+    # S9: Gamma(shape=2, scale=10) vs Gamma(shape=2, scale=15)
+    # mean1=20, mean2=30; right-skewed asymmetric scale shift
+    list(id = "S9", name = "Asymmetric (Gamma)",
+         pdf1 = function(x) dgamma(x, shape = 2, scale = 10),
+         pdf2 = function(x) dgamma(x, shape = 2, scale = 15),
          xrange = c(0, 100))
   )
 
@@ -151,7 +174,7 @@ fig1_scenario_overview <- function(palette = c("greyscale", "color")) {
                      fill = Region, color = Region, linetype = Region,
                      group = Region)) +
     geom_area(position = "identity", alpha = 0.45, linewidth = 0.5) +
-    facet_wrap(~ Scenario, ncol = 4, scales = "free") +
+    facet_wrap(~ Scenario, ncol = 3, scales = "free") +
     scale_fill_manual(values = fill_vals, na.value = NA) +
     scale_color_manual(values = color_vals) +
     scale_linetype_manual(values = c("Region 1" = "solid", "Region 2" = "dashed")) +
@@ -438,6 +461,107 @@ fig_combo_simulation <- function(palette = c("greyscale", "color"),
             legend.box.margin = margin(t = -8),
             legend.margin = margin(t = 0, b = 0))
   }
+}
+
+# =============================================================================
+# Per-Normalizer Simulation Results (5 normalizers compared)
+# Source: results/normalizer_comparison_grid{1,2}.rds (post-Rcpp pipeline)
+# Four separate figures per metric: bias / rmse / coverage / width.
+# Layout: X = scenario, Fill = normalizer (5 levels), Facet = sample size.
+# =============================================================================
+
+NORMALIZERS_ORDER <- c("IQR", "Q95Q5", "SD", "MAD", "Range")
+
+# 5-normalizer palette (qualitative, colorblind-friendly + greyscale variant)
+.normalizer_palette <- function(palette = c("greyscale", "color")) {
+  palette <- match.arg(palette)
+  if (palette == "color") {
+    # Okabe-Ito 5-level (CVD-safe)
+    c("IQR"   = "#0072B2",
+      "Q95Q5" = "#E69F00",
+      "SD"    = "#009E73",
+      "MAD"   = "#CC79A7",
+      "Range" = "#D55E00")
+  } else {
+    # Greyscale 5-level (dark to light, monotone luminance for B&W print)
+    c("IQR"   = "#1A1A1A",
+      "Q95Q5" = "#4D4D4D",
+      "SD"    = "#7F7F7F",
+      "MAD"   = "#B2B2B2",
+      "Range" = "#D9D9D9")
+  }
+}
+
+.prep_normalizer_plot_data <- function(grid = 1, results_dir = "results") {
+  fp <- if (identical(grid, "redesign")) {
+    file.path(results_dir, "normalizer_comparison_redesign.rds")
+  } else {
+    file.path(results_dir, sprintf("normalizer_comparison_grid%d.rds", as.integer(grid)))
+  }
+  if (!file.exists(fp)) stop("Results file not found: ", fp)
+  df <- readRDS(fp)
+  # Exclude SMD row (it has NA coverage / ci_width and uses SMD truth)
+  df <- df[df$normalizer != "SMD", ]
+  # Exclude N6 (Outlier 20% — unrealistic clinical setting, Tak 2026-05-11)
+  if (identical(grid, "redesign")) {
+    df <- df[df$scenario != "N6", ]
+  }
+  df$normalizer <- factor(df$normalizer, levels = NORMALIZERS_ORDER)
+  df$n_label    <- factor(paste0("n=", df$n),
+                          levels = c("n=50", "n=100", "n=200"))
+  df$scenario   <- factor(df$scenario, levels = unique(df$scenario))
+  df
+}
+
+# Shared base: dodged bars by normalizer, faceted by sample size
+.fig_normalizer_base <- function(plot_data, y_var, palette, y_label,
+                                   hline_at = NULL, ylim_pair = NULL) {
+  pal <- .normalizer_palette(palette)
+  p <- ggplot(plot_data,
+              aes(x = scenario, y = .data[[y_var]], fill = normalizer)) +
+    geom_col(position = position_dodge(0.85), width = 0.78) +
+    facet_wrap(~ n_label, ncol = 1) +
+    scale_fill_manual(values = pal) +
+    labs(x = "Scenario", y = y_label, fill = "Normalizer")
+  if (!is.null(hline_at)) {
+    p <- p + geom_hline(yintercept = hline_at,
+                          linetype = "dashed", color = "grey30", alpha = 0.8)
+  }
+  if (!is.null(ylim_pair)) {
+    p <- p + coord_cartesian(ylim = ylim_pair)
+  }
+  p
+}
+
+fig_normalizer_bias <- function(palette = c("greyscale", "color"),
+                                  grid = 1, results_dir = "results") {
+  d <- .prep_normalizer_plot_data(grid, results_dir)
+  .fig_normalizer_base(d, "bias", palette,
+                        y_label = "Bias",
+                        hline_at = 0)
+}
+
+fig_normalizer_rmse <- function(palette = c("greyscale", "color"),
+                                  grid = 1, results_dir = "results") {
+  d <- .prep_normalizer_plot_data(grid, results_dir)
+  .fig_normalizer_base(d, "rmse", palette,
+                        y_label = "RMSE")
+}
+
+fig_normalizer_coverage <- function(palette = c("greyscale", "color"),
+                                      grid = 1, results_dir = "results") {
+  d <- .prep_normalizer_plot_data(grid, results_dir)
+  .fig_normalizer_base(d, "coverage_pct", palette,
+                        y_label = "Coverage Probability",
+                        hline_at = 0.95,
+                        ylim_pair = c(0, 1))
+}
+
+fig_normalizer_width <- function(palette = c("greyscale", "color"),
+                                   grid = 1, results_dir = "results") {
+  d <- .prep_normalizer_plot_data(grid, results_dir)
+  .fig_normalizer_base(d, "mean_ci_width", palette,
+                        y_label = "Mean CI Width")
 }
 
 # =============================================================================

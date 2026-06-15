@@ -204,7 +204,19 @@
       "Bash(winget install *)",
       "Bash(export PATH=\"/c/Program Files/LibreOffice/program:$PATH\")",
       "Bash(npx -y @marp-team/marp-cli --pptx --pptx-editable --allow-local-files projects/similarity-metric/paper/slides/nABCD_presentation_en.md)",
-      "Bash(npx -y @marp-team/marp-cli --pptx --pptx-editable --allow-local-files projects/similarity-metric/paper/slides/nABCD_presentation.md)"
+      "Bash(npx -y @marp-team/marp-cli --pptx --pptx-editable --allow-local-files projects/similarity-metric/paper/slides/nABCD_presentation.md)",
+      "Bash(tasklist)",
+      "PowerShell(Get-Process *)",
+      "PowerShell(Get-CimInstance *)",
+      "PowerShell(Rscript *)",
+      "Bash(tasklist /FI \"IMAGENAME eq Rscript.exe\" /FO CSV)",
+      "Bash(tasklist /FI \"IMAGENAME eq Rterm.exe\" /FO CSV)",
+      "PowerShell(Stop-Process *)",
+      "Bash(tee /tmp/setup_compare.log)",
+      "Skill(meeting)",
+      "Skill(suits)",
+      "Skill(academic-research-skills:ars-plan)"
     ]
-  }
+  },
+  "autoMemoryEnabled": true
 }

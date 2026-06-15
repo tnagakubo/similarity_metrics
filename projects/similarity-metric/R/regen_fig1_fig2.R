@@ -1,15 +1,15 @@
 source("projects/similarity-metric/R/figures_paper.R")
 out <- OUTPUT_DIR
 
-# slide_scenario_overview: greyscale (completeness) + color (slides; paper omits this fig)
+# slide_scenario_overview: 9 scenarios (S1-S9) in 3x3 layout. Paper omits this fig.
 ggsave(file.path(out, "slide_scenario_overview.png"),
-       fig1_scenario_overview("greyscale"), width = 10, height = 5, dpi = 300)
+       fig1_scenario_overview("greyscale"), width = 10, height = 8, dpi = 300)
 ggsave(file.path(out, "slide_scenario_overview.pdf"),
-       fig1_scenario_overview("greyscale"), width = 10, height = 5)
+       fig1_scenario_overview("greyscale"), width = 10, height = 8)
 ggsave(file.path(out, "slide_scenario_overview_color.png"),
-       fig1_scenario_overview("color"),     width = 10, height = 5, dpi = 300)
+       fig1_scenario_overview("color"),     width = 10, height = 8, dpi = 300)
 ggsave(file.path(out, "slide_scenario_overview_color.pdf"),
-       fig1_scenario_overview("color"),     width = 10, height = 5)
+       fig1_scenario_overview("color"),     width = 10, height = 8)
 
 # fig1_nabcd_definition (paper Fig 1): greyscale (paper) + color (slides)
 ggsave(file.path(out, "fig1_nabcd_definition.png"),

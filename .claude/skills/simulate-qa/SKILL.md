@@ -1,6 +1,7 @@
 ---
 description: Simulate conference Q&A with expert homages
 model: opus
+effort: xhigh
 ---
 
 # Research Lab: Simulate Q&A
