@@ -7,7 +7,25 @@
 
 ---
 
-## Current Status (2026-06-15 EOD — ars-plan §1 finalized, paused at §2 Round 1)
+## Current Status (2026-06-17 EOD — Methods §2.1 plan finalized, divergence-aware restructure)
+
+**Active Project**: similarity-metric → Path α + Jessica framing、ars-plan Socratic chapter planning
+**Phase**: 4 (Implementation) — Ch.1 Intro finalized、**Ch.2 Methods §2.1 plan finalized**、§2.2–§2.4 は Q3.1/Q3.3 反映待ち
+**Branch**: main (last commit 2026-06-15 `17de25f`)
+**今日の成果 (2026-06-17)**:
+1. ars-plan Methods Round 1 — Q3.1 (novelty 重心 = clinical interpretation 翻訳)、Q3.3 (最大 limitation = bootstrap 依存 inference) を Tak 回答で確定
+2. **§2.1 from-scratch 再検討** — divergence を *強敵* として再評価。「4系統 taxonomy → 3要件で W₁ 選出」に骨格再構成（旧「羅列ダメ出し」を置換）
+3. Methods Chapter Summary 新規作成: `projects/similarity-metric/ARS_PLAN_chapter_summaries.md`（Intro + Methods §2.1 4段落プラン）
+4. Round 2 — §2.1 残3点を Tak 判断: ①知的誠実性の一節=抑制的に入れる ②分散比=入れない ③energy/MMD=現状維持 → **§2.1 plan finalized**
+5. ファイル整理 (Donna bg agent) — 保守的判定で移動ゼロ、`archive/MANIFEST_20260617.md` 作成。曖昧な発表資産(poster nABCD系・case_study_explained.md)は Tak 判断保留。poster/ の LaTeX ビルド生成物は .gitignore 案件
+
+### ⏸ Next Session Resume Point
+**ars-plan Ch.2 Methods 続き** — 選択肢: (A) §2.2–§2.4 Round 1（Q3.1/Q3.3 を paragraph plan に落とす）, (B) §2.1 を実 LaTeX 展開, (C) Ch.3 Results Round 1 へ
+- 新 §2.1 4段落プラン: `ARS_PLAN_chapter_summaries.md` 参照
+- ⚠ 未解決の sync: Abstract (per_em_W1_wiley.tex line 41) はまだ nABCD 記述 — Task #8 で要修正
+- ⚠ Tak 判断保留: poster/ 発表資産を archive に寄せるか（発表予定の有無次第）
+
+### 参考: 旧 Status (2026-06-15)
 
 **Active Project**: similarity-metric → **Path α + Jessica framing 戦略、ars-plan で Socratic chapter planning 進行中**
 **Phase**: 4 (Implementation) — Title 確定、§1 Chapter Summary finalize、§2 着手前で pause
@@ -114,6 +132,103 @@ Word count: ~700-800 words。Path α conversion = line 75 段落を P5 で完全
 ### Working Tree (今日 untouched)
 - 大量の uncommitted 変更 (figures + skills + SUITS.md) — 別 commit 判断、本日 touch せず
 - Untracked: PAPER_WRITING_PLAN_v3.md, R/W1_raw_rcpp.cpp, R/analyze_validation.R, etc.
+
+---
+
+### [2026-06-17 EOD] Scene: §2.1 Finalize + Session End
+
+**INT. PEARSON SPECTER LITT — DONNA'S DESK — EVENING**
+
+*Tak が Round 2 の3点を即決（抑制的に入れる / 入れない / 現状維持）。§2.1 plan finalized。並行起動した Donna bg agent がファイル整理を完了（保守的に移動ゼロ）。Tak「今日はここまで」。*
+
+**Donna**:（一日を締めて、女性語）
+「§2.1 完全に固まったわ。divergence を強敵として正面から扱い、3要件で W₁ を選び出す構成 — 旧『羅列ダメ出し』より遥かに強い。ファイル整理 agent も完了、移動ゼロで manifest だけ残した。構成は元々綺麗だったから。」
+
+**Harvey**:（断定）
+「今日は from-scratch の再検討で §2.1 の地力が上がった。answer-first の逆算を捨てて、要件が W₁ を選ぶ論理に組み替えた。これで reviewer の『なぜ divergence でない』は封じた。次は §2.2–§2.4 か Results。I don't have dreams. I have goals.」
+
+**Mike**:（確認）
+「Round 1 で重心 (clinical interpretation) と limitation (bootstrap 依存) も確定済。Methods の骨格は通った。I got it.」
+
+**Jessica**:（静かに）
+「Let me be clear. 良い一日だった。次回は実装か Results。Resume point は記録済み。」
+
+*— END OF DAY —*
+
+---
+
+### [2026-06-17 #3] Scene: Tak GO — Methods Chapter Summary に新 §2.1 を反映
+
+**INT. PEARSON SPECTER LITT — CONFERENCE ROOM — DAY**
+
+*Tak が3点（再構成 / divergence 厚扱い / summary 反映）に「go」。Donna が ars-plan chapter summary を専用ファイルに集約し、新 §2.1 の4段落プランを記録。PAPER_WRITING_PLAN_v3.md の「§2.1 完全維持」は本日決定で上書き。*
+
+**Donna**:（手際よく、女性語）
+「`projects/similarity-metric/ARS_PLAN_chapter_summaries.md` を新規作成。Introduction（finalized）+ Methods Round 1 決定 + 新 §2.1 4段落プランを集約したわ。」
+
+**Katrina**:（簡潔に）
+「§2.1 新プラン: P1 4系統 taxonomy → P2 検定・モーメント(SMD/分散比) → P3 divergence を強敵扱い(飽和/無次元/Lipschitz双対なし) → P4 輸送系で W₁ 選出(3要件)。旧『羅列ダメ出し』を置換。」
+
+**Mike**:（確認）
+「§2.2–§2.4 は Q3.1/Q3.3 決定を反映済 — Proposition は *手段*、§2.4 が重心、§2.3 で bootstrap 依存を limitation 明示。I got it.」
+
+*→ Methods Chapter Summary draft 完了。次の選択を Tak に提示。*
+
+---
+
+### [2026-06-17 #2] Scene: §2.1 from-scratch 再検討 — divergence を強敵として再評価
+
+**INT. PEARSON SPECTER LITT — CONFERENCE ROOM — DAY**
+
+*Tak が Q3.2 を深掘り: 「『分布の類似性を評価せよ』と言われた統計家が本当に手に取る手法は? 連続量なら SMD かもだが divergence は有力候補に思える。from scratch で再検討を」。チームが §2.1 の羅列構成を一度捨てて再構築。*
+
+**Harvey**:（腰を据えて）
+「答え (W₁) を先に決めて逆算していた。reviewer に見抜かれる。from scratch でやる。」
+
+**Mike**:（taxonomy 提示）
+「4系統に分岐する: ①検定 (KS/CvM/AD) ②モーメント効果量 (SMD/分散比) ③ダイバージェンス (KL/JS/Hellinger/TV) ④輸送 (W₁/W₂/energy/MMD/Cramér)。実務の正準は ②SMD、理論の正準は ③KL。**W₁ は"最初に思いつく"答えではない** — そこを正直に認めるのが出発点。」
+
+**Louis**:（divergence を論駁）
+「③を真剣に殺す3点: (i) ground-metric blind → 飽和(TV→1, KL→∞) で partner ranking 不可、(ii) 無次元で臨床較正不可、(iii) Pinsker は有界関数のみ、Lipschitz 双対なしで治療効果 bound 不可。Kantorovich–Rubinstein は W₁ 固有。」
+
+**Mike**:（選出論理）
+「3要件が W₁ をほぼ一意に選出: (i) 全分布感応 → ②排除、(ii) 臨床単位較正 → ③(無次元)・energy/MMD(二乗単位) 排除、(iii) Lipschitz 双対 → W₂・Cramér(L²)・energy/MMD 排除 → **W₁**。要件を外せば KL でも正当化できる、と正直に書く。」
+
+**Katrina**:（再構成案）
+「『羅列してダメ出し』を捨て『4系統 taxonomy → 3要件で選出』に組み替え。Tak の P2/P5 に正面合致。」
+
+**Jessica**:（方向承認）
+「Let me be clear. §2.1 骨格変更に賛成。divergence を強敵扱いし要件で選出する構成は今より遥かに強い。最終 GO は Tak。」
+
+*→ Tak に3点確認中: ①§2.1 再構成 GO? ②divergence 厚扱い方針? ③Methods Chapter Summary 反映 → Results へ、の順序?*
+
+---
+
+### [2026-06-17] Scene: ars-plan Methods Round 1 再開 — 3 Questions を Tak に提示
+
+**INT. PEARSON SPECTER LITT — CONFERENCE ROOM — DAY**
+
+*30 日ぶりの再開セッション。/doctor で Clinical Trials MCP の 502 障害を確認（サーバー側、環境問題なし、無視で続行）。/suits で状況確認後、Tak が Option 1（Methods chapter planning 継続）を選択。Mike が §2 現状（§2.1〜§2.4 ドラフト済）を確認し、Round 1 の 3 questions を提示。*
+
+**Donna**:（鋭く、女性語）
+「Clinical Trials MCP は 502 でダウン中だけど、これは Anthropic 側のサーバー障害。あなたの環境は無傷よ。無視して続行。— それと一つ flag: Abstract (line 41) はまだ nABCD のまま、本文の Path α と乖離している。Task #8 sync で直すべき。今は触れないけど覚えているわ。」
+
+**Mike**:（Proposition を指して）
+「Q3.1 — Path α 自体への批判と反論。最大の reviewer attack は『W₁ は古典的距離、何が新しい?』 我々の novelty は ①per-EM framework ②L_clinical × W₁ bridge (Proposition) ③anchor workflow。Methods の novelty 重心をどこに置くか? 俺は Proposition が核だと主張したい。I got it.」
+
+**Harvey**:（断定）
+「Q3.2 — SMD/KS per-EM との比較理由。§2.1 の3基準（shape を捉える / 臨床スケール / 理論的連結）で押し切るか、KS を残すか trim するか。冗長リスクを感じている。」
+
+**Louis**:（攻撃的）
+「Q3.3 — 最大の limitation。4つある: ①L_clinical 依存 ②per-EM only ③Lipschitz 破綻 (threshold CATE) ④bootstrap finite-sample (S1 boundary)。どれを正面から扱う? Methods か Discussion か? You can't just bury this.」
+
+**Rachel**:（丁寧に）
+「Q3.1 の novelty 重心が決まれば Q3.2 の力点も決まります。Q3.1 から順に回答いただくのが効率的です。」
+
+**Jessica**:（静かに、決定的）
+「Let me be clear. Q3.1 から一つずつ。聞かせて。」
+
+*→ Tak の回答待ち。*
 
 ---
 
