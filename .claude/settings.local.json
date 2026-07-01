@@ -215,7 +215,24 @@
       "Bash(tee /tmp/setup_compare.log)",
       "Skill(meeting)",
       "Skill(suits)",
-      "Skill(academic-research-skills:ars-plan)"
+      "Skill(academic-research-skills:ars-plan)",
+      "WebFetch(domain:www.pmda.go.jp)",
+      "Bash(ls -la .claude/hooks/)",
+      "Bash(ls .claude/skills/)",
+      "Bash(ls agents/)",
+      "Bash(ls *.md)",
+      "Bash(ls -la RULES_ADDON.md)",
+      "Bash(bash .claude/hooks/check-persistence.sh)",
+      "Bash(bash .claude/hooks/check-numbers-verification.sh)",
+      "Bash(python -c \"import json; json.load\\(open\\('.claude/settings.json'\\)\\); print\\('valid JSON'\\)\")",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('.claude/settings.json'\\)\\);console.log\\('valid JSON'\\)\")",
+      "Read(//c/Users/hrd13/Downloads/**)",
+      "WebFetch(domain:www.taylorfrancis.com)",
+      "Bash(PYTHONIOENCODING=utf-8 PYTHONUTF8=1 python -)",
+      "Bash(latexmk -C per_em_W1_wiley)",
+      "Bash(latexmk -pdf -interaction=nonstopmode -halt-on-error=false per_em_W1_wiley.tex)",
+      "Bash(ls -la per_em_W1_wiley.log per_em_W1_wiley.pdf)",
+      "Bash(latexmk -pdf -interaction=nonstopmode -f per_em_W1_wiley.tex)"
     ]
   },
   "autoMemoryEnabled": true

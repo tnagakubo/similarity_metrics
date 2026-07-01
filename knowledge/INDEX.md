@@ -80,6 +80,7 @@
 | `summaries/Matsushima_2024.md` | Matsushima et al. (2024) | PMDA workshop, 3-layer consistency approach, 4 MRCT case studies, 5-dimensional assessment framework |
 | `summaries/Deodhar_2020.md` | Deodhar et al. (2021) | PREVENT trial, secukinumab nr-axSpA, ASAS40, CRP/MRI subgroup as EM, 24-country MRCT |
 | `summaries/FTT_1994.md` | FTT Collaborative Group (1994) | Fibrinolytic therapy in AMI, age/SBP subgroup analysis, "irrespective of age/BP" conclusion, CATE sensitivity implications |
+| `summaries/Komiyama_2024_Ch4_Pooling.md` | Komiyama, Hiro, Matsuoka & Yamamoto (2024) Ch.4 | Japanese E17 TF pooling recipe: representative-value Euclidean distance, Lasso EM-weighting, hierarchical clustering, ≤4 regions; **distributional gap vs W₁ (S8 case), Δ_max operationalizes §4.6.1.4 clinical-meaningfulness** |
 
 ---
 

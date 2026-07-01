@@ -59,6 +59,10 @@
           {
             "type": "command",
             "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/check-paper-sync.sh'"
+          },
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/check-numbers-verification.sh'"
           }
         ]
       }
@@ -69,6 +73,10 @@
           {
             "type": "command",
             "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/check-suits-lines.sh'"
+          },
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/check-persistence.sh'"
           }
         ]
       }

@@ -14,7 +14,6 @@
 
 \usepackage{mathtools}
 \usepackage{amssymb}
-\newcommand{\hnABCD}{\mathrlap{\widehat{\phantom{\text{nA}}}}\text{nABCD}}
 
 \graphicspath{{../figures/}}
 
@@ -38,7 +37,7 @@
 \corres{Corresponding Author, Department Name, Institution Name, Address. \email{corresponding@institution.edu}}
 
 \abstract[Abstract]{%
-The ICH E17 guideline describes regional pooling in multi-regional clinical trials (MRCTs) in terms of the similarity of effect modifier distributions, but provides no quantitative methodology. We propose the normalized Area Between Cumulative Distributions (nABCD), a planning-stage dissimilarity index defined as the Wasserstein-1 distance divided by the pooled interquartile range. Unlike the standardized mean difference (SMD), nABCD captures differences in scale and skewness in addition to location---distributional features that may drive treatment effect heterogeneity through non-linear effect modification. Because nABCD requires only baseline effect modifier distributions, it can be computed from any representative data source, including prior trials, disease registries, and real-world evidence (RWE) databases---enabling a common planning scenario in which a small-sample region identifies suitable pooling partners before the trial begins. We develop a dual-pathway clinical calibration: when prior evidence on conditional average treatment effect (CATE) sensitivity ($L$) is available, nABCD is translated into a maximum potential regional treatment effect difference ($\Delta_{\max}$) with bootstrap confidence intervals; when $L$ is unknown, the framework reverse-calculates the required CATE sensitivity ($L^*$) at pre-specified clinical margins. Simulation studies across seven systematic scenarios demonstrated satisfactory bias and coverage of the percentile bootstrap estimator for non-negligible distributional differences at moderate sample sizes per region. We illustrate the framework through a hypothetical thrombolytic MRCT grounded in publicly available GUSTO-I individual patient data, with one region designated as a small-sample anchor and the remaining regions evaluated as pooling partners on two candidate effect modifiers (age and systolic blood pressure). Partner rankings differed markedly between the two effect modifiers, with several partners ranked similar on one but dissimilar on the other, demonstrating that all candidate effect modifiers must be evaluated jointly. A small subset of partners emerged as leading pooling candidates because they ranked low on both candidate effect modifiers and required clinically implausible CATE sensitivity to produce a meaningful treatment effect difference. The principal contribution of this work is to transform the previously qualitative judgment of ``similar enough'' into a reproducible quantitative basis for sponsor judgment, filling the methodological gap in ICH E17 implementation and supporting evidence-based regional pooling decisions from any representative population data source.}
+The ICH E17 guideline describes regional pooling in multi-regional clinical trials (MRCTs) in terms of the similarity of effect modifier distributions, but provides no quantitative methodology. We propose a planning-stage framework that quantifies effect modifier dissimilarity using the Wasserstein-1 ($W_1$) distance, retained in the original measurement units of each effect modifier. Unlike the standardized mean difference (SMD), the $W_1$ distance captures differences in scale and skewness in addition to location---distributional features that may drive treatment effect heterogeneity through non-linear effect modification. Because it requires only baseline effect modifier distributions, $W_1$ can be computed from any representative data source, including prior trials, disease registries, and real-world evidence (RWE) databases---enabling a common planning scenario in which a small-sample region identifies suitable pooling partners before the trial begins. We develop a dual-pathway clinical calibration: when prior evidence on conditional average treatment effect (CATE) sensitivity ($L$) is available, the $W_1$ distance is translated into a maximum potential regional treatment effect difference ($\Delta_{\max}$) with bootstrap confidence intervals; when $L$ is unknown, the framework reverse-calculates the required CATE sensitivity ($L^*$) at pre-specified clinical margins. Simulation studies across seven systematic scenarios demonstrated satisfactory bias and coverage of the percentile bootstrap estimator for non-negligible distributional differences at moderate sample sizes per region. We illustrate the framework through a hypothetical thrombolytic MRCT grounded in publicly available GUSTO-I individual patient data, with one region designated as a small-sample anchor and the remaining regions evaluated as pooling partners on two candidate effect modifiers (age and systolic blood pressure). Partner rankings differed markedly between the two effect modifiers, with several partners ranked similar on one but dissimilar on the other, demonstrating that all candidate effect modifiers must be evaluated jointly. A small subset of partners emerged as leading pooling candidates because they ranked low on both candidate effect modifiers and required clinically implausible CATE sensitivity to produce a meaningful treatment effect difference. The principal contribution of this work is to transform the previously qualitative judgment of ``similar enough'' into a reproducible quantitative basis for sponsor judgment, filling the methodological gap in ICH E17 implementation and supporting evidence-based regional pooling decisions from any representative population data source.}
 
 \keywords{multi-regional clinical trial; ICH E17; effect modifier; Wasserstein distance; regional pooling; distributional similarity}
 
@@ -51,7 +50,7 @@ The ICH E17 guideline describes regional pooling in multi-regional clinical tria
 \maketitle
 
 \renewcommand\thefootnote{}
-\footnotetext{\textbf{Abbreviations:} ABCD, area between cumulative distributions; AMI, acute myocardial infarction; CATE, conditional average treatment effect; CDF, cumulative distribution function; CI, confidence interval; EDF, empirical distribution function; EU, European Union; GUSTO, Global Utilization of Streptokinase and t-PA for Occluded coronary arteries; ICH, International Council for Harmonisation; IPD, individual patient data; IQR, interquartile range; KL, Kullback--Leibler; KS, Kolmogorov--Smirnov; MRCT, multi-regional clinical trial; nABCD, normalized area between cumulative distributions; NMPA, National Medical Products Administration; RWE, real-world evidence; SBP, systolic blood pressure; SMD, standardized mean difference; US, United States.}
+\footnotetext{\textbf{Abbreviations:} AMI, acute myocardial infarction; CATE, conditional average treatment effect; CDF, cumulative distribution function; CI, confidence interval; EDF, empirical distribution function; EU, European Union; GUSTO, Global Utilization of Streptokinase and t-PA for Occluded coronary arteries; ICH, International Council for Harmonisation; IPD, individual patient data; IQR, interquartile range; KL, Kullback--Leibler; KS, Kolmogorov--Smirnov; MRCT, multi-regional clinical trial; NMPA, National Medical Products Administration; RWE, real-world evidence; SBP, systolic blood pressure; SMD, standardized mean difference; US, United States.}
 
 \renewcommand\thefootnote{\fnsymbol{footnote}}
 \setcounter{footnote}{1}
@@ -60,19 +59,19 @@ The ICH E17 guideline describes regional pooling in multi-regional clinical tria
 \section{Introduction}\label{sec:intro}
 %==============================================================================
 
-Multi-regional clinical trials (MRCTs), conducted across multiple countries or regulatory regions under a single protocol, have become the standard paradigm for global pharmaceutical development.\cite{chen2010,quan2010} This approach offers substantial benefits: accelerated timelines, broader generalizability, and earlier access to new therapies for patients worldwide. The International Council for Harmonisation (ICH) E17 guideline, adopted in 2017, established principles for planning and designing MRCTs, with a central assumption that treatment effects are generalizable across the target population.\cite{iche17}
+Multi-regional clinical trials (MRCTs), conducted across multiple countries or regulatory regions under a single protocol, have become the standard paradigm for global pharmaceutical development.\cite{chen2010,quan2010} The International Council for Harmonisation (ICH) E17 guideline, adopted in 2017, established principles for planning and designing MRCTs to evaluate whether treatment effects can be regarded as generalizable across the target population.\cite{iche17}
 
-Several regulatory authorities expect demonstration of treatment effect consistency in regional subpopulations,\cite{matsushima2024,song2025} yet individual regional sample sizes in global MRCTs are often insufficient for such demonstration. A key strategy for addressing this challenge is the \emph{regional pooling approach}, wherein regions with similar patient characteristics are grouped for analysis to enhance the ability to assess regional consistency.\cite{iche17} The ICH E17 guideline describes pooling decisions in terms of the similarity of effect modifier distributions.\cite{iche17}
+Regulatory authorities in Japan and China expect demonstration of treatment effect consistency in regional subpopulations,\cite{matsushima2024,song2025} yet individual regional sample sizes in global MRCTs are often insufficient for such demonstration. A key strategy for addressing this challenge is the regional pooling approach, wherein regions with similar patient characteristics are grouped for analysis to enhance the ability to assess regional consistency.\cite{iche17} The ICH E17 guideline describes pooling decisions in terms of the similarity of effect modifier distributions.\cite{iche17}
 
-An effect modifier is a baseline patient characteristic---such as age, disease severity, or genetic marker---for which the treatment benefit differs across subgroups. For example, if younger patients respond better to treatment than older patients, age is an effect modifier. When such heterogeneity exists, even if the drug works identically at the individual level, regions with different patient compositions may observe different average treatment effects. A region with predominantly younger patients would show larger benefits than a region with predominantly older patients, not because the drug works differently, but because the patient mix differs. This fundamental relationship underscores why effect modifier distributional similarity is critical to the validity of regional pooling. In this paper, we focus on continuous effect modifiers, such as age and disease severity scores; categorical effect modifiers raise distinct methodological considerations and are outside the present scope.
+An effect modifier is a baseline patient characteristic---such as age, disease severity, or genetic marker---for which the treatment benefit differs across subgroups. When such heterogeneity exists, even if the drug works identically at the individual level, regions with different patient compositions may observe different average treatment effects. A region with predominantly younger patients would show larger benefits than a region with predominantly older patients, not because the drug works differently, but because the patient mix differs. This fundamental relationship underscores why the similarity of the full effect modifier distribution, not only its average level, is critical to the validity of regional pooling. In this paper, we focus on continuous effect modifiers, such as age and disease severity scores; categorical effect modifiers raise distinct methodological considerations and are outside the present scope.
 
-Despite the regulatory importance of effect modifier distributional similarity, current practice lacks a standardized quantitative methodology. The ICH E17 guideline provides no specific metric, threshold, or statistical procedure for determining when distributions are ``similar enough.'' Recent regulatory guidance has highlighted this gap. Song et al., writing from the China NMPA perspective on ICH E17 implementation, note the challenge of operationalizing pooling criteria without quantitative tools.\cite{song2025} Long et al.\ further discuss basic considerations for consistency evaluation under ICH E17.\cite{long2025}
+Despite the regulatory importance of effect modifier distributional similarity, current practice lacks a standardized, clinically calibrated methodology. The ICH E17 guideline provides no specific metric, threshold, or statistical procedure for determining when distributions are ``similar enough.'' Recent regulatory guidance has highlighted this gap. Song et al., writing from the China NMPA perspective on ICH E17 implementation, note the challenge of operationalizing pooling criteria without quantitative tools.\cite{song2025} The most concrete existing proposal is that of Komiyama et al., members of the ICH E17 expert working group, who operationalize pooling through cluster analysis on region-level effect modifier summaries, with inter-regional distances measured between representative values and weighted for relevance via the Lasso.\cite{komiyama2024} This proposal leaves two gaps that we address. First, it reduces each regional distribution to one or more representative values; any such finite summary requires specifying in advance which distributional features are relevant and can overlook features that were not pre-specified---such as differences in spread or tail behaviour---rather than comparing the full distributions directly. Second, it explicitly calls for a judgment of whether effect modifier differences are ``clinically meaningful or not'' but supplies no metric to operationalize that judgment.
 
 This absence of quantitative tools is particularly acute at the \emph{planning stage}, when sponsors must identify suitable pooling partners for small-sample regions. The pooling rationale requires quantitative evidence that partner regions' patient populations are ``similar enough,'' yet no established method exists to provide such evidence. A workshop report by Matsushima et al.\ documented that regional imbalance in CRP-positive/MRI-negative status contributed to apparent inconsistency in the secukinumab MRCT.\cite{matsushima2024} This example illustrates the practical consequences when effect modifier distributional differences are not assessed quantitatively at the planning stage.
 
 Although general-purpose comparison tools such as the standardized mean difference are routinely applied to baseline covariates,\cite{austin2011} they were not designed for assessing effect modifier distributional similarity across regions. As a single summary measure, the standardized mean difference cannot detect differences in variance or distributional shape. When effect modification is non-linear, these distributional features directly influence regional average treatment effects, and a comparison based on means alone will miss them.
 
-This paper addresses these gaps by proposing the \emph{normalized Area Between Cumulative Distributions} (nABCD) as a quantitative index for assessing effect modifier distributional similarity across regions. nABCD is defined as the Wasserstein-1 distance between two cumulative distribution functions, normalized by a robust scale measure (the pooled interquartile range) to achieve scale-free interpretation. Unlike the standardized mean difference, nABCD captures differences in variance and shape simultaneously. We estimate nABCD with bootstrap confidence intervals and link it to clinical interpretation through a calibration framework. The Wasserstein distance provides a theoretically grounded measure of distributional dissimilarity in this setting.
+This paper addresses these gaps by proposing a quantitative framework for assessing effect modifier distributional similarity across regions, based on the Wasserstein-1 ($W_1$) distance between two cumulative distribution functions, retained in the original measurement units of the effect modifier. Geometrically, $W_1$ equals the area between the two cumulative distribution functions. Unlike the standardized mean difference, $W_1$ captures differences in variance and shape simultaneously. We estimate $W_1$ with bootstrap confidence intervals and link it to clinical interpretation through a calibration framework. The Wasserstein distance provides a theoretically grounded measure of distributional dissimilarity in this setting.
 
 The remainder of this paper is organized as follows. Section~\ref{sec:methods} presents the methodological framework, including the index definition, clinical calibration, and estimation procedure. Section~\ref{sec:simulation} describes a simulation study. Section~\ref{sec:application} demonstrates the framework using publicly available individual patient data. Section~\ref{sec:discussion} discusses implications, limitations, and future directions.
 
@@ -181,32 +180,32 @@ The pooling assessment proceeds by computing per-effect-modifier $W_1$ with boot
 \section{Simulation Study}\label{sec:simulation}
 %==============================================================================
 
-We conducted simulation studies to evaluate the estimation properties of the $\widehat{W}_1$ estimator: bias, variability, and coverage probability of bootstrap confidence intervals. These properties are essential for the clinical calibration framework, as reliable estimation of $W_1$ directly determines the quality of $\Delta_{\max}$ estimates via equation~(\ref{eq:delta_max}). Because the absolute scale of $W_1$ varies with the natural units of each distributional family considered, we present results throughout this section in the dimensionless ratio $\widehat{W}_1 / \widehat{\text{IQR}}_{\text{pooled}}$ for cross-scenario comparability; the corresponding bootstrap distribution of $\Delta_{\max}$ is invariant to this normalization choice (Supplement~A), so the operating characteristics displayed below carry directly to the clinical-scale quantities used in the methodology. We assessed performance across a range of scenarios relevant to MRCT applications.
+We conducted simulation studies to evaluate the estimation properties of the $\widehat{W}_1$ estimator: bias, variability, and coverage probability of bootstrap confidence intervals. These properties are essential for the clinical calibration framework, as reliable estimation of $W_1$ directly determines the quality of $\Delta_{\max}$ estimates via equation~(\ref{eq:delta_max}). We report operating characteristics for $\widehat{W}_1$ in the original units of the effect modifier, with each scenario specified at $\sigma = 10$; bias and CI width are therefore on the $W_1$ scale, while coverage is unitless and directly comparable across scenarios. We assessed performance across a range of scenarios relevant to MRCT applications.
 
 \subsection{Simulation Design}\label{sec:sim_design}
 
 \subsubsection{Scenarios}
 
-We designed seven systematic scenarios for methodological validation, examining controlled distributional differences across location, scale, and combinations thereof. Table~\ref{tab:scenarios} summarizes these scenarios with their true values of $W_1 / \text{IQR}_{\text{pooled}}$, the dimensionless presentation form used throughout this section.
+We designed seven systematic scenarios for methodological validation, examining controlled distributional differences across location, scale, and combinations thereof. Table~\ref{tab:scenarios} summarizes these scenarios with their true $W_1$ values, in the original units of the effect modifier.
 
 \begin{table}[ht]
 \centering
 \caption{Simulation scenarios with clinical motivations.\label{tab:scenarios}}
 \begin{tabular}{lllll}
 \toprule
-\textbf{ID} & \textbf{Description} & \textbf{Distribution 1} & \textbf{Distribution 2} & \textbf{True $W_1 / \text{IQR}_{\text{pooled}}$} \\
+\textbf{ID} & \textbf{Description} & \textbf{Distribution 1} & \textbf{Distribution 2} & \textbf{True $W_1$} \\
 \midrule
-S1 & Null (identical) & $N(50, 10^2)$ & $N(50, 10^2)$ & 0.000 \\
-S2 & Location 0.2$\sigma$ & $N(50, 10^2)$ & $N(52, 10^2)$ & 0.146 \\
-S3 & Location 0.5$\sigma$ & $N(50, 10^2)$ & $N(55, 10^2)$ & 0.358 \\
-S4 & Location 1.0$\sigma$ & $N(50, 10^2)$ & $N(60, 10^2)$ & 0.656 \\
-S5 & Scale 1.5$\times$ & $N(50, 10^2)$ & $N(50, 15^2)$ & 0.244 \\
-S6 & Skew (Log-normal) & $N(50, 10^2)$ & LogN$(\mu, \sigma)$ & 0.606 \\
-S7 & Location + Scale & $N(50, 10^2)$ & $N(55, 15^2)$ & 0.347 \\
+S1 & Null (identical) & $N(50, 10^2)$ & $N(50, 10^2)$ & 0.00 \\
+S2 & Location 0.2$\sigma$ & $N(50, 10^2)$ & $N(52, 10^2)$ & 2.00 \\
+S3 & Location 0.5$\sigma$ & $N(50, 10^2)$ & $N(55, 10^2)$ & 5.00 \\
+S4 & Location 1.0$\sigma$ & $N(50, 10^2)$ & $N(60, 10^2)$ & 10.00 \\
+S5 & Scale 1.5$\times$ & $N(50, 10^2)$ & $N(50, 15^2)$ & 3.99 \\
+S6 & Skew (Log-normal) & $N(50, 10^2)$ & LogN$(\mu, \sigma)$ & 12.15 \\
+S7 & Location + Scale & $N(50, 10^2)$ & $N(55, 15^2)$ & 5.85 \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
-\item The Log-normal in S6 is parameterized to match mean 50 with CV $\approx$ 53\%, typical of clinical biomarkers such as ALT. S7 combines location and scale differences, representing the most realistic MRCT pattern. Tabulated values are computed via Monte Carlo integration ($n_{\textup{MC}} = 10^6$) using the population pooled IQR; operating characteristics of $\widehat{W}_1$ in any original measurement unit follow by multiplying tabulated entries by the corresponding $\text{IQR}_{\text{pooled}}$.
+\item The Log-normal in S6 is parameterized to match mean 50 with CV $\approx$ 53\%, typical of clinical biomarkers such as ALT. S7 combines location and scale differences, representing the most realistic MRCT pattern. True $W_1$ values for S1--S4 are exact ($W_1 = |\mu_1 - \mu_2|$ for equal-variance normals); S5 uses the closed form $W_1 = \sqrt{2/\pi}\,|\sigma_1 - \sigma_2|$; S6 and S7 are computed via Monte Carlo integration ($n_{\textup{MC}} = 10^6$).
 \end{tablenotes}
 \end{table}
 
@@ -216,10 +215,10 @@ For each scenario, we generated samples of size $n = 50$, 100, and 200 per regio
 
 \subsubsection{Evaluation Metrics}
 
-Consistent with the estimation-centered framework, and writing $\hat{\rho} = \widehat{W}_1 / \widehat{\text{IQR}}_{\text{pooled}}$ and $\rho = W_1 / \text{IQR}_{\text{pooled}}$ for the dimensionless ratio, we evaluated:
+Consistent with the estimation-centered framework, we evaluated the operating characteristics of the sample Wasserstein-1 estimator $\widehat{W}_1$ for the population value $W_1$, reported in the original units of the effect modifier:
 \begin{enumerate}[1.]
-\item Bias: $\text{Mean}(\hat{\rho}) - \rho$
-\item Root mean squared error (RMSE): $\sqrt{\text{Mean}[(\hat{\rho} - \rho)^2]}$
+\item Bias: $\text{Mean}(\widehat{W}_1) - W_1$
+\item Root mean squared error (RMSE): $\sqrt{\text{Mean}[(\widehat{W}_1 - W_1)^2]}$
 \item Coverage probability: Proportion of 95\% bootstrap CIs containing the true value
 \item CI width: Mean width of bootstrap CIs, reflecting estimation precision
 \end{enumerate}
@@ -228,41 +227,41 @@ Consistent with the estimation-centered framework, and writing $\hat{\rho} = \wi
 
 \subsubsection{Point Estimation and Coverage}
 
-Table~\ref{tab:bias} presents the bias of $\hat{\rho}$ across scenarios and sample sizes. The estimator showed positive bias under the null hypothesis (S1), with bias decreasing from 0.185 at $n=50$ to 0.094 at $n=200$. This positive bias arises because the non-negativity of $W_1$ yields $\widehat{W}_1 > 0$ (and hence $\hat{\rho} > 0$) with probability 1 in finite samples, even when the true value equals zero ($F_1 = F_2$ almost everywhere). The estimator remains consistent ($\hat{\rho} \to 0$ as $n \to \infty$), but the convergence is slow near the parameter space boundary.
+Table~\ref{tab:bias} presents the bias of $\widehat{W}_1$ across scenarios and sample sizes, in the original units of the effect modifier (scenarios are specified with $\sigma = 10$). The estimator showed positive bias under the null hypothesis (S1), with bias decreasing from 2.46 at $n=50$ to 1.26 at $n=200$. This positive bias arises because the non-negativity of $W_1$ yields $\widehat{W}_1 > 0$ with probability 1 in finite samples, even when the true value equals zero ($F_1 = F_2$ almost everywhere). The estimator remains consistent ($\widehat{W}_1 \to 0$ as $n \to \infty$ under the null), but the convergence is slow near the parameter space boundary.
 
 \begin{table}[ht]
 \centering
-\caption{Bias of $\hat{\rho}$ by scenario and sample size.\label{tab:bias}}
+\caption{Bias of $\widehat{W}_1$ by scenario and sample size, in the original units of the effect modifier.\label{tab:bias}}
 \begin{tabular}{lcccc}
 \toprule
-\textbf{Scenario} & \textbf{True $\rho$} & $\boldsymbol{n=50}$ & $\boldsymbol{n=100}$ & $\boldsymbol{n=200}$ \\
+\textbf{Scenario} & \textbf{True $W_1$} & $\boldsymbol{n=50}$ & $\boldsymbol{n=100}$ & $\boldsymbol{n=200}$ \\
 \midrule
-S1 (Null) & 0.000 & 0.185 & 0.132 & 0.094 \\
-S2 (0.2$\sigma$) & 0.146 & 0.078 & 0.038 & 0.017 \\
-S3 (0.5$\sigma$) & 0.358 & 0.023 & 0.009 & 0.005 \\
-S4 (1.0$\sigma$) & 0.656 & 0.014 & 0.006 & 0.003 \\
-S5 (Scale) & 0.244 & 0.056 & 0.028 & 0.014 \\
-S6 (Skew) & 0.606 & 0.034 & 0.016 & 0.010 \\
-S7 (Loc+Scale) & 0.347 & 0.049 & 0.027 & 0.015 \\
+S1 (Null) & 0.00 & 2.463 & 1.759 & 1.260 \\
+S2 (0.2$\sigma$) & 2.00 & 0.990 & 0.472 & 0.173 \\
+S3 (0.5$\sigma$) & 5.00 & 0.174 & 0.051 & 0.020 \\
+S4 (1.0$\sigma$) & 10.00 & 0.034 & $-0.009$ & 0.004 \\
+S5 (Scale) & 3.99 & 0.829 & 0.389 & 0.189 \\
+S6 (Skew) & 12.15 & 0.382 & 0.210 & 0.116 \\
+S7 (Loc+Scale) & 5.85 & 0.624 & 0.326 & 0.181 \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
-\item Bias is defined as $\text{Mean}(\hat{\rho}) - \rho$, where $\rho = W_1 / \text{IQR}_{\text{pooled}}$. Results based on 10{,}000 replications with $B = 2{,}000$ bootstrap resamples.
+\item Bias is defined as $\text{Mean}(\widehat{W}_1) - W_1$, in the units of the effect modifier (scenarios specified with $\sigma = 10$). Results based on 10{,}000 replications with $B = 2{,}000$ bootstrap resamples.
 \end{tablenotes}
 \end{table}
 
-For scenarios with true $\rho$ above approximately 0.2, bias was less than 0.04 in absolute value at $n \geq 100$, indicating satisfactory point estimation performance at practical sample sizes (Figure~\ref{fig:simulation}(A)). For S4 (1.0$\sigma$ location shift), bias was negligible (0.014 at $n=50$, 0.003 at $n=200$), confirming accurate estimation even for large distributional differences. For scenarios near the boundary (S1, S2), positive bias was more pronounced and diminished slowly with sample size---a well-known phenomenon for non-negative statistics where sampling variability inflates estimates when the true value is close to zero.
+For the non-null scenarios away from the boundary (S3--S7), bias was small relative to each scenario's true $W_1$ and diminished with sample size; at $n = 200$ it was at most 0.189 (S5), a small fraction of the corresponding $W_1$ (Figure~\ref{fig:simulation}(A)). For S4 (1.0$\sigma$ location shift, $W_1 = 10$), bias was negligible (0.034 at $n=50$, 0.004 at $n=200$), confirming accurate estimation even for large distributional differences. For scenarios near the boundary (S1, S2), positive bias was more pronounced and diminished slowly with sample size---a well-known phenomenon for non-negative statistics where sampling variability inflates estimates when the true value is close to zero.
 
 \begin{figure*}[t]
 \centerline{\includegraphics[width=\textwidth]{fig2_simulation_results.pdf}}
-\caption{Estimation properties of $\hat{\rho} = \widehat{W}_1 / \widehat{\text{IQR}}_{\text{pooled}}$ across scenarios (S1--S7) and sample sizes ($n = 50, 100, 200$). Panel~(A): bias, with dashed horizontal line at zero. Panel~(B): coverage probability of 95\% percentile bootstrap CIs, with dashed line at the nominal 0.95 level; S1 coverage is structurally zero because the true value lies at the parameter space boundary (see Section~\ref{sec:sim_results}). Panel~(C): mean CI width in units of $\hat{\rho}$.\label{fig:simulation}}
+\caption{Estimation properties of the sample Wasserstein-1 estimator $\widehat{W}_1$, in the original units of the effect modifier, across scenarios (S1--S7) and sample sizes ($n = 50, 100, 200$). Panel~(A): bias, with dashed horizontal line at zero. Panel~(B): coverage probability of 95\% percentile bootstrap CIs, with dashed line at the nominal 0.95 level; S1 coverage is structurally zero because the true value lies at the parameter space boundary (see Section~\ref{sec:sim_results}). Panel~(C): mean CI width in units of $W_1$.\label{fig:simulation}}
 \end{figure*}
 
-Table~\ref{tab:coverage} presents coverage probabilities of the 95\% bootstrap confidence intervals. For scenarios with true $\rho$ above approximately 0.2, coverage was near-nominal at $n \geq 100$: S3 (0.945--0.946), S4 (0.954--0.955), S6 (0.951--0.954), and S7 (0.932--0.938). S4 (1.0$\sigma$ location shift) showed particularly stable coverage across all sample sizes, with no degradation at larger $n$, confirming satisfactory bootstrap performance even for large distributional differences. S5 (scale) showed moderate undercoverage at $n=50$ (0.847) that improved to near-nominal at $n=200$ (0.939). S2 (small location shift) showed undercoverage at $n=50$ (0.652) due to its near-boundary true value, improving to 0.943 at $n=200$.
+Table~\ref{tab:coverage} presents coverage probabilities of the 95\% bootstrap confidence intervals. For the non-null scenarios, coverage was near-nominal at $n \geq 100$: S3 (0.948--0.951), S4 (0.944--0.948), S6 (0.942--0.946), and S7 (0.936--0.945). S4 (1.0$\sigma$ location shift) showed stable coverage across all sample sizes, with no degradation at larger $n$, confirming satisfactory bootstrap performance even for large distributional differences. S5 (scale) showed moderate undercoverage at $n=50$ (0.863) that improved to near-nominal at $n=200$ (0.945). S2 (small location shift) showed undercoverage at $n=50$ (0.703) due to its near-boundary true value, improving to 0.947 at $n=200$.
 
-Coverage for S1 (null) is shown as zero in Figure~\ref{fig:simulation}(B) because its true $\rho$ lies at the parameter space boundary. The non-negativity constraint produces persistent positive bias that prevents the finite-sample confidence interval from containing the true value of zero. This does not indicate estimator failure---the estimator is consistent---but rather that sample sizes well beyond 200 per region would be needed for reliable inference when the true distributional difference is negligible.
+Coverage for S1 (null) is shown as zero in Figure~\ref{fig:simulation}(B) because its true $W_1$ lies at the parameter space boundary. The non-negativity constraint produces persistent positive bias that prevents the finite-sample confidence interval from containing the true value of zero. This does not indicate estimator failure---the estimator is consistent---but rather that sample sizes well beyond 200 per region would be needed for reliable inference when the true distributional difference is negligible.
 
-We also evaluated BCa (bias-corrected and accelerated) confidence intervals in preliminary experiments. BCa intervals showed consistently lower coverage than percentile intervals across all scenarios, particularly for near-boundary scenarios. The BCa correction overcorrects for $\hat{\rho}$ because the statistic is bounded below by zero, causing the acceleration parameter to distort the quantile adjustment. Based on these findings, we adopt percentile bootstrap as the primary inference method.
+We also evaluated BCa (bias-corrected and accelerated) confidence intervals in preliminary experiments. BCa intervals showed consistently lower coverage than percentile intervals across all scenarios, particularly for near-boundary scenarios. The BCa correction overcorrects for $\widehat{W}_1$ because the statistic is bounded below by zero, causing the acceleration parameter to distort the quantile adjustment. Based on these findings, we adopt percentile bootstrap as the primary inference method.
 
 Monte Carlo standard errors for all reported coverage probabilities were below 0.005 at 10{,}000 replications, ensuring that observed differences across scenarios and sample sizes reflect genuine operating characteristic differences rather than simulation noise.
 
@@ -273,79 +272,79 @@ Monte Carlo standard errors for all reported coverage probabilities were below 0
 \toprule
 \textbf{Scenario} & $\boldsymbol{n=50}$ & $\boldsymbol{n=100}$ & $\boldsymbol{n=200}$ \\
 \midrule
-S2 (0.2$\sigma$) & 0.652 & 0.885 & 0.943 \\
-S3 (0.5$\sigma$) & 0.946 & 0.945 & 0.946 \\
-S4 (1.0$\sigma$) & 0.947 & 0.955 & 0.954 \\
-S5 (Scale) & 0.847 & 0.910 & 0.939 \\
-S6 (Skew) & 0.954 & 0.954 & 0.951 \\
-S7 (Loc+Scale) & 0.911 & 0.932 & 0.938 \\
+S2 (0.2$\sigma$) & 0.703 & 0.904 & 0.947 \\
+S3 (0.5$\sigma$) & 0.950 & 0.951 & 0.948 \\
+S4 (1.0$\sigma$) & 0.942 & 0.944 & 0.948 \\
+S5 (Scale) & 0.863 & 0.917 & 0.945 \\
+S6 (Skew) & 0.946 & 0.942 & 0.946 \\
+S7 (Loc+Scale) & 0.928 & 0.936 & 0.945 \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
 \item Coverage under S1 (Null) is shown as zero in Figure~\ref{fig:simulation}(B) but omitted from this table for brevity; the structural zero arises from the non-negativity constraint at the parameter space boundary.
-\item For S4, coverage was near-nominal across all sample sizes (0.947--0.955), confirming satisfactory performance even for large distributional differences. The undercoverage for S2 at small sample sizes (0.652 at $n=50$) and S5 (0.847 at $n=50$) reflects boundary proximity effects that diminish with increasing $n$.
+\item For S4, coverage was near-nominal across all sample sizes (0.942--0.948), confirming satisfactory performance even for large distributional differences. The undercoverage for S2 at small sample sizes (0.703 at $n=50$) and S5 (0.863 at $n=50$) reflects boundary proximity effects that diminish with increasing $n$.
 \end{tablenotes}
 \end{table}
 
 \subsubsection{Estimation Precision}
 
-The mean CI width pattern across scenarios and sample sizes is shown in Figure~\ref{fig:simulation}(C). Table~\ref{tab:precision} presents the RMSE and mean CI width across scenarios. RMSE decreased consistently with increasing $n$, reaching values below 0.10 for all scenarios at $n = 200$. Mean CI width narrowed proportionally, with CIs at $n = 100$ typically spanning 0.22--0.38 in units of $\hat{\rho}$. In the clinical calibration framework, this CI width propagates to $\Delta_{\max}$ via $\Delta_{\max} = L_{\text{clinical}} \cdot W_1 = L_{\text{clinical}} \cdot \text{IQR}_{\text{pooled}} \cdot \rho$ (Supplement~A). For example, with $L_{\text{clinical}} = 0.01$/yr and $\text{IQR}_{\text{pooled}} = 17$ (values representative of age in the GUSTO-I application), a CI width of 0.27 in $\hat{\rho}$ corresponds to a $\Delta_{\max}$ CI width of $0.01 \times 17 \times 0.27 = 0.046$ (4.6\%pt)---a level of precision sufficient for meaningful clinical calibration.
+The mean CI width pattern across scenarios and sample sizes is shown in Figure~\ref{fig:simulation}(C). Table~\ref{tab:precision} presents the RMSE and mean CI width across scenarios, in the original units of the effect modifier. RMSE decreased consistently with increasing $n$, at the $O(n^{-1/2})$ rate expected from Wasserstein plug-in theory; for S3, for example, it fell from 1.83 at $n=50$ to 0.98 at $n=200$. Mean CI width narrowed proportionally, with CIs at $n = 100$ for the non-null scenarios spanning roughly 3.6--7.0 in units of $W_1$. In the clinical calibration framework, this CI width propagates directly to $\Delta_{\max}$ via $\Delta_{\max} = L_{\text{clinical}} \cdot W_1$ (Section~\ref{sec:inference}). For example, with $L_{\text{clinical}} = 0.01$/yr (representative of age in the GUSTO-I application), a $\widehat{W}_1$ CI width of 4.96 years (S3 at $n = 100$) corresponds to a $\Delta_{\max}$ CI width of $0.01 \times 4.96 = 0.050$ (5.0\%pt)---a level of precision sufficient for meaningful clinical calibration.
 
 \begin{table}[ht]
 \centering
-\caption{RMSE and mean CI width of $\hat{\rho}$ by scenario and sample size.\label{tab:precision}}
+\caption{RMSE and mean CI width of $\widehat{W}_1$ by scenario and sample size, in the original units of the effect modifier.\label{tab:precision}}
 \begin{tabular}{lcccccc}
 \toprule
 & \multicolumn{3}{c}{\textbf{RMSE}} & \multicolumn{3}{c}{\textbf{Mean CI Width}} \\
 \cmidrule(lr){2-4}\cmidrule(lr){5-7}
 \textbf{Scenario} & $\boldsymbol{n=50}$ & $\boldsymbol{n=100}$ & $\boldsymbol{n=200}$ & $\boldsymbol{n=50}$ & $\boldsymbol{n=100}$ & $\boldsymbol{n=200}$ \\
 \midrule
-S1 (Null) & 0.20 & 0.14 & 0.10 & 0.33 & 0.22 & 0.16 \\
-S2 (0.2$\sigma$) & 0.12 & 0.09 & 0.06 & 0.36 & 0.27 & 0.21 \\
-S3 (0.5$\sigma$) & 0.13 & 0.10 & 0.07 & 0.46 & 0.36 & 0.27 \\
-S4 (1.0$\sigma$) & 0.12 & 0.09 & 0.06 & 0.49 & 0.34 & 0.24 \\
-S5 (Scale) & 0.11 & 0.07 & 0.05 & 0.37 & 0.26 & 0.19 \\
-S6 (Skew) & 0.14 & 0.10 & 0.07 & 0.54 & 0.38 & 0.26 \\
-S7 (Loc+Scale) & 0.12 & 0.09 & 0.06 & 0.43 & 0.32 & 0.23 \\
+S1 (Null) & 2.63 & 1.87 & 1.34 & 4.19 & 2.94 & 2.07 \\
+S2 (0.2$\sigma$) & 1.60 & 1.13 & 0.86 & 4.67 & 3.57 & 2.84 \\
+S3 (0.5$\sigma$) & 1.83 & 1.37 & 0.98 & 6.22 & 4.96 & 3.77 \\
+S4 (1.0$\sigma$) & 1.98 & 1.42 & 1.00 & 7.52 & 5.45 & 3.89 \\
+S5 (Scale) & 1.64 & 1.11 & 0.77 & 5.65 & 4.10 & 2.97 \\
+S6 (Skew) & 2.61 & 1.86 & 1.29 & 9.74 & 7.04 & 5.03 \\
+S7 (Loc+Scale) & 2.00 & 1.44 & 1.01 & 6.97 & 5.27 & 3.87 \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
-\item CI width is defined as mean of (upper $-$ lower) across 10{,}000 replications.
+\item CI width is defined as mean of (upper $-$ lower) across 10{,}000 replications, in the units of the effect modifier (scenarios specified with $\sigma = 10$).
 \end{tablenotes}
 \end{table}
 
-Under the null hypothesis (S1), the positive bias produces CIs that are shifted upward from zero. At $n = 50$, the mean estimate was 0.185 with mean CI width 0.33, and at $n = 200$, the mean estimate decreased to 0.094 with mean CI width 0.16. This bias is relevant for clinical calibration. When the true distributional difference is zero, the estimator will suggest a small positive $\Delta_{\max}$. Practitioners should be aware of this conservative tendency, particularly at smaller sample sizes.
+Under the null hypothesis (S1), the positive bias produces CIs that are shifted upward from zero. At $n = 50$, the mean estimate was 2.46 with mean CI width 4.19, and at $n = 200$, the mean estimate decreased to 1.26 with mean CI width 2.07. This bias is relevant for clinical calibration. When the true distributional difference is zero, the estimator will suggest a small positive $\Delta_{\max}$. Practitioners should be aware of this conservative tendency, particularly at smaller sample sizes.
 
 \subsubsection{Comparison with Standardized Mean Difference}
 
-Table~\ref{tab:smd} compares the sensitivity of $\hat{\rho}$ and SMD to different types of distributional differences. While both metrics respond to location shifts, SMD is insensitive to differences in variance and shape---the very types of distributional differences that may drive treatment effect heterogeneity through non-linear CATE functions.
+Table~\ref{tab:smd} compares the sensitivity of $\widehat{W}_1$ and SMD to different types of distributional differences. While both metrics respond to location shifts, SMD is insensitive to differences in variance and shape---the very types of distributional differences that may drive treatment effect heterogeneity through non-linear CATE functions.
 
 \begin{table}[ht]
 \centering
-\caption{Sensitivity comparison: $\hat{\rho}$ versus SMD at $n=100$.\label{tab:smd}}
+\caption{Sensitivity comparison: $\widehat{W}_1$ versus SMD at $n=100$.\label{tab:smd}}
 \begin{tabular}{lccc}
 \toprule
-\textbf{Scenario} & $\boldsymbol{\hat{\rho}}$ \textbf{(mean $\pm$ SD)} & \textbf{SMD (mean $\pm$ SD)} & \textbf{Implication} \\
+\textbf{Scenario} & $\boldsymbol{\widehat{W}_1}$ \textbf{(mean $\pm$ SD)} & \textbf{SMD (mean $\pm$ SD)} & \textbf{Implication} \\
 \midrule
-S3 (Location) & $0.367 \pm 0.097$ & $0.50 \pm 0.14$ & Both detect \\
-S5 (Scale only) & $0.272 \pm 0.066$ & $0.00 \pm 0.14$ & Only $\hat{\rho}$ detects \\
-S6 (Skew only) & $0.622 \pm 0.094$ & $0.00 \pm 0.14$ & Only $\hat{\rho}$ detects \\
+S3 (Location) & $5.05 \pm 1.36$ & $0.50 \pm 0.14$ & Both detect \\
+S5 (Scale only) & $4.38 \pm 1.04$ & $0.00 \pm 0.14$ & Only $\widehat{W}_1$ detects \\
+S6 (Skew only) & $12.36 \pm 1.85$ & $0.00 \pm 0.14$ & Only $\widehat{W}_1$ detects \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
-\item SMD depends only on the difference in means, making it insensitive to differences in variance and skewness. $\hat{\rho}$ (and hence $\widehat{W}_1$) captures the full distributional difference. S6 is particularly informative because a large distributional difference ($\rho = 0.62$, corresponding to a substantial $W_1$ on the variable's natural scale) is entirely invisible to SMD.
+\item SMD depends only on the difference in means, making it insensitive to differences in variance and skewness. $\widehat{W}_1$ captures the full distributional difference. The comparison is one of detection: SMD is near zero for the pure scale (S5) and skew (S6) contrasts, whereas $\widehat{W}_1$ is substantially positive, registering distributional differences that SMD cannot. $\widehat{W}_1$ (in units of the effect modifier, here $\sigma = 10$) and SMD (dimensionless) are reported on different scales, so only the presence or absence of a signal, not the numerical magnitudes, should be compared across the two columns.
 \end{tablenotes}
 \end{table}
 
-In summary, the simulation study across seven scenarios demonstrates that the $\widehat{W}_1$ estimator (presented in the dimensionless form $\hat{\rho}$ for cross-scenario comparability) provides reliable estimation with the following properties at sample sizes typical in MRCT regional subgroups:
+In summary, the simulation study across seven scenarios demonstrates that the $\widehat{W}_1$ estimator provides reliable estimation with the following properties at sample sizes typical in MRCT regional subgroups:
 \begin{enumerate}[1.]
-\item Bias: Less than 0.04 in $\hat{\rho}$ for most non-null scenarios at $n \geq 100$, with positive bias largest near the boundary (S1: 0.132 at $n = 100$) and negligible for scenarios with true $\rho$ above 0.2 (S3: 0.009, S4: 0.006 at $n = 100$).
-\item Coverage: 0.88--0.96 at $n \geq 100$ for scenarios with true $\rho \geq 0.2$ (S3--S7); S6 (skew) and S7 (location + scale) achieved coverage between 0.91--0.95.
-\item Precision: RMSE below 0.12 and CI width below 0.38 at $n \geq 100$.
+\item Bias: Small relative to each scenario's $W_1$ at $n \geq 100$, with positive bias largest near the boundary (S1: 1.76 at $n = 100$) and negligible for the larger-shift scenarios (S3: 0.051, S4: $-0.009$ at $n = 100$).
+\item Coverage: Near-nominal (0.92--0.95) at $n \geq 100$ for the non-null scenarios (S3--S7), including S6 (skew) and S7 (location + scale).
+\item Precision: RMSE and CI width decrease at the $O(n^{-1/2})$ rate; at $n = 200$, RMSE ranged from 0.77 (S5) to 1.34 (S1) in units of $W_1$.
 \item Sensitivity: Captures location, scale, and skewness differences where SMD is limited to location only.
 \end{enumerate}
 
-Scenario S3 (0.5$\sigma$ location shift, true $\rho = 0.358$) exemplifies the operating characteristics at clinically relevant effect sizes. Bias was negligible ($+0.009$ at $n = 100$), coverage was nominal (0.945), and CI width (0.36) translated to a $\Delta_{\max}$ CI width of $0.01 \times 17 \times 0.36 = 0.061$ (6.1\%pt) when calibrated with $L_{\text{clinical}} = 0.01$/yr and $\text{IQR}_{\text{pooled}} = 17$ (age-scale parameters representative of the GUSTO-I application)---a level of precision sufficient for informed regulatory deliberation.
+Scenario S3 (0.5$\sigma$ location shift, true $W_1 = 5$) exemplifies the operating characteristics at clinically relevant effect sizes. Bias was negligible ($+0.051$ at $n = 100$), coverage was nominal (0.951), and the CI width (4.96 years) translated to a $\Delta_{\max}$ CI width of $0.01 \times 4.96 = 0.050$ (5.0\%pt) when calibrated with $L_{\text{clinical}} = 0.01$/yr (age-scale parameters representative of the GUSTO-I application)---a level of precision sufficient for informed regulatory deliberation.
 
 These estimation properties ensure that $\widehat{W}_1$, when combined with the clinical calibration framework of Section~\ref{sec:inference}, provides $\Delta_{\max}$ estimates of sufficient quality for regulatory deliberation. We recommend $n \geq 100$ per region for reliable estimation and inference.
 
@@ -377,7 +376,7 @@ SBP (mmHg) & 132.4 & 22.9 & 0.20 & 30--34 \\
 \end{tablenotes}
 \end{table}
 
-\subsection{Distributional Assessment: Per-EM W₁ Across 15 Partner Regions}\label{sec:app_nabcd}
+\subsection{Distributional Assessment: Per-EM $W_1$ Across 15 Partner Regions}\label{sec:app_nabcd}
 
 We computed $\widehat{W}_1$ between Region~8 and each of the remaining 15 regions for both candidate effect modifiers, expressed in the original measurement units (years for age, mmHg for SBP), with percentile bootstrap 95\% confidence intervals ($B = 2{,}000$). Table~\ref{tab:gusto_nabcd} presents the results. Figure~\ref{fig:gusto_forest} displays these results as a forest plot with bootstrap CIs, with partners ordered by ascending $\widehat{W}_{1,\text{age}}$ to aid visual comparison.
 
@@ -466,21 +465,23 @@ Among the jointly eligible partners, R4 emerges as the leading single-pool candi
 \section{Discussion}\label{sec:discussion}
 %==============================================================================
 
-This paper addresses three methodological gaps identified in Section~\ref{sec:existing}, demonstrating that nABCD: (i) captures scale and skewness differences in regional effect modifier distributions that are invisible to standardized mean differences, as confirmed by simulation scenarios with location-preserving variance and shape contrasts (S5, S6); (ii) translates distributional distance into a clinically interpretable scale via the heterogeneity bound \(\Delta_{\max}\) (equation~\ref{eq:delta_max}), providing a theoretical link to regional treatment effect heterogeneity that is absent in empirical-distribution-function tests such as the Kolmogorov--Smirnov statistic; and (iii) admits reliable percentile bootstrap inference for non-negligible distributional differences at moderate sample sizes (\(n \geq 100\) per region, coverage 0.88--0.96 across S2--S7), while exhibiting characterized boundary behavior near the null that delimits the operational range of inference.
+This paper addresses three methodological gaps identified in Section~\ref{sec:existing}, demonstrating that the $W_1$ distance: (i) captures scale and skewness differences in regional effect modifier distributions that are invisible to standardized mean differences, as confirmed by simulation scenarios with location-preserving variance and shape contrasts (S5, S6); (ii) translates distributional distance into a clinically interpretable scale via the heterogeneity bound \(\Delta_{\max}\) (equation~\ref{eq:delta_max}), providing a theoretical link to regional treatment effect heterogeneity that is absent both in empirical-distribution-function tests such as the Kolmogorov--Smirnov statistic and in representative-value distance methods such as Euclidean distance on region-level effect modifier summaries;\cite{komiyama2024} and (iii) admits reliable percentile bootstrap inference for non-negligible distributional differences at moderate sample sizes (\(n \geq 100\) per region, coverage 0.90--0.95 across S2--S7), while exhibiting characterized boundary behavior near the null that delimits the operational range of inference.
 
-These methodological findings carry two interpretive implications for pooling decisions, illustrated by the GUSTO-I application as a worked example of the framework's operation rather than a substantive epidemiological claim. First, when multiple candidate effect modifiers are under consideration, all candidates must be evaluated jointly. A partner ranked similar on one effect modifier may not be similar on another, as exemplified by the contrast between R2 and R9. Restricting evaluation to a subset of candidates risks selecting partners whose distributional differences on the omitted modifiers would later compromise consistency. Second, partner selection cannot rest on nABCD ranking alone. The required CATE sensitivity $L^*$ that would translate a given nABCD into a clinically meaningful $\Delta_{\max}$ varies markedly across partners and across candidate effect modifiers, so the same nABCD value carries different clinical weight depending on the partner-specific distributional differences. In the GUSTO-I example, six partners (R1, R4, R5, R6, R14, R15) emerged as jointly eligible because their $L^*$ values exceeded the plausible bounds reviewed in Section~\ref{sec:application}; R4 stood out as the leading single-pool candidate due to its balanced ranking on both modifiers. Pooling judgments therefore require both distributional ranking and clinical calibration, applied across the full set of candidate effect modifiers.
+These methodological findings carry two interpretive implications for pooling decisions, illustrated by the GUSTO-I application as a worked example of the framework's operation rather than a substantive epidemiological claim. First, when multiple candidate effect modifiers are under consideration, all candidates must be evaluated jointly. A partner ranked similar on one effect modifier may not be similar on another, as exemplified by the contrast between R2 and R9. Restricting evaluation to a subset of candidates risks selecting partners whose distributional differences on the omitted modifiers would later compromise consistency. Second, partner selection cannot rest on $W_1$ ranking alone. The required CATE sensitivity $L^*$ that would translate a given $W_1$ into a clinically meaningful $\Delta_{\max}$ varies markedly across partners and across candidate effect modifiers, so the same $W_1$ value carries different clinical weight depending on the partner-specific distributional differences. In the GUSTO-I example, six partners (R1, R4, R5, R6, R14, R15) emerged as jointly eligible because their $L^*$ values exceeded the plausible bounds reviewed in Section~\ref{sec:application}; R4 stood out as the leading single-pool candidate due to its balanced ranking on both modifiers. Pooling judgments therefore require both distributional ranking and clinical calibration, applied across the full set of candidate effect modifiers.
 
-Section~\ref{sec:existing} identified three gaps in existing distributional measures. SMD captures only location. The KS statistic and related EDF tests lack a clinically interpretable scale and a theoretical link to treatment effect heterogeneity. KL divergence is asymmetric, can diverge under non-overlapping support, and requires density estimation impractical at small regional samples. nABCD addresses all three. Where SMD captures only the mean, our simulation confirmed that scale (S5) and skewness (S6) differences produced near-zero SMD yet non-negligible nABCD. Where the KS statistic offers no clinical-scale translation, the IQR normalization and the heterogeneity bound (equation~\ref{eq:delta_max}) translate distributional distance into clinically meaningful units. Where KL divergence is asymmetric and prone to instability under limited sample overlap, nABCD is symmetric, finite for any pair of empirical distributions, and computable directly from CDFs without density estimation, while remaining amenable to bootstrap inference.
+These implications also clarify how the framework relates to the most concrete existing pooling recipe, that of Komiyama et al., who combine multiple effect modifiers into a single Lasso-weighted distance and cluster regions on the resulting distance matrix.\cite{komiyama2024} The per-effect-modifier resolution adopted here matters precisely because partner rankings can reverse across modifiers: in the GUSTO-I example R2 and R9 each rank similar on one modifier but dissimilar on the other, so collapsing the modifiers into one aggregate distance can mask an incompatibility that the joint, per-modifier criterion of Section~\ref{sec:application} retains. The two perspectives are nonetheless complementary, in two respects. First, the heterogeneity bound speaks directly to a question their account leaves open---whether a pooled-region treatment-effect estimate transfers to an individual member country. Within a pool whose members are mutually close on every candidate modifier, each pairwise regional difference in average treatment effect is bounded by $L_{\text{clinical}} \cdot W_1$ (equation~\ref{eq:heterogeneity_bound}), so the pooled estimate applies to each member country with a clinically interpretable and bounded error, rather than resting on the point estimate of the pool alone. Second, our distance-based calibration answers which partners are similar enough, a question distinct from how many pooled regions to form; subgroup-multiplicity considerations suggest the latter should remain small, typically no more than four,\cite{komiyama2024,quan2010} and the two constraints can be applied in sequence.
 
-Two principal strengths follow from the dual-pathway clinical calibration. First, the framework adapts to where the trial sits on the spectrum of CATE sensitivity evidence, rather than imposing a fixed nABCD cutoff. At the MRCT planning stage, where $L$ is typically unavailable for novel agents, the $L^*$ reverse-calculation (equation~\ref{eq:lstar}) serves as the primary calibration tool. When $L$ is available from prior evidence, the $\Delta_{\max}$ pathway (equation~\ref{eq:delta_max}) provides a complementary calibration on the clinical scale. Second, nABCD's value as a distributional measure, capturing scale and skewness differences invisible to SMD, holds regardless of whether $L$ is available. Clinical calibration enhances but does not replace this distributional assessment.
+Section~\ref{sec:existing} identified three gaps in existing distributional measures. SMD captures only location. The KS statistic and related EDF tests lack a clinically interpretable scale and a theoretical link to treatment effect heterogeneity. KL divergence is asymmetric, can diverge under non-overlapping support, and requires density estimation impractical at small regional samples. The $W_1$ distance addresses all three. Where SMD captures only the mean, our simulation confirmed that scale (S5) and skewness (S6) differences produced near-zero SMD yet non-negligible $W_1$. Where the KS statistic offers no clinical-scale translation, the heterogeneity bound (equation~\ref{eq:delta_max}) translates distributional distance into clinically meaningful units. Where KL divergence is asymmetric and prone to instability under limited sample overlap, $W_1$ is symmetric, finite for any pair of empirical distributions, and computable directly from CDFs without density estimation, while remaining amenable to bootstrap inference.
 
-For practice, we recommend computing nABCD with bootstrap CIs at moderate sample sizes (Section~\ref{sec:simulation}) for every candidate effect modifier across region pairs, translating each into $\Delta_{\max}$ (when $L$ is estimable) or $L^*$ at pre-specified $\Delta_{\text{clin}}$ values (when $L$ is unknown), and reporting these alongside clinically relevant benchmarks (overall treatment effect, non-inferiority margin) to support deliberation rather than binary decisions. When multiple candidate effect modifiers are evaluated, sponsors may adopt a conservative approach based on the maximum $\Delta_{\max}$ (or smallest $L^*$) across all effect modifiers and region pairs, or a totality-of-evidence approach in which the full collection---together with bootstrap uncertainty and the reliability of each $L$ estimate---informs holistic judgment. The choice depends on regulatory context.
+Two principal strengths follow from the dual-pathway clinical calibration. First, the framework adapts to where the trial sits on the spectrum of CATE sensitivity evidence, rather than imposing a fixed $W_1$ cutoff. At the MRCT planning stage, where $L$ is typically unavailable for novel agents, the $L^*$ reverse-calculation (equation~\ref{eq:lstar}) serves as the primary calibration tool. When $L$ is available from prior evidence, the $\Delta_{\max}$ pathway (equation~\ref{eq:delta_max}) provides a complementary calibration on the clinical scale. Second, the value of $W_1$ as a distributional measure, capturing scale and skewness differences invisible to SMD, holds regardless of whether $L$ is available. Clinical calibration enhances but does not replace this distributional assessment.
 
-For policy, the framework's compatibility with diverse data sources is a distinctive practical advantage. Because nABCD requires only baseline effect modifier distributions, regional data can be assembled from prior trials, registries, electronic health records, or other real-world evidence (RWE) sources---an increasingly relevant capability as regulatory agencies promote RWE use in drug development (ICH E6(R3)). The framework is particularly relevant for regulatory submissions requiring regional subpopulation consistency.\cite{matsushima2024,song2025} Matsushima et al.'s\cite{matsushima2024} PMDA workshop documented how regional imbalance in CRP-positive/MRI-negative status caused apparent inconsistency in the secukinumab MRCT, underscoring the practical consequences when effect modifier distributional differences are not assessed prospectively.
+For practice, we recommend computing $W_1$ with bootstrap CIs at moderate sample sizes (Section~\ref{sec:simulation}) for every candidate effect modifier across region pairs, translating each into $\Delta_{\max}$ (when $L$ is estimable) or $L^*$ at pre-specified $\Delta_{\text{clin}}$ values (when $L$ is unknown), and reporting these alongside clinically relevant benchmarks (overall treatment effect, non-inferiority margin) to support deliberation rather than binary decisions. When multiple candidate effect modifiers are evaluated, sponsors may adopt a conservative approach based on the maximum $\Delta_{\max}$ (or smallest $L^*$) across all effect modifiers and region pairs, or a totality-of-evidence approach in which the full collection---together with bootstrap uncertainty and the reliability of each $L$ estimate---informs holistic judgment. The choice depends on regulatory context.
 
-nABCD is one input within a holistic regulatory evaluation; biological plausibility, clinical relevance, and benefit--risk balance extend beyond what any single distributional measure can quantify.\cite{iche17,matsushima2024} The framework has further limitations. It treats continuous effect modifiers marginally, leaving categorical and multivariate extensions for future work. As a non-negative function of the Wasserstein distance, nABCD exhibits positive bias and zero bootstrap coverage when the true value lies at or near zero (S1; Section~\ref{sec:sim_results}),\cite{andrews2000} so we recommend $n \geq 100$ per region and cautious interpretation of estimates near the null. Clinical calibration depends on the CATE sensitivity $L$, which may be unavailable for novel agents (handled by the $L^*$ pathway) or transferred from prior evidence (a clinical assumption); the framework supplies quantitative inputs but prescribes no cutoffs. Finally, as with any covariate-based approach, unmeasured effect modifiers may contribute to heterogeneity beyond what the index captures.
+For policy, the framework's compatibility with diverse data sources is a distinctive practical advantage. Because $W_1$ requires only baseline effect modifier distributions, regional data can be assembled from prior trials, registries, electronic health records, or other real-world evidence (RWE) sources---an increasingly relevant capability as regulatory agencies promote RWE use in drug development (ICH E6(R3)). The framework is particularly relevant for regulatory submissions requiring regional subpopulation consistency.\cite{matsushima2024,song2025} Matsushima et al.'s\cite{matsushima2024} PMDA workshop documented how regional imbalance in CRP-positive/MRI-negative status caused apparent inconsistency in the secukinumab MRCT, underscoring the practical consequences when effect modifier distributional differences are not assessed prospectively.
 
-Beyond the scope and methodological extensions noted above, two further directions warrant investigation. The upstream identification of which baseline characteristics constitute relevant effect modifiers is itself a non-trivial problem deserving dedicated treatment. Bias-correction methods tailored to the boundary behavior of nABCD at small samples could extend the operational range of inference. The principal contribution of this paper is to supply a quantitative tool where one was previously absent. nABCD, combined with bootstrap confidence intervals and clinical calibration via $\Delta_{\max}$ or $L^*$, transforms the previously qualitative judgment of ``similar enough'' into a reproducible, quantitative basis for sponsor judgment, filling the methodological gap left by ICH E17 and enabling evidence-based, clinically grounded pooling decisions.
+The $W_1$ distance is one input within a holistic regulatory evaluation; biological plausibility, clinical relevance, and benefit--risk balance extend beyond what any single distributional measure can quantify.\cite{iche17,matsushima2024} The framework has further limitations. It treats continuous effect modifiers marginally, leaving categorical and multivariate extensions for future work. Being non-negative, $W_1$ exhibits positive bias and zero bootstrap coverage when the true value lies at or near zero (S1; Section~\ref{sec:sim_results}),\cite{andrews2000} so we recommend $n \geq 100$ per region and cautious interpretation of estimates near the null. Clinical calibration depends on the CATE sensitivity $L$, which may be unavailable for novel agents (handled by the $L^*$ pathway) or transferred from prior evidence (a clinical assumption); the framework supplies quantitative inputs but prescribes no cutoffs. Finally, as with any covariate-based approach, unmeasured effect modifiers may contribute to heterogeneity beyond what the index captures.
+
+Beyond the scope and methodological extensions noted above, two further directions warrant investigation. The upstream identification of which baseline characteristics constitute relevant effect modifiers is itself a non-trivial problem deserving dedicated treatment; regression-based relevance weighting such as the Lasso offers one front-end for this selection,\cite{komiyama2024} after which the present framework quantifies distributional distance on the retained modifiers. Bias-correction methods tailored to the boundary behavior of $W_1$ at small samples could extend the operational range of inference. The principal contribution of this paper is to supply a standardized, clinically calibrated tool where none was previously available. The $W_1$ distance, combined with bootstrap confidence intervals and clinical calibration via $\Delta_{\max}$ or $L^*$, transforms the previously qualitative judgment of ``similar enough'' into a reproducible, quantitative basis for sponsor judgment, filling the methodological gap left by ICH E17 and enabling evidence-based, clinically grounded pooling decisions.
 
 %==============================================================================
 % Back matter
@@ -504,13 +505,13 @@ The authors declare no potential conflict of interests.
 
 \bmsection*{Data availability statement}
 
-R code for computing nABCD and reproducing the simulation study is available at [repository URL]. GUSTO-I individual patient data are available from the original investigators subject to applicable data sharing policies; the dataset is described in the original publication.\cite{gusto1993}
+R code for computing the Wasserstein-1 distance and reproducing the simulation study is available at [repository URL]. GUSTO-I individual patient data are available from the original investigators subject to applicable data sharing policies; the dataset is described in the original publication.\cite{gusto1993}
 
 \bibliography{per_em_W1_wiley}
 
 \bmsection*{Supporting information}
 
-Additional supporting information may be found in the online version of the article at the publisher's website. Supporting materials include: complete R code for nABCD computation, simulation scripts, and additional figures for realistic clinical scenarios.
+Additional supporting information may be found in the online version of the article at the publisher's website. Supporting materials include: complete R code for Wasserstein-1 distance computation, simulation scripts, and additional figures for realistic clinical scenarios.
 
 %==============================================================================
 \appendix
@@ -518,47 +519,45 @@ Additional supporting information may be found in the online version of the arti
 
 \bmsection{Proofs and Mathematical Details\label{app:proofs}}
 
-\bmsubsection{Proof of Proposition~\ref{prop:nonnegativity}\label{app:proof1}}
+\bmsubsection{Non-negativity and Identity of Indiscernibles\label{app:proof1}}
 
-Non-negativity follows directly from the non-negativity of the Wasserstein-1 distance: $W_1(F_1, F_2) = \int |F_1(x) - F_2(x)| \, dx \geq 0$. Since $\text{IQR}_{\text{pooled}} > 0$ for non-degenerate distributions, the ratio $\text{nABCD} = W_1 / \text{IQR}_{\text{pooled}} \geq 0$.
+Non-negativity is immediate: $W_1(F_1, F_2) = \int |F_1(x) - F_2(x)| \, dx \geq 0$, since the integrand is non-negative.
 
-For the identity of indiscernibles, we show both directions. If $F_1 = F_2$, then $|F_1(x) - F_2(x)| = 0$ for all $x$, so $W_1(F_1, F_2) = 0$ and hence $\text{nABCD} = 0$. Conversely, if $\text{nABCD} = 0$, then $W_1(F_1, F_2) = \int |F_1(x) - F_2(x)| \, dx = 0$. Since $|F_1(x) - F_2(x)| \geq 0$ and is right-continuous, $\int |F_1(x) - F_2(x)| \, dx = 0$ implies $F_1(x) = F_2(x)$ almost everywhere, and by right-continuity of CDFs, $F_1 = F_2$ everywhere.
+For the identity of indiscernibles, we show both directions. If $F_1 = F_2$, then $|F_1(x) - F_2(x)| = 0$ for all $x$, so $W_1(F_1, F_2) = 0$. Conversely, if $W_1(F_1, F_2) = \int |F_1(x) - F_2(x)| \, dx = 0$, then since $|F_1(x) - F_2(x)| \geq 0$ and is right-continuous, the integral can vanish only if $F_1(x) = F_2(x)$ almost everywhere, and by right-continuity of CDFs, $F_1 = F_2$ everywhere.
 
 \bmsubsection{Asymptotic Properties\label{app:asymptotic}}
 
-Under standard regularity conditions, the empirical Wasserstein-1 distance $W_1(\hat{F}_1, \hat{F}_2)$ is a consistent estimator of $W_1(F_1, F_2)$.\cite{delbarrio1999} Combined with the consistency of the empirical IQR, $\hnABCD$ is a consistent estimator of $\text{nABCD}(F_1, F_2)$.
+Under standard regularity conditions, the empirical Wasserstein-1 distance $\widehat{W}_1 = W_1(\hat{F}_1, \hat{F}_2)$ is a consistent estimator of $W_1(F_1, F_2)$.\cite{delbarrio1999}
 
-In one dimension, the empirical $W_1$ distance converges at rate $O(n^{-1/2})$ without logarithmic correction.\cite{delbarrio1999} For two-sample estimation with $F_1 \neq F_2$ and finite second moments, $\sqrt{n}(W_1(\hat{F}_{1,n_1}, \hat{F}_{2,n_2}) - W_1(F_1, F_2))$ converges in distribution to a mean-zero Gaussian, where $n = n_1 + n_2$ with $n_1/n \to \lambda \in (0,1)$. Since the empirical IQR also converges at rate $O(n^{-1/2})$ under standard density conditions, the delta method applied to the ratio $g(w, q) = w/q$ yields asymptotic normality of $\hnABCD$:
+In one dimension, the empirical $W_1$ distance converges at rate $O(n^{-1/2})$ without logarithmic correction.\cite{delbarrio1999} For two-sample estimation with $F_1 \neq F_2$ and finite second moments,
 \begin{equation}
-\sqrt{n}\bigl(\hnABCD - \text{nABCD}(F_1, F_2)\bigr) \xrightarrow{d} N(0,\, \sigma^2_{\text{nABCD}}),
+\sqrt{\tfrac{n_1 n_2}{n_1 + n_2}}\,\bigl(\widehat{W}_1 - W_1(F_1, F_2)\bigr) \xrightarrow{d} N(0,\, \sigma^2_{W_1}),
 \label{eq:asymptotic_normality}
 \end{equation}
-where $\sigma^2_{\text{nABCD}}$ depends on the asymptotic variances and covariance of the $W_1$ and IQR estimators. This result requires $\text{nABCD} > 0$ (i.e., $F_1 \neq F_2$). At the boundary $F_1 = F_2$, the parameter lies on the edge of the parameter space and standard asymptotics do not apply (see Section~\ref{sec:discussion}).
+where $n_1/(n_1 + n_2) \to \lambda \in (0,1)$ and $\sigma^2_{W_1}$ depends on $F_1$ and $F_2$ through the limiting two-sample empirical process.\cite{delbarrio1999} This result requires $W_1 > 0$ (i.e., $F_1 \neq F_2$). At the boundary $F_1 = F_2$, the parameter lies on the edge of the parameter space and standard asymptotics do not apply, consistent with the degenerate bootstrap coverage observed under the null (S1; see Section~\ref{sec:discussion}).
 
 The bootstrap provides valid inference for the Wasserstein distance under mild conditions.\cite{sommerfeld2018} The percentile bootstrap confidence interval achieves asymptotically correct coverage for non-degenerate distributions.
 
-\bmsection{R Code for nABCD Computation\label{app:rcode}}
+\bmsection{R Code for $W_1$ Computation\label{app:rcode}}
 
-\begin{lstlisting}[caption={R function for computing nABCD with bootstrap confidence intervals.},label=lst:nabcd,basicstyle=\fontsize{8}{10}\selectfont\ttfamily]
-compute_nABCD <- function(x1, x2) {
+\begin{lstlisting}[caption={R function for computing the Wasserstein-1 distance with bootstrap confidence intervals.},label=lst:nabcd,basicstyle=\fontsize{8}{10}\selectfont\ttfamily]
+compute_W1 <- function(x1, x2) {
   pooled <- c(x1, x2)
-  iqr_pooled <- IQR(pooled)
-  if (iqr_pooled == 0) return(NA)
   all_vals <- sort(unique(pooled))
   F1 <- ecdf(x1); F2 <- ecdf(x2)
   w1 <- sum(diff(all_vals) *
     abs(F1(all_vals[-length(all_vals)]) -
         F2(all_vals[-length(all_vals)])))
-  w1 / iqr_pooled
+  w1
 }
 
-nABCD_bootstrap <- function(x1, x2,
+W1_bootstrap <- function(x1, x2,
     B = 2000, conf = 0.95) {
-  obs <- compute_nABCD(x1, x2)
+  obs <- compute_W1(x1, x2)
   boot_vals <- replicate(B, {
     b1 <- sample(x1, replace = TRUE)
     b2 <- sample(x2, replace = TRUE)
-    compute_nABCD(b1, b2)
+    compute_W1(b1, b2)
   })
   alpha <- 1 - conf
   ci <- quantile(boot_vals,

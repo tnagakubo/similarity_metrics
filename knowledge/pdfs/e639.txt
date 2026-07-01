@@ -1,0 +1,954 @@
+Therapeutic Innovation & Regulatory Science (2024) 58:845–854
+https://doi.org/10.1007/s43441-024-00639-0
+
+ORIGINAL RESEARCH
+
+Simultaneous Global Drug Development and Multiregional Clinical
+Trials (MRCT): 5 Years After Implementation of ICH E17 Guidelines
+Rominder Singh1
+
+· William Wang2 · Aloka Chakravarty3 · Jun Wang4 · Yoshiaki Uyama5
+
+Received: 23 October 2023 / Accepted: 1 March 2024 / Published online: 12 May 2024
+© The Author(s), under exclusive licence to The Drug Information Association, Inc 2024
+
+Abstract
+The ICH E17 guidelines (2014–2017) on Multiregional Clinical Trials (MRCT) was a joint effort by the regulators and
+industry to facilitate simultaneous global drug development and registration through taking a strategic approach for clinical
+trials. In other words, the objective was to reduce the time it takes to bringing medications to patients around the world
+through minimizing unnecessary duplication of local or regional studies, which may add the regulatory burden to cost and
+time of bringing new therapies to patients. Under the auspices of ICH, training materials were created and provided to
+various stakeholders. Despite the successful promotion of the benefits of ICH E17 MRCT guidelines across the different
+regions, the uptake of some concepts (e.g., pooling strategy) in the ICH E17 guidelines has been slow. This paper describes
+various factors which could affect the conduct of MRCT at a global level, including ambiguity in definition of “region” (in
+MRCT), new regulatory requirements to enroll a diverse patient population, the use of decentralized clinical trials, use of
+data sources other than randomized clinical trials (e.g., use of Real Word Data), and the impact of the COVID-19 pandemic
+on the conduct of MRCT.
+Keywords Multiregional clinical trials · MRCT​· Drug development · ICH E17
+
+Introduction
+History of ICH E17 Guidelines
+
+Aloka Chakravarty—This work was performed as the Senior
+Statistical Advisor, Office of the Commissioner, US Food and Drug
+Administration.
+* Rominder Singh
+drugdevpro@gmail.com
+1
+
+Pfizer Research and Development, 10555 Science Center Dr,
+San Diego, CA 92121, USA
+
+2
+
+Merck & Co., Inc, 126 East Lincoln Ave, Rahway, NJ 07065,
+USA
+
+3
+
+Pfizer Chief Medical Affairs Office, 66 Hudson Boulevard,
+New York, NY 10001, USA
+
+4
+
+Center of Drug Evaluation, National Medical Products
+Administration, Zone 2, No. 22 Guangde Street, Economic
+and Technological Development Zone, Beijing, China
+
+5
+
+Regulatory Science Center, Pharmaceuticals and Medical
+Devices Agency, Shin‑Kasumigaseki Building, 3‑3‑2,
+Kasumigaseki, Chiyoda‑ku, Tokyo 100‑0013, Japan
+
+The International Council for Harmonization (ICH) is a
+global organization that brings together regulatory authorities and pharmaceutical industry experts from around the
+world to develop guidelines on the quality, safety, and efficacy of pharmaceuticals. One of the recent guidelines developed by the ICH is the E17 guideline, which focuses on the
+general principles for planning and design of multi-regional
+clinical trials (MRCTs) in drug development.
+The development of the ICH E17 guideline began in 2014
+with the formation of an expert working group consisting
+of regulatory authorities and industry experts from across
+the world. The working group was tasked with developing guidelines to harmonize the planning and design of
+MRCTs simultaneously across multiple regions. After several years of discussions and revisions, the draft guideline
+was endorsed by the ICH assembly in June 2016 followed
+by the public consultation in each region. The guideline
+was revised based on feedback received from stakeholders,
+and the final version was published in November 2017 [1].
+
+13
+
+Vol.:(0123456789)
+
+846
+
+The guideline aims to ensure that MRCTs are designed and
+conducted in a manner that produces reliable and interpretable results while minimizing the burden on study subjects
+and investigators. Subsequently, the ICH sponsored the E17
+Implementation Working Group to develop training material
+and provide the training to various stakeholders including
+the regulators, academia, and the industry [2].
+The ICH E17 guideline, expanding on the ICH E5
+[3], covers several key topics, including the rationale for
+conducting a MRCT, the selection of regions and populations
+for inclusion, the use of bridging studies, and the handling
+of data from different regions. It is recommended that the
+ICH E17 should be used together with other ICH guidelines,
+including E5, E6, E8, E9, E10 and E18 guidelines [2]. By
+providing clear and comprehensive guidance on the planning
+and design of MRCTs, the guidelines make sure that clinical
+trial data is reliable and interpretable, ultimately benefiting
+patients and public health.
+
+Status of Implementation of ICH E17
+Guidelines in each Region
+A literature search on PubMed for the term ‘MRCT’
+or multiregional clinical trials show that the number of
+references peaked around 2020–2021. The US Food and
+Drug Administration adopted the guidance in July 2018.
+The European Federation of Pharmaceutical Industries
+and Associations (EFPIA) found in its survey of seven
+multinational companies that there was significant difference
+in uptake and application of ICH E17 guideline [4]. A similar
+survey by the Japanese Pharmaceutical Manufacturing
+Association (JPMA) found that the respondents had
+questions about the application of the MRCT guidelines [5].
+In both the EU and Japan surveys, lack of clarity on defining
+the sample size and “pooling strategies” was identified as
+one of the major reasons on lack of understanding of the
+guidelines.
+A publication of an online survey of representatives
+from industry, academic centers and clinical research
+organizations in Korea [6] evaluated the ICH E17 guideline
+for clarity, applicability to Korea, the impact to local
+environment and the adoption time. The acceptability and
+appropriateness of the guidelines varied across various
+groups of respondents. The results suggest adoption period
+was approximately 1–2 years.
+In Japan [7], dose-selection, consistency between the
+overall- and Japanese-populations and good clinical practice
+compliance were well considered in MRCTs. However, the
+use of relevant guidelines for disease and primary end point
+definitions, standardization of efficacy/safety information,
+sample size allocation as well as training/validation on
+subject selection and primary end point, were addressed
+
+13
+
+Therapeutic Innovation & Regulatory Science (2024) 58:845–854
+
+less adequately and may need to be considered when
+planning future MRCTs. Recent studies also suggest further
+collaboration opportunity in Asia in conducting MRCTs [8]
+and a potential delay in drug approvals in Japan resulting
+from less participations of Japan in MRCTs [9].
+These findings suggest that there may be a need to
+improve awareness and adherence to the ICH E17 guideline at a global level to ensure that MRCTs are conducted
+efficiently and with high-quality data that can be used for
+drug approval across multiple regions. As depicted in Fig. 1
+from the ICH E17 guidelines, design and conduct MRCTs
+will allow for near simultaneous registration of drugs across
+multiple regions [2].
+
+Possible Reasons Behind Slow Uptake of ICH
+E17 Guidelines
+Over the last decade, particularly since the outbreak
+of COVID-19 pandemic, traditional drug development
+paradigm is changing. Historically, drug development
+applied the sequential Ph1-2-3 drug development paradigm.
+This traditional approach is changing due to several
+factors that have emerged over the past few years. This is
+particularly true for diseases with significant unmet medical
+needs, such as rare diseases, life-threatening conditions,
+or areas where existing therapies are inadequate or nonexistent. These factors have led to a shift in the way new
+drugs are discovered, developed, and approved. The ICH
+E17 guidelines as written may not take into account changes
+in the drug development paradigm which are discussed
+below.
+
+Increased Focus on Personalized Medicine
+The growing understanding of the human genome and
+the molecular basis of diseases has paved the way for
+personalized medicine. This approach aims to develop
+targeted therapies based on a patient’s unique genetic
+makeup, which may render the traditional one-size-fits-all
+approach obsolete.
+
+Expedited Regulatory Pathways
+Expedited regulatory pathways including the US FDA’s fast
+track, breakthrough therapy, priority review designations,
+and accelerated approvals [10], EU’s PRIME designation
+[11] or PMDA’s priority review and Sakigake designation
+and conditional approvals [12] are mechanisms provided by
+regulatory agencies to facilitate and expedite development
+and review of new drugs that are intended to address an
+unmet medical need. These pathways aim to ensure that
+therapies for serious conditions are approved and available
+
+847
+
+Therapeutic Innovation & Regulatory Science (2024) 58:845–854
+
+Figure 1  Conduct of MRCTs could lead to near simultaneous regulatory submissions (adapted from the ICH E17 guideline [1]).
+
+to patients as soon as possible. To take advantage of these
+expedited pathways, the sponsors tend to conduct local or
+regional studies rather than conducting MRCTs as these
+mechanisms allow for faster regulatory approval based on
+Phase 1 or Phase 2 data, which can be especially critical
+for patients with limited or no treatment options which are
+not generally amenable to MRCT as described in the E17
+guideline.
+
+Focus on Patient‑centricity
+There is a growing emphasis to involve patients in the
+drug development process, from early-stage research to
+post-approval studies. This shift towards patient-centricity
+ensures that new therapies are developed based on patients’
+needs and preferences. While the use of patient reported
+outcomes (PROs) in MRCTs can provide valuable insights
+into the effectiveness and impact of treatments from the
+patient’s perspective, there are several challenges associated
+with their use such as cultural and linguistic differences
+which can lead to challenges in evaluating results of PRO
+measures and assuring the reliability and validity of the
+data. Translation of PRO measures needs to be culturally
+appropriate, not just linguistically correct. Depending on the
+setting and the patient population, different methods of data
+collection (e.g., paper, electronic, interview) may be utilized.
+
+The collection methods may have implications for data
+quality, sensitivity and specificity of PRO measurements.
+Finally, ensuring the same PRO measures are analyzed
+and interpreted in the same way across diverse regions
+and populations can be challenging, making it difficult to
+interpret the MRCT data generated from PROs. Although
+there is no specific mention of PROs in the current ICH E17
+guidelines which is an evolving area in conduct of clinical
+trials, the E17 did discuss the use of endpoints that may
+have differences in understanding when used in different
+cultural settings.
+
+Change in Definition of a “Region” and “Pooled
+Region”
+In the context of MRCTs [2], “Region” is typically defined
+based on a combination of factors such as:
+Geography
+This is the most obvious factor and refers to the physical
+location of the countries involved. For instance, the region
+might be “East Asian countries” or “Sub-Saharan African
+countries.”
+
+13
+
+848
+
+Regulatory Environment
+Countries with similar regulatory environments or the same
+regulatory bodies (like the European Union) may be grouped
+together as a region.
+Pooled Region
+These areas are typically pooled together based on
+certain shared characteristics, such as ethnic, genetic,
+environmental, or socio-economic factors, disease
+prevalence, or health system similarities. Thus, data from
+various geographies can be pooled based on the common
+factors or to provide a more comprehensive understanding
+of the drug’s efficacy and safety across diverse populations.
+The definition of a region is important because it
+determines the population that is represented in the clinical
+trial. It also has implications for the extrapolation of the
+results of the trial and their acceptance by regulatory
+authorities in different parts of the world. By pooling data
+from different regions, researchers can assess the consistency
+of a drug’s effects and identify any potential differences in
+responses among various populations including a pooled
+region. It’s a crucial part of designing and implementing
+an MRCT. The concept of a “pooled region” was described
+in the ICH E17 guideline is particularly relevant when
+analyzing data from MRCTs, as these trials are conducted
+across multiple regions with different ethnicities, cultures,
+and healthcare systems. However, when pooling regions,
+it is crucial to ensure that the grouping is justified and
+scientifically sound. Insufficient information and data
+about impact of ethnic factors to drug responses would
+make application of pooled concept more difficult. Factors
+such as the similarity of the patient populations, healthcare
+practices, standard of care, and regulatory requirements
+should be considered when deciding which regions to pool.
+More accumulation of data on ethnic factors through conduct
+of MRCTs and other related research would be useful for
+better interpretation of data from MRCTs [1, 2].
+It is important to note, as highlighted in the previous
+section, various survey results have suggested that there
+is lack of understanding, and application, of the “pooled
+region”.
+
+Diversity in Clinical Trials
+When the ICH E17 guideline was being drafted, the
+concept of “diversity in clinical trials” was not specifically
+highlighted or emphasized [13]. It was expected that
+when designing a MRCT protocol for global drug
+development diverse patient populations in clinical
+trials ensure that the study findings are applicable to
+people of different ages, races, ethnicities, genders, and
+
+13
+
+Therapeutic Innovation & Regulatory Science (2024) 58:845–854
+
+socioeconomic backgrounds in all regions. This helps
+to identify any potential differences in drug response
+among different groups and ensure that new treatments
+are safe and effective for the intended population. It was
+also emphasized that understanding genetic and biological
+differences would allow to study different populations that
+may have varying genetic backgrounds and biological
+factors that influence drug response, metabolism, and
+safety. Including diverse participants in clinical trials
+allows researchers to better understand these factors and
+optimize drug dosing, efficacy, and safety for various
+populations.
+In theory, MRCT could be conducted in one “region” if
+that region has similar influential factors that representative
+of the multiple regional population. In that ideal situation,
+the data can be used for registration in another region.
+This strategy was tested unsuccessfully, when the US
+Food and Drug Administration rejected the registration
+of an anticancer immunotherapy drug that was primarily
+developed in another single country [14]. The FDA opined
+that the sponsor needed to provide clinical data that is
+applicable to the U.S. population. This rejection by the US
+FDA has cited the principles of E17 as the agency and its
+outside advisers were critical for not enrolling a diverse
+enough population for the results to be applicable to U.S.
+patients. It should be noted, the ICH E17 guidance also
+recommend including various populations from different
+regions for examining similarities and differences of ethnic
+factors on drug response from an early phase of clinical
+trials. The FDA decision highlights the need for diversity
+in clinical trials and could deter drugmakers from relying
+on clinical tests exclusively performed in one country for
+a global registration.
+
+Evolution of Decentralized Clinical Trials
+The use of decentralized clinical trials (DCTs), also known
+as virtual or remote clinical trials, have become popular
+over the last few years especially during the COVID
+pandemic [15, 16]. Here the clinical trial relies on digital
+technology and innovative methods to collect data from
+study participants without requiring them to visit a central
+trial site or clinic. This approach aims to increase the
+accessibility, efficiency, and convenience of clinical trials
+for both participants and researchers. As part of remote the
+monitoring participants can be monitored remotely using
+digital devices, such as smartphones, wearable sensors, and
+telemedicine platforms. Telemedicine consultations and
+home-based interventions are also allowed.
+While DCTs offer numerous benefits, they also come
+with potential challenges that differ across the regions,
+such as data privacy and security concerns, technology
+
+849
+
+Therapeutic Innovation & Regulatory Science (2024) 58:845–854
+
+access disparities, and ensuring data quality and regulatory
+compliance. Despite these challenges, the adoption of
+DCTs is expected to increase as technology continues to
+advance and the need for more efficient and patient-centric
+clinical research grows. Moreover, not all regions and
+regulators allow for conduct of decentralized clinical trials
+thus creating lesser opportunities for global participating
+using DCT. Many of these topics related to DCT were not
+considered when the ICH E17 guidelines were drafted.
+
+Increase Use of Real‑World Evidence/Data (RWE/
+RWD)
+Real-world evidence (RWE) is derived from real-world data
+(RWD), such as electronic health records, claims databases,
+patient registries, and other sources outside of controlled
+clinical trials. RWE has the potential to inform healthcare
+decision-making and complement evidence from traditional
+clinical trials [17, 18], although there are both advantages
+and disadvantages associated with RWE.
+However, the ICH E17 guideline did not explicitly
+consider the use of RWD and RWE. For example, although
+data sources may vary significantly across different regions,
+with variations in data collection methods, data quality, and
+access to proprietary databases. Understanding and adhering
+to the specific regulations in each region can be challenging,
+as there may be differences in data privacy and security
+laws, consent requirements, and data sharing agreements.
+Differences in treatment guidelines, access to healthcare
+services, and healthcare infrastructure may introduce
+bias and confounding factors in the analysis of RWD.
+Understanding and accounting for these regional variations
+is critical for accurate interpretation of the findings. Finally,
+extrapolation of RWD/RWE across different populations and
+regions can be challenging.
+
+Limitations of ICH E5 Guidelines
+ICH E5 guideline Titled: Ethnic Factors in the Acceptability
+of Foreign Clinical Data, published in 1998 provides
+recommendations on how to evaluate the potential impact
+of ethnic factors on the safety and efficacy of drugs [3].
+The ICH E5 guideline focuses on the extrapolation of
+foreign clinical data to a new region, but it may not be fully
+applicable in situations where a drug is being developed
+simultaneously in multiple regions or in global clinical
+trials. The ICH E5 guidelines are about 3 decades old, and
+since then, our understanding of the role of ethnic factors
+in drug response has evolved significantly. For example,
+the guideline may not fully capture the current state of
+knowledge in pharmacogenomics and related fields. Also,
+there appears to be more focus on genetics and intrinsic
+
+factors which are easily identifiable while the extrinsic
+factors are more difficult to study and are generally
+overlooked.
+The definition of the region, denoted by the ‘R’ in MRCT,
+has also evolved under the E17 guidelines. Multiregional
+clinical trials involve conducting clinical studies in different
+geographic regions simultaneously. The definition of the
+region has expanded beyond geographical boundaries to
+include factors such as regulatory and ethnic considerations.
+The E17 guidelines provide guidance on how to interpret
+and apply the concept of region in the design and conduct
+of multiregional clinical trials, considering these broader
+implications.
+Relating to the discussion about region, the question
+always remained, who is Asian? Asia is a diverse continent
+spanning 30% of the world’s landmass and over 60%
+of the world’s population. Thus, geographic location,
+race, and ethnicity by themselves are poor surrogates to
+determine meaningful clinical effect. A single ethnic label
+of “Asian” may not represent the broad diversity between
+collections of people in Asia. Thus, the “Asian” phenotype
+underestimates the genetic diversity of Asia yet potentially
+overstates its impact on variability in drug disposition and
+pharmacodynamics [19].
+
+Not All Sponsors are Created Equal
+Historically the drug development and clinical trials was
+“vertically integrated” whereby the sponsor, generally a
+multinational pharmaceutical company, would have end to
+end drug development in-house—starting with preclinical to
+post-marketing. The ICH E17 guidelines encourage to “start
+with end in mind” approach of designing Phase 1 studies to
+identify various confounding factors that would guide the
+subsequent phases including the pivotal studies. However,
+over the last two decades the drug development paradigm has
+changed from integrated R&D (whereby the sponsor would
+conduct the research leading to development) to “S&D”—
+Search and Develop. It is well recognized that acquisitions
+have played a significant role in drug development and
+marketing in recent decades. Pharmaceutical companies
+often acquire start-up or smaller biotech companies to
+gain access to promising drug candidates to enhance their
+own product portfolios. Since the smaller biotechnology
+companies often rely on being acquired as their exit strategy
+they are focus on speed with studies within same country or
+region rather the MRCT. This resulted in smaller companies
+designing Phase 1 and 2 studies with the intention of being
+acquired and not considering the end-to-end development
+approach advocated in the ICH E17 guidelines. In many
+cases, a small company will develop a drug to a certain
+stage, and then a larger company will acquire the small
+company and will conduct the later-stage trials and bring
+
+13
+
+850
+
+the drug to the market. Hence these acquired assets do not
+have the necessary MRCT data from various regions around
+the world to design meaningful pivotal MRCT studies and
+continue the strategy of local/regional development and
+registration.
+Recent report from US Congressional Budget Office in
+2021 show that small drug companies (those with annual
+revenues of less than $500 million) now account for more
+than 70% of the nearly 3,000 drugs in phase III clinical trials
+[20]. While no data are available to identify if these are
+being conducted using MRCT, if speed to market is the aim,
+then it is likely these studies are being conducted locally or
+regionally. These small drug companies are also responsible
+for a growing share of drugs already on the market. Since
+2009, about one-third of the new drugs approved by the
+US Food and Drug Administration have been developed by
+pharmaceutical firms with annual revenues of less than $100
+million [21]. Many of these companies have been acquired
+by larger companies. Large drug companies (those with
+annual revenues of $1 billion or more) still account for more
+than half of new drugs approved since 2009 and an even
+greater share of revenues, but they have only initiated about
+20% of drugs currently in phase 3 clinical trials [22]. These
+larger companies have the means and expertise to conduct
+MRCTs, Data are lacking on how many of these large
+companies do conduct MRCT studies as a rule while the
+start-up or smaller companies do not have the resources or
+expertise to conduct MRCT studies with global registration
+strategy in mind.
+
+Not all Products Require MRCT​
+Oncology, neurology, and infectious diseases have all had a
+rising share of new launches in the past five years with 197
+of the 330 launches (60%). Precision medicine increasingly
+dominates in oncology where targeted therapies account for
+almost all of research, and over 40% of the pipeline is for
+rare cancers with nextgeneration biotherapeutics [23]. Thus,
+not all drug development may require multiregional clinical
+trials. For example, cell and gene therapies are generally not
+amenable to MRCT rather are more suitable for small multicenter or even as part of cancer network such as NCCN
+(National Comprehensive Cancer Network). Previous studies
+have shown that usually large outcome studies for CV or
+diabetes have effectively utilized the end-to-end MRCT [24].
+
+13
+
+Therapeutic Innovation & Regulatory Science (2024) 58:845–854
+
+Recommendations on How to Improve
+the Uptake of ICH E17 Guidelines
+E17 Pooling Strategy and Its Application
+One of the key concepts introduced in the ICH E17 is
+the pre-specified pooling strategy (see Principle #4 in the
+ICH E17 [1]). This Principle aims to provide flexibility in
+sample size allocation to regions, facilitate the assessment of
+consistency in treatment effects across regions, and support
+regulatory decision-making. The pooling strategy should be
+based on established knowledge about key intrinsic/extrinsic
+factor and effect modifiers (i.e., those intrinsic/extrinsic
+factors that impact the treatment effects). The identification
+of these factors should be collected and examined early in
+the drug development program, and further be reflected in
+the study design at late stage (ICH E17 Training Module
+2) [2].
+Based on these systematic approaches of collecting,
+examination, to reflection on intrinsic/extrinsic factors,
+study subjects who have similar factors shall be defined
+prospectively in late phase trials, either as pooled region
+(e.g., pooling patients from East Asia Countries with similar
+confounding factors) or pooled subpopulation (e.g., pooling
+patients with particular polymorphism). The consistency
+evaluation should be structured and can take a layered
+approach that examine treatment effects at country level,
+region level, subpopulation level and global level. To enable
+the holistic evaluation, the sample size allocation can focus
+on the pooled region and/or pooled subpopulation, balanced
+with the considerations of country level regulatory need [25]
+(Also, refer to ICH E17 training modules 4 to 6 [2]).
+It should be specially noted that early phase studies, such
+PK/PD studies or epidemiology studies, can provide valuable
+information to define the pooling regions/subpopulations.
+The 2014 guideline “Basic principles for conducting
+phase 1 trials in the Japanese population on prior to global
+clinical trials” in Japan has given specific consideration for
+conducting early phase trials in the region [26]. The NMPA
+Center for Drug Evaluation (CDE) is developing related
+guidelines, including considerations for conducting early
+phase trials in China prior to confirmatory MRCT. The
+strategies for conducting a phase I trial in China should be
+comprehensively evaluated during the clinical development
+plan. This guideline can facilitate guiding the related work
+and promote China to participate in global development as
+soon as possible [25]. A future ICH E17 Q&A document
+may be useful to provide a harmonized guidelines on the
+connection between early and late phase trials for MRCT
+design and interpretation of the current guidelines.
+
+851
+
+Therapeutic Innovation & Regulatory Science (2024) 58:845–854
+
+Apply Lessons from the Pandemic on Conduct
+of MRCT and ICH E17 Guidelines
+The vaccines developed during the pandemic applied many
+of the principles outlined in the ICH E17 guidelines and
+there are many lessons learned from the use of MRCTs which
+should be made business as usual [27]. For example, the
+pandemic underscored the need for greater harmonization
+of regulatory requirements across countries. Differences in
+regulatory requirements did not slow down the initiation
+and progression of MRCTs. The pandemic also accelerated
+the adoption of remote monitoring and other digital health
+technologies in MRCTs. These technologies can enhance
+the efficiency of MRCTs even post-pandemic. The changing
+conditions of a pandemic require flexibility in trial design.
+Adaptive trial designs, which allow modifications to the
+trial after it begins (based on interim results), have proved
+to be particularly beneficial. As the pandemic evolved,
+participation in MRCTs provided the flexibility to pivot
+resources and focus to regions where the pandemic’s impact
+was greater. Frequent communication with the regulators
+as recommended in the E17 guidelines provided guidance
+to sponsors on how to manage clinical trials during the
+pandemic, addressing issues such as protocol deviations,
+remote monitoring, and patient safety. Despite the need for
+speed the regulators ensured that the study findings were
+applicable to populations of different ages, races, ethnicities,
+genders, and socioeconomic backgrounds for drug approval.
+This helped to identify any potential differences in drug
+response among different groups and reduce disparities in
+healthcare access and outcomes.
+While not discussed in the ICH E17 guideline,
+the pandemic provided examples of Emergency Use
+Authorization (EUA) for the use of medical products that
+have not undergone the usual rigorous testing and approval
+process. Likewise, there were Conditional Approval
+where a medicinal product received conditional approval
+based on less complete clinical data and iterative phases
+of data gathering than normally required if the drug fills
+an unmet medical need for a serious condition and had
+positive impact on public health. All these pathways
+accelerated the drug development and approval process
+which can be weaved in the future design and conduct of
+MRCT. However, as noted earlier, the ICH E17 guidelines
+were written whereby intrinsic and extrinsic data would
+be generated in earlier phases of the clinical development
+to help with design of pivotal studies. Due to urgency and
+speed of drug development during the pandemic, many of
+the intrinsic and extrinsic factors were not collected in early
+phase of development During the pandemic the sponsors
+and the regulators were not necessarily thinking “how do
+I apply ICH E17 guidelines” rather their focus to how to
+simultaneously develop vaccines and life-saving therapies
+
+around the world. The focus was on speed, quality, and
+consistency-all the factors advocated in the ICH E17
+guidelines.
+
+Adaptive Clinical Trial Design and Its Application
+to MRCTs
+Adaptive clinical trial design has become increasingly
+popular to increase productivity of drug development. This
+is further fueled by the urgency brought by the pandemic.
+New ICH guidelines (ICH E20) are being developed
+on the design, conduct, analysis, and interpretation of
+adaptive clinical trials. Even though ICH E17 did not
+specifically discuss this topic, more and more MRCTs
+are using adaptive design, especially group sequential
+design for global simultaneous drug/vaccine development
+and registration. A few additional points may need to be
+considered: (1) Aligning with the ICH E17 principles, the
+interim analyses that have the potential to stop the trial
+early for multi-regional filings may need to examine the
+regional consistency as part of the key supportive analyses;
+(2) the data monitoring committee (DMC) may need to
+have representations, not only from different functional
+expertise (e.g., clinical, statistics), but also from key regions;
+(3) In case the trial results are considered insufficient (e.g.,
+limited sample size/exposure or total amount of statistical
+information such as event counts) for some regions, and
+if the MRCT has a regional extension, the proper firewall
+should be in place to maintain the trial integrity.
+
+Focus on Social Determinants of Health for Extrinsic
+Factors
+Historically there has been too much focus on ICH E5
+guidelines with the regulators and sponsors about impacts
+of ethnic factors, especially intrinsic factors such as genetics
+since the genetic-factors are often more quantifiable and
+easier to study than many non-genetic factors. However,
+as our understanding of drug response continues to evolve,
+the field is increasingly recognizing the importance of
+considering a broad range of Social Determinants of Health
+[28], not just genetic ones, to truly optimize drug therapy for
+different populations. Drug development is a multifactorial
+complex process and the ICH E5 guidelines should be
+taken into context of new definition of ‘region’ in MRCT
+as defined in the E17 guidelines that encourage pooling of
+data across regions especially focusing on the determinants
+of health.
+
+13
+
+852
+
+Increase Focus on Patient Reported Outcomes
+Patient Reported Outcomes (PROs) offer insights into
+how a treatment is experienced by patients across various
+regions, providing valuable data on the effect of cultural,
+geographical, or socioeconomic factors on patients’
+perceptions of their health and treatment. PRO measures
+would need to be standardized across multiple regions
+to provide consistent data, even though the trials are
+conducted in diverse geographic and cultural settings and
+would provide holistic understanding of treatment impact.
+Finally, the PROs can help regulatory authorities make more
+informed decisions about the approval and labeling of drugs
+and treatments [29–31]. This data would provide a more
+complete picture of the benefits and risks of a treatment
+from the patients’ perspective. This would require consistent
+data collection across multiple regions, each with its unique
+language. The translation and cultural adaptation of PRO
+measures need to be done carefully to maintain their validity.
+It is also critical to ensure that data privacy regulations are
+adhered to when collecting and processing PRO data from
+different regions. There is no mention of this in the current
+ICH E17 guidelines but can be considered in design of the
+MRCTs.
+
+Pivot Towards Digital
+The pivot towards digital technologies has been a
+significant development of MRCTs, particularly during the
+pandemic. As travel and face-to-face contact were heavily
+restricted due to safety concerns, digital technologies
+proved invaluable in facilitating continued clinical
+research. This has manifested itself in enhanced remote
+monitoring and data collection using electronic informed
+consent (eIC) to reduce the need for physical paperwork
+and in-person meetings. There was increase in telemedicine
+through virtual visits with trial participants, assessing
+their condition, providing advice, and even delivering
+some forms of treatment remotely. If telemedicine is to
+become a part of MRCTs, new methodology would need to
+be created to ensure the data quality with stricter QA/QC
+checks. Many MRCTs are moving towards a decentralized
+model, where many aspects of the trial, such as patient
+recruitment, data collection, and even some aspects of
+treatment, are conducted remotely using digital tools.
+There is increased use of artificial intelligence (AI) and
+machine learning (ML) technologies for data analysis,
+pattern recognition, and predictive modeling, making
+it possible to quickly analyze the vast amounts of data
+generated by MRCTs and gain insights more quickly.
+Finally, the cloud-based data storage and sharing digital
+storage solutions will make it easier to store and share the
+large volumes of data generated by MRCTs, improving
+
+13
+
+Therapeutic Innovation & Regulatory Science (2024) 58:845–854
+
+collaboration, and enabling more rapid analysis. While the
+pivot towards digital technologies had many benefits, it
+also brings new challenges. Issues such as data security,
+privacy, and the digital divide (where some populations
+may not have access to the required technology) need to
+be carefully managed to ensure that MRCTs are conducted
+ethically and effectively. Incorporating this in consistent
+manner across the various regions would allow to
+effectively incorporate digital methodologies into MRCT
+design and conduct.
+
+Update the ICH E17 Guidelines Through Q&A
+One of the ways ICH maintains and improves upon its
+existing guidelines is through a Questions & Answers
+(Q&A) process. This process allows for clarification,
+interpretation, and expansion of the guidance provided
+in the guidelines based on questions or issues raised by
+stakeholders. Historically the Q&A are developed five to
+seven years after the original publication. With the Q&A
+the ICH guidelines can remain current and relevant to be
+interpreted and applied consistently across different regions.
+It also would allow for a level of flexibility and adaptation
+in response to emerging issues or advances in scientific
+understanding.
+
+Conclusion
+It has been over 5 years since the ICH E17 guidelines on
+MRCT were adopted and training material produced by
+ICH. Much has changed on how drugs are developed and
+registered, especially some novel approaches were adopted
+during the pandemic which were not originally considered
+when the ICH E17 guideline was developed. In response to
+these changes, there are still topics that require clarification,
+such as pooling strategies, local vs. regional data for
+registration, and other operational challenges.
+In addition, the pandemic has shown us that newer
+approaches adopted by sponsors and regulators can be
+used to perform clinical trials and approve medicines. This
+has contributed to shorter registration timelines and more
+streamline clinical studies. The question now remains can
+we weave-in the principles of ICH E17 MRCT into the drug
+development and registration approach for the next decade.
+This may be a good time to start the ICH Q&A process to
+provide more contemporary guidance.
+
+853
+
+Therapeutic Innovation & Regulatory Science (2024) 58:845–854
+
+Author Contributions
+
+All authors (except JW) were members of the expert working group
+for ICH E17 guideline published in 2017. The views expressed in this
+article are those of the authors and do not necessarily reflect the official
+views of the Pharmaceuticals and Medical Devices Agency, National
+Medical Products Administration or those of companies that employ
+them.
+
+10.
+
+11.
+
+Funding
+
+No funding was received for this work.
+
+12.
+
+Declarations
+
+13.
+
+Conflict of interest
+
+RS, WW, AC work for for-profit biopharmaceutical companies. The
+work by AC was performed as the Senior Statistical Advisor, Office of
+the Commissioner, US Food and Drug Administration. JW and YU are
+regulators who work for their respective regulatory agencies.
+
+14.
+
+15.
+
+16.
+
+References
+1. The International Council for Harmonisation of Technical
+Requirements for Pharmaceuticals for Human Use. General principles for planning and design of multi-regional clinical trials E17
+https://d​ ataba​ se.i​ ch.o​ rg/s​ ites/d​ efaul​ t/fi
+​ les/E
+​ 17EWG_S
+​ tep4_2​ 017_​
+1116pdf Date: Nov 16, 2017; Date accessed: April 28, 2023.
+2. ICH (International Council for Harmonisation of Technical
+Requirements for Pharmaceuticals for Human Use). 2017. ICH
+E17 Training Module.
+3. The International Council for Harmonisation of Technical
+Requirements. for Pharmaceuticals for Human Use Ethnic factors in the acceptability of foreign clinical data E5 (R1). https://​
+datab​ase.​ich.​org/​sites/​defau​lt/​files/​E5_​R1__​Guide​line.​pdf Date:
+Feb 5, 1998; Date accessed: April 28, 2023.
+4. European Federation of Pharmaceutical Industries and Associations (EFPIA), implementation of the ICH E17 guideline on planning and design of multi-regional clinical trials in international
+markets. 2021; https://w
+​ ww.e​ fpia.e​ u/m
+​ edia/6​ 36586/e​ fpia-i​ ch-e​ 17-​
+advoc​acy-​toolk​it_​dec-​2021.​pdf.
+5. Japan Pharmaceutical Manufacturers Association (JPMA). Drug
+Evaluation From Now On What’s the value of local data in the
+global clinical data package? July 2022; https://​www.​jpma.​or.​jp/​
+engli​sh/​repor​ts/​drug_​evalu​ation_​commi​ttee/​dsdut​h0000​0004zz-​
+att/​DS_​202212_​e17.​pdf.
+6. Sohn M, Song Y, Jeon AY, Oh JM, Kim I. Perspectives on adopting the Guideline for multi-regional clinical trials in Korea: a
+multi-stakeholder survey. Korean J Clin Pharm. 2019;29:267–77.
+7. Asano K, Aoi Y, Kamada S, Uyama Y, Tohkin M. Points to consider for implementation of the ICH E17 Guideline: learning from
+past multiregional clinical trials in Japan. Clin Pharmacol Ther.
+2021;109(6):1555–63. https://​doi.​org/​10.​1002/​cpt.​2121. Epub
+2020 Dec 16. PMID: 33245786; PMCID: PMC8246727.
+8. Aoi Y, Kato Y, Asano K, Otsubo Y, Uyama Y. Characteristics of
+Asian participation in multi-regional clinical trials reviewed for
+drug approval in Japan: opportunities for collaboration between
+South-East Asia, East Asia, and Japan. Ther Innov Reg Sci; 2023.
+9. Noguchi A, Hanaoka H, Uyama Y. Potential future drug development lag in Japan based on an analysis of multiregional clinical
+
+17.
+
+18.
+19.
+
+20.
+21.
+22.
+
+23.
+24.
+25.
+26.
+
+trials in the US, Europe, and East Asia. Ther Innov Reg Sci.
+2022;56:523–9.
+U.S. Food and Drug Administration. Expedited pathways: Fast
+track, breakthrough therapy, priority review, accelerated approval.
+Retrieved from https://​www.​fda.​gov/​patie​nts/​learn-​about-​drug-​
+and-​d evice-​a ppro​vals/​fast-​t rack-​b reak​t hrou​g h-​t hera​py-​a ccel​
+erated-​appro​val-​prior​ity-​review Date accessed: October 1, 2023.
+European Medicines Agency. PRIME: Priority Medicines.
+Retrieved from https://w
+​ ww.e​ ma.e​ uropa.e​ u/e​ n/h​ uman-r​ egula​ tory/​
+resea​rch-​devel​opment/​prime-​prior​ity-​medic​ines Date accessed:
+October 1, 2023.
+Pharmaceuticals and Medical Devices Agency. Further Advancement for Early Patient Access Retrieved from https://​www.​pmda.​
+go.​jp/​files/​00023​5784.​pdf Date accessed: October 1, 2023.
+Fashoyin-Aje L, Beaver JA, Pazdur. R promoting inclusion of
+members of racial and ethnic minority groups in cancer drug
+development. JAMA Oncol. 2021;7:1445–6.
+Desai A, Smith CJ, West HJ. Navigating approval pathways
+for immunotherapy in NSCLC: should criteria be revised?
+Nat Rev Clin Oncol. 2023;20:423–4. https://​doi.​org/​10.​1038/​
+s41571-​023-​00761-2.
+Agarwal P, Sverdlov O, Menon A, Desai A, Smith CJ, West HJ.
+Navigating approval pathways for immunotherapy in NSCLC:
+should criteria be revised? Nat Rev Clin Oncol. 2023;20:423–4.
+https://​doi.​org/​10.​1038/​s41571-​023-​00761-2.
+Bhatt A, Evans T. (2020). The promise and peril of decentralized
+trials. Appl Clin Trials, 29(8). https://​www.​appli​edcli​nical​trial​
+sonli​ne.​com/​view/​the-​promi​se-​and-​peril-​of-​decen​trali​zed-​trials.
+U.S. Food and Drug Administration. (2018). Use of Real-World
+Evidence to Support Regulatory Decision-Making for Medical
+Devices: Guidance for Industry and Food and Drug Administration Staff. Retrieved from https://​www.​fda.​gov/​regul​atory-​infor​
+mation/​search-​fda-​guida​nce-​docum​ents/​use-​real-​world-​evide​nce-​
+suppor​ t-r​ egula​ tory-d​ ecisi​ on-m
+​ aking-m
+​ edica​ l-d​ evice​ s Accessed on
+October 1, 2023.
+Purpura CA, Garry EM, Honig N, Case A, Rassen JA. The role of
+real-world evidence in FDA-Approved New Drug and Biologics
+license applications. Clin Pharmacol Ther. 2022;111:135–44.
+Singh R, Teo YY. Asian phenotype underestimates the genetic
+diversity of Asia yet overstates its Impact on Variability in Drug
+Disposition and Pharmacodynamics. Clin Pharmacol Ther.
+2019;105(4):802–5. https://​doi.​org/​10.​1002/​cpt.​1329.
+US Congresional Budget Office. (2021), Research and Development in the Pharmaceutical Industry; April 2021, https://​www.​
+cbo.​gov/​publi​cation/​57126.
+Geilinger U, Leo C, January, HBM New Drug Approval Report
+(HBM Partners., 2019), p. 16. https://t​ inyur​ l.c​ om/y​ yzze4​ 76, (PDF,
+1.14 MB).
+US Government Accountability Office, Drug Industry. Profits,
+Research and Development Spending, and Merger and Acquisition deals, GAO-18-40 (November 2017), p. 16, www.​gao.​gov/​
+produ​cts/​GAO-​18-​40./.
+IQVIA Institute for Human Data Science. (2019), The Changing Landscape of Research and Development (April 2019), p. 15,
+https://​tinyu​rl.​com/​1cm3g​2fs.
+Salim Y, Wittes J. Interpreting Geographic variations in results of
+randomized, controlled trials. N Engl J Med. 2016;375(23):2263–
+71. https://​doi.​org/​10.​1056/​nejmr​a1510​065.
+Li G, Binkowitz B, Wang W, Quan H, Chen J. Simultaneous
+global New Drug Development Multi-regional clinical trials after
+ICH E17. Chapman & Hall; 2021.
+Ministry of Health, Labour and Welfare, Basic Principles for Conducting Phase I Trials in the Japanese Population Prior to Global
+Clinical Trials, Administrative Notice on October 27(Evaluation
+and Licensing Division, Pharmaceutical and Food Safety Bureau).
+2014. https://​www.​pmda.​go.​jp/​files/​00015​7777.​pdf.
+
+13
+
+854
+27. Sharma SK, Kulkarni S, Aggarwal R. COVID-19 Vaccine
+Development and Launch: a review. Front Public Health.
+2021;9:617239. https://​doi.​org/​10.​3389/​fpubh.​2021.​617239.
+28. Center for Disease Control. Social Determinants Health CDC.
+2021. https://​www.​cdc.​gov/​socia​ldete​rmina​nts/​index.​htm.
+29. FDA. Guidance for Industry: patient-reported outcome measures:
+use in Medical Product Development to support labeling claims.
+Silver Spring, MD: US Food and Drug Administration; 2009.
+30. European Medicines Agency Committee for Medicinal Productsfor Human Use. Appendix 2 to the Guideline on the evaluation
+of Anticancer Medicinal products in Man: the Use of patientreported outcome (PRO) measures in Oncology studies EMA/
+CHMP/292464/2014. London, England: European Medicine
+Agency; 2016.
+
+13
+
+Therapeutic Innovation & Regulatory Science (2024) 58:845–854
+31. Chinese Technical. Guidelines for the Implementation of Patient
+Centered Clinical Trials – DRAFT August 2022.
+Publisher’s Note Springer Nature remains neutral with regard to
+jurisdictional claims in published maps and institutional affiliations.
+Springer Nature or its licensor (e.g. a society or other partner) holds
+exclusive rights to this article under a publishing agreement with the
+author(s) or other rightsholder(s); author self-archiving of the accepted
+manuscript version of this article is solely governed by the terms of
+such publishing agreement and applicable law.
+
+
