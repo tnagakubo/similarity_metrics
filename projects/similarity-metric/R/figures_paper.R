@@ -85,8 +85,8 @@ load_application_params <- function(data_dir = DATA_DIR) {
 }
 
 # =============================================================================
-# Figure 1: Scenario Overview — Density plots for all 9 scenarios (S1-S9)
-# S8 (Outlier) and S9 (Gamma) added 2026-05-10 for normalizer comparison study
+# Figure 1: Scenario Overview — Density plots for S1-S7 (current paper scope)
+# S8 (Outlier) / S9 (Gamma) defs retained below but sliced out of this figure (normalizer study only)
 # =============================================================================
 
 fig1_scenario_overview <- function(palette = c("greyscale", "color")) {
@@ -146,6 +146,7 @@ fig1_scenario_overview <- function(palette = c("greyscale", "color")) {
          pdf2 = function(x) dgamma(x, shape = 2, scale = 15),
          xrange = c(0, 100))
   )
+  sc_defs <- sc_defs[seq_len(7)]  # S1-S7 only (current paper scope); S8-S9 defs kept above for normalizer study
 
   # Build data frame from analytical PDFs
   df_all <- do.call(rbind, lapply(sc_defs, function(sc) {

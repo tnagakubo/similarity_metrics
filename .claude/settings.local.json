@@ -232,7 +232,13 @@
       "Bash(latexmk -C per_em_W1_wiley)",
       "Bash(latexmk -pdf -interaction=nonstopmode -halt-on-error=false per_em_W1_wiley.tex)",
       "Bash(ls -la per_em_W1_wiley.log per_em_W1_wiley.pdf)",
-      "Bash(latexmk -pdf -interaction=nonstopmode -f per_em_W1_wiley.tex)"
+      "Bash(latexmk -pdf -interaction=nonstopmode -f per_em_W1_wiley.tex)",
+      "Bash(awk '/^---$/{c++} c>=1 && !/^  /{print}' \"projects/similarity-metric/poster/Poster_GSC_TN_marp.md\")",
+      "Bash(\"/c/Program Files/R/R-4.5.1/bin/Rscript\" matrix_clustering.R)",
+      "Bash(latexmk -pdf -interaction=nonstopmode -halt-on-error per_em_W1_wiley.tex)",
+      "Bash(mkdir -p /tmp/pptx_check)",
+      "Read(//tmp/pptx_check/ppt/**)",
+      "Read(//tmp/pptx_check/ppt/slides/**)"
     ]
   },
   "autoMemoryEnabled": true
