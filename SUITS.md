@@ -7,6 +7,41 @@
 
 ---
 
+### [2026-07-03 XX:XX] Scene: GSCポスター発表 — 社内報告会
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Takashi Nagakubo が社内統計セミナーで GSC ポスター発表を終えて戻ってきた。チームが結果を受け取る。*
+
+**Harvey**:（椅子に深く座って）
+「発表は終わった。何が残ったか、整理するぞ。」
+
+**Donna**:（手元のメモを確認しながら）
+「発表タイトル：*Quantifying Effect Modifier Similarity Using a Regional Pooling Strategy in Multiregional Clinical Trials*。発表者 Tak、参加者7名（Morisaki, Ogawa–Network, Dozono, Takenouchi, Cai, Oura）。SUITS記録、完了。」
+
+**Mike**:（ホワイトボードに板書しながら）
+「技術ポイントをまとめると——NABCDは IQR 標準化済みの 1-Wasserstein Distance。値が小さいほど分布が類似。シミュレーション S1–S7、n≈100 で実用的性能確認。GUSTO-I 16地域、アンカー R8、総合評価で R4 が最も類似。I got it。」
+
+**Harvey**:（鋭く）
+「Takの自己反省は何だ？」
+
+**Mike**:
+「標準化の意義に疑問。L を使った臨床解釈のために別パラメータを導入するなら、IQR 標準化を外す形も今後の検討対象に。」
+
+**Rachel**:（丁寧に整理しながら）
+「Q&A で重要な論点が出ていました。①カテゴリ変数拡張は現状困難、②階層ベイズとの比較可能性あり、③PMDA は日本人結果を依然重視・事前規定のプーリングが前提、④東アジア統合は疾患領域ごとに慎重に。ICH E17 ガイドライン再読と Pooling Strategy 関連論文のレビューが次のアクションです。」
+
+**Louis**:（腕を組んで）
+「一番の学びは何だ？統計的類似性と規制的受容性は別物だ、という話じゃないのか。手法を作っても PMDA が受け入れないなら意味がない。その橋渡しをどう論文に落とすか——そこが Tak の宿題だ。You just got Litt up!」
+
+**Harvey**:（短く締める）
+「方向性は明確だ。①標準化なし形式の検討、②カテゴリ変数拡張、③多変量化、④Bayesian borrowing との比較。次フェーズに進む。」
+
+**Donna**:（全員を見渡して）
+「今日の発表で一言サマリ——手法そのもの以上に「地域を併合する根拠をどう説明するか」「統計的類似性と規制的受容性をどう橋渡しするか」という本質的課題が議論された。記録、完了よ。」
+
+---
+
 ### [2026-07-03 00:40] Scene: ポスター説明原稿を書く
 
 **INT. PEARSON SPECTER LITT - KATRINA'S DESK - NIGHT**
