@@ -173,9 +173,14 @@ single-EM selection needs adequate $n$ (Gaussian ≥ 75–100; skewed ≥ 150–
 
 - Replace/augment the detection table (`tab:smd`, metric *values*) with a
   **decision-consequence** table (false-pooling / AUC by type at each n), for both families.
-- Figures (paper standard, 7in, greyscale): (i) false-pooling vs n by method, per family;
-  (ii) AUC heat-map, method × discordance type, per family.
+- Figures (`figures/fig_selection_*`, paper standard: `theme_bw` base 11, greyscale
+  + colour slide variant, identity encoded by colour + linetype + shape):
+  (i) `fig_selection_false_pooling` — false-pooling@k vs n, one panel per family;
+  (ii) `fig_selection_auc_by_type` — AUC vs n by method, faceted family × discordance
+  type, with a 0.5 chance/blind reference line (SMD sits on it for scale/shape;
+  log-SMD sits on it for the combined case).
 - State scope (Q_metric) and the W₁≈KS caveat explicitly. W₁-over-KS, if seen, rests on
   theory (Δ_max = L·W₁ calibration, EM-unit interpretability), not on this roster.
 
-*Pilot scripts:* `pilot_countries.R` (Set 1); `check_lnorm_family.R` (Set 2 truth structure).
+*Code:* `R/selection_simulation.R` (driver), `R/figures_selection.R` (figures);
+validated by `R/validate_selection.R` and `R/validate_figures.R`.
