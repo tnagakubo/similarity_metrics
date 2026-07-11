@@ -1,24 +1,62 @@
-# Simulation Study Plan — Pooling-Partner Selection
+# Simulation Study Plan — Pooling-Partner Selection and Pooled-Region Formation
 
 **Question (Tak):** Under virtual scenarios where several countries each have their
 own effect-modifier (EM) distribution — some similar to an anchor, some not — can a
-distributional metric (W₁) select the truly-similar countries as pooling partners
-*more correctly than* competing methods (SMD, KS)?
+distributional metric (W₁) recover the truly-similar countries *more correctly than*
+competing methods?
+
+Two **task formulations**, because the literature contains both (Tak, 2026-07-12):
+
+- **Part 1 — anchor-centric selection.** One anchor region; rank the candidates by
+  anchor-to-candidate distance and pool the nearest. This uses only the anchor's row
+  of the distance matrix. Corresponds to "which regions may be pooled into the
+  pivotal region?"
+- **Part 2 — pooled-region formation by clustering.** No anchor; build the FULL
+  pairwise distance matrix over all countries and partition them by clustering.
+  This is exactly Komiyama et al. (2024) Ch.4 §4.6.1.2.
+
+**Competitors.** Earlier versions compared only distance *metrics* (W₁ / SMD / KS).
+That is insufficient: a reviewer will ask why the comparison omits the concrete
+existing *procedure*. We therefore add the Komiyama representative-value distance
+(§4.6.1.1: a representative value per EM parameter, each coordinate standardized to
+N(0,1) across regions, Euclidean distance), in two variants:
+
+- **RV(mean, SD)** — the natural two-coordinate reading. Implementing it as
+  mean-only would be a strawman patchable in one line (Louis, 2026-06-27).
+- **RV(mean, SD, skew)** — pre-empts "then just add another moment."
 
 **Framework:** ADEMP (Morris, White & Crowther 2019, *Stat Med* 38:2074–2102,
 DOI: 10.1002/sim.8086). Scope = **Q_metric** (recovery of true EM-distributional
 similarity from finite samples). No outcome/CATE model is used; the link from
 distributional closeness to treatment-effect difference is carried by the
-Kantorovich–Rubinstein bound in the paper's theory section, not by this simulation.
+Kantorovich–Rubinstein bound in the paper's theory section, **not** by this
+simulation. Δ_max — the property that separates W₁ from KS — is therefore **not
+tested here**, and no claim of W₁-over-KS may rest on this simulation.
 
 **Design principle (Tak, realism):** All countries within a scenario set share the
 **same distributional family** — a single endpoint cannot be Gaussian in nine
-regions and log-normal in one. Skewness is therefore studied in its own
-consistent-family world, not as a lone outlier. Two scenario sets:
+regions and log-normal in one. Three scenario sets:
 
 - **Set 1 — Gaussian world:** every country Normal; discordance in location / scale.
 - **Set 2 — Skewed world:** every country log-normal (a realistic skewed biomarker,
   e.g. ALT); discordance in location / dispersion-and-shape.
+- **Set 3 — Mixture world (moment-matched):** every country a two-component Gaussian
+  mixture (e.g. a genotype sub-population — fast/slow metabolisers — whose mixing
+  proportion differs by region). Every candidate matches the anchor **exactly on
+  mean (50) and SD (10)**; only the shape differs.
+
+**Why Set 3 is not optional.** Sets 1 and 2 are both **two-parameter families**:
+(mean, SD) determines the whole distribution, so a fair RV(mean, SD) method can
+detect *every* discordant country there — including the log-normal "shape" ones,
+whose skewness is a deterministic function of (mean, SD). (Audit: Set 2's Dp1 holds
+mean = 50 but moves SD 20 → 30; the SD axis alone separates it.) Against a fair
+Komiyama baseline, W₁ therefore has **no structural advantage in Sets 1–2**, and we
+report that honestly. The question a moment-list method cannot answer is *which*
+moments must be enumerated. Set 3 answers it: the symmetric-mixture countries match
+the anchor on mean, SD **and skewness**, so even RV(mean, SD, skew) is blind, while
+W₁ and KS see the CDF gap. Set 3 is a **stress test / worst case**, not a claim that
+moment-matching is typical — the "identical mean *and* SD" construction is
+deliberately adversarial, and is labelled as such.
 
 ---
 
@@ -70,6 +108,57 @@ blind. **Log-scale SMD** picks up only a tiny residual mean shift (~0.17 for Dp1
 stays blind to the dispersion → shows the failure is structural, not a missing
 transform. W₁ and KS resolve all discordance types.
 
+⚠️ **But note what a *fair* RV baseline does here.** Raising CV at fixed mean also
+moves the SD (20 → 30 → 42.5). RV(mean, SD) separates Dp1/Dp2 on the SD axis alone.
+Set 2 defeats *SMD*, not Komiyama. Hence Set 3.
+
+---
+
+## Table 2c — Set 3, Mixture world (every country: mean 50, SD 10)
+
+Two-component Gaussian mixture `w·N(m₁,s) + (1−w)·N(m₂,s)`, parameterised by the
+mixing weight `w` and the component gap `d = m₁ − m₂`, with `s` solved so that the
+overall mean and variance hit the anchor's:
+`var = s² + w(1−w)d²`, `skew = w(1−w)(1−2w)d³ / var^{1.5}`.
+Setting `w = 0.5` forces skew = 0 → those countries match the anchor's **first three
+moments**. Moments below verified from 10⁶ draws (`selection_sim.log`).
+
+| Country | w | d | mean | SD | skew | true W₁ | RV(mean,SD) sees? | RV(+skew) sees? |
+|---|---|---|---|---|---|---|---|---|
+| A0 | 0.50 | 6 | 50.0 | 10.0 | 0.00 | anchor (≈ unimodal) | — | — |
+| G1–G3 | 0.50 | 6 | 50.0 | 10.0 | 0.00 | 0.000 | — | — |
+| B1 | 0.50 | 15 | 50.0 | 10.0 | 0.00 | 0.686 | **no** | **no** |
+| B2 | 0.50 | 19 | 50.0 | 10.0 | 0.00 | 3.015 | **no** | **no** |
+| S1 | 0.75 | 16 | 50.0 | 10.0 | −0.386 | 0.910 | **no** | yes |
+| S2 | 0.85 | 19 | 50.0 | 10.0 | −0.614 | 1.262 | **no** | yes |
+| C1 | 0.70 | 18 | 50.0 | 10.0 | −0.492 | 1.633 | **no** | yes |
+| C2 | 0.80 | 17 | 50.0 | 10.0 | −0.472 | 1.035 | **no** | yes |
+
+B1/B2 are symmetric bimodal (mean, SD **and** skew all equal to the anchor's);
+S1/S2 place a minority sub-population low (skew differs); C1/C2 do both.
+Because every country shares the anchor's (mean, SD), **RV(mean,SD) assigns identical
+coordinates to all ten countries** — its distance matrix carries no signal at all.
+
+Note the price of the construction: holding (mean, SD) fixed caps how far the shapes
+can move, so the true W₁ values here (0.69–3.02) are smaller than Set 1's (4.8–8.0).
+The theoretical ceiling under matched (mean, SD) is ≈ 5.35 (a two-point limit).
+**Detection is therefore genuinely hard for every method** — the point of Set 3 is the
+*qualitative* split (moment-based ≈ chance, distribution-based above it), not a high
+absolute score.
+
+---
+
+## Table 2d — Part 2 roster (clustering): 12 countries, 3 true groups of 4
+
+| Set | Group A (×4) | Group B (×4) | Group C (×4) | Can RV(mean,SD) separate the groups? |
+|---|---|---|---|---|
+| Set 1 Gaussian | N(50, 10²) | N(58, 10²) | N(50, 20²) | yes (groups differ in mean or SD) |
+| Set 2 Log-normal | mean 50, CV 0.40 | mean 58, CV 0.40 | mean 50, CV 0.85 | yes (SD 20 / 23 / 42) |
+| Set 3 Mixture | w=0.50, d=6 | w=0.50, d=19 | w=0.85, d=19 | **no** — all 12 countries have mean 50, SD 10 |
+
+In Set 3 groups A and B are additionally skew-matched (both 0), so RV(mean, SD, skew)
+cannot separate A from B either.
+
 ---
 
 ## Table 3 — Methods compared
@@ -80,9 +169,20 @@ transform. W₁ and KS resolve all discordance types.
 | **SMD (raw)** | \|mean(x)−mean(y)\| / pooled SD | location (mean) only | scale, shape |
 | **SMD (log)** — Set 2 only | same on log-transformed data | location on log scale | dispersion/shape |
 | **KS** | sup\|F̂_x − F̂_y\| | full distribution (sup-norm) | weaker on tail mass than W₁ |
+| **RV(mean, SD)** — Komiyama §4.6.1.1 | each country → (mean, SD); each coordinate standardized to N(0,1) **across the roster**; Euclidean | whatever the enumerated moments encode — in a 2-parameter family, the whole distribution | any feature not spanned by the listed coordinates |
+| **RV(mean, SD, skew)** | same, with a third coordinate | + skewness | shape features beyond the 3rd moment (e.g. symmetric bimodality) |
 
-Selection = rank the 9 candidates by the method's distance; the `k` nearest are the
-proposed pooling partners.
+Selection (Part 1) = rank the 9 candidates by the method's distance; the `k` nearest
+are the proposed pooling partners. Clustering (Part 2) = cluster the full 12×12
+distance matrix.
+
+**Deliberate asymmetry, stated up front.** RV is roster-standardized, KS is bounded
+in [0,1], W₁ is on the raw EM scale. This is not an oversight: each method is
+implemented as its own source defines it. Standardization is *intrinsic* to the
+Komiyama recipe (it is what makes different EM parameters commensurable), whereas W₁
+is deliberately left on the EM's clinical scale — that is the property Δ_max
+calibrates. Rescaling W₁ to "match" the others would destroy the very quantity the
+paper's theory is about.
 
 ---
 
@@ -93,9 +193,18 @@ proposed pooling partners.
 | **precision@k** | fraction of the k = \|S*\| nearest that are true matches | higher better | recovery of the poolable set |
 | **false-pooling@k** | P(≥1 discordant enters the top-k, displacing a match) | lower better | the safety-relevant error |
 | **AUC per discordance type** | P(a true-match distance < a type-t discordant distance) | 1 = perfect, 0.5 = blind | isolates which discordance each method resolves |
+| **adjusted Rand index** (Part 2) | Hubert–Arabie ARI between the recovered partition and the construction partition | 1 = exact, 0 = chance | recovery of the pooled-region structure |
+| **exact recovery** (Part 2) | P(ARI = 1) | higher better | how often the whole partition is right |
 
 Metrics live on incommensurable scales, so **only within-method rankings are used** —
 no shared or per-metric distance threshold.
+
+**Part 2 fairness constraint (the reviewer's first objection).** The clustering
+ALGORITHM is held fixed across methods — same linkage (average), same number of
+clusters (k = the true number of groups) — and **only the distance matrix is
+swapped**. Any ARI difference is therefore attributable to the distance, not to
+clustering choices. Handing every method the true `k` is *generous to the baselines*:
+it gives them the answer to §4.6.1.3 (how many pooled regions) for free.
 
 **Lead with AUC.** AUC is both threshold-free *and* $k$-free, and scores ties fairly.
 precision@k / false-pooling@k are reported as the intuitive illustration, with the
@@ -125,62 +234,130 @@ adding replications, so effect sizes with MC SE are the honest summary.
 
 ## Non-circularity guards (falsification checks)
 
-1. **Metric-free truth.** The poolable set is a designer-set binary label (same
-   population as anchor: yes/no), *not* "smallest true W₁" — the latter would rig it.
+1. **Metric-free truth.** The poolable set (Part 1) and the true partition (Part 2)
+   are designer-set construction labels (drawn from the anchor's population: yes/no;
+   which population each country came from), *not* "smallest true W₁" — the latter
+   would rig it.
 2. **Balanced types, reported separately.** All discordance types are present; the
    location types are a built-in control (SMD detects location, so all methods should
    score ≈1 there). Cherry-picking only SMD-blind types is prohibited.
-3. **Steelman the competitor (Set 2).** SMD is given its standard-practice
-   log-transform. The claim survives even the fair version of the rival.
+3. **Steelman every competitor.** SMD gets its standard-practice log-transform
+   (Set 2). Komiyama gets (mean, SD) — not a mean-only strawman — **and** a
+   (mean, SD, skew) variant, i.e. the "just add another moment" patch is granted in
+   advance rather than argued against. In Part 2 all methods are handed the true
+   number of clusters.
+4. **Report the cells where W₁ loses.** Sets 1–2 are two-parameter families where
+   RV(mean, SD) is expected to match or beat W₁, and Part 2/Set 2 is expected to
+   favour KS. These cells are pre-declared, not discovered post hoc, and are reported
+   with the same prominence as Set 3. `validate_figures.R` asserts them as CLAIM
+   checks, so silently dropping them breaks the build.
 
 ---
 
-## Production results (10{,}000 reps, random tie-break; `results/selection_sim_summary.csv`)
+## Production results
 
-**Set 1 (Gaussian)** — false-pooling@3 (W₁ / SMD / KS):
+Part 1: 10,000 reps (`results/selection_sim_summary.csv`).
+Part 2: 5,000 reps (`results/clustering_sim_summary.csv`). MC SE ≤ 0.005 throughout.
 
-| n | W₁ | SMD | KS |
-|---|---|---|---|
-| 25 | 0.575 | 0.936 | 0.833 |
-| 50 | 0.286 | 0.907 | 0.617 |
-| 75 | 0.152 | 0.900 | 0.446 |
-| 100 | 0.085 | 0.895 | 0.330 |
+### Part 1 — selection, combined-type AUC at n = 100
 
-Scale-type AUC: SMD ≈ 0.50 at every n (structurally blind); W₁ 0.93 → 1.00; KS 0.72 → 0.93.
+| Set | W₁ | KS | RV(mean,SD) | RV(+skew) | SMD | SMD(log) |
+|---|---|---|---|---|---|---|
+| 1 Gaussian | 0.985 | 0.957 | **0.988** | 0.847 | 0.947 | — |
+| 2 Log-normal | **0.950** | 0.802 | 0.895 | 0.839 | 0.648 | 0.500 |
+| 3 Mixture | **0.699** | 0.676 | 0.494 | 0.638 | 0.504 | — |
 
-**Set 2 (log-normal)** — false-pooling@3 (W₁ / SMD / SMD_log / KS):
+**Set 3, by discordance type (n = 100)** — the decisive cells:
 
-| n | W₁ | SMD | SMD_log | KS |
-|---|---|---|---|---|
-| 25 | 0.841 | 0.976 | 0.971 | 0.939 |
-| 100 | 0.438 | 0.951 | 0.940 | 0.703 |
+| Discordance | matched moments | W₁ | KS | RV(mean,SD) | RV(+skew) | SMD |
+|---|---|---|---|---|---|---|
+| shape_sym (B1,B2) | mean, SD **and skew** | 0.759 | **0.772** | **0.453** | **0.434** | 0.506 |
+| shape_skew (S1,S2) | mean, SD | **0.639** | 0.602 | **0.503** | 0.651 | 0.502 |
+| combined (C1,C2) | mean, SD | **0.699** | 0.676 | **0.494** | 0.638 | 0.504 |
 
-Shape-type AUC (n=100): W₁ 0.981 / SMD **0.507** / SMD_log 0.801 / KS 0.932.
-Combined-type AUC (n=100): SMD_log **0.500** — log-transform trades the raw-dispersion
-blind spot for a new one when a raw-mean increase and a dispersion increase cancel in
-the log-mean (disclosed, not tuned).
+RV(mean,SD) sits at chance (0.45–0.50) in **every** Set-3 cell — its coordinates are
+identical for all ten countries. RV(+skew) rescues the skewed types (0.65) but is
+*still* at chance on the symmetric-bimodal type (0.434): the third moment matches too.
 
-**Reading.** Relative order W₁ > KS > SMD holds at every $n$ in both families.
-Raw SMD recovers ~half the matches and false-pools ~0.90–0.95 **without improving as
-$n$ grows**, because scale/shape discordants share the anchor's mean; log-SMD only
-partially rescues shape and not the combined case. Absolute performance falls at small
-$n$ and in the skewed world (even W₁ false-pools 0.84 at $n=25$ in Set 2), so reliable
-single-EM selection needs adequate $n$ (Gaussian ≥ 75–100; skewed ≥ 150–200).
+### Part 2 — clustering, adjusted Rand index at n = 100
+
+| Set | W₁ | KS | RV(mean,SD) | RV(+skew) | SMD |
+|---|---|---|---|---|---|
+| 1 Gaussian | 0.995 | 0.983 | **0.996** | 0.620 | 0.452 |
+| 2 Log-normal | 0.642 | **0.850** | 0.614 | 0.448 | 0.334 |
+| 3 Mixture | **0.526** | 0.503 | **0.018** | 0.131 | −0.000 |
+
+### Reading
+
+1. **Set 3 is the decisive result.** With (mean, SD) matched across all 12 countries,
+   RV(mean, SD) achieves ARI = **0.018** — it recovers *no* pooled-region structure at
+   all, at any n (max |ARI| = 0.018 over n ∈ {25…100}); SMD is at 0.000. W₁ reaches
+   0.526 and KS 0.503. The split is qualitative: **distribution-based methods work,
+   moment-based methods do not run.**
+2. **Adding a moment is not a free patch.** On Set 1, RV(mean, SD, skew) is *worse*
+   than RV(mean, SD) — AUC 0.847 vs 0.988, ARI 0.620 vs 0.996 — because the third
+   coordinate is pure estimation noise where two moments suffice. And it does not even
+   buy blindness-insurance: on Set 3's symmetric-bimodal type it is still at chance
+   (0.434). "Just add another moment" is a bet on a guess, with a measured cost.
+3. **Where W₁ does not win — reported, not buried.** On Gaussian data RV(mean, SD)
+   edges W₁ out (AUC 0.988 vs 0.985; ARI 0.996 vs 0.995; false-pooling 0.071 vs 0.085)
+   — as it must, since a Gaussian *is* its first two moments. In Part 2 / Set 2, KS
+   clusters markedly better than W₁ (ARI 0.850 vs 0.642): the high-CV group C has
+   SD ≈ 42, so its within-group W₁ distances are large and average linkage lets the
+   cluster spread, whereas KS is bounded in [0,1]. Same property, two faces (see
+   Reporting plan).
+4. **SMD's blind spots survive the refactor.** Scale AUC 0.499 (Set 1), shape AUC
+   0.507 (Set 2), and log-SMD's combined AUC 0.500 (Set 2) — the log-transform trades
+   the raw-dispersion blind spot for a new one when a raw-mean increase and a
+   dispersion increase cancel in the log-mean.
+5. **Absolute difficulty.** Set 3 is hard for *everyone*: even W₁ false-pools 0.921 at
+   n = 100 (matched-moment shape differences produce true W₁ of only 0.69–3.02, versus
+   4.8–8.0 in Set 1). The Set-3 claim is about the qualitative gap, not about W₁ making
+   moment-matched selection easy.
 
 ---
 
 ## Reporting plan
 
-- Replace/augment the detection table (`tab:smd`, metric *values*) with a
-  **decision-consequence** table (false-pooling / AUC by type at each n), for both families.
-- Figures (`figures/fig_selection_*`, paper standard: `theme_bw` base 11, greyscale
-  + colour slide variant, identity encoded by colour + linetype + shape):
-  (i) `fig_selection_false_pooling` — false-pooling@k vs n, one panel per family;
-  (ii) `fig_selection_auc_by_type` — AUC vs n by method, faceted family × discordance
-  type, with a 0.5 chance/blind reference line (SMD sits on it for scale/shape;
-  log-SMD sits on it for the combined case).
-- State scope (Q_metric) and the W₁≈KS caveat explicitly. W₁-over-KS, if seen, rests on
-  theory (Δ_max = L·W₁ calibration, EM-unit interpretability), not on this roster.
+**The argument this simulation licenses — and its limits.**
 
-*Code:* `R/selection_simulation.R` (driver), `R/figures_selection.R` (figures);
-validated by `R/validate_selection.R` and `R/validate_figures.R`.
+1. Where the EM distribution belongs to a two-parameter family (Sets 1–2), a
+   representative-value method with the right coordinates is **as good as W₁, and on
+   Gaussian scale-discordance slightly better**. Say so plainly.
+2. No method tells you *which* moments to enumerate. Set 3 prices that ignorance:
+   with (mean, SD) matched, RV forms **no clusters at all** (ARI ≈ 0); with skewness
+   matched too, RV(mean, SD, skew) is blind as well.
+3. **Adding a moment is not free.** On Set 1, RV(mean, SD, skew) is *worse* than
+   RV(mean, SD) — the irrelevant third coordinate injects estimation noise. So "just
+   add another moment" is not a costless patch; it is a bet on a guess.
+4. Therefore the honest split is **distribution-based (W₁, KS) vs moment-based (SMD,
+   RV)**, not "W₁ beats everything." W₁-over-KS does **not** follow from this
+   simulation — in Part 2/Set 2 KS clusters *better* than W₁ — and rests instead on
+   Δ_max (clinical calibration in EM units), which this simulation does not test.
+
+**On W₁'s scale-sensitivity (one property, two faces — state it once).** W₁ lives on
+the EM's raw scale. That is *why* it detects scale/dispersion discordance where
+moment-methods fail (Set 1), and *why* an intrinsically high-spread group (Set 2
+group C, SD ≈ 42) has large within-group distances and clusters loosely under average
+linkage. Normalising W₁ would not fix Part 2 anyway: `hclust` + `cutree` are invariant
+to a global rescale of the distance matrix, so a global normalisation leaves ARI
+bit-identical; a per-country normalisation would erase the very scale information that
+beats SMD/RV in Set 1.
+
+**Figures** (`figures/`, paper standard: `theme_bw` base 11, width 7", white bg,
+greyscale + `_color` slide variant; identity encoded by colour + linetype + shape):
+- `fig_selection_auc_by_type` — Part 1. AUC vs n, faceted family × discordance type
+  (3 × 3), 0.5 chance/blind reference line.
+- `fig_selection_false_pooling` — Part 1. false-pooling@k vs n, one panel per family.
+- `fig_clustering_ari` — Part 2. Adjusted Rand index vs n, one panel per family,
+  0 = chance reference. **This is the decisive figure**: in Set 3 the RV and SMD
+  series sit on the zero line.
+
+**Tables.** Replace/augment the detection table (`tab:smd`, metric *values*) with a
+decision-consequence table (false-pooling / AUC by type at each n) across the three
+families, plus an ARI table for Part 2.
+
+*Code:* `R/selection_simulation.R` (Part 1), `R/clustering_simulation.R` (Part 2),
+`R/figures_selection.R` (all figures); validated by `R/validate_selection.R` and
+`R/validate_figures.R` (the latter asserts both figure fidelity **and** the
+qualitative claims above, including the ones where W₁ loses).
