@@ -49,13 +49,40 @@ Hence, for a single continuous EM:
 
 **Framework:** ADEMP (Morris, White & Crowther 2019, *Stat Med* 38:2074–2102,
 DOI: 10.1002/sim.8086). Scope = **Q_metric** (recovery of true EM-distributional
-similarity from finite samples). No outcome/CATE model is used, and no θ (treatment
-effect as a function of the EM) is posited. Consequently this simulation shows that
-W₁ is **never blind**; it does **not** show that W₁ is **right**. Demonstrating the
-latter needs a Part 3 (posit an explicit Lipschitz θ, take truth = |E_A θ − E_B θ|,
-measure each metric's agreement with it and W₁'s bound coverage) — and that Part 3
-must include a **saturating** θ, which W₁ will lose, or Kantorovich–Rubinstein duality
-makes the result circular. Part 3 is a scope decision, not yet taken.
+similarity from finite samples). No outcome/CATE model is used, and **no θ (treatment
+effect as a function of the EM) is posited** — deliberately.
+
+### Why no θ, and why there is no "Part 3" (Tak, 2026-07-12 — a scope decision, not an omission)
+
+It is tempting to add an effect-tracking study: posit an explicit Lipschitz θ, compute
+the true regional effect difference |E_A θ − E_B θ|, and check that W₁ tracks it. **We
+do not, for three reasons, and the first is decisive.**
+
+1. **It would be verifying a premise, not a claim.** An effect modifier *is*, by
+   definition, a characteristic for which the treatment benefit differs across its
+   levels. "Regions with different EM distributions have different average treatment
+   effects" therefore **follows from the object being an EM at all** — it is the
+   setting of the problem, not a proposition this paper argues for. A simulation that
+   confirms it confirms a definition. (Whether the EM–effect relationship is *known* or
+   *unknown* varies by programme; what does not vary is that, given an EM, a
+   distributional difference implies an effect difference.)
+2. **It would destroy the generality of the result.** The Kantorovich–Rubinstein bound
+   holds for **every** 1-Lipschitz θ — the paper never has to name the dose–response
+   shape. Simulate one, and the conclusion becomes conditional on that shape, inviting
+   exactly the question we can currently answer with "any Lipschitz θ".
+3. **Circularity.** By KR duality, W₁ = sup over 1-Lipschitz θ of |E_A θ − E_B θ|. A θ
+   chosen freely makes W₁ optimal *by definition*, so "W₁ tracks the effect difference
+   best" would be a restatement of the theorem, not evidence for it. Escaping that
+   requires pre-specifying several θ shapes including a saturating one — at which point
+   the study is testing the shape of θ, which is a different paper.
+
+**What this scope buys, and what it costs.** The simulation shows that W₁ is **never
+blind** where the competitors are — an identification claim about the metric. It does
+not, and does not need to, re-derive that EM differences move treatment effects. The one
+honest consequence to disclose (see Reporting plan): where θ **saturates**, the
+KR bound remains **valid but loose**, so W₁ over-flags. That is a *conservative* error —
+it errs toward not pooling — and in a regulatory setting a conservative bound is the
+intended behaviour, not a defect.
 
 **Design principle (Tak, realism):** All countries within a scenario set share the
 **same distributional family** — a single endpoint cannot be Gaussian in nine
@@ -350,7 +377,8 @@ truth; the code must match it, not the other way round.
 | True distributional references | analytic (numerical integration of \|F_A − F_B\|; grid sup for KS). Set 4 additionally has **closed forms** for W₁ and KS, verified against the integration to 4 dp. |
 | Standardization asymmetry (deliberate) | RV is roster-standardized (intrinsic to Ch.4's recipe — it is what makes different EMs commensurable); KS is bounded in [0,1] by construction; W₁ is left on the EM's raw clinical scale (the quantity Δ_max calibrates). Rescaling W₁ to "match" would destroy what the theory is about. |
 | Fixed | anchor distribution; roster composition; the σ constants within each world |
-| Full-study extensions (not done) | multiple anchors; vary \|S\*\|; "near-match" countries for graded discrimination; **Part 3 effect-tracking** (posit an explicit Lipschitz θ, truth = \|E_A θ − E_B θ\|, measure each metric's agreement and W₁'s bound coverage — must include a saturating θ, which W₁ loses, or KR duality makes it circular) |
+| Full-study extensions (not done) | multiple anchors; vary \|S\*\|; "near-match" countries for graded discrimination |
+| **Deliberately out of scope** | An effect-tracking study positing an explicit θ. Not an omission — see "Why no θ" above: it would verify a *premise* (an EM's distribution differing implies its treatment effect differing — true by the definition of an effect modifier), it would make the result conditional on one dose–response shape when the KR bound holds for **all** Lipschitz θ, and by KR duality a freely-chosen θ makes W₁ optimal by construction. |
 
 ---
 
@@ -558,15 +586,20 @@ in Set 4.
 
 **Two limitations that must be in the paper, not left for a reviewer to find.**
 
-- **Saturating treatment effect — the one case where W₁ is wrong and KS is right.** If
-  θ(x) plateaus beyond a threshold (the extreme patients already have maximal, or zero,
-  effect), then moving the tail from ±70 to ±100 changes the true |Δθ| by nothing, while
-  W₁ doubles. W₁ over-flags; KS's flatness is accidentally correct. The KR bound stays
-  **valid** (it is an upper bound) but becomes **loose**. The honest framing is the
-  **error asymmetry**: W₁'s error runs toward *lost pooling* (an efficiency loss);
-  KS's runs toward *false pooling* (a validity loss — regions whose extreme patients
-  genuinely respond differently get pooled). Regulators do not weight these equally.
-  Note KS's false-pooling@k in Set 4 is **0.975** against W₁'s **0.726**.
+- **Saturating treatment effect — where the bound goes loose, and why that is the
+  intended behaviour.** If θ(x) plateaus beyond a threshold (the extreme patients
+  already have maximal, or zero, effect), then moving the tail from ±70 to ±100 changes
+  the true |Δθ| by nothing, while W₁ doubles. The KR bound remains **valid** — it is an
+  upper bound, and an upper bound cannot be violated by a flatter θ — but it becomes
+  **loose**, so W₁ over-flags.
+  **This is a conservative error, and conservatism is what an upper bound is for.**
+  Δ_max is a worst-case statement: *whatever* the (Lipschitz) dose–response turns out to
+  be, the regional effect difference cannot exceed L·W₁. A sponsor who declines to pool
+  on that basis loses efficiency; a sponsor who pools because a metric was insensitive
+  loses validity. The **error asymmetry** is the honest framing — W₁ errs toward *not
+  pooling*, KS errs toward *false pooling* (Set 4 false-pooling@k: KS **0.971** vs W₁
+  **0.718**) — and regulators do not weight these equally. Report the looseness; do not
+  apologise for it.
 - **W₁ is not robust to outliers — the flip side of the sensitivity we are selling.**
   One mis-keyed lab value at 10× moves W₁ by (1/n)·distance, unboundedly; KS moves by at
   most 1/n regardless. This is the single most credible attack from a regulatory
