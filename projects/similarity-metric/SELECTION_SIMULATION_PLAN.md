@@ -49,15 +49,18 @@ Hence, for a single continuous EM:
 
 **Framework:** ADEMP (Morris, White & Crowther 2019, *Stat Med* 38:2074–2102,
 DOI: 10.1002/sim.8086). Scope = **Q_metric** (recovery of true EM-distributional
-similarity from finite samples). No outcome/CATE model is used; the link from
-distributional closeness to treatment-effect difference is carried by the
-Kantorovich–Rubinstein bound in the paper's theory section, **not** by this
-simulation. Δ_max — the property that separates W₁ from KS — is therefore **not
-tested here**, and no claim of W₁-over-KS may rest on this simulation.
+similarity from finite samples). No outcome/CATE model is used, and no θ (treatment
+effect as a function of the EM) is posited. Consequently this simulation shows that
+W₁ is **never blind**; it does **not** show that W₁ is **right**. Demonstrating the
+latter needs a Part 3 (posit an explicit Lipschitz θ, take truth = |E_A θ − E_B θ|,
+measure each metric's agreement with it and W₁'s bound coverage) — and that Part 3
+must include a **saturating** θ, which W₁ will lose, or Kantorovich–Rubinstein duality
+makes the result circular. Part 3 is a scope decision, not yet taken.
 
 **Design principle (Tak, realism):** All countries within a scenario set share the
 **same distributional family** — a single endpoint cannot be Gaussian in nine
-regions and log-normal in one. Three scenario sets:
+regions and log-normal in one. Four scenario sets, each aimed at a specific
+competitor:
 
 - **Set 1 — Gaussian world:** every country Normal; discordance in location / scale.
 - **Set 2 — Skewed world:** every country log-normal (a realistic skewed biomarker,
@@ -65,7 +68,21 @@ regions and log-normal in one. Three scenario sets:
 - **Set 3 — Mixture world (moment-matched):** every country a two-component Gaussian
   mixture (e.g. a genotype sub-population — fast/slow metabolisers — whose mixing
   proportion differs by region). Every candidate matches the anchor **exactly on
-  mean (50) and SD (10)**; only the shape differs.
+  mean (50) and SD (10)**; only the shape differs. **Target: the moment-based methods
+  (SMD, RV).**
+- **Set 4 — Extremes world (rare displaced mass):** every country a bulk population
+  plus a rare severely-low and a rare severely-high subgroup. Regions differ in **how
+  severe** and **how many** their extreme patients are. **Target: KS.**
+
+**The layered argument, and why it is forced rather than lazy.** Set 3 blinds the
+moment methods but leaves W₁ and KS side by side — and KS is older and simpler, so a
+reviewer will ask "then why not just use KS?" Set 4 answers that. **No single scenario
+blinds both**, and this is not for want of trying: a cell that blinds KS *and* the SD
+simultaneously is **impossible in this family**, because variance responds to
+displacement quadratically while W₁ responds linearly, so matching the SD forces the
+bulk to collapse — which is itself a large, narrow CDF gap, and KS reappears (0.213).
+Hence: **Set 3 kills the moment methods, Set 4 kills KS, and W₁ is the only metric that
+survives both.**
 
 **Why Set 3 is not optional.** Sets 1 and 2 are both **two-parameter families**:
 (mean, SD) determines the whole distribution, so a fair RV2 method (our extension, not Ch.4) can
@@ -170,16 +187,81 @@ absolute score.
 
 ---
 
+## Table 2c-bis — Set 4, Extremes world (the W₁-vs-KS test)
+
+Family (one functional form for every country):
+
+$$X \sim (1-\varepsilon_L-\varepsilon_H)\,N(\mu_0,\sigma_0^2) \;+\; \varepsilon_L\,N(\mu_0-\Delta_L,\sigma_t^2) \;+\; \varepsilon_H\,N(\mu_0+\Delta_H,\sigma_t^2)$$
+
+with $\sigma_0 = 10$ (bulk) and $\sigma_t = 8$ (extreme subgroups) fixed across the
+world. Anchor: $\mu_0 = 50$, $\varepsilon_L = \varepsilon_H = 0.05$,
+$\Delta_L = \Delta_H = 40$.
+
+**The mechanism, in closed form.** When only the extreme *locations* move, the bulk
+term cancels exactly and the two lobes of $F_A - F_B$ have disjoint support, so:
+
+$$W_1 = \varepsilon_L\delta_L + \varepsilon_H\delta_H \qquad\text{(linear, unbounded)}$$
+$$\mathrm{KS} = \max_{j\in\{L,H\}}\ \varepsilon_j\Big(2\Phi\big(\tfrac{\delta_j}{2\sigma_t}\big)-1\Big) \qquad\text{(saturates at } \varepsilon\text{)}$$
+
+The sup is a **max, not a sum** — KS cannot even accumulate across the two extremes.
+$2\Phi(\delta/2\sigma_t)-1 \to 1$ geometrically, so once $\delta \gtrsim 5\sigma_t$, KS
+is within 1 % of $\varepsilon$ and **stops responding entirely** while W₁ keeps growing.
+Doubling the displacement (±30 → ±60) **doubles W₁ and moves KS by 6 %**. Both formulas
+verified against numerical integration to 4 dp.
+
+| Country | role | $\varepsilon_L,\Delta_L$ | $\varepsilon_H,\Delta_H$ | $\mu_0$ | mean | SD | \|Δmean\| | **true W₁** | **true KS** |
+|---|---|---|---|---|---|---|---|---|---|
+| A0 | anchor | .05, 40 | .05, 40 | 50 | 50.0 | 16.0 | — | — | — |
+| G1–G3 | **match** | .05, 40 | .05, 40 | 50 | 50.0 | 16.0 | 0.00 | 0.000 | 0.000 |
+| T1 | sym_severity | .05, 70 | .05, 70 | 50 | 50.0 | 24.2 | **0.00** | **3.000** | **0.047** |
+| T2 | sym_severity | .05, 100 | .05, 100 | 50 | 50.0 | 33.1 | **0.00** | **6.000** | **0.050** |
+| P1 | sym_prevalence | .12, 40 | .12, 40 | 50 | 50.0 | 21.8 | **0.00** | 4.483 | 0.067 |
+| P2 | asym_severity | .05, 40 | .05, 100 | 50 | 53.0 | 25.8 | 3.00 | 3.000 | 0.050 |
+| S1 | bulk_shift *(control)* | .05, 40 | .05, 40 | 52 | 52.0 | 16.0 | 2.00 | 2.000 | **0.072** |
+| S2 | bulk_shift *(control)* | .05, 40 | .05, 40 | 53 | 53.0 | 16.0 | 3.00 | 3.000 | **0.107** |
+
+**Read the |Δmean| column.** T1, T2 and P1 have Δmean = **0 exactly**, yet W₁ > 0 — the
+CDFs *cross* (one lobe positive, one negative), so SMD and RV1 have **no coordinate at
+all**. This is why a two-sided design is used rather than the obvious one-sided tail:
+with a one-sided tail, W₁ turns out to equal |Δmean| identically and a reviewer answers
+"then just use the mean."
+
+**The rank inversion (population-level, exact).** KS(S1) = **0.072** > KS(T2) =
+**0.050**. KS therefore calls *shifting every patient by 2 units* **more discordant**
+than *pushing 10 % of patients 60 units further into both extremes*. W₁ says T2 is
+**3× worse** (6.00 vs 2.00) — and by the Kantorovich–Rubinstein bound it *is* 3× worse.
+
+**The theorem behind it (n-free; no simulation, no adversarial θ).**
+KS admits no KR-type bound: there is no finite $C$ with $|\Delta\theta| \le C\cdot\mathrm{KS}$
+for all 1-Lipschitz θ. *Proof:* take $\theta(x) = x$ — a linear exposure–response, the
+most natural clinical form there is. Under tail displacement $|\Delta\theta| = \varepsilon\delta$
+while $\mathrm{KS} \le \varepsilon$, so $|\Delta\theta|/\mathrm{KS} \ge \delta \to \infty$. ∎
+(Choosing θ adversarially would make W₁ win *by definition* via KR duality; this proof
+does not, which is the point.)
+
+**Clinical reading.** eGFR for a renally-cleared drug: a bulk of adequately-functioning
+patients plus a rare severely-impaired minority (and, at the other end, augmented renal
+clearance). Regions differ in how severe their impaired minority is (5 % at eGFR 40 vs
+5 % at eGFR 10) and how many are impaired. Exposure ∝ 1/eGFR, so the exposure–response
+slope $L$ is steep **exactly where the rare mass sits** — these are the patients who
+accumulate drug and whose benefit–risk inverts. W₁ is measured in mL/min/1.73m², the
+units in which Δ_max is elicited; **KS returns 0.05 and cannot be converted into
+anything.**
+
+---
+
 ## Table 2d — Part 2 roster (clustering): 12 countries, 3 true groups of 4
 
-| Set | Group A (×4) | Group B (×4) | Group C (×4) | Can RV2 separate the groups? |
+| Set | Group A (×4) | Group B (×4) | Group C (×4) | Who cannot separate the groups? |
 |---|---|---|---|---|
-| Set 1 Gaussian | N(50, 10²) | N(58, 10²) | N(50, 20²) | yes (groups differ in mean or SD) |
-| Set 2 Log-normal | mean 50, CV 0.40 | mean 58, CV 0.40 | mean 50, CV 0.85 | yes (SD 20 / 23 / 42) |
-| Set 3 Mixture | w=0.50, d=6 | w=0.50, d=19 | w=0.85, d=19 | **no** — all 12 countries have mean 50, SD 10 |
+| Set 1 Gaussian | N(50, 10²) | N(58, 10²) | N(50, 20²) | RV1 / SMD (group C shares A's mean) |
+| Set 2 Log-normal | mean 50, CV 0.40 | mean 58, CV 0.40 | mean 50, CV 0.85 | RV1 / SMD (same reason) |
+| Set 3 Mixture | w=0.50, d=6 | w=0.50, d=19 | w=0.85, d=19 | **all RV variants + SMD** — every country has mean 50, SD 10 (A vs B are skew-matched too, so RV3 fails as well) |
+| Set 4 Extremes | ±40 extremes | ±70 extremes | ±100 extremes | **KS** — its population distances are nearly constant off-diagonal (0.047 / 0.050 / 0.047), carrying no cluster structure |
 
-In Set 3 groups A and B are additionally skew-matched (both 0), so RV3
-cannot separate A from B either.
+Set 4's W₁ distances form a clean ladder (A–B 3.0, A–C 6.0, B–C 3.0) while KS's matrix
+is degenerate — the exact **mirror** of Set 3, where it is the representative-value
+coordinates that are identical across all 12 countries.
 
 ---
 
@@ -270,10 +352,23 @@ adding replications, so effect sizes with MC SE are the honest summary.
    advance rather than argued against. In Part 2 all methods are handed the true
    number of clusters.
 4. **Report the cells where W₁ loses.** Sets 1–2 are two-parameter families where
-   RV2 is expected to match or beat W₁, and Part 2/Set 2 is expected to
-   favour KS. These cells are pre-declared, not discovered post hoc, and are reported
-   with the same prominence as Set 3. `validate_figures.R` asserts them as CLAIM
-   checks, so silently dropping them breaks the build.
+   RV2 is expected to match or beat W₁; Part 2/Set 2 is expected to favour KS; Set 4's
+   `bulk_shift` control is expected to favour KS (a tall, narrow CDF gap is the
+   sup-norm's home turf); and Set 4's `asym_severity` cell is expected to favour RV3
+   (variance scales as Δ², skewness as Δ³). These cells are pre-declared, not
+   discovered post hoc, and are reported with the same prominence as the wins.
+   `validate_figures.R` asserts them as CLAIM checks, so silently dropping them breaks
+   the build.
+5. **Set 4 handicaps W₁ on purpose.** The anchor's *own* 5 % contamination inflates
+   W₁'s null through binomial tail-count mismatch — the null W₁ rises from 1.74 ± 0.62
+   (uncontaminated) to **3.00 ± 1.03**, while KS's null barely moves (0.1182 → 0.1190).
+   W₁ is therefore made to work against a ~70 % noisier baseline than it would
+   otherwise face, and still wins. This is evidence *against* cherry-picking.
+6. **Every set contains a control where the targeted competitor works.** Set 1/2's
+   location types (SMD sees them), Set 3's `shape_skew` (RV3 sees it), Set 4's
+   `bulk_shift` (KS sees it) and `asym_severity` (SMD and RV3 see it). Cherry-picking
+   only the cells that blind the competitor is prohibited — a competitor that is at
+   chance *everywhere* would indicate a rigged family, not a real blind spot.
 
 ---
 
@@ -282,7 +377,23 @@ adding replications, so effect sizes with MC SE are the honest summary.
 Part 1: 10,000 reps (`results/selection_sim_summary.csv`).
 Part 2: 5,000 reps (`results/clustering_sim_summary.csv`). MC SE ≤ 0.005 throughout.
 
-### Part 1 — selection, combined-type AUC at n = 100
+### Part 2 — clustering, adjusted Rand index at n = 100 (the headline table)
+
+| Set | Target | W₁ | KS | **RV1 (Ch.4)** | RV2 | RV3 | SMD |
+|---|---|---|---|---|---|---|---|
+| 1 Gaussian | — | 0.995 | 0.983 | **0.489** | **0.996** | 0.620 | 0.452 |
+| 2 Log-normal | — | 0.642 | **0.850** | **0.343** | 0.614 | 0.448 | 0.334 |
+| 3 Mixture | moment methods | **0.526** | 0.503 | **−0.000** | **0.018** | **0.131** | **−0.000** |
+| 4 Extremes | KS | **0.355** | **0.003** | **0.026** | 0.271 | 0.189 | **0.018** |
+
+**Survivors of both Set 3 and Set 4 (ARI > 0.20 in each): W₁, and only W₁.**
+KS clears Set 3 (0.503) but collapses in Set 4 (0.003). RV2 clears Set 4 (0.271) but
+collapses in Set 3 (0.018). This is asserted directly in `validate_figures.R`, not left
+to the reader's eye.
+
+### Part 1 — selection, AUC at n = 100
+
+Sets 1–3, combined-discordance type:
 
 | Set | W₁ | KS | **RV1 (Ch.4)** | RV2 | RV3 | SMD | SMD(log) |
 |---|---|---|---|---|---|---|---|
@@ -290,13 +401,21 @@ Part 2: 5,000 reps (`results/clustering_sim_summary.csv`). MC SE ≤ 0.005 throu
 | 2 Log-normal | **0.950** | 0.802 | **0.657** | 0.895 | 0.839 | 0.648 | 0.500 |
 | 3 Mixture | **0.699** | 0.676 | **0.503** | 0.494 | 0.638 | 0.504 | — |
 
-### Part 2 — clustering, adjusted Rand index at n = 100
+Set 4, by discordance type — note that **KS is at chance on both displaced-extreme
+types** and **beats W₁ on the bulk-shift control**:
 
-| Set | W₁ | KS | **RV1 (Ch.4)** | RV2 | RV3 | SMD |
+| Discordance | W₁ | KS | RV1 | RV2 | RV3 | SMD |
 |---|---|---|---|---|---|---|
-| 1 Gaussian | 0.995 | 0.983 | **0.489** | **0.996** | 0.620 | 0.452 |
-| 2 Log-normal | 0.642 | **0.850** | **0.343** | 0.614 | 0.448 | 0.334 |
-| 3 Mixture | **0.526** | 0.503 | **−0.000** | 0.018 | 0.131 | −0.000 |
+| sym_severity (extremes further out) | **0.972** | **0.511** | 0.620 | 0.921 | 0.912 | **0.502** |
+| sym_prevalence (more patients extreme) | **0.903** | 0.680 | 0.566 | 0.774 | 0.716 | **0.503** |
+| asym_severity (one extreme further out) | 0.947 | **0.504** | 0.719 | 0.885 | **0.985** | 0.641 |
+| bulk_shift *(control — everyone shifts)* | 0.707 | **0.734** | 0.677 | 0.676 | 0.667 | 0.677 |
+
+KS on `sym_severity` runs **0.500 → 0.511** from n = 25 to 100 — **flat**, the same
+"gains no information" signature as RV1's fake scale detection — while W₁ runs
+**0.837 → 0.972**. And `bulk_shift` is exactly the cell where KS *should* win (a tall,
+narrow CDF gap is the sup-norm's home turf): it does, and it is reported.
+false-pooling@k at n = 100: **W₁ 0.718 vs KS 0.971, SMD 0.972, RV1 0.953.**
 
 **RV1 — the chapter's recipe as written — tracks SMD almost exactly** (ARI 0.489/0.343/
 −0.000 vs SMD 0.452/0.334/−0.000). For a single continuous EM, one representative value
@@ -317,6 +436,15 @@ all ten countries. RV3 rescues the skewed types (0.65) but is *still* at chance 
 symmetric-bimodal type (0.434): the third moment matches too.
 
 ### Reading
+
+0. **The headline: Set 3 kills the moment methods, Set 4 kills KS, and W₁ is the only
+   metric that survives both.** In Set 3 the representative-value coordinates are
+   identical across all 12 countries, so RV recovers no structure (ARI −0.000 / 0.018 /
+   0.131) — but KS works (0.503). In Set 4 the KS distances are nearly constant
+   off-diagonal, so KS recovers no structure (ARI **0.003**) — but RV2 works (0.271).
+   Only W₁ is above 0.20 in both (0.526 and 0.355). The two blind spots are
+   **complementary**, and a scenario blinding both is provably unavailable in these
+   families — so the layered argument is forced, not lazy.
 
 1. **Ch.4 as written (RV1) has SMD's blind spot.** For one continuous EM its distance
    is a function of the location summary alone. Clustering ARI 0.489 (Set 1) vs W₁ 0.995.
@@ -368,34 +496,76 @@ symmetric-bimodal type (0.434): the third moment matches too.
 3. **Adding a moment is not free.** On Set 1, RV3 is *worse* than
    RV2 — the irrelevant third coordinate injects estimation noise. So "just
    add another moment" is not a costless patch; it is a bet on a guess.
-4. Therefore the honest split is **distribution-based (W₁, KS) vs moment-based (SMD,
-   RV)**, not "W₁ beats everything." W₁-over-KS does **not** follow from this
-   simulation — in Part 2/Set 2 KS clusters *better* than W₁ — and rests instead on
-   Δ_max (clinical calibration in EM units), which this simulation does not test.
+4. **KS is not a substitute.** Set 4 shows KS at chance where a rare mass is displaced
+   far — and the failure is *structural*, not a power problem: KS is capped at the
+   contamination fraction ε however far the mass moves, so it assigns the *same*
+   distance to a tail displaced 30 units and one displaced 60, **at every n, including
+   n = ∞**. It is an identification failure, and it comes with a rank inversion (KS
+   rates a 2-unit shift of everyone as worse than pushing 10 % of patients 60 units
+   into the extremes). The theorem is the clean statement: **KS admits no
+   Kantorovich–Rubinstein-type bound.**
+5. **Therefore: Set 3 kills the moment methods; Set 4 kills KS; W₁ is the only metric
+   that survives both.** This is the headline claim, and `validate_figures.R` asserts
+   it directly (only W₁ has ARI > 0.20 in *both* Set 3 and Set 4).
 
-**On W₁'s scale-sensitivity (one property, two faces — state it once).** W₁ lives on
+**On W₁'s scale-sensitivity (one property, three faces — state it once).** W₁ lives on
 the EM's raw scale. That is *why* it detects scale/dispersion discordance where
-moment-methods fail (Set 1), and *why* an intrinsically high-spread group (Set 2
-group C, SD ≈ 42) has large within-group distances and clusters loosely under average
-linkage. Normalising W₁ would not fix Part 2 anyway: `hclust` + `cutree` are invariant
-to a global rescale of the distance matrix, so a global normalisation leaves ARI
-bit-identical; a per-country normalisation would erase the very scale information that
-beats SMD/RV in Set 1.
+moment-methods fail (Set 1), *why* it sees rare mass displaced far while KS saturates
+(Set 4), and *why* an intrinsically high-spread group (Set 2 group C, SD ≈ 42) has large
+within-group distances and clusters loosely under average linkage. Normalising W₁ would
+not fix Part 2 anyway: `hclust` + `cutree` are invariant to a global rescale of the
+distance matrix, so a global normalisation leaves ARI bit-identical; a per-country
+normalisation would erase the very scale information that beats SMD/RV in Set 1 and KS
+in Set 4.
+
+**Two limitations that must be in the paper, not left for a reviewer to find.**
+
+- **Saturating treatment effect — the one case where W₁ is wrong and KS is right.** If
+  θ(x) plateaus beyond a threshold (the extreme patients already have maximal, or zero,
+  effect), then moving the tail from ±70 to ±100 changes the true |Δθ| by nothing, while
+  W₁ doubles. W₁ over-flags; KS's flatness is accidentally correct. The KR bound stays
+  **valid** (it is an upper bound) but becomes **loose**. The honest framing is the
+  **error asymmetry**: W₁'s error runs toward *lost pooling* (an efficiency loss);
+  KS's runs toward *false pooling* (a validity loss — regions whose extreme patients
+  genuinely respond differently get pooled). Regulators do not weight these equally.
+  Note KS's false-pooling@k in Set 4 is **0.975** against W₁'s **0.726**.
+- **W₁ is not robust to outliers — the flip side of the sensitivity we are selling.**
+  One mis-keyed lab value at 10× moves W₁ by (1/n)·distance, unboundedly; KS moves by at
+  most 1/n regardless. This is the single most credible attack from a regulatory
+  statistician, and Set 4 makes it *more* salient, not less. Pre-specify a mitigation:
+  clinical truncation of the EM to a physiologically plausible range, or a
+  trimmed/winsorized W₁.
+
+**A design heuristic worth reporting.** Define ρ = W₁/(KS · σ_EM) — the effective width
+of the CDF gap in SD units — and compare it with a pure location shift in the same family
+(ρ_trans = 1/(σ·f_max); 2.51 for a Gaussian). Across all cells, **ρ/ρ_trans ≲ 1 ⟹ KS ties
+or wins; ≳ 1.7 ⟹ W₁ wins**. This single quantity retrodicts every cell in the study,
+including why KS edges W₁ on Set 3's symmetric-bimodal type (ratio 0.76 — a *tall, narrow*
+gap is L∞'s home turf). W₁ out-powers KS **iff the CDF gap spans many SDs of the EM** —
+which is why displacement into the tails, and nothing else, buys the advantage. (A
+second candidate mechanism — many small CDF gaps spread across the bulk — was tested and
+**rejected**: it works in the population but collapses at n = 100, exactly as the ρ
+heuristic predicts.)
 
 **Figures** (`figures/`, paper standard: `theme_bw` base 11, width 7", white bg,
 greyscale + `_color` slide variant; identity encoded by colour + linetype + shape):
-- `fig_selection_auc_by_type` — Part 1. AUC vs n, faceted family × discordance type
-  (3 × 3), 0.5 chance/blind reference line.
+- `fig_selection_auc_by_type` — Part 1, Sets 1–3. AUC vs n, faceted family ×
+  discordance type (3 × 3), 0.5 chance/blind reference line.
+- `fig_selection_auc_set4` — Part 1, Set 4. Its own figure: it asks a different
+  question (W₁ vs KS, not which-moment) and has four discordance types. KS sits on the
+  0.5 line for the displaced-extreme types and **beats W₁ on the bulk-shift control**.
 - `fig_selection_false_pooling` — Part 1. false-pooling@k vs n, one panel per family.
-- `fig_clustering_ari` — Part 2. Adjusted Rand index vs n, one panel per family,
-  0 = chance reference. **This is the decisive figure**: in Set 3 the RV and SMD
-  series sit on the zero line.
+- `fig_clustering_ari` — Part 2. Adjusted Rand index vs n, one panel per family (2 × 2),
+  0 = chance reference. **This is the decisive figure**: in Set 3 the RV and SMD series
+  sit on the zero line; in Set 4 the KS series sits on the zero line; **the W₁ series is
+  the only one above zero in every panel.**
 
 **Tables.** Replace/augment the detection table (`tab:smd`, metric *values*) with a
-decision-consequence table (false-pooling / AUC by type at each n) across the three
+decision-consequence table (false-pooling / AUC by type at each n) across the four
 families, plus an ARI table for Part 2.
 
 *Code:* `R/selection_simulation.R` (Part 1), `R/clustering_simulation.R` (Part 2),
 `R/figures_selection.R` (all figures); validated by `R/validate_selection.R` and
-`R/validate_figures.R` (the latter asserts both figure fidelity **and** the
-qualitative claims above, including the ones where W₁ loses).
+`R/validate_figures.R` (the latter asserts figure fidelity, the qualitative claims
+above, the headline "only W₁ survives both Set 3 and Set 4", **and** every cell where
+W₁ loses).

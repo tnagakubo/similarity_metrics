@@ -182,6 +182,69 @@ build_set3 <- function() {   # Mixture world: every country has mean 50, SD 10
   )
 }
 
+# ---- Set 4: extremes world (the decisive test of W1 vs KS) ------------------
+# WHY THIS SET EXISTS. Set 3 blinds the moment-based methods (SMD, RV) but leaves
+# W1 and KS side by side -- and KS is older and simpler, so a reviewer will ask
+# "then why not just use KS?". Set 4 answers that, and the mechanism is exact:
+#
+#   KS = sup_t |F_A - F_B|  is an L-infinity norm on the CDF gap. A contaminated
+#        fraction eps CAPS it at eps, no matter how far that mass is displaced.
+#   W1  = integral |F_A - F_B| dt  is an L1 norm in EM units: mass TIMES the
+#        distance it moves. It grows linearly and without bound in the displacement.
+#
+# Family (one functional form for every country -- Tak's realism requirement):
+#   X ~ (1-eL-eH) N(mu0, s0^2) + eL N(mu0-dL, st^2) + eH N(mu0+dH, st^2)
+# i.e. a bulk population plus a rare severely-low and a rare severely-high subgroup
+# (clinically: eGFR for a renally-cleared drug -- a bulk of adequate function plus a
+# small severely-impaired minority whose exposure, and hence treatment effect,
+# deviates most; regions differ in HOW SEVERE and HOW MANY those patients are).
+#
+# Closed forms when only the extreme LOCATIONS move by dL, dH (bulk cancels exactly;
+# the two lobes have disjoint support, so the sup is a max, not a sum):
+#   W1 = eL*dL + eH*dH                                  (linear, unbounded)
+#   KS = max_j eL/H * (2*pnorm(d_j/(2*st)) - 1)         (saturates at eps)
+# Doubling the displacement (+-30 -> +-60) doubles W1 but moves KS by 6%.
+#
+# Consequence to look for in the results: KS rates a 2-unit shift of EVERY patient
+# (KS 0.072) as MORE discordant than pushing 10% of patients 60 units further into
+# the extremes (KS 0.050). W1 says the latter is 3x worse -- and by the
+# Kantorovich-Rubinstein bound it IS 3x worse. Note also that T1/T2/P1 have
+# |mean difference| = 0 EXACTLY (the CDFs cross), so SMD and RV1 have no coordinate.
+ext_c <- function(role, mu0, eL, dL, eH, dH, s0 = 10, st = 8) {
+  stopifnot(eL >= 0, eH >= 0, eL + eH < 1)
+  w <- c(eL, 1 - eL - eH, eH)
+  m <- c(mu0 - dL, mu0, mu0 + dH)
+  s <- c(st, s0, st)
+  list(role = role,
+       sampler = function(n) {
+         k <- as.vector(rmultinom(1L, n, w))
+         c(rnorm(k[1], m[1], s[1]), rnorm(k[2], m[2], s[2]), rnorm(k[3], m[3], s[3]))
+       },
+       cdf = function(t) w[1]*pnorm(t, m[1], s[1]) + w[2]*pnorm(t, m[2], s[2]) +
+                         w[3]*pnorm(t, m[3], s[3]))
+}
+build_set4 <- function() {   # Extremes world: bulk + rare low + rare high extremes
+  list(
+    A0  = ext_c("anchor",          50, 0.05,  40, 0.05,  40),
+    G1  = ext_c("match",           50, 0.05,  40, 0.05,  40),
+    G2  = ext_c("match",           50, 0.05,  40, 0.05,  40),
+    G3  = ext_c("match",           50, 0.05,  40, 0.05,  40),
+    # the extreme subgroups sit FURTHER out, symmetrically. Mean unchanged (CDFs
+    # cross), KS pinned near eps = 0.05, W1 = 0.05*30*2 = 3.0 and 0.05*60*2 = 6.0.
+    T1  = ext_c("sym_severity",    50, 0.05,  70, 0.05,  70),
+    T2  = ext_c("sym_severity",    50, 0.05, 100, 0.05, 100),
+    # MORE patients are extreme, at the same severity. Mean unchanged.
+    P1  = ext_c("sym_prevalence",  50, 0.12,  40, 0.12,  40),
+    # only the HIGH extreme moves out -- a cell where SMD works and KS is blind,
+    # proving the blindness is KS-specific and not a generically hard cell.
+    P2  = ext_c("asym_severity",   50, 0.05,  40, 0.05, 100),
+    # CONTROL: a plain location shift of everyone. KS is expected to BEAT W1 here
+    # (a tall, narrow CDF gap is the sup-norm's home turf). Kept deliberately.
+    S1  = ext_c("bulk_shift",      52, 0.05,  40, 0.05,  40),
+    S2  = ext_c("bulk_shift",      53, 0.05,  40, 0.05,  40)
+  )
+}
+
 # ---- analytic true distances anchor -> candidate ---------------------------
 true_w1 <- function(a, b, lo, hi) integrate(function(t) abs(a$cdf(t) - b$cdf(t)),
                                             lo, hi, subdivisions = 3000L, rel.tol = 1e-8)$value
@@ -259,7 +322,9 @@ main <- function() {
     list(id = "Set2_LogNormal", roster = build_set2(),
          methods = c("W1","SMD","SMD_log","KS","RV1","RV2","RV3"), lo = 0, hi = 500),
     list(id = "Set3_Mixture", roster = build_set3(),
-         methods = c("W1","SMD","KS","RV1","RV2","RV3"), lo = -60, hi = 160)
+         methods = c("W1","SMD","KS","RV1","RV2","RV3"), lo = -60, hi = 160),
+    list(id = "Set4_Extremes", roster = build_set4(),
+         methods = c("W1","SMD","KS","RV1","RV2","RV3"), lo = -400, hi = 600)
   )
   n_grid   <- c(25L, 50L, 75L, 100L)
   base_seed <- 20260711L

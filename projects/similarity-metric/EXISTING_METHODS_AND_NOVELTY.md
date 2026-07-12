@@ -138,13 +138,45 @@ Stated against the prior art above, **not** against a strawman.
 |---|---|---|---|
 | **(a)** | Compare the **whole** within-region EM distribution via $W_1$, with **no pre-specification of which moment matters** | Ch.4's representative value; SMD's mean | Not a *relevance-weighting* improvement — Lasso (§4.6.1.1) already does that, and does it better than anything we offer. |
 | **(b)** | **Clinical calibration**: $\Delta_{\max} = L_{\text{clinical}} \cdot W_1$ turns a distance into a bound on the regional treatment-effect difference, giving an operational answer to "how close is close enough" | §4.6.1.4 names this question and leaves it open ("there is not a simple answer") | Not a claim that Ch.4 was wrong to leave it open — only that we now supply the metric. |
-| **(c)** | **Theoretical link** distance → treatment-effect difference (Kantorovich–Rubinstein bound) | Absent from representative-value Euclidean distance **and** from the KS statistic | This, and not simulation performance, is what separates $W_1$ from KS. |
+| **(c)** | **Theoretical link** distance → treatment-effect difference (Kantorovich–Rubinstein bound) | Absent from representative-value Euclidean distance **and** from the KS statistic | Not a claim that W₁ beats KS on power everywhere — it does not (see below). |
 | **(d)** | **Per-EM resolution with a joint (AND) criterion**, instead of collapsing EMs into one aggregate distance | Ch.4 aggregates via Lasso-weighted distance; GUSTO-I shows age and SBP distances are nearly uncorrelated ($r = 0.13$), so aggregation can mask an incompatibility on one modifier | Complementary, not a refutation: aggregation is reasonable when a single pooled ranking is wanted. |
 
 **What we do NOT contribute, and must say so:** EM identification/selection (their
 Lasso front-end is better), and the number of pooled regions (§4.6.1.3's ≤ 4 stands;
 $\Delta_{\max}$ answers the *distance-threshold* question, which is a different
 question — do not conflate the two).
+
+### Why KS is not a substitute — and what that argument does and does not license
+
+KS also compares whole distributions, is older, and is simpler. The answer is **not**
+"W₁ has better power" — across the simulation KS sometimes wins (Set 2 clustering, Set
+3's symmetric-bimodal cell, Set 4's bulk-shift control). The answer is **structural**:
+
+- **KS admits no Kantorovich–Rubinstein-type bound.** There is no finite $C$ with
+  $|\Delta\theta| \le C\cdot\mathrm{KS}$ for every 1-Lipschitz θ. Take $\theta(x)=x$ —
+  a linear exposure–response, the most natural clinical form. Under displacement of a
+  rare tail, $|\Delta\theta| = \varepsilon\delta$ while $\mathrm{KS}\le\varepsilon$, so
+  the ratio diverges. (Choosing θ adversarially would make W₁ win *by definition* via
+  KR duality; this proof does not — that is the point.)
+- **KS is capped at the contamination fraction.** It assigns the *same* distance to a
+  tail displaced 30 EM units and one displaced 60 — at every n, including n = ∞. This
+  is an **identification** failure, not a power failure, and Set 4 exhibits it: KS at
+  chance (AUC ≈ 0.50, flat in n) and recovering no cluster structure (ARI ≈ 0).
+- **It comes with a rank inversion.** KS rates *shifting every patient by 2 units* as
+  more discordant than *pushing 10 % of patients 60 units further into the extremes*.
+
+**The layered structure of the whole comparison, stated plainly:** **Set 3 blinds the
+moment-based methods (SMD, RV); Set 4 blinds KS; W₁ is the only metric that survives
+both.** And that layering is *forced*, not lazy — a scenario blinding KS and the SD
+simultaneously is impossible in this family (variance responds to displacement
+quadratically, W₁ linearly, so matching SD collapses the bulk and KS reappears).
+
+**The honest counterweight (must appear in the paper):** where θ **saturates** — the
+extreme patients already at maximal or zero effect — W₁ over-flags and KS's flatness is
+accidentally right. The KR bound stays valid but becomes loose. Answer with the **error
+asymmetry**: W₁ errs toward *lost pooling* (efficiency); KS errs toward *false pooling*
+(validity). And W₁ is **not robust to outliers** — the flip side of the sensitivity being
+sold; pre-specify clinical truncation or a trimmed W₁.
 
 ---
 

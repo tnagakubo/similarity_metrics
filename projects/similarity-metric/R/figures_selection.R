@@ -59,13 +59,18 @@ METHOD_LABELS <- c(W1 = "W[1]", KS = "KS",
                    SMD_log = "'SMD (log)'", SMD = "'SMD (raw)'")
 FAMILY_LABELS <- c(Set1_Gaussian  = "Set 1: Gaussian world",
                    Set2_LogNormal = "Set 2: Log-normal world",
-                   Set3_Mixture   = "Set 3: Mixture world (moment-matched)")
-TYPE_LABELS   <- c(location   = "Location",
-                   scale      = "Scale",
-                   shape      = "Shape/dispersion",
-                   shape_sym  = "Shape, mean+SD+skew matched",
-                   shape_skew = "Shape, mean+SD matched",
-                   combined   = "Combined")
+                   Set3_Mixture   = "Set 3: Mixture world (moment-matched)",
+                   Set4_Extremes  = "Set 4: Extremes world (rare displaced mass)")
+TYPE_LABELS   <- c(location       = "Location",
+                   scale          = "Scale",
+                   shape          = "Shape/dispersion",
+                   shape_sym      = "Shape, mean+SD+skew matched",
+                   shape_skew     = "Shape, mean+SD matched",
+                   combined       = "Combined",
+                   sym_severity   = "Extremes further out (mean matched)",
+                   sym_prevalence = "More patients extreme (mean matched)",
+                   asym_severity  = "One extreme further out",
+                   bulk_shift     = "Location shift of everyone")
 
 .pal <- function(palette = c("greyscale", "color")) {
   palette <- match.arg(palette)
@@ -132,12 +137,13 @@ fig_false_pooling <- function(df, palette = "greyscale") {
 }
 
 # ---- Figure 2: AUC vs n, by discordance type (Part 1) ----------------------
-fig_auc_by_type <- function(df, palette = "greyscale") {
+# .fig_auc() renders whichever (set|type) facets it is handed, so Sets 1-3 (which
+# share the "which moment is discordant" question) go in one figure and Set 4 (which
+# asks the separate W1-vs-KS question, and has four types) gets its own.
+.fig_auc <- function(df, facet_order, palette, ncol) {
   pal <- .pal(palette)
-  d <- df %>% filter(measure == "auc") %>% droplevels()
-  facet_order <- c("Set1_Gaussian|location",  "Set1_Gaussian|scale",       "Set1_Gaussian|combined",
-                   "Set2_LogNormal|location", "Set2_LogNormal|shape",      "Set2_LogNormal|combined",
-                   "Set3_Mixture|shape_sym",  "Set3_Mixture|shape_skew",   "Set3_Mixture|combined")
+  d <- df %>% filter(measure == "auc") %>%
+    filter(paste(set, type, sep = "|") %in% facet_order) %>% droplevels()
   present <- facet_order[facet_order %in% paste(d$set, d$type, sep = "|")]
   d <- d %>% mutate(fk = paste(set, type, sep = "|"),
                     facet = factor(fk, levels = present,
@@ -146,13 +152,20 @@ fig_auc_by_type <- function(df, palette = "greyscale") {
   ggplot(d, aes(n, value, color = method, linetype = method, shape = method, group = method)) +
     geom_hline(yintercept = 0.5, linetype = "dashed", color = "grey60", linewidth = 0.4) +
     geom_line(linewidth = 0.5) + geom_point(size = 1.8) +
-    facet_wrap(~ facet, ncol = 3) +
+    facet_wrap(~ facet, ncol = ncol) +
     scale_x_continuous(breaks = c(25, 50, 75, 100)) +
     scale_y_continuous(limits = c(0.35, 1), breaks = seq(0.4, 1, 0.2)) +
     .method_scales(pal, levels(d$method)) +
     labs(x = "n per country", y = "AUC (true match vs discordant)") +
     .theme + guides(color = guide_legend(nrow = 1))
 }
+FACETS_123 <- c("Set1_Gaussian|location",  "Set1_Gaussian|scale",     "Set1_Gaussian|combined",
+                "Set2_LogNormal|location", "Set2_LogNormal|shape",    "Set2_LogNormal|combined",
+                "Set3_Mixture|shape_sym",  "Set3_Mixture|shape_skew", "Set3_Mixture|combined")
+FACETS_4   <- c("Set4_Extremes|sym_severity", "Set4_Extremes|sym_prevalence",
+                "Set4_Extremes|asym_severity", "Set4_Extremes|bulk_shift")
+fig_auc_by_type <- function(df, palette = "greyscale") .fig_auc(df, FACETS_123, palette, 3)
+fig_auc_set4    <- function(df, palette = "greyscale") .fig_auc(df, FACETS_4,   palette, 4)
 
 # ---- Figure 3: adjusted Rand index vs n (Part 2) ---------------------------
 fig_clustering_ari <- function(df, palette = "greyscale") {
@@ -177,9 +190,10 @@ generate_all_figures <- function(output_dir = resolve_output_dir()) {
   message("[figures] clustering: ", resolve_csv("clustering_sim_summary.csv"))
   message("[figures] output    : ", output_dir)
   specs <- list(
-    list(fn = fig_false_pooling,  df = sel, name = "fig_selection_false_pooling", w = 7.2, h = 3.6),
+    list(fn = fig_false_pooling,  df = sel, name = "fig_selection_false_pooling", w = 7.2, h = 5.2),
     list(fn = fig_auc_by_type,    df = sel, name = "fig_selection_auc_by_type",   w = 7.2, h = 6.4),
-    list(fn = fig_clustering_ari, df = clu, name = "fig_clustering_ari",          w = 7.2, h = 3.6))
+    list(fn = fig_auc_set4,       df = sel, name = "fig_selection_auc_set4",      w = 7.2, h = 3.0),
+    list(fn = fig_clustering_ari, df = clu, name = "fig_clustering_ari",          w = 7.2, h = 5.4))
   for (s in specs) for (pal in c("greyscale", "color")) {
     suffix <- if (pal == "color") "_color" else ""
     p <- s$fn(s$df, pal)

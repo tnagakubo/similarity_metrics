@@ -50,9 +50,9 @@ chk("no NA values after load", all(!is.na(sel$value)) && all(!is.na(clu$value)))
 
 # A2. all three sets and all six methods survive the load (the old 2-set/3-method
 #     schema would silently drop RV1/RV2/RV3/Set3 -- this is the check that catches it)
-chk("selection: all 3 sets present", setequal(unique(sel$set), names(FAMILY_LABELS)),
+chk("selection: all 4 sets present", setequal(unique(sel$set), names(FAMILY_LABELS)),
     paste(sort(unique(sel$set)), collapse = ", "))
-chk("clustering: all 3 sets present", setequal(unique(clu$set), names(FAMILY_LABELS)))
+chk("clustering: all 4 sets present", setequal(unique(clu$set), names(FAMILY_LABELS)))
 chk("selection: RV1, RV2, RV3 present in every set",
     all(vapply(names(FAMILY_LABELS), function(s)
       all(c("RV1", "RV2", "RV3") %in% raw_s$method[raw_s$set == s]), logical(1))))
@@ -68,25 +68,33 @@ point_y <- function(p, n_expect) {
   if (!length(hit)) stop("no layer with ", n_expect, " rows")
   hit[[1]]$y
 }
-fp_csv  <- raw_s$value[raw_s$measure == "false_pooling_at_k"]
-auc_csv <- raw_s$value[raw_s$measure == "auc"]
-ari_csv <- raw_c$value[raw_c$measure == "ari"]
+in_facets <- function(d, fs) paste(d$set, d$type, sep = "|") %in% fs
+fp_csv   <- raw_s$value[raw_s$measure == "false_pooling_at_k"]
+auc123   <- raw_s$value[raw_s$measure == "auc" & in_facets(raw_s, FACETS_123)]
+auc4     <- raw_s$value[raw_s$measure == "auc" & in_facets(raw_s, FACETS_4)]
+ari_csv  <- raw_c$value[raw_c$measure == "ari"]
 chk("fig1 (false-pooling) point y == CSV (multiset)",
     approx(sort(point_y(fig_false_pooling(sel, "greyscale"), length(fp_csv))), sort(fp_csv)),
     sprintf("%d points", length(fp_csv)))
-chk("fig2 (AUC) point y == CSV (multiset)",
-    approx(sort(point_y(fig_auc_by_type(sel, "greyscale"), length(auc_csv))), sort(auc_csv)),
-    sprintf("%d points", length(auc_csv)))
+chk("fig2 (AUC, Sets 1-3) point y == CSV (multiset)",
+    approx(sort(point_y(fig_auc_by_type(sel, "greyscale"), length(auc123))), sort(auc123)),
+    sprintf("%d points", length(auc123)))
+chk("fig2b (AUC, Set 4) point y == CSV (multiset)",
+    approx(sort(point_y(fig_auc_set4(sel, "greyscale"), length(auc4))), sort(auc4)),
+    sprintf("%d points", length(auc4)))
+chk("fig2 + fig2b together cover EVERY AUC row (none silently dropped)",
+    length(auc123) + length(auc4) == sum(raw_s$measure == "auc"),
+    sprintf("%d + %d = %d of %d", length(auc123), length(auc4),
+            length(auc123) + length(auc4), sum(raw_s$measure == "auc")))
 chk("fig3 (ARI) point y == CSV (multiset)",
     approx(sort(point_y(fig_clustering_ari(clu, "greyscale"), length(ari_csv))), sort(ari_csv)),
     sprintf("%d points", length(ari_csv)))
 
-# A4. no AUC row falls outside the 9 declared facets
-facet_ok <- c("Set1_Gaussian|location",  "Set1_Gaussian|scale",     "Set1_Gaussian|combined",
-              "Set2_LogNormal|location", "Set2_LogNormal|shape",    "Set2_LogNormal|combined",
-              "Set3_Mixture|shape_sym",  "Set3_Mixture|shape_skew", "Set3_Mixture|combined")
+# A4. every AUC row lands in a declared facet of fig2 (Sets 1-3) or fig2b (Set 4).
+#     A row belonging to neither would be silently dropped from both figures.
+facet_ok <- c(FACETS_123, FACETS_4)
 d2 <- subset(raw_s, measure == "auc")
-chk("fig2 maps every AUC row to a declared facet",
+chk("every AUC row maps to a declared facet (fig2 or fig2b)",
     all(paste(d2$set, d2$type, sep = "|") %in% facet_ok),
     paste(setdiff(unique(paste(d2$set, d2$type, sep = "|")), facet_ok), collapse = ", "))
 
@@ -167,7 +175,52 @@ chk("CLAIM Set3: RV1 and RV2 blind to ALL three discordance types (AUC <= 0.55)"
       vs("Set3_Mixture", 100, "RV1", "auc", ty) <= 0.55 &&
       vs("Set3_Mixture", 100, "RV2", "auc", ty) <= 0.55, logical(1))))
 
+# B2b. SET 4 -- the W1-vs-KS test. KS is an L-infinity norm on the CDF gap, so a rare
+#      contaminated fraction eps caps it no matter how far the mass is displaced;
+#      W1 is an L1 norm in EM units and grows linearly in the displacement. The tell,
+#      as with RV1's fake scale detection, is FLAT IN n.
+ks_sev <- vapply(c(25,50,75,100), function(n) vs("Set4_Extremes", n, "KS", "auc", "sym_severity"), numeric(1))
+w1_sev <- vapply(c(25,50,75,100), function(n) vs("Set4_Extremes", n, "W1", "auc", "sym_severity"), numeric(1))
+chk("CLAIM Set4: KS is at CHANCE on displaced extremes, at every n",
+    all(abs(ks_sev - 0.5) < 0.05),
+    sprintf("KS n=25..100: %s", paste(sprintf("%.3f", ks_sev), collapse = " ")))
+chk("CLAIM Set4: KS gains no information as n grows (flat), while W1 rises",
+    abs(ks_sev[4] - ks_sev[1]) < 0.05 && w1_sev[4] > w1_sev[1] && w1_sev[4] > 0.90,
+    sprintf("KS %.3f->%.3f | W1 %.3f->%.3f", ks_sev[1], ks_sev[4], w1_sev[1], w1_sev[4]))
+chk("CLAIM Set4: SMD is at chance too (the displaced-extreme cells match on the mean)",
+    abs(vs("Set4_Extremes", 100, "SMD", "auc", "sym_severity") - 0.5) < 0.05,
+    sprintf("SMD=%.3f", vs("Set4_Extremes", 100, "SMD", "auc", "sym_severity")))
+chk("CLAIM Set4 clustering: KS recovers NO structure (ARI ~ 0 at every n)",
+    all(abs(vapply(c(25,50,75,100), function(n) vc("Set4_Extremes", n, "KS", "ari"), numeric(1))) < 0.06),
+    sprintf("max |ARI| = %.3f",
+            max(abs(vapply(c(25,50,75,100), function(n) vc("Set4_Extremes", n, "KS", "ari"), numeric(1))))))
+chk("CLAIM Set4 clustering: W1 exceeds KS by a wide margin at n=100",
+    vc("Set4_Extremes", 100, "W1", "ari") - vc("Set4_Extremes", 100, "KS", "ari") > 0.20,
+    sprintf("W1=%.3f KS=%.3f", vc("Set4_Extremes",100,"W1","ari"), vc("Set4_Extremes",100,"KS","ari")))
+
+# B2c. THE LAYERED ARGUMENT. No competitor survives BOTH Set 3 and Set 4. This is the
+#      claim the whole comparison rests on, so assert it directly rather than by eye.
+survives <- function(m) {
+  s3 <- vc("Set3_Mixture",  100, m, "ari")
+  s4 <- vc("Set4_Extremes", 100, m, "ari")
+  c(set3 = s3 > 0.20, set4 = s4 > 0.20)
+}
+surv <- vapply(c("W1","KS","RV1","RV2","RV3","SMD"), function(m) all(survives(m)), logical(1))
+chk("CLAIM: W1 is the ONLY method that survives both Set 3 and Set 4 (ARI > 0.20 in each)",
+    isTRUE(surv[["W1"]]) && sum(surv) == 1L,
+    sprintf("survivors: %s", paste(names(surv)[surv], collapse = ", ")))
+
 # B3. Honest counter-findings the paper must NOT overclaim away.
+chk("CLAIM Set4: KS BEATS W1 on the bulk-shift control (a tall, narrow CDF gap)",
+    vs("Set4_Extremes", 100, "KS", "auc", "bulk_shift") >=
+      vs("Set4_Extremes", 100, "W1", "auc", "bulk_shift"),
+    sprintf("KS=%.3f >= W1=%.3f", vs("Set4_Extremes",100,"KS","auc","bulk_shift"),
+            vs("Set4_Extremes",100,"W1","auc","bulk_shift")))
+chk("CLAIM Set4: a moment method (RV3) BEATS W1 on the asymmetric cell",
+    vs("Set4_Extremes", 100, "RV3", "auc", "asym_severity") >
+      vs("Set4_Extremes", 100, "W1", "auc", "asym_severity"),
+    sprintf("RV3=%.3f > W1=%.3f", vs("Set4_Extremes",100,"RV3","auc","asym_severity"),
+            vs("Set4_Extremes",100,"W1","auc","asym_severity")))
 chk("CLAIM Set1: RV2 (OUR extension, not Ch.4) matches or beats W1 (Gaussian is 2-parameter)",
     vs("Set1_Gaussian", 100, "RV2", "auc", "combined") >= vs("Set1_Gaussian", 100, "W1", "auc", "combined") - 0.02,
     sprintf("RV2=%.3f vs W1=%.3f", vs("Set1_Gaussian",100,"RV2","auc","combined"),
@@ -189,6 +242,8 @@ expect_files <- c("fig_selection_false_pooling.pdf", "fig_selection_false_poolin
                   "fig_selection_false_pooling_color.pdf",
                   "fig_selection_auc_by_type.pdf", "fig_selection_auc_by_type.png",
                   "fig_selection_auc_by_type_color.pdf",
+                  "fig_selection_auc_set4.pdf", "fig_selection_auc_set4.png",
+                  "fig_selection_auc_set4_color.pdf",
                   "fig_clustering_ari.pdf", "fig_clustering_ari.png",
                   "fig_clustering_ari_color.pdf")
 paths <- file.path(tmpdir, expect_files)

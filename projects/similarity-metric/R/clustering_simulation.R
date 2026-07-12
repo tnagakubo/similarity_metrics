@@ -138,6 +138,25 @@ build_clust_set3 <- function() {
     rep_group("B", 4, "B", mix_sampler(0.50, 19)),
     rep_group("C", 4, "C", mix_sampler(0.85, 19)))
 }
+# Set 4: bulk + rare low/high extreme subgroups. Groups differ ONLY in HOW FAR the
+# rare extremes sit (+-40 / +-70 / +-100), at fixed prevalence 5% each side and fixed
+# mean 50. KS is capped at the contamination fraction eps regardless of displacement,
+# so its population distance matrix is nearly CONSTANT off-diagonal (0.047 / 0.050 /
+# 0.047) and carries no cluster structure at all -- the exact mirror of Set 3, where
+# it is the representative-value coordinates that are identical across countries.
+# W1 = eps*(dL + dH) gives a clean ladder: A-B 3.0, A-C 6.0, B-C 3.0.
+ext_sampler <- function(mu0, eL, dL, eH, dH, s0 = 10, st = 8) {
+  w <- c(eL, 1 - eL - eH, eH); m <- c(mu0 - dL, mu0, mu0 + dH); s <- c(st, s0, st)
+  function(n) {
+    k <- as.vector(rmultinom(1L, n, w))
+    c(rnorm(k[1], m[1], s[1]), rnorm(k[2], m[2], s[2]), rnorm(k[3], m[3], s[3]))
+  }
+}
+build_clust_set4 <- function() {
+  c(rep_group("A", 4, "A", ext_sampler(50, 0.05,  40, 0.05,  40)),
+    rep_group("B", 4, "B", ext_sampler(50, 0.05,  70, 0.05,  70)),
+    rep_group("C", 4, "C", ext_sampler(50, 0.05, 100, 0.05, 100)))
+}
 
 # ---- one cell ---------------------------------------------------------------
 run_cell <- function(roster, methods, n_per, n_reps, seed, k_true) {
@@ -191,7 +210,8 @@ main <- function() {
   sets <- list(
     list(id = "Set1_Gaussian",  roster = build_clust_set1()),
     list(id = "Set2_LogNormal", roster = build_clust_set2()),
-    list(id = "Set3_Mixture",   roster = build_clust_set3())
+    list(id = "Set3_Mixture",   roster = build_clust_set3()),
+    list(id = "Set4_Extremes",  roster = build_clust_set4())
   )
   n_grid <- c(25L, 50L, 75L, 100L)
   base_seed <- 20260712L
