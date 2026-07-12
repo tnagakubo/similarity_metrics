@@ -49,16 +49,16 @@ chk("clustering: every CSV row present with identical value",
 chk("no NA values after load", all(!is.na(sel$value)) && all(!is.na(clu$value)))
 
 # A2. all three sets and all six methods survive the load (the old 2-set/3-method
-#     schema would silently drop KOM/KOM3/Set3 -- this is the check that catches it)
+#     schema would silently drop RV1/RV2/RV3/Set3 -- this is the check that catches it)
 chk("selection: all 3 sets present", setequal(unique(sel$set), names(FAMILY_LABELS)),
     paste(sort(unique(sel$set)), collapse = ", "))
 chk("clustering: all 3 sets present", setequal(unique(clu$set), names(FAMILY_LABELS)))
-chk("selection: KOM and KOM3 present in every set",
+chk("selection: RV1, RV2, RV3 present in every set",
     all(vapply(names(FAMILY_LABELS), function(s)
-      all(c("KOM", "KOM3") %in% raw_s$method[raw_s$set == s]), logical(1))))
-chk("clustering: all 5 methods present in every set",
+      all(c("RV1", "RV2", "RV3") %in% raw_s$method[raw_s$set == s]), logical(1))))
+chk("clustering: all 6 methods present in every set",
     all(vapply(names(FAMILY_LABELS), function(s)
-      setequal(unique(raw_c$method[raw_c$set == s]), c("W1","SMD","KS","KOM","KOM3")), logical(1))))
+      setequal(unique(raw_c$method[raw_c$set == s]), c("W1","SMD","KS","RV1","RV2","RV3")), logical(1))))
 
 # A3. figures plot EXACTLY the CSV numbers (multiset equality of point y-values)
 point_y <- function(p, n_expect) {
@@ -91,8 +91,8 @@ chk("fig2 maps every AUC row to a declared facet",
     paste(setdiff(unique(paste(d2$set, d2$type, sep = "|")), facet_ok), collapse = ", "))
 
 # A5. method factor / palette coverage
-chk("method levels = the 6 declared methods",
-    identical(levels(sel$method), c("W1","KS","KOM","KOM3","SMD_log","SMD")))
+chk("method levels = the 7 declared methods",
+    identical(levels(sel$method), c("W1","KS","RV1","RV2","RV3","SMD_log","SMD")))
 pal <- .pal("greyscale")
 chk("palette keys cover every method",
     all(levels(sel$method) %in% names(pal$color)) &&
@@ -105,35 +105,72 @@ vs <- function(set, n, meth, meas, ty) raw_s$value[raw_s$set == set & raw_s$n ==
 vc <- function(set, n, meth, meas)     raw_c$value[raw_c$set == set & raw_c$n == n &
                                     raw_c$method == meth & raw_c$measure == meas]
 
-# B1. DECISIVE: in the moment-matched world the representative-value methods cannot
-#     cluster at all, while W1 can. (Part 2, Set 3.)
-chk("CLAIM Set3: RV(mean,SD) ARI ~ 0 at every n",
-    all(abs(vapply(c(25,50,75,100), function(n) vc("Set3_Mixture", n, "KOM", "ari"), numeric(1))) < 0.10),
-    sprintf("max |ARI| = %.3f", max(abs(vapply(c(25,50,75,100), function(n) vc("Set3_Mixture", n, "KOM", "ari"), numeric(1))))))
-chk("CLAIM Set3: SMD ARI ~ 0 at every n",
-    all(abs(vapply(c(25,50,75,100), function(n) vc("Set3_Mixture", n, "SMD", "ari"), numeric(1))) < 0.10))
-chk("CLAIM Set3: W1 ARI exceeds RV(mean,SD) by a wide margin at n=100",
-    vc("Set3_Mixture", 100, "W1", "ari") - vc("Set3_Mixture", 100, "KOM", "ari") > 0.3,
-    sprintf("W1=%.3f KOM=%.3f", vc("Set3_Mixture",100,"W1","ari"), vc("Set3_Mixture",100,"KOM","ari")))
+# B0. Ch.4 AS WRITTEN (RV1 = one representative value per EM) carries no information
+#     about scale for a single continuous EM. This is the citation-faithful claim;
+#     RV2/RV3 are OUR extensions and must never be attributed to Komiyama.
+#
+#     Subtlety, verified analytically: RV1's scale-AUC is ~0.62, not ~0.50. That is
+#     NOT detection. RV1's distance is |xbar_i - xbar_A| / const, and all Set-1
+#     countries share the true mean 50, so RV1's POPULATION distance to the anchor is
+#     exactly 0 for the scale countries. The 0.62 comes from a wider country having a
+#     noisier sample mean: for independent X~N(0,s1), Y~N(0,s2), P(|X|<|Y|) =
+#     (2/pi)atan(s2/s1), giving 0.59 (V1) and 0.64 (V2) -> mean 0.62, matching the sim.
+#     The signature of "no information" is therefore not AUC = 0.5 but AUC FLAT IN n:
+#     a method that actually resolved scale would improve as n grows (W1: 0.93 -> 1.00).
+rv1_scale <- vapply(c(25,50,75,100), function(n) vs("Set1_Gaussian", n, "RV1", "auc", "scale"), numeric(1))
+w1_scale  <- vapply(c(25,50,75,100), function(n) vs("Set1_Gaussian", n, "W1",  "auc", "scale"), numeric(1))
+chk("CLAIM Set1: RV1 scale-AUC is FLAT in n (gains no information as n grows)",
+    abs(rv1_scale[4] - rv1_scale[1]) < 0.03 && max(rv1_scale) < 0.70,
+    sprintf("RV1 n=25..100: %s", paste(sprintf("%.3f", rv1_scale), collapse = " ")))
+chk("CLAIM Set1: W1 scale-AUC RISES with n and ends far above RV1",
+    w1_scale[4] > w1_scale[1] && w1_scale[4] - rv1_scale[4] > 0.3,
+    sprintf("W1 n=25..100: %s (RV1 ends %.3f)", paste(sprintf("%.3f", w1_scale), collapse = " "), rv1_scale[4]))
+chk("CLAIM Set1: RV1 scale-AUC matches the sample-mean-noise prediction (2/pi)atan(.)",
+    abs(rv1_scale[4] - 0.6231) < 0.03,
+    sprintf("observed %.3f vs predicted 0.623", rv1_scale[4]))
+chk("CLAIM Set1: RV1 and SMD agree on LOCATION (the control -- both see it)",
+    abs(vs("Set1_Gaussian", 100, "RV1", "auc", "location") -
+        vs("Set1_Gaussian", 100, "SMD", "auc", "location")) < 0.02,
+    sprintf("RV1=%.3f SMD=%.3f", vs("Set1_Gaussian",100,"RV1","auc","location"),
+            vs("Set1_Gaussian",100,"SMD","auc","location")))
+chk("CLAIM Set1 clustering: RV1 tracks SMD, far below W1",
+    abs(vc("Set1_Gaussian", 100, "RV1", "ari") - vc("Set1_Gaussian", 100, "SMD", "ari")) < 0.10 &&
+    vc("Set1_Gaussian", 100, "W1", "ari") - vc("Set1_Gaussian", 100, "RV1", "ari") > 0.3,
+    sprintf("RV1=%.3f SMD=%.3f W1=%.3f", vc("Set1_Gaussian",100,"RV1","ari"),
+            vc("Set1_Gaussian",100,"SMD","ari"), vc("Set1_Gaussian",100,"W1","ari")))
+
+# B1. DECISIVE: in the moment-matched world NO representative-value variant can
+#     cluster -- not the chapter's recipe, not either extension. (Part 2, Set 3.)
+for (m in c("RV1", "RV2", "SMD")) {
+  v <- vapply(c(25,50,75,100), function(n) vc("Set3_Mixture", n, m, "ari"), numeric(1))
+  chk(sprintf("CLAIM Set3: %s ARI ~ 0 at every n", m), all(abs(v) < 0.10),
+      sprintf("max |ARI| = %.3f", max(abs(v))))
+}
+chk("CLAIM Set3: W1 ARI exceeds every RV variant by a wide margin at n=100",
+    all(vc("Set3_Mixture", 100, "W1", "ari") -
+        vapply(c("RV1","RV2","RV3"), function(m) vc("Set3_Mixture", 100, m, "ari"), numeric(1)) > 0.3),
+    sprintf("W1=%.3f RV1=%.3f RV2=%.3f RV3=%.3f", vc("Set3_Mixture",100,"W1","ari"),
+            vc("Set3_Mixture",100,"RV1","ari"), vc("Set3_Mixture",100,"RV2","ari"),
+            vc("Set3_Mixture",100,"RV3","ari")))
 
 # B2. Adding a moment is NOT free: an irrelevant 3rd coordinate degrades the RV
-#     method where the first two suffice (Set 1), and still fails to see the
-#     symmetric-bimodal discordance (Set 3).
-chk("CLAIM Set1: RV3 (mean,SD,skew) is WORSE than RV (mean,SD) [combined AUC, n=100]",
-    vs("Set1_Gaussian", 100, "KOM3", "auc", "combined") < vs("Set1_Gaussian", 100, "KOM", "auc", "combined"),
-    sprintf("KOM3=%.3f < KOM=%.3f", vs("Set1_Gaussian",100,"KOM3","auc","combined"),
-            vs("Set1_Gaussian",100,"KOM","auc","combined")))
+#     method where two suffice (Set 1), and still fails on symmetric bimodality (Set 3).
+chk("CLAIM Set1: RV3 is WORSE than RV2 [combined AUC, n=100]",
+    vs("Set1_Gaussian", 100, "RV3", "auc", "combined") < vs("Set1_Gaussian", 100, "RV2", "auc", "combined"),
+    sprintf("RV3=%.3f < RV2=%.3f", vs("Set1_Gaussian",100,"RV3","auc","combined"),
+            vs("Set1_Gaussian",100,"RV2","auc","combined")))
 chk("CLAIM Set3: RV3 still blind to symmetric-bimodal (AUC <= 0.55 at n=100)",
-    vs("Set3_Mixture", 100, "KOM3", "auc", "shape_sym") <= 0.55,
-    sprintf("AUC=%.3f", vs("Set3_Mixture", 100, "KOM3", "auc", "shape_sym")))
-chk("CLAIM Set3: RV (mean,SD) blind to ALL three discordance types (AUC <= 0.55)",
-    all(vapply(c("shape_sym","shape_skew","combined"),
-               function(ty) vs("Set3_Mixture", 100, "KOM", "auc", ty) <= 0.55, logical(1))))
+    vs("Set3_Mixture", 100, "RV3", "auc", "shape_sym") <= 0.55,
+    sprintf("AUC=%.3f", vs("Set3_Mixture", 100, "RV3", "auc", "shape_sym")))
+chk("CLAIM Set3: RV1 and RV2 blind to ALL three discordance types (AUC <= 0.55)",
+    all(vapply(c("shape_sym","shape_skew","combined"), function(ty)
+      vs("Set3_Mixture", 100, "RV1", "auc", ty) <= 0.55 &&
+      vs("Set3_Mixture", 100, "RV2", "auc", ty) <= 0.55, logical(1))))
 
 # B3. Honest counter-findings the paper must NOT overclaim away.
-chk("CLAIM Set1: RV (mean,SD) matches or beats W1 (Gaussian is 2-parameter)",
-    vs("Set1_Gaussian", 100, "KOM", "auc", "combined") >= vs("Set1_Gaussian", 100, "W1", "auc", "combined") - 0.02,
-    sprintf("KOM=%.3f vs W1=%.3f", vs("Set1_Gaussian",100,"KOM","auc","combined"),
+chk("CLAIM Set1: RV2 (OUR extension, not Ch.4) matches or beats W1 (Gaussian is 2-parameter)",
+    vs("Set1_Gaussian", 100, "RV2", "auc", "combined") >= vs("Set1_Gaussian", 100, "W1", "auc", "combined") - 0.02,
+    sprintf("RV2=%.3f vs W1=%.3f", vs("Set1_Gaussian",100,"RV2","auc","combined"),
             vs("Set1_Gaussian",100,"W1","auc","combined")))
 chk("CLAIM Set2 clustering: KS beats W1 (W1 scale-sensitivity loosens the high-spread group)",
     vc("Set2_LogNormal", 100, "KS", "ari") > vc("Set2_LogNormal", 100, "W1", "ari"),

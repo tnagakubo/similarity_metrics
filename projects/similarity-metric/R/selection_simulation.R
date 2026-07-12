@@ -57,17 +57,30 @@ ks_dist  <- function(x, y) as.numeric(suppressWarnings(ks.test(x, y)$statistic))
 # AUC: P(a true-match distance < a discordant distance), ties scored 0.5 (fair).
 auc_pairs <- function(dm, dd) mean(outer(dm, dd, function(a, b) (a < b) + 0.5 * (a == b)))
 
-# ---- Komiyama et al. (2024) Ch.4 §4.6.1.1 representative-value distance ------
-# Each country -> a representative value per EM "parameter" (coordinate); each
-# coordinate is standardized to N(0,1) ACROSS countries; distance = Euclidean.
-# Standardization is roster-level (not pairwise), so this cannot be written as a
-# two-sample distance -- hence the roster-level distance API below.
-# Implemented FAIRLY (Louis, 2026-06-27): §4.6.1.1 says "representative value in
-# each candidate PARAMETER", not "the mean". A mean-only version would be a
-# strawman patchable in one line. Two variants are therefore reported:
-#   KOM  = (mean, SD)         -- the natural 2-coordinate reading
-#   KOM3 = (mean, SD, skew)   -- pre-empts "just add another moment"
-komiyama_dists <- function(xA, xs, coords = c("mean", "sd")) {
+# ---- Representative-value (RV) distances -------------------------------------
+# Komiyama et al. (2024) Ch.4 §4.6.1.1: give each region "a representative value in
+# each candidate parameter of effect modifier", plot regions in that parameter space,
+# standardize each coordinate to N(0,1) ACROSS regions, take a Euclidean distance.
+#
+# WHAT THE CHAPTER ACTUALLY SAYS (verified against the chapter text 2026-07-12; an
+# earlier internal note misread it -- see EXISTING_METHODS_AND_NOVELTY.md §3):
+# "candidate parameter of effect modifier" = the candidate EM ITSELF, not a parameter
+# of its distribution. Proof: "ten candidate parameters of the effect modifier ... on
+# a ten-dimension space" (one axis per EM), and the §4.6.1.4 worked example whose axes
+# are "the proportion of male patients and that of younger patients" -- one summary
+# number per EM. The chapter never discusses spread or shape of a within-region EM
+# distribution.
+#
+# Therefore, for a SINGLE continuous EM:
+#   RV1 = (mean)               -- THIS is Ch.4's recipe. It is a function of the
+#                                 location summary alone => same blind spot as SMD.
+#   RV2 = (mean, SD)           -- an extension Ch.4 does NOT propose. We grant it in
+#   RV3 = (mean, SD, skew)         advance because it is the natural reviewer rebuttal
+#                                 ("just add another summary"). Never call these
+#                                 "Komiyama's method".
+# Standardization is roster-level, so RV cannot be written as a two-sample distance --
+# hence the roster-level distance API below.
+rv_dists <- function(xA, xs, coords = c("mean", "sd")) {
   allx <- c(list(A0 = xA), xs)
   M <- vapply(allx, function(v) {
     m <- mean(v); s <- sd(v)
@@ -91,8 +104,9 @@ DISTFUN <- list(
   SMD     = as_roster(smd_dist),
   SMD_log = as_roster(smd_log_dist),
   KS      = as_roster(ks_dist),
-  KOM     = function(xA, xs) komiyama_dists(xA, xs, c("mean", "sd")),
-  KOM3    = function(xA, xs) komiyama_dists(xA, xs, c("mean", "sd", "skew"))
+  RV1     = function(xA, xs) rv_dists(xA, xs, "mean"),                        # Ch.4 as written
+  RV2     = function(xA, xs) rv_dists(xA, xs, c("mean", "sd")),               # our extension
+  RV3     = function(xA, xs) rv_dists(xA, xs, c("mean", "sd", "skew"))        # our extension
 )
 
 # ---- roster builders -------------------------------------------------------
@@ -126,7 +140,7 @@ build_set2 <- function() {   # Skewed / log-normal world
 # WHY THIS SET EXISTS. Sets 1 and 2 are two-parameter families: (mean, SD)
 # determines the whole distribution, so a fair (mean,SD) representative-value
 # method can detect EVERY discordant country there -- W1 has no structural
-# advantage over KOM in Sets 1-2, and we report that honestly. The open question
+# advantage over RV2 in Sets 1-2, and we report that honestly. The open question
 # a moment-list method cannot answer is: WHICH moments must be enumerated? Set 3
 # answers it. Every country is a two-component Gaussian mixture (one consistent
 # family, per Tak's realism requirement -- e.g. a genotype sub-population, such as
@@ -159,7 +173,7 @@ build_set3 <- function() {   # Mixture world: every country has mean 50, SD 10
     B1  = mix_c("shape_sym",    0.50, 15),   # separation d/s = 2.3
     B2  = mix_c("shape_sym",    0.50, 19),   # separation d/s = 6.1 (two clear modes)
     # Asymmetric (a minority sub-population sitting low): mean and SD identical,
-    # skewness differs -> KOM blind, KOM3 can see it.
+    # skewness differs -> RV1/RV2 blind, RV3 can see it.
     S1  = mix_c("shape_skew",   0.75, 16),   # skew ~= -0.38
     S2  = mix_c("shape_skew",   0.85, 19),   # skew ~= -0.61
     # Asymmetric AND bimodal.
@@ -241,11 +255,11 @@ main <- function() {
 
   sets <- list(
     list(id = "Set1_Gaussian", roster = build_set1(),
-         methods = c("W1","SMD","KS","KOM","KOM3"), lo = -80, hi = 250),
+         methods = c("W1","SMD","KS","RV1","RV2","RV3"), lo = -80, hi = 250),
     list(id = "Set2_LogNormal", roster = build_set2(),
-         methods = c("W1","SMD","SMD_log","KS","KOM","KOM3"), lo = 0, hi = 500),
+         methods = c("W1","SMD","SMD_log","KS","RV1","RV2","RV3"), lo = 0, hi = 500),
     list(id = "Set3_Mixture", roster = build_set3(),
-         methods = c("W1","SMD","KS","KOM","KOM3"), lo = -60, hi = 160)
+         methods = c("W1","SMD","KS","RV1","RV2","RV3"), lo = -60, hi = 160)
   )
   n_grid   <- c(25L, 50L, 75L, 100L)
   base_seed <- 20260711L
@@ -255,8 +269,8 @@ main <- function() {
     S <- sets[[si]]
     # Truth structure, printed once per set. The moment columns are the audit that
     # decides whether a set can discriminate W1 from a representative-value method:
-    # a discordant country whose (mean, SD) equal the anchor's is invisible to KOM,
-    # and one whose skew also matches is invisible to KOM3.
+    # a discordant country whose (mean, SD) equal the anchor's is invisible to RV1/RV2,
+    # and one whose skew also matches is invisible to RV3 as well.
     ids_all <- names(S$roster)
     set.seed(990000L + si)
     mom <- vapply(ids_all, function(id) {

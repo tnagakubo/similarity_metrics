@@ -17,13 +17,35 @@ Two **task formulations**, because the literature contains both (Tak, 2026-07-12
 
 **Competitors.** Earlier versions compared only distance *metrics* (W₁ / SMD / KS).
 That is insufficient: a reviewer will ask why the comparison omits the concrete
-existing *procedure*. We therefore add the Komiyama representative-value distance
-(§4.6.1.1: a representative value per EM parameter, each coordinate standardized to
-N(0,1) across regions, Euclidean distance), in two variants:
+existing *procedure*. We therefore add the representative-value (RV) distance of
+Komiyama et al. (2024) Ch.4 §4.6.1.1 — and we must be precise about what that
+chapter does and does not say (Tak, 2026-07-12: 「小宮山を拡大解釈しすぎないように」;
+full audit in `EXISTING_METHODS_AND_NOVELTY.md`).
 
-- **RV(mean, SD)** — the natural two-coordinate reading. Implementing it as
-  mean-only would be a strawman patchable in one line (Louis, 2026-06-27).
-- **RV(mean, SD, skew)** — pre-empts "then just add another moment."
+**What Ch.4 says.** "Let a region have **a representative value in each candidate
+parameter of effect modifier** and plot regions on the parameter space", then take a
+Euclidean/Manhattan distance after standardizing each coordinate to N(0,1) across
+regions. "Candidate parameter of effect modifier" means **the candidate EM itself**,
+not a parameter of its distribution — proved twice in the chapter: *"ten candidate
+parameters of the effect modifier … on a **ten-dimension space**"* (one axis per EM),
+and the §4.6.1.4 worked example whose axes are *"the proportion of male patients and
+that of younger patients"* (one summary number per EM). **The chapter never discusses
+the spread or shape of a within-region EM distribution.**
+
+Hence, for a single continuous EM:
+
+- **RV1 = (mean)** — **this is Ch.4's recipe as written.** Its distance is a function
+  of the location summary alone, so it inherits SMD's blind spot exactly. This is the
+  only variant the paper may attribute to Komiyama et al.
+- **RV2 = (mean, SD)** — an extension **Ch.4 does not propose**. We grant it in
+  advance because it is the natural reviewer rebuttal ("just add another summary").
+- **RV3 = (mean, SD, skew)** — likewise **not** proposed in Ch.4; pre-empts "then add
+  another moment."
+
+> ⚠️ An earlier internal note (2026-06-27) misread "parameter" as *distributional*
+> parameter and labelled RV2 as "Komiyama's method". That was wrong and is corrected
+> here. **Never call RV2/RV3 Komiyama's method** — doing so cites them for a claim
+> they never made.
 
 **Framework:** ADEMP (Morris, White & Crowther 2019, *Stat Med* 38:2074–2102,
 DOI: 10.1002/sim.8086). Scope = **Q_metric** (recovery of true EM-distributional
@@ -46,14 +68,14 @@ regions and log-normal in one. Three scenario sets:
   mean (50) and SD (10)**; only the shape differs.
 
 **Why Set 3 is not optional.** Sets 1 and 2 are both **two-parameter families**:
-(mean, SD) determines the whole distribution, so a fair RV(mean, SD) method can
+(mean, SD) determines the whole distribution, so a fair RV2 method (our extension, not Ch.4) can
 detect *every* discordant country there — including the log-normal "shape" ones,
 whose skewness is a deterministic function of (mean, SD). (Audit: Set 2's Dp1 holds
 mean = 50 but moves SD 20 → 30; the SD axis alone separates it.) Against a fair
-Komiyama baseline, W₁ therefore has **no structural advantage in Sets 1–2**, and we
+RV2 baseline, W₁ therefore has **no structural advantage in Sets 1–2**, and we
 report that honestly. The question a moment-list method cannot answer is *which*
 moments must be enumerated. Set 3 answers it: the symmetric-mixture countries match
-the anchor on mean, SD **and skewness**, so even RV(mean, SD, skew) is blind, while
+the anchor on mean, SD **and skewness**, so even RV3 is blind, while
 W₁ and KS see the CDF gap. Set 3 is a **stress test / worst case**, not a claim that
 moment-matching is typical — the "identical mean *and* SD" construction is
 deliberately adversarial, and is labelled as such.
@@ -109,7 +131,7 @@ stays blind to the dispersion → shows the failure is structural, not a missing
 transform. W₁ and KS resolve all discordance types.
 
 ⚠️ **But note what a *fair* RV baseline does here.** Raising CV at fixed mean also
-moves the SD (20 → 30 → 42.5). RV(mean, SD) separates Dp1/Dp2 on the SD axis alone.
+moves the SD (20 → 30 → 42.5). RV2 separates Dp1/Dp2 on the SD axis alone.
 Set 2 defeats *SMD*, not Komiyama. Hence Set 3.
 
 ---
@@ -123,7 +145,7 @@ overall mean and variance hit the anchor's:
 Setting `w = 0.5` forces skew = 0 → those countries match the anchor's **first three
 moments**. Moments below verified from 10⁶ draws (`selection_sim.log`).
 
-| Country | w | d | mean | SD | skew | true W₁ | RV(mean,SD) sees? | RV(+skew) sees? |
+| Country | w | d | mean | SD | skew | true W₁ | RV2 sees? | RV3 sees? |
 |---|---|---|---|---|---|---|---|---|
 | A0 | 0.50 | 6 | 50.0 | 10.0 | 0.00 | anchor (≈ unimodal) | — | — |
 | G1–G3 | 0.50 | 6 | 50.0 | 10.0 | 0.00 | 0.000 | — | — |
@@ -136,7 +158,7 @@ moments**. Moments below verified from 10⁶ draws (`selection_sim.log`).
 
 B1/B2 are symmetric bimodal (mean, SD **and** skew all equal to the anchor's);
 S1/S2 place a minority sub-population low (skew differs); C1/C2 do both.
-Because every country shares the anchor's (mean, SD), **RV(mean,SD) assigns identical
+Because every country shares the anchor's (mean, SD), **RV2 assigns identical
 coordinates to all ten countries** — its distance matrix carries no signal at all.
 
 Note the price of the construction: holding (mean, SD) fixed caps how far the shapes
@@ -150,13 +172,13 @@ absolute score.
 
 ## Table 2d — Part 2 roster (clustering): 12 countries, 3 true groups of 4
 
-| Set | Group A (×4) | Group B (×4) | Group C (×4) | Can RV(mean,SD) separate the groups? |
+| Set | Group A (×4) | Group B (×4) | Group C (×4) | Can RV2 separate the groups? |
 |---|---|---|---|---|
 | Set 1 Gaussian | N(50, 10²) | N(58, 10²) | N(50, 20²) | yes (groups differ in mean or SD) |
 | Set 2 Log-normal | mean 50, CV 0.40 | mean 58, CV 0.40 | mean 50, CV 0.85 | yes (SD 20 / 23 / 42) |
 | Set 3 Mixture | w=0.50, d=6 | w=0.50, d=19 | w=0.85, d=19 | **no** — all 12 countries have mean 50, SD 10 |
 
-In Set 3 groups A and B are additionally skew-matched (both 0), so RV(mean, SD, skew)
+In Set 3 groups A and B are additionally skew-matched (both 0), so RV3
 cannot separate A from B either.
 
 ---
@@ -169,8 +191,9 @@ cannot separate A from B either.
 | **SMD (raw)** | \|mean(x)−mean(y)\| / pooled SD | location (mean) only | scale, shape |
 | **SMD (log)** — Set 2 only | same on log-transformed data | location on log scale | dispersion/shape |
 | **KS** | sup\|F̂_x − F̂_y\| | full distribution (sup-norm) | weaker on tail mass than W₁ |
-| **RV(mean, SD)** — Komiyama §4.6.1.1 | each country → (mean, SD); each coordinate standardized to N(0,1) **across the roster**; Euclidean | whatever the enumerated moments encode — in a 2-parameter family, the whole distribution | any feature not spanned by the listed coordinates |
-| **RV(mean, SD, skew)** | same, with a third coordinate | + skewness | shape features beyond the 3rd moment (e.g. symmetric bimodality) |
+| **RV1 (mean)** — **Komiyama §4.6.1.1 as written** | each country → one representative value; standardized to N(0,1) **across the roster**; Euclidean | location only | scale, shape — **the same blind spot as SMD** |
+| **RV2 (mean, SD)** — *our extension, not in Ch.4* | two coordinates, same construction | whatever the two moments encode — in a 2-parameter family, the whole distribution | any feature not spanned by the listed coordinates |
+| **RV3 (mean, SD, skew)** — *our extension, not in Ch.4* | three coordinates | + skewness | shape beyond the 3rd moment (e.g. symmetric bimodality); and the extra coordinate costs accuracy where two suffice |
 
 Selection (Part 1) = rank the 9 candidates by the method's distance; the `k` nearest
 are the proposed pooling partners. Clustering (Part 2) = cluster the full 12×12
@@ -247,7 +270,7 @@ adding replications, so effect sizes with MC SE are the honest summary.
    advance rather than argued against. In Part 2 all methods are handed the true
    number of clusters.
 4. **Report the cells where W₁ loses.** Sets 1–2 are two-parameter families where
-   RV(mean, SD) is expected to match or beat W₁, and Part 2/Set 2 is expected to
+   RV2 is expected to match or beat W₁, and Part 2/Set 2 is expected to
    favour KS. These cells are pre-declared, not discovered post hoc, and are reported
    with the same prominence as Set 3. `validate_figures.R` asserts them as CLAIM
    checks, so silently dropping them breaks the build.
@@ -261,56 +284,71 @@ Part 2: 5,000 reps (`results/clustering_sim_summary.csv`). MC SE ≤ 0.005 throu
 
 ### Part 1 — selection, combined-type AUC at n = 100
 
-| Set | W₁ | KS | RV(mean,SD) | RV(+skew) | SMD | SMD(log) |
-|---|---|---|---|---|---|---|
-| 1 Gaussian | 0.985 | 0.957 | **0.988** | 0.847 | 0.947 | — |
-| 2 Log-normal | **0.950** | 0.802 | 0.895 | 0.839 | 0.648 | 0.500 |
-| 3 Mixture | **0.699** | 0.676 | 0.494 | 0.638 | 0.504 | — |
-
-**Set 3, by discordance type (n = 100)** — the decisive cells:
-
-| Discordance | matched moments | W₁ | KS | RV(mean,SD) | RV(+skew) | SMD |
-|---|---|---|---|---|---|---|
-| shape_sym (B1,B2) | mean, SD **and skew** | 0.759 | **0.772** | **0.453** | **0.434** | 0.506 |
-| shape_skew (S1,S2) | mean, SD | **0.639** | 0.602 | **0.503** | 0.651 | 0.502 |
-| combined (C1,C2) | mean, SD | **0.699** | 0.676 | **0.494** | 0.638 | 0.504 |
-
-RV(mean,SD) sits at chance (0.45–0.50) in **every** Set-3 cell — its coordinates are
-identical for all ten countries. RV(+skew) rescues the skewed types (0.65) but is
-*still* at chance on the symmetric-bimodal type (0.434): the third moment matches too.
+| Set | W₁ | KS | **RV1 (Ch.4)** | RV2 | RV3 | SMD | SMD(log) |
+|---|---|---|---|---|---|---|---|
+| 1 Gaussian | 0.985 | 0.957 | **0.951** | **0.988** | 0.847 | 0.947 | — |
+| 2 Log-normal | **0.950** | 0.802 | **0.657** | 0.895 | 0.839 | 0.648 | 0.500 |
+| 3 Mixture | **0.699** | 0.676 | **0.503** | 0.494 | 0.638 | 0.504 | — |
 
 ### Part 2 — clustering, adjusted Rand index at n = 100
 
-| Set | W₁ | KS | RV(mean,SD) | RV(+skew) | SMD |
-|---|---|---|---|---|---|
-| 1 Gaussian | 0.995 | 0.983 | **0.996** | 0.620 | 0.452 |
-| 2 Log-normal | 0.642 | **0.850** | 0.614 | 0.448 | 0.334 |
-| 3 Mixture | **0.526** | 0.503 | **0.018** | 0.131 | −0.000 |
+| Set | W₁ | KS | **RV1 (Ch.4)** | RV2 | RV3 | SMD |
+|---|---|---|---|---|---|---|
+| 1 Gaussian | 0.995 | 0.983 | **0.489** | **0.996** | 0.620 | 0.452 |
+| 2 Log-normal | 0.642 | **0.850** | **0.343** | 0.614 | 0.448 | 0.334 |
+| 3 Mixture | **0.526** | 0.503 | **−0.000** | 0.018 | 0.131 | −0.000 |
+
+**RV1 — the chapter's recipe as written — tracks SMD almost exactly** (ARI 0.489/0.343/
+−0.000 vs SMD 0.452/0.334/−0.000). For a single continuous EM, one representative value
+per modifier carries only location information, so Ch.4's distance and the SMD fail in
+the same places. **This is the citation-faithful finding.** RV2/RV3 are extensions the
+chapter does not propose.
+
+**Set 3, by discordance type (n = 100)** — the decisive cells:
+
+| Discordance | matched moments | W₁ | KS | RV1 | RV2 | RV3 | SMD |
+|---|---|---|---|---|---|---|---|
+| shape_sym (B1,B2) | mean, SD **and skew** | 0.759 | **0.772** | **0.508** | **0.453** | **0.434** | 0.506 |
+| shape_skew (S1,S2) | mean, SD | **0.639** | 0.602 | **0.500** | **0.503** | 0.651 | 0.502 |
+| combined (C1,C2) | mean, SD | **0.699** | 0.676 | **0.503** | **0.494** | 0.638 | 0.504 |
+
+RV1 and RV2 sit at chance in **every** Set-3 cell — their coordinates are identical for
+all ten countries. RV3 rescues the skewed types (0.65) but is *still* at chance on the
+symmetric-bimodal type (0.434): the third moment matches too.
 
 ### Reading
 
-1. **Set 3 is the decisive result.** With (mean, SD) matched across all 12 countries,
-   RV(mean, SD) achieves ARI = **0.018** — it recovers *no* pooled-region structure at
-   all, at any n (max |ARI| = 0.018 over n ∈ {25…100}); SMD is at 0.000. W₁ reaches
-   0.526 and KS 0.503. The split is qualitative: **distribution-based methods work,
-   moment-based methods do not run.**
-2. **Adding a moment is not a free patch.** On Set 1, RV(mean, SD, skew) is *worse*
-   than RV(mean, SD) — AUC 0.847 vs 0.988, ARI 0.620 vs 0.996 — because the third
-   coordinate is pure estimation noise where two moments suffice. And it does not even
-   buy blindness-insurance: on Set 3's symmetric-bimodal type it is still at chance
+1. **Ch.4 as written (RV1) has SMD's blind spot.** For one continuous EM its distance
+   is a function of the location summary alone. Clustering ARI 0.489 (Set 1) vs W₁ 0.995.
+   *Subtlety worth stating precisely:* RV1's Set-1 **scale**-AUC is 0.62, not 0.50 — but
+   that is **not detection**. All Set-1 countries share the true mean 50, so RV1's
+   *population* distance to the anchor is exactly 0 for the scale countries; the 0.62
+   comes from a wider country having a noisier sample mean. For independent
+   X∼N(0,s₁), Y∼N(0,s₂), P(|X|<|Y|) = (2/π)·arctan(s₂/s₁) → 0.59 (V1) and 0.64 (V2),
+   mean **0.623**, against **0.619** observed. The tell is that RV1's scale-AUC is
+   **flat in n** (0.623 → 0.619 from n = 25 to 100) while W₁'s **rises** (0.932 →
+   0.997). A method that truly resolved scale would improve with n. RV1 gains no
+   information; it is reading its own estimation noise.
+2. **Set 3 is the decisive result.** With (mean, SD) matched across all 12 countries,
+   RV1 achieves ARI = **−0.000** and RV2 **0.018** — *no* pooled-region structure is
+   recovered at any n. W₁ reaches 0.526 and KS 0.503. The split is qualitative:
+   **distribution-based methods work; representative-value methods do not run.**
+3. **Adding a moment is not a free patch.** On Set 1, RV3 is *worse* than RV2 —
+   AUC 0.847 vs 0.988, ARI 0.620 vs 0.996 — because the third coordinate is pure
+   estimation noise where two moments suffice. And it does not even buy
+   blindness-insurance: on Set 3's symmetric-bimodal type it is still at chance
    (0.434). "Just add another moment" is a bet on a guess, with a measured cost.
-3. **Where W₁ does not win — reported, not buried.** On Gaussian data RV(mean, SD)
-   edges W₁ out (AUC 0.988 vs 0.985; ARI 0.996 vs 0.995; false-pooling 0.071 vs 0.085)
-   — as it must, since a Gaussian *is* its first two moments. In Part 2 / Set 2, KS
-   clusters markedly better than W₁ (ARI 0.850 vs 0.642): the high-CV group C has
-   SD ≈ 42, so its within-group W₁ distances are large and average linkage lets the
-   cluster spread, whereas KS is bounded in [0,1]. Same property, two faces (see
-   Reporting plan).
-4. **SMD's blind spots survive the refactor.** Scale AUC 0.499 (Set 1), shape AUC
+4. **Where W₁ does not win — reported, not buried.** On Gaussian data RV2 (our
+   extension, *not* Ch.4) edges W₁ out (AUC 0.988 vs 0.985; ARI 0.996 vs 0.995) — as it
+   must, since a Gaussian *is* its first two moments. In Part 2 / Set 2, KS clusters
+   markedly better than W₁ (ARI 0.850 vs 0.642): the high-CV group C has SD ≈ 42, so its
+   within-group W₁ distances are large and average linkage lets the cluster spread,
+   whereas KS is bounded in [0,1]. Same property, two faces (see Reporting plan).
+5. **SMD's blind spots survive the refactor.** Scale AUC 0.499 (Set 1), shape AUC
    0.507 (Set 2), and log-SMD's combined AUC 0.500 (Set 2) — the log-transform trades
    the raw-dispersion blind spot for a new one when a raw-mean increase and a
    dispersion increase cancel in the log-mean.
-5. **Absolute difficulty.** Set 3 is hard for *everyone*: even W₁ false-pools 0.921 at
+6. **Absolute difficulty.** Set 3 is hard for *everyone*: even W₁ false-pools 0.921 at
    n = 100 (matched-moment shape differences produce true W₁ of only 0.69–3.02, versus
    4.8–8.0 in Set 1). The Set-3 claim is about the qualitative gap, not about W₁ making
    moment-matched selection easy.
@@ -326,9 +364,9 @@ identical for all ten countries. RV(+skew) rescues the skewed types (0.65) but i
    Gaussian scale-discordance slightly better**. Say so plainly.
 2. No method tells you *which* moments to enumerate. Set 3 prices that ignorance:
    with (mean, SD) matched, RV forms **no clusters at all** (ARI ≈ 0); with skewness
-   matched too, RV(mean, SD, skew) is blind as well.
-3. **Adding a moment is not free.** On Set 1, RV(mean, SD, skew) is *worse* than
-   RV(mean, SD) — the irrelevant third coordinate injects estimation noise. So "just
+   matched too, RV3 is blind as well.
+3. **Adding a moment is not free.** On Set 1, RV3 is *worse* than
+   RV2 — the irrelevant third coordinate injects estimation noise. So "just
    add another moment" is not a costless patch; it is a bet on a guess.
 4. Therefore the honest split is **distribution-based (W₁, KS) vs moment-based (SMD,
    RV)**, not "W₁ beats everything." W₁-over-KS does **not** follow from this

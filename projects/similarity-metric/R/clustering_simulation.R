@@ -20,8 +20,10 @@
 # Giving each method the true k is generous to the moment-based baselines: it
 # hands them the answer to §4.6.1.3 (how many clusters) for free.
 #
-# Methods: W1, SMD, KS (pairwise); KOM = (mean,SD) and KOM3 = (mean,SD,skew)
-# representative-value Euclidean, standardized across the roster (Komiyama §4.6.1.1).
+# Methods: W1, SMD, KS (pairwise); RV1 = (mean) = Ch.4 as written, RV2 = (mean,SD)
+# and RV3 = (mean,SD,skew) = extensions Ch.4 does NOT propose, granted in advance.
+# All RV variants: coordinates standardized across the roster, Euclidean (§4.6.1.1).
+# See EXISTING_METHODS_AND_NOVELTY.md §3 -- do NOT call RV2/RV3 "Komiyama's method".
 #
 # Three worlds, matching Part 1 (one distributional family per world -- Tak's
 # realism requirement):
@@ -29,7 +31,7 @@
 #   Set 2 Log-normal  — groups differ in location / dispersion+shape
 #   Set 3 Mixture     — groups differ in SHAPE ONLY; every country has the same
 #                       mean (50) and SD (10). Representative-value coordinates are
-#                       identical across all 12 countries => KOM/KOM3 cannot form
+#                       identical across all 12 countries => RV cannot form
 #                       clusters at all (ARI ~ 0), while W1/KS still can.
 #
 # Outputs (results/):
@@ -73,7 +75,7 @@ dmat_pairwise <- function(S, f) {
 }
 # Komiyama representative-value distance: coordinates standardized ACROSS the
 # roster (N(0,1) per coordinate), then Euclidean between countries.
-dmat_komiyama <- function(S, coords) {
+dmat_rv <- function(S, coords) {
   M <- vapply(S, function(v) {
     mu <- mean(v); s <- sd(v)
     c(mean = mu, sd = s, skew = mean(((v - mu) / s)^3))[coords]
@@ -88,8 +90,9 @@ DMAT <- list(
   W1   = function(S) dmat_pairwise(S, w1_s),
   SMD  = function(S) dmat_pairwise(S, smd_s),
   KS   = function(S) dmat_pairwise(S, ks_s),
-  KOM  = function(S) dmat_komiyama(S, c("mean", "sd")),
-  KOM3 = function(S) dmat_komiyama(S, c("mean", "sd", "skew"))
+  RV1  = function(S) dmat_rv(S, "mean"),
+  RV2  = function(S) dmat_rv(S, c("mean", "sd")),
+  RV3  = function(S) dmat_rv(S, c("mean", "sd", "skew"))
 )
 
 # ---- adjusted Rand index (Hubert & Arabie 1985) -----------------------------
@@ -124,7 +127,7 @@ build_clust_set2 <- function() {   # Log-normal: reference / location / dispersi
 }
 # Set 3: every country mean 50, SD 10 -- groups differ ONLY in shape.
 # Group A: near-unimodal (d = 6). Group B: symmetric bimodal (d = 19, skew 0 too).
-# Group C: skewed (w = 0.85, d = 19). A vs B is invisible to KOM *and* KOM3.
+# Group C: skewed (w = 0.85, d = 19). A vs B is invisible to RV1/RV2 *and* RV3.
 mix_sampler <- function(w, d, mu = 50, v = 100) {
   s2 <- v - w * (1 - w) * d^2; stopifnot(s2 > 0); s <- sqrt(s2)
   m1 <- mu + (1 - w) * d; m2 <- mu - w * d
@@ -184,7 +187,7 @@ main <- function() {
   say("reps=%d  started=%s  R=%s", OPTS$reps, format(Sys.time()), R.version.string)
   say("algorithm held fixed across methods: hclust(average) + cutree(k=3); only the distance matrix varies")
 
-  methods <- c("W1", "SMD", "KS", "KOM", "KOM3")
+  methods <- c("W1", "SMD", "KS", "RV1", "RV2", "RV3")
   sets <- list(
     list(id = "Set1_Gaussian",  roster = build_clust_set1()),
     list(id = "Set2_LogNormal", roster = build_clust_set2()),
@@ -221,8 +224,8 @@ main <- function() {
       all_rows[[length(all_rows)+1]] <- res
       el <- as.numeric(difftime(Sys.time(), t0, units = "secs"))
       pick <- function(m) res$value[res$method == m & res$measure == "ari"]
-      say("[%s n=%d] seed=%d done (%.1fs)  ARI: W1=%.3f KS=%.3f KOM=%.3f KOM3=%.3f SMD=%.3f",
-          S$id, n, seed, el, pick("W1"), pick("KS"), pick("KOM"), pick("KOM3"), pick("SMD"))
+      say("[%s n=%d] seed=%d done (%.1fs)  ARI: W1=%.3f KS=%.3f RV1=%.3f RV2=%.3f RV3=%.3f SMD=%.3f",
+          S$id, n, seed, el, pick("W1"), pick("KS"), pick("RV1"), pick("RV2"), pick("RV3"), pick("SMD"))
       cfg_rows[[length(cfg_rows)+1]] <- data.frame(set = S$id, n = n, seed = seed,
         reps = OPTS$reps, k_true = k_true, linkage = "average",
         methods = paste(methods, collapse = "|"), elapsed_s = round(el, 1),

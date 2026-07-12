@@ -49,10 +49,13 @@ resolve_output_dir <- function() {
 }
 
 # ---- labels / levels -------------------------------------------------------
-# W1 first (hero); KOM/KOM3 are the Komiyama representative-value baselines.
-METHOD_LEVELS <- c("W1", "KS", "KOM", "KOM3", "SMD_log", "SMD")
+# W1 first (hero). RV1 = the representative-value distance of Komiyama Ch.4 as
+# written (one summary per effect modifier). RV2/RV3 are extensions the chapter
+# does NOT propose -- we grant them in advance as the natural reviewer rebuttal.
+# The labels say "RV", never "Komiyama", for RV2/RV3 (EXISTING_METHODS_AND_NOVELTY.md §3).
+METHOD_LEVELS <- c("W1", "KS", "RV1", "RV2", "RV3", "SMD_log", "SMD")
 METHOD_LABELS <- c(W1 = "W[1]", KS = "KS",
-                   KOM = "'RV (mean, SD)'", KOM3 = "'RV (mean, SD, skew)'",
+                   RV1 = "'RV: mean (Ch.4)'", RV2 = "'RV: +SD'", RV3 = "'RV: +SD, skew'",
                    SMD_log = "'SMD (log)'", SMD = "'SMD (raw)'")
 FAMILY_LABELS <- c(Set1_Gaussian  = "Set 1: Gaussian world",
                    Set2_LogNormal = "Set 2: Log-normal world",
@@ -67,15 +70,15 @@ TYPE_LABELS   <- c(location   = "Location",
 .pal <- function(palette = c("greyscale", "color")) {
   palette <- match.arg(palette)
   col <- if (palette == "color")
-    c(W1 = "#D52B1E", KS = "#0072B2", KOM = "#009E73", KOM3 = "#66C2A5",
+    c(W1 = "#D52B1E", KS = "#0072B2", RV1 = "#006D4F", RV2 = "#009E73", RV3 = "#66C2A5",
       SMD_log = "#E69F00", SMD = "#999999")
   else
-    c(W1 = "#1A1A1A", KS = "#4D4D4D", KOM = "#737373", KOM3 = "#969696",
+    c(W1 = "#1A1A1A", KS = "#4D4D4D", RV1 = "#666666", RV2 = "#8C8C8C", RV3 = "#A6A6A6",
       SMD_log = "#BDBDBD", SMD = "#D9D9D9")
   list(color = col,
-       linetype = c(W1 = "solid", KS = "dashed", KOM = "dotdash", KOM3 = "twodash",
-                    SMD_log = "longdash", SMD = "dotted"),
-       shape    = c(W1 = 16, KS = 17, KOM = 15, KOM3 = 18, SMD_log = 3, SMD = 4))
+       linetype = c(W1 = "solid", KS = "dashed", RV1 = "dotdash", RV2 = "twodash",
+                    RV3 = "longdash", SMD_log = "1272", SMD = "dotted"),
+       shape    = c(W1 = 16, KS = 17, RV1 = 15, RV2 = 18, RV3 = 8, SMD_log = 3, SMD = 4))
 }
 
 .theme <- theme_bw(base_size = 11) +
