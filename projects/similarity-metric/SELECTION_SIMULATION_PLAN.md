@@ -103,53 +103,62 @@ deliberately adversarial, and is labelled as such.
 
 | Element | Specification |
 |---|---|
-| **A — Aims** | Show W₁ recovers the true poolable set (countries sharing the anchor's EM distribution) from finite samples with higher precision and lower false-pooling than SMD and KS; characterise where each method succeeds/fails by discordance type, in **both** a symmetric (Gaussian) and a skewed (log-normal) world. |
-| **D — Data-generating mechanisms** | Two 10-country sets, each = 1 anchor + 9 candidates, all from one family (Set 1 Gaussian, Table 2a; Set 2 log-normal, Table 2b). EM sampled i.i.d.; sample size `n` per country varied. |
-| **E — Estimand / target** | The **true poolable set** S* = {candidates drawn from the anchor's population}, fixed **by construction** (metric-independent → non-circular). |
-| **M — Methods** | Selection rules ranking candidates by anchor-to-candidate distance (Table 3): W₁, SMD, KS. In Set 2, SMD is reported on both the raw and the log scale (log-transform is standard practice for skewed data). |
-| **P — Performance measures** | Threshold-free, ranking-based (Table 4): precision@k, false-pooling@k, AUC per discordance type. |
+| **A — Aims** | Establish **where each candidate metric is structurally blind**, and show that W₁ is the only one that is never blind. Specifically: (i) characterise each method's recovery of the true pooling structure by discordance type and sample size; (ii) show that representative-value / moment methods carry no information once the enumerated moments are matched (Set 3); (iii) show that KS carries no information once a rare mass is displaced far (Set 4); (iv) report every cell where W₁ is matched or beaten. **Not** aimed at showing W₁ is *right* — that needs a θ and is out of scope (see Framework). |
+| **D — Data-generating mechanisms** | Four worlds, one distributional family each (Tables 2a–2d). **Part 1**: 10 countries = 1 anchor + 9 candidates (3 true matches + 6 discordant). **Part 2**: 12 countries = 3 true groups of 4. EM sampled i.i.d.; sample size `n` per country varied. Set 1 Gaussian; Set 2 log-normal; Set 3 two-component Gaussian mixture (moment-matched); Set 4 three-component mixture (bulk + rare low/high extremes). |
+| **E — Estimand / target** | **Part 1**: the true poolable set S\* = {candidates drawn from the anchor's population}. **Part 2**: the true partition of the 12 countries into the populations they were drawn from. Both fixed **by construction** (metric-independent → non-circular). |
+| **M — Methods** | Distances (Table 3): W₁, KS, SMD (raw; + log in Set 2), and three representative-value variants — **RV1 = (mean)**, which is Komiyama Ch.4 as written, plus **RV2 = (mean, SD)** and **RV3 = (mean, SD, skew)**, which the chapter does **not** propose and which we grant in advance. **Part 1** ranks candidates by anchor-to-candidate distance and takes the k nearest. **Part 2** clusters the full pairwise distance matrix with the algorithm held fixed (average linkage, k = true number of groups) so that only the distance varies. |
+| **P — Performance measures** | Threshold-free (Table 4). **Part 1**: AUC per discordance type (primary — k-free and tie-fair), precision@k, false-pooling@k. **Part 2**: adjusted Rand index, exact-recovery rate. All with Monte Carlo SE; no method-vs-method significance tests. |
 
 ---
 
 ## Table 2a — Set 1, Gaussian world (anchor = N(50, 10²))
 
-| Country | EM distribution | Construction label (= truth) | Discordance type | Δmean | true W₁ | SMD-detectable? |
-|---|---|---|---|---|---|---|
-| A0 | N(50, 10²) | anchor | — | — | — | — |
-| G1–G3 | N(50, 10²) | **MATCH** (poolable) | — | 0 | 0.00 | — |
-| L1 | N(55, 10²) | discordant | location (0.5σ) | 5 | 5.00 | yes |
-| L2 | N(58, 10²) | discordant | location (0.8σ) | 8 | 8.00 | yes |
-| V1 | N(50, 16²) | discordant | scale (1.6×) | 0 | 4.79 | **no** |
-| V2 | N(50, 20²) | discordant | scale (2.0×) | 0 | 7.98 | **no** |
-| X1 | N(56, 14²) | discordant | location + scale | 6 | 6.23 | partial |
-| X2 | N(54, 13²) | discordant | location + scale (mild) | 4 | 4.4 | partial |
+All true W₁ / KS below are the values the code actually produces (numerical integration
+of |F_A − F_B|; grid sup for KS), verified by `R/validate_plan.R`.
+
+| Country | EM distribution | Construction label (= truth) | Discordance type | Δmean | true W₁ | true KS | SMD-detectable? |
+|---|---|---|---|---|---|---|---|
+| A0 | N(50, 10²) | anchor | — | — | — | — | — |
+| G1–G3 | N(50, 10²) | **MATCH** (poolable) | — | 0 | 0.000 | 0.000 | — |
+| L1 | N(55, 10²) | discordant | location (0.5σ) | 5 | 5.000 | 0.197 | yes |
+| L2 | N(58, 10²) | discordant | location (0.8σ) | 8 | 8.000 | 0.311 | yes |
+| V1 | N(50, 16²) | discordant | scale (1.6×) | **0** | 4.787 | 0.112 | **no** |
+| V2 | N(50, 20²) | discordant | scale (2.0×) | **0** | 7.979 | 0.161 | **no** |
+| X1 | N(56, 14²) | discordant | location + scale | 6 | 6.234 | 0.231 | partial |
+| X2 | N(54, 13²) | discordant | location + scale (mild) | 4 | 4.254 | 0.167 | partial |
 
 Symmetric family → no shape/skew discordance (Gaussians cannot skew); that role
-belongs to Set 2. SMD's blind spot here is **scale** (V1, V2).
+belongs to Set 2. SMD's blind spot here is **scale** (V1, V2), which share the anchor's
+mean exactly. RV1 (Ch.4 as written) inherits that blind spot — see Reading §1.
 
 ---
 
 ## Table 2b — Set 2, Skewed world (anchor = LogN, mean 50, CV 0.40; sd 20, median 46.4, skew 1.26)
 
-| Country | EM distribution | Construction label (= truth) | Discordance type | Δmean | true W₁ | SMD (raw / log) detects? |
-|---|---|---|---|---|---|---|
-| A0 | LogN(mean 50, CV 0.40) | anchor | — | — | — | — |
-| G1–G3 | LogN(mean 50, CV 0.40) | **MATCH** (poolable) | — | 0 | 0.00 | — |
-| Lm1 | LogN(mean 55, CV 0.40) | discordant | location (median shift) | 5 | 5.00 | yes / yes |
-| Lm2 | LogN(mean 58, CV 0.40) | discordant | location (median shift) | 8 | 8.00 | yes / yes |
-| Dp1 | LogN(mean 50, CV 0.60) | discordant | dispersion + shape | 0 | 6.74 | **no** / weak (~0.17) |
-| Dp2 | LogN(mean 50, CV 0.85) | discordant | dispersion + shape | 0 | 13.91 | **no** / weak |
-| Cx  | LogN(mean 55, CV 0.65) | discordant | location + dispersion | 5 | 9.60 | partial / partial |
+SD and skew below are **analytic**, from (mean *m*, CV *c*): SD = *mc*, skew = (*c*² + 3)*c*.
+They are not sample estimates — the log-normal's heavy tail makes the sample skewness
+noticeably unstable even at 10⁶ draws, so the plan carries the exact values.
+
+| Country | EM distribution | Construction label (= truth) | Discordance type | Δmean | SD | skew | true W₁ | true KS | SMD (raw / log) detects? |
+|---|---|---|---|---|---|---|---|---|---|
+| A0 | LogN(mean 50, CV 0.40) | anchor | — | — | 20.00 | 1.264 | — | — | — |
+| G1–G3 | LogN(mean 50, CV 0.40) | **MATCH** (poolable) | — | 0 | 20.00 | 1.264 | 0.000 | 0.000 | — |
+| Lm1 | LogN(mean 55, CV 0.40) | discordant | location | 5 | 22.00 | 1.264 | 5.000 | 0.098 | yes / yes |
+| Lm2 | LogN(mean 58, CV 0.40) | discordant | location | 8 | 23.20 | 1.264 | 8.000 | 0.153 | yes / yes |
+| Dp1 | LogN(mean 50, CV 0.60) | discordant | dispersion + shape | **0** | 30.00 | 2.016 | 6.744 | 0.132 | **no** / weak |
+| Dp2 | LogN(mean 50, CV 0.85) | discordant | dispersion + shape | **0** | 42.50 | 3.164 | 13.950 | 0.245 | **no** / weak |
+| Cx1 | LogN(mean 55, CV 0.65) | discordant | location + dispersion | 5 | 35.75 | 2.225 | 9.603 | 0.106 | partial / partial |
+| Cx2 | LogN(mean 53, CV 0.55) | discordant | location + dispersion (mild) | 3 | 29.15 | 1.816 | 5.821 | 0.070 | partial / partial |
 
 Constructed by fixing the mean and varying CV: raising CV at fixed mean lowers the
 median and raises skew (Dp1 skew 2.02, Dp2 skew 3.16), so raw SMD (Δmean = 0) is
-blind. **Log-scale SMD** picks up only a tiny residual mean shift (~0.17 for Dp1) and
-stays blind to the dispersion → shows the failure is structural, not a missing
-transform. W₁ and KS resolve all discordance types.
+blind. **Log-scale SMD** picks up only a tiny residual mean shift and stays blind to the
+dispersion → the failure is structural, not a missing transform. W₁ and KS resolve all
+discordance types here.
 
 ⚠️ **But note what a *fair* RV baseline does here.** Raising CV at fixed mean also
 moves the SD (20 → 30 → 42.5). RV2 separates Dp1/Dp2 on the SD axis alone.
-Set 2 defeats *SMD*, not Komiyama. Hence Set 3.
+Set 2 defeats *SMD* and *RV1*, not RV2. Hence Set 3.
 
 ---
 
@@ -322,18 +331,26 @@ adding replications, so effect sizes with MC SE are the honest summary.
 
 ## Table 5 — Factors and simulation controls
 
+Every row below is **machine-checked against the code** by `R/validate_plan.R` — if the
+plan and the implementation disagree, that script fails. The plan is the source of
+truth; the code must match it, not the other way round.
+
 | Item | Setting |
 |---|---|
-| Scenario set (family) | Set 1 Gaussian, Set 2 log-normal — reported separately |
+| Scenario sets (families) | **Four**, reported separately: Set 1 Gaussian · Set 2 log-normal · Set 3 mixture (moment-matched) · Set 4 extremes (rare displaced mass) |
+| Task formulations | **Part 1** anchor-centric selection (10 countries: 1 anchor + 9 candidates, 3 true matches) · **Part 2** pooled-region formation by clustering (12 countries, 3 true groups of 4) |
 | Sample size per country `n` | {25, 50, 75, 100} (equal across countries; small-n emphasis — realistic regional subgroups) |
-| Discordance types | Set 1: location, scale, combined · Set 2: location, dispersion/shape, combined — all present, **each reported separately** |
-| Monte Carlo repetitions | 10{,}000 per configuration (proportion MC SE ≤ 0.005; reported per estimate) |
-| Tie-breaking | ties in a method's distances broken at **random** under the cell seed, not by roster order (matches are listed first, so roster-order ties would spuriously flatter the correct answer — bites KS at small n where its statistic is discrete) |
+| Methods | W₁ · KS · SMD (raw) · **RV1 (mean) = Ch.4 as written** · RV2 (mean, SD) · RV3 (mean, SD, skew). Set 2 additionally reports SMD on the log scale. |
+| Discordance types (Part 1) | Set 1: location, scale, combined · Set 2: location, shape/dispersion, combined · Set 3: shape_sym, shape_skew, combined · Set 4: sym_severity, sym_prevalence, asym_severity, bulk_shift — **each reported separately** |
+| Monte Carlo repetitions | **Part 1: 10,000** per cell · **Part 2: 5,000** per cell. Achieved MC SE (reported per estimate): **Part 1 ≤ 0.005** (max 0.0050) · **Part 2 ARI ≤ 0.004** (max 0.0039). The one exception is Part 2's **exact-recovery rate**, a proportion whose SE at 5,000 reps peaks at √(0.25/5000) = **0.0071** near p = 0.5 (observed max 0.0070) — a structural bound, not a deficiency. All headline claims rest on ARI and AUC, whose SEs are within 0.005; exact recovery is reported as a secondary, intuitive measure. |
+| Clustering algorithm (Part 2) | `hclust(average linkage)` + `cutree(k = true k)`, **held fixed across methods**; only the distance matrix is swapped. Handing every method the true `k` is deliberately generous to the baselines. |
+| Tie-breaking (Part 1) | ties in a method's distances broken at **random** under the cell seed, not by roster order (matches are listed first, so roster-order ties would spuriously flatter the correct answer — bites KS at small n where its statistic is discrete) |
 | Seeding / reproducibility | per-cell seed set inside `run_cell`, serial execution ⇒ **bit-reproducible** (contrast: the per-EM W₁ operating-characteristic sim is aggregate-reproducible only, due to `parLapplyLB` + per-worker RNG) |
-| Dependencies | pure base R (`rnorm`/`rlnorm`/`sort`/`ks.test`/`integrate`); W₁ estimator equals the canonical integral-of-\|F₁−F₂\| to machine precision |
-| True distributional references | analytic (numerical integration of \|F_A − F_B\|; grid sup for KS) |
-| Fixed | anchor distribution; roster composition |
-| Full-study extensions | multiple anchors; vary \|S*\|; add "near-match" countries (within-tolerance) for graded discrimination |
+| Dependencies | pure base R (`rnorm`/`rlnorm`/`rbinom`/`rmultinom`/`sort`/`ks.test`/`integrate`/`hclust`); W₁ estimator equals the canonical integral-of-\|F₁−F₂\| to machine precision |
+| True distributional references | analytic (numerical integration of \|F_A − F_B\|; grid sup for KS). Set 4 additionally has **closed forms** for W₁ and KS, verified against the integration to 4 dp. |
+| Standardization asymmetry (deliberate) | RV is roster-standardized (intrinsic to Ch.4's recipe — it is what makes different EMs commensurable); KS is bounded in [0,1] by construction; W₁ is left on the EM's raw clinical scale (the quantity Δ_max calibrates). Rescaling W₁ to "match" would destroy what the theory is about. |
+| Fixed | anchor distribution; roster composition; the σ constants within each world |
+| Full-study extensions (not done) | multiple anchors; vary \|S\*\|; "near-match" countries for graded discrimination; **Part 3 effect-tracking** (posit an explicit Lipschitz θ, truth = \|E_A θ − E_B θ\|, measure each metric's agreement and W₁'s bound coverage — must include a saturating θ, which W₁ loses, or KR duality makes it circular) |
 
 ---
 
@@ -434,6 +451,27 @@ chapter does not propose.
 RV1 and RV2 sit at chance in **every** Set-3 cell — their coordinates are identical for
 all ten countries. RV3 rescues the skewed types (0.65) but is *still* at chance on the
 symmetric-bimodal type (0.434): the third moment matches too.
+
+### Does the method LEARN? — ARI gain from n = 25 to n = 100 (Part 2)
+
+The cleanest evidence in the study, because it separates **identification failure** from
+**power failure**. A method that is merely under-powered improves as data accumulates. A
+method that is structurally blind does not move at all.
+
+| Set | W₁ | KS | RV1 | RV2 | RV3 | SMD |
+|---|---|---|---|---|---|---|
+| 1 Gaussian | +0.390 | +0.459 | +0.119 | +0.323 | +0.233 | +0.103 |
+| 2 Log-normal | +0.310 | +0.416 | +0.193 | +0.341 | +0.262 | +0.184 |
+| **3 Mixture** | +0.258 | +0.215 | **+0.001** | **+0.001** | +0.076 | **+0.001** |
+| **4 Extremes** | +0.244 | **+0.003** | **+0.005** | +0.127 | +0.066 | **+0.001** |
+
+In Set 3, quadrupling the sample moves RV1, RV2 and SMD by **0.001**. In Set 4 it moves
+KS by **0.003**. They are not short of data — **there is no signal in their distance
+matrices to find**, and there would be none at n = ∞ either. W₁ gains at least +0.24 in
+every world. The same signature appears in Part 1's AUC (Set 4: KS 0.500 → 0.511 while
+W₁ goes 0.837 → 0.972; Set 1 scale: RV1 0.623 → 0.619 while W₁ goes 0.932 → 0.997).
+
+**This is what licenses the word "blind" instead of "underpowered".**
 
 ### Reading
 
