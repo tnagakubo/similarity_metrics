@@ -167,6 +167,27 @@ FACETS_4   <- c("Set4_Extremes|sym_severity", "Set4_Extremes|sym_prevalence",
 fig_auc_by_type <- function(df, palette = "greyscale") .fig_auc(df, FACETS_123, palette, 3)
 fig_auc_set4    <- function(df, palette = "greyscale") .fig_auc(df, FACETS_4,   palette, 4)
 
+# ---- Figure 2c: clinical harm vs n (Part 1, lens A) -------------------------
+# E[max true W1 among the countries the method chose to pool], in EM units.
+# Multiply by L_clinical to read the y-axis as Delta_max: the worst-case regional
+# treatment-effect difference the selected pool still admits, over EVERY Lipschitz
+# theta (KR bound -- theta-free, so this does not reopen the rejected Part 3).
+# 0 = perfect, because true matches have true W1 = 0 by construction.
+fig_harm <- function(df, palette = "greyscale") {
+  pal <- .pal(palette)
+  d <- df %>% filter(measure == "harm_maxW1") %>% droplevels()
+  ggplot(d, aes(n, value, color = method, linetype = method, shape = method, group = method)) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "grey60", linewidth = 0.4) +
+    geom_line(linewidth = 0.5) + geom_point(size = 1.8) +
+    facet_wrap(~ family, scales = "free_y") +
+    scale_x_continuous(breaks = c(25, 50, 75, 100)) +
+    .method_scales(pal, levels(d$method)) +
+    labs(x = "n per country",
+         y = expression(paste("E[max true ", W[1], " in chosen pool]  (EM units; ",
+                              times, " ", L[clinical], " = ", Delta[max], ")"))) +
+    .theme + guides(color = guide_legend(nrow = 1))
+}
+
 # ---- Figure 3: adjusted Rand index vs n (Part 2) ---------------------------
 fig_clustering_ari <- function(df, palette = "greyscale") {
   pal <- .pal(palette)
@@ -193,6 +214,7 @@ generate_all_figures <- function(output_dir = resolve_output_dir()) {
     list(fn = fig_false_pooling,  df = sel, name = "fig_selection_false_pooling", w = 7.2, h = 5.2),
     list(fn = fig_auc_by_type,    df = sel, name = "fig_selection_auc_by_type",   w = 7.2, h = 6.4),
     list(fn = fig_auc_set4,       df = sel, name = "fig_selection_auc_set4",      w = 7.2, h = 3.0),
+    list(fn = fig_harm,           df = sel, name = "fig_selection_harm",          w = 7.2, h = 5.4),
     list(fn = fig_clustering_ari, df = clu, name = "fig_clustering_ari",          w = 7.2, h = 5.4))
   for (s in specs) for (pal in c("greyscale", "color")) {
     suffix <- if (pal == "color") "_color" else ""

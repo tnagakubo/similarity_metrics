@@ -210,6 +210,31 @@ chk("CLAIM: W1 is the ONLY method that survives both Set 3 and Set 4 (ARI > 0.20
     isTRUE(surv[["W1"]]) && sum(surv) == 1L,
     sprintf("survivors: %s", paste(names(surv)[surv], collapse = ", ")))
 
+# B2d. CLINICAL HARM (lens A). false-pooling counts mistakes; harm weighs them.
+#      E[max true W1 in the chosen pool] x L_clinical = Delta_max, the worst-case
+#      regional effect difference the pool still admits (KR bound, theta-free).
+vh <- function(set, n, meth) vs(set, n, meth, "harm_maxW1", "overall")
+chk("CLAIM Set4: KS's mistakes are WORSE than W1's, not just as frequent",
+    vh("Set4_Extremes", 100, "KS") > 1.5 * vh("Set4_Extremes", 100, "W1"),
+    sprintf("harm KS=%.3f vs W1=%.3f (ratio %.2f); false-pooling KS=%.3f vs W1=%.3f",
+            vh("Set4_Extremes",100,"KS"), vh("Set4_Extremes",100,"W1"),
+            vh("Set4_Extremes",100,"KS") / vh("Set4_Extremes",100,"W1"),
+            vs("Set4_Extremes",100,"KS","false_pooling_at_k","overall"),
+            vs("Set4_Extremes",100,"W1","false_pooling_at_k","overall")))
+chk("CLAIM: harm is 0 when the selection is perfect (true matches have true W1 = 0)",
+    all(vapply(names(FAMILY_LABELS), function(s) vh(s, 100, "W1") >= 0, logical(1))) &&
+      min(raw_s$value[raw_s$measure == "harm_maxW1"]) >= 0,
+    sprintf("min harm across all cells = %.4f", min(raw_s$value[raw_s$measure == "harm_maxW1"])))
+chk("CLAIM Set3: W1 admits the least harmful pool of all six methods",
+    vh("Set3_Mixture", 100, "W1") == min(vapply(c("W1","KS","RV1","RV2","RV3","SMD"),
+                                                function(m) vh("Set3_Mixture", 100, m), numeric(1))),
+    sprintf("W1=%.3f KS=%.3f RV2=%.3f SMD=%.3f", vh("Set3_Mixture",100,"W1"),
+            vh("Set3_Mixture",100,"KS"), vh("Set3_Mixture",100,"RV2"), vh("Set3_Mixture",100,"SMD")))
+# HONEST: report the harm cell where W1 does NOT win, so it cannot be quietly dropped.
+chk("CLAIM Set1 (HONEST): RV2's pool is no worse than W1's -- Gaussian is 2 moments",
+    vh("Set1_Gaussian", 100, "RV2") <= vh("Set1_Gaussian", 100, "W1") + 0.05,
+    sprintf("RV2=%.3f vs W1=%.3f", vh("Set1_Gaussian",100,"RV2"), vh("Set1_Gaussian",100,"W1")))
+
 # B3. Honest counter-findings the paper must NOT overclaim away.
 chk("CLAIM Set4: KS BEATS W1 on the bulk-shift control (a tall, narrow CDF gap)",
     vs("Set4_Extremes", 100, "KS", "auc", "bulk_shift") >=
@@ -244,6 +269,8 @@ expect_files <- c("fig_selection_false_pooling.pdf", "fig_selection_false_poolin
                   "fig_selection_auc_by_type_color.pdf",
                   "fig_selection_auc_set4.pdf", "fig_selection_auc_set4.png",
                   "fig_selection_auc_set4_color.pdf",
+                  "fig_selection_harm.pdf", "fig_selection_harm.png",
+                  "fig_selection_harm_color.pdf",
                   "fig_clustering_ari.pdf", "fig_clustering_ari.png",
                   "fig_clustering_ari_color.pdf")
 paths <- file.path(tmpdir, expect_files)

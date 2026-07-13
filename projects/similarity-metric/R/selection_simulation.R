@@ -251,7 +251,7 @@ true_w1 <- function(a, b, lo, hi) integrate(function(t) abs(a$cdf(t) - b$cdf(t))
 true_ks <- function(a, b, lo, hi) { g <- seq(lo, hi, length.out = 200001L); max(abs(a$cdf(g) - b$cdf(g))) }
 
 # ---- one cell: one (roster, methods, n) over n_reps ------------------------
-run_cell <- function(roster, methods, n_per, n_reps, seed) {
+run_cell <- function(roster, methods, n_per, n_reps, seed, tw1) {
   set.seed(seed)
   cand_ids   <- setdiff(names(roster), "A0")
   roles      <- vapply(cand_ids, function(id) roster[[id]]$role, character(1))
@@ -259,9 +259,16 @@ run_cell <- function(roster, methods, n_per, n_reps, seed) {
   k_true     <- sum(true_match)
   types      <- setdiff(unique(roles), "match")
   nc         <- length(cand_ids)
+  stopifnot(all(cand_ids %in% names(tw1)))   # tw1 = TRUE anchor->candidate W1
 
   # accumulators (sum & sumsq per rep) for mean + MC SE
-  acc <- function() list(prec = 0, prec2 = 0, fp = 0, fp2 = 0,
+  # 'harm' = max TRUE W1 among the countries the method chose to pool. By KR duality
+  # this is exactly the worst-case regional treatment-effect difference the pool still
+  # admits, divided by L_clinical: Delta_max = L * harm. It is theta-FREE (a bound over
+  # ALL Lipschitz theta), so it does not reopen the rejected Part 3 -- see the plan,
+  # "Clinical interpretation WITHIN this scope". A perfect selection gives harm = 0,
+  # because true matches have true W1 = 0 by construction.
+  acc <- function() list(prec = 0, prec2 = 0, fp = 0, fp2 = 0, harm = 0, harm2 = 0,
                          auc = setNames(numeric(length(types)), types),
                          auc2 = setNames(numeric(length(types)), types))
   A <- setNames(lapply(methods, function(m) acc()), methods)
@@ -275,8 +282,10 @@ run_cell <- function(roster, methods, n_per, n_reps, seed) {
       sel <- cand_ids[order(d, jit)][seq_len(k_true)]     # RANDOM tie-break
       ncm <- sum(true_match[sel])
       p <- ncm / k_true; f <- as.numeric(ncm < k_true)
+      h <- max(tw1[sel])                                  # worst-case bound admitted
       A[[m]]$prec <- A[[m]]$prec + p; A[[m]]$prec2 <- A[[m]]$prec2 + p*p
       A[[m]]$fp   <- A[[m]]$fp   + f; A[[m]]$fp2   <- A[[m]]$fp2   + f*f
+      A[[m]]$harm <- A[[m]]$harm + h; A[[m]]$harm2 <- A[[m]]$harm2 + h*h
       dm <- d[true_match]
       for (ty in types) {
         av <- auc_pairs(dm, d[roles == ty])
@@ -291,10 +300,15 @@ run_cell <- function(roster, methods, n_per, n_reps, seed) {
   rows <- list()
   for (m in methods) {
     pr <- meanse(A[[m]]$prec, A[[m]]$prec2); fp <- meanse(A[[m]]$fp, A[[m]]$fp2)
+    hm <- meanse(A[[m]]$harm, A[[m]]$harm2)
     rows[[length(rows)+1]] <- data.frame(method=m, measure="precision_at_k", type="overall",
                                          value=pr$mu, mc_se=pr$se, stringsAsFactors=FALSE)
     rows[[length(rows)+1]] <- data.frame(method=m, measure="false_pooling_at_k", type="overall",
                                          value=fp$mu, mc_se=fp$se, stringsAsFactors=FALSE)
+    # E[max true W1 in the chosen pool], in EM units. Multiply by L_clinical to read it
+    # as Delta_max -- the worst-case regional treatment-effect difference the pool admits.
+    rows[[length(rows)+1]] <- data.frame(method=m, measure="harm_maxW1", type="overall",
+                                         value=hm$mu, mc_se=hm$se, stringsAsFactors=FALSE)
     for (ty in types) {
       au <- meanse(A[[m]]$auc[ty], A[[m]]$auc2[ty])
       rows[[length(rows)+1]] <- data.frame(method=m, measure="auc", type=ty,
@@ -351,11 +365,17 @@ main <- function() {
     say("\n-- %s truth structure (moments from 1e6 draws) --", S$id)
     say(paste(capture.output(print(tr, row.names = FALSE)), collapse = "\n"))
 
+    # TRUE anchor->candidate W1, reused by run_cell as the clinical-harm yardstick.
+    cand_ids <- setdiff(ids_all, "A0")
+    TW1 <- setNames(tr$true_W1[match(cand_ids, tr$country)], cand_ids)
+    stopifnot(!anyNA(TW1), all(TW1[vapply(cand_ids, function(i) S$roster[[i]]$role,
+                                          character(1)) == "match"] == 0))
+
     for (n in n_grid) {
       cell <- cell + 1L
       seed <- base_seed + 1000L * cell
       t0 <- Sys.time()
-      res <- run_cell(S$roster, S$methods, n_per = n, n_reps = OPTS$reps, seed = seed)
+      res <- run_cell(S$roster, S$methods, n_per = n, n_reps = OPTS$reps, seed = seed, tw1 = TW1)
       res <- cbind(set = S$id, n = n, res)
       all_rows[[length(all_rows)+1]] <- res
       el <- as.numeric(difftime(Sys.time(), t0, units = "secs"))

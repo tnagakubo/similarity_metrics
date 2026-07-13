@@ -84,6 +84,49 @@ KR bound remains **valid but loose**, so W₁ over-flags. That is a *conservativ
 it errs toward not pooling — and in a regulatory setting a conservative bound is the
 intended behaviour, not a defect.
 
+### Clinical interpretation WITHIN this scope — the bound, not a simulated effect
+
+> ⚠️ **Read this before concluding that the harm/threshold analyses below contradict
+> "no θ". They do not — they are its dual.** (Tak, 2026-07-13: 「シミュレーションでの
+> 選択には臨床的解釈が含められないかね」.)
+
+Rejecting Part 3 rejects **positing a θ and simulating outcomes under it**. It does not
+reject clinical interpretation. Δ_max = L · W₁ is **θ-free**: by Kantorovich–Rubinstein
+duality it is the **worst-case** regional treatment-effect difference **over every
+1-Lipschitz θ**, and it is a deterministic function of W₁ alone. Nothing is simulated,
+nothing is assumed about the dose–response shape.
+
+|  | Part 3 (rejected) | Clinical lens used here |
+|---|---|---|
+| θ | **posit one** shape | quantify over **all** Lipschitz θ |
+| status | a simulated outcome | a **theorem** (KR duality) |
+| circularity | W₁ optimal by construction | none — the bound is not a metric being scored |
+
+So: **the same theorem, invoked in the opposite direction.** Part 3 would have picked a θ
+and asked "does W₁ track it?" (circular). Here we ask "given the selection this method
+made, what is the *largest* regional effect difference that could still be hiding in it,
+whatever θ turns out to be?" That question has an exact answer, L · (the true W₁ of the
+worst region admitted), and it is the question a regulator actually asks.
+
+This is therefore an **extension of the Q_metric scope, not a reversal of it** — it
+operationalizes contribution (b), which the ranking-based analyses never touch.
+
+**Why this was missing, and why it matters.** Parts 1 and 2 as originally built score
+methods by *ranking* (AUC, precision@k) and hand every method the true k / true cluster
+count. That was deliberate — distances live on incommensurable scales, so a shared
+threshold looked unfair. But it quietly **removes the very thing this paper contributes**:
+W₁ is the only distance for which a threshold can be *derived from clinical input*
+(W₁ ≤ Δ_clin / L). KS is a dimensionless [0,1] statistic with no principle for choosing
+"close enough"; SMD's 0.1 is a convention, not a calibration. Scoring only by rank hands
+the competitors an oracle they would not have in practice, and never tests the
+calibration. Two analyses close that gap:
+
+- **(A) Clinical-harm lens** (§ Harm below) — keep the ranking rule, but additionally
+  report the **worst-case bound implied by the pool each method actually chose**.
+- **(B) Calibrated-threshold selection** (§ Threshold below) — drop the oracle-k and
+  select by a threshold, testing whether a threshold calibrated in one world **transfers**
+  to another. W₁'s does (it lives on the EM scale); a [0,1] statistic's cannot.
+
 **Design principle (Tak, realism):** All countries within a scenario set share the
 **same distributional family** — a single endpoint cannot be Gaussian in nine
 regions and log-normal in one. Four scenario sets, each aimed at a specific
@@ -336,6 +379,7 @@ paper's theory is about.
 | **AUC per discordance type** | P(a true-match distance < a type-t discordant distance) | 1 = perfect, 0.5 = blind | isolates which discordance each method resolves |
 | **adjusted Rand index** (Part 2) | Hubert–Arabie ARI between the recovered partition and the construction partition | 1 = exact, 0 = chance | recovery of the pooled-region structure |
 | **exact recovery** (Part 2) | P(ARI = 1) | higher better | how often the whole partition is right |
+| **clinical harm** — E[max true W₁ in the chosen pool] | for each replicate, the **largest true** anchor-to-candidate W₁ among the countries the method selected; averaged over replicates. In EM units; multiply by L_clinical to read it as **Δ_max** | 0 = perfect (true matches have true W₁ = 0 by construction); lower better | **how bad the mistakes are, not just how many.** By KR duality this is exactly the worst-case regional treatment-effect difference the pool still admits, over *every* Lipschitz θ — see "Clinical interpretation WITHIN this scope" |
 
 Metrics live on incommensurable scales, so **only within-method rankings are used** —
 no shared or per-metric distance threshold.
@@ -479,6 +523,52 @@ chapter does not propose.
 RV1 and RV2 sit at chance in **every** Set-3 cell — their coordinates are identical for
 all ten countries. RV3 rescues the skewed types (0.65) but is *still* at chance on the
 symmetric-bimodal type (0.434): the third moment matches too.
+
+### Harm — how bad are the mistakes? (Part 1, clinical lens (A))
+
+false-pooling@k counts errors; it does not weigh them. Admitting a country whose true
+W₁ is 6.0 is three times worse than admitting one at 2.0 — the Kantorovich–Rubinstein
+bound says so exactly. **E[max true W₁ in the chosen pool]** weighs them. Multiply by
+L_clinical and it *is* Δ_max: the worst-case regional treatment-effect difference the
+selected pool still admits, whatever the dose–response turns out to be.
+
+Reported **alongside** AUC/ARI, never instead of them (the metric-independent measures
+remain the primary evidence; this one is expressed on the EM scale and so must not be
+the only yardstick). Numbers filled in from the production run.
+
+**The cell this measure was built for is Set 4.** KS ranks the 2-unit bulk shift
+(true W₁ **2.0**) as *more* discordant than pushing 10 % of patients 60 units into the
+extremes (true W₁ **6.0**). So when KS errs, it errs *toward admitting the worse
+country*. false-pooling@k sees one mistake either way; harm sees the factor of three.
+
+**Production, n = 100** (EM units; × L_clinical to read as Δ_max):
+
+| Set | W₁ | KS | RV1 (Ch.4) | RV2 | RV3 | SMD |
+|---|---|---|---|---|---|---|
+| 1 Gaussian | 0.40 | 1.62 | 5.17 | **0.34** | 3.16 | 6.12 |
+| 2 Log-normal | **2.58** | 4.61 | 8.74 | 3.41 | 4.65 | 10.06 |
+| 3 Mixture | **0.99** | 1.05 | 1.85 | 1.96 | 2.11 | 1.85 |
+| 4 Extremes | **2.00** | **4.27** | 4.08 | 2.50 | 2.68 | 4.48 |
+
+**The headline is the Set-4 comparison against the binary measure.**
+
+| Set 4, n = 100 | W₁ | KS | ratio |
+|---|---|---|---|
+| false-pooling@k *(counts mistakes)* | 0.718 | 0.971 | **1.35×** |
+| harm = E[max true W₁] *(weighs them)* | 2.00 | 4.27 | **2.14×** |
+
+The gap **widens** when the errors are weighed: KS is not merely more often wrong, it is
+wrong *in a costlier direction*. Reading it clinically: **the pool KS selects admits
+roughly twice the worst-case regional treatment-effect difference that W₁'s does.**
+
+W₁ has the least harmful pool in Sets 2, 3 and 4. **In Set 1 it does not** — RV2 (our own
+extension, *not* Ch.4) edges it, 0.34 vs 0.40, exactly as it should when the family is
+two-parameter. Reported, and asserted in `validate_figures.R`.
+
+⚠️ **Reported alongside AUC/ARI, never instead of them.** harm is expressed on W₁'s own
+scale, so making it the sole yardstick would invite the fair objection that every method
+was scored by W₁'s ruler. The metric-independent measures remain the primary evidence;
+harm is the second lens, and it is the one that speaks the regulator's language.
 
 ### Does the method LEARN? — ARI gain from n = 25 to n = 100 (Part 2)
 
