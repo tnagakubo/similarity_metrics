@@ -65,11 +65,31 @@ old_rate <- mean(replicate(200, { d <- c(A=1.0, B=1.0); which(names(sort(d))[1] 
 chk("OLD stable-sort would be 100% biased (documents the fixed bug)", approx(old_rate, 1))
 
 # 9. run_cell bit-reproducibility (same seed) & structural sanity ------------
-r1 <- run_cell(build_set1(), c("W1","SMD","KS"), n_per = 40L, n_reps = 300L, seed = 123L)
-r2 <- run_cell(build_set1(), c("W1","SMD","KS"), n_per = 40L, n_reps = 300L, seed = 123L)
+# run_cell now also needs tw1 = the TRUE anchor->candidate W1 (the clinical-harm
+# yardstick). Build it the same way main() does, by integrating |F_A - F_B|.
+S1  <- build_set1()
+CID <- setdiff(names(S1), "A0")
+TW1 <- vapply(CID, function(id) true_w1(S1$A0, S1[[id]], -80, 250), numeric(1))
+chk("true W1 = 0 for the true matches, > 0 for every discordant country",
+    all(TW1[vapply(CID, function(i) S1[[i]]$role, character(1)) == "match"] == 0) &&
+      all(TW1[vapply(CID, function(i) S1[[i]]$role, character(1)) != "match"] > 0),
+    "=> a perfect selection scores harm = 0, so the harm scale is anchored at truth")
+
+r1 <- run_cell(S1, c("W1","SMD","KS"), n_per = 40L, n_reps = 300L, seed = 123L, tw1 = TW1)
+r2 <- run_cell(S1, c("W1","SMD","KS"), n_per = 40L, n_reps = 300L, seed = 123L, tw1 = TW1)
 chk("run_cell reproducible (same seed identical)", identical(r1, r2))
-chk("all values in [0,1]", all(r1$value >= 0 & r1$value <= 1))
-chk("all mc_se >= 0 and small", all(r1$mc_se >= 0 & r1$mc_se < 0.1))
+# AUC / precision / false-pooling are in [0,1]; harm is in EM units, so exclude it.
+u <- subset(r1, measure != "harm_maxW1")
+chk("all unit-free values in [0,1]", all(u$value >= 0 & u$value <= 1))
+chk("all mc_se >= 0 and small (unit-free measures)", all(u$mc_se >= 0 & u$mc_se < 0.1))
+h <- subset(r1, measure == "harm_maxW1")
+chk("harm is within the range of true W1 actually present in the roster",
+    all(h$value >= 0) && all(h$value <= max(TW1)),
+    sprintf("harm in [%.2f, %.2f]; max true W1 in roster = %.2f",
+            min(h$value), max(h$value), max(TW1)))
+chk("harm ranks W1 no worse than SMD on this Gaussian roster (SMD is scale-blind)",
+    h$value[h$method == "W1"] <= h$value[h$method == "SMD"],
+    sprintf("W1=%.2f SMD=%.2f", h$value[h$method=="W1"], h$value[h$method=="SMD"]))
 # W1 should beat SMD on scale-type AUC (structural, not a tuned claim)
 w1_scale  <- r1$value[r1$method=="W1"  & r1$measure=="auc" & r1$type=="scale"]
 smd_scale <- r1$value[r1$method=="SMD" & r1$measure=="auc" & r1$type=="scale"]

@@ -226,8 +226,30 @@ chk("Reproducibility: every cell has a distinct seed",
 ## explicitly rather than pretending the bound holds everywhere.
 sum_s <- read.csv(.here("../results/selection_sim_summary.csv"),  stringsAsFactors = FALSE)
 sum_c <- read.csv(.here("../results/clustering_sim_summary.csv"), stringsAsFactors = FALSE)
-chk("Table 5: Part 1 MC SE <= 0.005 everywhere",
-    max(sum_s$mc_se) <= 0.005, sprintf("max %.5f", max(sum_s$mc_se)))
+
+## Precision is judged PER MEASURE TYPE, because the measures are not the same kind of
+## quantity. AUC / precision / false-pooling are unit-free and live in [0,1], so an
+## absolute bound (0.005) is the right statement. `harm` is E[max true W1] in EM UNITS
+## (values 0.3-10), so demanding an absolute SE of 0.005 would be a category error --
+## it is judged on RELATIVE precision instead. This is not a relaxed bound; it is the
+## bound that means anything for a scale quantity.
+UNITFREE <- c("precision_at_k", "false_pooling_at_k", "auc")
+chk("Table 5: Part 1 MC SE <= 0.005 for the unit-free measures (AUC / precision / false-pooling)",
+    max(sum_s$mc_se[sum_s$measure %in% UNITFREE]) <= 0.005,
+    sprintf("max %.5f", max(sum_s$mc_se[sum_s$measure %in% UNITFREE])))
+hh <- subset(sum_s, measure == "harm_maxW1")
+chk("Table 5: Part 1 harm -- RELATIVE MC SE <= 4% (it is in EM units, not a proportion)",
+    max(hh$mc_se / hh$value) <= 0.04,
+    sprintf("max %.2f%% (abs max %.4f)", 100 * max(hh$mc_se / hh$value), max(hh$mc_se)))
+## And the headline the harm lens exists for must survive its own Monte Carlo error.
+k4 <- subset(hh, set == "Set4_Extremes" & n == 100 & method == "KS")
+w4 <- subset(hh, set == "Set4_Extremes" & n == 100 & method == "W1")
+chk("Table 5: the Set-4 harm gap (KS vs W1) is far outside MC error",
+    (k4$value - w4$value) / sqrt(k4$mc_se^2 + w4$mc_se^2) > 20,
+    sprintf("gap %.3f = %.0f SEs; CIs [%.3f,%.3f] vs [%.3f,%.3f]",
+            k4$value - w4$value, (k4$value - w4$value) / sqrt(k4$mc_se^2 + w4$mc_se^2),
+            k4$value - 1.96*k4$mc_se, k4$value + 1.96*k4$mc_se,
+            w4$value - 1.96*w4$mc_se, w4$value + 1.96*w4$mc_se))
 chk("Table 5: Part 2 ARI MC SE <= 0.005 (the headline measure)",
     max(sum_c$mc_se[sum_c$measure == "ari"]) <= 0.005,
     sprintf("max %.5f", max(sum_c$mc_se[sum_c$measure == "ari"])))
