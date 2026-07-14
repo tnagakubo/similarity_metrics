@@ -124,8 +124,70 @@ calibration. Two analyses close that gap:
 - **(A) Clinical-harm lens** (§ Harm below) — keep the ranking rule, but additionally
   report the **worst-case bound implied by the pool each method actually chose**.
 - **(B) Calibrated-threshold selection** (§ Threshold below) — drop the oracle-k and
-  select by a threshold, testing whether a threshold calibrated in one world **transfers**
-  to another. W₁'s does (it lives on the EM scale); a [0,1] statistic's cannot.
+  select by a threshold derived from the clinical requirement.
+
+---
+
+## Part 1B — Clinically calibrated threshold selection (`R/threshold_simulation.R`)
+
+**The sponsor's problem, stated properly.** A sponsor does not want *"the countries drawn
+from the same population"* — that set is unobservable and, in truth, not what they care
+about. They want *"the countries whose pooling keeps the regional treatment-effect
+difference within what I can tolerate"*. Write that tolerance Δ_clin. By the KR bound,
+for **any** 1-Lipschitz θ:
+
+$$\Delta_{\max} = L\cdot W_1 \le \Delta_{\text{clin}} \quad\Longleftrightarrow\quad W_1 \le \Delta_{\text{clin}}/L \;=:\; \tau_{\text{clin}}$$
+
+**A W₁ threshold *is* the clinical requirement, restated on the EM scale.** No θ is
+posited and nothing is simulated to obtain it — this is the θ-free bound again.
+
+**Targets (both defined on the truth, so no method is scored by its own ruler):**
+
+- **ACCEPTABLE** = { true W₁ ≤ τ_clin } — the true matches (W₁ = 0) **plus** any
+  discordant country mild enough to tolerate.
+- **UNACCEPTABLE** = { true W₁ > τ_clin }.
+- **violation rate** = P(the chosen pool contains an unacceptable country) — the
+  sponsor's requirement was breached.
+- **sensitivity** = E[fraction of the acceptable countries admitted] — the efficiency
+  lost by being cautious.
+
+Reported as **the sensitivity each method attains while holding violation ≤ α** (α = 0.05).
+
+**τ_clin = the median true W₁ among the discordant countries** — half the real
+differences are mild enough to tolerate, half are not. It is a function of the truth
+alone, tuned to no method. (An earlier version set τ_clin to half the *lightest*
+discordant W₁; in Set 3 that gave 0.34, which is **below the null bias of the Ŵ₁
+estimator at n = 100**, so nothing could be selected at all. That is itself a finding —
+a clinical requirement finer than the estimator's resolution is not decidable at that
+sample size — but it is not a decision problem, so it is not the operating regime we
+study.)
+
+**No oracle k.** Nobody is told how many countries to pool. This removes a crutch the
+earlier parts handed every competitor.
+
+### Why the competitors cannot do this — provable from the true values alone
+
+A **KS threshold does not identify Δ_max.** Set 4:
+
+| | true W₁ | true KS |
+|---|---|---|
+| T1 (extremes +30 further) | **3.0** | **0.047** |
+| T2 (extremes +60 further) | **6.0** | **0.050** |
+| S1 (everyone shifted 2) | 2.0 | 0.072 |
+
+A KS cut at 0.05 admits **both T1 and T2** — the same KS value is consistent with
+Δ_max = L·3.0 **and** L·6.0. Worse, KS ranks S1 (0.072) as *more* discordant than T2
+(0.050): **a sponsor honouring a KS threshold rejects the safer region and admits the one
+permitting three times the effect difference.** SMD's 0.1 is a convention, not a
+calibration; RV has no threshold theory at all.
+
+### Steelman — the competitors are given an oracle they could never have
+
+W₁ must derive its threshold from the clinical input alone (τ = τ_clin). Every competitor
+is instead handed its **oracle-best threshold**: for each scenario and each n we search
+its entire distance grid and give it the cut that **maximises sensitivity subject to
+violation ≤ α**. They are told the answer; W₁ is not. If W₁ still wins, the win is not an
+artefact of threshold choice.
 
 **Design principle (Tak, realism):** All countries within a scenario set share the
 **same distributional family** — a single endpoint cannot be Gaussian in nine
