@@ -189,6 +189,55 @@ its entire distance grid and give it the cut that **maximises sensitivity subjec
 violation ≤ α**. They are told the answer; W₁ is not. If W₁ still wins, the win is not an
 artefact of threshold choice.
 
+### ⚠️ Circularity — the single biggest reviewer risk in the paper, and it lives here
+
+**State this in the manuscript. Do not leave it latent.**
+
+Part 1B's ground truth is ACCEPTABLE = { true W₁ ≤ τ_clin } — **a W₁ sublevel set by
+construction**. Parts 1 and 2 had a metric-independent truth (the construction label, and
+AUC/ARI scored against it). Part 1B *deliberately replaced* that with the clinical target.
+So the obvious hit is: *"you defined the truth on W₁'s scale, then W₁ won — tautology."*
+
+**The defense is two-part, and the second part is the load-bearing one.**
+
+**1. Own the identity, because it is the contribution.** By the KR theorem, the set of
+regions that can be pooled within a tolerance Δ_clin **is** a W₁ sublevel set — and it is
+**not** a KS sublevel set, nor an SMD one, nor a representative-value one. That is not a
+rigged scoreboard; **that identity is contribution (b)**. If the clinical target happened
+to be a KS sublevel set, KS would be the right metric and this paper would not exist.
+
+**2. Lead with the θ-free, truth-only non-identification result.** The claim does not rest
+on the simulation at all — it is visible in the true values, before a single sample is
+drawn:
+
+| Set 4 | true W₁ | true KS |
+|---|---|---|
+| T1 | **3.0** | 0.047 |
+| T2 | **6.0** | 0.050 |
+| S1 | 2.0 | **0.072** |
+
+**No KS threshold — not even an oracle-tuned one — can recover a target of the form
+{ W₁ ≤ τ } for τ between 3 and 6.** Any cut admitting T1 admits T2 (their KS values differ
+by 6 %), and any cut excluding T2 excludes T1. Meanwhile the cut would have to *reject* S1,
+whose true W₁ is the smallest of the three. **The failure is one of identification, not of
+tuning**, and it is a statement about the two metrics, not about our simulation design.
+
+The simulation's role is therefore narrow and honest: it **quantifies the cost** of that
+non-identification in finite samples (Set 4: sensitivity 0.31 vs 0.02 at n = 100, with KS
+given its best possible threshold). **Present the two together** — the non-identification
+result is what makes the sensitivity comparison non-circular, and the sensitivity
+comparison is what makes the non-identification result consequential.
+
+### τ_clin is swept, not chosen
+
+Reporting a single τ invites *"you picked the threshold"*, and one particular τ is
+actively misleading: in Set 4, three countries sit at true W₁ = **exactly 3.000**, so a τ
+placed there makes them a coin-flip to admit **even for a perfect method** — a structural
+cap on sensitivity that has nothing to do with any metric. τ_clin is therefore swept over
+the **midpoints between consecutive distinct discordant true W₁ values**, so that every τ
+partitions the roster cleanly and each one represents a genuinely different clinical
+requirement (from "tolerate only the mildest difference" to "tolerate all but the worst").
+
 **Design principle (Tak, realism):** All countries within a scenario set share the
 **same distributional family** — a single endpoint cannot be Gaussian in nine
 regions and log-normal in one. Four scenario sets, each aimed at a specific

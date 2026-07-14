@@ -152,13 +152,29 @@ main <- function() {
     #     that everything qualifies is not either. (An earlier version set tau_clin to
     #     half the lightest discordant W1 -- which in Set 3 was 0.34, BELOW the null
     #     bias of the W1 estimator at n = 100, so nothing at all could be selected.)
-    disc     <- TW1[roles != "match"]
-    tau_clin <- as.numeric(median(disc))
+    disc <- sort(TW1[roles != "match"])
+    # SWEEP tau_clin, do not report one point. Two reasons:
+    #  - "you chose tau" is answerable only by showing the whole curve;
+    #  - a country sitting EXACTLY on tau is a coin-flip to admit even for a perfect
+    #    method (Set 4 has three at true W1 = 3.000, the median), which structurally caps
+    #    sensitivity. Placing tau BETWEEN the true W1 values removes that knife-edge.
+    # Grid = midpoints between consecutive distinct discordant W1 values, so every tau
+    # partitions the roster cleanly and each one is a genuinely different clinical
+    # requirement (from "tolerate only the mildest" to "tolerate all but the worst").
+    # Round before de-duplicating: true_w1() integrates numerically, so three countries
+    # constructed to sit at exactly 3.0 come back as 2.9999998 / 3.0000001 / 3.0000000.
+    # Without this, unique() keeps all three and the "midpoint" grid emits tau = 3.000
+    # itself -- putting tau EXACTLY on those countries and making them a coin-flip to
+    # admit even for a perfect method. That is the knife-edge this sweep exists to remove.
+    u <- unique(round(disc, 6))
+    tau_grid <- (u[-length(u)] + u[-1]) / 2
+    tau_grid <- tau_grid[vapply(tau_grid, function(t) sum(TW1 <= t) >= 3 &&
+                                                      sum(TW1 >  t) >= 1, logical(1))]
     say("\n-- %s --", S$id)
-    say("   discordant true W1: %s", paste(sprintf("%.2f", sort(disc)), collapse = " "))
-    say("   tau_clin = median = %.3f   =>  ACCEPTABLE = { true W1 <= %.3f } : %d of %d candidates",
-        tau_clin, tau_clin, sum(TW1 <= tau_clin), length(TW1))
-    say("   (matches are acceptable at W1 = 0; a mild discordant country may also be)")
+    say("   discordant true W1: %s", paste(sprintf("%.2f", disc), collapse = " "))
+    say("   tau_clin swept over %d values: %s",
+        length(tau_grid), paste(sprintf("%.2f", tau_grid), collapse = " "))
+    say("   (each tau => ACCEPTABLE = {true W1 <= tau}; matches at W1 = 0 always acceptable)")
 
     # Threshold grids: each method searched over ITS OWN distance scale, from 0 to a
     # generous upper bound estimated from a pilot draw. W1's grid necessarily contains
@@ -169,48 +185,57 @@ main <- function() {
       xs <- lapply(cand, function(i) S$roster[[i]]$sampler(60L)); names(xs) <- cand
       vapply(methods, function(m) max(DISTFUN[[m]](xA, xs)), numeric(1))
     })
+    # W1's grid must contain EVERY swept tau_clin exactly, because tau_clin is the only
+    # threshold W1 is entitled to use without an oracle -- we have to be able to read its
+    # operating point off the grid at that precise value.
     grids <- lapply(methods, function(m) {
       hi <- 1.15 * max(pilot[m, ])
-      sort(unique(c(seq(0, hi, length.out = 200L), if (m == "W1") tau_clin)))
+      sort(unique(c(seq(0, hi, length.out = 200L), if (m == "W1") tau_grid)))
     })
     names(grids) <- methods
 
     for (n in n_grid) {
       cell <- cell + 1L
-      seed <- base_seed + 1000L * cell
       t0 <- Sys.time()
-      res <- run_threshold_cell(S$roster, methods, n, OPTS$reps, seed, TW1, tau_clin, grids)
-      res <- cbind(set = S$id, n = n, tau_clin = tau_clin, res)
-      all_rows[[length(all_rows) + 1]] <- res
+      for (ti in seq_along(tau_grid)) {
+        tau_clin <- tau_grid[ti]
+        seed <- base_seed + 1000L * cell + ti
+        res <- run_threshold_cell(S$roster, methods, n, OPTS$reps, seed, TW1, tau_clin, grids)
+        res <- cbind(set = S$id, n = n, tau_clin = tau_clin,
+                     n_acceptable = sum(TW1 <= tau_clin), res)
+        all_rows[[length(all_rows) + 1]] <- res
 
-      # OPERATING POINT. For every method: the best sensitivity it can reach while
-      # keeping the violation rate at or below alpha -- i.e. the oracle-best threshold.
-      # For W1 we ALSO report what happens at the threshold it is entitled to use
-      # without any oracle: tau = tau_clin, derived from the clinical requirement alone.
-      for (m in methods) {
-        r <- res[res$method == m, ]
-        ok <- r[r$violation <= OPTS$alpha, ]
-        best <- if (nrow(ok)) ok[which.max(ok$sensitivity), ] else r[which.min(r$violation), ]
-        op_rows[[length(op_rows) + 1]] <- data.frame(
-          set = S$id, n = n, method = m, kind = "oracle_best",
-          tau = best$tau, violation = best$violation, sensitivity = best$sensitivity,
-          feasible = nrow(ok) > 0, stringsAsFactors = FALSE)
-        if (m == "W1") {
-          i <- which.min(abs(r$tau - tau_clin))
+        # OPERATING POINT, per (set, n, tau_clin):
+        #  - every competitor gets its ORACLE-BEST threshold (max sensitivity s.t.
+        #    violation <= alpha) -- it is told the answer;
+        #  - W1 ALSO reports the threshold it is entitled to derive with no oracle at
+        #    all: tau = tau_clin itself, straight from the clinical requirement.
+        for (m in methods) {
+          r  <- res[res$method == m, ]
+          ok <- r[r$violation <= OPTS$alpha, ]
+          best <- if (nrow(ok)) ok[which.max(ok$sensitivity), ] else r[which.min(r$violation), ]
           op_rows[[length(op_rows) + 1]] <- data.frame(
-            set = S$id, n = n, method = "W1_clinical", kind = "derived_tau_clin",
-            tau = r$tau[i], violation = r$violation[i], sensitivity = r$sensitivity[i],
-            feasible = r$violation[i] <= OPTS$alpha, stringsAsFactors = FALSE)
+            set = S$id, n = n, tau_clin = tau_clin, method = m, kind = "oracle_best",
+            tau = best$tau, violation = best$violation, sensitivity = best$sensitivity,
+            feasible = nrow(ok) > 0, stringsAsFactors = FALSE)
+          if (m == "W1") {
+            i <- which.min(abs(r$tau - tau_clin))
+            op_rows[[length(op_rows) + 1]] <- data.frame(
+              set = S$id, n = n, tau_clin = tau_clin, method = "W1_derived",
+              kind = "derived_tau_clin", tau = r$tau[i], violation = r$violation[i],
+              sensitivity = r$sensitivity[i], feasible = r$violation[i] <= OPTS$alpha,
+              stringsAsFactors = FALSE)
+          }
         }
       }
       el <- as.numeric(difftime(Sys.time(), t0, units = "secs"))
-      pick <- function(m) { o <- op_rows[[length(op_rows)]] ; o }
       sens_at <- function(m) {
-        z <- Filter(function(o) o$set == S$id && o$n == n && o$method == m, op_rows)
-        if (length(z)) z[[1]]$sensitivity else NA_real_
+        z <- Filter(function(o) o$set == S$id && o$n == n && o$method == m &&
+                                o$kind == "oracle_best", op_rows)
+        if (length(z)) mean(vapply(z, function(o) o$sensitivity, numeric(1))) else NA_real_
       }
-      say("[%s n=%d] seed=%d (%.0fs)  sensitivity @ violation<=%.2f :  W1=%.3f  KS=%.3f  RV2=%.3f  SMD=%.3f",
-          S$id, n, seed, el, OPTS$alpha,
+      say("[%s n=%d] (%.0fs, %d taus)  mean sensitivity @ violation<=%.2f :  W1=%.3f  KS=%.3f  RV2=%.3f  SMD=%.3f",
+          S$id, n, el, length(tau_grid), OPTS$alpha,
           sens_at("W1"), sens_at("KS"), sens_at("RV2"), sens_at("SMD"))
     }
   }
