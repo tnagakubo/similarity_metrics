@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>per-EM W₁ 論文 — 論理構成（日本語版）</title>
+<style>
+  :root{
+    --ink:#14181F; --soft:#4A5058; --faint:#7C838C;
+    --ground:#F7F5F4; --panel:#FFFFFF; --rule:#E2DEDB; --accent:#A8322A;
+    --jp:"Yu Gothic","YuGothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Meiryo","Noto Sans JP",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--ground); color:var(--ink);
+       font-family:var(--jp); line-height:1.7; padding:2.5rem 1.25rem 5rem}
+  .wrap{max-width:1120px; margin:0 auto}
+  header{border-bottom:2px solid var(--ink); padding-bottom:1rem; margin-bottom:1.5rem}
+  h1{font-size:1.75rem; margin:0 0 .5rem}
+  .sub{color:var(--soft); font-size:.95rem; margin:0; max-width:72ch}
+  .meta{margin-top:.8rem; font-size:.78rem; color:var(--faint);
+        font-family:ui-monospace,Consolas,monospace}
+  .note{background:#F4EBD6; border-left:3px solid #8A6A1F; color:#5C4A16;
+        padding:.7rem 1rem; font-size:.85rem; margin:0 0 2.5rem; border-radius:2px}
+  section{margin-bottom:3.5rem}
+  h2{font-size:1.15rem; margin:0 0 .3rem; padding-bottom:.45rem; border-bottom:1px solid var(--rule)}
+  h2 .n{color:var(--accent); font-family:ui-monospace,Consolas,monospace; margin-right:.5rem}
+  .lede{color:var(--soft); font-size:.92rem; margin:.6rem 0 1.2rem; max-width:72ch}
+  .card{background:var(--panel); border:1px solid var(--rule); border-radius:3px;
+        padding:1.2rem; overflow-x:auto}
+  .card svg{display:block; margin:0 auto; max-width:100%; height:auto}
+  .err{color:#A8322A; font-family:ui-monospace,Consolas,monospace; font-size:.8rem;
+       white-space:pre-wrap}
+  footer{border-top:1px solid var(--rule); padding-top:1rem; margin-top:3rem;
+         font-size:.78rem; color:var(--faint); font-family:ui-monospace,Consolas,monospace}
+  @media print{
+    body{background:#fff; padding:0}
+    .note{display:none}
+    section{page-break-inside:avoid; margin-bottom:2rem}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>per-EM W₁ 論文 — 論理構成</h1>
+  <p class="sub">ICH E17 の空白 → Komiyama Ch.4 が残す2つの穴 → W₁ と Δmax がそれを埋める → どの競合手法もどこかで構造的に盲目になる</p>
+  <p class="meta">2026-07-12 時点 ／ Set 1–4 本番実行済（10,000・5,000 reps）／ 検証 3系統 計 142 件 全通過 ／ scope = Q_metric で確定</p>
+</header>
+
+<div class="note">
+  図はブラウザ上で描画されます（日本語フォントはこの PC のものが使われます）。
+  画像として保存するには、図を右クリック →「画像として保存」。全体を PDF にするには <b>Ctrl+P →「PDF として保存」</b>。
+</div>
+
+<section>
+  <h2><span class="n">図1</span>論証の鎖 — gap → 貢献 → 証拠</h2>
+  <p class="lede">
+    E17 の空白から出発し、Komiyama Ch.4 が<b>唯一の具体的な既存提案</b>として本流に立つ（Quan・Song・Long は点線——別の問いに答えているので gap の相手ではない）。
+    そこから gap が2本出て、貢献 (a)(b) が対応する。<b>査読者の反論「では KS でよいのでは」</b>が (a) の下流に入り、貢献 (c) がそれに答える。
+    右の点線ノートが図4 への接続——<b>上界があらゆる Lipschitz な θ で成立するからこそ、θ を特定してはならない</b>。
+  </p>
+  <div class="card" id="fig1"></div>
+</section>
+
+<section>
+  <h2><span class="n">図2</span>関門構造 — 手法はどこで脱落するか</h2>
+  <p class="lede">
+    <b>論文の中核。</b>6手法が2つの関門を順に通る。判定基準は「ARI が高いか」<b>だけでなく「n で伸びるか」</b>——ここが要点。
+    <b>関門1（Set 3）で moment 法が全滅</b>し、<b>関門2（Set 4）で KS が脱落</b>する。点線が示すとおり<b>二つの盲点は相補的</b>で、
+    KS は関門1を通過していたし、RV2 は関門2なら通過できた。緑のノートが「盲目」と書いてよい根拠を述べる。
+  </p>
+  <div class="card" id="fig2"></div>
+</section>
+
+<section>
+  <h2><span class="n">図3</span>機構 — なぜ KS は Set 4 で死ぬのか</h2>
+  <p class="lede">
+    同じ「稀な質量が δ だけ動く」入力が、二つのノルムで<b>まったく違う応答</b>を生む。
+    δ を 30→60 に倍にすると <b>W₁ は 2.00 倍、KS は 1.065 倍</b>（ε=0.05 に釘付け）。
+    帰結が<b>順位逆転</b>で、そこから理論（KR 上界が存在しない）と実測（AUC がチャンスかつ n で不動）の両方に降りる。
+  </p>
+  <div class="card" id="fig3"></div>
+</section>
+
+<section>
+  <h2><span class="n">図4</span>scope 確定 — なぜ θ を置かないのか</h2>
+  <p class="lede">
+    効果追跡研究（Part 3）は<b>実施しない</b>。工数の問題ではなく、<b>やるべきでない理由が3つある</b>。
+    3本が合流して scope（Q_metric）が確定し、最後に<b>開示すべき唯一の帰結</b>——飽和 θ で上界が緩む件——が、
+    「限界」ではなく<b>保守的上界という設計思想</b>として位置づけられる。
+  </p>
+  <div class="card" id="fig4"></div>
+</section>
+
+<footer>
+  数値はすべて本番シミュレーションの実測値（Part 1 = 10,000 reps、Part 2 = 5,000 reps、n = 100、MC SE ≤ 0.005）。<br>
+  出典：SELECTION_SIMULATION_PLAN.md ／ EXISTING_METHODS_AND_NOVELTY.md ／ results/*_sim_summary.csv ／ branch worktree-selection-sim
+</footer>
+
+</div>
+
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+const JP = '"Yu Gothic","YuGothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Meiryo","Noto Sans JP",sans-serif';
+
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  securityLevel: 'loose',
+  flowchart: { htmlLabels: true, curve: 'basis', nodeSpacing: 45, rankSpacing: 55 },
+  themeVariables: {
+    fontFamily: JP,
+    fontSize: '14px',
+    primaryColor: '#EFEBE7',
+    primaryTextColor: '#1A1A1A',
+    lineColor: '#5A5A5A'
+  }
+});
+
+// Diagram sources live in template literals, so no HTML entity escaping is involved
+// and the browser never parses '<b>' or '-->' as markup.
+const CLASSDEFS = `
+    classDef prior fill:#EFEBE7,stroke:#8C8078,color:#1A1A1A
+    classDef gap fill:#F0DEDB,stroke:#A8322A,color:#1A1A1A
+    classDef contrib fill:#DDE6EE,stroke:#31536B,color:#1A1A1A
+    classDef evid fill:#E2E8DE,stroke:#4A6B4A,color:#1A1A1A
+    classDef rev fill:#F4EBD6,stroke:#8A6A1F,color:#1A1A1A
+    classDef scope fill:#F4EBD6,stroke:#8A6A1F,color:#1A1A1A,stroke-width:2px,stroke-dasharray: 4 3
+    classDef start fill:#EFEBE7,stroke:#8C8078,color:#1A1A1A
+    classDef gate fill:#F4EBD6,stroke:#8A6A1F,color:#1A1A1A
+    classDef dead fill:#ECEAE9,stroke:#A9AAAB,color:#5A5A5A
+    classDef win fill:#F0DEDB,stroke:#A8322A,color:#1A1A1A,stroke-width:3px
+    classDef note fill:#DDE6EE,stroke:#31536B,color:#1A1A1A
+    classDef key fill:#E2E8DE,stroke:#4A6B4A,color:#1A1A1A,stroke-width:2px
+    classDef src fill:#EFEBE7,stroke:#8C8078,color:#1A1A1A
+    classDef w1 fill:#F0DEDB,stroke:#A8322A,color:#1A1A1A
+    classDef ks fill:#ECEAE9,stroke:#A9AAAB,color:#3A3A3A
+    classDef punch fill:#F4EBD6,stroke:#8A6A1F,color:#1A1A1A,stroke-width:2px
+    classDef out fill:#DDE6EE,stroke:#31536B,color:#1A1A1A
+    classDef tempt fill:#ECEAE9,stroke:#A9AAAB,color:#3A3A3A,stroke-dasharray: 5 3
+    classDef head fill:#F4EBD6,stroke:#8A6A1F,color:#1A1A1A,stroke-width:2px
+    classDef body fill:#DDE6EE,stroke:#31536B,color:#1A1A1A
+    classDef final fill:#F0DEDB,stroke:#A8322A,color:#1A1A1A,stroke-width:3px
+    classDef sat fill:#E2E8DE,stroke:#4A6B4A,color:#1A1A1A,stroke-width:2px
+`;
+
+const FIG1 = `flowchart TD
+    E17["<b>ICH E17（2017）</b><br/>『similar enough』ならプール可<br/><i>metric・閾値・手続きは示さない</i>"]
+    OTH["Quan 2010 ・ Song 2025 ・ Long 2025<br/>治療効果の一貫性／実務手順／統計モデル<br/><i>EM 分布そのものは比較しない</i>"]
+    KOM["<b>Komiyama Ch.4（2024）</b><br/>最も具体的な既存提案<br/>各 EM に代表値ひとつ → Euclidean<br/>→ Lasso 重み → クラスタリング"]
+
+    E17 --> KOM
+    E17 -.-> OTH
+
+    KOM --> GA["<b>gap（a）</b><br/>分布は各 EM につき要約値ひとつでしか入らない<br/>→ 要約が一致する地域は<b>距離ゼロ</b>"]
+    KOM --> GB["<b>gap（b）</b><br/>『臨床的に意味があるか』を問いながら<br/><b>判断のための metric を供給しない</b>"]
+
+    GA --> CA["<b>貢献（a）</b><br/>W₁ は分布全体を比較する<br/><b>どのモーメントが効くか事前指定しない</b>"]
+    GB --> CB["<b>貢献（b）</b><br/>Δmax = L・W₁ が地域間の治療効果差を上界する<br/><b>あらゆる 1-Lipschitz な θ に対して</b>"]
+
+    CA --> REV{"<b>査読者</b><br/>『では KS でよいのでは？』<br/>より古く、より単純"}
+    REV --> CC["<b>貢献（c）</b><br/>KS は無次元で<br/><b>KR 型の上界を持たない</b><br/>θ(x)=x ⟹ |Δθ| / KS → ∞"]
+
+    CA --> EA["<b>証拠 — Set 3</b><br/>モーメント一致の世界<br/>RV1 −0.000 ・ RV2 0.018 ・ SMD −0.000<br/><i>しかも n を増やしても改善しない</i>"]
+    CB --> EB["<b>証拠</b><br/>KR 双対性（Prop.1）<br/>— 定理であってシミュレーションではない<br/>＋ GUSTO-I 臨床較正"]
+    CC --> EC["<b>証拠 — Set 4</b><br/>稀な質量が遠くへ動く世界<br/>KS は ARI <b>0.003</b>、AUC <b>0.511</b><br/><i>しかも n でフラット</i>"]
+
+    CB -.-> SCOPE["<b>⚠ scope への帰結</b><br/>上界は<b>あらゆる</b> Lipschitz な θ で成立する<br/>⟹ <b>θ を特定してはならない</b><br/><i>（これが Part 3 を置かない理由 → 図4）</i>"]
+${CLASSDEFS}
+    class E17,OTH,KOM prior
+    class GA,GB gap
+    class CA,CB,CC contrib
+    class EA,EB,EC evid
+    class REV rev
+    class SCOPE scope`;
+
+const FIG2 = `flowchart TD
+    START["<b>6つの候補手法</b><br/>W₁ ・ KS ・ RV1 ・ RV2 ・ RV3 ・ SMD<br/><i>RV1 = Komiyama Ch.4 の recipe そのもの</i>"]
+
+    G3{"<b>関門 1 — Set 3</b><br/>混合分布の世界：全 12 か国が<br/>平均 50・SD 10、うち2群は歪度まで一致<br/><br/><b>地域グループを回復できるか？</b><br/><i>n=100 での ARI、そして n で伸びるか</i>"}
+
+    D3["<b>❌ モーメント法は全滅</b><br/>RV1 −0.000 ・ RV2 0.018 ・ SMD −0.000<br/><br/><b>n を 25→100 に4倍しても伸び +0.001</b><br/><i>データを4倍にしても何も変わらない。<br/>座標が全 12 か国で同一——探すべき信号が<br/>存在せず、n = ∞ でも存在しない。</i>"]
+
+    G4{"<b>関門 2 — Set 4</b><br/>極端値の世界：稀な 5% の患者が遠くにおり、<br/>地域は「どれだけ遠いか」「どれだけ多いか」で異なる<br/><br/><b>地域グループを回復できるか？</b><br/><i>n=100 での ARI、そして n で伸びるか</i>"}
+
+    D4["<b>❌ KS 脱落</b><br/>ARI 0.003 ・ AUC 0.511<br/><br/><b>n を4倍しても伸び +0.003</b><br/><i>KS = sup|F₁−F₂| は、質量がどれだけ遠くへ<br/>動いても汚染割合 ε で頭打ち。<br/>n = ∞ でも同じ距離を返す。</i>"]
+
+    WIN["<b>✅ W₁ — 唯一の生存者</b><br/>Set 3：ARI 0.526（伸び +0.258）<br/>Set 4：ARI 0.355（伸び +0.244）<br/><br/><i>W₁ = ∫|F₁−F₂| dt は「質量 × 移動距離」、<br/>EM の単位を持つ。4つの世界すべてで +0.24 以上伸びる。</i>"]
+
+    KEY["<b>なぜ「n での伸び」が決定的か</b><br/><b>identification failure（原理的に解けない）</b>と<br/><b>power failure（データ不足）</b>を分離するから。<br/>検出力不足なら、データが増えれば改善する。<br/>構造的に盲目なら、まったく動かない。<br/><i>これが「盲目」と書いてよい根拠。</i>"]
+
+    NOTE["<b>なぜ一つのシナリオで両方倒さないのか？</b><br/>この族では<b>不可能</b>。分散は変位に<b>二次</b>で、<br/>W₁ は<b>一次</b>で応答する。SD を合わせようとすると<br/>bulk が潰れ——それ自体が背の高い狭い CDF 乖離となり——<br/>KS が復活する（0.213）。<br/><i>層状の議論は怠慢ではなく、数学的に強制されている。</i>"]
+
+    START --> G3
+    G3 -->|"脱落"| D3
+    G3 -->|"通過：W₁ 0.526 ・ KS 0.503"| G4
+    G4 -->|"脱落"| D4
+    G4 -->|"通過"| WIN
+    D3 -.->|"RV2 は関門2 なら通過できた（0.271）<br/>だが既に脱落済み"| NOTE
+    D4 -.->|"KS は関門1 を通過していた（0.503）<br/>だがここで脱落"| NOTE
+    D3 --- KEY
+    D4 --- KEY
+${CLASSDEFS}
+    class START start
+    class G3,G4 gate
+    class D3,D4 dead
+    class WIN win
+    class NOTE note
+    class KEY key`;
+
+const FIG3 = `flowchart TD
+    SRC["<b>稀なサブグループが遠ざかる</b><br/>両側それぞれ ε = 5% の患者が<br/>δ（EM 単位）だけ変位<br/><i>例：重度腎機能障害の少数集団</i>"]
+
+    SRC --> W["<b>W₁ = ∫ |F₁ − F₂| dt</b><br/>L¹ ノルム、EM の単位を持つ<br/><b>= 質量 × 移動距離</b><br/><br/>W₁ = ε_L・δ_L + ε_H・δ_H<br/><i>線形・非有界</i>"]
+
+    SRC --> K["<b>KS = sup |F₁ − F₂|</b><br/>L∞ ノルム、無次元<br/><b>= CDF 乖離の最大値</b><br/><br/>KS = max ε(2Φ(δ/2σ) − 1) ≤ ε<br/><i>質量そのもので飽和</i>"]
+
+    W --> WN["<b>δ：30 → 60</b><br/>W₁：3.00 → 6.00<br/><b>×2.00</b>"]
+    K --> KN["<b>δ：30 → 60</b><br/>KS：0.047 → 0.050<br/><b>×1.065</b> — 天井 ε = 0.05 に釘付け"]
+
+    WN --> INV["<b>⚠ 順位逆転</b><br/>KS は<i>「全患者を 2 単位ずらす」</i>（KS 0.072）を<br/><i>「10% の患者を 60 単位も極端側へ押しやる」</i>（KS 0.050）<br/>より<b>深刻だと判定する</b><br/><br/>W₁ は後者を <b>3倍悪い</b>と言い<br/>— KR 上界はそれが<b>正確に</b> 3 倍悪いと保証する"]
+    KN --> INV
+
+    INV --> THM["<b>定理（n 非依存）</b><br/>KS は KR 型の上界を持たない：あらゆる 1-Lipschitz な θ に対し<br/>|Δθ| ≤ C・KS を満たす有限の C は存在しない。<br/>θ(x)=x（線形の用量反応、最も自然な臨床形）を取れば<br/>|Δθ| = εδ、KS ≤ ε、よって |Δθ| / KS ≥ δ → ∞ ∎<br/><br/><i>敵対的ではない：θ を敵対的に選べば<br/>双対性より W₁ が定義上勝ってしまう。</i>"]
+
+    INV --> SIM["<b>シミュレーション（n = 100）</b><br/>KS の AUC 0.511 — チャンス<br/>しかも <b>n でフラット</b>（0.500 → 0.511）<br/><br/>W₁ の AUC 0.972、<b>上昇</b>（0.837 → 0.972）<br/><br/><i>power の失敗ではなく identification の失敗：<br/>KS は n = ∞ でも同じ距離を割り当てる</i>"]
+${CLASSDEFS}
+    class SRC src
+    class W,WN w1
+    class K,KN ks
+    class INV punch
+    class THM,SIM out`;
+
+const FIG4 = `flowchart TD
+    TEMPT["<b>誘惑される追加研究（『Part 3』）</b><br/>明示的な Lipschitz な θ(x)（EM 値 x における治療効果）を置き、<br/>真の地域間効果差 |E_A θ − E_B θ| を計算して<br/>W₁ がそれを追えるか検証する<br/><br/><i>これは実施しない — 時間の問題ではない</i>"]
+
+    TEMPT --> R1["<b>理由 1 — 決定的</b><br/><b>前提</b>の検証であって<br/>主張の検証ではない"]
+    TEMPT --> R2["<b>理由 2</b><br/>結果の<b>一般性を破壊する</b>"]
+    TEMPT --> R3["<b>理由 3</b><br/><b>循環論法</b>になる"]
+
+    R1 --> R1D["効果修飾因子（EM）とは<b>定義上</b>、<br/>その水準によって治療効果が異なる特性のこと。<br/><br/>ゆえに<b>「EM 分布が異なる地域は平均治療効果が異なる」</b>は、<br/><b>対象が EM である以上、定義から従う</b>。<br/>これは問題設定そのものであり、論証すべき命題ではない。<br/><br/><i>シミュレーションで確認しても、定義を確認するだけ。</i><br/>（EM と効果の関係が既知か未知かは開発プログラムによる。<br/>だが<b>分布差が効果差を含意する点は状況に依らない。</b>）"]
+
+    R2 --> R2D["Kantorovich–Rubinstein 上界は<br/><b>あらゆる 1-Lipschitz な θ で成立</b>する——<br/>本論文は用量反応の形を一度も特定しない。<br/><br/>θ を<b>一つ</b>選んでシミュレーションすれば、<br/>結論は<b>その形に条件付けられる</b>——そして<br/>『その結果は θ の形に依存するのでは？』に<br/>答えられなくなる。<br/><br/><i>今なら答えられる。「どんな Lipschitz な θ でも成立する」と。</i>"]
+
+    R3 --> R3D["KR 双対性より：<br/><b>W₁ = sup { |E_A θ − E_B θ| : θ ∈ Lip₁ }</b><br/><br/><b>θ を自由に選べる設定では W₁ は定義上最適</b>になる。<br/>『W₁ が効果差を最もよく追えた』は<b>定理の言い換え</b>であって、<br/>その証拠ではない。<br/><br/><i>回避には複数の θ 形状（飽和型を含む）の事前指定が必要で、<br/>それは別の論文になる。</i>"]
+
+    R1D --> OUT["<b>scope 確定：Q_metric</b><br/>Set 1–4 が立証するのは<br/><b>「W₁ は競合が盲目な場所で盲目でない」</b>こと。<br/>EM の差が効果を動かすことを<br/>再導出する必要はない——定義がそう言っている。"]
+    R2D --> OUT
+    R3D --> OUT
+
+    OUT --> SAT["<b>開示すべき唯一の帰結</b><br/>θ が<b>飽和</b>する場合、KR 上界は<b>妥当なまま</b><br/>（上界は、より平坦な θ に破られない）<br/><b>緩くなる</b>だけ——ゆえに W₁ は過剰に警告する。<br/><br/><b>これは保守側の誤りであり、<br/>上界とはそもそも保守的に働くためにある。</b><br/>W₁ の誤りは<b>プールを見送る</b>（効率の損失）、<br/>KS の誤りは<b>誤ってプールする</b>（妥当性の損失）。<br/>Set 4 の false-pooling：<b>KS 0.971 vs W₁ 0.718</b>。<br/><br/><i>緩さは正直に報告する。謝罪はしない。</i>"]
+${CLASSDEFS}
+    class TEMPT tempt
+    class R1,R2,R3 head
+    class R1D,R2D,R3D body
+    class OUT final
+    class SAT sat`;
+
+const figs = [['fig1', FIG1], ['fig2', FIG2], ['fig3', FIG3], ['fig4', FIG4]];
+for (const [id, code] of figs) {
+  const host = document.getElementById(id);
+  try {
+    const { svg } = await mermaid.render(id + '-svg', code);
+    host.innerHTML = svg;
+  } catch (e) {
+    host.innerHTML = '<p class="err">図の描画に失敗しました：\n' + (e && e.message ? e.message : e) + '</p>';
+  }
+}
+</script>
+</body>
+</html>

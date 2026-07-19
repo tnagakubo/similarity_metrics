@@ -238,7 +238,9 @@
       "Bash(latexmk -pdf -interaction=nonstopmode -halt-on-error per_em_W1_wiley.tex)",
       "Bash(mkdir -p /tmp/pptx_check)",
       "Read(//tmp/pptx_check/ppt/**)",
-      "Read(//tmp/pptx_check/ppt/slides/**)"
+      "Read(//tmp/pptx_check/ppt/slides/**)",
+      "Bash(Rscript pilot_countries.R)",
+      "Bash(Rscript pilot_countries_set2.R)"
     ]
   },
   "autoMemoryEnabled": true

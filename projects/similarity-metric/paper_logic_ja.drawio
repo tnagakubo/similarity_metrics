@@ -1,0 +1,218 @@
+<mxfile host="app.diagrams.net" version="24.0.0" type="device">
+  <diagram id="fig1" name="図1 論証の鎖">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="f1_e17" value="&lt;b&gt;ICH E17（2017）&lt;/b&gt;&lt;br&gt;『similar enough』ならプール可&lt;br&gt;&lt;i&gt;metric・閾値・手続きは示さない&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="480" y="20" width="340" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_oth" value="Quan 2010 ・ Song 2025 ・ Long 2025&lt;br&gt;治療効果の一貫性／実務手順／統計モデル&lt;br&gt;&lt;i&gt;EM 分布そのものは比較しない&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="60" y="25" width="340" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_kom" value="&lt;b&gt;Komiyama Ch.4（2024）&lt;/b&gt;&lt;br&gt;最も具体的な既存提案&lt;br&gt;各 EM に代表値ひとつ → Euclidean&lt;br&gt;→ Lasso 重み → クラスタリング" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="470" y="160" width="360" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f1_ga" value="&lt;b&gt;gap（a）&lt;/b&gt;&lt;br&gt;分布は各 EM につき要約値ひとつでしか入らない&lt;br&gt;→ 要約が一致する地域は &lt;b&gt;距離ゼロ&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F0DEDB;strokeColor=#A8322A;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="300" y="320" width="360" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_gb" value="&lt;b&gt;gap（b）&lt;/b&gt;&lt;br&gt;『臨床的に意味があるか』を問いながら&lt;br&gt;&lt;b&gt;判断のための metric を供給しない&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F0DEDB;strokeColor=#A8322A;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="740" y="320" width="360" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f1_ca" value="&lt;b&gt;貢献（a）&lt;/b&gt;&lt;br&gt;W₁ は分布全体を比較する&lt;br&gt;&lt;b&gt;どのモーメントが効くか事前指定しない&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDE6EE;strokeColor=#31536B;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="300" y="470" width="360" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_cb" value="&lt;b&gt;貢献（b）&lt;/b&gt;&lt;br&gt;Δmax = L・W₁ が地域間の治療効果差を上界する&lt;br&gt;&lt;b&gt;あらゆる 1-Lipschitz な θ に対して&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDE6EE;strokeColor=#31536B;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="740" y="470" width="360" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f1_rev" value="&lt;b&gt;査読者&lt;/b&gt;&lt;br&gt;『では KS でよいのでは？』&lt;br&gt;より古く、より単純" style="rhombus;whiteSpace=wrap;html=1;fillColor=#F4EBD6;strokeColor=#8A6A1F;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="70" y="610" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_cc" value="&lt;b&gt;貢献（c）&lt;/b&gt;&lt;br&gt;KS は無次元で&lt;br&gt;&lt;b&gt;KR 型の上界を持たない&lt;/b&gt;&lt;br&gt;θ(x)=x ⟹ |Δθ| / KS → ∞" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDE6EE;strokeColor=#31536B;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="60" y="800" width="320" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f1_ea" value="&lt;b&gt;証拠 — Set 3&lt;/b&gt;&lt;br&gt;モーメント一致の世界&lt;br&gt;RV1 −0.000 ・ RV2 0.018 ・ SMD −0.000&lt;br&gt;&lt;i&gt;しかも n を増やしても改善しない&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E2E8DE;strokeColor=#4A6B4A;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="420" y="620" width="330" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_eb" value="&lt;b&gt;証拠&lt;/b&gt;&lt;br&gt;KR 双対性（Prop.1）&lt;br&gt;— 定理であってシミュレーションではない&lt;br&gt;＋ GUSTO-I 臨床較正" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E2E8DE;strokeColor=#4A6B4A;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="790" y="620" width="330" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_ec" value="&lt;b&gt;証拠 — Set 4&lt;/b&gt;&lt;br&gt;稀な質量が遠くへ動く世界&lt;br&gt;KS は ARI &lt;b&gt;0.003&lt;/b&gt;、AUC &lt;b&gt;0.511&lt;/b&gt;&lt;br&gt;&lt;i&gt;しかも n でフラット&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E2E8DE;strokeColor=#4A6B4A;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="55" y="950" width="330" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f1_scope" value="&lt;b&gt;⚠ scope への帰結&lt;/b&gt;&lt;br&gt;上界は &lt;b&gt;あらゆる&lt;/b&gt; Lipschitz な θ で成立する&lt;br&gt;⟹ &lt;b&gt;θ を特定してはならない&lt;/b&gt;&lt;br&gt;&lt;i&gt;（これが Part 3 を置かない理由 → 図4）&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F4EBD6;strokeColor=#8A6A1F;strokeWidth=2;dashed=1;dashPattern=8 4;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="465" width="340" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f1_e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f1_e17" target="f1_kom"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f1_e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;strokeColor=#8C8078;" edge="1" parent="1" source="f1_e17" target="f1_oth"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f1_e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f1_kom" target="f1_ga"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f1_e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f1_kom" target="f1_gb"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f1_e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f1_ga" target="f1_ca"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f1_e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f1_gb" target="f1_cb"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f1_e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f1_ca" target="f1_rev"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f1_e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f1_ca" target="f1_ea"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f1_e9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f1_cb" target="f1_eb"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f1_e10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;strokeColor=#8A6A1F;" edge="1" parent="1" source="f1_cb" target="f1_scope"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f1_e11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f1_rev" target="f1_cc"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f1_e12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f1_cc" target="f1_ec"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="fig2" name="図2 関門構造（中核）">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="f2_start" value="&lt;b&gt;6つの候補手法&lt;/b&gt;&lt;br&gt;W₁ ・ KS ・ RV1 ・ RV2 ・ RV3 ・ SMD&lt;br&gt;&lt;i&gt;RV1 = Komiyama Ch.4 の recipe そのもの&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="440" y="20" width="360" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f2_g3" value="&lt;b&gt;関門 1 — Set 3&lt;/b&gt;&lt;br&gt;混合分布の世界：全 12 か国が&lt;br&gt;平均 50・SD 10、うち2群は歪度まで一致&lt;br&gt;&lt;br&gt;&lt;b&gt;地域グループを回復できるか？&lt;/b&gt;&lt;br&gt;&lt;i&gt;n=100 での ARI、そして n で伸びるか&lt;/i&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#F4EBD6;strokeColor=#8A6A1F;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="410" y="150" width="420" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f2_d3" value="&lt;b&gt;❌ モーメント法は全滅&lt;/b&gt;&lt;br&gt;RV1 −0.000 ・ RV2 0.018 ・ SMD −0.000&lt;br&gt;&lt;br&gt;&lt;b&gt;n を 25→100 に4倍しても伸び +0.001&lt;/b&gt;&lt;br&gt;&lt;i&gt;データを4倍にしても何も変わらない。座標が全 12 か国で同一——探すべき信号が存在せず、n = ∞ でも存在しない。&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECEAE9;strokeColor=#A9AAAB;fontColor=#5A5A5A;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="40" y="410" width="340" height="160" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f2_g4" value="&lt;b&gt;関門 2 — Set 4&lt;/b&gt;&lt;br&gt;極端値の世界：稀な 5% の患者が遠くにおり、&lt;br&gt;地域は「どれだけ遠いか」「どれだけ多いか」で異なる&lt;br&gt;&lt;br&gt;&lt;b&gt;地域グループを回復できるか？&lt;/b&gt;&lt;br&gt;&lt;i&gt;n=100 での ARI、そして n で伸びるか&lt;/i&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#F4EBD6;strokeColor=#8A6A1F;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="460" y="400" width="460" height="210" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f2_d4" value="&lt;b&gt;❌ KS 脱落&lt;/b&gt;&lt;br&gt;ARI 0.003 ・ AUC 0.511&lt;br&gt;&lt;br&gt;&lt;b&gt;n を4倍しても伸び +0.003&lt;/b&gt;&lt;br&gt;&lt;i&gt;KS = sup|F₁−F₂| は、質量がどれだけ遠くへ動いても汚染割合 ε で頭打ち。n = ∞ でも同じ距離を返す。&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECEAE9;strokeColor=#A9AAAB;fontColor=#5A5A5A;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="440" y="680" width="340" height="160" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f2_win" value="&lt;b&gt;✅ W₁ — 唯一の生存者&lt;/b&gt;&lt;br&gt;Set 3：ARI 0.526（伸び +0.258）&lt;br&gt;Set 4：ARI 0.355（伸び +0.244）&lt;br&gt;&lt;br&gt;&lt;i&gt;W₁ = ∫|F₁−F₂| dt は「質量 × 移動距離」、EM の単位を持つ。4つの世界すべてで +0.24 以上伸びる。&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F0DEDB;strokeColor=#A8322A;strokeWidth=3;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="880" y="680" width="360" height="160" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f2_key" value="&lt;b&gt;なぜ「n での伸び」が決定的か&lt;/b&gt;&lt;br&gt;&lt;b&gt;identification failure（原理的に解けない）&lt;/b&gt;と&lt;b&gt;power failure（データ不足）&lt;/b&gt;を分離するから。&lt;br&gt;検出力不足なら、データが増えれば改善する。構造的に盲目なら、まったく動かない。&lt;br&gt;&lt;i&gt;これが「盲目」と書いてよい根拠。&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E2E8DE;strokeColor=#4A6B4A;strokeWidth=2;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="440" y="900" width="400" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f2_note" value="&lt;b&gt;なぜ一つのシナリオで両方倒さないのか？&lt;/b&gt;&lt;br&gt;この族では &lt;b&gt;不可能&lt;/b&gt;。分散は変位に &lt;b&gt;二次&lt;/b&gt; で、W₁ は &lt;b&gt;一次&lt;/b&gt; で応答する。SD を合わせようとすると bulk が潰れ——それ自体が背の高い狭い CDF 乖離となり——KS が復活する（0.213）。&lt;br&gt;&lt;i&gt;層状の議論は怠慢ではなく、数学的に強制されている。&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDE6EE;strokeColor=#31536B;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="20" y="900" width="390" height="160" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f2_e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f2_start" target="f2_g3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f2_e2" value="脱落" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;fontFamily=Yu Gothic;fontSize=12;" edge="1" parent="1" source="f2_g3" target="f2_d3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f2_e3" value="通過：W₁ 0.526 ・ KS 0.503" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;fontFamily=Yu Gothic;fontSize=12;" edge="1" parent="1" source="f2_g3" target="f2_g4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f2_e4" value="脱落" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;fontFamily=Yu Gothic;fontSize=12;" edge="1" parent="1" source="f2_g4" target="f2_d4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f2_e5" value="通過" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#A8322A;strokeWidth=2;fontFamily=Yu Gothic;fontSize=12;" edge="1" parent="1" source="f2_g4" target="f2_win"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f2_e6" value="RV2 は関門2 なら通過できた（0.271）が、既に脱落済み" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;strokeColor=#31536B;fontFamily=Yu Gothic;fontSize=11;" edge="1" parent="1" source="f2_d3" target="f2_note"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f2_e7" value="KS は関門1 を通過していた（0.503）が、ここで脱落" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;strokeColor=#31536B;fontFamily=Yu Gothic;fontSize=11;" edge="1" parent="1" source="f2_d4" target="f2_note"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f2_e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#4A6B4A;" edge="1" parent="1" source="f2_d3" target="f2_key"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f2_e9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#4A6B4A;" edge="1" parent="1" source="f2_d4" target="f2_key"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="fig3" name="図3 機構 KS の飽和">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="f3_src" value="&lt;b&gt;稀なサブグループが遠ざかる&lt;/b&gt;&lt;br&gt;両側それぞれ ε = 5% の患者が δ（EM 単位）だけ変位&lt;br&gt;&lt;i&gt;例：重度腎機能障害の少数集団&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="380" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f3_w" value="&lt;b&gt;W₁ = ∫ |F₁ − F₂| dt&lt;/b&gt;&lt;br&gt;L¹ ノルム、EM の単位を持つ&lt;br&gt;&lt;b&gt;= 質量 × 移動距離&lt;/b&gt;&lt;br&gt;&lt;br&gt;W₁ = ε_L・δ_L + ε_H・δ_H&lt;br&gt;&lt;i&gt;線形・非有界&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F0DEDB;strokeColor=#A8322A;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="100" y="170" width="350" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="f3_k" value="&lt;b&gt;KS = sup |F₁ − F₂|&lt;/b&gt;&lt;br&gt;L∞ ノルム、無次元&lt;br&gt;&lt;b&gt;= CDF 乖離の最大値&lt;/b&gt;&lt;br&gt;&lt;br&gt;KS = max ε(2Φ(δ/2σ) − 1) ≤ ε&lt;br&gt;&lt;i&gt;質量そのもので飽和&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECEAE9;strokeColor=#A9AAAB;fontColor=#3A3A3A;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="730" y="170" width="350" height="130" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f3_wn" value="&lt;b&gt;δ：30 → 60&lt;/b&gt;&lt;br&gt;W₁：3.00 → 6.00&lt;br&gt;&lt;b&gt;×2.00&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F0DEDB;strokeColor=#A8322A;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="150" y="360" width="250" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="f3_kn" value="&lt;b&gt;δ：30 → 60&lt;/b&gt;&lt;br&gt;KS：0.047 → 0.050&lt;br&gt;&lt;b&gt;×1.065&lt;/b&gt; — 天井 ε = 0.05 に釘付け" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECEAE9;strokeColor=#A9AAAB;fontColor=#3A3A3A;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="780" y="360" width="250" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f3_inv" value="&lt;b&gt;⚠ 順位逆転&lt;/b&gt;&lt;br&gt;KS は &lt;i&gt;「全患者を 2 単位ずらす」&lt;/i&gt;（KS 0.072）を&lt;br&gt;&lt;i&gt;「10% の患者を 60 単位も極端側へ押しやる」&lt;/i&gt;（KS 0.050）より &lt;b&gt;深刻だと判定する&lt;/b&gt;&lt;br&gt;&lt;br&gt;W₁ は後者を &lt;b&gt;3倍悪い&lt;/b&gt; と言い&lt;br&gt;— KR 上界はそれが &lt;b&gt;正確に&lt;/b&gt; 3 倍悪いと保証する" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F4EBD6;strokeColor=#8A6A1F;strokeWidth=2;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="330" y="500" width="470" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f3_thm" value="&lt;b&gt;定理（n 非依存）&lt;/b&gt;&lt;br&gt;KS は KR 型の上界を持たない：あらゆる 1-Lipschitz な θ に対し |Δθ| ≤ C・KS を満たす有限の C は存在しない。&lt;br&gt;θ(x)=x（線形の用量反応、最も自然な臨床形）を取れば |Δθ| = εδ、KS ≤ ε、よって |Δθ| / KS ≥ δ → ∞ ∎&lt;br&gt;&lt;br&gt;&lt;i&gt;敵対的ではない：θ を敵対的に選べば、双対性より W₁ が定義上勝ってしまう。&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDE6EE;strokeColor=#31536B;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="60" y="720" width="430" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="f3_sim" value="&lt;b&gt;シミュレーション（n = 100）&lt;/b&gt;&lt;br&gt;KS の AUC 0.511 — チャンス&lt;br&gt;しかも &lt;b&gt;n でフラット&lt;/b&gt;（0.500 → 0.511）&lt;br&gt;&lt;br&gt;W₁ の AUC 0.972、&lt;b&gt;上昇&lt;/b&gt;（0.837 → 0.972）&lt;br&gt;&lt;br&gt;&lt;i&gt;power の失敗ではなく identification の失敗：KS は n = ∞ でも同じ距離を割り当てる&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDE6EE;strokeColor=#31536B;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="640" y="720" width="430" height="180" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f3_e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f3_src" target="f3_w"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f3_e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f3_src" target="f3_k"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f3_e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#A8322A;" edge="1" parent="1" source="f3_w" target="f3_wn"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f3_e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#A9AAAB;" edge="1" parent="1" source="f3_k" target="f3_kn"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f3_e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f3_wn" target="f3_inv"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f3_e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f3_kn" target="f3_inv"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f3_e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f3_inv" target="f3_thm"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f3_e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f3_inv" target="f3_sim"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="fig4" name="図4 scope なぜ θ を置かないか">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1250" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="f4_tempt" value="&lt;b&gt;誘惑される追加研究（『Part 3』）&lt;/b&gt;&lt;br&gt;明示的な Lipschitz な θ(x)（EM 値 x における治療効果）を置き、真の地域間効果差 |E_A θ − E_B θ| を計算して W₁ がそれを追えるか検証する&lt;br&gt;&lt;br&gt;&lt;i&gt;これは実施しない — 時間の問題ではない&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECEAE9;strokeColor=#A9AAAB;fontColor=#3A3A3A;dashed=1;dashPattern=8 4;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="420" y="20" width="460" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f4_r1" value="&lt;b&gt;理由 1 — 決定的&lt;/b&gt;&lt;br&gt;&lt;b&gt;前提&lt;/b&gt;の検証であって&lt;br&gt;主張の検証ではない" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F4EBD6;strokeColor=#8A6A1F;strokeWidth=2;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="60" y="200" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="f4_r2" value="&lt;b&gt;理由 2&lt;/b&gt;&lt;br&gt;結果の &lt;b&gt;一般性を破壊する&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F4EBD6;strokeColor=#8A6A1F;strokeWidth=2;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="500" y="200" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="f4_r3" value="&lt;b&gt;理由 3&lt;/b&gt;&lt;br&gt;&lt;b&gt;循環論法&lt;/b&gt; になる" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F4EBD6;strokeColor=#8A6A1F;strokeWidth=2;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="940" y="200" width="300" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f4_r1d" value="効果修飾因子（EM）とは &lt;b&gt;定義上&lt;/b&gt;、その水準によって治療効果が異なる特性のこと。&lt;br&gt;&lt;br&gt;ゆえに &lt;b&gt;「EM 分布が異なる地域は平均治療効果が異なる」&lt;/b&gt; は、&lt;b&gt;対象が EM である以上、定義から従う&lt;/b&gt;。これは問題設定そのものであり、論証すべき命題ではない。&lt;br&gt;&lt;br&gt;&lt;i&gt;シミュレーションで確認しても、定義を確認するだけ。&lt;/i&gt;&lt;br&gt;（EM と効果の関係が既知か未知かは開発プログラムによる。だが &lt;b&gt;分布差が効果差を含意する点は状況に依らない&lt;/b&gt;。）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDE6EE;strokeColor=#31536B;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="20" y="330" width="380" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="f4_r2d" value="Kantorovich–Rubinstein 上界は &lt;b&gt;あらゆる 1-Lipschitz な θ で成立&lt;/b&gt; する——本論文は用量反応の形を一度も特定しない。&lt;br&gt;&lt;br&gt;θ を &lt;b&gt;一つ&lt;/b&gt; 選んでシミュレーションすれば、結論は &lt;b&gt;その形に条件付けられる&lt;/b&gt;——そして『その結果は θ の形に依存するのでは？』に答えられなくなる。&lt;br&gt;&lt;br&gt;&lt;i&gt;今なら答えられる。「どんな Lipschitz な θ でも成立する」と。&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDE6EE;strokeColor=#31536B;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="460" y="330" width="380" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="f4_r3d" value="KR 双対性より：&lt;br&gt;&lt;b&gt;W₁ = sup { |E_A θ − E_B θ| : θ ∈ Lip₁ }&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;θ を自由に選べる設定では W₁ は定義上最適&lt;/b&gt; になる。『W₁ が効果差を最もよく追えた』は &lt;b&gt;定理の言い換え&lt;/b&gt; であって、その証拠ではない。&lt;br&gt;&lt;br&gt;&lt;i&gt;回避には複数の θ 形状（飽和型を含む）の事前指定が必要で、それは別の論文になる。&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDE6EE;strokeColor=#31536B;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="900" y="330" width="380" height="230" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f4_out" value="&lt;b&gt;scope 確定：Q_metric&lt;/b&gt;&lt;br&gt;Set 1–4 が立証するのは &lt;b&gt;「W₁ は競合が盲目な場所で盲目でない」&lt;/b&gt; こと。&lt;br&gt;EM の差が効果を動かすことを再導出する必要はない——定義がそう言っている。" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F0DEDB;strokeColor=#A8322A;strokeWidth=3;fontFamily=Yu Gothic;fontSize=13;align=center;" vertex="1" parent="1">
+          <mxGeometry x="420" y="650" width="460" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f4_sat" value="&lt;b&gt;開示すべき唯一の帰結&lt;/b&gt;&lt;br&gt;θ が &lt;b&gt;飽和&lt;/b&gt; する場合、KR 上界は &lt;b&gt;妥当なまま&lt;/b&gt;（上界は、より平坦な θ に破られない）&lt;b&gt;緩くなる&lt;/b&gt; だけ——ゆえに W₁ は過剰に警告する。&lt;br&gt;&lt;br&gt;&lt;b&gt;これは保守側の誤りであり、上界とはそもそも保守的に働くためにある。&lt;/b&gt;&lt;br&gt;W₁ の誤りは &lt;b&gt;プールを見送る&lt;/b&gt;（効率の損失）、KS の誤りは &lt;b&gt;誤ってプールする&lt;/b&gt;（妥当性の損失）。&lt;br&gt;Set 4 の false-pooling：&lt;b&gt;KS 0.971 vs W₁ 0.718&lt;/b&gt;。&lt;br&gt;&lt;br&gt;&lt;i&gt;緩さは正直に報告する。謝罪はしない。&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E2E8DE;strokeColor=#4A6B4A;strokeWidth=2;fontFamily=Yu Gothic;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="380" y="850" width="540" height="230" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f4_e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f4_tempt" target="f4_r1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f4_e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f4_tempt" target="f4_r2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f4_e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f4_tempt" target="f4_r3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f4_e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f4_r1" target="f4_r1d"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f4_e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f4_r2" target="f4_r2d"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f4_e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#5A5A5A;" edge="1" parent="1" source="f4_r3" target="f4_r3d"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f4_e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#A8322A;" edge="1" parent="1" source="f4_r1d" target="f4_out"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f4_e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#A8322A;" edge="1" parent="1" source="f4_r2d" target="f4_out"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f4_e9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#A8322A;" edge="1" parent="1" source="f4_r3d" target="f4_out"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f4_e10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#4A6B4A;" edge="1" parent="1" source="f4_out" target="f4_sat"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
