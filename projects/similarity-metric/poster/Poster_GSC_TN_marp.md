@@ -2,7 +2,7 @@
 marp: true
 size: 16:9
 paginate: true
-header: "May 8, 2026"
+header: "July 3, 2026"
 footer: ""
 style: |
   /* ============================================
@@ -381,7 +381,7 @@ $$
 # Clinical Calibration
 
 <div class="block">
-<div class="block-title">Pathway 1 — When L is available: $\Delta_{\max}$</div>
+<div class="block-title">Pathway 1 — When L is available</div>
 <div class="block-body">
 
 $$
@@ -394,7 +394,7 @@ Worst-case regional treatment effect difference on the **clinical scale**.
 </div>
 
 <div class="block">
-<div class="block-title">Pathway 2 — When L is unknown: $L^*$</div>
+<div class="block-title">Pathway 2 — When L is unknown</div>
 <div class="block-body">
 
 $$
