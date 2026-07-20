@@ -1,0 +1,17 @@
+"set","n","seed","reps","k_true","linkage","methods","elapsed_s"
+"Set1_Gaussian",25,20261712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",53.3
+"Set1_Gaussian",50,20262712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",61.8
+"Set1_Gaussian",75,20263712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",67.6
+"Set1_Gaussian",100,20264712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",75.6
+"Set2_LogNormal",25,20265712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",64.3
+"Set2_LogNormal",50,20266712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",67.5
+"Set2_LogNormal",75,20267712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",68.7
+"Set2_LogNormal",100,20268712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",57.8
+"Set3_Mixture",25,20269712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",47.7
+"Set3_Mixture",50,20270712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",50.6
+"Set3_Mixture",75,20271712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",51.5
+"Set3_Mixture",100,20272712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",53.6
+"Set4_Extremes",25,20273712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",47.6
+"Set4_Extremes",50,20274712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",50.8
+"Set4_Extremes",75,20275712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",54.4
+"Set4_Extremes",100,20276712,5000,3,"average","W1|SMD|KS|RV1|RV2|RV3",55.7
