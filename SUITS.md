@@ -45,6 +45,39 @@
 
 ## 🎬 Live Script
 
+### [2026-07-20 21:50] Scene: oracle k を外す — そして k を「推定」ではなく「消す」
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Tak「W1使ったクラスタリングはできない？」→ 確認したところ Part 2 が既にそれ。ただし `cutree(k = 3)` で**真のクラスタ数を教えている**。Tak の選択は「k を推定する手法にする」。*
+
+**Katrina**:（設計を2系統に割る）
+「2つ作った。**別の問いだから、別の採点をする。**
+
+**Rule A — silhouette k̂（統計的、全手法）**: 各手法が自分の距離行列上で silhouette 最大の k を選ぶ。手法非依存だから『oracle を失っても W₁ の優位は残るか』を公平に問える。**ARI で採点**（構成ラベル＝ metric 非依存なので非循環）。
+
+**Rule B — 臨床 τ_clin cut（W₁ の貢献）**: **k を推定しない。消す。** KR bound より pool 内の任意ペアが |Δθ| ≤ L·W₁ を満たすから、pool が許容可能 ⇔ **直径 ≤ τ_clin**。その高さで樹形図を切れば k は臨床要件から落ちてくる。Part 1B が閾値でやったことを partition に一般化した形。」
+
+**Jessica**:（Katrina が ARI で採点しかけたのを止める）
+「Let me be clear。**Rule B を ARI で採点してはだめ。** τ_clin cut が構成群を復元するのは τ_clin が群内／群間のギャップに偶然入ったときだけ。ARI を τ_clin で最大化すれば、それは**要件を真値に合わせるチューニング**——Louis が Part 1B で刺したその循環そのものよ。
+
+Part 1B と同じ枠で測りなさい——**violation（形成された pool に真の W₁ > τ のペアが入る確率）と sensitivity（真に pool 可能なペアが同居する割合）を τ_clin で掃引**。両方とも真の W₁ の上で定義されるから非循環。そうすれば Rule B は Part 1B の焼き直しでなく、**anchor ベース選択から partition への一般化**になるわ。」
+
+**Mike**:（技術的前提を押さえる）
+「linkage を変える必要がある。**Rule B は complete linkage 必須**——高さ h で切れば全クラスタの直径 ≤ h が保証される、それが許容条件そのものだ。average linkage にはその保証が無いから、τ_clin cut が許容度を破る pool を吐きうる。Rule A は Part 2 と比較可能にするため average のまま。」
+
+**Louis**:（実装を睨む）
+「自作の sampler で走らせるな。**production と別物になってたぞ**——`mix_sampler` の `d` の扱いも `ext_sampler` の引数構成も違った。Set 3 と Set 4 が別の world になってた。source しろ。」
+
+**Mike**:
+「直した。`clustering_simulation.R` を source して roster・距離・ARI を**同一実装で共有**する。それと真値の作り方も直した——群内は**同一 sampler だから真の W₁ は厳密に 0**、推定しない。推定すると MC ノイズ（0.02〜0.12）が τ グリッドを支配して、実距離より下にグリッドが張られていた。
+
+閉形式で検証済み: Set 1 の A-B = **7.997**（理論 |50−58| = 8.0）、A-C = **7.977**（理論 √(2/π)·10 = 7.979）。Set 4 は A-B=3.041 / A-C=6.093 で計画書の T1=3.0 / T2=6.0 構造と整合。」
+
+**スモークでの手応え**: Rule B は **Set 1・2 でも violation を制御**（ほぼ全セル ≤5%）。Part 1B の anchor 版点推定則が violation 19〜58% で吹き飛んだ場所だ——complete linkage の直径保証が効いている。**本番 run 実行中**（reps=2000、n = 25〜400）。
+
+---
+
 ### [2026-07-20 14:50] Scene: 一目で分かる図 — log(n) が効く
 
 **INT. PEARSON SPECTER LITT - KATRINA'S DESK - NIGHT**
