@@ -45,6 +45,26 @@
 
 ## 🎬 Live Script
 
+### [2026-07-20 14:50] Scene: 一目で分かる図 — log(n) が効く
+
+**INT. PEARSON SPECTER LITT - KATRINA'S DESK - NIGHT**
+
+*Tak「この結果が一目でわかるグラフは作成したかい？」*
+
+**Katrina**:（率直に）
+「していなかった。既存の図5枚は**全部 n ≤ 100 のグリッド**——今回の発見そのものが見えない図よ。作った。
+
+`fig_required_n_ari`（ARI vs n、log x、4 world の panel）と `fig_required_n_auc`（selection、3 panel）。**log x が効く**——n を20倍にして何も得られない手法は、データ不足でないことが**目で分かる**。
+
+Set 3 panel では RV と SMD がゼロ線に張り付いたまま、W₁ と KS だけが 1 まで登る。Set 4 panel が今日の主役——**KS は n≈400 まで平坦、そこから 0.98 まで急上昇**。これが『盲目』の読みを引退させた形。その隣で RV2 が 0.38 で頭打ちになる。ARI 0.8 / AUC 0.9 の基準線と chance 線を入れたから、必要例数は交点から直接読める。」
+
+**Donna**:
+「house style も守ってるわ——theme_bw base 11、width 7"、白背景、greyscale + `_color` スライド版。identity は色 + 線種 + 記号の三重符号化だから、印刷でも CVD でも読める。**そして生成後に目視確認済み**——validator は色を見るけどレイアウトは見ないから。」
+
+**成果物**: `R/figures_required_n.R`、`figures/fig_required_n_{ari,auc}[_color].{pdf,png}`
+
+---
+
 ### [2026-07-20 14:30] Scene: 全部を1枚に — 何が言えて、何が言えないか
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
