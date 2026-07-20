@@ -1,244 +1,244 @@
-"set","method","threshold","required_n","note","max_auc","value_at_2000"
-"Set1_Gaussian / location","KS",0.8,25,"<=25",1,1
-"Set1_Gaussian / location","KS",0.9,39,"",1,1
-"Set1_Gaussian / location","KS",0.95,62,"",1,1
-"Set1_Gaussian / scale","KS",0.8,41,"",1,1
-"Set1_Gaussian / scale","KS",0.9,76,"",1,1
-"Set1_Gaussian / scale","KS",0.95,120,"",1,1
-"Set1_Gaussian / combined","KS",0.8,34,"",1,1
-"Set1_Gaussian / combined","KS",0.9,62,"",1,1
-"Set1_Gaussian / combined","KS",0.95,94,"",1,1
-"Set1_Gaussian / location","RV1",0.8,25,"<=25",1,1
-"Set1_Gaussian / location","RV1",0.9,30,"",1,1
-"Set1_Gaussian / location","RV1",0.95,48,"",1,1
-"Set1_Gaussian / scale","RV1",0.8,NA,"blind (plateau 0.622)",0.6266,0.62
-"Set1_Gaussian / scale","RV1",0.9,NA,"blind (plateau 0.622)",0.6266,0.62
-"Set1_Gaussian / scale","RV1",0.95,NA,"blind (plateau 0.622)",0.6266,0.62
-"Set1_Gaussian / combined","RV1",0.8,27,"",1,1
-"Set1_Gaussian / combined","RV1",0.9,56,"",1,1
-"Set1_Gaussian / combined","RV1",0.95,89,"",1,1
-"Set1_Gaussian / location","RV2",0.8,25,"<=25",1,1
-"Set1_Gaussian / location","RV2",0.9,33,"",1,1
-"Set1_Gaussian / location","RV2",0.95,50,"",1,1
-"Set1_Gaussian / scale","RV2",0.8,25,"<=25",1,1
-"Set1_Gaussian / scale","RV2",0.9,25,"<=25",1,1
-"Set1_Gaussian / scale","RV2",0.95,28,"",1,1
-"Set1_Gaussian / combined","RV2",0.8,25,"<=25",1,1
-"Set1_Gaussian / combined","RV2",0.9,34,"",1,1
-"Set1_Gaussian / combined","RV2",0.95,51,"",1,1
-"Set1_Gaussian / location","RV3",0.8,37,"",0.9037,0.8983
-"Set1_Gaussian / location","RV3",0.9,657,"",0.9037,0.8983
-"Set1_Gaussian / location","RV3",0.95,NA,"blind (plateau 0.900)",0.9037,0.8983
-"Set1_Gaussian / scale","RV3",0.8,25,"<=25",0.9264,0.9246
-"Set1_Gaussian / scale","RV3",0.9,48,"",0.9264,0.9246
-"Set1_Gaussian / scale","RV3",0.95,NA,"blind (plateau 0.924)",0.9264,0.9246
-"Set1_Gaussian / combined","RV3",0.8,41,"",0.8806,0.879
-"Set1_Gaussian / combined","RV3",0.9,NA,"blind (plateau 0.880)",0.8806,0.879
-"Set1_Gaussian / combined","RV3",0.95,NA,"blind (plateau 0.880)",0.8806,0.879
-"Set1_Gaussian / location","SMD",0.8,25,"<=25",1,1
-"Set1_Gaussian / location","SMD",0.9,30,"",1,1
-"Set1_Gaussian / location","SMD",0.95,48,"",1,1
-"Set1_Gaussian / scale","SMD",0.8,NA,"blind (plateau 0.500)",0.5077,0.4937
-"Set1_Gaussian / scale","SMD",0.9,NA,"blind (plateau 0.500)",0.5077,0.4937
-"Set1_Gaussian / scale","SMD",0.95,NA,"blind (plateau 0.500)",0.5077,0.4937
-"Set1_Gaussian / combined","SMD",0.8,34,"",1,1
-"Set1_Gaussian / combined","SMD",0.9,67,"",1,1
-"Set1_Gaussian / combined","SMD",0.95,104,"",1,1
-"Set1_Gaussian / location","W1",0.8,25,"<=25",1,1
-"Set1_Gaussian / location","W1",0.9,33,"",1,1
-"Set1_Gaussian / location","W1",0.95,50,"",1,1
-"Set1_Gaussian / scale","W1",0.8,25,"<=25",1,1
-"Set1_Gaussian / scale","W1",0.9,25,"<=25",1,1
-"Set1_Gaussian / scale","W1",0.95,33,"",1,1
-"Set1_Gaussian / combined","W1",0.8,25,"<=25",1,1
-"Set1_Gaussian / combined","W1",0.9,35,"",1,1
-"Set1_Gaussian / combined","W1",0.95,56,"",1,1
-"Set2_LogNormal / location","KS",0.8,75,"",1,1
-"Set2_LogNormal / location","KS",0.9,157,"",1,1
-"Set2_LogNormal / location","KS",0.95,251,"",1,1
-"Set2_LogNormal / shape","KS",0.8,38,"",1,1
-"Set2_LogNormal / shape","KS",0.9,77,"",1,1
-"Set2_LogNormal / shape","KS",0.95,128,"",1,1
-"Set2_LogNormal / combined","KS",0.8,99,"",1,1
-"Set2_LogNormal / combined","KS",0.9,188,"",1,1
-"Set2_LogNormal / combined","KS",0.95,285,"",1,1
-"Set2_LogNormal / location","RV1",0.8,59,"",1,1
-"Set2_LogNormal / location","RV1",0.9,127,"",1,1
-"Set2_LogNormal / location","RV1",0.95,201,"",1,1
-"Set2_LogNormal / shape","RV1",0.8,NA,"blind (plateau 0.619)",0.6273,0.6167
-"Set2_LogNormal / shape","RV1",0.9,NA,"blind (plateau 0.619)",0.6273,0.6167
-"Set2_LogNormal / shape","RV1",0.95,NA,"blind (plateau 0.619)",0.6273,0.6167
-"Set2_LogNormal / combined","RV1",0.8,188,"",0.9973,0.9973
-"Set2_LogNormal / combined","RV1",0.9,403,"",0.9973,0.9973
-"Set2_LogNormal / combined","RV1",0.95,672,"",0.9973,0.9973
-"Set2_LogNormal / location","RV2",0.8,64,"",1,1
-"Set2_LogNormal / location","RV2",0.9,132,"",1,1
-"Set2_LogNormal / location","RV2",0.95,208,"",1,1
-"Set2_LogNormal / shape","RV2",0.8,25,"<=25",1,1
-"Set2_LogNormal / shape","RV2",0.9,60,"",1,1
-"Set2_LogNormal / shape","RV2",0.95,127,"",1,1
-"Set2_LogNormal / combined","RV2",0.8,40,"",1,1
-"Set2_LogNormal / combined","RV2",0.9,106,"",1,1
-"Set2_LogNormal / combined","RV2",0.95,187,"",1,1
-"Set2_LogNormal / location","RV3",0.8,90,"",0.9996,0.9996
-"Set2_LogNormal / location","RV3",0.9,191,"",0.9996,0.9996
-"Set2_LogNormal / location","RV3",0.95,323,"",0.9996,0.9996
-"Set2_LogNormal / shape","RV3",0.8,38,"",0.9987,0.9987
-"Set2_LogNormal / shape","RV3",0.9,138,"",0.9987,0.9987
-"Set2_LogNormal / shape","RV3",0.95,303,"",0.9987,0.9987
-"Set2_LogNormal / combined","RV3",0.8,68,"",0.9993,0.9993
-"Set2_LogNormal / combined","RV3",0.9,180,"",0.9993,0.9993
-"Set2_LogNormal / combined","RV3",0.95,330,"",0.9993,0.9993
-"Set2_LogNormal / location","SMD",0.8,62,"",1,1
-"Set2_LogNormal / location","SMD",0.9,134,"",1,1
-"Set2_LogNormal / location","SMD",0.95,215,"",1,1
-"Set2_LogNormal / shape","SMD",0.8,NA,"blind (plateau 0.499)",0.5091,0.497
-"Set2_LogNormal / shape","SMD",0.9,NA,"blind (plateau 0.499)",0.5091,0.497
-"Set2_LogNormal / shape","SMD",0.95,NA,"blind (plateau 0.499)",0.5091,0.497
-"Set2_LogNormal / combined","SMD",0.8,266,"",0.9938,0.9938
-"Set2_LogNormal / combined","SMD",0.9,529,"",0.9938,0.9938
-"Set2_LogNormal / combined","SMD",0.95,853,"",0.9938,0.9938
-"Set2_LogNormal / location","SMD_log",0.8,59,"",1,1
-"Set2_LogNormal / location","SMD_log",0.9,122,"",1,1
-"Set2_LogNormal / location","SMD_log",0.95,196,"",1,1
-"Set2_LogNormal / shape","SMD_log",0.8,100,"",0.9998,0.9998
-"Set2_LogNormal / shape","SMD_log",0.9,225,"",0.9998,0.9998
-"Set2_LogNormal / shape","SMD_log",0.95,398,"",0.9998,0.9998
-"Set2_LogNormal / combined","SMD_log",0.8,NA,"blind (plateau 0.512)",0.5152,0.5069
-"Set2_LogNormal / combined","SMD_log",0.9,NA,"blind (plateau 0.512)",0.5152,0.5069
-"Set2_LogNormal / combined","SMD_log",0.95,NA,"blind (plateau 0.512)",0.5152,0.5069
-"Set2_LogNormal / location","W1",0.8,60,"",1,1
-"Set2_LogNormal / location","W1",0.9,129,"",1,1
-"Set2_LogNormal / location","W1",0.95,204,"",1,1
-"Set2_LogNormal / shape","W1",0.8,25,"<=25",1,1
-"Set2_LogNormal / shape","W1",0.9,32,"",1,1
-"Set2_LogNormal / shape","W1",0.95,58,"",1,1
-"Set2_LogNormal / combined","W1",0.8,26,"",1,1
-"Set2_LogNormal / combined","W1",0.9,60,"",1,1
-"Set2_LogNormal / combined","W1",0.95,101,"",1,1
-"Set3_Mixture / shape_sym","KS",0.8,184,"",0.9761,0.9761
-"Set3_Mixture / shape_sym","KS",0.9,716,"",0.9761,0.9761
-"Set3_Mixture / shape_sym","KS",0.95,1320,"",0.9761,0.9761
-"Set3_Mixture / shape_skew","KS",0.8,440,"",0.9803,0.9803
-"Set3_Mixture / shape_skew","KS",0.9,905,"",0.9803,0.9803
-"Set3_Mixture / shape_skew","KS",0.95,1472,"",0.9803,0.9803
-"Set3_Mixture / combined","KS",0.8,253,"",0.9889,0.9889
-"Set3_Mixture / combined","KS",0.9,550,"",0.9889,0.9889
-"Set3_Mixture / combined","KS",0.95,973,"",0.9889,0.9889
-"Set3_Mixture / shape_sym","RV1",0.8,NA,"blind (plateau 0.498)",0.5111,0.4948
-"Set3_Mixture / shape_sym","RV1",0.9,NA,"blind (plateau 0.498)",0.5111,0.4948
-"Set3_Mixture / shape_sym","RV1",0.95,NA,"blind (plateau 0.498)",0.5111,0.4948
-"Set3_Mixture / shape_skew","RV1",0.8,NA,"blind (plateau 0.503)",0.5064,0.4994
-"Set3_Mixture / shape_skew","RV1",0.9,NA,"blind (plateau 0.503)",0.5064,0.4994
-"Set3_Mixture / shape_skew","RV1",0.95,NA,"blind (plateau 0.503)",0.5064,0.4994
-"Set3_Mixture / combined","RV1",0.8,NA,"blind (plateau 0.502)",0.5084,0.5046
-"Set3_Mixture / combined","RV1",0.9,NA,"blind (plateau 0.502)",0.5084,0.5046
-"Set3_Mixture / combined","RV1",0.95,NA,"blind (plateau 0.502)",0.5084,0.5046
-"Set3_Mixture / shape_sym","RV2",0.8,NA,"blind (plateau 0.449)",0.4579,0.4466
-"Set3_Mixture / shape_sym","RV2",0.9,NA,"blind (plateau 0.449)",0.4579,0.4466
-"Set3_Mixture / shape_sym","RV2",0.95,NA,"blind (plateau 0.449)",0.4579,0.4466
-"Set3_Mixture / shape_skew","RV2",0.8,NA,"blind (plateau 0.502)",0.5119,0.5009
-"Set3_Mixture / shape_skew","RV2",0.9,NA,"blind (plateau 0.502)",0.5119,0.5009
-"Set3_Mixture / shape_skew","RV2",0.95,NA,"blind (plateau 0.502)",0.5119,0.5009
-"Set3_Mixture / combined","RV2",0.8,NA,"blind (plateau 0.493)",0.4959,0.4925
-"Set3_Mixture / combined","RV2",0.9,NA,"blind (plateau 0.493)",0.4959,0.4925
-"Set3_Mixture / combined","RV2",0.95,NA,"blind (plateau 0.493)",0.4959,0.4925
-"Set3_Mixture / shape_sym","RV3",0.8,NA,"blind (plateau 0.445)",0.452,0.4439
-"Set3_Mixture / shape_sym","RV3",0.9,NA,"blind (plateau 0.445)",0.452,0.4439
-"Set3_Mixture / shape_sym","RV3",0.95,NA,"blind (plateau 0.445)",0.452,0.4439
-"Set3_Mixture / shape_skew","RV3",0.8,NA,"blind (plateau 0.782)",0.7898,0.7898
-"Set3_Mixture / shape_skew","RV3",0.9,NA,"blind (plateau 0.782)",0.7898,0.7898
-"Set3_Mixture / shape_skew","RV3",0.95,NA,"blind (plateau 0.782)",0.7898,0.7898
-"Set3_Mixture / combined","RV3",0.8,NA,"blind (plateau 0.775)",0.7837,0.7837
-"Set3_Mixture / combined","RV3",0.9,NA,"blind (plateau 0.775)",0.7837,0.7837
-"Set3_Mixture / combined","RV3",0.95,NA,"blind (plateau 0.775)",0.7837,0.7837
-"Set3_Mixture / shape_sym","SMD",0.8,NA,"blind (plateau 0.499)",0.5108,0.4948
-"Set3_Mixture / shape_sym","SMD",0.9,NA,"blind (plateau 0.499)",0.5108,0.4948
-"Set3_Mixture / shape_sym","SMD",0.95,NA,"blind (plateau 0.499)",0.5108,0.4948
-"Set3_Mixture / shape_skew","SMD",0.8,NA,"blind (plateau 0.502)",0.5067,0.4993
-"Set3_Mixture / shape_skew","SMD",0.9,NA,"blind (plateau 0.502)",0.5067,0.4993
-"Set3_Mixture / shape_skew","SMD",0.95,NA,"blind (plateau 0.502)",0.5067,0.4993
-"Set3_Mixture / combined","SMD",0.8,NA,"blind (plateau 0.502)",0.5087,0.5042
-"Set3_Mixture / combined","SMD",0.9,NA,"blind (plateau 0.502)",0.5087,0.5042
-"Set3_Mixture / combined","SMD",0.95,NA,"blind (plateau 0.502)",0.5087,0.5042
-"Set3_Mixture / shape_sym","W1",0.8,204,"",0.9849,0.9849
-"Set3_Mixture / shape_sym","W1",0.9,690,"",0.9849,0.9849
-"Set3_Mixture / shape_sym","W1",0.95,1199,"",0.9849,0.9849
-"Set3_Mixture / shape_skew","W1",0.8,284,"",0.9966,0.9966
-"Set3_Mixture / shape_skew","W1",0.9,537,"",0.9966,0.9966
-"Set3_Mixture / shape_skew","W1",0.95,843,"",0.9966,0.9966
-"Set3_Mixture / combined","W1",0.8,192,"",0.9988,0.9988
-"Set3_Mixture / combined","W1",0.9,368,"",0.9988,0.9988
-"Set3_Mixture / combined","W1",0.95,572,"",0.9988,0.9988
-"Set4_Extremes / sym_severity","KS",0.8,741,"",0.9878,0.9878
-"Set4_Extremes / sym_severity","KS",0.9,1047,"",0.9878,0.9878
-"Set4_Extremes / sym_severity","KS",0.95,1417,"",0.9878,0.9878
-"Set4_Extremes / sym_prevalence","KS",0.8,202,"",0.9999,0.9999
-"Set4_Extremes / sym_prevalence","KS",0.9,367,"",0.9999,0.9999
-"Set4_Extremes / sym_prevalence","KS",0.95,529,"",0.9999,0.9999
-"Set4_Extremes / asym_severity","KS",0.8,871,"",0.9818,0.9818
-"Set4_Extremes / asym_severity","KS",0.9,1252,"",0.9818,0.9818
-"Set4_Extremes / asym_severity","KS",0.95,1582,"",0.9818,0.9818
-"Set4_Extremes / bulk_shift","KS",0.8,155,"",0.9988,0.9988
-"Set4_Extremes / bulk_shift","KS",0.9,333,"",0.9988,0.9988
-"Set4_Extremes / bulk_shift","KS",0.95,529,"",0.9988,0.9988
-"Set4_Extremes / sym_severity","RV1",0.8,NA,"blind (plateau 0.617)",0.6254,0.6156
-"Set4_Extremes / sym_severity","RV1",0.9,NA,"blind (plateau 0.617)",0.6254,0.6156
-"Set4_Extremes / sym_severity","RV1",0.95,NA,"blind (plateau 0.617)",0.6254,0.6156
-"Set4_Extremes / sym_prevalence","RV1",0.8,NA,"blind (plateau 0.562)",0.5699,0.5567
-"Set4_Extremes / sym_prevalence","RV1",0.9,NA,"blind (plateau 0.562)",0.5699,0.5567
-"Set4_Extremes / sym_prevalence","RV1",0.95,NA,"blind (plateau 0.562)",0.5699,0.5567
-"Set4_Extremes / asym_severity","RV1",0.8,196,"",0.9989,0.9989
-"Set4_Extremes / asym_severity","RV1",0.9,389,"",0.9989,0.9989
-"Set4_Extremes / asym_severity","RV1",0.95,636,"",0.9989,0.9989
-"Set4_Extremes / bulk_shift","RV1",0.8,242,"",0.9938,0.9938
-"Set4_Extremes / bulk_shift","RV1",0.9,491,"",0.9938,0.9938
-"Set4_Extremes / bulk_shift","RV1",0.95,810,"",0.9938,0.9938
-"Set4_Extremes / sym_severity","RV2",0.8,25,"<=25",0.9999,0.9999
-"Set4_Extremes / sym_severity","RV2",0.9,76,"",0.9999,0.9999
-"Set4_Extremes / sym_severity","RV2",0.95,177,"",0.9999,0.9999
-"Set4_Extremes / sym_prevalence","RV2",0.8,140,"",0.994,0.994
-"Set4_Extremes / sym_prevalence","RV2",0.9,412,"",0.994,0.994
-"Set4_Extremes / sym_prevalence","RV2",0.95,804,"",0.994,0.994
-"Set4_Extremes / asym_severity","RV2",0.8,41,"",1,1
-"Set4_Extremes / asym_severity","RV2",0.9,125,"",1,1
-"Set4_Extremes / asym_severity","RV2",0.95,226,"",1,1
-"Set4_Extremes / bulk_shift","RV2",0.8,245,"",0.9939,0.9939
-"Set4_Extremes / bulk_shift","RV2",0.9,490,"",0.9939,0.9939
-"Set4_Extremes / bulk_shift","RV2",0.95,806,"",0.9939,0.9939
-"Set4_Extremes / sym_severity","RV3",0.8,25,"<=25",0.9998,0.9998
-"Set4_Extremes / sym_severity","RV3",0.9,83,"",0.9998,0.9998
-"Set4_Extremes / sym_severity","RV3",0.95,213,"",0.9998,0.9998
-"Set4_Extremes / sym_prevalence","RV3",0.8,223,"",0.9922,0.9922
-"Set4_Extremes / sym_prevalence","RV3",0.9,527,"",0.9922,0.9922
-"Set4_Extremes / sym_prevalence","RV3",0.95,886,"",0.9922,0.9922
-"Set4_Extremes / asym_severity","RV3",0.8,25,"<=25",1,1
-"Set4_Extremes / asym_severity","RV3",0.9,41,"",1,1
-"Set4_Extremes / asym_severity","RV3",0.95,60,"",1,1
-"Set4_Extremes / bulk_shift","RV3",0.8,248,"",0.9938,0.9938
-"Set4_Extremes / bulk_shift","RV3",0.9,491,"",0.9938,0.9938
-"Set4_Extremes / bulk_shift","RV3",0.95,810,"",0.9938,0.9938
-"Set4_Extremes / sym_severity","SMD",0.8,NA,"blind (plateau 0.496)",0.5069,0.4948
-"Set4_Extremes / sym_severity","SMD",0.9,NA,"blind (plateau 0.496)",0.5069,0.4948
-"Set4_Extremes / sym_severity","SMD",0.95,NA,"blind (plateau 0.496)",0.5069,0.4948
-"Set4_Extremes / sym_prevalence","SMD",0.8,NA,"blind (plateau 0.501)",0.5103,0.4956
-"Set4_Extremes / sym_prevalence","SMD",0.9,NA,"blind (plateau 0.501)",0.5103,0.4956
-"Set4_Extremes / sym_prevalence","SMD",0.95,NA,"blind (plateau 0.501)",0.5103,0.4956
-"Set4_Extremes / asym_severity","SMD",0.8,279,"",0.9968,0.9968
-"Set4_Extremes / asym_severity","SMD",0.9,530,"",0.9968,0.9968
-"Set4_Extremes / asym_severity","SMD",0.95,839,"",0.9968,0.9968
-"Set4_Extremes / bulk_shift","SMD",0.8,242,"",0.9938,0.9938
-"Set4_Extremes / bulk_shift","SMD",0.9,489,"",0.9938,0.9938
-"Set4_Extremes / bulk_shift","SMD",0.95,810,"",0.9938,0.9938
-"Set4_Extremes / sym_severity","W1",0.8,25,"<=25",1,1
-"Set4_Extremes / sym_severity","W1",0.9,42,"",1,1
-"Set4_Extremes / sym_severity","W1",0.95,72,"",1,1
-"Set4_Extremes / sym_prevalence","W1",0.8,48,"",1,1
-"Set4_Extremes / sym_prevalence","W1",0.9,98,"",1,1
-"Set4_Extremes / sym_prevalence","W1",0.95,148,"",1,1
-"Set4_Extremes / asym_severity","W1",0.8,32,"",1,1
-"Set4_Extremes / asym_severity","W1",0.9,67,"",1,1
-"Set4_Extremes / asym_severity","W1",0.95,105,"",1,1
-"Set4_Extremes / bulk_shift","W1",0.8,186,"",0.9978,0.9978
-"Set4_Extremes / bulk_shift","W1",0.9,377,"",0.9978,0.9978
-"Set4_Extremes / bulk_shift","W1",0.95,581,"",0.9978,0.9978
+"set","method","threshold","required_n","status","note","max_auc","value_at_2000"
+"Set1_Gaussian / location","KS",0.8,25,"reached","<=25",1,1
+"Set1_Gaussian / location","KS",0.9,39,"reached","",1,1
+"Set1_Gaussian / location","KS",0.95,62,"reached","",1,1
+"Set1_Gaussian / scale","KS",0.8,41,"reached","",1,1
+"Set1_Gaussian / scale","KS",0.9,76,"reached","",1,1
+"Set1_Gaussian / scale","KS",0.95,120,"reached","",1,1
+"Set1_Gaussian / combined","KS",0.8,34,"reached","",1,1
+"Set1_Gaussian / combined","KS",0.9,62,"reached","",1,1
+"Set1_Gaussian / combined","KS",0.95,94,"reached","",1,1
+"Set1_Gaussian / location","RV1",0.8,25,"reached","<=25",1,1
+"Set1_Gaussian / location","RV1",0.9,30,"reached","",1,1
+"Set1_Gaussian / location","RV1",0.95,48,"reached","",1,1
+"Set1_Gaussian / scale","RV1",0.8,NA,"partial","partial (plateau 0.622)",0.6266,0.62
+"Set1_Gaussian / scale","RV1",0.9,NA,"partial","partial (plateau 0.622)",0.6266,0.62
+"Set1_Gaussian / scale","RV1",0.95,NA,"partial","partial (plateau 0.622)",0.6266,0.62
+"Set1_Gaussian / combined","RV1",0.8,27,"reached","",1,1
+"Set1_Gaussian / combined","RV1",0.9,56,"reached","",1,1
+"Set1_Gaussian / combined","RV1",0.95,89,"reached","",1,1
+"Set1_Gaussian / location","RV2",0.8,25,"reached","<=25",1,1
+"Set1_Gaussian / location","RV2",0.9,33,"reached","",1,1
+"Set1_Gaussian / location","RV2",0.95,50,"reached","",1,1
+"Set1_Gaussian / scale","RV2",0.8,25,"reached","<=25",1,1
+"Set1_Gaussian / scale","RV2",0.9,25,"reached","<=25",1,1
+"Set1_Gaussian / scale","RV2",0.95,28,"reached","",1,1
+"Set1_Gaussian / combined","RV2",0.8,25,"reached","<=25",1,1
+"Set1_Gaussian / combined","RV2",0.9,34,"reached","",1,1
+"Set1_Gaussian / combined","RV2",0.95,51,"reached","",1,1
+"Set1_Gaussian / location","RV3",0.8,37,"reached","",0.9037,0.8983
+"Set1_Gaussian / location","RV3",0.9,657,"reached","",0.9037,0.8983
+"Set1_Gaussian / location","RV3",0.95,NA,"partial","partial (plateau 0.900)",0.9037,0.8983
+"Set1_Gaussian / scale","RV3",0.8,25,"reached","<=25",0.9264,0.9246
+"Set1_Gaussian / scale","RV3",0.9,48,"reached","",0.9264,0.9246
+"Set1_Gaussian / scale","RV3",0.95,NA,"partial","partial (plateau 0.924)",0.9264,0.9246
+"Set1_Gaussian / combined","RV3",0.8,41,"reached","",0.8806,0.879
+"Set1_Gaussian / combined","RV3",0.9,NA,"partial","partial (plateau 0.880)",0.8806,0.879
+"Set1_Gaussian / combined","RV3",0.95,NA,"partial","partial (plateau 0.880)",0.8806,0.879
+"Set1_Gaussian / location","SMD",0.8,25,"reached","<=25",1,1
+"Set1_Gaussian / location","SMD",0.9,30,"reached","",1,1
+"Set1_Gaussian / location","SMD",0.95,48,"reached","",1,1
+"Set1_Gaussian / scale","SMD",0.8,NA,"blind","blind (plateau 0.500 at chance 0.50)",0.5077,0.4937
+"Set1_Gaussian / scale","SMD",0.9,NA,"blind","blind (plateau 0.500 at chance 0.50)",0.5077,0.4937
+"Set1_Gaussian / scale","SMD",0.95,NA,"blind","blind (plateau 0.500 at chance 0.50)",0.5077,0.4937
+"Set1_Gaussian / combined","SMD",0.8,34,"reached","",1,1
+"Set1_Gaussian / combined","SMD",0.9,67,"reached","",1,1
+"Set1_Gaussian / combined","SMD",0.95,104,"reached","",1,1
+"Set1_Gaussian / location","W1",0.8,25,"reached","<=25",1,1
+"Set1_Gaussian / location","W1",0.9,33,"reached","",1,1
+"Set1_Gaussian / location","W1",0.95,50,"reached","",1,1
+"Set1_Gaussian / scale","W1",0.8,25,"reached","<=25",1,1
+"Set1_Gaussian / scale","W1",0.9,25,"reached","<=25",1,1
+"Set1_Gaussian / scale","W1",0.95,33,"reached","",1,1
+"Set1_Gaussian / combined","W1",0.8,25,"reached","<=25",1,1
+"Set1_Gaussian / combined","W1",0.9,35,"reached","",1,1
+"Set1_Gaussian / combined","W1",0.95,56,"reached","",1,1
+"Set2_LogNormal / location","KS",0.8,75,"reached","",1,1
+"Set2_LogNormal / location","KS",0.9,157,"reached","",1,1
+"Set2_LogNormal / location","KS",0.95,251,"reached","",1,1
+"Set2_LogNormal / shape","KS",0.8,38,"reached","",1,1
+"Set2_LogNormal / shape","KS",0.9,77,"reached","",1,1
+"Set2_LogNormal / shape","KS",0.95,128,"reached","",1,1
+"Set2_LogNormal / combined","KS",0.8,99,"reached","",1,1
+"Set2_LogNormal / combined","KS",0.9,188,"reached","",1,1
+"Set2_LogNormal / combined","KS",0.95,285,"reached","",1,1
+"Set2_LogNormal / location","RV1",0.8,59,"reached","",1,1
+"Set2_LogNormal / location","RV1",0.9,127,"reached","",1,1
+"Set2_LogNormal / location","RV1",0.95,201,"reached","",1,1
+"Set2_LogNormal / shape","RV1",0.8,NA,"partial","partial (plateau 0.619)",0.6273,0.6167
+"Set2_LogNormal / shape","RV1",0.9,NA,"partial","partial (plateau 0.619)",0.6273,0.6167
+"Set2_LogNormal / shape","RV1",0.95,NA,"partial","partial (plateau 0.619)",0.6273,0.6167
+"Set2_LogNormal / combined","RV1",0.8,188,"reached","",0.9973,0.9973
+"Set2_LogNormal / combined","RV1",0.9,403,"reached","",0.9973,0.9973
+"Set2_LogNormal / combined","RV1",0.95,672,"reached","",0.9973,0.9973
+"Set2_LogNormal / location","RV2",0.8,64,"reached","",1,1
+"Set2_LogNormal / location","RV2",0.9,132,"reached","",1,1
+"Set2_LogNormal / location","RV2",0.95,208,"reached","",1,1
+"Set2_LogNormal / shape","RV2",0.8,25,"reached","<=25",1,1
+"Set2_LogNormal / shape","RV2",0.9,60,"reached","",1,1
+"Set2_LogNormal / shape","RV2",0.95,127,"reached","",1,1
+"Set2_LogNormal / combined","RV2",0.8,40,"reached","",1,1
+"Set2_LogNormal / combined","RV2",0.9,106,"reached","",1,1
+"Set2_LogNormal / combined","RV2",0.95,187,"reached","",1,1
+"Set2_LogNormal / location","RV3",0.8,90,"reached","",0.9996,0.9996
+"Set2_LogNormal / location","RV3",0.9,191,"reached","",0.9996,0.9996
+"Set2_LogNormal / location","RV3",0.95,323,"reached","",0.9996,0.9996
+"Set2_LogNormal / shape","RV3",0.8,38,"reached","",0.9987,0.9987
+"Set2_LogNormal / shape","RV3",0.9,138,"reached","",0.9987,0.9987
+"Set2_LogNormal / shape","RV3",0.95,303,"reached","",0.9987,0.9987
+"Set2_LogNormal / combined","RV3",0.8,68,"reached","",0.9993,0.9993
+"Set2_LogNormal / combined","RV3",0.9,180,"reached","",0.9993,0.9993
+"Set2_LogNormal / combined","RV3",0.95,330,"reached","",0.9993,0.9993
+"Set2_LogNormal / location","SMD",0.8,62,"reached","",1,1
+"Set2_LogNormal / location","SMD",0.9,134,"reached","",1,1
+"Set2_LogNormal / location","SMD",0.95,215,"reached","",1,1
+"Set2_LogNormal / shape","SMD",0.8,NA,"blind","blind (plateau 0.499 at chance 0.50)",0.5091,0.497
+"Set2_LogNormal / shape","SMD",0.9,NA,"blind","blind (plateau 0.499 at chance 0.50)",0.5091,0.497
+"Set2_LogNormal / shape","SMD",0.95,NA,"blind","blind (plateau 0.499 at chance 0.50)",0.5091,0.497
+"Set2_LogNormal / combined","SMD",0.8,266,"reached","",0.9938,0.9938
+"Set2_LogNormal / combined","SMD",0.9,529,"reached","",0.9938,0.9938
+"Set2_LogNormal / combined","SMD",0.95,853,"reached","",0.9938,0.9938
+"Set2_LogNormal / location","SMD_log",0.8,59,"reached","",1,1
+"Set2_LogNormal / location","SMD_log",0.9,122,"reached","",1,1
+"Set2_LogNormal / location","SMD_log",0.95,196,"reached","",1,1
+"Set2_LogNormal / shape","SMD_log",0.8,100,"reached","",0.9998,0.9998
+"Set2_LogNormal / shape","SMD_log",0.9,225,"reached","",0.9998,0.9998
+"Set2_LogNormal / shape","SMD_log",0.95,398,"reached","",0.9998,0.9998
+"Set2_LogNormal / combined","SMD_log",0.8,NA,"blind","blind (plateau 0.512 at chance 0.50)",0.5152,0.5069
+"Set2_LogNormal / combined","SMD_log",0.9,NA,"blind","blind (plateau 0.512 at chance 0.50)",0.5152,0.5069
+"Set2_LogNormal / combined","SMD_log",0.95,NA,"blind","blind (plateau 0.512 at chance 0.50)",0.5152,0.5069
+"Set2_LogNormal / location","W1",0.8,60,"reached","",1,1
+"Set2_LogNormal / location","W1",0.9,129,"reached","",1,1
+"Set2_LogNormal / location","W1",0.95,204,"reached","",1,1
+"Set2_LogNormal / shape","W1",0.8,25,"reached","<=25",1,1
+"Set2_LogNormal / shape","W1",0.9,32,"reached","",1,1
+"Set2_LogNormal / shape","W1",0.95,58,"reached","",1,1
+"Set2_LogNormal / combined","W1",0.8,26,"reached","",1,1
+"Set2_LogNormal / combined","W1",0.9,60,"reached","",1,1
+"Set2_LogNormal / combined","W1",0.95,101,"reached","",1,1
+"Set3_Mixture / shape_sym","KS",0.8,184,"reached","",0.9761,0.9761
+"Set3_Mixture / shape_sym","KS",0.9,716,"reached","",0.9761,0.9761
+"Set3_Mixture / shape_sym","KS",0.95,1320,"reached","",0.9761,0.9761
+"Set3_Mixture / shape_skew","KS",0.8,440,"reached","",0.9803,0.9803
+"Set3_Mixture / shape_skew","KS",0.9,905,"reached","",0.9803,0.9803
+"Set3_Mixture / shape_skew","KS",0.95,1472,"reached","",0.9803,0.9803
+"Set3_Mixture / combined","KS",0.8,253,"reached","",0.9889,0.9889
+"Set3_Mixture / combined","KS",0.9,550,"reached","",0.9889,0.9889
+"Set3_Mixture / combined","KS",0.95,973,"reached","",0.9889,0.9889
+"Set3_Mixture / shape_sym","RV1",0.8,NA,"blind","blind (plateau 0.498 at chance 0.50)",0.5111,0.4948
+"Set3_Mixture / shape_sym","RV1",0.9,NA,"blind","blind (plateau 0.498 at chance 0.50)",0.5111,0.4948
+"Set3_Mixture / shape_sym","RV1",0.95,NA,"blind","blind (plateau 0.498 at chance 0.50)",0.5111,0.4948
+"Set3_Mixture / shape_skew","RV1",0.8,NA,"blind","blind (plateau 0.503 at chance 0.50)",0.5064,0.4994
+"Set3_Mixture / shape_skew","RV1",0.9,NA,"blind","blind (plateau 0.503 at chance 0.50)",0.5064,0.4994
+"Set3_Mixture / shape_skew","RV1",0.95,NA,"blind","blind (plateau 0.503 at chance 0.50)",0.5064,0.4994
+"Set3_Mixture / combined","RV1",0.8,NA,"blind","blind (plateau 0.502 at chance 0.50)",0.5084,0.5046
+"Set3_Mixture / combined","RV1",0.9,NA,"blind","blind (plateau 0.502 at chance 0.50)",0.5084,0.5046
+"Set3_Mixture / combined","RV1",0.95,NA,"blind","blind (plateau 0.502 at chance 0.50)",0.5084,0.5046
+"Set3_Mixture / shape_sym","RV2",0.8,NA,"blind","blind (plateau 0.449 at chance 0.50)",0.4579,0.4466
+"Set3_Mixture / shape_sym","RV2",0.9,NA,"blind","blind (plateau 0.449 at chance 0.50)",0.4579,0.4466
+"Set3_Mixture / shape_sym","RV2",0.95,NA,"blind","blind (plateau 0.449 at chance 0.50)",0.4579,0.4466
+"Set3_Mixture / shape_skew","RV2",0.8,NA,"blind","blind (plateau 0.502 at chance 0.50)",0.5119,0.5009
+"Set3_Mixture / shape_skew","RV2",0.9,NA,"blind","blind (plateau 0.502 at chance 0.50)",0.5119,0.5009
+"Set3_Mixture / shape_skew","RV2",0.95,NA,"blind","blind (plateau 0.502 at chance 0.50)",0.5119,0.5009
+"Set3_Mixture / combined","RV2",0.8,NA,"blind","blind (plateau 0.493 at chance 0.50)",0.4959,0.4925
+"Set3_Mixture / combined","RV2",0.9,NA,"blind","blind (plateau 0.493 at chance 0.50)",0.4959,0.4925
+"Set3_Mixture / combined","RV2",0.95,NA,"blind","blind (plateau 0.493 at chance 0.50)",0.4959,0.4925
+"Set3_Mixture / shape_sym","RV3",0.8,NA,"blind","blind (plateau 0.445 at chance 0.50)",0.452,0.4439
+"Set3_Mixture / shape_sym","RV3",0.9,NA,"blind","blind (plateau 0.445 at chance 0.50)",0.452,0.4439
+"Set3_Mixture / shape_sym","RV3",0.95,NA,"blind","blind (plateau 0.445 at chance 0.50)",0.452,0.4439
+"Set3_Mixture / shape_skew","RV3",0.8,NA,"partial","partial (plateau 0.782)",0.7898,0.7898
+"Set3_Mixture / shape_skew","RV3",0.9,NA,"partial","partial (plateau 0.782)",0.7898,0.7898
+"Set3_Mixture / shape_skew","RV3",0.95,NA,"partial","partial (plateau 0.782)",0.7898,0.7898
+"Set3_Mixture / combined","RV3",0.8,NA,"partial","partial (plateau 0.775)",0.7837,0.7837
+"Set3_Mixture / combined","RV3",0.9,NA,"partial","partial (plateau 0.775)",0.7837,0.7837
+"Set3_Mixture / combined","RV3",0.95,NA,"partial","partial (plateau 0.775)",0.7837,0.7837
+"Set3_Mixture / shape_sym","SMD",0.8,NA,"blind","blind (plateau 0.499 at chance 0.50)",0.5108,0.4948
+"Set3_Mixture / shape_sym","SMD",0.9,NA,"blind","blind (plateau 0.499 at chance 0.50)",0.5108,0.4948
+"Set3_Mixture / shape_sym","SMD",0.95,NA,"blind","blind (plateau 0.499 at chance 0.50)",0.5108,0.4948
+"Set3_Mixture / shape_skew","SMD",0.8,NA,"blind","blind (plateau 0.502 at chance 0.50)",0.5067,0.4993
+"Set3_Mixture / shape_skew","SMD",0.9,NA,"blind","blind (plateau 0.502 at chance 0.50)",0.5067,0.4993
+"Set3_Mixture / shape_skew","SMD",0.95,NA,"blind","blind (plateau 0.502 at chance 0.50)",0.5067,0.4993
+"Set3_Mixture / combined","SMD",0.8,NA,"blind","blind (plateau 0.502 at chance 0.50)",0.5087,0.5042
+"Set3_Mixture / combined","SMD",0.9,NA,"blind","blind (plateau 0.502 at chance 0.50)",0.5087,0.5042
+"Set3_Mixture / combined","SMD",0.95,NA,"blind","blind (plateau 0.502 at chance 0.50)",0.5087,0.5042
+"Set3_Mixture / shape_sym","W1",0.8,204,"reached","",0.9849,0.9849
+"Set3_Mixture / shape_sym","W1",0.9,690,"reached","",0.9849,0.9849
+"Set3_Mixture / shape_sym","W1",0.95,1199,"reached","",0.9849,0.9849
+"Set3_Mixture / shape_skew","W1",0.8,284,"reached","",0.9966,0.9966
+"Set3_Mixture / shape_skew","W1",0.9,537,"reached","",0.9966,0.9966
+"Set3_Mixture / shape_skew","W1",0.95,843,"reached","",0.9966,0.9966
+"Set3_Mixture / combined","W1",0.8,192,"reached","",0.9988,0.9988
+"Set3_Mixture / combined","W1",0.9,368,"reached","",0.9988,0.9988
+"Set3_Mixture / combined","W1",0.95,572,"reached","",0.9988,0.9988
+"Set4_Extremes / sym_severity","KS",0.8,741,"reached","",0.9878,0.9878
+"Set4_Extremes / sym_severity","KS",0.9,1047,"reached","",0.9878,0.9878
+"Set4_Extremes / sym_severity","KS",0.95,1417,"reached","",0.9878,0.9878
+"Set4_Extremes / sym_prevalence","KS",0.8,202,"reached","",0.9999,0.9999
+"Set4_Extremes / sym_prevalence","KS",0.9,367,"reached","",0.9999,0.9999
+"Set4_Extremes / sym_prevalence","KS",0.95,529,"reached","",0.9999,0.9999
+"Set4_Extremes / asym_severity","KS",0.8,871,"reached","",0.9818,0.9818
+"Set4_Extremes / asym_severity","KS",0.9,1252,"reached","",0.9818,0.9818
+"Set4_Extremes / asym_severity","KS",0.95,1582,"reached","",0.9818,0.9818
+"Set4_Extremes / bulk_shift","KS",0.8,155,"reached","",0.9988,0.9988
+"Set4_Extremes / bulk_shift","KS",0.9,333,"reached","",0.9988,0.9988
+"Set4_Extremes / bulk_shift","KS",0.95,529,"reached","",0.9988,0.9988
+"Set4_Extremes / sym_severity","RV1",0.8,NA,"partial","partial (plateau 0.617)",0.6254,0.6156
+"Set4_Extremes / sym_severity","RV1",0.9,NA,"partial","partial (plateau 0.617)",0.6254,0.6156
+"Set4_Extremes / sym_severity","RV1",0.95,NA,"partial","partial (plateau 0.617)",0.6254,0.6156
+"Set4_Extremes / sym_prevalence","RV1",0.8,NA,"partial","partial (plateau 0.562)",0.5699,0.5567
+"Set4_Extremes / sym_prevalence","RV1",0.9,NA,"partial","partial (plateau 0.562)",0.5699,0.5567
+"Set4_Extremes / sym_prevalence","RV1",0.95,NA,"partial","partial (plateau 0.562)",0.5699,0.5567
+"Set4_Extremes / asym_severity","RV1",0.8,196,"reached","",0.9989,0.9989
+"Set4_Extremes / asym_severity","RV1",0.9,389,"reached","",0.9989,0.9989
+"Set4_Extremes / asym_severity","RV1",0.95,636,"reached","",0.9989,0.9989
+"Set4_Extremes / bulk_shift","RV1",0.8,242,"reached","",0.9938,0.9938
+"Set4_Extremes / bulk_shift","RV1",0.9,491,"reached","",0.9938,0.9938
+"Set4_Extremes / bulk_shift","RV1",0.95,810,"reached","",0.9938,0.9938
+"Set4_Extremes / sym_severity","RV2",0.8,25,"reached","<=25",0.9999,0.9999
+"Set4_Extremes / sym_severity","RV2",0.9,76,"reached","",0.9999,0.9999
+"Set4_Extremes / sym_severity","RV2",0.95,177,"reached","",0.9999,0.9999
+"Set4_Extremes / sym_prevalence","RV2",0.8,140,"reached","",0.994,0.994
+"Set4_Extremes / sym_prevalence","RV2",0.9,412,"reached","",0.994,0.994
+"Set4_Extremes / sym_prevalence","RV2",0.95,804,"reached","",0.994,0.994
+"Set4_Extremes / asym_severity","RV2",0.8,41,"reached","",1,1
+"Set4_Extremes / asym_severity","RV2",0.9,125,"reached","",1,1
+"Set4_Extremes / asym_severity","RV2",0.95,226,"reached","",1,1
+"Set4_Extremes / bulk_shift","RV2",0.8,245,"reached","",0.9939,0.9939
+"Set4_Extremes / bulk_shift","RV2",0.9,490,"reached","",0.9939,0.9939
+"Set4_Extremes / bulk_shift","RV2",0.95,806,"reached","",0.9939,0.9939
+"Set4_Extremes / sym_severity","RV3",0.8,25,"reached","<=25",0.9998,0.9998
+"Set4_Extremes / sym_severity","RV3",0.9,83,"reached","",0.9998,0.9998
+"Set4_Extremes / sym_severity","RV3",0.95,213,"reached","",0.9998,0.9998
+"Set4_Extremes / sym_prevalence","RV3",0.8,223,"reached","",0.9922,0.9922
+"Set4_Extremes / sym_prevalence","RV3",0.9,527,"reached","",0.9922,0.9922
+"Set4_Extremes / sym_prevalence","RV3",0.95,886,"reached","",0.9922,0.9922
+"Set4_Extremes / asym_severity","RV3",0.8,25,"reached","<=25",1,1
+"Set4_Extremes / asym_severity","RV3",0.9,41,"reached","",1,1
+"Set4_Extremes / asym_severity","RV3",0.95,60,"reached","",1,1
+"Set4_Extremes / bulk_shift","RV3",0.8,248,"reached","",0.9938,0.9938
+"Set4_Extremes / bulk_shift","RV3",0.9,491,"reached","",0.9938,0.9938
+"Set4_Extremes / bulk_shift","RV3",0.95,810,"reached","",0.9938,0.9938
+"Set4_Extremes / sym_severity","SMD",0.8,NA,"blind","blind (plateau 0.496 at chance 0.50)",0.5069,0.4948
+"Set4_Extremes / sym_severity","SMD",0.9,NA,"blind","blind (plateau 0.496 at chance 0.50)",0.5069,0.4948
+"Set4_Extremes / sym_severity","SMD",0.95,NA,"blind","blind (plateau 0.496 at chance 0.50)",0.5069,0.4948
+"Set4_Extremes / sym_prevalence","SMD",0.8,NA,"blind","blind (plateau 0.501 at chance 0.50)",0.5103,0.4956
+"Set4_Extremes / sym_prevalence","SMD",0.9,NA,"blind","blind (plateau 0.501 at chance 0.50)",0.5103,0.4956
+"Set4_Extremes / sym_prevalence","SMD",0.95,NA,"blind","blind (plateau 0.501 at chance 0.50)",0.5103,0.4956
+"Set4_Extremes / asym_severity","SMD",0.8,279,"reached","",0.9968,0.9968
+"Set4_Extremes / asym_severity","SMD",0.9,530,"reached","",0.9968,0.9968
+"Set4_Extremes / asym_severity","SMD",0.95,839,"reached","",0.9968,0.9968
+"Set4_Extremes / bulk_shift","SMD",0.8,242,"reached","",0.9938,0.9938
+"Set4_Extremes / bulk_shift","SMD",0.9,489,"reached","",0.9938,0.9938
+"Set4_Extremes / bulk_shift","SMD",0.95,810,"reached","",0.9938,0.9938
+"Set4_Extremes / sym_severity","W1",0.8,25,"reached","<=25",1,1
+"Set4_Extremes / sym_severity","W1",0.9,42,"reached","",1,1
+"Set4_Extremes / sym_severity","W1",0.95,72,"reached","",1,1
+"Set4_Extremes / sym_prevalence","W1",0.8,48,"reached","",1,1
+"Set4_Extremes / sym_prevalence","W1",0.9,98,"reached","",1,1
+"Set4_Extremes / sym_prevalence","W1",0.95,148,"reached","",1,1
+"Set4_Extremes / asym_severity","W1",0.8,32,"reached","",1,1
+"Set4_Extremes / asym_severity","W1",0.9,67,"reached","",1,1
+"Set4_Extremes / asym_severity","W1",0.95,105,"reached","",1,1
+"Set4_Extremes / bulk_shift","W1",0.8,186,"reached","",0.9978,0.9978
+"Set4_Extremes / bulk_shift","W1",0.9,377,"reached","",0.9978,0.9978
+"Set4_Extremes / bulk_shift","W1",0.95,581,"reached","",0.9978,0.9978

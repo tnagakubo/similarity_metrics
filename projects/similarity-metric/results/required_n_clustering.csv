@@ -1,73 +1,73 @@
-"set","method","threshold","required_n","note","max_ari","value_at_2000"
-"Set1_Gaussian","KS",0.7,38,"",1,1
-"Set1_Gaussian","KS",0.8,49,"",1,1
-"Set1_Gaussian","KS",0.9,66,"",1,1
-"Set1_Gaussian","RV1",0.7,NA,"blind (plateau 0.497)",0.4995,0.4954
-"Set1_Gaussian","RV1",0.8,NA,"blind (plateau 0.497)",0.4995,0.4954
-"Set1_Gaussian","RV1",0.9,NA,"blind (plateau 0.497)",0.4995,0.4954
-"Set1_Gaussian","RV2",0.7,27,"",1,1
-"Set1_Gaussian","RV2",0.8,36,"",1,1
-"Set1_Gaussian","RV2",0.9,48,"",1,1
-"Set1_Gaussian","RV3",0.7,388,"",0.736,0.736
-"Set1_Gaussian","RV3",0.8,NA,"blind (plateau 0.725)",0.736,0.736
-"Set1_Gaussian","RV3",0.9,NA,"blind (plateau 0.725)",0.736,0.736
-"Set1_Gaussian","SMD",0.7,NA,"blind (plateau 0.461)",0.4621,0.46
-"Set1_Gaussian","SMD",0.8,NA,"blind (plateau 0.461)",0.4621,0.46
-"Set1_Gaussian","SMD",0.9,NA,"blind (plateau 0.461)",0.4621,0.46
-"Set1_Gaussian","W1",0.7,32,"",1,1
-"Set1_Gaussian","W1",0.8,41,"",1,1
-"Set1_Gaussian","W1",0.9,53,"",1,1
-"Set2_LogNormal","KS",0.7,59,"",1,1
-"Set2_LogNormal","KS",0.8,83,"",1,1
-"Set2_LogNormal","KS",0.9,129,"",1,1
-"Set2_LogNormal","RV1",0.7,NA,"blind (plateau 0.495)",0.4979,0.494
-"Set2_LogNormal","RV1",0.8,NA,"blind (plateau 0.495)",0.4979,0.494
-"Set2_LogNormal","RV1",0.9,NA,"blind (plateau 0.495)",0.4979,0.494
-"Set2_LogNormal","RV2",0.7,129,"",1,0.9998
-"Set2_LogNormal","RV2",0.8,179,"",1,0.9998
-"Set2_LogNormal","RV2",0.9,267,"",1,0.9998
-"Set2_LogNormal","RV3",0.7,269,"",0.9532,0.9532
-"Set2_LogNormal","RV3",0.8,423,"",0.9532,0.9532
-"Set2_LogNormal","RV3",0.9,868,"",0.9532,0.9532
-"Set2_LogNormal","SMD",0.7,NA,"blind (plateau 0.461)",0.4643,0.4606
-"Set2_LogNormal","SMD",0.8,NA,"blind (plateau 0.461)",0.4643,0.4606
-"Set2_LogNormal","SMD",0.9,NA,"blind (plateau 0.461)",0.4643,0.4606
-"Set2_LogNormal","W1",0.7,118,"",1,1
-"Set2_LogNormal","W1",0.8,156,"",1,1
-"Set2_LogNormal","W1",0.9,217,"",1,1
-"Set3_Mixture","KS",0.7,431,"",0.9945,0.9945
-"Set3_Mixture","KS",0.8,629,"",0.9945,0.9945
-"Set3_Mixture","KS",0.9,911,"",0.9945,0.9945
-"Set3_Mixture","RV1",0.7,NA,"blind (plateau 0.001)",0.0048,6e-04
-"Set3_Mixture","RV1",0.8,NA,"blind (plateau 0.001)",0.0048,6e-04
-"Set3_Mixture","RV1",0.9,NA,"blind (plateau 0.001)",0.0048,6e-04
-"Set3_Mixture","RV2",0.7,NA,"blind (plateau 0.014)",0.0183,0.0144
-"Set3_Mixture","RV2",0.8,NA,"blind (plateau 0.014)",0.0183,0.0144
-"Set3_Mixture","RV2",0.9,NA,"blind (plateau 0.014)",0.0183,0.0144
-"Set3_Mixture","RV3",0.7,NA,">2000 (still rising, 0.339 at n=2000)",0.3389,0.3389
-"Set3_Mixture","RV3",0.8,NA,">2000 (still rising, 0.339 at n=2000)",0.3389,0.3389
-"Set3_Mixture","RV3",0.9,NA,">2000 (still rising, 0.339 at n=2000)",0.3389,0.3389
-"Set3_Mixture","SMD",0.7,NA,"blind (plateau 0.001)",0.005,5e-04
-"Set3_Mixture","SMD",0.8,NA,"blind (plateau 0.001)",0.005,5e-04
-"Set3_Mixture","SMD",0.9,NA,"blind (plateau 0.001)",0.005,5e-04
-"Set3_Mixture","W1",0.7,256,"",1,1
-"Set3_Mixture","W1",0.8,364,"",1,1
-"Set3_Mixture","W1",0.9,513,"",1,1
-"Set4_Extremes","KS",0.7,1059,"",0.9847,0.9847
-"Set4_Extremes","KS",0.8,1240,"",0.9847,0.9847
-"Set4_Extremes","KS",0.9,1453,"",0.9847,0.9847
-"Set4_Extremes","RV1",0.7,NA,"blind (plateau 0.024)",0.0286,0.0231
-"Set4_Extremes","RV1",0.8,NA,"blind (plateau 0.024)",0.0286,0.0231
-"Set4_Extremes","RV1",0.9,NA,"blind (plateau 0.024)",0.0286,0.0231
-"Set4_Extremes","RV2",0.7,NA,"blind (plateau 0.378)",0.3803,0.3803
-"Set4_Extremes","RV2",0.8,NA,"blind (plateau 0.378)",0.3803,0.3803
-"Set4_Extremes","RV2",0.9,NA,"blind (plateau 0.378)",0.3803,0.3803
-"Set4_Extremes","RV3",0.7,NA,"blind (plateau 0.248)",0.2525,0.247
-"Set4_Extremes","RV3",0.8,NA,"blind (plateau 0.248)",0.2525,0.247
-"Set4_Extremes","RV3",0.9,NA,"blind (plateau 0.248)",0.2525,0.247
-"Set4_Extremes","SMD",0.7,NA,"blind (plateau 0.016)",0.0224,0.0141
-"Set4_Extremes","SMD",0.8,NA,"blind (plateau 0.016)",0.0224,0.0141
-"Set4_Extremes","SMD",0.9,NA,"blind (plateau 0.016)",0.0224,0.0141
-"Set4_Extremes","W1",0.7,282,"",0.9994,0.9994
-"Set4_Extremes","W1",0.8,376,"",0.9994,0.9994
-"Set4_Extremes","W1",0.9,544,"",0.9994,0.9994
+"set","method","threshold","required_n","status","note","max_ari","value_at_2000"
+"Set1_Gaussian","KS",0.7,38,"reached","",1,1
+"Set1_Gaussian","KS",0.8,49,"reached","",1,1
+"Set1_Gaussian","KS",0.9,66,"reached","",1,1
+"Set1_Gaussian","RV1",0.7,NA,"partial","partial (plateau 0.497)",0.4995,0.4954
+"Set1_Gaussian","RV1",0.8,NA,"partial","partial (plateau 0.497)",0.4995,0.4954
+"Set1_Gaussian","RV1",0.9,NA,"partial","partial (plateau 0.497)",0.4995,0.4954
+"Set1_Gaussian","RV2",0.7,27,"reached","",1,1
+"Set1_Gaussian","RV2",0.8,36,"reached","",1,1
+"Set1_Gaussian","RV2",0.9,48,"reached","",1,1
+"Set1_Gaussian","RV3",0.7,388,"reached","",0.736,0.736
+"Set1_Gaussian","RV3",0.8,NA,"partial","partial (plateau 0.725)",0.736,0.736
+"Set1_Gaussian","RV3",0.9,NA,"partial","partial (plateau 0.725)",0.736,0.736
+"Set1_Gaussian","SMD",0.7,NA,"partial","partial (plateau 0.461)",0.4621,0.46
+"Set1_Gaussian","SMD",0.8,NA,"partial","partial (plateau 0.461)",0.4621,0.46
+"Set1_Gaussian","SMD",0.9,NA,"partial","partial (plateau 0.461)",0.4621,0.46
+"Set1_Gaussian","W1",0.7,32,"reached","",1,1
+"Set1_Gaussian","W1",0.8,41,"reached","",1,1
+"Set1_Gaussian","W1",0.9,53,"reached","",1,1
+"Set2_LogNormal","KS",0.7,59,"reached","",1,1
+"Set2_LogNormal","KS",0.8,83,"reached","",1,1
+"Set2_LogNormal","KS",0.9,129,"reached","",1,1
+"Set2_LogNormal","RV1",0.7,NA,"partial","partial (plateau 0.495)",0.4979,0.494
+"Set2_LogNormal","RV1",0.8,NA,"partial","partial (plateau 0.495)",0.4979,0.494
+"Set2_LogNormal","RV1",0.9,NA,"partial","partial (plateau 0.495)",0.4979,0.494
+"Set2_LogNormal","RV2",0.7,129,"reached","",1,0.9998
+"Set2_LogNormal","RV2",0.8,179,"reached","",1,0.9998
+"Set2_LogNormal","RV2",0.9,267,"reached","",1,0.9998
+"Set2_LogNormal","RV3",0.7,269,"reached","",0.9532,0.9532
+"Set2_LogNormal","RV3",0.8,423,"reached","",0.9532,0.9532
+"Set2_LogNormal","RV3",0.9,868,"reached","",0.9532,0.9532
+"Set2_LogNormal","SMD",0.7,NA,"partial","partial (plateau 0.461)",0.4643,0.4606
+"Set2_LogNormal","SMD",0.8,NA,"partial","partial (plateau 0.461)",0.4643,0.4606
+"Set2_LogNormal","SMD",0.9,NA,"partial","partial (plateau 0.461)",0.4643,0.4606
+"Set2_LogNormal","W1",0.7,118,"reached","",1,1
+"Set2_LogNormal","W1",0.8,156,"reached","",1,1
+"Set2_LogNormal","W1",0.9,217,"reached","",1,1
+"Set3_Mixture","KS",0.7,431,"reached","",0.9945,0.9945
+"Set3_Mixture","KS",0.8,629,"reached","",0.9945,0.9945
+"Set3_Mixture","KS",0.9,911,"reached","",0.9945,0.9945
+"Set3_Mixture","RV1",0.7,NA,"blind","blind (plateau 0.001 at chance 0.00)",0.0048,6e-04
+"Set3_Mixture","RV1",0.8,NA,"blind","blind (plateau 0.001 at chance 0.00)",0.0048,6e-04
+"Set3_Mixture","RV1",0.9,NA,"blind","blind (plateau 0.001 at chance 0.00)",0.0048,6e-04
+"Set3_Mixture","RV2",0.7,NA,"blind","blind (plateau 0.014 at chance 0.00)",0.0183,0.0144
+"Set3_Mixture","RV2",0.8,NA,"blind","blind (plateau 0.014 at chance 0.00)",0.0183,0.0144
+"Set3_Mixture","RV2",0.9,NA,"blind","blind (plateau 0.014 at chance 0.00)",0.0183,0.0144
+"Set3_Mixture","RV3",0.7,NA,"unmeasured",">2000 (still rising, 0.339 at n=2000)",0.3389,0.3389
+"Set3_Mixture","RV3",0.8,NA,"unmeasured",">2000 (still rising, 0.339 at n=2000)",0.3389,0.3389
+"Set3_Mixture","RV3",0.9,NA,"unmeasured",">2000 (still rising, 0.339 at n=2000)",0.3389,0.3389
+"Set3_Mixture","SMD",0.7,NA,"blind","blind (plateau 0.001 at chance 0.00)",0.005,5e-04
+"Set3_Mixture","SMD",0.8,NA,"blind","blind (plateau 0.001 at chance 0.00)",0.005,5e-04
+"Set3_Mixture","SMD",0.9,NA,"blind","blind (plateau 0.001 at chance 0.00)",0.005,5e-04
+"Set3_Mixture","W1",0.7,256,"reached","",1,1
+"Set3_Mixture","W1",0.8,364,"reached","",1,1
+"Set3_Mixture","W1",0.9,513,"reached","",1,1
+"Set4_Extremes","KS",0.7,1059,"reached","",0.9847,0.9847
+"Set4_Extremes","KS",0.8,1240,"reached","",0.9847,0.9847
+"Set4_Extremes","KS",0.9,1453,"reached","",0.9847,0.9847
+"Set4_Extremes","RV1",0.7,NA,"blind","blind (plateau 0.024 at chance 0.00)",0.0286,0.0231
+"Set4_Extremes","RV1",0.8,NA,"blind","blind (plateau 0.024 at chance 0.00)",0.0286,0.0231
+"Set4_Extremes","RV1",0.9,NA,"blind","blind (plateau 0.024 at chance 0.00)",0.0286,0.0231
+"Set4_Extremes","RV2",0.7,NA,"partial","partial (plateau 0.378)",0.3803,0.3803
+"Set4_Extremes","RV2",0.8,NA,"partial","partial (plateau 0.378)",0.3803,0.3803
+"Set4_Extremes","RV2",0.9,NA,"partial","partial (plateau 0.378)",0.3803,0.3803
+"Set4_Extremes","RV3",0.7,NA,"partial","partial (plateau 0.248)",0.2525,0.247
+"Set4_Extremes","RV3",0.8,NA,"partial","partial (plateau 0.248)",0.2525,0.247
+"Set4_Extremes","RV3",0.9,NA,"partial","partial (plateau 0.248)",0.2525,0.247
+"Set4_Extremes","SMD",0.7,NA,"blind","blind (plateau 0.016 at chance 0.00)",0.0224,0.0141
+"Set4_Extremes","SMD",0.8,NA,"blind","blind (plateau 0.016 at chance 0.00)",0.0224,0.0141
+"Set4_Extremes","SMD",0.9,NA,"blind","blind (plateau 0.016 at chance 0.00)",0.0224,0.0141
+"Set4_Extremes","W1",0.7,282,"reached","",0.9994,0.9994
+"Set4_Extremes","W1",0.8,376,"reached","",0.9994,0.9994
+"Set4_Extremes","W1",0.9,544,"reached","",0.9994,0.9994
