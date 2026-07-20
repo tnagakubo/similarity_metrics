@@ -45,6 +45,32 @@
 
 ## 🎬 Live Script
 
+### [2026-07-20 14:30] Scene: 全部を1枚に — 何が言えて、何が言えないか
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Tak「シミュレーションから示される結果を表と箇条書きでわかりやすくまとめて。何が主張できるのか整理したい」。Katrina が全 CSV から数値を再抽出し、1 文書に統合する。*
+
+**Katrina**:（`SIMULATION_FINDINGS.md` を出す）
+「作った。背骨は**3分類**——blind（chance 上で平坦、n=∞ でも解けない）/ partial（chance 超で頭打ち）/ recovering（回復、必要例数の問題）。n を 2000 まで伸ばして初めて区別がついた分類よ。
+
+主張は**強度順に10個**。★★★ が5つ——うち4つは**真値だけか漸近で確定**するもので、n に依存しない。★★ が4つで達成可能な n での言明。★ が設計指針。
+
+そして**訂正表**を別に立てた。旧案のうち **6項目が誤りか要修正**。一番大きいのは『Set 4 が KS を殺す、盲目であって underpowered ではない』——これは誤り。」
+
+**Mike**:
+「harm と false-pooling も production CSV から取り直した。Set 4: false-pooling 比 1.35×、harm 比 **2.14×**——計画書の数字と一致した。順位逆転の真値も sim 出力から確認済み。全数値が CSV 由来だ。I got it.」
+
+**Harvey**:（表を指す）
+「これで議論の土台ができた。**KS への武器を置き換える。** clustering の結果じゃない——KR bound と順位逆転だ。どちらも n に依存しない。『例数を 1240 くれれば KS でいい』という反論が効かない場所に主張を移す。」
+
+**Louis**:
+「訂正表があるのがいい。**自分が何を間違えていたかを書いた文書**を持ってる著者は強い。査読者に先に言われる側じゃなくなる。」
+
+**成果物**: `projects/similarity-metric/SIMULATION_FINDINGS.md`（設計 / 3分類 / clustering・selection・閾値較正の表 / 主張10件 / 訂正6件 / 論文への波及 / 再現手順）
+
+---
+
 ### [2026-07-20 14:05] Scene: 確定 — 「盲目」の名指しが入れ替わった
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
