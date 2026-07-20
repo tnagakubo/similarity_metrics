@@ -1,0 +1,13 @@
+"set","threshold","required_n","note","achieved_by","best_at_2000"
+"Set1_Gaussian",0.7,27,"","RV2",1
+"Set1_Gaussian",0.8,36,"","RV2",1
+"Set1_Gaussian",0.9,48,"","RV2",1
+"Set2_LogNormal",0.7,59,"","KS",1
+"Set2_LogNormal",0.8,83,"","KS",1
+"Set2_LogNormal",0.9,129,"","KS",1
+"Set3_Mixture",0.7,256,"","W1",1
+"Set3_Mixture",0.8,364,"","W1",1
+"Set3_Mixture",0.9,513,"","W1",1
+"Set4_Extremes",0.7,282,"","W1",0.9994
+"Set4_Extremes",0.8,376,"","W1",0.9994
+"Set4_Extremes",0.9,544,"","W1",0.9994

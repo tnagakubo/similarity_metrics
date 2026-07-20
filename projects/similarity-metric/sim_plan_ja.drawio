@@ -1,0 +1,106 @@
+<mxfile host="app.diagrams.net" version="24.0.0" type="device">
+  <diagram id="simplan" name="シミュレーション計画">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1640" pageHeight="1140" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="&lt;b&gt;シミュレーション計画 — プール相手の選択（Q_metric スコープ）&lt;/b&gt;" style="text;html=1;fontFamily=Yu Gothic;fontSize=17;align=center;verticalAlign=middle;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="40" y="16" width="1560" height="34" as="geometry" />
+        </mxCell>
+
+        <mxCell id="q" value="&lt;b&gt;問い（Tak）&lt;/b&gt;　各国が固有の効果修飾因子（EM）分布を持つ仮想シナリオで、分布メトリック W₁ は&lt;br&gt;『真に似た国』を競合手法より &lt;b&gt;正しく復元できるか&lt;/b&gt;？" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=13;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="300" y="60" width="1040" height="58" as="geometry" />
+        </mxCell>
+
+        <mxCell id="fwlab" value="&lt;b&gt;枠組み&lt;/b&gt;" style="text;html=1;fontFamily=Yu Gothic;fontSize=12;align=left;verticalAlign=middle;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="40" y="132" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="fw1" value="&lt;b&gt;ADEMP&lt;/b&gt;&lt;br&gt;Morris, White &amp; Crowther 2019&lt;br&gt;&lt;i&gt;Stat Med, DOI 10.1002/sim.8086&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F2EF;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=11;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="110" y="132" width="330" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="fw2" value="&lt;b&gt;スコープ = Q_metric&lt;/b&gt;&lt;br&gt;有限標本からの EM 分布類似度の復元&lt;br&gt;&lt;i&gt;アウトカム／CATE モデルは使わない&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F2EF;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=11;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="460" y="132" width="360" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="fw3" value="&lt;b&gt;θ を置かない&lt;/b&gt;&lt;br&gt;効果追跡（Part 3）はしない&lt;br&gt;&lt;i&gt;KR 上界は全 Lipschitz θ で成立&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F2EF;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=11;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="840" y="132" width="330" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="fw4" value="&lt;b&gt;真値＝構成ラベル&lt;/b&gt;&lt;br&gt;metric 非依存に設計者が固定&lt;br&gt;&lt;i&gt;→ 非循環（circularity を排除）&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F2EF;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=11;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1190" y="132" width="380" height="62" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tasklab" value="&lt;b&gt;2つのタスク&lt;/b&gt;" style="text;html=1;fontFamily=Yu Gothic;fontSize=12;align=left;verticalAlign=middle;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="40" y="212" width="80" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="p1" value="&lt;b&gt;Part 1 — アンカー中心の選択&lt;/b&gt;&lt;br&gt;10 国 = 1 anchor + 9 candidate（真の match 3 ＋ 不一致 6）&lt;br&gt;アンカーとの距離で順位づけ → 近い &lt;b&gt;上位 k&lt;/b&gt; をプール&lt;br&gt;&lt;i&gt;「どの地域を pivotal 地域に併合できるか」&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="120" y="210" width="700" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="p2" value="&lt;b&gt;Part 2 — クラスタリングで地域形成&lt;/b&gt;&lt;br&gt;12 国 = 3 群 × 4（アンカーなし）&lt;br&gt;全 pairwise 距離行列を average linkage で分割（k = 真の群数）&lt;br&gt;&lt;i&gt;Komiyama Ch.4 §4.6.1.2 に対応&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="840" y="210" width="700" height="86" as="geometry" />
+        </mxCell>
+
+        <mxCell id="piplab" value="&lt;b&gt;1 セルの流れ（ADEMP のデータ生成〜評価）&lt;/b&gt;" style="text;html=1;fontFamily=Yu Gothic;fontSize=12;align=left;verticalAlign=middle;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="40" y="316" width="500" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="s1" value="&lt;b&gt;標本生成&lt;/b&gt;&lt;br&gt;各国から n を i.i.d.&lt;br&gt;抽出" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="346" width="250" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="s2" value="&lt;b&gt;距離を計算&lt;/b&gt;&lt;br&gt;各手法でアンカー→候補&lt;br&gt;（Part 2 は全 pairwise）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="330" y="346" width="270" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" value="&lt;b&gt;選択／クラスタ&lt;/b&gt;&lt;br&gt;上位 k を選ぶ／&lt;br&gt;距離行列を分割" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="640" y="346" width="250" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="s4" value="&lt;b&gt;真値と照合&lt;/b&gt;&lt;br&gt;構成ラベルと比較&lt;br&gt;（metric 非依存）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="930" y="346" width="250" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="s5" value="&lt;b&gt;集計&lt;/b&gt;&lt;br&gt;R 反復の平均&lt;br&gt;＋ Monte Carlo SE" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="346" width="250" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" style="endArrow=classic;html=1;strokeColor=#5A5147;" edge="1" parent="1" source="s1" target="s2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e23" style="endArrow=classic;html=1;strokeColor=#5A5147;" edge="1" parent="1" source="s2" target="s3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e34" style="endArrow=classic;html=1;strokeColor=#5A5147;" edge="1" parent="1" source="s3" target="s4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e45" style="endArrow=classic;html=1;strokeColor=#5A5147;" edge="1" parent="1" source="s4" target="s5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="loopnote" value="&lt;i&gt;各 Set × n {25, 50, 75, 100} × Part 1／2 のセルごとに反復（Part 1：1万反復 ／ Part 2：5千反復）。純 base R・per-cell seed で bit-reproducible。&lt;/i&gt;" style="text;html=1;fontFamily=Yu Gothic;fontSize=11;align=left;verticalAlign=middle;fillColor=none;fontColor=#5A5147;" vertex="1" parent="1">
+          <mxGeometry x="40" y="426" width="1430" height="22" as="geometry" />
+        </mxCell>
+
+        <mxCell id="caslab" value="&lt;b&gt;4つの世界 ＝ 消去カスケード&lt;/b&gt;　各世界が特定の競合を &lt;b&gt;盲目化&lt;/b&gt; するよう設計（Set は独立に報告）" style="text;html=1;fontFamily=Yu Gothic;fontSize=13;align=left;verticalAlign=middle;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="40" y="462" width="1200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="set1" value="&lt;b&gt;Set 1　ガウス世界&lt;/b&gt;&lt;br&gt;N(50, 10²)。location／scale の不一致&lt;br&gt;&lt;br&gt;&lt;b&gt;盲点：SMD・RV1&lt;/b&gt;&lt;br&gt;（平均一致の scale を見ない）&lt;br&gt;&lt;i&gt;control：location 型は全手法が検出&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F0DEDB;strokeColor=#A8322A;fontFamily=Yu Gothic;fontSize=12;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="498" width="360" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="set2" value="&lt;b&gt;Set 2　対数正規世界&lt;/b&gt;&lt;br&gt;歪んだ世界。分散＋形状の不一致&lt;br&gt;&lt;br&gt;&lt;b&gt;盲点：SMD(raw)&lt;/b&gt;&lt;br&gt;（log 変換でも形状に盲目）&lt;br&gt;&lt;i&gt;RV2 はまだ生存 → Set 3 が必要&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F0DEDB;strokeColor=#A8322A;fontFamily=Yu Gothic;fontSize=12;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="430" y="498" width="360" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="set3" value="&lt;b&gt;Set 3　混合世界&lt;/b&gt;&lt;br&gt;全国が mean 50・SD 10（モーメント一致）&lt;br&gt;&lt;br&gt;&lt;b&gt;盲点：RV2・RV3&lt;/b&gt;&lt;br&gt;（列挙モーメントが尽きる）&lt;br&gt;&lt;i&gt;control：shape_skew は RV3 が検出&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F0DEDB;strokeColor=#A8322A;fontFamily=Yu Gothic;fontSize=12;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="820" y="498" width="360" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="set4" value="&lt;b&gt;Set 4　極値世界&lt;/b&gt;&lt;br&gt;bulk ＋ 稀に変位した極値サブ集団&lt;br&gt;&lt;br&gt;&lt;b&gt;盲点：KS&lt;/b&gt;（sup-norm が飽和）&lt;br&gt;W₁ は線形に増加し続ける&lt;br&gt;&lt;i&gt;control：bulk_shift は KS が検出&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F0DEDB;strokeColor=#A8322A;fontFamily=Yu Gothic;fontSize=12;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="498" width="360" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="c12" style="endArrow=classic;html=1;strokeColor=#A8322A;strokeWidth=2;" edge="1" parent="1" source="set1" target="set2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="c23" style="endArrow=classic;html=1;strokeColor=#A8322A;strokeWidth=2;" edge="1" parent="1" source="set2" target="set3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="c34" style="endArrow=classic;html=1;strokeColor=#A8322A;strokeWidth=2;" edge="1" parent="1" source="set3" target="set4"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="concl" value="&lt;b&gt;→ W₁ は4世界すべてで一度も盲目にならない（唯一の never-blind メトリック）&lt;/b&gt;　　各世界には &lt;b&gt;競合が効く control セル&lt;/b&gt; を必ず配置し、勝ちセルと同じ重みで報告（cherry-pick の否定）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDEBDD;strokeColor=#3A7A3A;fontFamily=Yu Gothic;fontSize=13;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="670" width="1530" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="ce1" style="endArrow=classic;html=1;strokeColor=#3A7A3A;strokeWidth=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="set4" target="concl"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="methods" value="&lt;b&gt;手法（Table 3）&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;W₁&lt;/b&gt; — 標本 Wasserstein-1、&lt;b&gt;全分布&lt;/b&gt;を EM 単位で見る&lt;br&gt;&lt;b&gt;KS&lt;/b&gt; — sup|F̂−F̂|、tail mass に弱い&lt;br&gt;&lt;b&gt;SMD&lt;/b&gt;（raw／Set 2 は log も） — location のみ&lt;br&gt;&lt;b&gt;RV1&lt;/b&gt;(mean) — &lt;b&gt;Komiyama §4.6.1.1 そのもの&lt;/b&gt;、SMD と同じ盲点&lt;br&gt;&lt;b&gt;RV2&lt;/b&gt;(mean, SD)／&lt;b&gt;RV3&lt;/b&gt;(+skew) — &lt;i&gt;我々の拡張。&lt;br&gt;　Komiyama の手法とは呼ばない（誤引用の防止）&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="756" width="760" height="224" as="geometry" />
+        </mxCell>
+        <mxCell id="measures" value="&lt;b&gt;測定（Table 4・すべて閾値フリー）&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;AUC&lt;/b&gt;（主指標：k-free・tie-fair・不一致型ごと）&lt;br&gt;&lt;b&gt;precision@k ／ false-pooling@k&lt;/b&gt;（oracle k 前提の図示）&lt;br&gt;&lt;b&gt;ARI&lt;/b&gt;（Part 2、Hubert–Arabie）／ exact recovery&lt;br&gt;&lt;b&gt;clinical harm&lt;/b&gt; = E[max true W₁]（EM 単位、選んだプールの最悪値）&lt;br&gt;　= L 倍で &lt;b&gt;Δmax&lt;/b&gt;（プールが許す最悪の効果差）&lt;br&gt;&lt;i&gt;手法間は順位のみ比較・有意差検定はしない（MC SE で報告）&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EFEBE7;strokeColor=#8C8078;fontFamily=Yu Gothic;fontSize=12;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="820" y="756" width="750" height="224" as="geometry" />
+        </mxCell>
+
+        <mxCell id="footer" value="&lt;i&gt;真値＝構成ラベル（アンカー母集団か否か／どの母集団由来か）で metric 非依存 → 非循環を担保。真の距離は |F_A − F_B| の数値積分（Set 4 は W₁・KS の閉形式も、4 桁まで照合）。計画は R/validate_plan.R で実装と機械照合。&lt;/i&gt;" style="text;html=1;fontFamily=Yu Gothic;fontSize=11;align=left;verticalAlign=middle;fillColor=none;fontColor=#5A5147;" vertex="1" parent="1">
+          <mxGeometry x="40" y="994" width="1530" height="34" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

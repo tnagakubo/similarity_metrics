@@ -37,12 +37,23 @@ suppressWarnings(RNGkind("Mersenne-Twister", "Inversion", "Rejection"))
 
 # ---- CLI (reps overridable for a quick smoke run) --------------------------
 parse_args <- function(a = commandArgs(trailingOnly = TRUE)) {
-  out <- list(reps = 10000L, ntest = FALSE)
+  # Defaults reproduce the production run bit-for-bit. --n-grid/--base-seed/--tag
+  # exist for the required-sample-size extension, which must write to its OWN files:
+  # pass a --tag and a --base-seed distinct from the production one so neither the
+  # CSVs nor the seed stream collide with results the manuscript already cites.
+  out <- list(reps = 10000L, ntest = FALSE, n_grid = c(25L, 50L, 75L, 100L),
+              base_seed = 20260711L, tag = "")
   for (x in a) {
     if (grepl("^--reps=", x)) out$reps <- as.integer(sub("^--reps=", "", x))
+    else if (grepl("^--n-grid=", x))
+      out$n_grid <- as.integer(strsplit(sub("^--n-grid=", "", x), ",")[[1]])
+    else if (grepl("^--base-seed=", x))
+      out$base_seed <- as.integer(sub("^--base-seed=", "", x))
+    else if (grepl("^--tag=", x)) out$tag <- sub("^--tag=", "", x)
     else if (x == "--test")  out$ntest <- TRUE
   }
   if (out$ntest) out$reps <- 500L
+  stopifnot(length(out$n_grid) > 0, !anyNA(out$n_grid), all(out$n_grid > 1))
   out
 }
 
@@ -323,7 +334,7 @@ main <- function() {
   OPTS <- parse_args()
   results_dir <- "results"
   if (!dir.exists(results_dir)) dir.create(results_dir, recursive = TRUE)
-  logfile <- file.path(results_dir, "selection_sim.log")
+  logfile <- file.path(results_dir, sprintf("selection_sim%s.log", OPTS$tag))
   logcon <- file(logfile, open = "wt"); on.exit(close(logcon), add = TRUE)
   say <- function(...) { m <- sprintf(...); cat(m, "\n"); writeLines(m, logcon) }
 
@@ -340,8 +351,8 @@ main <- function() {
     list(id = "Set4_Extremes", roster = build_set4(),
          methods = c("W1","SMD","KS","RV1","RV2","RV3"), lo = -400, hi = 600)
   )
-  n_grid   <- c(25L, 50L, 75L, 100L)
-  base_seed <- 20260711L
+  n_grid    <- OPTS$n_grid
+  base_seed <- OPTS$base_seed
 
   all_rows <- list(); cfg_rows <- list(); cell <- 0L
   for (si in seq_along(sets)) {
@@ -392,10 +403,12 @@ main <- function() {
 
   summary_df <- do.call(rbind, all_rows); rownames(summary_df) <- NULL
   cfg_df     <- do.call(rbind, cfg_rows)
-  write.csv(summary_df, file.path(results_dir, "selection_sim_summary.csv"), row.names = FALSE)
-  write.csv(cfg_df,     file.path(results_dir, "selection_sim_config.csv"),  row.names = FALSE)
-  say("\n[save] results/selection_sim_summary.csv  (%d rows)", nrow(summary_df))
-  say("[save] results/selection_sim_config.csv")
+  f_sum <- sprintf("selection_sim_summary%s.csv", OPTS$tag)
+  f_cfg <- sprintf("selection_sim_config%s.csv",  OPTS$tag)
+  write.csv(summary_df, file.path(results_dir, f_sum), row.names = FALSE)
+  write.csv(cfg_df,     file.path(results_dir, f_cfg),  row.names = FALSE)
+  say("\n[save] results/%s  (%d rows)", f_sum, nrow(summary_df))
+  say("[save] results/%s", f_cfg)
   say("[done] finished=%s", format(Sys.time()))
   invisible(summary_df)
 }
