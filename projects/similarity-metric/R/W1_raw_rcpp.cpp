@@ -126,3 +126,63 @@ List W1_raw_bootstrap_cpp(NumericVector x, NumericVector y,
     Named("ci_upper") = ci_hi
   );
 }
+
+// --- One-sided upper bootstrap bounds (Part 1B bootstrap selection rule) ------
+// Returns the point estimate and the ONE-SIDED upper percentile bootstrap bound
+// at EACH requested probability, from a SINGLE bootstrap. Used by the clinically
+// calibrated selection rule "admit candidate iff its (1-alpha) upper bound <= tau":
+// the whole confidence-level sweep is read off one bootstrap, so cost is
+// reps * candidates * B (independent of tau and of how many levels are swept).
+// RNG is R::unif_rand => set.seed() makes this bit-reproducible in serial, exactly
+// like W1_raw_bootstrap_cpp above.
+//
+// [[Rcpp::export]]
+List W1_raw_boot_upper_cpp(NumericVector x, NumericVector y,
+                           int B, NumericVector probs) {
+  int n1 = x.size(), n2 = y.size();
+
+  std::vector<double> xs(x.begin(), x.end());
+  std::vector<double> ys(y.begin(), y.end());
+  std::sort(xs.begin(), xs.end());
+  std::sort(ys.begin(), ys.end());
+
+  double w1_obs;
+  if (n1 == n2) {
+    double s = 0;
+    for (int i = 0; i < n1; i++) s += std::abs(xs[i] - ys[i]);
+    w1_obs = s / n1;
+  } else {
+    w1_obs = wasserstein1_general(xs, ys);
+  }
+
+  std::vector<double> w1_boot;
+  w1_boot.reserve(B);
+  std::vector<double> xb(n1), yb(n2);
+
+  for (int b = 0; b < B; b++) {
+    for (int i = 0; i < n1; i++) xb[i] = x[std::min((int)(R::unif_rand() * n1), n1 - 1)];
+    for (int i = 0; i < n2; i++) yb[i] = y[std::min((int)(R::unif_rand() * n2), n2 - 1)];
+    std::sort(xb.begin(), xb.end());
+    std::sort(yb.begin(), yb.end());
+
+    double w1b;
+    if (n1 == n2) {
+      double s = 0;
+      for (int i = 0; i < n1; i++) s += std::abs(xb[i] - yb[i]);
+      w1b = s / n1;
+    } else {
+      w1b = wasserstein1_general(xb, yb);
+    }
+    w1_boot.push_back(w1b);
+  }
+
+  std::sort(w1_boot.begin(), w1_boot.end());
+  int np = probs.size();
+  NumericVector upper(np);
+  for (int j = 0; j < np; j++) upper[j] = quantile7(w1_boot.data(), B, probs[j]);
+
+  return List::create(
+    Named("estimate") = w1_obs,
+    Named("upper")    = upper
+  );
+}
