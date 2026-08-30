@@ -204,11 +204,114 @@ This condition is not a restatement of a minimum sample size per region. A sampl
 \section{Simulation Study}\label{sec:simulation}
 %==============================================================================
 
-We conducted simulation studies to evaluate the estimation properties of the $\widehat{W}_1$ estimator: bias, variability, and coverage probability of bootstrap confidence intervals. These properties are essential for the clinical calibration framework, as reliable estimation of $W_1$ directly determines the quality of $\Delta_{\max}$ estimates via equation~(\ref{eq:delta_max}). We report operating characteristics for $\widehat{W}_1$ in the original units of the effect modifier, with each scenario specified at $\sigma = 10$; bias and CI width are therefore on the $W_1$ scale, while coverage is unitless and directly comparable across scenarios. We assessed performance across a range of scenarios relevant to MRCT applications.
+We conducted two complementary simulation studies. Study 2, presented first, evaluates decision performance: whether each candidate distance measure, used to select pooling partners, identifies the regions that truly share the anchor's effect modifier distribution. Study 1 evaluates estimation performance: bias, variability, and coverage probability of bootstrap confidence intervals for $\widehat{W}_1$. Partner selection is the deliverable of the framework, which is why Study 2 carries the primary comparison; Study 1 underwrites the calibration pathway that converts an estimated distance into a $\Delta_{\max}$ statement via equation~(\ref{eq:delta_max}).
 
-\subsection{Simulation Design}\label{sec:sim_design}
+Because the two studies answer different questions, they produce different sample-size statements, and a third arises from the operability condition of Section~\ref{sec:operability}. Study 1's recommendation of $n \geq 100$ per region is an estimation criterion, calibrated to bias, coverage, and CI width. Study 2's required sample sizes are decision-accuracy criteria: for selection, the sample size at which a measure's discrimination reaches AUC $\geq 0.9$, which for $\widehat{W}_1$ ranges from 42 to 690 per region across the decisive cells reported below; for the clustering illustration, ARI $\geq 0.8$, with task floors of 36--376. The operability condition compares the estimator's null floor with the clinically derived threshold, and depends on the strictness of the clinical margin as well as on $n$. The three statements are labelled throughout and are not interchangeable.
 
-\subsubsection{Scenarios}
+\subsection{Study 2: Decision Performance}\label{sec:study2}
+
+% Figures: R/selection_simulation.R + R/clustering_simulation.R
+% (results/selection_sim_summary{,_ext}.csv, clustering_sim_summary{,_ext}.csv,
+% required_n_{selection,clustering}{,_floor}.csv, clustering_nok_silhouette.csv).
+% Every number quoted in this subsection is checked by R/verify_study2_figures.R
+% against those CSVs and the generators (results/verify_study2.log, ALL PASS
+% 2026-08-30). Two recorded-note errors were corrected by that gate: the blind
+% plateau values are max_auc (0.50-0.51), n=2000 values are 0.49-0.50; and the
+% design constants are 10,000/3,000 reps (selection), 5,000/2,000 (clustering),
+% 9 candidates in every set (not "5,000-10,000" / "9-11").
+
+\subsubsection{Design}\label{sec:study2_design}
+
+Study 2 follows the ADEMP structure for simulation studies.\cite{morris2019} Four worlds are simulated, each built from a single distributional family and each containing regions constructed either from the anchor's own population (true matches) or from a discordant population. Set 1 (Gaussian) places discordance in location and scale. Set 2 (log-normal) places it in location and in dispersion combined with shape. Set 3 (mixture) is the adversarial world for summary-based measures: every region, matched or discordant, is constructed with mean 50 and SD 10, so all discordance lies in distributional shape. Set 4 (extremes) displaces rare subgroups: 5\% of a discordant region's population is moved 40--100 units away while the mean is held fixed, the pattern of a small severe subpopulation; one control region instead shifts its whole population by a small amount, a configuration deliberately favourable to CDF-supremum statistics. Ground truth is the construction label---which regions were built from the anchor's population---so the target of the decision is defined without reference to any of the compared measures and the comparison is not circular.
+
+Six measures enter the comparison: $W_1$, the KS statistic, and SMD, together with three representative-value distances. RV1 is the representative-value distance of the pooling strategy of Komiyama et al.\ as written, with one representative value per effect modifier---for a continuous modifier, the regional mean---standardized across the roster and compared by Euclidean distance.\cite{komiyama2024} RV2 and RV3 are our extensions, not part of the cited proposal: they augment the coordinate vector with the regional SD (RV2) and additionally skewness (RV3), and are included to test whether added distributional summaries close the gap to full-distribution measures. On the log-normal world, SMD computed on the log scale is also run.
+
+Two tasks score the measures against the same ground truth. In the selection task, an anchor and nine candidate regions are drawn; each measure ranks the candidates by their distance to the anchor and admits the $k$ closest, where $k$ is the number of true matches. Giving every measure the same $k$ removes threshold choice from the comparison entirely; the clinically derived threshold that $W_1$ alone possesses is exercised in the application (Section~\ref{sec:application}). Performance is summarized by the AUC for discriminating true matches from discordant candidates (chance = 0.5), by the false-pooling rate among the $k$ admitted, and by harm, defined as the expected largest true $W_1$ inside the selected pool---by Proposition~\ref{prop:heterogeneity}, the worst-case regional treatment-effect difference the selected pool admits, per unit of $L_{\text{clinical}}$. In the clustering task, twelve regions in three true groups of four are partitioned from each measure's distance matrix (average linkage) and scored by the adjusted Rand index (ARI; chance = 0), first with the true number of clusters supplied and then with it estimated. The selection task ran 10{,}000 replications per cell at the production grid ($n = 25$--100 per region) and 3{,}000 at the extended grid ($n = 150$--2{,}000); the clustering task, 5{,}000 and 2{,}000. The extension to $n = 2{,}000$ is what makes the classification below possible.
+
+\subsubsection{Three Behaviours: Blind, Partial, and Recovering}\label{sec:study2_classification}
+
+Extending the sample-size grid to $n = 2{,}000$ separates the measures into three behaviours (Figure~\ref{fig:study2_auc}). A measure is blind in a cell when its AUC is flat at chance through $n = 2{,}000$: the population value of its distance carries no information about the construction label, so the task is unsolvable for that measure at any sample size. This is an identification failure, not a power failure. In Set 3 it is exact by construction: all regions there share mean and SD, so the population distance between representative-value coordinates built from the mean, or from mean and SD, is zero. On the selection task, RV1, RV2, and SMD are blind in the Set 3 combined cell and SMD in the Set 4 symmetric-severity cell (AUC 0.49--0.51 across the full grid); in the Set 3 shape-symmetric cell, where skewness is also matched, RV3 joins them.
+
+A measure is partial when its AUC plateaus above chance but below the accuracy target: part of the structure is resolved, and the remainder never is. RV1 in the Set 4 symmetric-severity cell plateaus at 0.63, and RV3 in the Set 3 combined cell at 0.78. Neither is blind---both resolve real structure---but no sample size completes either.
+
+A measure is recovering when its AUC rises monotonically through the target: identification succeeds, and what remains is a required-sample-size question. $W_1$ and the KS statistic are recovering in every world on both tasks. In particular, the KS statistic is blind nowhere: in the Set 4 cell where it is weakest it still reaches ARI 0.985 at $n = 2{,}000$. Its failures in what follows are failures of efficiency, not of identification.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{fig_required_n_auc.pdf}
+\caption{Selection AUC (true matches versus discordant candidates) as a function of per-region sample size ($n = 25$--2{,}000, log scale) for six distance measures in three cells of Study 2: the Set 3 combined cell (mean- and SD-matched mixtures), the Set 4 symmetric-severity cell (mean-matched displaced extremes), and the Set 4 bulk-shift control cell (uniform location shift of the whole population). The dashed horizontal line marks AUC = 0.9; chance corresponds to 0.5.}
+\label{fig:study2_auc}
+\end{figure}
+
+\subsubsection{Selection: Required Sample Sizes and the Cost of Errors}\label{sec:study2_selection}
+
+Table~\ref{tab:study2_required_n} reports, for the decisive cells, the per-region sample size at which each measure's selection AUC reaches 0.9. Two kinds of number appear in it, and they answer different questions. Reading down the $W_1$ column gives the difficulty of the task, from 42 (symmetric severity) to 690 (shape-symmetric mixtures). Reading across a row gives the method difference within one task: in the symmetric-severity cell, $W_1$ reaches the target at $n = 42$ and the KS statistic at $n = 1{,}047$, a 25-fold difference on the same data-generating process. The control cell behaves as designed: a uniform shift of the whole population is the configuration the CDF supremum is best suited to, the KS statistic wins it (333 versus 377), and we report the loss. Nor is the comparison uniformly favourable to $W_1$ against the coordinate extensions: in the asymmetric-severity cell, RV3 reaches the target at $n = 41$, before $W_1$ at 67.
+
+\begin{table}[ht]
+\centering
+\caption{Per-region sample size at which selection AUC reaches 0.9, by cell and measure. Blind cells (AUC 0.49--0.51 across the full grid to $n = 2{,}000$) are marked ``blind''; partial cells (AUC plateaus above chance but below 0.9) are marked ``partial'' with the plateau in parentheses.\label{tab:study2_required_n}}
+\begin{tabular}{lrrllrr}
+\toprule
+\textbf{Cell} & $\boldsymbol{W_1}$ & \textbf{KS} & \textbf{SMD} & \textbf{RV1} & \textbf{RV2} & \textbf{RV3} \\
+\midrule
+Set 4, symmetric severity  & 42  & 1{,}047 & blind & partial (0.63) & 76  & 83 \\
+Set 4, asymmetric severity & 67  & 1{,}252 & 530   & 389            & 125 & 41 \\
+Set 4, bulk shift (control) & 377 & 333    & 489   & 491            & 490 & 491 \\
+Set 3, combined            & 368 & 550     & blind & blind          & blind & partial (0.78) \\
+Set 3, shape-symmetric     & 690 & 716     & blind & blind          & blind & blind \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\item Cells are contrast types within each world; ``combined'' pools a world's contrast types. In the shape-symmetric cell, RV2 and RV3 sit at or slightly below chance through $n = 2{,}000$. Numeric entries in the RV2 and RV3 columns of the blind rows would be misleading and are replaced by the behaviour label.
+\end{tablenotes}
+\end{table}
+
+The required-$n$ comparison counts errors; weighting them by their clinical cost widens the gap. At $n = 100$ in Set 4 (all contrast types pooled), $W_1$'s false-pooling rate among the $k$ admitted is 0.718 against the KS statistic's 0.971, a 1.35-fold difference; harm---the expected largest true $W_1$ inside the selected pool---is 2.000 against 4.27, a 2.14-fold difference. The KS statistic errs more often, and it errs in the more expensive direction, admitting the regions whose true distances are largest. Across the four worlds at $n = 100$, $W_1$ has the smallest harm in three (in the Gaussian world RV2 is smallest, 0.336 against $W_1$'s 0.402).
+
+One further failure is a property of population values rather than of sample size. In Set 4, the true anchor distances of four discordant regions are, on the $W_1$ scale, 3.0, 6.0, 3.0, and 2.0; on the KS scale, 0.047, 0.050, 0.050, and 0.072. The orderings reverse: the clinically mildest region ($W_1 = 2.0$, the bulk-shift region) is the most discordant on the KS scale, and the clinically worst ($W_1 = 6.0$) is separated from the mildest displaced-extremes region by a KS gap of 0.003. Consequently, for any threshold $\tau$ between 3 and 6, no KS threshold admits exactly the regions with true $W_1 \leq \tau$---at any sample size, however the threshold is chosen. Where the clinical requirement is a bound on $W_1$-scale discrepancy, as the calibration of Section~\ref{sec:inference} makes it, the KS statistic cannot express the requirement even asymptotically.
+
+\subsubsection{Clustering as a Second Scoring Currency}\label{sec:study2_clustering}
+
+The classification of Section~\ref{sec:study2_classification} was stated on the selection task. If it reflected an interaction between a measure and one task, a different task could rank the measures differently; if the defect lies upstream in the distance itself, an independent scoring currency should reproduce it. The clustering task provides that currency, and reproduces the classification cell for cell (Table~\ref{tab:study2_ari}). The blind measures remain at chance at $n = 2{,}000$ (ARI 0.001--0.023 for RV1 and SMD in Sets 3 and 4, and 0.014 for RV2 in Set 3). The partial measures plateau (RV1 0.495 and SMD 0.460 in Set 1; RV2 0.380 and RV3 0.247 in Set 4). $W_1$ and the KS statistic recover everywhere, and the KS statistic again pays a large efficiency price where the CDF discrepancy is spread thin (required $n$ for ARI $\geq 0.8$: 1{,}240 against $W_1$'s 376 in Set 4, and 629 against 364 in Set 3) while winning outright in Set 2 at moderate sample sizes (ARI 0.850 against 0.642 at $n = 100$; required $n$ 83 against 156). The task floors---the best any measure achieves---are 36, 83, 364, and 376 across the four worlds, and the floor-achieving measure changes with the world (RV2 in Set 1, the KS statistic in Set 2, $W_1$ in Sets 3 and 4), which guards the comparison against the reading that it was constructed for one winner. The table also shows that adding moments is not free: in Set 1, where the mean and SD coordinates suffice, RV3 clusters worse than RV2 (0.620 against 0.996 at $n = 100$) because the unnecessary skewness coordinate injects estimation noise; and the added coordinates buy no insurance in the cells where skewness is also matched.
+
+\begin{table}[ht]
+\centering
+\caption{Clustering ARI at $n = 100$ and $n = 2{,}000$ (first and second entry in each cell) for the four worlds, with the true number of clusters supplied.\label{tab:study2_ari}}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Measure} & \textbf{Set 1 Gaussian} & \textbf{Set 2 Log-normal} & \textbf{Set 3 Mixture} & \textbf{Set 4 Extremes} \\
+\midrule
+$W_1$ & 0.995 / 1.000 & 0.642 / 1.000 & 0.526 / 1.000 & 0.355 / 0.999 \\
+KS    & 0.983 / 1.000 & 0.850 / 1.000 & 0.503 / 0.995 & 0.003 / 0.985 \\
+SMD   & 0.452 / 0.460 & 0.334 / 0.461 & 0.000 / 0.001 & 0.018 / 0.014 \\
+RV1   & 0.489 / 0.495 & 0.343 / 0.494 & 0.000 / 0.001 & 0.026 / 0.023 \\
+RV2   & 0.996 / 1.000 & 0.614 / 1.000 & 0.018 / 0.014 & 0.271 / 0.380 \\
+RV3   & 0.620 / 0.736 & 0.448 / 0.953 & 0.131 / 0.339 & 0.189 / 0.247 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\item ARI = 0 corresponds to chance agreement; 1 to exact recovery of the three true groups.
+\end{tablenotes}
+\end{table}
+
+Supplying the true number of clusters is itself an oracle no sponsor has. Re-running the task with the number of clusters estimated by the silhouette criterion changes little for $W_1$ (its ARI at $n = 100$ falls by 0.005--0.023 across the four worlds) and most for the KS statistic (by 0.260 in Set 1 and 0.179 in Set 2, because its distance structure leads the silhouette to choose two clusters). Two honest qualifications attach. First, in the hard worlds no measure recovers the true number of clusters at $n = 100$: the modal choice is two for every measure in Sets 3 and 4, and the highest rate of choosing the true number is 0.228 and 0.288 respectively---a limit of the task, not a difference between measures. Nor is hitting the true number itself evidence of quality: in Set 3, measures whose ARI is near zero hit it at least as often as $W_1$, because a noise distance matrix can land on the right count by accident. Second, $W_1$'s Set 3 advantage over the KS statistic under the oracle ($+0.023$ at $n = 100$) disappears without it ($-0.005$).
+
+% TODO (2026-08-30): the outline's remaining Study 2 material is deliberately
+% not yet written here: (i) the rho = W1/(KS*sigma_EM) regime heuristic and its
+% rho/rho_trans normalization (per-cell rho_trans values are not yet covered by
+% the verification gate; section 4.5's rho paragraph waits on the same machinery);
+% (ii) the oracle-best-threshold steelman and the threshold-rule operating
+% characteristics (Part 1B), whose placement relative to section 2.6 is an open
+% structural question; (iii) subsection 3.1.4 of the outline (procedure
+% justification, anchor-vs-clustering, 100k reps) -- its content currently lives
+% in the Discussion paragraph sourced from results/anchor_vs_clustering_tau_100k.csv,
+% and moving or duplicating it is a Tak decision.
+
+\subsection{Study 1: Estimation Properties}\label{sec:study1}
+
+Study 2 compared decisions; Study 1 characterizes the estimator those decisions rely on: bias, variability, and coverage probability of bootstrap confidence intervals for $\widehat{W}_1$. These properties underwrite the clinical calibration framework, as reliable estimation of $W_1$ directly determines the quality of $\Delta_{\max}$ estimates via equation~(\ref{eq:delta_max}). We report operating characteristics in the original units of the effect modifier, with each scenario specified at $\sigma = 10$; bias and CI width are therefore on the $W_1$ scale, while coverage is unitless and directly comparable across scenarios.
+
+\subsubsection{Design}\label{sec:sim_design}
 
 We designed seven systematic scenarios for methodological validation, examining controlled distributional differences across location, scale, and combinations thereof. Table~\ref{tab:scenarios} summarizes these scenarios with their true $W_1$ values, in the original units of the effect modifier.
 
@@ -233,11 +336,7 @@ S7 & Location + Scale & $N(50, 10^2)$ & $N(55, 15^2)$ & 5.85 \\
 \end{tablenotes}
 \end{table}
 
-\subsubsection{Simulation Parameters}
-
 For each scenario, we generated samples of size $n = 50$, 100, and 200 per region, reflecting sample sizes typical in MRCT regional subgroups. We performed 10{,}000 replications per scenario--sample size combination to ensure stable estimates of operating characteristics, with Monte Carlo standard errors below 0.005 for all reported proportions. Bootstrap confidence intervals were computed using $B = 2{,}000$ resamples. All simulations were conducted in R version 4.5.1.
-
-\subsubsection{Evaluation Metrics}
 
 Consistent with the estimation-centered framework, we evaluated the operating characteristics of the sample Wasserstein-1 estimator $\widehat{W}_1$ for the population value $W_1$, reported in the original units of the effect modifier:
 \begin{enumerate}[1.]
@@ -247,9 +346,7 @@ Consistent with the estimation-centered framework, we evaluated the operating ch
 \item CI width: Mean width of bootstrap CIs, reflecting estimation precision
 \end{enumerate}
 
-\subsection{Results}\label{sec:sim_results}
-
-\subsubsection{Point Estimation and Coverage}
+\subsubsection{Results}\label{sec:sim_results}
 
 Table~\ref{tab:bias} presents the bias of $\widehat{W}_1$ across scenarios and sample sizes, in the original units of the effect modifier (scenarios are specified with $\sigma = 10$). The estimator showed positive bias under the null hypothesis (S1), with bias decreasing from 2.46 at $n=50$ to 1.26 at $n=200$. This positive bias arises because the non-negativity of $W_1$ yields $\widehat{W}_1 > 0$ with probability 1 in finite samples, even when the true value equals zero ($F_1 = F_2$ almost everywhere). The estimator remains consistent ($\widehat{W}_1 \to 0$ as $n \to \infty$ under the null), but the convergence is slow near the parameter space boundary.
 
@@ -310,8 +407,6 @@ S7 (Loc+Scale) & 0.928 & 0.936 & 0.945 \\
 \end{tablenotes}
 \end{table}
 
-\subsubsection{Estimation Precision}
-
 The mean CI width pattern across scenarios and sample sizes is shown in Figure~\ref{fig:simulation}(C). Table~\ref{tab:precision} presents the RMSE and mean CI width across scenarios, in the original units of the effect modifier. RMSE decreased consistently with increasing $n$, at the $O(n^{-1/2})$ rate expected from Wasserstein plug-in theory; for S3, for example, it fell from 1.83 at $n=50$ to 0.98 at $n=200$. Mean CI width narrowed proportionally, with CIs at $n = 100$ for the non-null scenarios spanning roughly 3.6--7.0 in units of $W_1$. In the clinical calibration framework, this CI width propagates directly to $\Delta_{\max}$ via $\Delta_{\max} = L_{\text{clinical}} \cdot W_1$ (Section~\ref{sec:inference}). For example, with $L_{\text{clinical}} = 0.01$/yr (representative of age in the GUSTO-I application), a $\widehat{W}_1$ CI width of 4.96 years (S3 at $n = 100$) corresponds to a $\Delta_{\max}$ CI width of $0.01 \times 4.96 = 0.050$ (5.0\%pt)---a level of precision sufficient for meaningful clinical calibration.
 
 \begin{table}[ht]
@@ -337,40 +432,22 @@ S7 (Loc+Scale) & 2.00 & 1.44 & 1.01 & 6.97 & 5.27 & 3.87 \\
 \end{tablenotes}
 \end{table}
 
-Under the null hypothesis (S1), the positive bias produces CIs that are shifted upward from zero. At $n = 50$, the mean estimate was 2.46 with mean CI width 4.19, and at $n = 200$, the mean estimate decreased to 1.26 with mean CI width 2.07. This bias is relevant for clinical calibration. When the true distributional difference is zero, the estimator will suggest a small positive $\Delta_{\max}$. Practitioners should be aware of this conservative tendency, particularly at smaller sample sizes.
+Under the null hypothesis (S1), the positive bias produces CIs that are shifted upward from zero. At $n = 50$, the mean estimate was 2.46 with mean CI width 4.19, and at $n = 200$, the mean estimate decreased to 1.26 with mean CI width 2.07. This bias is relevant for clinical calibration. When the true distributional difference is zero, the estimator will suggest a small positive $\Delta_{\max}$. Practitioners should be aware of this conservative tendency, particularly at smaller sample sizes. This boundary behaviour is the operability phenomenon of Section~\ref{sec:operability} in its simplest instance: the null floor that diagnostic estimates is the sampling distribution characterized here.
 
-\subsubsection{Comparison with Standardized Mean Difference}
-
-Table~\ref{tab:smd} compares the sensitivity of $\widehat{W}_1$ and SMD to different types of distributional differences. While both metrics respond to location shifts, SMD is insensitive to differences in variance and shape---the very types of distributional differences that may drive treatment effect heterogeneity through non-linear CATE functions.
-
-\begin{table}[ht]
-\centering
-\caption{Sensitivity comparison: $\widehat{W}_1$ versus SMD at $n=100$.\label{tab:smd}}
-\begin{tabular}{lccc}
-\toprule
-\textbf{Scenario} & $\boldsymbol{\widehat{W}_1}$ \textbf{(mean $\pm$ SD)} & \textbf{SMD (mean $\pm$ SD)} & \textbf{Implication} \\
-\midrule
-S3 (Location) & $5.05 \pm 1.36$ & $0.50 \pm 0.14$ & Both detect \\
-S5 (Scale only) & $4.38 \pm 1.04$ & $0.00 \pm 0.14$ & Only $\widehat{W}_1$ detects \\
-S6 (Skew only) & $12.36 \pm 1.85$ & $0.00 \pm 0.14$ & Only $\widehat{W}_1$ detects \\
-\bottomrule
-\end{tabular}
-\begin{tablenotes}
-\item SMD depends only on the difference in means, making it insensitive to differences in variance and skewness. $\widehat{W}_1$ captures the full distributional difference. The comparison is one of detection: SMD is near zero for the pure scale (S5) and skew (S6) contrasts, whereas $\widehat{W}_1$ is substantially positive, registering distributional differences that SMD cannot. $\widehat{W}_1$ (in units of the effect modifier, here $\sigma = 10$) and SMD (dimensionless) are reported on different scales, so only the presence or absence of a signal, not the numerical magnitudes, should be compared across the two columns.
-\end{tablenotes}
-\end{table}
-
+% NOTE (2026-08-30): the former SMD sensitivity table (tab:smd, S3/S5/S6
+% detection contrast) was deleted per the restructure outline -- Study 2's
+% six-method decision comparison supersedes it. Discussion paragraphs still
+% citing S5/S6 as SMD-blindness evidence carry queued review edits (decision 4).
 In summary, the simulation study across seven scenarios demonstrates that the $\widehat{W}_1$ estimator provides reliable estimation with the following properties at sample sizes typical in MRCT regional subgroups:
 \begin{enumerate}[1.]
 \item Bias: Small relative to each scenario's $W_1$ at $n \geq 100$, with positive bias largest near the boundary (S1: 1.76 at $n = 100$) and negligible for the larger-shift scenarios (S3: 0.051, S4: $-0.009$ at $n = 100$).
 \item Coverage: Near-nominal (0.92--0.95) at $n \geq 100$ for the non-null scenarios (S3--S7), including S6 (skew) and S7 (location + scale).
 \item Precision: RMSE and CI width decrease at the $O(n^{-1/2})$ rate; at $n = 200$, RMSE ranged from 0.77 (S5) to 1.34 (S1) in units of $W_1$.
-\item Sensitivity: Captures location, scale, and skewness differences where SMD is limited to location only.
 \end{enumerate}
 
 Scenario S3 (0.5$\sigma$ location shift, true $W_1 = 5$) exemplifies the operating characteristics at clinically relevant effect sizes. Bias was negligible ($+0.051$ at $n = 100$), coverage was nominal (0.951), and the CI width (4.96 years) translated to a $\Delta_{\max}$ CI width of $0.01 \times 4.96 = 0.050$ (5.0\%pt) when calibrated with $L_{\text{clinical}} = 0.01$/yr (age-scale parameters representative of the GUSTO-I application)---a level of precision sufficient for informed regulatory deliberation.
 
-These estimation properties ensure that $\widehat{W}_1$, when combined with the clinical calibration framework of Section~\ref{sec:inference}, provides $\Delta_{\max}$ estimates of sufficient quality for regulatory deliberation. We recommend $n \geq 100$ per region for reliable estimation and inference.
+These estimation properties ensure that $\widehat{W}_1$, when combined with the clinical calibration framework of Section~\ref{sec:inference}, provides $\Delta_{\max}$ estimates of sufficient quality for regulatory deliberation. We recommend $n \geq 100$ per region for reliable estimation and inference; this is the estimation criterion of the statements distinguished at the head of this section, and the sample sizes that decisions require are Study 2's (Section~\ref{sec:study2_selection}).
 
 %==============================================================================
 \section{Application: Hypothetical Thrombolytic MRCT Using GUSTO-I Data}\label{sec:application}
@@ -525,14 +602,13 @@ Among the jointly eligible partners, R4 emerges as the leading single-pool candi
 % 30 anchor distances are bit-identical to results/gusto_r8_w1_per_pair.csv.
 % Pool diameters cross-checked against data/GUSTO/gusto_all_pairwise.csv
 % (max |diff| 4.9e-15 over the 30 anchor distances, 2026-08-30).
-% TODO (2026-08-30): several sentences below are deliberately written at the
-% level the current manuscript supports. When the decision-performance
-% simulation (outline Study 2) enters Section 3, re-point them: (a) the
-% "constructible but does not manifest" sentence can then cite the
-% matched-moment and displaced-extreme worlds directly; (b) the RV2/RV3
-% paragraph can add "consistent with the simulation finding that added moments
-% are not free"; (c) the rho paragraph can cite the rho/rho_trans regime.
-The preceding subsections applied the proposed framework alone. To place its selection in context, we repeated the complete partner-selection exercise with the alternative measures a sponsor could have used at the planning stage: the KS statistic and SMD of Section~\ref{sec:existing}, and three representative-value distances denoted RV1--RV3. RV1 is the representative-value distance of the pooling strategy of Komiyama et al., which describes each region by one representative value per effect modifier---for a continuous modifier, the regional mean---and measures the distance between the resulting summaries.\cite{komiyama2024} RV2 and RV3 are our extensions, not part of the cited proposal: they augment the coordinate vector with the regional standard deviation (RV2) and additionally the skewness (RV3), probing whether added distributional summaries close the gap to full-distribution measures. KL divergence is omitted for the reasons given in Section~\ref{sec:existing}. Because no alternative measure has a pathway from a clinical margin to a decision threshold, none can be given its own $\tau$; instead each measure admits its $k$ closest partners, where $k$ is the number $W_1$ admits at $\tau_{\text{clin}}$ ($k = 9$ on age, $k = 11$ on SBP). Matching the count removes any advantage or penalty from admitting more or fewer partners.
+% TODO (2026-08-30, updated same day): items (a) and (b) of the original note
+% were resolved when Study 2 entered Section 3 (this subsection now cites
+% sec:study2_classification and sec:study2_clustering). Remaining: (c) the rho
+% paragraph below still does not cite the rho/rho_trans regime, because that
+% machinery and its per-cell verification are not yet in Section 3 -- see the
+% TODO at the end of sec:study2_clustering.
+The preceding subsections applied the proposed framework alone. To place its selection in context, we repeated the complete partner-selection exercise with the alternative measures a sponsor could have used at the planning stage: the KS statistic and SMD of Section~\ref{sec:existing}, and the three representative-value distances RV1--RV3 of Section~\ref{sec:study2_design} (RV1 the distance of Komiyama et al.\ as written; RV2 and RV3 our extensions).\cite{komiyama2024} KL divergence is omitted for the reasons given in Section~\ref{sec:existing}. Because no alternative measure has a pathway from a clinical margin to a decision threshold, none can be given its own $\tau$; instead---mirroring Study 2's device---each measure admits its $k$ closest partners, where $k$ is the number $W_1$ admits at $\tau_{\text{clin}}$ ($k = 9$ on age, $k = 11$ on SBP). Matching the count removes any advantage or penalty from admitting more or fewer partners.
 
 Table~\ref{tab:app_allmethods} summarizes the agreement of each measure with $W_1$. On both effect modifiers, the KS statistic, SMD, and RV1 admit exactly the partners $W_1$ admits, and the joint selection under the AND rule is identical for all four measures: R1, R4, R5, R6, R14, R15, precisely the six regions of the preceding subsection. Only RV2 and RV3 depart, and their joint selections differ from the consensus and from each other (RV2: R1, R4, R5, R7, R12, R15; RV3: seven regions, R1, R4, R7, R9, R10, R12, R15).
 
@@ -554,9 +630,9 @@ SBP ($k=11$) & overlap  & 11/11 & 11/11 & 11/11 & 9/11 & 8/11 \\
 \end{tablenotes}
 \end{table}
 
-The mechanism of the agreement is that GUSTO-I's regional differences are predominantly differences in location. Where distributions differ mainly in their means, every measure that responds to the mean orders partners in nearly the same way. The configurations in which SMD is blind---scale-only and shape-only contrasts such as S5 and S6 (Table~\ref{tab:smd})---are constructible and clinically plausible, but they do not manifest in this dataset. What the comparison licenses is accordingly a controlled statement: in GUSTO-I, $W_1$ reaches the same selection as the existing measures, and its contribution here is not a different answer but the same answer plus its clinical calibration---the translation pathway from $\Delta_{\text{clin}}$ to a threshold, and the bound of equation~(\ref{eq:delta_max}), which no alternative carries. Since one cannot know before computing the distances whether one's own data are location-dominated, the agreement observed here cannot be presumed in advance.
+The mechanism of the agreement is that GUSTO-I's regional differences are predominantly differences in location. Where distributions differ mainly in their means, every measure that responds to the mean orders partners in nearly the same way. The configurations in which SMD is blind at any sample size---the moment-matched mixtures and mean-fixed displaced extremes of Study 2 (Section~\ref{sec:study2_classification})---are constructible and clinically plausible, but they do not manifest in this dataset. What the comparison licenses is accordingly a controlled statement: in GUSTO-I, $W_1$ reaches the same selection as the existing measures, and its contribution here is not a different answer but the same answer plus its clinical calibration---the translation pathway from $\Delta_{\text{clin}}$ to a threshold, and the bound of equation~(\ref{eq:delta_max}), which no alternative carries. Since one cannot know before computing the distances whether one's own data are location-dominated, the agreement observed here cannot be presumed in advance.
 
-Two further observations sharpen the comparison. First, RV1 and SMD produce identical partner orderings on both effect modifiers (Spearman correlation 1.000; Pearson 0.9999 on age and 0.9995 on SBP): on a single continuous effect modifier the representative value is the mean, so RV1 is a mean difference and SMD its standardized version. This is a scope observation rather than a criticism---the setting of the cited proposal describes regions by proportions of binary characteristics, where a single summary describes each distribution completely.\cite{komiyama2024} Second, the departures of RV2 and RV3 come with no guarantee of improvement: they are the only measures that leave the consensus, and their rank agreement with $W_1$ on SBP is markedly lower (0.643 and 0.536, against 0.954 for SMD and RV1). The instructive case is R6 on age, whose $\widehat{W}_{1,\text{age}} = 0.912$ years makes it the ninth-closest partner while its RV2 distance of 2.056 drops it from the admitted nine (displaced by R11), because the standard-deviation coordinate dominates the distance. Real data offer no ground truth against which to adjudicate this disagreement; what the application shows is that augmenting the coordinate vector changes the selection, and moves it away from every other measure considered here.
+Two further observations sharpen the comparison. First, RV1 and SMD produce identical partner orderings on both effect modifiers (Spearman correlation 1.000; Pearson 0.9999 on age and 0.9995 on SBP): on a single continuous effect modifier the representative value is the mean, so RV1 is a mean difference and SMD its standardized version. This is a scope observation rather than a criticism---the setting of the cited proposal describes regions by proportions of binary characteristics, where a single summary describes each distribution completely.\cite{komiyama2024} Second, the departures of RV2 and RV3 come with no guarantee of improvement: they are the only measures that leave the consensus, and their rank agreement with $W_1$ on SBP is markedly lower (0.643 and 0.536, against 0.954 for SMD and RV1). The instructive case is R6 on age, whose $\widehat{W}_{1,\text{age}} = 0.912$ years makes it the ninth-closest partner while its RV2 distance of 2.056 drops it from the admitted nine (displaced by R11), because the standard-deviation coordinate dominates the distance. Real data offer no ground truth against which to adjudicate this disagreement, but Study 2 does: adding moments is not free there (Section~\ref{sec:study2_clustering}), and only the simulation and the application together license the reading that the departures of RV2 and RV3 are more likely noise than information. What the application alone shows is that augmenting the coordinate vector changes the selection, and moves it away from every other measure considered here.
 
 The comparison so far varies the measure while holding the decision procedure fixed. Varying the procedure instead exposes the choice analyzed in Section~\ref{sec:discussion}: screening each candidate against the designated anchor, as in the preceding subsections, versus clustering the full pairwise distance matrix and reading off the anchor's cluster. On the same $W_1$ distances, the pairwise screen admits nine partners on age and eleven on SBP; cutting a complete-linkage dendrogram at height $\tau_{\text{clin}}$ leaves the anchor with two partners on each modifier (R5 and R6 on age; R2 and R16 on SBP); and clustering with a silhouette-selected number of clusters yields an anchor pool of ten partners on age and the same two-partner pool on SBP. The cut pool is a subset of the pairwise pool on both modifiers, as it must be, since a within-pool diameter of at most $\tau$ implies in particular that every anchor distance is at most $\tau$.
 
@@ -570,6 +646,10 @@ Finally, alongside the distances we recorded for every pair the ratio $\rho = W_
 \section{Discussion}\label{sec:discussion}
 %==============================================================================
 
+% TODO (2026-08-30): queued review edit (decision 4, 2026-08-15) -- item (i)
+% below cites S5/S6 (Study 1), but the structural-blindness evidence now lives
+% in Study 2 (sec:study2_classification), and Study 1's SMD table was deleted
+% in the 2026-08-30 restructure. Re-point during the paragraph review.
 This paper addresses three methodological gaps identified in Section~\ref{sec:existing}, demonstrating that the $W_1$ distance: (i) captures scale and skewness differences in regional effect modifier distributions that are invisible to standardized mean differences, as confirmed by simulation scenarios with location-preserving variance and shape contrasts (S5, S6); (ii) translates distributional distance into a clinically interpretable scale via the heterogeneity bound \(\Delta_{\max}\) (equation~\ref{eq:delta_max}), providing a theoretical link to regional treatment effect heterogeneity that is absent both in empirical-distribution-function tests such as the Kolmogorov--Smirnov statistic and in representative-value distance methods such as Euclidean distance on region-level effect modifier summaries;\cite{komiyama2024} and (iii) admits reliable percentile bootstrap inference for non-negligible distributional differences at moderate sample sizes (\(n \geq 100\) per region, coverage 0.90--0.95 across S2--S7), while exhibiting characterized boundary behavior near the null that delimits the operational range of inference.
 
 These methodological findings carry two interpretive implications for pooling decisions, illustrated by the GUSTO-I application as a worked example of the framework's operation rather than a substantive epidemiological claim. First, when multiple candidate effect modifiers are under consideration, all candidates must be evaluated jointly. A partner ranked similar on one effect modifier may not be similar on another, as exemplified by the contrast between R2 and R9. Restricting evaluation to a subset of candidates risks selecting partners whose distributional differences on the omitted modifiers would later compromise consistency. Second, partner selection cannot rest on $W_1$ ranking alone. The required CATE sensitivity $L^*$ that would translate a given $W_1$ into a clinically meaningful $\Delta_{\max}$ varies markedly across partners and across candidate effect modifiers, so the same $W_1$ value carries different clinical weight depending on the partner-specific distributional differences. In the GUSTO-I example, six partners (R1, R4, R5, R6, R14, R15) emerged as jointly eligible because their $L^*$ values exceeded the plausible bounds reviewed in Section~\ref{sec:application}; R4 stood out as the leading single-pool candidate due to its balanced ranking on both modifiers. Pooling judgments therefore require both distributional ranking and clinical calibration, applied across the full set of candidate effect modifiers.
@@ -580,6 +660,11 @@ These implications also clarify how the framework relates to the most concrete e
 % (results/anchor_vs_clustering_tau_100k.csv). MC SE <= 0.0005 on every rate quoted.
 Which of the two decision procedures is appropriate---pairwise screening against a designated anchor region, as in Section~\ref{sec:application}, or clustering the full pairwise distance matrix, as in their account---is determined by the estimand rather than by statistical performance. When a single anchor region borrows strength from its partners---the setting of Section~\ref{sec:application}---screening candidates by their pairwise distance to the anchor is theoretically sufficient: $W_1$ is convex in mixtures of partner distributions, so the anchor-to-pool distance never exceeds the largest anchor-to-partner distance, and controlling each pairwise $W_1$ at a threshold $\tau$ controls the anchor's heterogeneity bound at $L_{\text{clinical}} \cdot \tau$. A supplementary simulation comparing the two procedures on a common outcome---the set of regions pooled with the anchor---found that pairwise screening then also performs better empirically, attaining higher sensitivity at matched control of the anchor's own violation rate in every simulated world and sample size examined. When instead pooled regions are formed at the planning stage and every member reports the shared pooled estimate---the setting contemplated by the pooled-region concept of ICH E17\cite{iche17} and by Komiyama et al.\cite{komiyama2024}---pairwise screening under-protects: two partners each within $\tau$ of the anchor may lie up to $2\tau$ apart, so a member's own heterogeneity bound can reach twice the intended margin. In the same simulation this exposure was neither hypothetical nor a small-sample artefact: at a fixed clinical threshold, anchor-wise screening violated the pool-wide requirement in 61--68\% of replications, and the rate did not fall with sample size across $n = 25$ to $400$ per region, as expected of a structural rather than a sampling limitation. Cutting a complete-linkage dendrogram at height $\tau$ instead guarantees that every within-pool pairwise distance is at most $\tau$ in the estimated distances, so its residual breach reflects estimation error alone and declined from 16\% at $n = 25$ to below 1\% at $n = 400$. Clustering with a statistically selected number of clusters offered no such protection and frequently admitted dissimilar members, so the guarantee derives from the clinical cut, not from clustering as such. Procedure choice should therefore follow the estimand: pairwise screening for a single borrowing region, diameter-controlled clustering for shared pooled regions.
 
+% TODO (2026-08-30): queued review edit (decision 4, 2026-08-15) -- "The $W_1$
+% distance addresses all three" below needs the controlled reading (location-
+% dominated data; see sec:app_allmethods), and the S5/S6 sentence cites the
+% deleted Study 1 SMD table (evidence now in sec:study2_classification).
+% Re-point during the paragraph review.
 Section~\ref{sec:existing} identified three gaps in existing distributional measures. SMD captures only location. The KS statistic and related EDF tests lack a clinically interpretable scale and a theoretical link to treatment effect heterogeneity. KL divergence is asymmetric, can diverge under non-overlapping support, and requires density estimation impractical at small regional samples. The $W_1$ distance addresses all three. Where SMD captures only the mean, our simulation confirmed that scale (S5) and skewness (S6) differences produced near-zero SMD yet non-negligible $W_1$. Where the KS statistic offers no clinical-scale translation, the heterogeneity bound (equation~\ref{eq:delta_max}) translates distributional distance into clinically meaningful units. Where KL divergence is asymmetric and prone to instability under limited sample overlap, $W_1$ is symmetric, finite for any pair of empirical distributions, and computable directly from CDFs without density estimation, while remaining amenable to bootstrap inference.
 
 Two principal strengths follow from the dual-pathway clinical calibration. First, the framework adapts to where the trial sits on the spectrum of CATE sensitivity evidence, rather than imposing a fixed $W_1$ cutoff. At the MRCT planning stage, where $L$ is typically unavailable for novel agents, the $L^*$ reverse-calculation (equation~\ref{eq:lstar}) serves as the primary calibration tool. When $L$ is available from prior evidence, the $\Delta_{\max}$ pathway (equation~\ref{eq:delta_max}) provides a complementary calibration on the clinical scale. Second, the value of $W_1$ as a distributional measure, capturing scale and skewness differences invisible to SMD, holds regardless of whether $L$ is available. Clinical calibration enhances but does not replace this distributional assessment.

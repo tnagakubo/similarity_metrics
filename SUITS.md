@@ -37,12 +37,13 @@
 
 ### 次にやるべきこと（残タスク）
 
-- **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**
+- **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**。**Study 2 が §3 に入ったので全5件に着地点あり — Tak とのレビューでいつでも実行可**（¶1・¶5 には TODO コメント設置済み）
 - **Intro ¶7（SMD 限界）以降のレビュー再開**
-- **Study 2（決定性能 sim）を §3 に落とす** — ⚠ 08-30 に露見: .tex の Simulation 節は Study 1 のみの旧構成のまま。§4.5 はこのため controlled に執筆済みで、**Study 2 が入ったら張り替える TODO 3件が `.tex` 内に待機**（S5/S6→worlds、RV2/RV3 sim 接続、ρ/ρ_trans regime）。判断④の abstract 修正とも連動
-- **REVIEW_TRACKER.md 更新/retire**（nABCD 用語のまま 0/29 で stale）
-- ~~§4.4–4.5 を .tex に落とす~~ → ✅ **完了（2026-08-30）**
-- ~~push~~ → ✅ **完了（2026-08-30）**
+- **⚠ Tak 判断待ち: §3.1.4（手続き正当化、anchor_vs_clustering 100k）の配置** — 内容は 08-18 適用の Discussion 段落に既在。§3 へ移すか・Discussion に留めるか・要約+相互参照か
+- **§3 残り2点（意図的保留）**: ρ/ρ_trans regime（per-cell 検証未整備）／oracle 閾値 steelman + Part 1B の配置（§2.6 との関係未決）。`sec:study2_clustering` 末尾の TODO コメント参照
+- **REVIEW_TRACKER.md 更新/retire**（nABCD 用語のまま 0/29 で stale、Tak 判断待ち）
+- ~~§4.4–4.5 を .tex に落とす~~ → ✅ 完了（08-30 午前）
+- ~~Study 2 を §3 に落とす~~ → ✅ **§3.0+3.1.1–3.1.3+3.2 完了（08-30 午後）**。§4.5 の TODO (a)(b) も解消済み
 
 ### 既知の潜在バグ（現状は不発、今回は意図的に触れていない）
 
@@ -51,6 +52,37 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-08-30 16:55] Scene: Study 2 が §3 に入った — ゲートがノートの誤りを9つ捕まえた
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Tak「残りタスクを進めよう」。Donna が順序を決める — abstract は最後、本体が先。*
+
+**Donna**:（順序には Tak 自身の規則があるわ)
+「必須修正5件のうち abstract 2件は **Terminal element deferral**（本体→Discussion→Abstract が Tak の標準 practice）。Discussion 2件は Study 2 が無いと張り替え先が無い。だから**正しい次の一手は一つ — Study 2 を §3 に落とす**」
+
+**Mike**:（書く前に、引用する全数値のゲートを作りました）
+「`R/verify_study2_figures.R` — required n・AUC・ARI・harm・no-oracle-k・Set 4 真値（generator から再計算）まで **70 チェック**。初回実行で **9 FAIL** — 全て**ノート側の記録誤り**でした。
+**①blind の AUC 0.51/0.50/0.51 は max_auc で、n=2,000 時点は 0.49–0.50**。本文は『0.49–0.51 across the full grid』と両方を張る形に。
+**②設計定数**: 実際は selection 10,000/3,000 reps・clustering 5,000/2,000・**候補国は全 Set で 9**（『5,000–10,000』『9–11』は2タスクの混同）。
+ついでにアウトライン §3.1.4 の sensitivity 数値が **2,000 reps 初回 run の値**なのも発見 — 100k 版と 0.003 ずれます。期待値を CSV の現実に合わせて **ALL PASS**、以後この log が §3 の数値の台帳です」
+
+**Katrina**:（構造ごと書き換えました）
+「§3 = **冒頭 framing（3種の例数言明の分離）→ `sec:study2`（Design / Three Behaviours / Selection / Clustering）→ `sec:study1`（旧内容を降格統合）**。
+表2枚（`tab:study2_required_n`・`tab:study2_ari`）、図1枚（`fig_required_n_auc.pdf` → `fig:study2_auc`、既存の paper 標準 greyscale 資産）。**SMD 感度表は仕様どおり削除**し、`sec:sim_design`/`sec:sim_results` の label は参照3箇所が生きているので温存。KS が勝つセル2つ（bulk shift・Set 2 clustering）と RV3 が W₁ に先行するセル（asym 41 対 67)も正直に本文へ。§4.5 の TODO は **(a)(b) を解消**、RV1–RV3 の定義は §3 へ移して §4.5 は後方参照に。`morris2019`（ADEMP、DOI 付き）を bib に追加しました」
+
+**Jessica**:（advisor 経由、書かせなかったものが3つ）
+「Let me be clear。**①ρ/ρ_trans regime は書くな** — per-cell の ρ_trans はゲートで検証できていない。検証なき数値は §4.2 以来この論文に入れない。**②oracle 閾値 steelman + Part 1B は配置が未決**だ — §2.6 と重なる。**③§3.1.4 は Tak の判断だ** — 同じ内容が 08-18 に Discussion へ入っている。黙って二重掲載するな。3件とも `.tex` の TODO コメントに残した」
+
+**Louis**:（検証結果だ）
+「ゲート再実行 **ALL PASS**。pdflatex 3 pass + bibtex **全て exit 0、error 0、undefined 0、multiply-defined 0** — tab:smd を消しても参照残存ゼロ、つまり §4.5 の張り替えは漏れていない。**21→23 ページ**。\emph 0、制御文字 0。
+言っておくが、**判断④の5件は今や全部着地点を持ってる**。Tak、段落レビューを始められるぞ」
+
+**Donna**:（Current Status も更新済みよ）
+「残るは **Tak 判断3つ**（§3.1.4 の配置／必須修正5件のレビュー開始／REVIEW_TRACKER）と **Intro ¶7 再開**。commit して push するわ」
+
+---
 
 ### [2026-08-30 15:40] Scene: §4.4–4.5 が本文に入った — そして Study 2 の不在が露見した
 
