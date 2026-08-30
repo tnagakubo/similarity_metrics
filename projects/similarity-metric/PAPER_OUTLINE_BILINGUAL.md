@@ -352,8 +352,8 @@
 | 4.1 Scenario and EM selection | `sec:app_scenario` | exists |
 | 4.2 Operability check | *(new — suggest `sec:app_operability`)* | to write |
 | 4.3 Per-EM W₁ across 15 partners | `sec:app_nabcd` | exists (label name is a nABCD-era relic; keep it) |
-| 4.4 Clinical interpretation, eligibility, sensitivity | `sec:app_clinical` | exists, needs the §4.4 sensitivity content |
-| 4.5 All methods applied | *(new — suggest `sec:app_allmethods`)* | to write; absorbs the dissolved pool-level check |
+| 4.4 Clinical interpretation, eligibility, sensitivity | `sec:app_clinical` | ✅ sensitivity content written 2026-08-30 (`R/gusto_lub_sensitivity.R`, 30/30 verification PASS) |
+| 4.5 All methods applied | `sec:app_allmethods` | ✅ written 2026-08-30; absorbs the dissolved pool-level check; Study-2-dependent sentences held at current-manuscript level (TODO in `.tex`) |
 
 **Methods carries the same drift risk — §2.1, §2.6 and §2.7 are all new and two of them insert between existing labels.**
 **Methods も同じ drift の危険を持つ — §2.1・§2.6・§2.7 は全て新規で、うち2つは既存 label の間に入る。**
@@ -430,6 +430,9 @@
   joint eligible 6地域の age 解像状況: R1 ✗ / R4 ✗ / R5 ✗ / R6 ✓ / R14 ✓ / R15 ✗ — **6中4が未解像。**
 
 ### 4.4 Clinical interpretation, eligibility, and sensitivity / 臨床解釈・適格性・感度分析
+
+✅ **WRITTEN INTO THE `.tex` 2026-08-30.** Three paragraphs appended to `sec:app_clinical` (per-region slack + R7 near-miss; per-EM L_UB scaling; convergence with §4.2) plus the R7 unrounded-value correction in the eligibility paragraph. Figures established by `R/gusto_lub_sensitivity.R` — pure arithmetic on `results/gusto_r8_w1_per_pair.csv`, **30/30 verification PASS** against the values recorded below. Per the ⚠ at the asymmetry bullet, the common-factor scaling is computed **for the record only** (`results/gusto_lub_scaling.csv`, mode `common`) and does not appear in the manuscript. One presentational change against this outline: the "stable to roughly ±5–10%" summary (a common-scaling artefact, and false on the SBP downside — R7 enters at −1.4%) is replaced by exact critical factors, which are the slack values themselves: age +9.6% → R6 drops; SBP +5.8% → R15 drops; SBP −1.4% → R7 enters.
+  ✅ **2026-08-30 に `.tex` へ執筆済み。** `sec:app_clinical` に3段落を追加（地域別 slack + R7 near-miss／EM 別 L_UB scaling／§4.2 との収束）+ 適格性段落の R7 丸め訂正。数値は `R/gusto_lub_sensitivity.R` が確立（**検証 30/30 PASS**）。common-factor scaling は**記録のみ**で本文に載せない。アウトラインからの変更点1つ: 「±5–10% に安定」（common scaling 由来で、SBP 下方向には偽 — R7 が −1.4% で入る）は**臨界倍率 = slack 値そのもの**の記述に置換した。
 
 - L_UB from disease-area evidence: L_age,UB = 1×10⁻² /yr, L_SBP,UB = 2×10⁻³ /mmHg on the 30-day mortality scale, exceeding the empirical prognostic gradients reported for GUSTO-I. Eligible on an EM if L* > L_UB at Δ_clin = 1 %pt.
   疾患領域エビデンスからの L_UB: 30日死亡尺度で L_age,UB = 1×10⁻² /年、L_SBP,UB = 2×10⁻³ /mmHg。GUSTO-I で報告された経験的予後勾配を上回る。Δ_clin = 1 %pt で L* > L_UB なら当該 EM で eligible。
@@ -508,6 +511,9 @@
 ---
 
 ### 4.5 All methods applied, compared with the simulation's recommendations / 全手法の適用と simulation 推奨との対照 〔NEW / 新規、旧 4.6〕
+
+✅ **WRITTEN INTO THE `.tex` 2026-08-30 as `sec:app_allmethods`** — Results 1–5 as specified, one agreement table (`tab:app_allmethods`), pool diameters cross-checked against `data/GUSTO/gusto_all_pairwise.csv` (max |diff| 4.9e-15; note the CSV's `nABCD` column is $W_1/(2\cdot\text{IQR}_{\text{pooled}})$). ⚠ **The manuscript's Simulation section is still the Study-1-only structure**, so every Study-2 reference below was written at the level the current manuscript supports (S5/S6 + `tab:smd` for SMD blindness), with a TODO comment in the `.tex` listing the three re-pointings due when Study 2 enters §3: (a) "constructible but does not manifest" → cite the matched-moment / displaced-extreme worlds; (b) RV2/RV3 "adding moments is not free" simulation tie; (c) the ρ/ρ_trans regime and its thresholds. The steelman contrast with Study 2's oracle thresholds is likewise held back until Study 2 exists in the manuscript.
+  ✅ **2026-08-30 に `sec:app_allmethods` として `.tex` へ執筆済み** — Result 1–5、一致表 `tab:app_allmethods`、直径は `gusto_all_pairwise.csv` と 4.9e-15 で照合（同 CSV の `nABCD` 列は $W_1/(2\cdot\text{IQR})$）。⚠ **本文の Simulation 節は Study 1 のみの旧構成のまま**なので、Study 2 参照はすべて現行本文が支持する水準（S5/S6 + `tab:smd`）で執筆し、Study 2 が §3 に入った時の張り替え3件を `.tex` の TODO コメントに記載した。steelman の「Study 2 は oracle 閾値」対比も Study 2 が本文に入るまで保留。
 
 - **Implemented**: `R/application_all_methods.R` — six distances × two EMs × three procedures on GUSTO-I (16 regions, anchor R8). Outputs `results/app_all_methods_{distances,ranks,procedures}.csv`.
   **実施済み**: `R/application_all_methods.R` — GUSTO-I（16地域、anchor R8）に6距離 × 2 EM × 3手続き。出力 `results/app_all_methods_{distances,ranks,procedures}.csv`。

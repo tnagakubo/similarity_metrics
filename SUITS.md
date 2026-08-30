@@ -39,9 +39,10 @@
 
 - **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**
 - **Intro ¶7（SMD 限界）以降のレビュー再開**
-- **§4.4–4.5 を .tex に落とす**（現行 .tex は §4.1–4.3 のみ。§4.4 以降はアウトラインにしか存在しない）。§→`\label` 対応表はアウトライン §4 冒頭に記録済み
-- **push**（main が origin より先行）
+- **Study 2（決定性能 sim）を §3 に落とす** — ⚠ 08-30 に露見: .tex の Simulation 節は Study 1 のみの旧構成のまま。§4.5 はこのため controlled に執筆済みで、**Study 2 が入ったら張り替える TODO 3件が `.tex` 内に待機**（S5/S6→worlds、RV2/RV3 sim 接続、ρ/ρ_trans regime）。判断④の abstract 修正とも連動
 - **REVIEW_TRACKER.md 更新/retire**（nABCD 用語のまま 0/29 で stale）
+- ~~§4.4–4.5 を .tex に落とす~~ → ✅ **完了（2026-08-30）**
+- ~~push~~ → ✅ **完了（2026-08-30）**
 
 ### 既知の潜在バグ（現状は不発、今回は意図的に触れていない）
 
@@ -50,6 +51,34 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-08-30 15:40] Scene: §4.4–4.5 が本文に入った — そして Study 2 の不在が露見した
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Tak「状況確認してタスクを進めて」。Donna が残タスクを棚卸しし、自律で進められる §4.4–4.5 執筆を選ぶ。*
+
+**Donna**:（棚卸しから始めたわ）
+「レビュー系2件は Tak がいないと動かせない。自律で完了できるのは **§4.4 感度分析 + §4.5 全手法比較**。そして §4.2 の教訓どおり確認したら — **§4.4 の感度数値（L_UB scaling・地域別 slack）を生む script もリポジトリに無かった**の」
+
+**Mike**:（計算前に規則と予測を固定しました）
+「`R/gusto_lub_sensitivity.R` を新規作成 — `gusto_r8_w1_per_pair.csv` からの純算術、乱数なし。**検証 30/30 ALL PASS**（slack 6地域×2 EM、R7 near-miss L\*=0.001972・1.43% 超過、age/SBP 単独 scaling、common scaling は記録のみ）。
+発見が2つ。**① scaling の臨界倍率は slack 値そのもの** — age +9.6% で R6 が落ち、SBP +5.8% で R15 が落ち、SBP −1.4% で R7 が入る。**②アウトラインの「±5–10% に安定」は common scaling 由来で、SBP 下方向には偽**でした。本文は臨界倍率の記述に置換しています。
+直径6本も `gusto_all_pairwise.csv` から再確認 — **max |diff| 4.9e-15**。ただし同 CSV の `nABCD` 列は **W₁/(2·IQR_pooled)** です。×2 を忘れると全部半分になります」
+
+**Katrina**:（.tex に3点適用しました）
+「**① R7 の丸め訂正**（『0.0020 = L_UB』→ unrounded 0.001972 < L_UB を明記）**② `sec:app_clinical` に感度3段落**（slack + near-miss／EM 別 L_UB scaling — common factor は『独立な臨床入力が同方向同率に誤る理由はない』と明記して排除／§4.2 との収束）**③ 新規 `sec:app_allmethods`** — Result 1–5、一致表 `tab:app_allmethods`、3直径は毎回 pool を名指し（執筆ガード遵守）、ρ には判断⑤の画定の一文。RV2/RV3 は『our extensions, not part of the cited proposal』と帰属を明示しました」
+
+**Jessica**:（適用前に一つ止めた）
+「Let me be clear。**§4.5 の仕様は Study 2 を前提に書かれているが、`.tex` の Simulation 節は Study 1 のみの旧構成のままだ。** 存在しない節を根拠に主張を書けば、§2.6 で止めたのと同じ違反が一段大きく起きる。**現行本文が支持する水準で書け** — SMD の盲点は S5/S6 と `tab:smd` を引き、oracle 閾値・Set 1・ρ/ρ_trans は **Study 2 が入った時の張り替え TODO 3件**として `.tex` に残せ」
+
+**Louis**:（監査とコンパイルだ）
+「\emph **0**、制御文字 **0**。grep の行末バックスラッシュ検査が 63 件と出たが、**行末に backslash の無い行までマッチしていた — grep 側の挙動不良だ**。だからコンパイルで検証した: **pdflatex 3 pass + bibtex 全て exit 0、error 0、undefined 参照 0、multiply-defined 0、19→21 ページ**」
+
+**Donna**:（そして残タスクが1件増えたわ）
+「§4.4–4.5 は閉じた。でも今日の最大の発見は**タスクリストに穴があったこと** — **『Study 2 を §3 に落とす』がどこにも記録されていなかった**。判断④の abstract 修正（『simulation 文を Study 2 先頭へ』）は Study 2 が本文に無ければ張り替え先を持たない。残タスクに追加して、commit & push まで済ませたわ」
+
+---
 
 ### [2026-08-21 14:22] Scene: §4.2 の数値は、どの script からも生まれていなかった
 
