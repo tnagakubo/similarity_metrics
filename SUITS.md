@@ -2,7 +2,7 @@
 
 > *"I don't have dreams. I have goals."* - Harvey Specter
 
-**Previous Archive**: `archives/SUITS_20260719_132632.md`（1022 lines、2026-07-03 〜 2026-07-19 15:00）
+**Previous Archive**: `archives/SUITS_20260815_1835.md`（995 lines、2026-07-19 15:00 〜 2026-08-08 12:18）
 **Archive trigger**: Rule 2.5 (>1000 lines)
 
 ---
@@ -12,343 +12,348 @@
 **Active Project**: similarity-metric (per-EM W₁ paper, target *Statistics in Medicine*)
 **EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — Intro レビュー ¶7 で停止中
 **JA paper**: 意図的に削除済み（Tak 指示、EN 完成まで。Rule 2.7 保留）→ [[project_ja_paper_deleted]]
-**worktree**: `worktree-selection-sim` — **マージ済み・削除済み**（2026-07-20。bootstrap 実装も `a950ef2` で残置）。remote branch の削除は push 時
+**W₁ 計算系統**: ✅ **統一済み（2026-08-15）**。応用側の全スクリプトが厳密な CDF 面積形 `compute_w1` を使用
 
 ---
 
-## 🔄 直前のコンテキスト (from archived scenes, 2026-07-19)
+## 🔄 直前のコンテキスト
 
-### 直近の作業
-1. **大掃除**: nABCD 遺物・役目を終えた文書を `archives/cleanup_20260719/`（MANIFEST 付き）に集約。root `results/w1_raw_*` は現役ゆえ温存
-2. **git マージ解決**: SUITS.md の conflict（ローカル cleanup ⇔ リモート 7/3 GSC セミナー報告）を両シーン残す形で解決 → merge commit `f61ca19`。**main は origin より先行、push 未実施**
-3. **現在地確認**: 貢献 (b) の**理論**（Δ_max=L·W₁ 定理・KR 双対・二経路較正）は本文 §2 に既にある。欠けているのは**実証**（Part 1B の閾値選択 sim）
-4. **Jessica = advisor 設定**: `advisor` ツールを Jessica の声で表現。substance 忠実・register だけ Jessica → [[project_jessica_advisor_role]]
-5. **残① bootstrap 上限ルール**: 実装・検証（別スクリプト `threshold_bootstrap_simulation.R` + cpp `W1_raw_boot_upper_cpp`、既存 threshold_sim は不変）。結果 = **棄権であって制御ではない**（ヌルバイアスが τ 範囲をまたぐため match すら admit できず sensitivity ~0）
-6. **sim 計画の draw.io 作成**: `projects/similarity-metric/sim_plan_ja.drawio`
+### 直近の作業（2026-08-02 〜 08-15、詳細は archive）
 
-### 進行中のアクション
-- なし（draw.io 作成完了が直近）。
+1. **判断① 決着**: §4.4 感度分析は **(a) L_UB 感度**と **(c) 地域別 slack** を入れ、**(b) bootstrap CI 上限は落とす**（Tak: 「データが足りなければ答えが変わるのは既知」）
+2. **§4.5 の数値訂正**: 3箇所誤り（age partner↔partner 1.058→1.0595、SBP anchor→partner 4.714→4.7243、SBP partner↔partner 3.020→3.0253）。30本すべて 4.9e-15 で検証 PASS
+3. **W₁ 計算系統の露見と診断**: 実装が3つ併存。犯人は `application_all_methods.R` の `type = 7`（グリッドではなく補間規約）
+4. **✅ 統一完了（08-15）**: `w1_s` を CDF 面積形に差し替え・再実行。30本すべて `gusto_r8_w1_per_pair.csv` と **max |diff| = 0.0e+00**
+
+### ✅ Open decisions 全5件 決着（2026-08-15）
+
+| # | 判断 | Tak の結論 |
+|---|---|---|
+| ① | §4.4 感度分析 | (a) L_UB 感度と (c) 地域別 slack を入れ、**(b) bootstrap CI 上限は落とす** |
+| ② | pool 直径超過 | **§4.5 Result 4 に一本化**（旧 §4.5 解体、§4.6→§4.5 繰り上げ）、register は **scope の明確化** |
+| ③ | §2.6 の配置 | **独立節を維持 + §2.5→§2.6 を一本の較正の弧として書く** |
+| ④ | 主張水準 | **GUSTO の一致は Discussion にのみ**。abstract には載せない |
+| ⑤ | 位置優位性 diagnostic | **提案しない。** ρ は Result 5 に留め、画定の一文を付す |
 
 ### 次にやるべきこと（残タスク）
-- **worktree を main にマージ**（Part 1B sim 一式）
-- **本文 Results 統合**（点推定の operable range。bootstrap 否定結果は**載せない** = Tak 判断）
+
+- **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**
 - **Intro ¶7（SMD 限界）以降のレビュー再開**
-- **push**（main 先行 + merge commit を origin へ）
+- **§4.4–4.5 を .tex に落とす**（現行 .tex は §4.1–4.3 のみ。§4.4 以降はアウトラインにしか存在しない）。§→`\label` 対応表はアウトライン §4 冒頭に記録済み
+- **push**（main が origin より先行）
 - **REVIEW_TRACKER.md 更新/retire**（nABCD 用語のまま 0/29 で stale）
 
-### Tak からの直近の指示
-- 「bootstrap 否定結果は**例数が少ないから当然**。論文には触れない」→ 反映（実装は内部検証として残置）
-- 「sim 計画を分かりやすく draw.io で図示」→ 実行済み（`sim_plan_ja.drawio`）
-- 「Jessica が Advisor の役割を果たすように」→ `agents/jessica.md` Role 4 + memory に反映
+### 既知の潜在バグ（現状は不発、今回は意図的に触れていない）
+
+- ⚠ `selection_simulation.R` の `w1_dist` — 不等 n で両標本を小さい方から n 個に黙って切り詰める。simulation は常に等 n なので発火しないが、**応用側に流用してはならない**
 
 ---
 
 ## 🎬 Live Script
 
-### [2026-07-20 21:50] Scene: oracle k を外す — そして k を「推定」ではなく「消す」
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
-
-*Tak「W1使ったクラスタリングはできない？」→ 確認したところ Part 2 が既にそれ。ただし `cutree(k = 3)` で**真のクラスタ数を教えている**。Tak の選択は「k を推定する手法にする」。*
-
-**Katrina**:（設計を2系統に割る）
-「2つ作った。**別の問いだから、別の採点をする。**
-
-**Rule A — silhouette k̂（統計的、全手法）**: 各手法が自分の距離行列上で silhouette 最大の k を選ぶ。手法非依存だから『oracle を失っても W₁ の優位は残るか』を公平に問える。**ARI で採点**（構成ラベル＝ metric 非依存なので非循環）。
-
-**Rule B — 臨床 τ_clin cut（W₁ の貢献）**: **k を推定しない。消す。** KR bound より pool 内の任意ペアが |Δθ| ≤ L·W₁ を満たすから、pool が許容可能 ⇔ **直径 ≤ τ_clin**。その高さで樹形図を切れば k は臨床要件から落ちてくる。Part 1B が閾値でやったことを partition に一般化した形。」
-
-**Jessica**:（Katrina が ARI で採点しかけたのを止める）
-「Let me be clear。**Rule B を ARI で採点してはだめ。** τ_clin cut が構成群を復元するのは τ_clin が群内／群間のギャップに偶然入ったときだけ。ARI を τ_clin で最大化すれば、それは**要件を真値に合わせるチューニング**——Louis が Part 1B で刺したその循環そのものよ。
-
-Part 1B と同じ枠で測りなさい——**violation（形成された pool に真の W₁ > τ のペアが入る確率）と sensitivity（真に pool 可能なペアが同居する割合）を τ_clin で掃引**。両方とも真の W₁ の上で定義されるから非循環。そうすれば Rule B は Part 1B の焼き直しでなく、**anchor ベース選択から partition への一般化**になるわ。」
-
-**Mike**:（技術的前提を押さえる）
-「linkage を変える必要がある。**Rule B は complete linkage 必須**——高さ h で切れば全クラスタの直径 ≤ h が保証される、それが許容条件そのものだ。average linkage にはその保証が無いから、τ_clin cut が許容度を破る pool を吐きうる。Rule A は Part 2 と比較可能にするため average のまま。」
-
-**Louis**:（実装を睨む）
-「自作の sampler で走らせるな。**production と別物になってたぞ**——`mix_sampler` の `d` の扱いも `ext_sampler` の引数構成も違った。Set 3 と Set 4 が別の world になってた。source しろ。」
-
-**Mike**:
-「直した。`clustering_simulation.R` を source して roster・距離・ARI を**同一実装で共有**する。それと真値の作り方も直した——群内は**同一 sampler だから真の W₁ は厳密に 0**、推定しない。推定すると MC ノイズ（0.02〜0.12）が τ グリッドを支配して、実距離より下にグリッドが張られていた。
-
-閉形式で検証済み: Set 1 の A-B = **7.997**（理論 |50−58| = 8.0）、A-C = **7.977**（理論 √(2/π)·10 = 7.979）。Set 4 は A-B=3.041 / A-C=6.093 で計画書の T1=3.0 / T2=6.0 構造と整合。」
-
-**本番 run 完了**（reps=2000、n = 25〜400）。
-
-**Katrina**:（結果を読み上げる）
-「**Rule A**: W₁ は oracle 喪失の損失が**最小**（−0.005〜−0.023）。KS が最大（Set 1 で **−0.260**、Set 2 で −0.179）——KS の距離構造は silhouette に k=2 を選ばせる。W₁ 対最良競合の差は Set 1（−0.001→+0.006）と Set 4（+0.084→+0.065）で**残り**、Set 3 では**消える**（+0.023→−0.005、ノイズ内の同点）。Set 2 は元から劣位。
-
-そして**難しい world では誰も k=3 を回復しない**。n=100 で P(k̂=3) の最大は Set 3 が 0.228、Set 4 が 0.288。最頻値は全手法 k=2。**タスク自体の限界**よ。
-
-**Rule B**: violation は n≥100 でほぼ全 τ を制御（Set 1 は 4/4、Set 3 は n=50 で既に 4/4）。feasible な τ での sensitivity は n=400 で 0.52〜0.995。**誤りの方向は保守的**——Set 4 n=100・τ=1.508 は violation 0.0005 だが pool 数 **11.84/12**、つまりほぼ棄権。**破るのでなく分けすぎる方向に外す。**」
-
-**Mike**:（釘を刺す）
-「一点、書き方を間違えるな。**Part 1B との比較は like-for-like じゃない。** あっちの anchor 版は Set 1/2 で violation 19〜58% だったが、①決定手続きが違う（anchor 1本の比較 vs complete linkage の全ペア連言）②violation の定義が違う（anchor–国 vs pool 内の任意ペア）③τ グリッドが違う。**『Rule B が Part 1B の失敗を救済した』とは書けない。** 書けるのは『partition 形式の臨床 cut は自身の τ グリッド上で violation を制御する』までだ。
-
-真値は閉形式で検証済み。Rule B の数値も定義から手検証した——Set 1 n=400・τ=3.995（全群間距離より下）で sensitivity 0.995・k=3.03 = 真の3群をほぼ完全復元、Set 4 n=400・τ=6.901（全群間距離より上）で violation 0。どちらも定義通り。」
-
-**Louis**:（P(k̂=3) の列を指す）
-「この列を単独で読ませるな。Set 3 の RV1 は 0.215、SMD は 0.209 で W₁ の 0.132 より**高い**。だが ARI は ≈0 だ。距離行列がノイズだから k̂ が当たるのは**偶然**。k の正解率は clustering の質を意味しない——脚注で潰しておけ。」
-
----
-
-### [2026-07-20 14:50] Scene: 一目で分かる図 — log(n) が効く
-
-**INT. PEARSON SPECTER LITT - KATRINA'S DESK - NIGHT**
-
-*Tak「この結果が一目でわかるグラフは作成したかい？」*
-
-**Katrina**:（率直に）
-「していなかった。既存の図5枚は**全部 n ≤ 100 のグリッド**——今回の発見そのものが見えない図よ。作った。
-
-`fig_required_n_ari`（ARI vs n、log x、4 world の panel）と `fig_required_n_auc`（selection、3 panel）。**log x が効く**——n を20倍にして何も得られない手法は、データ不足でないことが**目で分かる**。
-
-Set 3 panel では RV と SMD がゼロ線に張り付いたまま、W₁ と KS だけが 1 まで登る。Set 4 panel が今日の主役——**KS は n≈400 まで平坦、そこから 0.98 まで急上昇**。これが『盲目』の読みを引退させた形。その隣で RV2 が 0.38 で頭打ちになる。ARI 0.8 / AUC 0.9 の基準線と chance 線を入れたから、必要例数は交点から直接読める。」
-
-**Donna**:
-「house style も守ってるわ——theme_bw base 11、width 7"、白背景、greyscale + `_color` スライド版。identity は色 + 線種 + 記号の三重符号化だから、印刷でも CVD でも読める。**そして生成後に目視確認済み**——validator は色を見るけどレイアウトは見ないから。」
-
-**成果物**: `R/figures_required_n.R`、`figures/fig_required_n_{ari,auc}[_color].{pdf,png}`
-
----
-
-### [2026-07-20 14:30] Scene: 全部を1枚に — 何が言えて、何が言えないか
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
-
-*Tak「シミュレーションから示される結果を表と箇条書きでわかりやすくまとめて。何が主張できるのか整理したい」。Katrina が全 CSV から数値を再抽出し、1 文書に統合する。*
-
-**Katrina**:（`SIMULATION_FINDINGS.md` を出す）
-「作った。背骨は**3分類**——blind（chance 上で平坦、n=∞ でも解けない）/ partial（chance 超で頭打ち）/ recovering（回復、必要例数の問題）。n を 2000 まで伸ばして初めて区別がついた分類よ。
-
-主張は**強度順に10個**。★★★ が5つ——うち4つは**真値だけか漸近で確定**するもので、n に依存しない。★★ が4つで達成可能な n での言明。★ が設計指針。
-
-そして**訂正表**を別に立てた。旧案のうち **6項目が誤りか要修正**。一番大きいのは『Set 4 が KS を殺す、盲目であって underpowered ではない』——これは誤り。」
-
-**Mike**:
-「harm と false-pooling も production CSV から取り直した。Set 4: false-pooling 比 1.35×、harm 比 **2.14×**——計画書の数字と一致した。順位逆転の真値も sim 出力から確認済み。全数値が CSV 由来だ。I got it.」
-
-**Harvey**:（表を指す）
-「これで議論の土台ができた。**KS への武器を置き換える。** clustering の結果じゃない——KR bound と順位逆転だ。どちらも n に依存しない。『例数を 1240 くれれば KS でいい』という反論が効かない場所に主張を移す。」
-
-**Louis**:
-「訂正表があるのがいい。**自分が何を間違えていたかを書いた文書**を持ってる著者は強い。査読者に先に言われる側じゃなくなる。」
-
-**成果物**: `projects/similarity-metric/SIMULATION_FINDINGS.md`（設計 / 3分類 / clustering・selection・閾値較正の表 / 主張10件 / 訂正6件 / 論文への波及 / 再現手順）
-
----
-
-### [2026-07-20 14:05] Scene: 確定 — 「盲目」の名指しが入れ替わった
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
-
-*本 run 完了（clustering reps=2000 / selection reps=3000、n = 150〜2000 の8点）。Mike が補間を独立再計算して検証。*
-
-**Mike**:（検証済みの表を出す）
-「捨て run の警告は**本物だった**。そして構図は俺たちが書こうとしていたのと**逆**だ。
-
-**① Set 4 の KS は盲目ではない。** ARI 0.005 (n=150) → 0.282 (600) → 0.664 (1000) → **0.985 (2000)**。完全に回復する。ARI≥0.8 の必要例数は KS=1240 vs W₁=376——**3.3倍**。これは identification の失敗じゃない、**power の差**だ。
-
-**② 本当に盲目なのは代表値法だった。** そして4つの world **全部**で。RV1 は Set1 0.497 / Set2 0.495 / Set3 0.001 / Set4 0.024 で n=2000 まで**平坦**。SMD も 0.461/0.461/0.001/0.016 で平坦。RV2 は Set3 0.014、Set4 は 0.378 で頭打ち。RV3 は Set1 0.725、Set4 0.248 で頭打ち。**これは n=∞ でも動かない。**
-
-補間は独立に再計算して一致を確認済み（Set4 W₁: n=300→0.7249, n=400→0.8209 を log(n) 線形補間 → 375.73 → 376）。」
-
-**Harvey**:（立ち上がる）
-「headline を書き換える。旧: 『Set 3 が moment 法を殺し、Set 4 が KS を殺す』——**後半は誤りだ**。新しい構図はこうだ:
-
-**代表値法は全 world で盲目**（n=2000 でも回復しない）。**KS は必ず識別する、ただし最大 3.3 倍の例数を要求する。** **W₁ は4 world 中3つで最小の例数で済む。** 
-
-前より弱い主張じゃない——**前より正確で、しかも代表値法への打撃は強くなった**。4 world 全部で盲目、と言えるようになったんだからな。」
-
-**Katrina**:（必要例数の表を出す）
-「task floor（全手法の最良、ARI≥0.8）: Set 1 = **36**（RV2）/ Set 2 = **83**（KS）/ Set 3 = **364**（W₁）/ Set 4 = **376**（W₁）。達成手法も併記した——Louis の指摘どおり、n によって入れ替わる。
-
-そして**これが論文の既存の推奨と衝突する。** 現行本文は『n ≥ 100 per region を推奨』と書いてる。でもそれは Study 1（W₁ の**推定**精度）から来た数字。**pooled-region 形成には Set 3/4 で 364〜376 必要**——n=100 では足りない。」
-
-**Louis**:（満足げに）
-「つまり我々は自分の推奨が不十分だと自分で見つけたわけだ。レビュアーに言われる前にな。**それが proactive review だ。**」
-
-**Jessica**:
-「Let me be clear。Tak の一つの質問が、誤った headline を訂正し、代表値法への批判を強め、既存の推奨の不足を露呈させた。**三つとも、査読で刺されていたはずのもの**よ。」
-
-**成果物**: `R/required_n.R`（新規、blind/underpowered を機械判定）、`results/required_n_{clustering,selection}[_floor].csv`、拡張 run の CSV 一式。production CSV は tag 分離で無傷。
-
----
-
-### [2026-07-20 13:40] Scene: ⚠️ タイミング計測が headline を刺した — KS は「盲目」ではないかもしれない
+### [2026-08-21 14:22] Scene: §4.2 の数値は、どの script からも生まれていなかった
 
 **INT. PEARSON SPECTER LITT - BULLPEN - DAY**
 
-*Tak 判断: 一回で全部（n=150〜2000）/ ARI 0.7・0.8・0.9 併記 / selection + clustering 両方。Mike が両スクリプトに `--n-grid` `--base-seed` `--tag` を追加（production CSV は tag で保護、デフォルトは bit-identical 再現を回帰テストで確認済み）。所要時間を測るための捨て実行で、想定外のものが出た。*
+*Tak「§4.2 を書いて」。前回残した TODO を解消する。*
 
-**Mike**:（画面を止めて）
-「待て。時間計測のつもりだった n=2000・reps=100 の捨て run で——**Set 4 の KS が ARI 0.978 を出した。** n=100 では 0.003 だ。」
+**Mike**:（検証しようとして、地面が無かった）
+「⚠ **§4.2 の数値を生む script が存在しません。** 全文検索のヒットは**全て生データの偶然一致**でした — **アウトラインにしか存在せず、再現不能**。
+しかも **08-15 の W₁ 統一で観測値が動いています** — 判定は観測値と床の比較なので、**6/15 と 1/15 が変わっている可能性がありました**」
 
-**Harvey**:（即座に何を意味するか掴む）
-「……論文の headline の片方が揺れる。Part 2 で俺たちは『Set 4 で KS は **blind であって underpowered ではない**』と書く予定だった。根拠は n を4倍にしても +0.003 しか動かないこと。だが n を20倍にしたら 0.978 まで飛ぶなら、それは**盲目ではない。極端に非力**なだけだ。」
+**Jessica**:（advisor 経由、計算前に3件）
+「Let me be clear。script を書くのは強制だ。ただ数値を生む前に決めろ —
+**①帰無床をどちらの地域から引くかは非対称だ。** anchor で固定して明記し、**partner から引いた場合に判定が反転しないか確かめろ**。反転すれば §4.2 が担うべき caveat だ
+**②600→2,000 を黙って変えるな。** 「訂正」ではなく**「初めて確立する」**だ
+**③判定規則を計算前に述べろ**。それが α を明示する義務と同じ一文で果たせる」
 
-**Mike**:（理論を分けて整理する）
-「主張を2つに分けて考える必要がある。
+**Jessica**:（事前予測を置いた）
+「**6/15 と 1/15 は生き残るはずだ。** age の移動は最大 0.005、床は 0.6–0.85 — **桁が違う。**
+違う結果が出たら **script を疑え**。ありそうなのは別の地域から引いているか、**1回の抽出を二つに割っている**かだ」
 
-**① Part 1B の非識別（閾値選択）は無傷だ。** 真値は T1: W₁=3.0/KS=0.047、T2: W₁=6.0/KS=0.050、S1: W₁=2.0/KS=**0.072**。KS は S1 を T2 より discordant と**順位を逆転**させる。どんな閾値でも {W₁ ≤ τ}, τ∈(3,6) は復元できない——これは真値だけの言明で、**n=∞ でも成立**する。ここは動かない。
+**Mike**:（予測どおりでした）
+「`R/gusto_operability_check.R` を新規作成（seed 20260821、B = 2,000、α = 0.05、統一済み `compute_w1`）。
+**age: 6/15 未解像 = R1, R4, R5, R7, R9, R15**（アウトラインと完全一致）、**SBP: 1/15 = R2**。
+**未解像の全件が eligible 側に落ちます**（age 6/6、SBP 1/1）— これが §4.2 の核心。
+**partner から引いた帰無床でも判定は一つも反転しません**」
 
-**② Part 2 の clustering の『盲目』は言い過ぎだった可能性が高い。** clustering は群を**分離**できればいい。真の KS 値は群間で確かに違う（0.047 / 0.050 / 0.072）——ごく僅かだが**ゼロではない**。だから n さえあれば解像できる。n≤100 で平坦に見えたのは飽和による**局所的な非力さ**で、識別の失敗ではない。
+**Katrina**:（適用しました）
+「`sec:app_operability` を §4.1 と §4.3 の間に挿入。**§2.6 の前方参照を張り替え、TODO コメント 5 行を解消**。
+⚠ 一件自分で捕まえました — **`\emph{}` を使っていた**。`memory/feedback_paper_no_emph.md` の禁止事項です。削除し、**既存本文の使用回数が 0 であることも確認**しました」
 
-対して **Set 3 の RV 法は本物の盲目**だ。構成上 (mean, SD) が12国すべてで一致——母集団距離が**厳密に 0**。n=∞ でも 0 のままだ。捨て run でも Set 1 の RV1 は n=2000 で 0.488、n=100 の 0.489 と**平坦**——盲目の署名そのもの。」
+**Louis**:（またバックスラッシュが消えたぞ）
+「表が壊れた。**行末の二重バックスラッシュが一重に潰れていた** — heredoc がまた 1 つ落としたんだ。
+今回は **pdflatex が `Misplaced noalign` で即座に落ちたから見つかった**。目で見て気づく種類じゃない — **コンパイルを検証に使っていなければ、壊れた表がそのまま残っていた**」
 
-**Louis**:（怒鳴る）
-「つまり俺たちは『W₁ だけが両方を生き残る』の**根拠の半分を、測っていない領域の外挿で書こうとしていた**ってことだ。レビュアーが n を伸ばして再現したら終わってた。Tak の質問が救ったんだぞ。」
+**Mike**:（修復と全数監査）
+「3 行を修復し、**ファイル全体で「行末が単一バックスラッシュ」の行を監査** — 残存ゼロ。
+**bibtex を含めて再コンパイル: error 0、undefined 参照・引用とも 0、19 ページ**（18→19）」
 
-**Donna**:（冷静に）
-「本 run が回ってる——n = 150〜2000 の8点、clustering は reps=2000、selection は reps=3000。reps=100 の捨て run で断定はしないわ。**確定は本 run の数字を見てから。**」
-
-**Jessica**:（短く）
-「Let me be clear。これは論文を弱める発見ではないわ。**言葉を正確にする発見**よ。『blind』と『underpowered』を混ぜて使っていたなら、それはいずれ刺される。今なら自分で直せる。」
-
-**要確認（本 run の数字で）**: ① Set 4 / KS は大 n で回復するか（→「盲目」撤回、「必要例数 20倍」に書き換え）② Set 3 / RV は大 n でも平坦か（→「盲目」維持）③ 必要例数表（ARI 0.7/0.8/0.9）
+**Donna**:（削除の副作用も確かめたわ）
+「TODO 削除の filter が幅広だったので、**前後でコメント行を diff した**わ。消えたのは **TODO の 5 行だけ**で、anchor_vs_clustering の provenance コメントは無事。
+アウトラインの §4.2 も確認済み数値に同期し、**「訂正ではなく初めての確立」**と明記したわ。帰無平均は旧値と 0.002–0.024 差だけど、**95 パーセンタイルの範囲は広がる** — 2,000 反復が裾をよく解像するからよ」
 
 ---
 
-### [2026-07-20 11:20] Scene: 必要例数を出せ — グリッドが届いていないと分かる
+### [2026-08-18 23:52] Scene: §2.6 が本文に入った — そして前方参照が宛先を持っていなかった
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*Tak「tex をアップデート」。draft を実際の原稿へ適用する。*
+
+**Jessica**:（advisor 経由、適用前に止めた）
+「Let me be clear。**§2.6 の第4段落は、論文が現在支えられない主張をする。** `.tex` に operability の言及はゼロだ。`\ref` は `??` になり、**Methods が論文のどこにも無い応用結果を主張する**ことになる。
+道は3つ — ①`sec:application` に張り替えて TODO を残す ②§4.2 も同時に書く ③第4段落を外す。Tak の指示の素直な読みは①だ。**ただし disclaimer 段落を黙って落とすな** — アウトラインが必須と指定する唯一の §2.6 内容だ。
+そして **検証は通読ではなくコンパイルでやれ**。pdflatex はあると確認済みだろ」
+
+**Mike**:（確認しました。指摘は正しい）
+「`sec:app_operability` の定義は **0**。`.tex` 全体で operability / null floor の言及も **0** でした。**§4.2 は未執筆です**」
+
+**Katrina**:（①で適用しました）
+「参照を既存の `sec:application` に張り替え、**当該文の真上に `% TODO (2026-08-18)` を置きました** — §4.2 を書く人に向けて、参照の張り替えと α = 0.05 の明記を指示してあります。**disclaimer 段落は落としていません**。
+LaTeX は Python の文字列リテラルに一切埋めず、**別ファイルに heredoc で書いて読み込む**方式にしました — 前回の bell 文字事故の対策です」
+
+**Mike**:（コンパイルで検証しました）
+「**pdflatex 2 pass とも exit 0、18 ページ。undefined 参照・multiply-defined label ともゼロ。** `sec:operability` / `eq:tau_clin` / `eq:operability` は各 1 回のみ定義。制御文字 0。
+Jessica の指摘した **「表示式が段落を割る」件も確認**しました — 式の前後に空行が無いので同一段落が継続し、式の後の「the largest $W_1$ at which…」は**孤立した断片になっていません**」
+
+**Harvey**:（入ったものを確認しておけ）
+「**Methods は 5 subsection になった** — existing / nabcd\_metric / estimation / inference / **operability**。そして **$\tau_{\text{clin}}$ がついに本文で定義された**。§4 が全面的に依拠しながら、一度も定義されていなかった量だ」
+
+**Donna**:（後始末を記録したわ）
+「`DRAFT_s25_s26_arc.md` は **提案ではなく「何をなぜ適用したかの記録」に書き換えた**。draft からの乖離 1 件もそこにある。
+編集前の `.tex` は scratchpad にバックアップ済み（md5 一致を確認してから編集したわ）。
+**残っているのは §4.2** — それが書かれるまで、§2.6 の最後の一文は **Section 4 全体を指したまま**よ」
+
+---
+
+### [2026-08-18 23:12] Scene: 記号のまま残すと、着地点を作る義務が生まれる
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*Tak「記号のままで、§4.2 で α=0.05 と述べる」。Donna が提示した未決事項の決着。*
+
+**Katrina**:（反映しました）
+「draft の未決事項を閉じました。$\alpha$ は §2.6 で記号のまま。**operability の規準が一つの慣習水準に縛られず、異なる許容度を持つスポンサーもそのまま適用できます**」
+
+**Mike**:（ただし義務が一つ生まれます）
+「記号のままにするということは、**§4.2 が着地点を作らなければならない**ということです。「95パーセンタイル」という語に暗黙に含めるのでは不十分で、**「本例では $\alpha = 0.05$ を採る」と選択として述べる必要があります**。その一文が無ければ、読者は **0.05 が選択されたのか惰性で継承されたのか判断できない**。アウトライン §4.2 の先頭に義務として記録しました」
+
+**Donna**:（そして編集で事故が起きたわ）
+「記録しておくわ。**バックスラッシュ a が bell 文字（0x07）に化けて、両ファイルに合計 12 個混入した**の。`$\alpha$` が `$␀lpha$` になっていた。画面では `$lpha$` に見えるから、**grep でも見つけにくい**。
+後始末の教訓は二つ — **① LaTeX を含むファイルをスクリプトで書くなら `chr(92)` を使う。バックスラッシュをリテラルで通すな**。**② 書いたら `grep -cP` で制御文字を数えろ**。両ファイルとも **0** を確認済みよ」
+
+**Louis**:（それはルール A そのものだ）
+「「修正しました」と言う前に grep しろ — 今回は **修正スクリプト自体が壊していた**。`bell chars removed: 4` と報告されても、ファイルには残っていた。**ツールの成功報告は中身の証拠じゃない。od -c でバイトを見るまで信じるな**」
+
+---
+
+### [2026-08-18 08:50] Scene: τ_clin は論文のどこにも定義されていなかった
 
 **INT. PEARSON SPECTER LITT - BULLPEN - DAY**
 
-*Tak「クラスタリングに必要と考えられる例数をシミュレーション結果から示すことが有用では」。Katrina が exact recovery を引き出す。*
+*Tak「続けよう」。実装フェーズ開始。判断③で仕様が固まった §2.6 から。*
 
-**Katrina**:（画面を指す）
-「有用よ。でも先に悪い知らせ。**現行グリッド n ≤ 100 では答えが出ない。** exact partition recovery（全手法の最良値）: Set 1 は n=75 で 0.961、n=100 で 0.992 — ここは答えられる。でも Set 2 は n=100 でも 0.582、Set 3 は **0.043**、Set 4 は **0.041**。難しい world では必要例数が**グリッドの外**にある。」
+**Mike**:（まず未コミット変更の正体を確認しました）
+「`.tex` の未コミット変更は **Discussion の新規1段落**（手続き選択の実証、anchor_vs_clustering sim 100k reps、provenance コメント付き）。未追跡の `R/anchor_vs_clustering_simulation.R` と `results/*_100k.csv` に対応していて、**他人の作業ではなく前セッションの我々のもの**でした。上に書いて安全です」
 
-**Mike**:（計算しながら）
-「基準を ARI ベースにしても同じだ。全手法最良 ARI は Set 3 で 0.288→0.526、Set 4 で 0.144→0.355 と n=100 まで**まだ上がり続けてる**。プラトーに達していないから『ここで十分』と言える点が無い。今のデータで必要例数を出せば、それは外挿だ。」
+**Mike**:（そして §2.6 を書こうとして、もっと大きいものに当たりました）
+「⚠ **τ_clin が `.tex` のどこにも定義されていません。** §4 が全面的に依拠している量です。
+しかも §2.5 の最終段落（line 179）は『**without forcing a binary accept/reject decision**』で終わっている — **応用が binary screen をしている事実と矛盾**（S6）。判断③の弧を作るには、ここを直さざるを得ません」
 
-**Harvey**:（即断）
-「なら測れ。n を伸ばす追試だ。cell あたり ~55 秒、n = {150, 200, 300, 400} × 4 sets で 20〜30 分。既存スクリプトは n をパラメータに取ってる——設計変更は要らない。**答えを外挿するな、測れ。**」
+**Jessica**:（advisor 経由、着手前に2件）
+「Let me be clear。**①line 179 は新規散文ではない。既存段落の主張の撤回だ。** abstract で正しく手を止めたのと同じ規則が効く。**両方 draft しろ、両方提示しろ、レビューまで適用するな。**
+**②撤回は書いてあるより大きい。** その文は `\cite{wasserstein2016}` を根拠に引いている。**主張を差し替えれば引用が宙に浮く**か、悪くすれば逆を支える。書く前に確認しろ」
 
-**Jessica**:（Harvey の即断を止める）
-「Let me be clear。方向は正しい。でもそのグリッドをまだ走らせるな——**先に天井を測りなさい。**
+**Rachel**:（確認しました。そして引用は生き残ります）
+「`wasserstein2016` は **Wasserstein & Lazar (2016)「The ASA Statement on p-Values」** です。
+**重要な区別があります** — ASA 声明が反対しているのは **p 値駆動の bright-line 二分**であって、**臨床推論から導かれる決定閾値ではありません。**
+ゆえに引用は生き残りますが、支える主張が変わります: 「**決定が存在しない**」ではなく「**決定が有意性検定に駆動されていない**」。もともと前者を支えたことはありません。本文中の使用は1箇所のみで、他に依存箇所はありません」
 
-Set 3 の全手法最良 ARI の増分を見なさい。+0.189 → +0.048 → +0.021。**減速している。** 漸近先は 0.55 付近で、0.8 に向かって登っているようには見えない。もしそれが本当なら Set 3 の『必要例数』は**存在しない**——どんな n でも成立しない、それが答えよ。n=400 まで伸ばしても結論は変わらない。逆に一貫推定量なら ARI→1 のはずだから、単に遅い途中かもしれない。**n ≤ 100 では区別がつかない。**
+**Harvey**:（なら撤回は1節だけだ）
+「段落の残りは正しい — estimation-centered、W₁ に固有の閾値は無い、閾値は L_clinical に依存し分布比較の外にある。**全部生きてる。**
+**壊れているのは最終節だけだ。段落を書き直すな — P3 は両方向に効く。** 撤回を精緻化として書けば、訂正ではなく前進に見える」
 
-だから先に n ≈ 1000〜2000 を Sets 2/3/4 で数セル。reps は 1000 で足りる——天井の平均が見たいだけで、精密な MCSE は要らない。15〜20 分。これで (a) 各 world が閾値に**到達しうるか**、(b) 到達するならグリッドをどこに張るか、が決まる。{150…400} を盲目に走らせたら『まだ登っている、結論なし』に 15 分払う危険があるわ。
+**Katrina**:（draft 2件、`DRAFT_s25_s26_arc.md`）
+「**A = line 179 の最終節の撤回と差し替え**（τ_clin を式として導入 + 判断③の蝶番2文）。**B = 新規 §2.6**（機構・必要条件・診断法・「n≥100 の言い換えではない」否認）。
+**§2.6 に GUSTO の数値は意図的に入れていません** — 帰無床の値も 6/15・1/15 も §4.2 のものです。§2.7 の『理論のみ述べる』と同じ規律。**唯一応用に触れる必要があるのは非一致の証拠**（n≈2,900 でも age は失敗）で、そこは数値でなく前方参照にしました」
 
-それと基準について二点。**exact recovery は practitioner の問いには厳しすぎる**——12国3群の完全一致は ARI 0.53 の場所で 0.04 よ。ARI ベースの方が擁護できる。そして基準は**事前指定**しなさい、必要例数はそこから直接落ちてくるのだから。
+**Louis**:（Methods の label も同じ危険だ）
+「Jessica の指摘で気づいた — **§ → `\label` の対応表を §4 にしか作っていなかった。** §2.1・§2.6・§2.7 は全部新規で、うち2つは既存 label の**間**に入る。**Methods 側も同じ drift が起きる。** 表を追加した。既存の `sec:nabcd_metric` は nABCD 時代の遺物名だが**改名するな**」
 
-最後に一つ、これは大きい。**GUSTO の応用は selection 問題（Region 8 が partner を探す = Part 1）であって clustering ではない。** 必要例数を実務助言として載せるなら、application に直結するのは selection の方よ。Part 1 に置くか、両方か——Tak に諮りなさい。」
-
-**Louis**:（噛みつく）
-「もう一つ穴がある。最良手法が n で**入れ替わる**——小 n では RV2、大きくなると W₁。task floor として出すならそれを明記しろ。黙っていれば cherry-pick に見える。」
-
-**判断待ち**: ① ceiling probe 実行可否 ② 基準（ARI ≥ ?）③ 対象タスク（clustering / selection / 両方）。
-
----
-
-### [2026-07-20 11:00] Scene: Tak の注文 — クラスタリングの限界も見せろ
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
-
-*構造案（§3 再編、Study 2 = 8段落）を提示。Tak のコメント:「クラスタリングの限界が確認できるとよい。例数少ない設定になるときなど。」*
-
-**Katrina**:（CSV を叩いて即答）
-「検証済みの数字がある。W₁ 自身の clustering ARI、n=25 で Set 1: 0.604 / Set 2: 0.332 / Set 3: 0.268 / Set 4: **0.112** — 難しい world では chance すれすれ。exact recovery は易しい Set 1 ですら n=25 で 22.9%。n=100 でも Set 3: 0.526、Set 4: 0.355 で 1 には遠い。」
-
-**Harvey**:
-「¶5 を拡張する——『W₁ の優位が成立する範囲の限界』として3点: (a) 競合に負ける場所（Set 1 RV2・Set 2 KS）、(b) **小 n では全手法が崩れる**（W₁ 含む）、(c) n=100 でも絶対性能は qualitative gap の主張に留める。既存の n ≥ 100 推奨と接続する。」
-
-**修正**: Study 2 ¶5 → ¶5a（競合に負ける場所）+ ¶5b（小 n クラスタリング限界、Tak 要望）。fig_clustering_ari が n=25 からの立ち上がりでこれを可視化する。
+**Donna**:（未決が1件出たわ）
+「⚠ **式の α をどうするか。** draft では記号のままにしたけど、§4.2 は95パーセンタイルを使っている。**§2.6 で α=0.05 と固定するか、記号のままにして §4.2 で述べるか** — Tak に聞くわ。
+そして**再係留の宿題**も記録した。Study 1 の帰無域 bias と閾値較正の operable range は、§2.6 ができたら**式(2.6)の実例として繋ぎ直す**べきもの。ただし**既存 Results 散文の編集だから別レビュー**よ」
 
 ---
 
-### [2026-07-20 10:45] Scene: Results 統合 — スコープの確認、構造案を先に
+### [2026-08-15 20:05] Scene: 残る3件 — そして2件は「判断」ですらなかった
 
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
 
-*Katrina の調査結果がスクリーンに。論文 §3 に選択 sim（Sets 1–4）は一切入っていない。*
+*Tak「continue」。判断③④⑤。Harvey が順序を決める。*
 
-**Harvey**:（ホワイトボードを叩く）
-「構図はこうだ。計画書の Reporting plan は選択 study **全体**の統合を想定、SUITS の残タスク表現は『点推定の operable range』= Part 1B に絞った書き方。Part 1B は Sets 1–4 の上に立つから単独では入れられない。俺の推奨は全体統合——だが Tak の判断を仰いだ。」
+**Harvey**:（順序には理由がある）
+「**③ → ⑤ → ④ だ。** ⑤ が新規貢献なら abstract の中身が変わる。だから主張水準の ④ は最後だ」
 
-**Tak の決定**: 「構造案だけ先に見る」——ドラフト前に subsection 構成・表と図の main/supplement 配分を提示して承認を取る。
+**Mike**:（③ — §2.6 を独立節にするか）
+「構造的事実が3つ。**①Q_operability は論文が答える3つの最上位の問いの1つ ②§4.2 は Application の独立節として既に存在 ③abstract が診断を応用の要点として名指ししている。** 折り込めば論文自身の主張を格下げします」
 
-**Katrina**:（即座に）
-「構造案を組む。Reporting plan・circularity defense・operable range の帰結・Tak の5原則（特に P3）を織り込む。」
+**Louis**:（決め手は別のところだ）
+「**§2.6 の独立性こそが §4.2 の『これは失敗の報告ではない』を成立させている。**
+診断が較正の下位項目なら、§4.2 が『age は operability に失敗する』と書いた瞬間、読者は**手法がつまずいた**と読む。自前の必要条件を持つ名前のある構成要素なら、同じ結果が**診断の仕事**と読める。**同じ事実、逆の読みだ**」
+
+**Katrina**:（長さは費用に計上しない）
+「.tex は全体 9,830 words、Methods 約 2,111。*Statistics in Medicine* に脅かされる上限はありません。**『Methods が 4→7 節に増える』を Tak に費用として提示するのは誤りです**」
+
+**Jessica**:（advisor 経由、選択肢を1つ消した）
+「Let me be clear。**素の独立は劣位だ、投票にかけるな。** 独立の唯一実在するリスクは『単独節＝解像度の問題の告白』と読まれること。**§2.5 が τ_clin を誘導し §2.6 がその解像可能性を問う、という弧で書けばそれは消える。** 弧つき独立が素の独立を支配している。**二択で出せ**」
+→ **Tak 判断: 独立節 + 較正の弧。** 反映済み
+
+**Mike**:（⑤ — そして前提が誤っていた）
+「⚠ **診断は既に存在します。** ρ = W₁/(KS·σ_EM) は実装済み（`application_all_methods.R:178`）、CSV 格納済み、Result 5 で GUSTO に適用済み。⑤ は『足すか』ではなく『**格上げするか**』でした。
+そして候補2つが**独立の理由で**落ちます。**(a) ρ／W₁–SMD 順位相関は分子に W₁ を含む** — ρ を計算できる者は既に W₁ を計算し終えている。『**事前に**どちらの世界にいるか教える』は**提案自身の機構で達成不能**です。scope の判断ではなく、提案が自分の条件で失敗している」
+
+**Katrina**:「**(b) モーメント分解は (a) を生き延びます**（W₁ を要さない）。ですが全文書を掃いた結果、**判断⑤の行以外どこにも存在しません** — 実装なし、評価なし、検証なし」
+
+**Louis**:「plan 814 行を読め。**『retrodicts every cell in the study』** — 構成した当のスタディを説明する、と自分で書いてある。**第2の候補機構は棄却済み、生き残ったのは適合した方だ。** 閾値 ≲1 / ≳1.7 に held-out 検証は無い。格上げは **P5 違反 — 主張が証拠を超える**」
+
+**Harvey**:（撤退ではない）
+「**ρ の本来の仕事は説明であって予測じゃない。** Result 5 の『KS が並ぶのは予測どおりであり W₁ の敗北ではない』— これが ρ に honest にできる仕事だ。**支えを欠くのは格上げだけ**」
+→ **Tak 判断: 提案しない。** ρ は Result 5 に留め、画定の一文を追加
+
+**Harvey**:（④ — そしてこれも「弱める」判断ではなかった）
+「現行 abstract は差の主張を**能力**に置き、GUSTO で例示している。**だが GUSTO は差を出さない。**
+**Study 2 には本物の乖離がある** — 代表値法は matched-moment world で構造的に盲目、任意の n で解けない。**手放す主張より強い主張を、証拠のある場所で立てられる。** 修正は弱めることじゃない、**場所を移すこと**だ」
+
+**Mike**:（A/B と独立に強制される修正が4件）
+「①②abstract の「small-sample」2箇所 — **R8 は n=2,916、16中6番目に大きい**。③simulation 文が Study 2 主役の階層の下で **Study 1 の言語のまま先頭**にある。④Discussion ¶1(i) が **S5・S6 = Study 1 のシナリオ**を引いている — 構造的盲目性の主張は今や Study 2 に乗っているので、**弱い方の証拠を指しています**」
+
+**Louis**:（掃いていない最大の過剰主張）
+「**Discussion ¶5 だ。『The W₁ distance addresses all three.』** SMD/KS/KL の欠陥を**位置優位データへの留保ゼロで全部解決したと言い切っている。** 査読者が §4.5 の一致所見と並べて読む段落はここだぞ。¶1 を直して ¶5 を放置すれば、同じ過剰主張が一段下に残るだけだ」
+→ **Tak 判断: GUSTO の一致は Discussion にのみ。**
+
+**Harvey**:（帰結を明示しておく）
+「**Tak の選択で ¶5 の重みが上がった。** abstract が一致に触れないなら、**Discussion がそれを単独で担う。** Louis の指摘は放置できない」
+
+**Donna**:（そして5件全部が閉じたわ）
+「**Open decisions は 5/5 決着。** でも `.tex` の修正5件は**適用していない** — abstract も Discussion も既存の散文だから、`memory/feedback_review_process.md` の**段落単位レビューを通すべき**よ。アウトラインに queued として全部記録したわ。
+今日の形を一つ言うと — **③⑤④のうち、⑤と④は『判断』ですらなかった。** ⑤は提案が自分の条件で失敗していて、④は弱めるのではなく移す話だった。**判断②もそうだった。** 設問を疑うことが、4件中3件で答えそのものだったわ」
 
 ---
 
-### [2026-07-20 10:24] Scene: マージ完了 — Part 1B が main に還る
+### [2026-08-15 19:10] Scene: 判断②は「書くか伏せるか」ではなかった — 13.2 倍が選択肢を消した
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Tak「continue」。判断②＝§4.5 の pool 直径超過を書くか伏せるか。材料を作った結果、設問そのものが誤っていた。*
+
+**Mike**:（超過は1つの事実ではありませんでした）
+「**どの pool を指すかの関数**です。読みが3つある —
+**① anchor estimand（論文が実際に提案しているもの）: 両 EM で超過ゼロ。**
+② §4.5 = joint eligible 6地域を共有 region と読む: age 1.0595 で **5.95% 超過**、15相互ペア中1本
+③ §4.6 = 各 EM 自身の pairwise 採択集合: age **10.9% 超過**、SBP **78.7% 超過**」
+
+**Harvey**:（それで設問が壊れた）
+「見えるか。**③ の SBP 超過は ② の age 超過の 13.2 倍派手だ。** そして §4.6 Result 4 は restructure の土台 — 『手続きは応用で大きく分岐する（9→2、11→2）』という所見そのもので、**その分岐は直径の話に他ならない。**
+Result 4 を残して §4.5 だけ伏せれば、**穏やかな方を隠して派手な方を印刷する**ことになる。**『伏せる』は到達不能だ。** 開示は強制される」
+
+**Katrina**:（そして所見は超過ではありませんでした）
+「共有 region 条件を強制したときの**費用**を出しました。併合可能な相手は **age 9→2（78% 減）、SBP 11→2（82% 減）**。
+これが**なぜ対比較 screening が存在するのか**の答えです。P2（凸性）が保証するのは anchor の上界だけで、全ペア制約は不要な保守性 — その値段が 78–82% の相手喪失。**読み①で超過がゼロなのは偶然ではなく、手法が保証している当のもの**」
+
+**Jessica**:（advisor 経由、提示前に3件止めた）
+「Let me be clear。**①Reading 1 の『余裕 +9.6%/+5.8%』を出すな。** それは §4.4 が**別の導出**で報告する同じ数字だ。読者は片方を誤植と読む。Donna のルール B そのもの
+**②『2τ の 53% を使った』という枠組みは切れ。** 1.0595 は一つのデータでの実現値で、2τ との比に推論的な内容は無い。そして査読者には『臨床 margin の2倍を許容する設計』と読める。**自分から差し出す場所ではない**
+**③『書くか伏せるか』はもう判断ではないと、はっきり言え。** 片側に潰れた二択を Tak に出すな。**生きている問いは「どこに置くか」と「どの register で書くか」だ。** アウトラインの設問自体が stale だから、それも直せ」
+
+**Rachel**:（補強を1点）
+「超過ペア R1–R6 の **R6 は §4.4 が age の境界地域として名指しする当の地域**です。2つの分析が同じ地域に収束しているので、**無関係な caveat 2件ではなく一致として**書けます」
+
+**Louis**:（伏せる危険は変わっていない）
+「査読者が同じ計算をして『論文自身の理論が指摘した罠に応用が落ちている』と書く。**先に書けば同じ事実が scope の規律の証拠になる。** それだけだ」
+
+**Harvey**:（Tak の判断）
+「**(i) §4.5 Result 4 に一本化。(ii) register は scope の明確化。**
+実装した — 旧 §4.5 は独立節として解体、**§4.6 → §4.5 に繰り上げ**。直径表・R6 収束・scope 枠組みは全部 Result 4 の中だ。§2.7 には『worked example は §4.5 Result 4、ここでは理論のみ』と道標を置いた」
+
+**Katrina**:（番号の後始末）
+「クロス参照を全数掃きました。生きた参照は §4.5 に統一済み。**W₁ 系統診断のブロックは『計算の来歴 — 記録であって本文ではない』として切り出し、遡って書き換えていません** — 来歴の記録は当時の番号のまま残すべきなので、冒頭に注記だけ付けました。
+`PAPER_RESTRUCTURE_PROPOSAL.md` も同じ構造に揃えました。残る `§4.6` は**小宮山 Ch.4 の §4.6.1.3**（書籍の節番号）だけで、混同されないよう明示しました」
+
+**Jessica**:（閉じる前にもう一度。3件のうち1件が本物だった）
+「**①第3の文書を掃いたか。** Louis 自身が2ターン前に言った『同じ数字を2つの文書に書けば片方は必ず腐る』だ。知っていた2つを直して、**3つ目の存在を確かめていない**
+**②.tex の label は生きた危険だ。** 散文の参照が無いのは確認したろうが、`sec:app_nabcd` などの label 名は**再構築前の順序を符号化している**。しかも §4.2 が既存2 label の**間**に入る。書く人がアウトライン番号を label に写すとき、静かにずれる
+**③そして Result 4 の見出しが、いま中身と食い違っている。** 『手続きは大きく分岐する』と題した節が、『手法の約束は何一つ破られていない』で始まり『直径を強制する費用が所見だ』で終わる。**merge の継ぎ目はそこだ**」
+
+**Mike**:（①は不発、②③は実在）
+「①掃きました — ヒットは全て**小宮山 Ch.4 の書籍節番号（§4.6.1.x）**で、我々の節ではありません。数値パターン（1.0595 / 8.9362 / 1.1093）も2文書の外にゼロ。**第3の文書に腐りは無かった**」
+
+**Katrina**:（②③を潰しました）
+「②アウトライン §4 の冒頭に **§ → `\label` 対応表**を記録。既存 label は再利用し改名しない旨も明記しました — 図とクロス参照が既に指しているので、改名は得るものが無くビルドを壊します。
+③見出しを『**手続きは大きく分岐し、それを分けているのは直径条件**』に改め、両文書に導入文を入れました。**分岐そのものが直径条件だ**と述べれば、所見と caveat が一本の論証になります」
+
+**Donna**:（執筆時の地雷を1つ埋めておいたわ）
+「Result 4 の表には**直径が3つ**載る。**ラベルなしで2つを同じ文に置けば、読者は片方を誤植と読む** — age の 1.0595 と 1.1093 は特に危ない。両文書に drafting guard として書き込んだわ。
+それと Katrina が前のシーンで拾った **0.9121 の偶然一致**も同じ guard に入れた。cut pool 直径と anchor→partner 最大が同じ値になるけど、**別の量よ**」
+
+---
+
+### [2026-08-15 18:35] Scene: 30本すべてが 0.0e+00 — 計算系統は1つになった
 
 **INT. PEARSON SPECTER LITT - BULLPEN - DAY**
 
-*Tak「その順番で進めよう」。Mike が worktree の始末に取りかかる。*
+*Tak「go」。08-08 に診断だけして止めていた W₁ 計算系統の統一を実行。*
 
-**Mike**:（画面に merge log を流しながら）
-「マージ完了。`worktree-selection-sim` の 12 commits — sim スクリプト 9 本、図 24 枚、結果 CSV 6 本、全部 conflict ゼロで main に入った。それと危ないところだった — worktree に bootstrap 上限ルールの実装が**未 commit のまま**残ってたんだ。Tak の判断は『論文外だが内部検証として残置』。だから commit `a950ef2` にして追加マージした。消してたら判断と矛盾するところだった。I got it!」
+**Jessica**:（advisor 経由、着手前に3点止めた）
+「Let me be clear。差し替える前に3つ。
+**①検証を『近い』で終わらせるな。** 差し替え後は Table 3 の出所と**同じ推定量・同じデータ**になる。ならば一致は ~1e-12 であるべきで、『概ね一致』では統一の証明にならない。**1e-4 で止まったら標本構成を疑え** — `application_all_methods.R` は両 EM の joint complete-case、`gusto_all_pairwise.R` は EM ごとの complete-case だ。違う部分集合を比べているなら推定量の差し替えでは埋まらない
+**②k を守れ、特に SBP の R7。** `k <- sum(w1a <= tau)` は W₁ から再計算される。R7 は 5.067 対 τ=5.0 で**余裕 1.3%**、推定量の移動幅は最大 0.031。ここが 11→12 に動けば Result 1 の表全体が変わり、『引き直し』では済まなくなる
+**③盲点 — この修正では直径2つは統合されないし、統合されてはいけない。** §4.5 は joint eligible 6地域の直径、§4.6 は各 EM 自身の pairwise 採択集合の直径。**別の pool、どちらも正しい。** 『1.1093 になった、完了』で終えれば、本文には age の直径が2つ載ったままになる」
 
-**Donna**:（チェックリストに線を引きながら）
-「worktree とローカルブランチは削除済み。main は origin より **17 commits 先行**よ。remote の `worktree-selection-sim` ブランチは push のときに片付けるわ。次は Katrina の番 — Results 統合よ。」
+**Mike**:（①の前提から潰しました）
+「NA 構造を先に確認しました。**GUSTO の age・sysbp は欠測ゼロ**（40,830 行すべて complete）。joint complete-case と per-EM complete-case は**同じ標本**です。R8 = 2,916 も一致。ゆえに機械精度での一致が原理的に可能 — Jessica の①の分岐は踏まなくて済みます」
 
-**残**: 本文 Results 統合（bootstrap 否定結果は除外）→ Intro ¶7 レビュー → push。
+**Katrina**:（差し替えて再実行しました）
+「`w1_s` を `sum(|F̂x(mid) − F̂y(mid)| · Δ)` に置換。**なぜ応用側が CDF 面積形なのか、そして simulation の `mean(|sort(x) − sort(y)|)` に『整合させて』はならない理由（地域サイズが不等）をコメントで残しました** — 次に触る人が善意で壊さないように」
+
+**Mike**:（検証6件、全 PASS）
+「**CHECK 1: 30本の anchor 距離 vs `gusto_r8_w1_per_pair.csv` → max |diff| = 0.000e+00。** ビット単位で同一です。『概ね一致』ではなく**同一**
+**CHECK 2: k は (9, 11) 維持。** R7 の SBP は 5.0673 → 5.0716 と**より外側へ**動き、除外のまま
+**CHECK 3:** age Spearman(旧,新) 1.00000・順位完全一致、SBP 0.99643・隣接1組の入替
+**CHECK 4: joint eligible = {R1, R4, R5, R6, R14, R15}** — 不変
+**CHECK 5: 直径不変式 §4.6 ≥ §4.5 が両 EM で成立**（age 1.1093 ≥ 1.0595、SBP 8.9362 ≥ 4.7243）。joint 集合が各 EM 集合の部分集合なのだから、そうでなければ計算が壊れている
+**CHECK 6:** 引き直すべき数値を旧新対照で列挙」
+
+**Harvey**:（結論は動かない、予測じゃなく実測で）
+「08-08 に『結論は一つも変わらない』と**試算**で言った。今日それを**実測で確認した**。動いたのは SBP の順位相関と直径だけだ。
+SBP: KS 0.964→0.957、SMD/RV1 0.950→0.954、**RV2 0.679→0.643、RV3 0.561→0.536**。age は全て不変。直径は age 1.1066→1.1093、SBP 8.9318→8.9362、SBP cut 4.2932→4.2823。
+**Result 5 の書き方が1箇所効かなくなった** — 『KS の順位一致は両 EM で 0.964』が使えない。age 0.964 / SBP 0.957 と書き分けた。**主張は変わらない、精度が上がっただけだ**」
+
+**Louis**:（ついでに古い死体を2つ見つけたぞ）
+「アウトラインの**日本語の重複警告が原因未診断のまま残っていた** — 上の行が診断済みと書いているのに、下で未診断と言っている。削除した。
+それと **`PAPER_RESTRUCTURE_PROPOSAL.md` の §4.5 が 08-08 の訂正前の値のままだった。** 1.058 で止まっている。アウトラインだけ直して proposal を放置していたんだ。**同じ数字を2つの文書に書けば、片方は必ず腐る。** 訂正して、ついでに『この pool は §4.6 とは別集合だ』というラベルも入れた」
+
+**Jessica**:（advisor 経由、閉じる前にもう一度止めた）
+「Let me be clear。**検証は通ったが、検証が見ていない場所が2つある。**
+①お前の CHECK 4 は **W₁ の joint 集合しか照合していない**。CHECK 6 は ranks CSV の overlap と Spearman しか差分を取っていない。**per-method の JOINT 行を見ている検査が1つもない。** RV3 の joint を数えろ
+②掃き出しは4桁（`0.9643`、`0.679`）で走らせた。**本文向けの散文は3桁で書く** — `0.964`、`0.950`。proposal の1件を捕まえたのは grep ではなく**お前がその節を読んだから**だ。3桁で掃け
+③そして `PAPER_RESTRUCTURE_PROPOSAL.md` の §4.6 結果1・結果2 を**一度も開いていない**。Louis が 08-08 の腐りを見つけた同じ文書の、一つ上の節だ」
+
+**Mike**:（数えました。そして性質が違いました）
+「**RV3 の joint は7地域でした** — {R1, R4, R7, R9, R10, R12, R15}。文書は R5 を含む**8地域**と書いています。
+ただし決定的なのはここです — **旧実行のログでも joint は同じ7地域。** つまりこれは W₁ 統一で動いた数値ではなく、**当初から誤って記載されていた**もの。Harvey の『動いたのは SBP の順位相関と直径だけ』は**修正の影響としては正しいまま**です。誤りの由来が別なだけで
+3桁掃き出しで proposal 290 行も捕まえました。SBP の Spearman が **KS 0.964 / SMD 0.950 / RV1 0.950** のまま残っていた。訂正済み
+そして Jessica の①に応えて **CHECK 7・8 を追加**しました。7 = 3つの CSV を**全セル**で旧新 diff（列を選ばない）。8 = joint 集合を CSV から**独立に再計算**して旧新照合。
+結果 — 動いた列は `W1`・`rho_heur`・`spearman_vs_W1`・`max_anchor_dist`・`pool_diameter` の5つだけ。**`members`・`n_selected`・`k`・`overlap`・`diameter_ok` は全て不変**、そして **joint 集合は6手法すべて旧新で完全同一**。修正は選択を一つも動かしていません。
+副産物として1つ確証が取れました — **§4.5 の SBP anchor→partner 4.7243 と、新しい app 実行の R15 sysbp 4.724 が一致します。** 統一前は一致しなかった値です」
+
+**Donna**:（そして Rule 2.5 が発火したわ）
+「995 行。このシーンを書けば超える。`archives/SUITS_20260815_1835.md` に退避したわ。
+今日の教訓は2つよ — **①検証が PASS しても文書は腐る。** Jessica が止めた3点のうち、①は Mike が前提を確認して不発、②は通過、**③だけが実際に残っていた**。直径2つの件は、数値検証を全部 PASS させても文書には残っていた種類の問題
+**②検証は『自分が見た列』しか守らない。** CHECK 1–6 は全部 PASS したのに RV3 の joint は誰も見ていなかった。**掃き出しの表記桁も同じ** — 4桁で掃いて3桁の本文を見逃した。`memory/feedback_calculation_verification.md` に **D: 検証スクリプトが照合していない出力列を列挙しろ / E: 掃き出しは本文の表記桁で走らせろ** を追加するわ」
+
+**Katrina**:（1件、cosmetic だけど残しておきます）
+「age の cut pool 直径が **0.9121** で、§4.5 の age anchor→partner 最大と**数値が一致**します。別の量の偶然の一致ですが、同じ段落に両方が載ると読者は片方を誤植と読みます。本文化のときに離すか、明示するか」
 
 ---
-
-### [2026-07-19 15:30] Scene: sim 計画を1枚に — 消去カスケードを図にする
-
-**INT. PEARSON SPECTER LITT - KATRINA'S DESK - DAY**
-
-*Tak「シミュレーションの計画をわかりやすく図示する draw.io」。Katrina が計画書 843 行を1枚に凝縮する。*
-
-**Katrina**:（既存スタイルに合わせて即描き上げる）
-「`sim_plan_ja.drawio` 完成。背骨は一つ——**4つの世界＝消去カスケード**。Set 1 が SMD・RV1 を、Set 2 が SMD(raw) を、Set 3 が RV2・RV3 を、Set 4 が KS を、それぞれ盲目化する。矢印で繋いで『W₁ だけが最後まで never-blind』に着地させた。上に問い・ADEMP 枠・2タスク・1セルの流れ、下に手法と測定。既存 `paper_logic_ja.drawio` と同じ Yu Gothic・warm grey・赤アクセントで統一。Results speak for themselves.」
-
-**Donna**:（一点添える）
-「各世界に『競合が効く control セル』も明記したわ——cherry-pick じゃないことが一目で分かる。非循環の担保（真値＝構成ラベル）も footer に。app.diagrams.net でそのまま開けるわよ。」
-
-**残**: マージ → 本文 Results 統合（bootstrap 否定結果は除外）→ Intro ¶7 レビュー → push。
-
----
-
-### [2026-07-19 15:20] Scene: Archive
-
-**INT. PEARSON SPECTER LITT - FILE ROOM - DAY**
-
-*Donna が分厚いフォルダをアーカイブ棚へ移す。*
-
-**Donna**:
-「SUITS.md が 1022 行になったから Rule 2.5 でアーカイブしたわ。`archives/SUITS_20260719_132632.md` に保存済み。7/3 の GSC セミナーから今日の bootstrap 否定結果まで——全部そこ。新しいスクリプト開始よ。」
-
-**Harvey**:（通りがかりに）
-「過去は過去だ。前を見ろ。残りはマージと本文統合、そして Intro の続きだ。」
-
----
-
-## 📊 Key Decisions（carried forward）
-
-- **Methodology**: Per-EM W₁ raw + Δ_max = L_clinical × W₁（正規化なし、nABCD 撤回済み）
-- **Estimation-centered**（testing でない）／ **Percentile bootstrap**（BCa は封印）／ 臨床較正は Δ_max 経由
-- **Part 3（θ sim）はやらない** — 前提の検証・一般性破壊・循環論法になる → [[project_no_effect_tracking_sim]]
-- **貢献 (b) の scope = Q_metric**。Set 1–4 の主張は「W₁ は盲目でない」（identification）
-- **bootstrap 上限選択ルール**: 検証済みだが**論文外**（小 n では棄権になるのは当然、と Tak 判断）
-- **Jessica = advisor ツールの声**（substance 忠実・register だけ Jessica）→ [[project_jessica_advisor_role]]
-- **小宮山 Ch.4**: 1 EM = 1 代表値。RV2/RV3 は我々の拡張、「小宮山の手法」と呼ぶな → [[feedback_komiyama_no_overreading]]
-
-## 📊 Key Memory References (Active)
-
-### CRITICAL Rules
-- Rule 2.5 (Auto-Archive) / Rule 2.7 (EN-JA Sync 保留中) / Rule 3.7 (Speaker Clarity) / Rule 3.8 (Tone Authenticity)
-
-### Active Memory (cross-conv)
-- [project_ja_paper_deleted.md](memory/project_ja_paper_deleted.md) — JA 削除、再生成するな
-- [project_jessica_advisor_role.md](memory/project_jessica_advisor_role.md) — advisor = Jessica の声
-- [project_no_effect_tracking_sim.md](memory/project_no_effect_tracking_sim.md) — Part 3 やらない
-- [feedback_komiyama_no_overreading.md](memory/feedback_komiyama_no_overreading.md) — 小宮山 拡大解釈禁止
-- [project_suits_tier1_guards.md](memory/project_suits_tier1_guards.md) — Persistence/Numbers guards
-- [feedback_calculation_verification.md](memory/feedback_calculation_verification.md) — 数値再検証必須
-- [feedback_tak_review_principles.md](memory/feedback_tak_review_principles.md) — Tak 5 原則
-- [feedback_speaker_clarity.md](memory/feedback_speaker_clarity.md) / [feedback_tone_authenticity.md](memory/feedback_tone_authenticity.md)
-- [feedback_paper_no_emph.md](memory/feedback_paper_no_emph.md) — `\emph` 使わない
-
-### Path α Specific (Active)
-- **W₁ theory**: Sommerfeld 2018, del Barrio 1999, Panaretos 2019, Vallender 1974, Villani 2009
-- **L_clinical**: VanderWeele 2014/2019, Fisher 2017, Riley 2010, FTT 1994, GUSTO 1993
-- **Komiyama 2024**: 当事者の pooling レシピ。gap = 分布構造潰し ＋ 臨床閾値未 operationalize。Δ_max が回答
-- **Out of scope**: Multi-EM aggregation（Discussion で対比）、within-EM normalization（Supplement A equivalence）

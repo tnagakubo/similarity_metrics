@@ -1,0 +1,7 @@
+"em","rule","n_selected","members","max_anchor_dist","pool_diameter","tau","diameter_ok","k_hat"
+"age","pairwise_tau",9,"R1|R4|R5|R6|R7|R9|R12|R14|R15",0.912122986633087,1.10933164128151,1,FALSE,NA
+"age","complete_cut",2,"R5|R6",0.912122986633087,0.912122986633087,1,TRUE,NA
+"age","silhouette",10,"R1|R4|R5|R6|R7|R9|R11|R12|R14|R15",1.2695770908329,1.51028856225268,1,FALSE,3
+"sysbp","pairwise_tau",11,"R1|R2|R3|R4|R5|R6|R10|R13|R14|R15|R16",4.72425267745316,8.93622912998068,5,FALSE,NA
+"sysbp","complete_cut",2,"R2|R16",4.28226212643428,4.28226212643428,5,TRUE,NA
+"sysbp","silhouette",2,"R2|R16",4.28226212643428,4.28226212643428,5,TRUE,2
