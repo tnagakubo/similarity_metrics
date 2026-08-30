@@ -39,7 +39,8 @@
 
 - **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**。**Study 2 が §3 に入ったので全5件に着地点あり — Tak とのレビューでいつでも実行可**（¶1・¶5 には TODO コメント設置済み）
 - **Intro ¶7（SMD 限界）以降のレビュー再開**
-- **⚠ Tak 判断待ち: §3.1.4（手続き正当化、anchor_vs_clustering 100k）の配置** — 内容は 08-18 適用の Discussion 段落に既在。§3 へ移すか・Discussion に留めるか・要約+相互参照か
+- ~~§3.1.4 の配置~~ → ✅ **決定（2026-08-30、Tak: 案A）**。Discussion 段落に留める。§3.1.4 は書かない（.tex/アウトラインに記録済み）
+- **▶ 進行中: 必須修正の段落レビュー** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ **¶6（queued 行6）提示中** → abstract 3件（行1–3、Terminal deferral）。abstract L40 の "scale and skewness" も行3 pass で再検討
 - **§3 残り2点（意図的保留）**: ρ/ρ_trans regime（per-cell 検証未整備）／oracle 閾値 steelman + Part 1B の配置（§2.6 との関係未決）。`sec:study2_clustering` 末尾の TODO コメント参照
 - **REVIEW_TRACKER.md 更新/retire**（nABCD 用語のまま 0/29 で stale、Tak 判断待ち）
 - ~~§4.4–4.5 を .tex に落とす~~ → ✅ 完了（08-30 午前）
@@ -52,6 +53,103 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-08-30 19:00] Scene: ¶6 の亡霊 — 名指しの moment が、論文がいま持っている証拠と食い違っていた
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Tak「進行中のタスクを確認してすすめてくれ」。Donna が棚卸し — queued 表の残りは行6（Discussion ¶6）と行1–3（abstract）。順序規則どおり ¶6 が先。¶1・¶5 の Option B 適用分が未 commit だったので、先に固めてから ¶6 の提示前チェックに入る。*
+
+**Donna**:（棚卸しと pre-check、両方回したわ）
+「未 commit は4ファイル — `.tex`・`.pdf`・アウトライン・SUITS。Tak 承認済みでコンパイル clean だから、これを commit して push してから進む。
+`feedback_tak_feedback_patterns` で効くのは2つ。**①『証拠範囲外の moment/property を claim していないか』** — 前例は 2026-04-25、S6 削除で "scale, shape, and skewness" を "scale and skewness" に narrow した件。今回はその逆向きで、**残った "scale and skewness" を支えていた SMD 感度表が 08-30 の再構成で消えた**。**②Terminal deferral** — 同じ句が abstract L40（"captures differences in scale and skewness in addition to location"）にもいるけど、abstract は行3の pass で一括。今は触らない」
+
+**Louis**:（この一文、三方向から崩れる）
+「『capturing scale and skewness differences invisible to SMD』——
+**一つ**、"skewness" は論文がいま持つ証拠の名前じゃない。Study 2 で SMD が盲目な3セルのうち、Set 3 shape-symmetric は**skewness も一致させた世界**で、それでも SMD は盲目だ（§3 L233、RV3 も落ちる）。盲目の原因は skewness じゃなく**平均の外にある差すべて**。moment を2つ名指しすると、証拠より狭くて、しかも当たってない。
+**二つ**、"scale" の方も表の裏付けが薄い。Set 1（Gaussian、location と scale の discordance）で SMD の ARI は 0.452/0.460 — **partial** であって blind じゃない。location 側を解いて scale 側を落としているんだろうが、**その分解は論文のどこにも書いてない**。書いてない分解に主張を乗せるな。
+**三つ**、¶5 が一段上で『location-only gap is structural … moment-matched worlds で SMD は chance』と書いたばかりだ。同じ証拠を moment 名に言い換えて繰り返す理由がない。**P3 だ**」
+
+**Mike**:（数値は全部ゲート済みの表から、新計算なしで確認しました）
+「Louis の3点、裏取りします。SMD 盲目セル = Set 4 symmetric severity・Set 3 combined・Set 3 shape-symmetric（`tab:study2_required_n`）。Set 1 の SMD ARI 0.452 / 0.460（`tab:study2_ari`）。shape-symmetric で skewness 一致は §3.1.2 本文どおり。全て `verify_study2_figures.R` ALL PASS の範囲内です。
+それから **"invisible to SMD" 自体は解析的に真**です — 平均が等しければ SMD = 0 は定義から出る。§2.2 L98 が $N(50,5^2)$ と $N(50,15^2)$ で既に言っている。だから問題は『嘘』ではなく、**証拠の置き場が移ったのに文が旧い置き場を指している**こと。
+もう一つ、**P2 の欠陥**が見えました。topic sentence は『Two principal strengths follow from the dual-pathway clinical calibration』なのに、第二の強みは『**calibration の有無に関わらず**成立する』— 較正から**従わない**ことが内容です。主題文と第二項が矛盾しています」
+
+**Rachel**:（証拠の anchor を確認しました）
+「"by construction" の担い手は §2.2（`sec:existing`）の解析的な一文で足ります。Study 2 の該当は `sec:study2_classification`。**どちらも既存 label で、新しい参照先は要りません**。abstract L40 の同じ句は、abstract 行3の書き換え（Study 2 を先頭に）で自然に再検討される位置ですので、そこに備考を付けておきます」
+
+**Katrina**:（3案を書きました）
+「**A** = 最小: 一文だけ差し替え、moment 名を『differences beyond location, to which SMD is blind by construction (§2.2)』に。P2 の主題文不整合は残る。
+**B** = 構造: 主題文を『Two features of the framework bear on its use in practice』に直し、第二項を**『距離の評価と較正は分離可能』**に純化。証拠は ¶5 に委ね、moment 名も Study 2 の引用も持たない。¶7『For practice, we recommend…』への接続が素直になる。
+**C** = 折衷: 主題文を直し、第二項に §2.2 と §3.1.2 の二重 anchor を残す。
+影響範囲はいずれも ¶6 内で閉じ、他段落の参照は動きません」
+
+**Harvey**:（推奨は B だ）
+「行6の要求は『re-evidence or trim』— どちらでも閉じる。だが **P2 の主題文の矛盾を残して一文だけ直すのは、¶1 のときと同じ半分の仕事**だ。B は ¶6 を『較正が適応する』『距離の評価は較正と独立』の二本に絞る。¶5 が証拠を全部持った今、¶6 が証拠を持ち直す必要はない。**C は ¶5 の直後に同じ参照をもう一度並べる — 読者に二度読ませる理由がない**」
+
+**Jessica**:（承認視点で一つだけ）
+「Let me be clear。¶6 は key decision ではない。だが **abstract に同じ句が残ったまま Discussion だけ narrow する過渡状態**が生じる。判断④の範囲内 — abstract は terminal pass で閉じる — であり、しかも abstract の句は解析的に真だから、その間に論文が矛盾を抱えることはない。**行3の pass に必ず持ち込め**。それが条件だ」
+
+**Donna**:（記録するわ）
+「queued 表の行3に『abstract L40 の "scale and skewness" も同 pass で再検討』を備考として追加。Current Status の進行行は ¶1 ✅ ¶5 ✅ → **¶6 提示中** → abstract 3件 に更新。¶6 の EN/JA 併記と Options を Tak に出す」
+
+*Options A/B/C を Tak に提示。ボールは Tak へ。*
+
+---
+
+
+### [2026-08-30 17:50] Scene: ¶5 も Option B — 一致が Discussion に住んだ。残るは ¶6 の亡霊と abstract
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak「Option B」×2連続。¶5 全文差し替え適用 — GUSTO 一致が Discussion に書き込まれ、「W₁ を使う理由」の skeleton 文で閉じる形に。コンパイル error 0、23ページ。queued 表 行5 ✅。残: 行6（¶6 の SMD 亡霊）→ abstract 3件。*
+
+**Jessica**:（過渡状態を記録した）
+「Discussion は一致を語り、abstract はまだ旧主張のまま。**意図された順序**（Terminal deferral）であり放置ではない。abstract 3件を閉じるまでこの状態は続く — 次のセッションに跨ぐなら必ず引き継げ」
+
+---
+
+### [2026-08-30 17:40] Scene: ¶1 は Option B で確定 — 次は「addresses all three」、そして一致の唯一の住処
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak「Option B」。¶1 全文差し替え適用、コンパイル error 0・undefined 0。アウトライン queued 表の行4を ✅ に。レビューは ¶5 へ。*
+
+**Katrina**:（適用済み）
+「¶1 は identification 主張へ格上げ、S 番号と coverage range は opening から §3 へ委譲。TODO は approval 記録に置換しました」
+
+**Harvey**:（¶5 の重みを確認しておく）
+「判断④で **GUSTO の一致は Discussion にのみ** — だが今の Discussion に一致の記述は**どこにも無い**。¶5 が唯一の住処になる。controlled reading の挿入だけじゃなく、**一致をここに書き込む**のが ¶5 の仕事だ」
+
+**Louis**:（隣の段落も見つけたぞ）
+「¶6 に同じ亡霊がいる — 『capturing scale and skewness differences invisible to SMD』。**¶5 を直して ¶6 を放置すれば、また一段下に残るだけだ。** queued 表に追記して次に回せ」
+
+*Options A/B/C を提示。ボールは Tak へ。*
+
+---
+
+### [2026-08-30 17:15] Scene: 判断A、そしてレビューの幕が上がる — Louis が提示前に過剰主張を1つ斬った
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak「A」。§3.1.4 は Discussion に留まる。Donna が3箇所（.tex TODO・アウトライン・Current Status）に記録し、そのまま必須修正5件の段落レビューへ。順序は Tak の規則どおり Discussion ¶1 から。*
+
+**Donna**:（提示前チェックを回したわ）
+「`feedback_tak_feedback_patterns` 参照済み。効くのは **C2（Discussion opening は high-level、具体数値は後続段落）** — 現行 ¶1 は S5/S6・coverage range を opening に抱えてる。①が S 番号を外すなら C2 も同時に解決できる」
+
+**Louis**:（draft 段階で1つ潰した）
+「最初の案は『moment-matched worlds で **SMD と代表値距離が** chance に留まる』だった — **嘘だ**。Set 4 sym_severity で盲目なのは SMD だけ、RV2/RV3 は 76/83 で回復する。Set 3 combined でも RV3 は 0.78 で chance じゃない。
+正しく言える最強の形は一つ — **『要約量ベースの競合4つはそれぞれ、少なくとも1つの臨床的に妥当な世界で構造的に盲目。W₁ はどの世界でも盲目でない』**。全数値ゲート検証済みだ。提示するのはこの形にしろ」
+
+**Mike**:（P1–P5 checklist、Option B で全項目 Yes）
+「(iii) の coverage range も検証しました — n≥100 で 0.904–0.951、『0.90–0.95』は真。ただし B 案ではその数値ごと §3.2 に委ねます。『identification failure that no sample size repairs』は n=2,000 まで平坦のゲート検証事実の範囲内です」
+
+**Harvey**:（推奨は B だ）
+「④の要求は (i) の張り替えだけだが、**C2 違反を残したまま張り替えるのは半分の仕事**だ。B は主張を『検出』から『identification』へ格上げする — Study 2 が支える分だけ強く、それ以上には強くない」
+
+*Options A/B/C を Tak に提示。ボールは Tak へ。*
+
+---
 
 ### [2026-08-30 16:55] Scene: Study 2 が §3 に入った — ゲートがノートの誤りを9つ捕まえた
 
