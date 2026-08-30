@@ -40,7 +40,7 @@
 - **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**。**Study 2 が §3 に入ったので全5件に着地点あり — Tak とのレビューでいつでも実行可**（¶1・¶5 には TODO コメント設置済み）
 - **Intro ¶7（SMD 限界）以降のレビュー再開**
 - ~~§3.1.4 の配置~~ → ✅ **決定（2026-08-30、Tak: 案A）**。Discussion 段落に留める。§3.1.4 は書かない（.tex/アウトラインに記録済み）
-- **▶ 進行中: 必須修正の段落レビュー** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ **abstract 3件（行1→2→3）提示へ**。abstract L40 の "scale and skewness" も行3 pass で再検討
+- **▶ 進行中: 必須修正の段落レビュー** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ **abstract 3件（行1→2→3）提示中** — SIM 規定 250 words（現行 354）。abstract L40 の "scale and skewness" も行3 pass で再検討
 - **§3 残り2点（意図的保留）**: ρ/ρ_trans regime（per-cell 検証未整備）／oracle 閾値 steelman + Part 1B の配置（§2.6 との関係未決）。`sec:study2_clustering` 末尾の TODO コメント参照
 - **REVIEW_TRACKER.md 更新/retire**（nABCD 用語のまま 0/29 で stale、Tak 判断待ち）
 - ~~§4.4–4.5 を .tex に落とす~~ → ✅ 完了（08-30 午前）
@@ -53,6 +53,44 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-08-31 00:55] Scene: abstract の提示前チェック — 250 words の壁と、アウトラインの自己矛盾が出てきた
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Discussion 側が閉じ、Terminal deferral の最後 — abstract 行1→2→3。Donna が提示前チェックを回すと、規定上の壁が一つ、アウトラインの矛盾が一つ出てきた。*
+
+**Donna**:（先に壁の話をするわ）
+「*Statistics in Medicine* の投稿規定を確認した — **abstract は 250 words 以内**、unstructured、keywords は6つまで。**現行 abstract は 354 words**。つまり行1–3を最小修正で当てても（A 案 = 379 words）規定を満たさない。**abstract は書き換えではなく、再構成でしか閉じない**。
+もう一つ。アウトライン §0-bis の abstract 順序リスト item 6 は『GUSTO で W₁ が既存手法と同じ partner set に達した — controlled level で abstract に書く』とある。**判断④（08-15、Tak）は『一致は Discussion にのみ、abstract には載せない』**。同じ commit（d5dbafd）に両方入っていて git では前後が取れないけど、Current Status と ¶5 の承認コメントは④で動いてる。**④を正として item 6 の一致句は落とす**。Tak が覆すなら別だけど、黙って二重基準にはしない」
+
+**Mike**:（行1の根拠を CSV で裏取りしました）
+「`gusto_operability.csv` の n_partner 15件 + n_anchor 2,916 を降順に並べると、R12 4,352 / R14 3,437 / R7 3,150 / R9 3,123 / R2 2,952 / **R8 2,916 = 6位** / R4 2,876 … R16 1,231。アウトラインの『6th largest of 16』は**真**です。"small-sample region" と "small-sample anchor" の2箇所は、データと矛盾する — 行1・2は事実訂正で議論の余地なし。
+B 案の全 claim を本文と突き合わせました: E17 の gap 文言は Intro L70、Δ_max = L·W₁ は eq:delta_max、『at every sample size examined』は ¶1 承認済み文言、KS の『underpowered rather than blind / more expensive direction』は §3.1.2・§3.1.3、n ≥ 100 は §3 冒頭、R8 vs 15 partners は §4.2、『which effect modifier carries the decision』は §4.2 L502、eligible = L* > L_UB は §4.4。**本文に無い言葉は一つも入れていません**」
+
+**Louis**:（草案で一つ潰した）
+「最初の B 案は『representative-value distances, **which coincide with SMD** on a single continuous effect modifier』だった — **RV2/RV3 は我々の拡張で、SMD には潰れない**。L636 が言ってるのは **RV1 だけ**が mean difference だということだ。『the simplest of which reduces to SMD』に直させた。小宮山の拡大解釈と同じ穴に abstract で落ちるところだったぞ。
+それと C 案の『scale and shape』— ¶6 で落としたばかりの moment 列挙を abstract に**戻す**案だ。解析的には真（平均一致なら SMD = 0）だが、Discussion が捨てた言葉を abstract だけが持つ。P5 じゃなく**一貫性**の問題として提示しろ」
+
+**Rachel**:（規定の細部を確認しました）
+「SIM の規定文: "an abstract of up to 250 words"、"should contain no citation to other published work"。B 案は Komiyama et al. を名指ししていません — 『an existing pooling recipe』の水準に留めています。keywords は現行6つで上限どおりです」
+
+**Katrina**:（語数は3案とも実測）
+「**A = 379**（行1–3 のみ、規定超過 +129）／**B = 248**（§0-bis 順序で全文再構成、④適用、moment 列挙なし、operability 句あり）／**C = 250**（B の骨格 + SMD 対比文を残し、operability 句を落として語数を合わせた）。B・C は `\abstract{}` 内の差し替えだけで、本文の参照は動きません」
+
+**Harvey**:（推奨は B）
+「250 の壁がある以上 A は選択肢じゃない — 提示するのは比較の起点としてだ。B と C の差は『operability 診断を abstract に出すか』『SMD 対比文を abstract に残すか』の二択。**§4.2 は Q_operability に答える節で、判断③の根拠 (c) が『abstract が診断を名指しする』ことを前提にしていた** — なのに現行 abstract に operability の語は無い。B はその欠落を埋める。C は ¶6 で捨てた言葉を拾い直す。B だ」
+
+**Jessica**:（承認視点、二つ）
+「Let me be clear。**一つ**、④は私の前で決まった判断だ — abstract に一致を書かないのは Tak 自身の選択。§0-bis の item 6 は記録の誤りとして扱い、Tak が今日この場で覆さない限り④が立つ。**二つ**、abstract は論文で最初に読まれ最後に書かれる。B が『本文に無い言葉を持たない』ことは Mike が確認した。**残る問いは Tak の判断だけ**だ」
+
+**Donna**:（記録してから出すわ）
+「アウトライン §0-bis に 250 words の規定と item 6 の矛盾 flag を追記。Current Status は **abstract 提示中**。行1→2→3 を一つの段落レビューとして EN/JA 併記で Tak に出す」
+
+*Options A/B/C を Tak に提示。ボールは Tak へ。*
+
+---
+
 
 ### [2026-08-31 00:35] Scene: ¶6 も Option B — Discussion 側の queued 3件が閉じた。残るは abstract だけ
 

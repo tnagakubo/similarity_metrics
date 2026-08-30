@@ -38,6 +38,8 @@
 
 - **Title (unchanged)**: "Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials."
   **タイトル（変更なし）**: 「Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials」
+- **Journal constraint (verified 2026-08-31, Wiley author guidelines): *Statistics in Medicine* abstract up to 250 words, unstructured, no citations, up to six keywords. Current abstract is 354 words, so the queued rows 1–3 cannot be closed by local edits — the abstract must be reconstructed.** / **投稿規定（2026-08-31 確認）: abstract は 250 words 以内・unstructured・引用なし・keywords 6つまで。現行 354 words のため、行1–3 は局所修正では閉じず、再構成が必要。**
+- ⚠ **Item 6 below conflicts with decision ④ (2026-08-15: GUSTO agreement is Discussion-only, abstract silent). Decision ④ governs; the agreement clause in item 6 is treated as a recording error unless Tak reverses ④ (flagged 2026-08-31).** / ⚠ **下記 item 6 は判断④（一致は Discussion のみ）と矛盾。④が優先、item 6 の一致句は記録誤りとして扱う（2026-08-31 flag）。**
 - **Two changes are forced on the abstract / abstract に強制される変更が2つある**
   - ❌ **"small-sample anchor" must go.** R8 has n = 2,916 and is the **6th largest of 16** regions — the data contradict the phrase. Use "a designated anchor region."
     ❌ **「small-sample anchor」は削除。** R8 は n = 2,916 で 16地域中**6番目に大きい** — データと矛盾する。「a designated anchor region」に変更。
