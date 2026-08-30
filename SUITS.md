@@ -40,7 +40,7 @@
 - **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**。**Study 2 が §3 に入ったので全5件に着地点あり — Tak とのレビューでいつでも実行可**（¶1・¶5 には TODO コメント設置済み）
 - **Intro ¶7（SMD 限界）以降のレビュー再開**
 - ~~§3.1.4 の配置~~ → ✅ **決定（2026-08-30、Tak: 案A）**。Discussion 段落に留める。§3.1.4 は書かない（.tex/アウトラインに記録済み）
-- **▶ 進行中: 必須修正の段落レビュー** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ **¶6（queued 行6）提示中** → abstract 3件（行1–3、Terminal deferral）。abstract L40 の "scale and skewness" も行3 pass で再検討
+- **▶ 進行中: 必須修正の段落レビュー** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ **abstract 3件（行1→2→3）提示へ**。abstract L40 の "scale and skewness" も行3 pass で再検討
 - **§3 残り2点（意図的保留）**: ρ/ρ_trans regime（per-cell 検証未整備）／oracle 閾値 steelman + Part 1B の配置（§2.6 との関係未決）。`sec:study2_clustering` 末尾の TODO コメント参照
 - **REVIEW_TRACKER.md 更新/retire**（nABCD 用語のまま 0/29 で stale、Tak 判断待ち）
 - ~~§4.4–4.5 を .tex に落とす~~ → ✅ 完了（08-30 午前）
@@ -53,6 +53,27 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-08-31 00:35] Scene: ¶6 も Option B — Discussion 側の queued 3件が閉じた。残るは abstract だけ
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Tak「B」。日付を跨いで3連続の Option B。¶6 全文差し替え適用、承認コメント設置。pdflatex 3 pass + bibtex 全て exit 0、error 0・undefined 0・multiply-defined 0、23ページ、\emph 0。queued 表 行6 ✅。*
+
+**Katrina**:（適用済み、検証済み）
+「¶6 は『較正が適応する』『分布評価と較正は分離可能』の二本に絞りました。moment 名も Study 2 の参照も持たず、証拠は ¶5 に委ねています。`invisible to SMD` は `.tex` から **0 件** — Discussion の亡霊は消えました」
+
+**Louis**:（次の獲物は決まってる）
+「Discussion の queued 3件は閉じた。だが **abstract はまだ全部旧いまま**だ — 『small-sample region』×2（R8 は n = 2,916、16地域中6番目に大きい）、『seven systematic scenarios demonstrated satisfactory bias and coverage』が Study 2 の席に座ってる、そして L40 の『scale and skewness』。**4箇所、一段落**。段落単位でやるなら abstract は一発で出せ」
+
+**Harvey**:（順序は変えない）
+「Terminal deferral の最後の一枚だ。行1・2 は事実訂正で議論の余地がない。行3 は主張の階層 — abstract の simulation 文を Study 2 先頭に書き換える。**§3 と ¶1・¶5 が確定した今、abstract が引ける言葉は全部本文にある**。本文に無い言葉を abstract に書くな」
+
+**Donna**:（commit して、abstract の提示に入るわ）
+「Current Status 更新済み。次は abstract を EN/JA 併記で出して、行1→2→3 を一つの段落レビューとして提示する」
+
+---
+
 
 ### [2026-08-30 19:00] Scene: ¶6 の亡霊 — 名指しの moment が、論文がいま持っている証拠と食い違っていた
 
