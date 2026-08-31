@@ -40,7 +40,7 @@
 - **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**。**Study 2 が §3 に入ったので全5件に着地点あり — Tak とのレビューでいつでも実行可**（¶1・¶5 には TODO コメント設置済み）
 - **▶ 進行中: Intro ¶7（SMD 限界）以降のレビュー再開**（13:40〜）
 - ~~§3.1.4 の配置~~ → ✅ **決定（2026-08-30、Tak: 案A）**。Discussion 段落に留める。§3.1.4 は書かない（.tex/アウトラインに記録済み）
-- **▶ 進行中: 必須修正の段落レビュー** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ abstract 3件は **Tak 指示（08-31）で最終原稿完成後の Terminal pass へ保留**（B/C 草案は §0-bis に保存、SIM 規定 250 words）。abstract L40 の "scale and skewness" も行3 pass で再検討
+- ✅ **必須修正の段落レビュー完了（本文分）** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ abstract 3件は **Tak 指示（08-31）で最終原稿完成後の Terminal pass へ保留**（B/C 草案は §0-bis に保存、SIM 規定 250 words）。abstract L40 の "scale and skewness" も行3 pass で再検討
 - **§3 残り2点（意図的保留）**: ρ/ρ_trans regime（per-cell 検証未整備）／oracle 閾値 steelman + Part 1B の配置（§2.6 との関係未決）。`sec:study2_clustering` 末尾の TODO コメント参照
 - **REVIEW_TRACKER.md 更新/retire**（nABCD 用語のまま 0/29 で stale、Tak 判断待ち）
 - ~~§4.4–4.5 を .tex に落とす~~ → ✅ 完了（08-30 午前）
@@ -53,6 +53,31 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-08-31 13:50] Scene: Intro ¶7 の提示前チェック — 「detect」の言葉が3つの節をまたいで浮いている
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*レビュー再開。Intro は ¶1–¶6 承認済み、¶7（SMD 限界）から。Harvey + Mike が checklist を回し、Louis が先に斬り込む。*
+
+**Donna**:（pre-check patterns 参照済み）
+「¶7 に効くのは用語整合。§2.2（承認済み）は『by construction SMD **captures only** differences in location』、Discussion ¶5（08-30 確定）も『SMD captures only location』。¶7 だけが『**cannot detect**』— estimation-centered の論文で、しかも周囲が descriptive に統一された後に、検出の言葉が Intro に残ってるわ」
+
+**Louis**:（三点だ）
+「**一つ**、『they were not designed for assessing …』— **意図の議論**だ。設計意図がどうであれ関係ない、SMD は構造的に位置しか持てない。論文の他の全部が構造の議論をしてるのに、Intro だけ弱い論法で立ってる。
+**二つ**、末尾『a comparison based on means alone will miss them』— **¶6 の末尾が同じことを言ったばかりだ**（『requires more than comparing means』）。連続する2段落が同じ文で閉じてる。P3。
+**三つ**、¶8 も見ておけ — 『$W_1$ captures differences in variance and shape simultaneously』。¶7 の直し方次第で ¶8 の対応文も揃える必要が出る。次に回すが、忘れるな」
+
+**Mike**:（P1–P5、検証しました）
+「『these distributional features directly influence regional average treatment effects』は eq.~(1)（$\bar\tau_r = \int \tau(x)\,dF_r(x)$、L86）から解析的に真 — 非線形 $\tau$ なら $F_r$ の位置以外も $\bar\tau_r$ に入る。P4 は問題なし。¶7 は主張がすべて解析的で、Study 2 を引く義務はありません。ただし**今は決定レベルの実証（§3.1）が存在する** — 前方参照を足すかは Tak の判断です。checklist は Option B で全項目 Yes」
+
+**Harvey**:（推奨は B、C は好みの問題だ）
+「B は三つを一度に片付ける — 意図の論法を捨てて構造の言明に替え、『detect』を §2.2 と同じ『captures only』に揃え、¶6 と重複する末尾を刈る。C の前方参照は Intro を強くするが、¶9 の roadmap が直後に §3 を案内する。**二重案内になるかは Tak が読んで決めろ**」
+
+*Options A/B/C を Tak に提示。ボールは Tak へ。*
+
+---
+
 
 ### [2026-08-31 13:40] Scene: 「Abstractは最終の原稿が完成してからだ」— Terminal deferral が貫かれ、レビューは Intro ¶7 へ戻る
 
