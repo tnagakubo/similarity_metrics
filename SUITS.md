@@ -38,7 +38,7 @@
 ### 次にやるべきこと（残タスク）
 
 - **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**。**Study 2 が §3 に入ったので全5件に着地点あり — Tak とのレビューでいつでも実行可**（¶1・¶5 には TODO コメント設置済み）
-- **▶ 進行中: Intro ¶7（SMD 限界）以降のレビュー再開**（13:40〜）
+- **▶ 進行中: Intro レビュー** — ¶7 ✅（Option B、08-31）→ **¶8（W₁ 導入）提示中** → ¶9 roadmap
 - ~~§3.1.4 の配置~~ → ✅ **決定（2026-08-30、Tak: 案A）**。Discussion 段落に留める。§3.1.4 は書かない（.tex/アウトラインに記録済み）
 - ✅ **必須修正の段落レビュー完了（本文分）** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ abstract 3件は **Tak 指示（08-31）で最終原稿完成後の Terminal pass へ保留**（B/C 草案は §0-bis に保存、SIM 規定 250 words）。abstract L40 の "scale and skewness" も行3 pass で再検討
 - **§3 残り2点（意図的保留）**: ρ/ρ_trans regime（per-cell 検証未整備）／oracle 閾値 steelman + Part 1B の配置（§2.6 との関係未決）。`sec:study2_clustering` 末尾の TODO コメント参照
@@ -53,6 +53,30 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-08-31 14:55] Scene: ¶7 は B で確定 — 「detect」が Intro から消えた。次は ¶8 の「theoretically grounded」
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Tak「B」。¶7 適用 — 意図論法は構造の言明へ、「cannot detect」は「captures only」へ、¶6 と重複する末尾は削除。pdflatex 3 pass + bibtex 全て exit 0、error 0・undefined 0、23ページ。*
+
+**Katrina**:（適用済み、残存も確認しました）
+「『not designed for』は本文から消滅。『cannot detect』の残りは §4.2 の『a difference the data at hand cannot detect』一箇所のみ — あれは SMD ではなくデータの解像の話で、正当な用法です。レビューは ¶8（W₁ 導入）へ」
+
+**Louis**:（¶8、二点だ）
+「**一つ**、末尾の『The Wasserstein distance provides a **theoretically grounded** measure of distributional dissimilarity in this setting』— 根拠を言わない grounded は形容詞だけの主張だ。P4。しかも直前の文が既に calibration への link を言ってる — 何も足さない締めの一文、P3 だ。
+**二つ**、『captures differences in variance and shape **simultaneously**』— 何と何の同時だ？ SMD が位置しか持たないのと対比するなら、言うべきは『位置に**加えて**分散と形状にも応答する』だ。¶7 の新しい言葉と揃えろ」
+
+**Mike**:（P1 と P4 を確認しました）
+「『these gaps』の参照先は直前の ¶5–¶7（metric/threshold/procedure の欠如、SMD の位置限定）で一意 — P1 は通ります。『responds to differences in variance and shape as well as location』は $W_1$ が分布差一般を metrize する事実の範囲内で真。『area between the two CDFs』は §2.3 の定義そのままです」
+
+**Harvey**:（推奨は B）
+「grounded の中身 — KR 双対性と heterogeneity bound — は §2 が本番でやる。Intro で形容詞だけ先払いする必要はない。刈って、¶9 の roadmap に案内させろ」
+
+*Options A/B/C を Tak に提示。ボールは Tak へ。*
+
+---
+
 
 ### [2026-08-31 13:50] Scene: Intro ¶7 の提示前チェック — 「detect」の言葉が3つの節をまたいで浮いている
 
