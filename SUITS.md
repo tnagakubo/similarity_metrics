@@ -38,9 +38,9 @@
 ### 次にやるべきこと（残タスク）
 
 - **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**。**Study 2 が §3 に入ったので全5件に着地点あり — Tak とのレビューでいつでも実行可**（¶1・¶5 には TODO コメント設置済み）
-- **Intro ¶7（SMD 限界）以降のレビュー再開**
+- **▶ 進行中: Intro ¶7（SMD 限界）以降のレビュー再開**（13:40〜）
 - ~~§3.1.4 の配置~~ → ✅ **決定（2026-08-30、Tak: 案A）**。Discussion 段落に留める。§3.1.4 は書かない（.tex/アウトラインに記録済み）
-- **▶ 進行中: 必須修正の段落レビュー** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ **abstract 3件（行1→2→3）提示中** — SIM 規定 250 words（現行 354）。abstract L40 の "scale and skewness" も行3 pass で再検討
+- **▶ 進行中: 必須修正の段落レビュー** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ abstract 3件は **Tak 指示（08-31）で最終原稿完成後の Terminal pass へ保留**（B/C 草案は §0-bis に保存、SIM 規定 250 words）。abstract L40 の "scale and skewness" も行3 pass で再検討
 - **§3 残り2点（意図的保留）**: ρ/ρ_trans regime（per-cell 検証未整備）／oracle 閾値 steelman + Part 1B の配置（§2.6 との関係未決）。`sec:study2_clustering` 末尾の TODO コメント参照
 - **REVIEW_TRACKER.md 更新/retire**（nABCD 用語のまま 0/29 で stale、Tak 判断待ち）
 - ~~§4.4–4.5 を .tex に落とす~~ → ✅ 完了（08-30 午前）
@@ -53,6 +53,21 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-08-31 13:40] Scene: 「Abstractは最終の原稿が完成してからだ」— Terminal deferral が貫かれ、レビューは Intro ¶7 へ戻る
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak の裁定は A でも B でも C でもなかった — abstract そのものを最終原稿完成後へ。Terminal element deferral の原則がそのまま通った形。行1–3 は queued のまま Terminal pass へ持ち越し。*
+
+**Donna**:（記録したわ）
+「B 草案（248 words）と C 草案（250 words）はアウトライン §0-bis に全文保存 — scratchpad は揮発するから。行1–3 は『最終原稿完成後』の条件付き queued に更新。**Terminal pass の開始条件が明確になった: 本文 §1–§5 の確定**。残る本文タスクは **Intro ¶7 以降のレビュー再開**、§3 の意図的保留2点、REVIEW_TRACKER の3つ。次は ¶7 よ」
+
+**Harvey**:（順序どおりだ）
+「Intro レビューは ¶7（SMD 限界）で止まっていた。§3 が Study 2 主導に書き換わり、Discussion の3段落が identification の言葉で確定した今、**¶7 が旧い検出の言葉のままなら Intro だけが取り残される**。提示前チェックにかけろ」
+
+---
+
 
 ### [2026-08-31 00:55] Scene: abstract の提示前チェック — 250 words の壁と、アウトラインの自己矛盾が出てきた
 
