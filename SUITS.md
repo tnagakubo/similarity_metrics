@@ -10,7 +10,7 @@
 ## Current Status
 
 **Active Project**: similarity-metric (per-EM W₁ paper, target *Statistics in Medicine*)
-**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — Intro レビュー ¶7 で停止中
+**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — Intro レビュー完了（2026-09-01）。残: §3 意図的保留2点・REVIEW_TRACKER・Terminal pass（abstract）
 **JA paper**: 意図的に削除済み（Tak 指示、EN 完成まで。Rule 2.7 保留）→ [[project_ja_paper_deleted]]
 **W₁ 計算系統**: ✅ **統一済み（2026-08-15）**。応用側の全スクリプトが厳密な CDF 面積形 `compute_w1` を使用
 
@@ -38,7 +38,7 @@
 ### 次にやるべきこと（残タスク）
 
 - **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**。**Study 2 が §3 に入ったので全5件に着地点あり — Tak とのレビューでいつでも実行可**（¶1・¶5 には TODO コメント設置済み）
-- **▶ 進行中: Intro レビュー** — ¶7 ✅ → ¶8 ✅（Option B、09-01）→ **¶9（roadmap）提示中 = Intro 最終段落**
+- ✅ **Intro レビュー完了（09-01）** — ¶7・¶8 = Option B、¶9 = Option C（roadmap 3点 + §3 節題 Studies）。Discussion ¶8 の "the index"（06-22 監査の取り逃し）も distance へ修正済み
 - ~~§3.1.4 の配置~~ → ✅ **決定（2026-08-30、Tak: 案A）**。Discussion 段落に留める。§3.1.4 は書かない（.tex/アウトラインに記録済み）
 - ✅ **必須修正の段落レビュー完了（本文分）** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ abstract 3件は **Tak 指示（08-31）で最終原稿完成後の Terminal pass へ保留**（B/C 草案は §0-bis に保存、SIM 規定 250 words）。abstract L40 の "scale and skewness" も行3 pass で再検討
 - **§3 残り2点（意図的保留）**: ρ/ρ_trans regime（per-cell 検証未整備）／oracle 閾値 steelman + Part 1B の配置（§2.6 との関係未決）。`sec:study2_clustering` 末尾の TODO コメント参照
@@ -53,6 +53,30 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-09-01 14:35] Scene: Intro が閉じた — そして「最後の一語」は最後ではなかった
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Tak「C」。¶9 適用、§3 節題は Studies へ。ところが検証 grep で Louis の「最後の一語」が覆る — Discussion ¶8（limitations）に『beyond what the index captures』がもう一つ残っていた。*
+
+**Mike**:（grep の癖まで含めて再検証しました）
+「前回の『.{60}index.{60}』は match の前後60字を要求するため、行末10字前にある L691 を落としていました。素の全数 grep でやり直し — 修正後、本文の『index』は adjusted Rand index のみ。数値でなくても検証は全数でやるべきでした。反省します」
+
+**Louis**:（訂正する、そして線を引いておく）
+「『最後の一語』は誤りだった — **二語**だ。ただしこれは新しい判断じゃない。**06-22 の nABCD 用語監査で承認済みの全域置換の取り逃し**であって、¶8 の段落レビューを先取りしたわけではない。一語、the index → the distance、それだけだ」
+
+**Katrina**:（適用・検証済み）
+「¶9 = Option C 全文 + 承認コメント、§3 節題 = Simulation Studies（旧題 0 件、参照は全て \ref の番号参照で波及ゼロ）、L691 修正済み。pdflatex 3 pass + bibtex exit 0、error 0・undefined 0、23ページ」
+
+**Jessica**:（一つだけ確認しておく）
+「Let me be clear。Intro が閉じたことと**本文が確定したこと**は別だ。Terminal pass（abstract）の開始条件は Tak が言った『最終の原稿』— §3 の意図的保留2点と REVIEW_TRACKER が残っている限り、確定を宣言するのは Tak であって我々ではない」
+
+**Donna**:（Current Status を締めたわ）
+「Intro レビュー完了。残タスクは3つ — **①§3 保留2点**（ρ/ρ_trans regime は per-cell 検証が未整備、oracle 閾値 steelman + Part 1B は §2.6 との配置未決）、**②REVIEW_TRACKER の retire 判断**、**③Terminal pass（abstract、行1–3 + B/C 草案保存済み）**。全部 Tak の判断が要る。commit して報告する」
+
+---
+
 
 ### [2026-09-01 14:30] Scene: ¶8 も B — そして ¶9 の roadmap に nABCD の最後の亡霊が残っていた
 
