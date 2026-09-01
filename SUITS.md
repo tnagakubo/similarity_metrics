@@ -38,7 +38,7 @@
 ### 次にやるべきこと（残タスク）
 
 - **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**。**Study 2 が §3 に入ったので全5件に着地点あり — Tak とのレビューでいつでも実行可**（¶1・¶5 には TODO コメント設置済み）
-- **▶ 進行中: Intro レビュー** — ¶7 ✅（Option B、08-31）→ **¶8（W₁ 導入）提示中** → ¶9 roadmap
+- **▶ 進行中: Intro レビュー** — ¶7 ✅ → ¶8 ✅（Option B、09-01）→ **¶9（roadmap）提示中 = Intro 最終段落**
 - ~~§3.1.4 の配置~~ → ✅ **決定（2026-08-30、Tak: 案A）**。Discussion 段落に留める。§3.1.4 は書かない（.tex/アウトラインに記録済み）
 - ✅ **必須修正の段落レビュー完了（本文分）** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ abstract 3件は **Tak 指示（08-31）で最終原稿完成後の Terminal pass へ保留**（B/C 草案は §0-bis に保存、SIM 規定 250 words）。abstract L40 の "scale and skewness" も行3 pass で再検討
 - **§3 残り2点（意図的保留）**: ρ/ρ_trans regime（per-cell 検証未整備）／oracle 閾値 steelman + Part 1B の配置（§2.6 との関係未決）。`sec:study2_clustering` 末尾の TODO コメント参照
@@ -53,6 +53,30 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-09-01 14:30] Scene: ¶8 も B — そして ¶9 の roadmap に nABCD の最後の亡霊が残っていた
+
+**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
+
+*Tak「B」。¶8 適用 — 「simultaneously」は ¶7 と同語に、「theoretically grounded」の締め文は削除。コンパイル error 0・undefined 0・23ページ。残るは Intro 最終段落、¶9 roadmap。*
+
+**Katrina**:（適用済み、残存確認済み）
+「『theoretically grounded』『simultaneously』の残りは承認コメント内の引用のみ — 本文はゼロです。¶9 へ」
+
+**Louis**:（roadmap に亡霊がいる）
+「『Section 2 presents the methodological framework, including the **index definition**』— **index だと？** この論文が定義するのは per-EM W₁ **distance** だ。nABCD 用語監査（06-22、16pp 全数）を生き延びた最後の一語だぞ。本文で『index』が残るのはここと adjusted Rand **index** だけ — 後者は正当、前者は死語だ。
+もう一つ — 『Section 3 **describes a simulation study**』。§3 の冒頭は『**two complementary simulation studies**』と言ってる。単数の roadmap は §3 の再構成（08-30）を知らない文だ。ついでに §3 の節題自体も『Simulation Stud**y**』のまま — 段落の外だが、一語だ。逃すな」
+
+**Mike**:（裏取りしました）
+「grep 全数: 本文の『index』は ¶9 の当該箇所と ARI の2件のみ。§3 冒頭文・Study 2/Study 1 の subsection 構成は確認どおり。もう一点 — ¶9 の §2 の列挙『index definition, clinical calibration, and estimation procedure』には **operability が無い**。§2.6『Operability: The Null Floor』は独立節（判断③）で、論文が答える3つの最上位の問いの1つです。roadmap が3つのうち1つを落としています」
+
+**Harvey**:（推奨は B、節題は C で拾う）
+「roadmap は論文の約束だ。§3 が二本立てになり、§2.6 が独立節になった — **約束の文だけが古い**。B で3点（index→distance、two studies、operability 追加）を締める。節題の単複は段落の外だから C に分けた — Tak が決めろ」
+
+*Options A/B/C を Tak に提示。ボールは Tak へ。*
+
+---
+
 
 ### [2026-08-31 14:55] Scene: ¶7 は B で確定 — 「detect」が Intro から消えた。次は ¶8 の「theoretically grounded」
 
