@@ -10,7 +10,7 @@
 ## Current Status
 
 **Active Project**: similarity-metric (per-EM W₁ paper, target *Statistics in Medicine*)
-**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — Intro レビュー完了（2026-09-01）。残: §3 意図的保留2点・REVIEW_TRACKER・Terminal pass（abstract）
+**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — Intro レビュー完了（2026-09-01）。残: **Terminal pass（abstract）のみ** — Tak の最終原稿宣言待ち
 **JA paper**: 意図的に削除済み（Tak 指示、EN 完成まで。Rule 2.7 保留）→ [[project_ja_paper_deleted]]
 **W₁ 計算系統**: ✅ **統一済み（2026-08-15）**。応用側の全スクリプトが厳密な CDF 面積形 `compute_w1` を使用
 
@@ -41,8 +41,8 @@
 - ✅ **Intro レビュー完了（09-01）** — ¶7・¶8 = Option B、¶9 = Option C（roadmap 3点 + §3 節題 Studies）。Discussion ¶8 の "the index"（06-22 監査の取り逃し）も distance へ修正済み
 - ~~§3.1.4 の配置~~ → ✅ **決定（2026-08-30、Tak: 案A）**。Discussion 段落に留める。§3.1.4 は書かない（.tex/アウトラインに記録済み）
 - ✅ **必須修正の段落レビュー完了（本文分）** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ abstract 3件は **Tak 指示（08-31）で最終原稿完成後の Terminal pass へ保留**（B/C 草案は §0-bis に保存、SIM 規定 250 words）。abstract L40 の "scale and skewness" も行3 pass で再検討
-- **§3 残り2点（意図的保留）**: ρ/ρ_trans regime（per-cell 検証未整備）／oracle 閾値 steelman + Part 1B の配置（§2.6 との関係未決）。`sec:study2_clustering` 末尾の TODO コメント参照
-- **REVIEW_TRACKER.md 更新/retire**（nABCD 用語のまま 0/29 で stale、Tak 判断待ち）
+- ✅ **§3 残り2点 → 削除決定（09-05、Tak）**: ρ/ρ_trans regime も oracle steelman + Part 1B も執筆しない。`.tex` の TODO 2件は DECIDED コメントに置換済み
+- ✅ **REVIEW_TRACKER.md → retired（09-05、Tak）**: RETIRED banner 付与、以後更新しない
 - ~~§4.4–4.5 を .tex に落とす~~ → ✅ 完了（08-30 午前）
 - ~~Study 2 を §3 に落とす~~ → ✅ **§3.0+3.1.1–3.1.3+3.2 完了（08-30 午後）**。§4.5 の TODO (a)(b) も解消済み
 
@@ -53,6 +53,27 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-09-05 00:05] Scene: ①削除 ②リタイア ③まだ — 本文の TODO がゼロになった夜と、Donna の行番号
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
+
+*Tak の三連裁定。①§3 保留2点は削除、②REVIEW_TRACKER は retire、③abstract は保留続行。作業中に一つ事故 — TODO 置換の2箇所目を旧行番号で切り、§4.5 冒頭の段落を巻き込んで消した。git diff が捕まえ、HEAD から復元。*
+
+**Donna**:（正直に記録するわ）
+「1箇所目の置換で行が2行縮んだのに、2箇所目を旧番号 619–624 で切った。消えたのは『The preceding subsections applied…』の段落一つ。git diff で即発見、HEAD から一字違わず復元。最終 diff は2 hunk とも『TODO → DECIDED』のコメント差し替えのみになったことを確認済みよ。**固定行番号での splice はもうしない — anchor で切る**」
+
+**Louis**:（復元の検証は俺だ）
+「diff 全hunk 精査 — 本文の変化は復元された段落を含めて**ゼロ**、コメント差し替えのみ。TODO は本文から **0件**。pdflatex 3 pass + bibtex exit 0、error 0・undefined 0・23ページ。ミスは事実だが、ゲートが仕事をした。それが仕組みってもんだ」
+
+**Katrina**:（3点、閉めました）
+「①`.tex` の TODO 2件 → DECIDED（09-05、Tak）コメントに置換。アウトラインの『Deliberately NOT yet written』3件は all resolved。②REVIEW_TRACKER.md（99行、0/29）に RETIRED banner — 履歴として凍結、以後更新しません。③abstract は行1–3 + B/C 草案が §0-bis で待機のまま。**残タスクは Terminal pass のみ**です」
+
+**Jessica**:（締めておく）
+「Let me be clear。本文に open item は無くなった。残る鍵は一つ — 『最終の原稿』の宣言。それは Tak の言葉であって、我々が急かすものではない」
+
+---
+
 
 ### [2026-09-01 14:35] Scene: Intro が閉じた — そして「最後の一語」は最後ではなかった
 

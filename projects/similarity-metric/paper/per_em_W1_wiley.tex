@@ -309,13 +309,11 @@ RV3   & 0.620 / 0.736 & 0.448 / 0.953 & 0.131 / 0.339 & 0.189 / 0.247 \\
 
 Supplying the true number of clusters is itself an oracle no sponsor has. Re-running the task with the number of clusters estimated by the silhouette criterion changes little for $W_1$ (its ARI at $n = 100$ falls by 0.005--0.023 across the four worlds) and most for the KS statistic (by 0.260 in Set 1 and 0.179 in Set 2, because its distance structure leads the silhouette to choose two clusters). Two honest qualifications attach. First, in the hard worlds no measure recovers the true number of clusters at $n = 100$: the modal choice is two for every measure in Sets 3 and 4, and the highest rate of choosing the true number is 0.228 and 0.288 respectively---a limit of the task, not a difference between measures. Nor is hitting the true number itself evidence of quality: in Set 3, measures whose ARI is near zero hit it at least as often as $W_1$, because a noise distance matrix can land on the right count by accident. Second, $W_1$'s Set 3 advantage over the KS statistic under the oracle ($+0.023$ at $n = 100$) disappears without it ($-0.005$).
 
-% TODO (2026-08-30): the outline's remaining Study 2 material is deliberately
-% not yet written here: (i) the rho = W1/(KS*sigma_EM) regime heuristic and its
-% rho/rho_trans normalization (per-cell rho_trans values are not yet covered by
-% the verification gate; section 4.5's rho paragraph waits on the same machinery);
-% (ii) the oracle-best-threshold steelman and the threshold-rule operating
-% characteristics (Part 1B), whose placement relative to section 2.6 is an open
-% structural question.
+% DECIDED (Tak, 2026-09-05): the outline's remaining Study 2 material will NOT
+% be written -- (i) the rho = W1/(KS*sigma_EM) regime heuristic (per-cell
+% rho_trans never entered the verification gate) and (ii) the oracle-best-
+% threshold steelman with the Part 1B operating characteristics. The section
+% is complete as it stands.
 % DECIDED (Tak, 2026-08-30, option A): outline subsection 3.1.4 (procedure
 % justification, anchor-vs-clustering, 100k reps) will NOT be written here --
 % its content stays in the Discussion paragraph sourced from
@@ -616,12 +614,11 @@ Among the jointly eligible partners, R4 emerges as the leading single-pool candi
 % 30 anchor distances are bit-identical to results/gusto_r8_w1_per_pair.csv.
 % Pool diameters cross-checked against data/GUSTO/gusto_all_pairwise.csv
 % (max |diff| 4.9e-15 over the 30 anchor distances, 2026-08-30).
-% TODO (2026-08-30, updated same day): items (a) and (b) of the original note
-% were resolved when Study 2 entered Section 3 (this subsection now cites
-% sec:study2_classification and sec:study2_clustering). Remaining: (c) the rho
-% paragraph below still does not cite the rho/rho_trans regime, because that
-% machinery and its per-cell verification are not yet in Section 3 -- see the
-% TODO at the end of sec:study2_clustering.
+% DECIDED (Tak, 2026-09-05): the rho paragraph below stays as written -- the
+% rho/rho_trans regime is not written into Section 3 (see the decision note at
+% the end of sec:study2_clustering), so no regime citation is added here.
+% (Items (a) and (b) of the original note were already resolved on 2026-08-30
+% when Study 2 entered Section 3.)
 The preceding subsections applied the proposed framework alone. To place its selection in context, we repeated the complete partner-selection exercise with the alternative measures a sponsor could have used at the planning stage: the KS statistic and SMD of Section~\ref{sec:existing}, and the three representative-value distances RV1--RV3 of Section~\ref{sec:study2_design} (RV1 the distance of Komiyama et al.\ as written; RV2 and RV3 our extensions).\cite{komiyama2024} KL divergence is omitted for the reasons given in Section~\ref{sec:existing}. Because no alternative measure has a pathway from a clinical margin to a decision threshold, none can be given its own $\tau$; instead---mirroring Study 2's device---each measure admits its $k$ closest partners, where $k$ is the number $W_1$ admits at $\tau_{\text{clin}}$ ($k = 9$ on age, $k = 11$ on SBP). Matching the count removes any advantage or penalty from admitting more or fewer partners.
 
 Table~\ref{tab:app_allmethods} summarizes the agreement of each measure with $W_1$. On both effect modifiers, the KS statistic, SMD, and RV1 admit exactly the partners $W_1$ admits, and the joint selection under the AND rule is identical for all four measures: R1, R4, R5, R6, R14, R15, precisely the six regions of the preceding subsection. Only RV2 and RV3 depart, and their joint selections differ from the consensus and from each other (RV2: R1, R4, R5, R7, R12, R15; RV3: seven regions, R1, R4, R7, R9, R10, R12, R15).

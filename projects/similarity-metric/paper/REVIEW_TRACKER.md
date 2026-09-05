@@ -1,3 +1,5 @@
+> **RETIRED 2026-09-05 (Tak).** Sentence-level tracking was superseded by the paragraph-review process (per `memory/feedback_review_process.md`: paragraph unit, not sentence unit); progress lives in SUITS.md and PAPER_OUTLINE_BILINGUAL.md. Kept for history; no longer maintained. 0/29 rows were processed under the old nABCD wording.
+
 # Sentence-by-Sentence Review Tracker
 
 > レビュー方法: 各文に対して Tak が判定を下す
