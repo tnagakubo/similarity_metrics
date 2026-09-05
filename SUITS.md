@@ -54,6 +54,25 @@
 
 ## 🎬 Live Script
 
+### [2026-09-06 00:15] Scene: 大掃除 — 14ファイルが archive へ、机の上には現役だけが残った
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*Tak「最終原稿はまだ確定しない。古い情報はすべて archive しろ。そのうえで論理構造を図示しろ」。Donna が全ファイルを棚卸しし、判定基準を「現役の供給源か、役目を終えた記録か」に置く。*
+
+**Donna**:（棚卸しの結果よ）
+「**archive 14件** — 適用済み draft（s25_s26 arc）、実行済み plan（selection sim・restructure・ARS chapter plan）、旧図（paper_logic_ja ×2・sim_plan_ja）、05-16 の figure/results ノート2件、retired tracker、idea 段階の process note、旧 briefing v3、そして nABCD スライド。`archive/README.md` に全件の理由と後継を記録。
+**keep** — `.tex` が現に参照する Supplement A/D、source of truth の EXISTING_METHODS_AND_NOVELTY、outline、R/・results/（gate 検証済み数値）、GUSTO データ、GSC poster」
+
+**Louis**:（一件だけ注意書きを付けさせた）
+「SIMULATION_FINDINGS.md — 07-20 時点の整理で、**08-30 のゲートが訂正した記録誤り9件を含む版**だ。archive README に『**この file から数値を引用するな**』と明記した。archive は保存であって免罪じゃない」
+
+**Katrina**:（残った机の上）
+「project 直下は EXISTING_METHODS_AND_NOVELTY.md と PAPER_OUTLINE_BILINGUAL.md の2枚 + 実働ディレクトリのみ。IDEAS_BACKLOG の『nABCD paper』も現名称に修正。次: 論理構造図 — 旧 paper_logic_ja の後継 `PAPER_LOGIC.md` + 図示 artifact を作ります」
+
+---
+
+
 ### [2026-09-05 00:05] Scene: ①削除 ②リタイア ③まだ — 本文の TODO がゼロになった夜と、Donna の行番号
 
 **INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**

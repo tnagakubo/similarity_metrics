@@ -24,7 +24,7 @@ Tak のアイデアを記録。頃合いを見計らって Donna がリマイン
 - ICH E17 の regional consistency との関係？
 
 **Remind when**:
-- nABCD paper が一段落したとき
+- similarity-metric paper（per-EM W₁）が一段落したとき
 - 因果推論関連の文献を読んだとき
 - 新しいプロジェクト開始時
 
