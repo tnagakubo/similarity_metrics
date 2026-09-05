@@ -54,6 +54,24 @@
 
 ## 🎬 Live Script
 
+### [2026-09-06 01:00] Scene: 論理構造図が立った — そして節番号のずれが正された
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*archive の後、Katrina が旧 paper_logic_ja の後継を組む。図を描く前に Mike が `.aux` を引き、内部記録の節番号が compiled numbering からずれていたことを発見。*
+
+**Mike**:（描く前に番号の裏を取りました）
+「`.aux` の newlabel 全数確認 — **operability は §2.5**（内部記録の『§2.6』は旧構成の呼称）、**SMD の定式化は §2.1**（『§2.2』と呼んでいた）。参照は全て \ref なので本文は無傷ですが、¶7 の承認コメント1件だけ『Section 2.2』とあったので 2.1 に修正。以後の正は図と PAPER_LOGIC.md です」
+
+**Katrina**:（2つ組みました）
+「**①`PAPER_LOGIC.md`**（repo、mermaid + 台帳表）— 旧 `paper_logic_ja.drawio/html` の後継、archive README から参照済み。**②Artifact『Per-EM W₁ Argument Map』**— §1→§5 の論証を1枚の SVG に: gap（brick）→ W₁ 採用と KR 双対性の背骨（teal）→ 2つの simulation 証拠（blue）→ GUSTO パイプライン（amber）→ Discussion の3主張。主張↔証拠の台帳と3つの問い、統治ルール（判断④・scope・RV 拡張・abstract 250w）も同じページに載せました。Results speak for themselves」
+
+**Donna**:（締めるわ）
+「本日の Tak 指示3点 — ③最終原稿は未確定（記録済み）、archive 14件（済）、論理構造図（済）。commit して報告する」
+
+---
+
+
 ### [2026-09-06 00:15] Scene: 大掃除 — 14ファイルが archive へ、机の上には現役だけが残った
 
 **INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
