@@ -38,6 +38,7 @@
 ### 次にやるべきこと（残タスク）
 
 - **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**。**Study 2 が §3 に入ったので全5件に着地点あり — Tak とのレビューでいつでも実行可**（¶1・¶5 には TODO コメント設置済み）
+- **▶ 進行中: 査読応答の段落レビュー（Harvey 推奨キュー）** — (1) L_UB: **¶A §2.4-L174 提示中** → ¶B §2.4-L190 → ¶C §4.4-L563 → ¶D Discussion limitation 新設 → (2) 綻び2件（§2.5-L214・§4.2）→ (3) binary remark + L66 → (4) RWE caveat → (5) presentation 3点 → (6) minors
 - ✅ **Intro レビュー完了（09-01）** — ¶7・¶8 = Option B、¶9 = Option C（roadmap 3点 + §3 節題 Studies）。Discussion ¶8 の "the index"（06-22 監査の取り逃し）も distance へ修正済み
 - ~~§3.1.4 の配置~~ → ✅ **決定（2026-08-30、Tak: 案A）**。Discussion 段落に留める。§3.1.4 は書かない（.tex/アウトラインに記録済み）
 - ✅ **必須修正の段落レビュー完了（本文分）** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ abstract 3件は **Tak 指示（08-31）で最終原稿完成後の Terminal pass へ保留**（B/C 草案は §0-bis に保存、SIM 規定 250 words）。abstract L40 の "scale and skewness" も行3 pass で再検討
@@ -53,6 +54,29 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-09-06 20:40] Scene: 応答適用フェーズ開幕 — L174、「directly」の一語が背負っていたもの
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Tak「Harvey推奨ですすめて」。キュー (1) L_UB 再位置付け（¶A §2.4-L174 → ¶B §2.4-L190 → ¶C §4.4-L563 → ¶D Discussion limitation 新設）から text 順で開始。¶A の提示前チェック。*
+
+**Donna**:（pre-check 済み）
+「¶A には R2.1(b) の核『provides a per-unit slope directly』がいる。ついでに『direction and significance of interaction』の **"significance"** — estimation-centered の論文で避けてきた言葉が残ってるから、同じ段落レビューで一緒に処理するわ」
+
+**Louis**:（Aの一句修正では守れない）
+「『directly』を消すだけなら簡単だ。だが査読者の次の質問は決まってる — **『では slope から L をどう作るんだ』**。答え（下界である事実 + safety factor + premise の条件性）まで段落に書いて初めて review に耐える。Mike のメモの Option A はそこまで含む — 段落側の形としては **B（構造改変）**だ」
+
+**Mike**:（P4 を検証しました）
+「『平均勾配は Lipschitz constant の下界』— 線形射影の係数は β = Cov(τ(X),X)/Var(X) で、平均値定理から |β| ≤ sup|τ′|。数学的に正確です。safety factor κ は非劣性 margin の discounting と同型の**判断**として書き、値は指定しない — P5 の範囲内。premise sup|τ′| ≤ L の条件性を明示すれば、Δ_max の bound 語彙は守れます」
+
+**Katrina**:（影響範囲）
+「¶A 内で完結、\cite 4件は温存。localization remark（部分積分）は §2.2/Appendix 側、limitation 段落は ¶D — この段落には積まない設計です」
+
+*Options A/B/C を Tak に提示。ボールは Tak へ。*
+
+---
+
 
 ### [2026-09-06 20:10] Scene: 三隊帰還 — 反撃の弾薬が揃い、ついでに本文の綻びを2つ見つけてきた
 
