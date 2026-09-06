@@ -54,6 +54,36 @@
 
 ## 🎬 Live Script
 
+### [2026-09-06 18:40] Scene: External Review — SIM Simulation。封筒の中身は Major Revision、そして想定外が5つ
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak「誰か外部のレビューしてもらってコメントもらえる？」。新設計の /external-review — AE が cold read（title・abstract・keywords・見出しのみ）で査読者3名を割り当て、各査読者が全文を独立レビュー。封筒が届き、Harvey が開ける。*
+
+**Harvey**:（手紙を読みながら）
+「Statistics in Medicine の模擬レビューだ。AE の判定は **Major Revision**。査読者は3名 — MRCT regulatory biostatistician、nonparametric methods specialist、trial design methodologist」
+
+**Louis**:（レビューを分類しながら）
+「Critical 2件、Major 8件、Minor 多数。**想定外が5つある**。
+**①L_UB の根拠が prognostic slope — prognostic は predictive の上界にならない**（R2/R1 が同時に突いた。『any plausible CATE sensitivity falls below them』は論理が飛んでいる）。
+**②L_clinical = Lipschitz 定数 vs IPD meta-regression の interaction slope = 平均勾配** — 非線形 CATE を動機にした論文が、較正入力に線形勾配を使う内部緊張。
+**③動機の secukinumab 例は binary EM なのに手法の scope は連続 EM のみ**。
+**④RWE/registry の分布は治験登録集団の分布と選択で乖離する** — policy 段落が無条件に advantage と主張している。
+**⑤Study 2 → Study 1 の提示順と番号の逆転** — cold reader は確実に混乱する。
+これは我々のレビュー体制が『論文の中』ばかり見て、**入力（L_UB）と scope の境界を見ていなかった**ということだ」
+
+**Mike**:（メモを取りながら）
+「①②は同根です — Prop.1 の L は sup|τ'|、evidence が与えるのは平均勾配。応答は (a) L_UB を『evidence-derived bound』でなく『illustrative bound』として明示的に位置付け直す、(b) 非線形 τ での乖離を Supplement D で定量的に論じる、の二段が候補。③は W₁ の binary 特殊形 |p₁−p₂| で拡張が自明なので、scope 文の書き方の問題です」
+
+**Harvey**:（決断）
+「対応の優先順位 — **①②が Critical、③④が Major の筆頭**。ただし本文は一行も動かさない。**全て Tak との段落レビュー案件だ**。Mike は ①② の技術応答メモ、Rachel は prognostic vs predictive の文献（deft 含む）、Katrina は notation 表と workflow box の設計案、番号逆転の解消案。abstract 指摘（250語超）は既知 — Terminal pass に合流させる」
+
+**Donna**:（記録したわ）
+「レビュー全文・decision letter・triage を Tak に提出。対応方針の判断はボールごと Tak へ」
+
+---
+
+
 ### [2026-09-06 01:00] Scene: 論理構造図が立った — そして節番号のずれが正された
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
