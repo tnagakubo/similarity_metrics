@@ -38,7 +38,7 @@
 ### 次にやるべきこと（残タスク）
 
 - **`.tex` 必須修正5件（判断④由来、未適用）** — abstract の "small-sample" 2箇所／simulation 文を Study 2 先頭へ／Discussion ¶1(i) の S5・S6 参照張り替え／**Discussion ¶5「addresses all three」に controlled な読み**。⚠ 既存散文ゆえ**段落レビューを通す**。**Study 2 が §3 に入ったので全5件に着地点あり — Tak とのレビューでいつでも実行可**（¶1・¶5 には TODO コメント設置済み）
-- **▶ 進行中: 査読応答の段落レビュー（Harvey 推奨キュー）** — (1) L_UB: ¶A ✅（B）→ ¶B ✅（C、09-06、ballman2015/kent2020 追加）→ **¶C §4.4 提示中** → ¶C §4.4-L563 → ¶D Discussion limitation 新設 → (2) 綻び2件（§2.5-L214・§4.2）→ (3) binary remark + L66 → (4) RWE caveat → (5) presentation 3点 → (6) minors
+- **▶ 進行中: 査読応答の段落レビュー（Harvey 推奨キュー）** — (1) L_UB: ¶A ✅（B）→ ¶B ✅（C、09-06、ballman2015/kent2020 追加）→ ¶C ✅（C、09-06、記法統一込み）→ **¶D Discussion limitation 新設 提示中** → ¶C §4.4-L563 → ¶D Discussion limitation 新設 → (2) 綻び2件（§2.5-L214・§4.2）→ (3) binary remark + L66 → (4) RWE caveat → (5) presentation 3点 → (6) minors
 - ✅ **Intro レビュー完了（09-01）** — ¶7・¶8 = Option B、¶9 = Option C（roadmap 3点 + §3 節題 Studies）。Discussion ¶8 の "the index"（06-22 監査の取り逃し）も distance へ修正済み
 - ~~§3.1.4 の配置~~ → ✅ **決定（2026-08-30、Tak: 案A）**。Discussion 段落に留める。§3.1.4 は書かない（.tex/アウトラインに記録済み）
 - ✅ **必須修正の段落レビュー完了（本文分）** — Discussion ¶1 ✅（Option B）→ ¶5 ✅（Option B）→ ¶6 ✅（Option B、08-31）→ abstract 3件は **Tak 指示（08-31）で最終原稿完成後の Terminal pass へ保留**（B/C 草案は §0-bis に保存、SIM 規定 250 words）。abstract L40 の "scale and skewness" も行3 pass で再検討
@@ -54,6 +54,18 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-09-06 23:50] Scene: ¶C は C — application 側の演繹が消え、記法が §2–§4 で揃った
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Tak「C」。¶C を §2.4 の judgment 框組みに整列、§4.4 の記法を L_{UB,em} 型へ統一（旧型残存 0）。「supports a conservative upper bound」の本文残存 0（承認コメント内の引用のみ）。コンパイル error 0・undefined 0・23ページ。キュー (1) の残りは ¶D — L159 が予告して存在しない Discussion の受け皿。*
+
+**Katrina**:（検証済み）
+「記法統一は表 caption・感度分析段落を含め4行が L_{UB,age}/L_{UB,SBP} に。notation 表の下書きがそのまま書ける状態になりました」
+
+---
+
 
 ### [2026-09-06 23:25] Scene: ¶B は C — 演繹が判断に降格し、Ballman と PATH が引用に入った
 
