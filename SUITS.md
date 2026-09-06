@@ -54,6 +54,32 @@
 
 ## 🎬 Live Script
 
+### [2026-09-06 20:10] Scene: 三隊帰還 — 反撃の弾薬が揃い、ついでに本文の綻びを2つ見つけてきた
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*3チームが `review_response/` に納品完了。Donna が検品し、Tak への一括報告へ。*
+
+**Mike**:（technical memo — 最重要3点）
+「**①R1.2 は valid** — L190/L563 の『prognostic slope を超えるから plausible な CATE 感度はその下』は non sequitur。応答は Option A: L_UB を sponsor-specified illustrative input に再位置付け + 正しい情報関係 |τ′| ≤ |R₀′|+|R₁′|（arm 分解）+ 既存の 0.8×–2× 感度分析を主たる robustness 文へ昇格。
+**②R2.1(b) は数学的に valid だが『内部矛盾』は過大** — Prop.1 の仮定は Lipschitz であって線形ではない。欠陥は L174 の一文に局在し、GUSTO 応用は両 EM とも L* 経路で meta-regression slope を使っていない。
+**③multiplicity の答えは論文を強くする** — Bonferroni 流 q_{1−0.05/30} でも flip するのは marginal な resolved 3件（R6/R12/R14）だけで、age unresolved が 6→9 に増え、**partner selection は不変**。全数値は tmp script（seed 固定）で再現済み、production の w1_obs 7値と完全一致」
+
+**Louis**:（そして拾い物だ）
+「Mike の隊が本文の綻びを2つ見つけた — **(a)** §3 冒頭近くの『operability 条件は2つの EM の一方で fail する』は eq (8) の定義（τ > q95）では**全30行 pass** で偽。§4.2 が実際に使っているのは per-partner の resolution（w1_obs vs floor）で、**§2.5 の定義と §4.2 の運用の間に語の乖離**がある。**(b)**『regional samples exceed two thousand』は R16 n=1,231 ほか4地域で偽。どちらも段落レビュー案件だ」
+
+**Rachel**:（文献 — 10本、全 DOI 検証済み）
+「Supplement D の天井主張は無引用・無条件のままでは偽ですが、**FTT の RR 近定常性を条件に明示すれば成立**し、保守性は約一桁です。応答チェーン: Ballman（taxonomy 譲歩）→ Glasziou–Irwig の ARR 分解 + PATH → 保守性定量（≈0.18×）→ deft/Riley 2020（正道の推定）。RWE 側は Steg GRACE・Rothwell・Kennedy-Martin で譲歩し、Westreich/Dahabreh の reweighting で建設的に返します」
+
+**Katrina**:（presentation — 推奨確定）
+「番号逆転は **Option (iii) 番号廃止・記述名**（swap は履歴・verify script の "Study 2" が逆の意味になる照合リスク）。notation 表 23 symbols・workflow box は cls 同梱パッケージで追加依存なし。S6 = LogN(μ≈3.787, σ=0.5) を script から特定、seed は operability の 20260821 だけ tex 未記載、placeholder 9箇所列挙済み」
+
+**Harvey**:（次の一手）
+「弾は揃った。**適用は全部 Tak との段落レビューだ。** 推奨順序 — (1) L_UB 再位置付け（§2.4/§4.4、R1.2+R2.1 を一括で閉じる）(2) Louis の綻び2つ（事実訂正）(3) binary remark + scope 文 (4) RWE caveat 1–2文 (5) presentation 3点 (6) minors。ボールは Tak へ」
+
+---
+
+
 ### [2026-09-06 19:45] Scene: 三隊同時展開 — Major Revision への応答準備
 
 **INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
