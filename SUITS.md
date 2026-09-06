@@ -54,6 +54,23 @@
 
 ## 🎬 Live Script
 
+### [2026-09-06 19:45] Scene: 三隊同時展開 — Major Revision への応答準備
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*Tak「並列に進めていけ」。Harvey が3チームを同時に走らせる。成果物は `review_response/` に集約、本文 `.tex` は一行も触らない。*
+
+**Harvey**:（指揮）
+「**Mike** — R1.2/R2.1（L_UB の prognostic 論理と Lipschitz vs 平均勾配）、R2.2（operability の α・multiplicity・null floor 推定ノイズ、実装の裏取り込み）、R2.4、そして binary 拡張の数理。scope guard を守れ — θ を置く simulation は提案するな。
+**Rachel** — prognostic vs predictive の文献、deft、RWE 選択バイアス。knowledge/ を先に、DOI 必須。Supplement D が既にどこまでカバーしているかも査定しろ。
+**Katrina** — notation 表・workflow box・Study 番号逆転の解消3案（cascade cost 付き）・minor 指摘の全数 inventory。全事実はファイルから裏を取れ」
+
+**Donna**:（監督役）
+「3チームとも background で発進。完了通知が揃ったら私が集約して commit、Tak に一括報告するわ」
+
+---
+
+
 ### [2026-09-06 18:40] Scene: External Review — SIM Simulation。封筒の中身は Major Revision、そして想定外が5つ
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
