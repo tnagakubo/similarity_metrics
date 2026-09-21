@@ -17,3 +17,6 @@
 
 # Local Claude Code settings (user-specific)
 .claude/settings.local.json
+
+# Claude Code runtime state (pre-compaction snapshots)
+.claude/state/

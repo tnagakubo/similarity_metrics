@@ -89,6 +89,17 @@ Progress is recorded as a Japanese drama script in `SUITS.md`:
 - `/motivate` - Encouragement
 - `/victory` - Celebrate
 
+### Lifecycle (see `RESEARCH_FRAMEWORK.md`)
+- `/phase [next | set N]` - Show / advance the 10-phase lifecycle (gates verified on disk by Donna)
+- `/protocol {study}` - Pre-register a simulation / analysis protocol (Phase 2)
+- `/pre-review [section]` - Proactive self-review by all members (Phase 6 entry)
+- `/submission-check` - Terminal pass before submission (Phase 7)
+- `/respond-reviewers [init|status|close]` - Point-by-point reviewer response tracker (Phase 8)
+- `/verify-numbers`, `/handoff` - Numbers gate / persistence guard (any phase)
+
+Phase state lives in `projects/{project}/LAB_STATUS.md`. Member subagents are defined in
+`.claude/agents/` (persona source: `agents/*.md`); path-scoped rules in `.claude/rules/`.
+
 ## External Experts
 
 The `/external-review`, `/simulate-qa`, and `/defend` commands dynamically generate
@@ -105,14 +116,20 @@ These are fictional characters paying tribute to statistical giants, not the act
 
 ```
 research-lab/
-├── CLAUDE.md           # Project rules
-├── SUITS.md            # Live drama script
-├── README.md           # This file
-├── archives/           # Archived SUITS.md files
-├── agents/             # Team definitions
-├── knowledge/          # Knowledge base
-├── projects/           # Workspaces
-└── templates/          # Templates
+├── CLAUDE.md              # Project rules
+├── RESEARCH_FRAMEWORK.md  # 10-phase research → paper lifecycle + Claude Code feature map
+├── SUITS.md               # Live drama script
+├── README.md              # This file
+├── .claude/
+│   ├── agents/            # Member subagents (harvey, mike, donna, rachel, katrina, louis, jessica)
+│   ├── rules/             # Path-scoped rules (paper-writing, r-code, suits-script)
+│   ├── skills/            # Slash commands
+│   └── hooks/             # Enforcement hooks (Donna)
+├── archives/              # Archived SUITS.md files
+├── agents/                # Persona definitions (source of truth for voice)
+├── knowledge/             # Knowledge base
+├── projects/              # Workspaces (each with LAB_STATUS.md)
+└── templates/             # Templates
 ```
 
 ## FAQ
