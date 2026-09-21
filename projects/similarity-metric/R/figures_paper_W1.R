@@ -3,10 +3,19 @@
 # Author: Katrina Bennett
 # Date: 2026-05-16
 #
-# Three main paper figures, rebuilt for the Path α (W1 raw / rho dimensionless)
-# framework. Mirrors the structure / standards of figures_paper.R but uses
-# W1-raw simulation results (results/w1_raw_simulation.rds) for fig2 and
-# rho-axis labelling for fig3.
+# Paper figures rebuilt for the Path α (W1 raw / rho dimensionless) framework.
+# Mirrors the structure / standards of figures_paper.R.
+#
+# 2026-09-21 (Tak's decision): figure 2 is NO LONGER produced here. The single
+# source of truth for fig2_simulation_results{,_color}.{pdf,png} is
+#   R/fig2_bar_chart.R  ->  generate_fig2_bars()
+# which reads the canonical Study 1 summary
+#   projects/similarity-metric/results/w1_raw_summary.csv  (2026-05-17 run,
+#   exact-quadrature S6/S7 truth; see results/STUDY1_PROVENANCE.md).
+# The fig2 block that used to live here read the superseded repo-root
+# results/w1_raw_simulation.rds ($summary = Monte-Carlo truth), now archived at
+# archives/results_root_20260516/, and silently overwrote the canonical output.
+# This script therefore reads nothing from any results/ tree.
 #
 # Paper standards (feedback_figure_paper_standard.md, 2026-04-29):
 #   width = 7"  (paper), base_size = 11, bg = white, greyscale palette
@@ -17,7 +26,6 @@
 #
 # Outputs (greyscale, paper):
 #   figures/fig1_w1_definition.{pdf,png}
-#   figures/fig2_simulation_results.{pdf,png}   (replaces v2 nABCD-based)
 #   figures/fig3_gusto_r8_forest.{pdf,png}      (rho axis)
 # Slides (color):
 #   _color.{pdf,png} variants
@@ -71,14 +79,9 @@ DATA_DIR_W1   <- file.path(.project_root, "data")
 GUSTO_CSV_W1  <- file.path(DATA_DIR_W1, "GUSTO", "gusto_r8_results.csv")
 OUTPUT_DIR_W1 <- file.path(.project_root, "figures")
 
-# Path α simulation results live at the REPO root (results/), not under
-# projects/similarity-metric/. Resolve from project root:
-.sim_repo_root <- function() {
-  # .project_root = .../projects/similarity-metric  → up two = repo
-  normalizePath(file.path(.project_root, "..", ".."), mustWork = FALSE)
-}
-W1_SIM_RDS    <- file.path(.sim_repo_root(), "results", "w1_raw_simulation.rds")
-W1_TRUTH_RDS  <- file.path(.sim_repo_root(), "results", "w1_raw_truth.rds")
+# No simulation-results input is read here. The Study 1 simulation output is
+# consumed only by R/fig2_bar_chart.R (fig2) and R/study1_summary_exact.R
+# (tables), both of which resolve it under projects/similarity-metric/results/.
 
 # Paper theme (consistent with figures_paper.R)
 theme_set(theme_bw(base_size = 11) +
@@ -172,87 +175,19 @@ fig1_w1_definition <- function(palette = c("greyscale", "color")) {
 }
 
 # =============================================================================
-# Figure 2: Simulation operating characteristics — W1 raw
-# 3-panel horizontal: (A) Bias, (B) Coverage, (C) Mean CI width
-# X-axis: n per group {50, 100, 200}. Color/line: scenario S1-S7.
-# Y-axis: W1 raw units (per scenario; common abstract unit since
-# scenarios share an N(50, 10^2) baseline).
+# Figure 2: NOT generated here (2026-09-21, Tak's decision)
+#
+# fig2_simulation_results{,_color}.{pdf,png} is produced exclusively by
+#   R/fig2_bar_chart.R  ->  generate_fig2_bars()
+# (grouped bar chart, 10" x 3.5", reading the canonical Study 1 summary
+#  projects/similarity-metric/results/w1_raw_summary.csv).
+#
+# The former line-plot generator (fig2_w1_simulation / .load_w1_summary /
+# .scenario_palette_W1) read the superseded repo-root results/ rds and wrote
+# the same filenames, so any re-run of this script silently replaced the
+# canonical figure. It has been removed; see git history and
+# projects/similarity-metric/archive/figure_rebuild_notes.md for the record.
 # =============================================================================
-
-.load_w1_summary <- function() {
-  if (!file.exists(W1_SIM_RDS)) {
-    stop("W1 simulation RDS not found at: ", W1_SIM_RDS,
-         "\nRun w1_raw_simulation.R first.")
-  }
-  sim <- readRDS(W1_SIM_RDS)
-  df  <- sim$summary
-  df$scenario <- factor(df$scenario,
-                        levels = c("S1", "S2", "S3", "S4", "S5", "S6", "S7"))
-  df
-}
-
-# 7-level Okabe-Ito-inspired palette (color) and monotone grey (greyscale)
-.scenario_palette_W1 <- function(palette = c("greyscale", "color")) {
-  palette <- match.arg(palette)
-  if (palette == "color") {
-    c("S1" = "#999999",
-      "S2" = "#E69F00",
-      "S3" = "#56B4E9",
-      "S4" = "#009E73",
-      "S5" = "#CC79A7",
-      "S6" = "#D55E00",
-      "S7" = "#0072B2")
-  } else {
-    # Monotone grey ramp (S1 lightest → S7 darkest)
-    c("S1" = "#BFBFBF",
-      "S2" = "#A6A6A6",
-      "S3" = "#8C8C8C",
-      "S4" = "#737373",
-      "S5" = "#595959",
-      "S6" = "#404040",
-      "S7" = "#1A1A1A")
-  }
-}
-
-fig2_w1_simulation <- function(palette = c("greyscale", "color")) {
-  palette <- match.arg(palette)
-  df  <- .load_w1_summary()
-  pal <- .scenario_palette_W1(palette)
-
-  base <- function(p) p +
-    geom_line(linewidth = 0.5) +
-    geom_point(size = 1.8) +
-    scale_x_continuous(breaks = c(50, 100, 200)) +
-    scale_color_manual(values = pal) +
-    labs(x = "n per group", color = "Scenario")
-
-  # Panel (A): Bias
-  pA <- base(ggplot(df, aes(x = n, y = bias,
-                            color = scenario, group = scenario))) +
-    geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
-    labs(y = expression(Bias~"of"~widehat(W)[1]~"(units of "*W[1]*")"),
-         subtitle = "(A) Bias")
-
-  # Panel (B): Coverage (95% bootstrap CI)
-  pB <- base(ggplot(df, aes(x = n, y = coverage_pct,
-                            color = scenario, group = scenario))) +
-    geom_hline(yintercept = 0.95, linetype = "dashed", color = "grey50") +
-    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
-    labs(y = "Coverage of 95% bootstrap CI",
-         subtitle = "(B) Coverage")
-
-  # Panel (C): Mean CI width
-  pC <- base(ggplot(df, aes(x = n, y = mean_ci_width,
-                            color = scenario, group = scenario))) +
-    labs(y = expression(Mean~CI~width~"(units of "*W[1]*")"),
-         subtitle = "(C) CI width")
-
-  (pA + pB + pC) +
-    plot_layout(guides = "collect") &
-    theme(legend.position = "bottom",
-          legend.box.margin = margin(t = -8),
-          legend.margin     = margin(t = 0, b = 0))
-}
 
 # =============================================================================
 # Figure 3: GUSTO-I Region 8 forest plot (rho axis)
@@ -319,7 +254,8 @@ fig3_gusto_r8_forest_W1 <- function(palette = c("greyscale", "color")) {
 }
 
 # =============================================================================
-# Generate all three paper figures (greyscale paper + color slides)
+# Generate the paper figures owned by this script: fig1, fig3
+# (greyscale paper + color slides). Fig 2 lives in R/fig2_bar_chart.R.
 # =============================================================================
 
 generate_paper_figures_W1 <- function(output_dir = OUTPUT_DIR_W1) {
@@ -339,18 +275,10 @@ generate_paper_figures_W1 <- function(output_dir = OUTPUT_DIR_W1) {
   }
   message("  fig1_w1_definition: done")
 
-  # --- Fig 2: simulation results (W1 raw) -----------------------------------
-  # Width 7" x 3.5" (consistent with v2 fig2_simulation_results, 3-panel horiz)
-  # Replaces v2 fig2_simulation_results.pdf in-place.
-  for (pal in c("greyscale", "color")) {
-    suffix <- if (pal == "color") "_color" else ""
-    p      <- fig2_w1_simulation(pal)
-    ggsave(file.path(output_dir, paste0("fig2_simulation_results", suffix, ".pdf")),
-           p, width = 10, height = 3.5, bg = "white")
-    ggsave(file.path(output_dir, paste0("fig2_simulation_results", suffix, ".png")),
-           p, width = 10, height = 3.5, dpi = 300, bg = "white")
-  }
-  message("  fig2_simulation_results: done")
+  # --- Fig 2: intentionally NOT written here --------------------------------
+  # fig2_simulation_results{,_color}.{pdf,png} belongs to R/fig2_bar_chart.R
+  # (generate_fig2_bars(), canonical CSV input). Do not re-add a fig2 writer to
+  # this script: it would overwrite the canonical figure with different data.
 
   # --- Fig 3: GUSTO-I R8 forest (rho axis) ----------------------------------
   for (pal in c("greyscale", "color")) {
@@ -363,7 +291,7 @@ generate_paper_figures_W1 <- function(output_dir = OUTPUT_DIR_W1) {
   }
   message("  fig3_gusto_r8_forest: done")
 
-  message("[W1 figures] all three figures regenerated.")
+  message("[W1 figures] fig1 + fig3 regenerated (fig2: see R/fig2_bar_chart.R).")
 }
 
 # Allow direct script invocation

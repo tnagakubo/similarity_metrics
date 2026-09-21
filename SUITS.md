@@ -11,7 +11,7 @@
 
 **Active Project**: similarity-metric (per-EM W₁ paper, target *Statistics in Medicine*)
 **Phase**: 8 — Revision（査読応答）→ `projects/similarity-metric/LAB_STATUS.md`（`/phase`、lifecycle 定義は `RESEARCH_FRAMEWORK.md`）
-**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex`（792 行、git clean）— Intro レビュー完了（2026-09-01）。残: **Terminal pass（abstract）** + 査読応答キュー (1) ¶D 以降 + **claude_science 指摘の段落レビュー（新規、09-21）**
+**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex`（792 行、git clean）— Intro レビュー完了（2026-09-01）。残: **Terminal pass（abstract）** + 査読応答キュー (1) ¶D 以降。claude_science 指摘は abstract を除き着地済み（09-21、24 ページ、error 0）。**未 commit 差分あり（Tak 指示待ち）**
 **JA paper**: 意図的に削除済み（Tak 指示、EN 完成まで。Rule 2.7 保留）→ [[project_ja_paper_deleted]]
 **W₁ 計算系統**: ✅ **統一済み（2026-08-15）**。応用側の全スクリプトが厳密な CDF 面積形 `compute_w1` を使用
 **外部査読**: `projects/similarity-metric/claude_science/`（Claude Science、09-21 生成）— 判定済み。**diff は当てない**、指摘は段落レビューで採用
@@ -30,14 +30,14 @@
 
 ### 進行中のアクション
 
-- **Donna**: SUITS archive 実行中（本シーン）。`worktree.bgIsolation: none` は Tak が 16:21 に settings.json へ投入済み — background job から SUITS 直接編集可
-- **Harvey**: claude_science 指摘の採用順序を提示済み（下記）。Tak の裁定待ち
+- **Harvey**: claude_science 対応完了（abstract 除く）。次は査読応答キュー (1) の **¶D Discussion limitation 新設**の提示
+- **Donna**: `worktree.bgIsolation: none` は Tak が 16:21 に settings.json へ投入済み — background job から SUITS 直接編集可。Louis の agent memory の誤配置（`claude_science/.claude/agent-memory/louis/`）は未移動
 
 ### 次にやるべきこと
 
-- **Tak 判断待ち 2 件（claude_science 由来）**: ① **canonical run の確定** — repo root `results/`（5/16、現在の表と fig2 の出所）か project 側 `results/`（5/17）か。確定後、表 + fig2 を同一 rds から 1 pass で再生成 ② **S6/S7 の真値** — MC 近似（12.15 / 5.85）を厳密値（12.1598 / 5.8332）に置換するか（run 非依存、bias 変化 ≤ 0.013）
-- **claude_science 指摘の採用順序（Harvey 案）**: ① M2 単位（一文、`L_UB,SBP` の 2%pt/10 mmHg も同時）→ ② Minor 4/6 事実訂正 → ③ M1 を残存 3 箇所（L121・L125・L695）込みで段落レビュー（本文 2–3 文 + Appendix、単調 τ の TV elicitability に先回り）→ ④ M4/M5 を R4 文（L627・L683）と一緒に段落レビュー → ⑤ Minor 1/3/7 → ⑥ abstract は Terminal pass、**Option B（outline §0-bis）基点**、referee 版は参考のみ。**M3 は canonical run 決定まで blocking**
-- **足元の修正（協働の前提）**: results tree 一本化／`w1_raw_simulation.R` の `parLapplyLB` を固定割当に（bit-reproducible 化）／`claude_science/verify_corrections.R` の root を canonical へ／表・図の出所 MANIFEST
+- ✅ **claude_science 指摘 12/13 着地（09-21 19:25）**: M1 B・M2・M3（canonical = project、S6/S7 厳密値、表 3 つ + fig2 同一 CSV から再生成）・M4 B・M5 A・Minor 1–7。残: **Minor 8 abstract = Terminal pass（Option B §0-bis 基点）**。Study 1 の出所は `results/STUDY1_PROVENANCE.md`
+- **Tak 判断待ち 3 件（09-21 Mike 発見）**: ① `figures_paper_W1.R` の **fig3 writer**（ρ̂ 軸版で現行 fig3 を上書き）を除去し `fig3_w1_axis.R` を単一 source にするか ② 旧 nABCD の fig2 writer `regen_fig1_fig2_combined.R` / `regen_fig2_simulation.R` の処遇 ③ archive で壊れた `w1_raw_report.R`・`w1_raw_figs.R`・`check_progress.R` を project tree へ repoint するか archive するか。あわせて `w1_raw_simulation.R` の cwd 相対 write（根因）に 1 行 + 5 箇所の修正案（Mike）
+- **足元の修正（残）**: `w1_raw_simulation.R` の `parLapplyLB` を固定割当に（bit-reproducible 化）／S4 n=50 coverage 0.9425 の丸め規約（原稿 formatC 0.942、gate round 0.943）は原稿側を維持
 - **査読応答キュー継続**: ¶D Discussion limitation 新設 → ¶C §4.4-L563 → (2) 綻び 2 件（§2.5-L214・§4.2）→ (3) binary remark + L66 → (4) RWE caveat → (5) presentation 3 点（R3.1 Study 番号・R3.2 notation 表・R3.3 workflow float）→ (6) minors
 - **`.tex` 必須修正 5 件（判断④由来、abstract 分は Terminal pass）**、`paper/submission/SUBMISSION_CHECKLIST.md` は nABCD 期の stale（referee 指摘、投稿前に再生成）
 - **framework の commit**（Tak 指示待ち）。Louis の agent memory が `claude_science/.claude/agent-memory/louis/` に誤配置 → repo root `.claude/agent-memory/` へ移動
@@ -60,6 +60,107 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-09-21 19:25] Scene: M5 Option A — claude_science の指摘、abstract を除いて全件着地
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Tak「A」。§4.3 の R9 文の直後に一文 — "Both small distances are unresolved against their null floors (Section 4.2), so the reversal rests on the two large ones." 落ちの前、段落は一度で終わる。*
+
+**Katrina**:
+「適用・検証済み。コンパイル error 0・undefined 0・24 ページ。Claude Science v2 gate の FAIL は **abstract 356 words** と **S4 n=50 の丸め tie** の 2 つだけ。cascade・proximity・量化子・応用側の数値はすべて PASS。Results speak for themselves」
+
+**Donna**:（台帳を閉じて）
+「claude_science 由来の 13 件のうち 12 件が閉じた。M1 B・M2・M3（canonical 切替）・M4 B・M5 A・Minor 1–7。残る Minor 8 = abstract は Terminal pass。Tak の未回答は 3 つ — fig3 の単一化、旧 nABCD の fig2 writer 2 本、archive で壊れた script 3 本。commit も Tak 指示待ち — working tree は tex・SUITS・CSV・fig2 4 枚・R script 2 本・provenance 4 file・archive rename 4 file」
+
+**Harvey**:
+「次は査読応答キューに戻る。¶D の Discussion limitation だ」
+
+---
+
+### [2026-09-21 19:20] Scene: M4 Option B を適用、fig2 の foot-gun を除去、root results を archive — 残るは M5 と abstract
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Tak「M4 Option B, figures_paper_W1.R 修正, root results archive」。Harvey は tex、Mike は script と archive。*
+
+**Harvey**:
+「M4 Option B、3 箇所。§4.4 の AND 条件段落の直後に新段落（許容的方向、9 中 6・6 中 4 の重なり、R6/R14 の保守的読み）、R4 段落は『resolved evidence 上で最有力、age は未解決』、Discussion ¶2 の R4 節も同旨。承認コメントは 09-21 Option B。cascade: `balanced` 系の残存は abstract L40 のみ（Terminal pass 送り）。コンパイル error 0・undefined 0・24 ページ。Claude Science gate の FAIL は abstract と S4 n=50 の丸め tie だけになった」
+
+**Mike**:（前提の訂正から）
+「I got it — まず僕の前回報告を二つ訂正します。①旧 fig2 block は width 10 in で `fig2_bar_chart.R` と同寸、7 in はコメントだけ。差分は **data（root May-16 rds `$summary` = MC 真値）と plot type（line vs bar）**。②`regen_fig1_fig2.R` 等 3 本は `figures_paper.R` を source していて `_W1` には触れない — 到達可能は誤りで、`figures_paper_W1.R` を source する script は repo にゼロ。そのうえで改修: fig2 writer と `.load_w1_summary()`・`W1_SIM_RDS` を削除し `fig2_bar_chart.R` への pointer を設置（+35/−107）。scratch run で fig1×4 + fig3×4 のみ生成、fig2 は 0、live figures/ の 12 file は md5 完全一致。root `results/` は tracked 4 file を `git mv` で `archives/results_root_20260516/`、mtime 保持、README 付き。archived CSV と canonical CSV は S6/S7 で実際に食い違う（S6 n=50 bias 0.3821 vs 0.3770）— 旧 block が別データを描いていたのは実証済み」
+
+**Louis**:
+「直したのは一丁目だ。同型の foot-gun が **まだ二つ**ある。(A) `figures_paper_W1.R` は今も **fig3 を ρ̂ 軸版で上書き**する — 現行 fig3 は `fig3_w1_axis.R` の raw Ŵ₁ 軸版（Tak 05-17 指示、本文 L566 が参照）。(B) `regen_fig1_fig2_combined.R` / `regen_fig2_simulation.R` は **旧 nABCD の `fig_combo_simulation()` で fig2 を上書き**する。それと archive で壊れた script が 3 本 — `w1_raw_report.R`・`w1_raw_figs.R`（cwd 相対で root を読む、`stop()` で落ちる）、`check_progress.R`（error ではなく『no partial yet』と黙って quit — monitor としては error より悪い）」
+
+**Katrina**:
+「`w1_raw_simulation.R` の根因は L234 の `dir.create("results")` + cwd 相対 write 5 箇所。修正案は `ROOT_ABS` の直後に `RESULTS_DIR <- file.path(dirname(ROOT_ABS), "results")` を 1 行、5 箇所を `file.path(RESULTS_DIR, ...)` に。現状 `SKIP_SIMULATION <- TRUE` なので再発は flag を外した瞬間。`verify_corrections.R` のヘッダ『CSV と rds$summary は一致』は canonical 切替後 S6/S7 で不成立だが、該当関数は未呼び出しなので assertion は落ちない。`archive/figure_rebuild_notes.md:141` の『fig2_bar_chart.R を最後に回せ』は obsolete」
+
+**Jessica**:
+「Let me be clear。fig3 と旧 fig2 writer は design question だ — Mike が一存で動かさなかったのは正しい。Tak に三つ聞け: fig3 の単一化、旧 writer 2 本の処遇、壊れた 3 script の repoint」
+
+**Donna**:
+「Tier B の残りは M5（R2/R9、1 文）。それが閉じれば claude_science の指摘は abstract を除いて全部着地。abstract は Terminal pass — ¶D の Discussion limitation が先よ」
+
+---
+
+### [2026-09-21 17:40] Scene: 三つの裁定を実行 — M1 Option B、canonical = project、S6/S7 厳密値。Study 1 の表と fig2 を同一 CSV から再生成
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Tak「M1 Option B, canonical run project, S6/S7 厳密値」。Harvey が二手に分ける — Mike は M3 + Minor 3 を一体で（project の rds から厳密真値で表と fig2 を 1 pass）、Harvey 自身は M1 Option B を §2.2 と cascade 4 箇所へ。ファイルは重ならない。*
+
+**Harvey**:（§2.2 を書き終えて）
+「M1 Option B、5 箇所に当てた。§2.2 冒頭 3 文 → 4 文（bound は唯一でない／区別は定数と tightness／単調 τ では TV も臨床量／順序 L·W₁ ≤ TV·D_KS、KS が勝つのは threshold case のみ）。§2.1 の『no theoretical connection』と『theoretical link』2 文、§2.2 の『unique』、Discussion ¶1 (ii) と ¶5。gibbs2002 は villani2009 に差し替え、引用ゼロになった。承認コメントは 09-21 Option B で更新。禁止句残存 **0**、proximity 違反 **0**」
+
+**Mike**:（再生成の結果を並べて）
+「I got it! canonical を project tree に切り替え、S6/S7 の truth を quadrature 値 12.159806 / 5.833155 に置換（独立再計算と 5e-7 以内で一致）。S1–S5 は既存 CSV を 3e-14 で再現、S6 bias は全 n で −0.00659、S7 は +0.01225、coverage 変化は最大 0.0011 — 予測どおり。旧 MC-truth summary は `w1_raw_summary_mctruth_20260517.csv` に保存、`STUDY1_PROVENANCE.md` に出所を記録。fig2 は `fig2_bar_chart.R` の loader を rds `$summary`（MC 真値のまま）から新 CSV 読みに変えて再生成、10×3.5 in・greyscale・`_color` 併産。発見が三つ — ①tree 切替で S1–S5 のセルも動く（3 表丸ごと差し替え）②本文『at most 0.189 (S5)』は値も scenario も変わり『0.193 (S7)』③S7 n=100 の旧 0.326 はどちらの run とも合わない既存の転記ミス。C1 cascade check: §3.2 の外に Study 1 の具体数値なし」
+
+**Katrina**:（tex に反映して検証）
+「表 3 つ・Table 2 の真値 12.16 / 5.83・注（MC → quadrature）・本文 4 行を差し替え。旧数値の残存 **0**、コンパイル **error 0・undefined 0・24 ページ**。Claude Science v2 gate: Study 1 表 **80/81** — 残り 1 は S4 n=50 coverage 0.9425 の丸め tie（原稿の既存規約 formatC = 0.942、gate は round() = 0.943）。原稿の他 17 セルは formatC 規約なので 0.942 を維持。cascade の残りは M4 の R4 文 2 箇所のみ。Results speak for themselves」
+
+**Louis**:
+「二つ釘だ。**一つ**、`figures_paper_W1.R` が同名 fig2 を root tree の rds から width 7 in で書き出す — 再実行すれば今日の figure を**黙って上書き**する。`regen_*` から到達可能。直すか殺すか、Tak が決めるまで誰も回すな。**二つ**、root の `results/` は canonical でなくなった。放置すれば次の外部監査がまた M3 を出す。archive へ」
+
+**Jessica**:
+「Let me be clear。Study 1 の数字は今日から一つの CSV と一つの script に紐づいた。次は M4。R4 の文を直さずに新段落だけ入れる版は出すな」
+
+**Donna**:
+「M4+R4 の Option を報告に載せる。commit は Tak の checkout なので指示待ち — working tree には tex・CSV・fig2 4 枚・R script 2 本・provenance が乗ってるわ」
+
+---
+
+### [2026-09-21 17:10] Scene: Claude Science v2 を受けて修正再開 — Tier A 7 件を適用、M1 は段落レビューへ
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - EVENING**
+
+*Tak「claude science の作業完了。修正を続けて」。Tak は 115b00a で全てを commit 済み、working tree は clean。claude_science/ には v2（16:02–16:16）— 我々の判定に応答し、M1 を 5 箇所へ展開、M4 の R4 文を書き直し、abstract を存在量化に修正、verify script に cascade gate（禁止句 8 + proximity rule）を追加。ただし M3 は依然 project 側 CSV を参照、abstract は依然「applied here」。*
+
+**Donna**:（v2 の README を読み上げて）
+「相手は学習したわ。『A claim correction applied to the sentence a referee quoted is not applied to the claim』— Louis の言葉がそのまま README に入ってる。cascade gate は known-bad の原稿に対して FAIL を出す設計。これは受け取る価値がある。ただし M3 の参照ファイルは直っていない — root の canonical run を知らないまま」
+
+**Harvey**:
+「採用順序どおりに動く。**Tier A** — Tak 判断が要らない事実・式・証明は今すぐ当てる。**Tier B** — 承認済み段落の claim 書き換え（M1 5 箇所・M4+R4・M5）は段落レビュー。M3 は canonical run 待ち、abstract は Terminal pass、Minor 3 は Tak 判断待ち。Mike、Tier A を当てて検証まで一気にやれ」
+
+**Mike**:（適用して検証）
+「I got it! Tier A 7 件、`paper/per_em_W1_wiley.tex` に適用しました。①Minor 6 roadmap（§2.1 追加・順序修正）②Minor 1 eq.7 を m 個の distinct 値で再添字、where 節に括弧 1 つ（Louis 案、売り込み 2 文は不採用）③M2 単位 — proportion scale の規約を一文、Δ_clin は『divided by 100 before entering any calculation』と換算を明示 ④Minor 2 S6 = LogN(3.787, 0.5²)、note に CV 53.3%・skew 1.75 ⑤Minor 5 文末の garbled 修正 + S1 95th pct 4.21/2.97/2.11、"exactly" は使わず『when the two regions are identical』⑥Minor 4 『clears the age threshold by only 9.6%』⑦Minor 7 A.1 証明、dense の根拠『a null set contains no interval』を一句。検証: 旧文言残存 **0**、`\emph` **0**、コンパイル **error 0・undefined 0・23 ページ**。Claude Science v2 gate を paper に対して実行 — PASS 11、FAIL 4 は全部 Tier B か保留分（M1 cascade 4 箇所、M4 R4 文、abstract 356 words、Study 1 表 = project CSV 参照）。M2 は FAIL から消えました」
+
+**Louis**:
+「M1 の段落レビューに入る前に一つ釘を刺す。referee v2 の §2.2 は『W₁ の定数だけが elicitable』で押し切ってるが、**τ が単調なら TV(τ) = |τ(b) − τ(a)|、最年少と最高齢の効果差で、臨床家は言える**。だから正直な主張は『定数の性質』じゃなく『**bound の順序**』だ — 線形 τ なら W₁ ≤ (b−a)·D_KS で L·W₁ ≤ TV·D_KS、W₁ 側が常に tight。KS 側が勝つのは τ が狭い範囲で急峻に変わる場合だけで、それは §5 で bound が conservative になると認めた当の threshold case だ。この一文を入れない option は P4 で落とす」
+
+**Rachel**:
+「引用は二点です。W₁ ≤ W₂ の典拠は `villani2009`（既に L140 で引用済み）、`gibbs2002` は metric 間関係の survey なのでその文には残せません。Discussion (ii) の `komiyama2024` は representative-value distances の文に付いたまま維持で問題ありません」
+
+**Katrina**:
+「Discussion ¶1 (ii) と ¶5 は Tak 承認済み（08-30 Option B）。M1 の 5 箇所は一つの決定として提示し、採択後に cascade grep — `unique theoretical`・`specific to $W_1`・`no theoretical connection`・`analogous`・`theoretical link` の残存 0 を acceptance にする。Results speak for themselves」
+
+**Jessica**:
+「Let me be clear。M1 は Methods の背骨に触る。Option は三つ出せ、推奨を一つ付けろ。Tak が選ぶまで §2.2 は一文字も動かすな」
+
+**Donna**:
+「提示は Tak への報告で。M1 → M4+R4 → M5 の順、一段落ずつ。commit は Tak の checkout なので指示待ち — 今は Tier A の 10 行差分が working tree にあるだけよ」
+
+---
 
 ### [2026-09-21 16:25] Scene: Archive
 

@@ -65,8 +65,12 @@ suppressPackageStartupMessages({
 }
 .project_root_fig2 <- .find_project_root_fig2()
 OUTPUT_DIR_FIG2    <- file.path(.project_root_fig2, "figures")
-W1_SIM_RDS_FIG2    <- normalizePath(
-  file.path(.project_root_fig2, "..", "..", "results", "w1_raw_simulation.rds"),
+# Canonical Study 1 summary = the PROJECT results tree (2026-05-17 run) with
+# exact-quadrature truths for S6/S7. Read the CSV, NOT the rds: the rds's
+# embedded `$summary` / `$truth` still carry the superseded Monte-Carlo
+# reference values. See results/STUDY1_PROVENANCE.md.
+W1_SUMMARY_CSV_FIG2 <- normalizePath(
+  file.path(.project_root_fig2, "results", "w1_raw_summary.csv"),
   mustWork = FALSE
 )
 
@@ -96,12 +100,12 @@ theme_set(theme_bw(base_size = 11) +
 }
 
 .load_w1_summary_fig2 <- function() {
-  if (!file.exists(W1_SIM_RDS_FIG2)) {
-    stop("W1 simulation RDS not found at: ", W1_SIM_RDS_FIG2,
-         "\nRun w1_raw_simulation.R first.")
+  if (!file.exists(W1_SUMMARY_CSV_FIG2)) {
+    stop("W1 summary CSV not found at: ", W1_SUMMARY_CSV_FIG2,
+         "\nRun study1_summary_exact.R first.")
   }
-  sim <- readRDS(W1_SIM_RDS_FIG2)
-  df  <- sim$summary
+  df <- as.data.frame(readr::read_csv(W1_SUMMARY_CSV_FIG2,
+                                      show_col_types = FALSE))
   df$scenario <- factor(df$scenario,
                         levels = c("S1", "S2", "S3", "S4", "S5", "S6", "S7"))
   df$n_label  <- factor(paste0("n=", df$n),
@@ -160,7 +164,7 @@ fig2_w1_simulation_bars <- function(palette = c("greyscale", "color")) {
 generate_fig2_bars <- function(output_dir = OUTPUT_DIR_FIG2) {
   dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
   message("[fig2 bars] project root: ", .project_root_fig2)
-  message("[fig2 bars] input RDS   : ", W1_SIM_RDS_FIG2)
+  message("[fig2 bars] input CSV   : ", W1_SUMMARY_CSV_FIG2)
   message("[fig2 bars] output dir  : ", output_dir)
 
   for (pal in c("greyscale", "color")) {
