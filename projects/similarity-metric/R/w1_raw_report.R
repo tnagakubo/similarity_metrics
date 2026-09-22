@@ -3,27 +3,85 @@
 # Author: Katrina Bennett (Technical Writer)
 # Date: 2026-05-16
 #
-# Inputs:
-#   results/w1_raw_simulation.rds   (from w1_raw_simulation.R)
-#   results/w1_raw_summary.csv      (mirror of the summary data frame)
+# 2026-09-22 (Mike): two fixes.
+#   (a) Paths resolve relative to THIS script's location, not the cwd. The
+#       repo-root results/ tree was archived to archives/results_root_20260516/,
+#       so the old cwd-relative "results/w1_raw_simulation.rds" made the script
+#       stop() from anywhere except the old repo root.
+#   (b) Summary AND truth now come from the canonical CSV
+#         projects/similarity-metric/results/w1_raw_summary.csv
+#       (exact-quadrature S6/S7 truth; see results/STUDY1_PROVENANCE.md). The
+#       rds's embedded `$summary` / `$truth` still carry the superseded
+#       Monte-Carlo reference values (S6 = 12.1532, S7 = 5.84541), so reading
+#       them here produced a document whose Table A truth and Table B bias
+#       disagreed. The rds is read only for `$config` (n_reps, B, sample sizes).
 #
-# Output:
-#   paper/w1_raw_simulation_results.md
+# NOTE: the default output target (paper/w1_raw_simulation_results.md) is listed
+# as superseded in projects/similarity-metric/archive/README.md ("Raw Study-1
+# results doc; section 3.2 + results/*.csv are authoritative"). Regenerate it
+# only deliberately; set W1_REPORT_OUT to write elsewhere (scratch check).
+#
+# Inputs  (project-relative)
+#   projects/similarity-metric/results/w1_raw_summary.csv      [canonical]
+#   projects/similarity-metric/results/w1_raw_simulation.rds   [config only]
+#
+# Output  (project-relative; override with W1_REPORT_OUT)
+#   projects/similarity-metric/paper/w1_raw_simulation_results.md
+#
+# No random number generation: the tables are a deterministic re-format of the
+# stored summary.
 # =============================================================================
 
 SKIP_SIMULATION <- TRUE
 
-sim_path <- "results/w1_raw_simulation.rds"
-out_path <- "projects/similarity-metric/paper/w1_raw_simulation_results.md"
+find_project_root <- function() {
+  # script location (Rscript --file=... or source(); two levels up from R/)
+  args  <- commandArgs(trailingOnly = FALSE)
+  f_arg <- sub("^--file=", "", args[grepl("^--file=", args)])
+  if (length(f_arg) > 0 && file.exists(f_arg)) {
+    return(normalizePath(dirname(dirname(f_arg)), winslash = "/"))
+  }
+  ofile <- tryCatch(sys.frame(1)$ofile, error = function(e) NULL)
+  if (!is.null(ofile)) {
+    return(normalizePath(dirname(dirname(ofile)), winslash = "/"))
+  }
+  here   <- normalizePath(getwd(), winslash = "/", mustWork = FALSE)
+  target <- file.path("projects", "similarity-metric")
+  if (dir.exists(file.path(here, target))) {
+    return(normalizePath(file.path(here, target), winslash = "/"))
+  }
+  here
+}
 
+PROJECT_ROOT <- find_project_root()
+RESULTS_DIR  <- file.path(PROJECT_ROOT, "results")
+sim_path     <- file.path(RESULTS_DIR, "w1_raw_simulation.rds")
+summ_path    <- file.path(RESULTS_DIR, "w1_raw_summary.csv")
+out_path     <- Sys.getenv(
+  "W1_REPORT_OUT",
+  unset = file.path(PROJECT_ROOT, "paper", "w1_raw_simulation_results.md")
+)
+
+message("[paths] canonical summary: ", summ_path)
+message("[paths] rds (config only): ", sim_path)
+message("[paths] output           : ", out_path)
+
+if (!file.exists(summ_path)) {
+  stop("Missing canonical summary ", summ_path,
+       "\nRun w1_raw_simulation.R, then study1_summary_exact.R.")
+}
 if (!file.exists(sim_path)) {
   stop("Run w1_raw_simulation.R first; missing ", sim_path)
 }
 
-sim <- readRDS(sim_path)
-summ <- sim$summary
-truth <- sim$truth
-cfg <- sim$config
+summ <- read.csv(summ_path, stringsAsFactors = FALSE)
+cfg  <- readRDS(sim_path)$config
+
+# Truth per scenario comes from the canonical summary (one value per scenario,
+# constant across n); the rds's $truth is the superseded Monte-Carlo version.
+truth_tab <- unique(summ[, c("scenario", "true_W1")])
+stopifnot(nrow(truth_tab) == 7L, !anyDuplicated(truth_tab$scenario))
+truth <- setNames(truth_tab$true_W1, as.character(truth_tab$scenario))
 
 # Ensure ordering S1->S7, n 50/100/200
 summ$scenario <- factor(summ$scenario, levels = c("S1","S2","S3","S4","S5","S6","S7"))
@@ -52,8 +110,8 @@ src_map <- c(
   S3 = "Exact (location shift, same sigma)",
   S4 = "Exact (location shift, same sigma)",
   S5 = "Closed form: sqrt(2/pi) * |sigma_x - sigma_y|",
-  S6 = "Monte Carlo (n = 1e6)",
-  S7 = "Monte Carlo (n = 1e6)"
+  S6 = "Exact (numerical quadrature of the CDF-area integral)",
+  S7 = "Exact (numerical quadrature of the CDF-area integral)"
 )
 
 ids <- c("S1","S2","S3","S4","S5","S6","S7")
@@ -61,7 +119,7 @@ ids <- c("S1","S2","S3","S4","S5","S6","S7")
 tableA <- data.frame(
   Scenario     = ids,
   Description  = desc_map[ids],
-  `True_W1`    = vapply(ids, function(id) fmt_num(truth[[id]]$truth, 4),
+  `True_W1`    = vapply(ids, function(id) fmt_num(truth[[id]], 4),
                         character(1)),
   Source       = src_map[ids],
   check.names = FALSE,
@@ -105,7 +163,7 @@ get1 <- function(scen, n, col) {
 }
 
 # Narrative comparison vs v2 (nABCD = W1/IQR ratios from simulation_results_v2.csv)
-v2_path <- "projects/similarity-metric/data/simulation_results_v2.csv"
+v2_path <- file.path(PROJECT_ROOT, "data", "simulation_results_v2.csv")
 v2_summary <- if (file.exists(v2_path)) {
   read.csv(v2_path, stringsAsFactors = FALSE)
 } else NULL
@@ -136,8 +194,10 @@ sec_A <- sprintf("
 
 For S1-S4 (normal location shifts at common sigma), W1(N(mu1, sigma^2), N(mu2, sigma^2)) = |mu1 - mu2| is exact.
 For S5 (same-mean different-sigma normals), W1 = sqrt(2/pi) * |sigma_x - sigma_y| (closed form). For S6 and S7
-(log-normal mixture and location+scale combination), no closed form is available; we use a Monte Carlo estimate
-with n_MC = 10^6 from the canonical wasserstein1() implementation as the population reference.
+(log-normal and location+scale combination), no closed form is available; the population reference is the
+numerical quadrature of the CDF-area integral W1 = integral |F1(t) - F2(t)| dt (R/study1_summary_exact.R;
+for S6 the integral is split at t = 0, where the integrand is non-smooth). This replaces the earlier
+Monte-Carlo reference (n_MC = 10^6); see results/STUDY1_PROVENANCE.md.
 ",
   md_table(tableA)
 )
@@ -216,7 +276,7 @@ permutation-style procedure (not reported here).
 
 **RMSE.** RMSE shrinks at the O(1/sqrt(n)) rate expected from W1 plug-in
 theory: for S3 (location 0.5 sigma, W1_true = 5), RMSE = %.4f at n = 50 vs
-%.4f at n = 200 — a factor of %.2f, close to the sqrt(50/200) = 2 prediction.
+%.4f at n = 200 — a factor of %.2f, close to the sqrt(200/50) = 2 prediction.
 
 **CI width.** Mean CI width also shrinks at the same O(1/sqrt(n)) rate.
 Width depends on the underlying distributions: heavier-tailed S6 (log-normal,
@@ -234,7 +294,7 @@ narrow-scale S2 (location 0.2 sigma, W1_true = 2) has the tightest
   fmt_num(100 * get1("S7",200,"coverage_pct"), 1),
   get1("S3",50,"rmse"), get1("S3",200,"rmse"),
   get1("S3",50,"rmse") / get1("S3",200,"rmse"),
-  truth[["S6"]]$truth,
+  truth[["S6"]],
   get1("S6",200,"mean_ci_width"),
   get1("S2",200,"mean_ci_width")
 )
@@ -271,9 +331,10 @@ W1 = clinical-relevance scale.
 footer <- "
 ## Data files
 
-- `results/w1_raw_simulation.rds` — full per-replicate output (estimates + bootstrap CI bounds), truth values, config
-- `results/w1_raw_summary.csv` — per-cell summary (this document's tables in machine-readable form)
-- `results/w1_raw_truth.rds` — population W1 values per scenario (exact + MC)
+- `projects/similarity-metric/results/w1_raw_summary.csv` — canonical per-cell summary with exact S6/S7 truth; the source of every number in this document
+- `projects/similarity-metric/results/w1_raw_simulation.rds` — full per-replicate output (estimates + bootstrap CI bounds); its embedded `$summary` / `$truth` are the superseded Monte-Carlo versions, read here only for `$config`
+- `projects/similarity-metric/results/STUDY1_PROVENANCE.md` — provenance of the canonical summary
+- `projects/similarity-metric/R/study1_summary_exact.R` — exact-truth re-summarisation (writes the canonical CSV)
 - `projects/similarity-metric/R/W1_raw_rcpp.cpp` — Rcpp kernel (matches wasserstein1() to machine epsilon)
 - `projects/similarity-metric/R/w1_raw_simulation.R` — driver script
 - `projects/similarity-metric/R/w1_raw_report.R` — this report generator

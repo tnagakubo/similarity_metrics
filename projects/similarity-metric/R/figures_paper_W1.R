@@ -24,11 +24,22 @@
 # Caption standards (feedback_caption_writing.md, 2026-04-29):
 #   figure captions describe what is plotted, not results / interpretation
 #
+# 2026-09-22 (Tak's decision): figure 3 is NO LONGER produced here either. The
+# single source of truth for fig3_gusto_r8_forest{,_color}.{pdf,png} is
+#   R/fig3_w1_axis.R
+# which plots the raw Wasserstein-1 axis \widehat{W}_1 in the original variable
+# units (years / mmHg), as required by Tak (2026-05-17) and referenced by the
+# manuscript. The fig3 block that used to live here plotted the dimensionless
+# ratio rho-hat = W1-hat / IQR-hat_pooled and wrote the same filenames, so any
+# re-run of this script silently replaced the raw-axis figure with the rho-axis
+# one. It has been removed.
+#
+# This script therefore owns figure 1 only.
+#
 # Outputs (greyscale, paper):
 #   figures/fig1_w1_definition.{pdf,png}
-#   figures/fig3_gusto_r8_forest.{pdf,png}      (rho axis)
 # Slides (color):
-#   _color.{pdf,png} variants
+#   figures/fig1_w1_definition_color.{pdf,png}
 # =============================================================================
 
 suppressPackageStartupMessages({
@@ -75,8 +86,6 @@ suppressPackageStartupMessages({
   cand
 }
 .project_root <- .find_project_root_W1()
-DATA_DIR_W1   <- file.path(.project_root, "data")
-GUSTO_CSV_W1  <- file.path(DATA_DIR_W1, "GUSTO", "gusto_r8_results.csv")
 OUTPUT_DIR_W1 <- file.path(.project_root, "figures")
 
 # No simulation-results input is read here. The Study 1 simulation output is
@@ -190,72 +199,26 @@ fig1_w1_definition <- function(palette = c("greyscale", "color")) {
 # =============================================================================
 
 # =============================================================================
-# Figure 3: GUSTO-I Region 8 forest plot (rho axis)
-# 2-panel: (A) age, (B) systolic blood pressure
-# Partners ordered by ascending rho-hat within each panel.
-# Axis label: rho-hat (dimensionless ratio = W1-hat / IQR-hat_pooled).
+# Figure 3: NOT generated here (2026-09-22, Tak's decision)
+#
+# fig3_gusto_r8_forest{,_color}.{pdf,png} is produced exclusively by
+#   R/fig3_w1_axis.R
+# (2-panel GUSTO-I Region 8 forest plot on the raw \widehat{W}_1 axis: years for
+#  age, mmHg for systolic blood pressure; percentile bootstrap CIs recomputed on
+#  the W1 scale from GUSTO-I IPD, B = 2000, set.seed(2026)).
+#
+# The former generator here (fig3_gusto_r8_forest_W1, plus the fig3-only path
+# helpers DATA_DIR_W1 / GUSTO_CSV_W1) read data/GUSTO/gusto_r8_results.csv and
+# plotted the dimensionless ratio rho-hat = W1-hat / IQR-hat_pooled on the same
+# filenames, so re-running this script replaced the raw-axis figure referenced by
+# the manuscript. It has been removed; see git history and
+# projects/similarity-metric/archive/figure_rebuild_notes.md for the record.
 # =============================================================================
 
-fig3_gusto_r8_forest_W1 <- function(palette = c("greyscale", "color")) {
-  palette <- match.arg(palette)
-
-  if (!file.exists(GUSTO_CSV_W1)) {
-    stop("GUSTO results CSV not found: ", GUSTO_CSV_W1)
-  }
-  raw <- read_csv(GUSTO_CSV_W1, show_col_types = FALSE)
-
-  forest_data <- raw %>%
-    select(partner, n,
-           nABCD_age,   ci_lower_age,   ci_upper_age,
-           nABCD_sysbp, ci_lower_sysbp, ci_upper_sysbp) %>%
-    pivot_longer(
-      cols = -c(partner, n),
-      names_to = c(".value", "variable"),
-      names_pattern = "(nABCD|ci_lower|ci_upper)_(age|sysbp)"
-    ) %>%
-    rename(rho_hat = nABCD) %>%
-    mutate(partner_label = paste0("R", partner))
-
-  .panel <- function(data, var_name, var_title, panel_letter) {
-    d <- data %>% filter(variable == var_name)
-    ord <- d %>% arrange(rho_hat) %>% pull(partner_label)
-    d$partner_label <- factor(d$partner_label, levels = rev(ord))
-
-    if (palette == "color") {
-      col_pt <- "#D52B1E"; col_ci <- "#D52B1E"
-    } else {
-      col_pt <- "#1A1A1A"; col_ci <- "#555555"
-    }
-
-    ggplot(d, aes(x = rho_hat, y = partner_label)) +
-      geom_errorbarh(aes(xmin = ci_lower, xmax = ci_upper),
-                     height = 0.3, linewidth = 0.4, color = col_ci) +
-      geom_point(size = 2, color = col_pt) +
-      scale_x_continuous(limits = c(0, NA),
-                         labels = function(x) sprintf("%.2f", x)) +
-      labs(
-        x = expression(hat(rho) == widehat(W)[1] / widehat(IQR)[pooled]),
-        y = "Partner region",
-        title = sprintf("(%s) %s", panel_letter, var_title)
-      ) +
-      theme(
-        legend.position  = "none",
-        plot.title       = element_text(size = rel(0.9), hjust = 0),
-        axis.text.y      = element_text(size = rel(0.85), color = "black",
-                                        hjust = 0)
-      )
-  }
-
-  pA <- .panel(forest_data, "age",   "Age",
-               "A")
-  pB <- .panel(forest_data, "sysbp", "Systolic blood pressure",
-               "B")
-  pA + pB
-}
-
 # =============================================================================
-# Generate the paper figures owned by this script: fig1, fig3
-# (greyscale paper + color slides). Fig 2 lives in R/fig2_bar_chart.R.
+# Generate the paper figure owned by this script: fig1 only
+# (greyscale paper + color slides). Fig 2 lives in R/fig2_bar_chart.R,
+# fig 3 in R/fig3_w1_axis.R.
 # =============================================================================
 
 generate_paper_figures_W1 <- function(output_dir = OUTPUT_DIR_W1) {
@@ -280,18 +243,13 @@ generate_paper_figures_W1 <- function(output_dir = OUTPUT_DIR_W1) {
   # (generate_fig2_bars(), canonical CSV input). Do not re-add a fig2 writer to
   # this script: it would overwrite the canonical figure with different data.
 
-  # --- Fig 3: GUSTO-I R8 forest (rho axis) ----------------------------------
-  for (pal in c("greyscale", "color")) {
-    suffix <- if (pal == "color") "_color" else ""
-    p      <- fig3_gusto_r8_forest_W1(pal)
-    ggsave(file.path(output_dir, paste0("fig3_gusto_r8_forest", suffix, ".pdf")),
-           p, width = 7, height = 3.5, bg = "white")
-    ggsave(file.path(output_dir, paste0("fig3_gusto_r8_forest", suffix, ".png")),
-           p, width = 7, height = 3.5, dpi = 300, bg = "white")
-  }
-  message("  fig3_gusto_r8_forest: done")
+  # --- Fig 3: intentionally NOT written here --------------------------------
+  # fig3_gusto_r8_forest{,_color}.{pdf,png} belongs to R/fig3_w1_axis.R (raw
+  # W1 axis). Do not re-add a fig3 writer to this script: it would overwrite the
+  # raw-axis figure with the rho-axis version.
 
-  message("[W1 figures] fig1 + fig3 regenerated (fig2: see R/fig2_bar_chart.R).")
+  message("[W1 figures] fig1 regenerated only ",
+          "(fig2: see R/fig2_bar_chart.R; fig3: see R/fig3_w1_axis.R).")
 }
 
 # Allow direct script invocation

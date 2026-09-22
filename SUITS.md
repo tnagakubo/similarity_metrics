@@ -38,7 +38,8 @@
 - ✅ **claude_science 指摘 12/13 着地（09-21 19:25）**: M1 B・M2・M3（canonical = project、S6/S7 厳密値、表 3 つ + fig2 同一 CSV から再生成）・M4 B・M5 A・Minor 1–7。残: **Minor 8 abstract = Terminal pass（Option B §0-bis 基点）**。Study 1 の出所は `results/STUDY1_PROVENANCE.md`
 - **Tak 判断待ち 3 件（09-21 Mike 発見）**: ① `figures_paper_W1.R` の **fig3 writer**（ρ̂ 軸版で現行 fig3 を上書き）を除去し `fig3_w1_axis.R` を単一 source にするか ② 旧 nABCD の fig2 writer `regen_fig1_fig2_combined.R` / `regen_fig2_simulation.R` の処遇 ③ archive で壊れた `w1_raw_report.R`・`w1_raw_figs.R`・`check_progress.R` を project tree へ repoint するか archive するか。あわせて `w1_raw_simulation.R` の cwd 相対 write（根因）に 1 行 + 5 箇所の修正案（Mike）
 - **足元の修正（残）**: `w1_raw_simulation.R` の `parLapplyLB` を固定割当に（bit-reproducible 化）／S4 n=50 coverage 0.9425 の丸め規約（原稿 formatC 0.942、gate round 0.943）は原稿側を維持
-- **査読応答キュー継続**: ¶D Discussion limitation 新設 → ¶C §4.4-L563 → (2) 綻び 2 件（§2.5-L214・§4.2）→ (3) binary remark + L66 → (4) RWE caveat → (5) presentation 3 点（R3.1 Study 番号・R3.2 notation 表・R3.3 workflow float）→ (6) minors
+- ✅ **査読応答キュー (1) L_UB 完了（09-22）**: ¶A B → ¶B C → ¶C C → **¶D B（Discussion limitation 新設）**。anchor 段落の数値訂正も Option B で適用（09-22）
+- **査読応答キュー継続**: (2) 綻び 2 件（§2.5-L214・§4.2）→ (3) binary remark + L66 → (4) RWE caveat → (5) presentation 3 点（R3.1 Study 番号・R3.2 notation 表・R3.3 workflow float）→ (6) minors。Terminal pass の台帳は outline §9（T1–T9）
 - **`.tex` 必須修正 5 件（判断④由来、abstract 分は Terminal pass）**、`paper/submission/SUBMISSION_CHECKLIST.md` は nABCD 期の stale（referee 指摘、投稿前に再生成）
 - **framework の commit**（Tak 指示待ち）。Louis の agent memory が `claude_science/.claude/agent-memory/louis/` に誤配置 → repo root `.claude/agent-memory/` へ移動
 - **Claude Science への確認（Tak）**: 起動方法、BRIEF.md を読ませられるか
@@ -60,6 +61,101 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-09-22 12:20] Scene: anchor 段落 Option B — 一文の虚偽三つを消し、Set4 の cell で structural を支えた。本日分を commit
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak「B」。Harvey が L699 を書き換える — 閾値の正体、分母、n との関係、matched な clustering 側、そして Set4 τ=4.51 の一文。source comment に訂正の来歴と SE の注意を残す。*
+
+**Harvey**:
+「入った。『at thresholds placed between the true between-group distances … 61–68% of anchor–replication draws at n = 50 and still in 45–61% at n = 400, declining with sample size but not towards zero』、その後に『anchor-level violations fell from 4.6% to 0.5% while pool-wide violations rose from 7% to 25%』、clustering は『in the same configurations, 13–16% → at most 0.9%』。旧 clause の本文残存 0（comment 内の引用のみ）。コンパイル error 0・undefined 0・24 ページ」
+
+**Katrina**:
+「本文の数字は全部 Mike が `anchor_vs_clustering_tau_100k.csv` から引いたもの。comment に『`mc_se_viol` は viol_anchor の SE』と書いておいた — 次に誰かが SE を引用するとき同じ穴に落ちないように。Results speak for themselves」
+
+**Donna**:
+「本日分を commit するわ。tex（¶D + anchor 段落）、outline §9 台帳、SUITS、R script 6 本、archive 3 本 + README 2 つ。claude_science の第 3・4 ラウンド（md 2 本 + 図 6 枚）は Tak の産物だから含めない — 判定は済んで台帳に載せた。残タスクは Terminal pass（abstract、T1–T9）と査読応答キューの (2) 以降」
+
+---
+
+### [2026-09-22 12:10] Scene: fig1/2/3 とも writer 1 本に — そして anchor 段落は一文に誤りが三つあった
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Mike が二つ目の報告を置く。fig3 の単一 source 化と、Discussion L699 の数値検証。*
+
+**Mike**:
+「I got it! fig3: `regen_fig3_forest.R` を `archive/R_superseded_20260922/` へ、`fig3_w1_axis.R` の絶対パスを resolver に。scratch 実行で PNG は live と byte-identical、派生 CSV も md5 一致、PDF だけ差分 — zlib で展開して特定、`/CreationDate` の 9 byte と font subset の head table 13 byte、**描画 content stream 16,218 byte は完全一致**。writer は fig1・fig2・fig3 とも **1 本ずつ**。live 12 file は session 開始前と md5 一致。
+anchor 段落: Harvey の読みは全部正しい — 61–68% は n=50 の 3 cell を整数%に丸めたもの、3 cell とも n で下がる（−10.3 / −19.5 / −4.8 pp、MC SE の 70 倍以上）、n=400 で 45–61%、clustering の 16%→<1% は Set1 τ=8.0 で正しい。ただし**さらに三つ**。①『at a fixed clinical threshold』— `tau_grid()` は真の群間 W₁ の中点で、clinical input はどこにも入っていない。②『% of replications』— 分母は 100,000 reps × 12 anchors = 1,200,000 の anchor–replication draws。③CSV の `mc_se_viol` は `viol_pair` でなく `viol_anchor` の SE（160 行全部で検証）。おまけに band の 3 cell は全部 `feasible = FALSE` — anchor rule が自分の anchor-level 要件（≤5%）も満たしていない τ で、Set1 τ=8.0 に至っては vp ≡ va、pool-wide 固有の under-protection の例ですらない。**structural を文字どおり示す cell は Set4 τ=4.51 の 1 つだけ** — anchor-level は 4.6%→0.5% に落ちながら pool-wide は 7%→25% に**上がる**」
+
+**Louis**:
+「一文に誤りが三つ、そのうえ例に選んだ cell が主張を支えていない。08-30 に『Discussion に留める』と決めた段落だ — 表を持たない段落に 9 個の数字を置けばこうなる、と Claude Science が言ったのは正しかった。だが構造を動かす話じゃない。**文を直せ**。最小修正（Mike 案）は虚偽を全部消す。強い主張をしたいなら Set4 の cell を一文足す — それが B だ」
+
+**Rachel**:
+「一つ補足を。『as expected of a structural rather than a sampling limitation』は結論の言い回しなので、下がるが高止まりする、という事実の後ろにそのまま置けます。因果の説明（『推定が鋭くなるほど離れる』等）は書かないでください — CSV は理由を語っていません」
+
+**Jessica**:
+「Let me be clear。Option を出せ。数字は Mike が CSV から引いたものだけを使う。Tak が選ぶまで L699 は動かすな」
+
+---
+
+### [2026-09-22 11:55] Scene: ¶D Option B を適用 — §2.2 が二度予告した受け皿が Discussion に立った。script 4 件も着地、fig3 は writer がまだ 2 本
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak「B」。Harvey が Discussion の limitation 段落の直後に ¶D を置き、重複する L の一文を消す。同じ頃、Mike の script 4 件が戻る。*
+
+**Harvey**:
+「¶D Option B、入った。7 文 — L_UB は判断／平均傾きは下界で safety factor も判断／threshold CATE で bound が緩むのは設計（class 上の worst case、非類似側に誤る）／その場合 KS bound が代替／局所性（F₁≠F₂ の範囲の変動だけが bound に入る）。承認コメントは 09-22 Option B。旧 L 文の残存 0、コンパイル error 0・undefined 0・24 ページ。査読応答キュー (1) L_UB の 4 段落 ¶A–¶D はこれで全部閉じた」
+
+**Mike**:（4 件の報告）
+「I got it! ①`figures_paper_W1.R` から fig3 writer と専用 helper を除去、scratch run で fig1 の 4 file だけ、live 12 file は md5 一致。②旧 nABCD の fig2 writer 2 本を `archive/R_nABCD_20260922/` へ `git mv`、source している script はゼロ。③3 script を project tree へ repoint — `w1_raw_report.R` は `$summary` だけでなく `$truth` も rds から読んでいて、summary だけ CSV に替えると Table A が 12.1532 を印字しつつ Table B が 12.1598 基準で bias を計算する自己矛盾文書になる。truth も CSV から取り、再生成 report は Tables 4/5/6 の **63 セル全部が原稿と一致**。`check_progress.R` は path だけ直し、読む path を先頭に print。④`w1_raw_simulation.R` に `RESULTS_DIR <- file.path(dirname(ROOT_ABS), "results")` + 5 箇所、parse OK、simulation は未実行。ただし **fig3 は writer がまだ 2 本** — `regen_fig3_forest.R` が ρ̂ 軸で同名を書く。`fig3_w1_axis.R` は絶対パス hardcode（r-code rule 違反）。Harvey から続行指示をもらって、今それをやっています。あわせて anchor 段落の数値を独立に再検証中」
+
+**Louis**:
+「repoint の副作用を一つ。`w1_raw_figs.R` を本番の figures/ に対して回すと tracked な `w1_raw_oc.{pdf,png}` が動く（S6 n=50 bias 0.377 vs 0.384）。論文が参照していない図だが、回すなら Tak の判断だ」
+
+**Donna**:
+「未 commit 差分: tex（¶D）、SUITS、R script 5 本、archive 2 本 + README。fig3 の続きと anchor 検証が戻ったら一括で報告。structure_review の採用 3 件（Supplement label・Appendix B → SI・未報告 sim の README）は Terminal / submission pass の台帳に載せたわ」
+
+---
+
+### [2026-09-22 11:40] Scene: 「推奨どおり進めて」— script 4 件を Mike へ、Claude Science 第 3・4 ラウンドを triage、¶D と anchor 段落の訂正を提示
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak「推奨どおり進めて」。Harvey が Mike に script 4 件（fig3 単一化・旧 nABCD fig2 writer の archive・壊れた 3 script の repoint・`w1_raw_simulation.R` の根因）を投げ、自分は claude_science に新着の 2 本 — `structure_review.md`（19:55）と `simulation_necessity.md`（20:55）— を読む。*
+
+**Donna**:（2 本を既決事項と突き合わせて）
+「structure_review は Problem 5 件 + 再構成 7 項目。うち **3 件は Tak の既決と正面衝突**よ。①『anchor vs clustering の simulation を §3.3 に昇格』— **08-30 案A『Discussion に留める、§3.1.4 は書かない』**。②『ρ を §2.2 に移して crossover criterion に』— **08-15 判断⑤『ρ は Result 5 に留め、提案しない』**。③『Study 1 を先に』— **08-30 の Study 2 主役の階層**、順序でなく番号付け（R3.1）で解く。残りは採れる: Supplement A/D の label 不整合（B・C が無い、file 名と対応しない）、Appendix B のコードを SI へ、§5 ¶1/¶5 の gap 列挙の重複 — 全部 Terminal / submission pass の案件」
+
+**Louis**:
+「simulation_necessity の方が刺さる。Discussion L699『anchor-wise screening violated … in 61–68% … and the rate **did not fall with sample size**』— referee は『自分のデータと矛盾する』と言い、Harvey が CSV で確かめた。**その通りだ**。Set1 τ=8: 0.636→0.533、τ=9.2: 0.642→0.447、Set2 τ=15.2: 0.661→0.613（n=25→400）。MC SE 0.0004 で、下がっている。61–68% は n=50 の 3 cell の帯だ。ただし referee の言う『非ゼロの plateau に収束』は正しく、clustering は 0.157→0.009 で **ゼロへ**。構造的 vs 標本的の対比は**強まる**。表のない Discussion 段落に数値を置いた代償がこれだ — 08-30 の案A の弱点が露出した。訂正は段落レビュー案件、Mike の再検証を通してから」
+
+**Mike**:（memo を開いて）
+「¶D の仕様は技術メモ §1.5・§2.5 にあります。L159（§2.2 末尾）が『threshold or step-function CATEs … conservative (Section 5)』と予告し、M1 Option B も『the threshold case in which equation (6) is itself conservative (Section 5)』と予告した — **受け皿が Discussion に無い**。¶D が受けるのは三つ: (1) L_UB は判断（§2.4 ¶B の再確認）、(2) 平均傾きは下界 → safety factor は判断、(3) threshold CATE で bound が緩むのは設計思想（保守的上界）で、その場合 KS bound（定数 = jump size）が tight になり得る。局所性 remark（bound は F₁≠F₂ の範囲の sup|τ′| だけで足りる）は tex に**未反映** — ¶D に入れるか §2.2 側かは Option で分ける」
+
+**Jessica**:
+「Let me be clear。三つを混ぜるな。①structure_review の既決衝突 3 件は **却下**、採れる 3 件は Terminal pass の台帳へ。②anchor 段落の数値訂正は Mike の再検証 → 段落レビュー。③¶D は Option を出せ。Tak が選ぶ」
+
+**Harvey**:
+「報告に ¶D の Option と anchor 訂正案を載せる。Mike の script 4 件は戻り次第」
+
+---
+
+### [2026-09-21 20:55] Scene: commit 8adf0e6 — 今日の 21 file を main に固めた
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
+
+*Tak「commit」。Donna が staging を数える — tex・PDF・SUITS・CSV・fig2 4 枚・R script 3 本・provenance 4 file・root results の rename 4 file + README。*
+
+**Donna**:
+「`8adf0e6` を main に。push はしていない。含めなかったのは claude_science に新しく現れた `structure_review.md` と図 4 枚 — Claude Science の第 3 ラウンドで、まだ誰も読んでいない。Tak が『判定』と言うまで触らないわ。この SUITS 追記は次の commit に乗る」
+
+**Harvey**:
+「今日の帳尻は合った。次は Tak が決める — structure_review を判定するか、¶D に戻るか」
+
+---
 
 ### [2026-09-21 19:25] Scene: M5 Option A — claude_science の指摘、abstract を除いて全件着地
 

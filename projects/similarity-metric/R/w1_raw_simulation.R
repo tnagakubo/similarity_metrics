@@ -25,11 +25,17 @@
 #   B           = 2000  percentile bootstrap
 #   conf        = 0.95
 #
-# Outputs:
-#   results/w1_raw_simulation.rds         — full per-replicate output (list)
-#   results/w1_raw_simulation_partial.rds — per-cell partial (resume support)
-#   results/w1_raw_summary.csv            — summary table
-#   paper/w1_raw_simulation_results.md    — markdown narrative
+# Outputs (2026-09-22: resolved from the script's own location via RESULTS_DIR,
+# NOT from the cwd; the old cwd-relative writes created a second results/ tree
+# wherever the script happened to be launched from, which is how the repo-root
+# results/ copy -- now archived at archives/results_root_20260516/ -- came to
+# shadow the canonical project outputs):
+#   projects/similarity-metric/results/w1_raw_simulation.rds         — full per-replicate output (list)
+#   projects/similarity-metric/results/w1_raw_simulation_partial.rds — per-cell partial (resume support)
+#   projects/similarity-metric/results/w1_raw_truth.rds              — population W1 per scenario
+#   projects/similarity-metric/results/w1_raw_summary.csv            — summary table (MC truth for S6/S7;
+#       the canonical exact-truth summary is written by R/study1_summary_exact.R)
+#   the markdown narrative is written separately by R/w1_raw_report.R
 # =============================================================================
 
 SKIP_SIMULATION <- TRUE
@@ -48,6 +54,8 @@ if (!file.exists(file.path(ROOT, "simulation_manuscript_v2.R"))) {
   ROOT <- hit[1]
 }
 ROOT_ABS <- normalizePath(ROOT)
+# All outputs go to the project results/ tree (sibling of R/), never to the cwd.
+RESULTS_DIR <- file.path(dirname(ROOT_ABS), "results")
 source(file.path(ROOT, "simulation_manuscript_v2.R"), chdir = TRUE)
 source(file.path(ROOT, "scenarios_extended.R"),      chdir = TRUE)
 
@@ -231,7 +239,8 @@ main <- function() {
               OPTS$reps, OPTS$boot, OPTS$cores, OPTS$test))
   cat(sprintf(" started: %s\n", format(Sys.time())))
 
-  if (!dir.exists("results")) dir.create("results", recursive = TRUE)
+  dir.create(RESULTS_DIR, showWarnings = FALSE, recursive = TRUE)
+  cat(sprintf(" results dir: %s\n", RESULTS_DIR))
 
   # --- Truth ---
   cat("\n[truth] computing W1_true (exact + MC n=1e6)...\n")
@@ -239,15 +248,15 @@ main <- function() {
   truth_df <- do.call(rbind, lapply(truth_list, as.data.frame))
   rownames(truth_df) <- NULL
   print(truth_df)
-  saveRDS(truth_list, "results/w1_raw_truth.rds")
-  cat("[truth] saved results/w1_raw_truth.rds\n")
+  saveRDS(truth_list, file.path(RESULTS_DIR, "w1_raw_truth.rds"))
+  cat("[truth] saved ", file.path(RESULTS_DIR, "w1_raw_truth.rds"), "\n", sep = "")
 
   # --- Cluster ---
   cl <- setup_cluster(OPTS$cores)
   on.exit({ if (!is.null(cl)) try(parallel::stopCluster(cl), silent = TRUE) }, add = TRUE)
 
   # --- Grid: S1-S7 x {50, 100, 200} ---
-  partial_file <- "results/w1_raw_simulation_partial.rds"
+  partial_file <- file.path(RESULTS_DIR, "w1_raw_simulation_partial.rds")
   if (file.exists(partial_file)) {
     partial <- readRDS(partial_file)
     cat(sprintf("[grid] resuming — %d cells already done\n", length(partial$cells)))
@@ -314,11 +323,12 @@ main <- function() {
                       started = partial$started,
                       finished = Sys.time())
   )
-  saveRDS(out_list, "results/w1_raw_simulation.rds")
-  cat("[save] results/w1_raw_simulation.rds\n")
+  saveRDS(out_list, file.path(RESULTS_DIR, "w1_raw_simulation.rds"))
+  cat("[save] ", file.path(RESULTS_DIR, "w1_raw_simulation.rds"), "\n", sep = "")
 
-  write.csv(summary_df, "results/w1_raw_summary.csv", row.names = FALSE)
-  cat("[save] results/w1_raw_summary.csv\n")
+  write.csv(summary_df, file.path(RESULTS_DIR, "w1_raw_summary.csv"),
+            row.names = FALSE)
+  cat("[save] ", file.path(RESULTS_DIR, "w1_raw_summary.csv"), "\n", sep = "")
 
   cat(sprintf("\n[done] finished: %s\n", format(Sys.time())))
   invisible(out_list)

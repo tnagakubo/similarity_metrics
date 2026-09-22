@@ -27,13 +27,44 @@ suppressPackageStartupMessages({
 
 set.seed(2026)
 
-# --- Paths ---
-base_dir <- "C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM/similarity_metrics/projects/similarity-metric"
-fig_dir  <- file.path(base_dir, "figures")
+# --- Paths -------------------------------------------------------------------
+# 2026-09-22 (Mike): the absolute base_dir hard-code was replaced by the
+# script-relative resolver used elsewhere in R/ (study1_summary_exact.R,
+# w1_raw_*.R), so the script runs from any cwd and on any checkout
+# (.claude/rules/r-code.md: project-relative paths).
+find_project_root <- function() {
+  # script location (Rscript --file=... or source(); two levels up from R/)
+  args  <- commandArgs(trailingOnly = FALSE)
+  f_arg <- sub("^--file=", "", args[grepl("^--file=", args)])
+  if (length(f_arg) > 0 && file.exists(f_arg)) {
+    return(normalizePath(dirname(dirname(f_arg)), winslash = "/"))
+  }
+  ofile <- tryCatch(sys.frame(1)$ofile, error = function(e) NULL)
+  if (!is.null(ofile)) {
+    return(normalizePath(dirname(dirname(ofile)), winslash = "/"))
+  }
+  here   <- normalizePath(getwd(), winslash = "/", mustWork = FALSE)
+  target <- file.path("projects", "similarity-metric")
+  if (dir.exists(file.path(here, target))) {
+    return(normalizePath(file.path(here, target), winslash = "/"))
+  }
+  here
+}
+
+base_dir <- find_project_root()
+# Output locations are overridable so a verification run can be diffed against
+# the live outputs without overwriting them.
+fig_dir     <- Sys.getenv("FIG3_OUT_DIR",     unset = file.path(base_dir, "figures"))
+results_dir <- Sys.getenv("FIG3_RESULTS_DIR", unset = file.path(base_dir, "results"))
+# GUSTO-I IPD comes from predtools::gusto (data(gusto) below), not from disk;
+# data_dir is kept only as the documented location of the derived CSVs.
 data_dir <- file.path(base_dir, "data", "GUSTO")
-results_dir <- file.path(base_dir, "results")
 dir.create(fig_dir,     showWarnings = FALSE, recursive = TRUE)
 dir.create(results_dir, showWarnings = FALSE, recursive = TRUE)
+
+cat("[paths] project root:", base_dir,    "\n")
+cat("[paths] figures     :", fig_dir,     "\n")
+cat("[paths] results     :", results_dir, "\n")
 
 # --- Core functions (W₁ on the raw scale) ---
 compute_w1 <- function(x, y) {
@@ -118,7 +149,7 @@ csv_out <- res_wide %>%
 write.csv(csv_out,
           file.path(results_dir, "gusto_r8_w1_per_pair.csv"),
           row.names = FALSE)
-cat("\nPer-pair Ŵ₁ saved: results/gusto_r8_w1_per_pair.csv\n")
+cat("\nPer-pair Ŵ₁ saved:", file.path(results_dir, "gusto_r8_w1_per_pair.csv"), "\n")
 
 cat(sprintf("\nAge   Ŵ₁ range: [%.3f, %.3f] years\n",
             min(results$W1[results$variable == "age"]),
