@@ -1,4 +1,4 @@
-# Supplement D: $L_{\text{clinical}}$ Literature Review
+# Supplement B: $L_{\text{clinical}}$ Literature Review
 
 **Compiled by**: Rachel Zane (Researcher), 2026-05-16
 **Purpose**: Identify literature supporting clinical specification of $L_{\text{clinical}}$ — the treatment-effect change per unit of effect modifier (EM) — within the Path α framework $\Delta_{\max} = L_{\text{clinical}} \times W_1$.

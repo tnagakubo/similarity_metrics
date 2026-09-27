@@ -36,7 +36,7 @@
 | 6 | Devroye & Győrfi (1985) *Nonparametric Density Estimation: The L₁ View* Ch.5 | ISBN: 0-471-81646-9 | ✅ | ✅ | Rates of Convergence |
 | 7 | ICH E17 (2017) "General Principles for Planning and Design of Multi-Regional Clinical Trials" | [ICH](https://database.ich.org/sites/default/files/E17_Guideline.pdf) | ✅ | ✅ | Regulatory/MRCT |
 | 8 | VanderWeele & Knol (2014) "A Tutorial on Interaction" | [10.1515/em-2013-0005](https://doi.org/10.1515/em-2013-0005) | ✅ | ✅ | Effect Modification |
-| 9 | Quan et al. (2010) "Assessment of Consistency of Treatment Effects in MRCTs" | [10.1177/009286150904400509](https://doi.org/10.1177/009286150904400509) | ✅ | ✅ | Regional Consistency |
+| 9 | Quan et al. (2010) "Assessment of Consistency of Treatment Effects in MRCTs" | [10.1177/009286151004400509](https://doi.org/10.1177/009286151004400509) | ✅ | ✅ | Regional Consistency |
 | 10 | Ikeda & Bretz (2010) "Sample size and proportion of Japanese patients in multi-regional trials" | [10.1002/pst.455](https://doi.org/10.1002/pst.455) | ✅ | ✅ | Sample Size/MRCT |
 | 11 | Panaretos & Zemel (2019) "Statistical Aspects of Wasserstein Distances" | [10.1146/annurev-statistics-030718-104938](https://doi.org/10.1146/annurev-statistics-030718-104938) | ✅ | ✅ | Wasserstein Theory |
 | 12 | del Barrio, Giné & Matrán (1999) "Central Limit Theorems for Wasserstein Distance" | [10.1214/aop/1022677394](https://doi.org/10.1214/aop/1022677394) | ✅ | ✅ | Wasserstein CLT |

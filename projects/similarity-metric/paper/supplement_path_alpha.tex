@@ -12,7 +12,7 @@
 \begin{document}
 \maketitle
 
-This supplement establishes that the clinical-scale quantity $\Delta_{\max}$, used as the calibration output of the methodology in the main paper, does not depend on the choice of within-effect-modifier scale normalizer applied to the Wasserstein-1 distance. This invariance result is referenced at Section~3.2 (Per-EM Wasserstein-1 Distance) and Section~3.4 (Interpretation and Clinical Calibration) of the main paper and provides the mathematical basis for our adoption of $W_1$ in its original measurement units as the primary similarity metric.
+This supplement establishes that the clinical-scale quantity $\Delta_{\max}$, used as the calibration output of the methodology in the main paper, does not depend on the choice of within-effect-modifier scale normalizer applied to the Wasserstein-1 distance. This invariance result is referenced at Section~2.2 (Per-EM Wasserstein-1 Distance) and Section~2.4 (Interpretation and Clinical Calibration) of the main paper and provides the mathematical basis for our adoption of $W_1$ in its original measurement units as the primary similarity metric.
 
 \section{Setup and Definitions}\label{sec:supA_setup}
 
@@ -32,7 +32,7 @@ For any such functional with $X(\bar{F}) > 0$, a dimensionless normalized simila
 \label{eq:supA_nabcd}
 \end{equation}
 
-The clinical calibration formula in the main paper (Section~3.4, equation for $\Delta_{\max}$) translates a similarity index into a maximum potential regional treatment effect difference. Expressed via a normalizer-dependent index, this calibration takes the form
+The clinical calibration formula in the main paper (Section~2.4, equation for $\Delta_{\max}$) translates a similarity index into a maximum potential regional treatment effect difference. Expressed via a normalizer-dependent index, this calibration takes the form
 \begin{equation}
 \Delta_{\max}^{(X)} = L_{\text{clinical}} \cdot X(\bar{F}) \cdot \text{nABCD}_X(F_1, F_2),
 \label{eq:supA_dmaxX}
@@ -68,7 +68,7 @@ Consequently, the nonparametric bootstrap distribution of $\widehat{\Delta_{\max
 
 \section{Connection to the Reverse Pathway}\label{sec:supA_reverse}
 
-The reverse calculation introduced in the main paper (Section~3.4) defines the required clinical slope as $L^* = \Delta_{\text{clin}} / W_1(F_1, F_2)$, where $\Delta_{\text{clin}}$ is a pre-specified clinical margin. Substituting any normalized form via $W_1 = X(\bar{F}) \cdot \text{nABCD}_X$ yields
+The reverse calculation introduced in the main paper (Section~2.4) defines the required clinical slope as $L^* = \Delta_{\text{clin}} / W_1(F_1, F_2)$, where $\Delta_{\text{clin}}$ is a pre-specified clinical margin. Substituting any normalized form via $W_1 = X(\bar{F}) \cdot \text{nABCD}_X$ yields
 \[
 L^* = \frac{\Delta_{\text{clin}}}{X(\bar{F}) \cdot \text{nABCD}_X(F_1, F_2)},
 \]

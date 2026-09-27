@@ -1,0 +1,7 @@
+- [Enumeration drift across sections](project_enumeration_drift.md) — 「two gaps / three gaps / (i)-(iii)」が章ごとに別物。Q_procedure が宿無しになった真因
+- [Restructure plan attack points](feedback_restructure_plan_attack_points.md) — plan レビューの初手4点: 未検証の語数前提 / 予算不整合 / 既決却下の再提案 / 数え直していない count
+- [Robustness→method promotion & in-plan drift](feedback_method_vs_robustness_promotion.md) — 印刷済みの表の算術を「段」に格上げ / 表の担い手と散文の不一致 / 引数が出力を決めない決定関数
+- [Point vs upper-CL & bridge residue](feedback_point_vs_upper_cl_and_bridge_residue.md) — application が点推定で L* 分類（Methods は upper CL）/ 決定機構削除後の残骸 grep
+- [Prose vs code metric & roster subset](feedback_prose_vs_code_metric_and_roster_subset.md) — false-pooling 定義がコードと別物 / roster の部分引用 / AUC ラベル vs population 定義
+- [Sim/App seam holes](feedback_sim_app_seam_holes.md) — σ=10 に years をつける / n≥100 と 5x margin の矛盾 / IQR で EM 間比較 / partner と distance のラベル混同 / near-null で upper CL
+- [Abstract compression & back matter](feedback_abstract_compression_and_backmatter.md) — abstract が Prop 仮定・判定基準・body 免責を落とす / Data availability と SI ファイル実体の乖離

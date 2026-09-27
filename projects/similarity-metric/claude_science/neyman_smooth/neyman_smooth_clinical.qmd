@@ -1,0 +1,473 @@
+---
+title: "Neyman の smooth test による主要評価変数の 2 標本 omnibus 検定"
+subtitle: "位置・尺度・歪度・裾への直交分解と、GUSTO-I による例示"
+date: today
+lang: ja
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    embed-resources: true
+    theme: cosmo
+    fig-cap-location: bottom
+    code-fold: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+source("R/neyman_smooth_2sample.R")
+library(knitr)
+sim <- read.csv("results/power_summary.csv", stringsAsFactors = FALSE)
+ga  <- readRDS("results/gusto_application.rds")
+fmt <- function(x, d = 3) formatC(x, format = "f", digits = d)
+n_gusto <- nrow(read.csv(file.path(
+  "C:/Users/hrd13/Documents/Gak/0 Study/800Claude/20260210_SIM",
+  "similarity_metrics/projects/similarity-metric/data/gusto.csv")))
+```
+
+## 要旨 {.unnumbered}
+
+主要評価変数の群間比較は、実務上ほぼ例外なく**位置**（平均あるいは中央値）の
+比較に帰着している。しかし治療効果は位置だけに現れるとは限らない。分散を
+縮小する治療、一部の患者のみが強く反応する治療、天井効果のある評価尺度では、
+分布は位置以外の方向に動く。
+
+本稿では Neyman の smooth test を 2 標本問題に適用し、群間差を**直交する
+解釈可能な成分**（第 1 成分 = 位置、第 2 成分 = 尺度、第 3 成分 = 歪度、
+第 4 成分 = 裾）へ分解する枠組みを実装・評価した。要点は次の 4 つである。
+
+1. 第 1 成分 $Z_1$ は Wilcoxon 順位和統計量の標準化値と**代数的に厳密一致**する
+   （同順位がある場合も含む）。すなわち smooth test は Wilcoxon 検定を第 1 成分
+   として内包し、そこに解釈可能な高次方向を追加した検定である。
+2. 有限母集団共分散を用いることで、同順位・離散値があっても成分は厳密に
+   直交し、$W_k = Z_1^2 + \dots + Z_k^2$ という入れ子構造が正確に成立する。
+3. 治療が**ばらつきや形状**を変える状況では、t 検定・Wilcoxon 検定の検出力は
+   名義水準 5% から動かない一方、smooth test は 1 群 50 例で 70% 超の検出力を
+   示した。代償として、純粋な位置シフトでは相対的に検出力が約 10〜25% 低下する。
+4. GUSTO-I の実データで、標準化平均差 $-0.02$、Wilcoxon $p = 0.89$ の 2 群間に
+   smooth test が $p < 0.001$ の差（尺度・歪度成分）を検出した。
+
+::: {.callout-note}
+本稿の数値はすべて本リポジトリのスクリプトで再現できる。文献情報はオフライン
+環境で作成したため、投稿前に原典で確認されたい。
+:::
+
+## 背景 {#sec-background}
+
+2 標本問題に対する標準的な検定は、暗黙のうちに対立仮説を限定している。
+
+| 検定 | 実質的な対立仮説 | 位置以外の差への感度 |
+|---|---|---|
+| t 検定 | 平均の差 | なし |
+| Wilcoxon 順位和検定 | 確率優越（$P(Y>X) \ne 1/2$） | ほぼなし |
+| Kolmogorov--Smirnov | 分布の差（一般） | 弱い |
+| Anderson--Darling | 分布の差（裾重み付き） | 中程度 |
+
+臨床試験で位置以外の差が生じる典型的な状況は次のとおりである。
+
+- **反応者部分集団**: 一部の患者のみが強く反応し、残りは不変。平均は動くが
+  分布は二峰性・歪んだ形になる。
+- **安定化作用**: 血糖変動、血圧変動、疼痛スコアなどを「ばらつかせない」ことが
+  治療目的である場合。平均差は小さくても分散差が大きい。
+- **天井・床効果のある評価尺度**: QOL スコア、機能評価尺度。
+- **地域間の患者背景分布**: MRCT において、平均は揃っていても分散や歪度が
+  異なる地域がある（第 4 節）。
+
+Kolmogorov--Smirnov 検定や Anderson--Darling 検定は omnibus ではあるが、
+**有意になった理由を説明しない**。規制当局への説明が必要な臨床試験では、
+「分布が異なる」だけでは不十分で、「どの方向に異なるのか」が要る。
+Neyman の smooth test はまさにこの分解を与える。
+
+## 方法 {#sec-method}
+
+### 定義
+
+対照群 $X_1,\dots,X_m \sim F$、試験群 $Y_1,\dots,Y_n \sim G$、$N = m+n$ とする。
+帰無仮説は $H_0: F = G$ である。
+
+$[0,1]$ 上の正規直交 Legendre 多項式 $b_1,\dots,b_d$
+（$\int_0^1 b_j = 0$, $\int_0^1 b_j b_l = \delta_{jl}$）を用いる。低次の 4 つは
+
+$$
+\begin{aligned}
+b_1(u) &= \sqrt{3}\,(2u-1), \\
+b_2(u) &= \sqrt{5}\,(6u^2-6u+1), \\
+b_3(u) &= \sqrt{7}\,(20u^3-30u^2+12u-1), \\
+b_4(u) &= 3\,(70u^4-140u^3+90u^2-20u+1),
+\end{aligned}
+$$
+
+であり、それぞれ位置・尺度・歪度・尖度（裾）方向に対応する。
+
+併合標本の中間順位 $R_i$ から $u_i = R_i/(N+1)$ とし、スコア行列
+$A_{ij} = b_j(u_i)$（$N \times d$）を作る。試験群の添字集合を $T$ として
+成分和を $S_j = \sum_{i \in T} A_{ij}$ と定義する。
+
+### 同順位に対する厳密な帰無モーメント
+
+無作為化（交換可能性）の帰無仮説の下で $T$ は $N$ 個から $n$ 個を非復元抽出した
+単純無作為標本であるから、**同順位の有無によらず厳密に**
+
+$$
+\mathrm{E}[S_j] = n\,\bar a_j, \qquad
+\mathrm{Cov}[S_j, S_l] = \frac{n(N-n)}{N-1}\, C_{jl},
+\qquad C_{jl} = \frac{1}{N}\sum_{i=1}^{N}(A_{ij}-\bar a_j)(A_{il}-\bar a_l)
+$$
+
+が成り立つ。$\Sigma = \frac{n(N-n)}{N-1}C$ の Cholesky 分解 $\Sigma = LL^{\top}$
+を用いて
+
+$$
+Z = L^{-1}(S - \mathrm{E}[S]), \qquad W_k = \sum_{j=1}^{k} Z_j^2
+$$
+
+とすれば、$W_k$ は先頭 $k$ 成分の二次形式
+$(S-\mathrm{E}S)_{1:k}^{\top}\Sigma_{1:k,1:k}^{-1}(S-\mathrm{E}S)_{1:k}$ と厳密に
+一致し、$H_0$ の下で漸近的に $\chi^2_k$ に従う。
+
+連続データの理想的な場合には $C \approx I$ だが、血圧や脈拍のように**同一値が
+大量に出る変数**では $C$ の非対角成分が無視できない。理想化した分散
+$nm/N$ を用いる実装は、この場合に成分が直交せず $W_k$ の分布が歪む。
+上式はこれを厳密に回避する。
+
+### Wilcoxon 検定との関係 {#sec-wilcoxon}
+
+$b_1$ は順位の 1 次関数なので、$Z_1$ は**同順位補正込みの Wilcoxon 順位和統計量の
+標準化値と厳密に一致する**。本実装で数値的に確認した（下記）。
+
+```{r wilcox-check}
+set.seed(7)
+xc <- rpois(60, 3); yc <- rpois(40, 4)
+ftc <- smooth_test_2sample(xc, yc, d = 4, selection = "fixed",
+                           calibrate = "asymptotic")
+Nc <- 100; mc <- 60; nc <- 40
+Rc <- rank(c(xc, yc)); Sc <- sum(Rc[(mc + 1):Nc])
+tt <- table(c(xc, yc))
+varW <- mc * nc / 12 * ((Nc + 1) - sum(tt^3 - tt) / (Nc * (Nc - 1)))
+zW <- (Sc - nc * (Nc + 1) / 2) / sqrt(varW)
+kable(data.frame(
+  `量` = c("smooth 第1成分 Z1", "同順位補正 Wilcoxon 標準化値", "差の絶対値"),
+  `値` = c(fmt(ftc$Z[1], 10), fmt(zW, 10), format(abs(ftc$Z[1] - zW), digits = 3))),
+  caption = "同順位を多数含む離散データ（Poisson, m=60, n=40）における一致の確認")
+```
+
+この関係は実務上重要である。smooth test を採用しても **Wilcoxon 検定の結果は
+捨てられない**——それは第 1 成分としてそのまま報告できる。
+
+### 成分数 $d$ と $k$ の選択
+
+$d$ を大きくすると検出できる対立仮説は広がるが、検出力は薄まる。Ledwina の
+Schwarz 型規則
+
+$$
+S = \arg\max_{1 \le k \le d}\ \{ W_k - k\log N \}
+$$
+
+によりデータから $k$ を選び、$W_S$ を検定統計量とする方法（以下 data-driven）を
+実装した。
+
+### 較正 {#sec-calibration}
+
+data-driven 統計量の帰無分布は $\chi^2_1$ に収束するが、収束は遅い。
+臨床試験の実サンプルサイズでは漸近近似は**アンダーカバー**になる。
+
+```{r crit-table, cache=TRUE}
+sizes <- c(50L, 100L, 200L)
+crit <- do.call(rbind, lapply(sizes, function(nn) {
+  tb <- smooth_null_table(nn, nn, d = 4, selection = "BIC", B = 20000, seed = 3)
+  data.frame(
+    `1群あたり例数` = nn,
+    `厳密95%点 (W_S)` = fmt(tb$crit["95%", "W_selected"], 2),
+    `chi2_1 の95%点` = fmt(qchisq(0.95, 1), 2),
+    `chi2_1 を使った場合の実際の第一種の過誤` =
+      fmt(mean(tb$draws[, "W_selected"] > qchisq(0.95, 1)), 3),
+    check.names = FALSE)
+}))
+kable(crit, caption = paste("data-driven 統計量の帰無分布（20,000 回）。",
+  "chi2_1 近似は名義 5% に対して過大な棄却率を与える。"))
+```
+
+連続データで同順位がなければ、順位統計量の帰無分布は $(m, n, d)$ のみに依存する
+（**分布非依存**）。したがって厳密臨界値は試験ごとに事前に表化でき、計算コストは
+解析時にはかからない。同順位がある場合は併合標本上の並べ替えで較正する
+（`calibrate = "permutation"`）。
+
+**推奨**: 同順位が無視できるなら事前表化した厳密臨界値、同順位があるなら
+並べ替え較正。$\chi^2$ 近似は固定 $k$ の場合にのみ使う。
+
+## シミュレーション {#sec-sim}
+
+1 群 50 / 100 / 200 例、有意水準 5%、各セル 5,000 反復
+（Monte-Carlo 標準誤差 $\le$ 0.7 パーセントポイント）。
+順位検定はすべて厳密な分布非依存臨界値を用いた。
+
+### 第一種の過誤
+
+```{r type1}
+t1 <- subset(sim, scenario == "S0_null_normal")[, c("n_per_arm", "test", "power")]
+t1w <- reshape(t1, idvar = "test", timevar = "n_per_arm", direction = "wide")
+names(t1w) <- c("検定", paste0("n=", sizes))
+kable(t1w, digits = 4, row.names = FALSE,
+      caption = paste("正規分布の帰無仮説下での棄却率。",
+        "対数正規の帰無仮説でも順位検定は同一の値を与える",
+        "（単調変換で順位が不変＝分布非依存の直接的な確認）。"))
+```
+
+Kolmogorov--Smirnov 検定のみ保守的（3.5% 程度）である。これは統計量の離散性に
+よるもので、実装の問題ではない。t 検定は対数正規の帰無仮説下でわずかに
+保守的になる（`r fmt(subset(sim, scenario=="S0b_null_lognormal" & test=="t-test (Welch)" & n_per_arm==50)$power, 4)`、n=50）。
+
+### 検出力
+
+![図 1: 7 つの対立仮説シナリオにおける検出力。1 群 50/100/200 例、有意水準 5%、
+各点 5,000 反復。](figures/fig1_power.png){#fig-power fig-alt="7つの対立仮説シナリオにおける6検定の検出力曲線"}
+
+読み取れる構造は 3 つある。
+
+**(a) 位置シフトでは smooth test は劣る（想定どおり）。** 正規・位置シフト
+0.35 SD、1 群 50 例で t 検定 `r fmt(subset(sim, scenario=="S1_location" & test=="t-test (Welch)" & n_per_arm==50)$power,3)`、
+Wilcoxon `r fmt(subset(sim, scenario=="S1_location" & test=="Wilcoxon" & n_per_arm==50)$power,3)` に対し
+data-driven smooth は `r fmt(subset(sim, scenario=="S1_location" & test=="Smooth data-driven (BIC)" & n_per_arm==50)$power,3)`。
+このとき BIC が選ぶ成分数の平均は
+`r fmt(unique(subset(sim, scenario=="S1_location" & n_per_arm==50)$mean_k_selected),2)`
+であり、ほぼ常に $k=1$（すなわち Wilcoxon 統計量そのもの）が選ばれている。
+検出力差は統計量の違いではなく、**選択を許したことによる帰無分布の
+裾の厚み**——臨界値が 3.84 ではなく
+`r fmt(as.numeric(crit[1,"厳密95%点 (W_S)"]),2)` になること——から生じている。
+これが data-driven 化の正味の代償である。n=200 では差は
+`r fmt(subset(sim, scenario=="S1_location" & test=="Wilcoxon" & n_per_arm==200)$power - subset(sim, scenario=="S1_location" & test=="Smooth data-driven (BIC)" & n_per_arm==200)$power,3)`
+まで縮む。
+
+**(b) 尺度・形状差では他の検定に検出力がない。** SD 1.0 対 1.6（平均・中央値は
+同一）で 1 群 50 例のとき、t 検定 `r fmt(subset(sim, scenario=="S3_scale_only" & test=="t-test (Welch)" & n_per_arm==50)$power,3)`、
+Wilcoxon `r fmt(subset(sim, scenario=="S3_scale_only" & test=="Wilcoxon" & n_per_arm==50)$power,3)`
+と名義水準のまま動かない。Anderson--Darling が
+`r fmt(subset(sim, scenario=="S3_scale_only" & test=="Anderson-Darling" & n_per_arm==50)$power,3)`、
+smooth ($k=2$) は `r fmt(subset(sim, scenario=="S3_scale_only" & test=="Smooth k=2" & n_per_arm==50)$power,3)`。
+平均を 0.2 SD 動かしつつ SD を 0.6 に縮める「安定化」シナリオでも同様で、
+1 群 50 例で t 検定 `r fmt(subset(sim, scenario=="S7_stabilising" & test=="t-test (Welch)" & n_per_arm==50)$power,3)`
+に対し smooth ($k=2$) `r fmt(subset(sim, scenario=="S7_stabilising" & test=="Smooth k=2" & n_per_arm==50)$power,3)`。
+
+**(c) 反応者部分集団は平均で十分に捉えられる。** 25% の患者が 1.6 SD 反応する
+シナリオでは、平均差 0.4 SD が生じるため t 検定が最良
+（1 群 50 例で `r fmt(subset(sim, scenario=="S4_responder" & test=="t-test (Welch)" & n_per_arm==50)$power,3)`）。
+smooth test はやや劣る。**部分集団の存在そのものを検出したいなら混合分布の
+モデリングが要るのであって、omnibus 検定はその代替にならない。**
+
+### 固定 $k$ と data-driven の使い分け
+
+高次の形状差（歪度のみが異なり平均・SD が一致するシナリオ）では、
+$k=4$ 固定が data-driven を大きく上回る
+（1 群 200 例で `r fmt(subset(sim, scenario=="S5_shape_only" & test=="Smooth k=4" & n_per_arm==200)$power,3)` 対
+`r fmt(subset(sim, scenario=="S5_shape_only" & test=="Smooth data-driven (BIC)" & n_per_arm==200)$power,3)`）。
+BIC の罰則 $\log N$ は高次成分の採用に厳しく、$Z_3, Z_4$ が中程度の大きさの
+場合に採り損ねるためである。
+
+- 懸念が**ばらつきの差**に集中しているなら $k=2$ を事前規定する。
+- **形状差一般**が懸念なら $k=4$ を事前規定する。
+- 事前に方向を絞れないなら data-driven（$d=4$）を使う。
+
+## GUSTO-I への適用 {#sec-gusto}
+
+GUSTO-I（急性心筋梗塞に対する血栓溶解療法の国際無作為化比較試験）の
+患者レベルデータ（`r format(n_gusto, big.mark=",")` 例、
+うち SK 群 `r format(ga$A$m[1], big.mark=",")` 例・t-PA 群 `r format(ga$A$n[1], big.mark=",")` 例）を用いる。
+主要評価変数は 30 日死亡（二値）であり smooth test の対象にならないため、
+ここでは**連続変数を仮想的な連続評価変数とみなした方法論的例示**を行う。
+
+### 無作為化された 2 群間: 帰無仮説の振る舞い
+
+無作為割付された SK 群と t-PA 群の間では、いかなる変数についても
+真の分布差は存在しないはずである。
+
+```{r gusto-a}
+A <- ga$A
+kable(data.frame(
+  `変数` = A$variable,
+  `SK群 n` = A$m, `t-PA群 n` = A$n,
+  `相異なる値の数` = A$n_distinct,
+  `SMD` = fmt(A$smd, 4),
+  `選択k` = A$k_sel,
+  `smooth p` = fmt(A$p_smooth, 3),
+  `t検定 p` = fmt(A$p_t, 3),
+  `Wilcoxon p` = fmt(A$p_wilcox, 3),
+  check.names = FALSE), row.names = FALSE,
+  caption = paste("無作為化された2群（SK vs t-PA）。並べ替え較正 B=2,000。",
+                  "脈拍は 20,000 例超で相異なる値が 157 しかない（同順位が支配的）。"))
+```
+
+5 変数すべてで $p > 0.2$、選択された成分数はすべて $k=1$ である。
+同順位が支配的な変数（脈拍: 相異なる値 `r A$n_distinct[A$variable=="pulse"]`）でも
+過大な棄却は生じていない。
+
+### 平均が一致し形状が異なる 2 群 {#sec-gusto-b}
+
+MRCT の地域間比較の文脈で、$|\mathrm{SMD}| < 0.05$ かつ記録粒度の揃った組合せを
+`r nrow(ga$screen)` 通りの（変数 $\times$ 地域対）から探索し、位置成分を超える信号
+$W_4 - W_1$ が最大の組合せを例示に用いた。
+
+```{r gusto-b}
+cm <- ga$B_test$components
+kable(data.frame(
+  `成分` = c("1: 位置（= Wilcoxon）", "2: 尺度", "3: 歪度", "4: 裾"),
+  `Z` = fmt(cm$Z, 3), `Z^2` = fmt(cm$Z2, 2),
+  `p（未調整）` = format.pval(cm$p_raw, digits = 3),
+  `p（Holm）` = format.pval(cm$p_holm, digits = 3),
+  check.names = FALSE), row.names = FALSE,
+  caption = sprintf(paste("年齢、地域 %d (n=%d) 対 地域 %d (n=%d)。",
+    "SMD = %s、t検定 p = %s、Wilcoxon p = %s。smooth test は k=%d が選択され",
+    "W = %s、並べ替え p < 0.001 (B=5,000)。"),
+    ga$B_pick$r1, ga$B_pick$m, ga$B_pick$r2, ga$B_pick$n,
+    fmt(ga$B_pick$smd, 3), fmt(ga$p_t, 2), fmt(ga$p_w, 2),
+    ga$B_test$k_selected, fmt(ga$B_test$statistic, 1)))
+```
+
+![図 2: GUSTO-I の 2 地域における年齢分布（a）、smooth 成分の分解（b）、
+および試験規模での再標本化検出力（c）。](figures/fig2_gusto.png){#fig-gusto fig-alt="GUSTO-Iの2地域における年齢分布、成分分解、再標本化検出力"}
+
+平均年齢は `r fmt(mean(ga$xB),1)` 歳と `r fmt(mean(ga$yB),1)` 歳でほぼ同一、
+Wilcoxon $p = `r fmt(ga$p_w,2)`$ である。しかし SD は
+`r fmt(sd(ga$xB),1)` 対 `r fmt(sd(ga$yB),1)`、歪度は
+`r fmt(mean(((ga$xB-mean(ga$xB))/sd(ga$xB))^3),2)` 対
+`r fmt(mean(((ga$yB-mean(ga$yB))/sd(ga$yB))^3),2)` で、
+第 2・第 3 成分がともに $|Z| > 4$ に達する。
+**年齢は虚血性心疾患における代表的な効果修飾因子であり、
+「平均年齢が揃っている」ことは「年齢分布が揃っている」ことを意味しない。**
+
+### 試験規模での検出可能性
+
+この 2 地域から 1 群あたり 50/100/200 例を再標本化し、各検定の棄却率を求めた
+（図 2c）。
+
+```{r gusto-c}
+cw <- reshape(ga$C[, c("n_per_arm","test","power")], idvar = "test",
+              timevar = "n_per_arm", direction = "wide")
+names(cw) <- c("検定", paste0("n=", sizes))
+kable(cw, digits = 4, row.names = FALSE,
+      caption = "2,000 回の再標本化。臨界値は併合標本の並べ替えから算出。")
+```
+
+1 群 200 例で t 検定 `r fmt(subset(ga$C, test=="t-test (Welch)" & n_per_arm==200)$power,3)`、
+Wilcoxon `r fmt(subset(ga$C, test=="Wilcoxon" & n_per_arm==200)$power,3)`（いずれも名義水準のまま）
+に対し、smooth ($k=4$) は `r fmt(subset(ga$C, test=="Smooth k=4" & n_per_arm==200)$power,3)` である。
+絶対値としては高くないが、位置検定の検出力が原理的に 5% で頭打ちになるのに対し、
+smooth test の検出力は例数とともに増加する。
+
+### 注意: 測定粒度の差は高次成分に化ける {#sec-caveat}
+
+高次成分は分布の形だけでなく**記録の仕方**にも反応する。同じ探索で
+記録粒度が大きく異なる組合せを取ると、
+
+```{r caveat}
+cv <- ga$caveat
+kable(data.frame(
+  `変数` = cv$variable, `地域対` = paste(cv$r1, "vs", cv$r2),
+  `SMD` = fmt(cv$smd, 3),
+  `Z1` = fmt(cv$Z1, 2), `Z2` = fmt(cv$Z2, 2),
+  `Z3` = fmt(cv$Z3, 2), `Z4` = fmt(cv$Z4, 2),
+  `整数値割合の差` = fmt(cv$gran_gap, 3), check.names = FALSE),
+  row.names = FALSE,
+  caption = sprintf(paste("記録粒度が揃っていない組合せ。整数値で記録された",
+    "割合が両地域で %s ポイント異なる（一部はインチからの換算とみられる）。",
+    "第3・第4成分の大きさは、母集団の差と記録方式の差の両方を含む。"),
+    fmt(100 * cv$gran_gap, 0)))
+```
+
+のように $|Z_3| > 7$ に達する。**解析計画では、高次成分を解釈する前に
+両群の測定・記録手順が同一であることを確認する必要がある。** 本稿の例示では
+整数値割合の差が 0.05 未満の組合せに限定した。
+
+## 臨床試験での実装に関する提言 {#sec-practice}
+
+### 何を検定しているのかを明示する
+
+smooth test の帰無仮説は $F = G$ であり、これは ICH E9(R1) のいう estimand とは
+直接対応しない。「治療群と対照群の分布が等しい」という帰無仮説の棄却は、
+**治療が有益であることを意味しない**——分散が増えただけでも棄却される。
+したがって次の役割分担を推奨する。
+
+1. **主要解析は従来どおり**（推定量＋信頼区間、位置に基づく検定）。estimand に
+   対応した推定値を主張の根拠とする。
+2. **smooth test は事前規定された副次的／補足解析**として、
+   「治療が分布のどの側面を変えたか」を記述する目的で用いる。
+3. 成分 $Z_1,\dots,Z_4$ を Holm 調整つきで報告し、
+   有意になった成分に対応する記述統計（群別の SD、歪度、分位点）を併記する。
+
+### 事前規定すべき項目
+
+- $d$（最大成分数）: 4 を既定とする。$d > 6$ は検出力上の利点がほとんどない。
+- $k$ の決め方: 固定（$k=2$ または $k=4$）か data-driven（BIC）か。
+  第 3 節の使い分けに従う。
+- 較正方法: 並べ替え（反復数を明記）か事前表化した厳密臨界値か。
+- 打ち切り・欠測の扱い。smooth test は完全観測の連続変数を前提とする。
+
+### 成分の報告様式（例）
+
+> 主要評価変数について、Neyman smooth test（Legendre 順位スコア、$d=4$、
+> 並べ替え較正 10,000 回）を事前規定の副次解析として実施した。全体の
+> $p = 0.003$ であり、成分分解では位置成分 $Z_1 = 0.41$（Holm 調整 $p = 1.00$）、
+> 尺度成分 $Z_2 = -3.12$（Holm 調整 $p = 0.005$）であった。治療群の標準偏差は
+> 対照群の 0.71 倍であり、平均値に差は認められなかった。
+
+## 限界 {#sec-limitations}
+
+- **完全観測の連続変数に限定される。** 打ち切りのある生存時間には適用できない。
+  打ち切り対応の smooth goodness-of-fit（Peña 型）は別途の定式化が要る。
+- **順位に基づくため、効果量そのものを与えない。** 検定であって推定ではない。
+  分布差の大きさを定量したい場合は Wasserstein 距離などと併用する。
+- **第 4 節の例示は探索的に選ばれた組合せである。** `r nrow(ga$screen)` 通りから
+  選んだ 1 例であり、そこでの $p$ 値は選択バイアスを含む。方法の挙動を示す
+  例示であって、地域差に関する確証的知見ではない。
+- **多重性。** 成分ごとの $p$ 値を報告する場合、全体の検定と成分の検定の関係を
+  事前に定める必要がある（本稿では閉検定手順を採らず、全体 $p$ を主とし成分は
+  Holm 調整つきの記述と位置づけた）。
+- シミュレーションは等例数配分のみを扱った。極端な不均等配分（例 3:1）は
+  未評価である。
+
+## 次に進めるとよい方向 {#sec-next}
+
+1. **打ち切り対応**: 生存時間主要評価変数への拡張。非比例ハザードの検出を
+   低次の直交成分として定式化できる。
+2. **共変量調整**: 層別／回帰調整した残差に対する smooth test、あるいは
+   条件付き分布 $F(y \mid x)$ の比較への拡張。
+3. **推定への接続**: 成分 $Z_j$ に対応する分布汎関数の推定と信頼区間。
+   検定から推定へ移せば ICH E9(R1) の枠組みに乗せやすくなる。
+4. **MRCT への応用**: 地域間の効果修飾因子分布の比較に成分分解を用い、
+   Wasserstein 距離による定量と組み合わせる（第 4.2 節の方向）。
+
+## 参考文献 {.unnumbered}
+
+- Neyman, J. (1937). "Smooth test" for goodness of fit. *Skandinavisk
+  Aktuarietidskrift*, 20, 149--199.
+- Ledwina, T. (1994). Data-driven version of Neyman's smooth test of fit.
+  *Journal of the American Statistical Association*, 89, 1000--1005.
+- Inglot, T. & Ledwina, T. (1996). Asymptotic optimality of data-driven
+  Neyman's tests for uniformity. *Annals of Statistics*.
+- Janic-Wróblewska, A. & Ledwina, T. (2000). Data driven rank test for
+  two-sample problem. *Scandinavian Journal of Statistics*, 27, 281--297.
+- Rayner, J. C. W. & Best, D. J. (1989). *Smooth Tests of Goodness of Fit*.
+  Oxford University Press.
+- Rayner, J. C. W., Thas, O. & Best, D. J. (2009). *Smooth Tests of Goodness
+  of Fit: Using R*. Wiley.
+- Thas, O. (2010). *Comparing Distributions*. Springer.
+- Scholz, F. W. & Stephens, M. A. (1987). K-sample Anderson--Darling tests.
+  *Journal of the American Statistical Association*, 82, 918--924.
+- ICH E9(R1) (2019). *Addendum on Estimands and Sensitivity Analysis in
+  Clinical Trials*.
+- The GUSTO Investigators (1993). An international randomized trial comparing
+  four thrombolytic strategies for acute myocardial infarction.
+  *New England Journal of Medicine*, 329, 673--682.
+
+## 再現手順 {.unnumbered}
+
+```
+R/neyman_smooth_2sample.R   検定の実装（base R のみ）
+R/simulation_power.R        第一種の過誤・検出力（約3分）
+R/gusto_application.R       GUSTO-I への適用（約3分）
+R/figures.R                 図の生成
+quarto render neyman_smooth_clinical.qmd
+```

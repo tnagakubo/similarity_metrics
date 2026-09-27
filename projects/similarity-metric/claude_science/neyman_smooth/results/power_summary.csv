@@ -1,0 +1,190 @@
+"scenario","label","n_per_arm","test","power","mc_se","mean_k_selected"
+"S0_null_normal","Null: N(0,1) vs N(0,1)",50,"t-test (Welch)",0.0488,0.00304691844328003,1.0458
+"S0_null_normal","Null: N(0,1) vs N(0,1)",50,"Wilcoxon",0.046,0.00296256645495084,1.0458
+"S0_null_normal","Null: N(0,1) vs N(0,1)",50,"Kolmogorov-Smirnov",0.0354,0.00261330595223751,1.0458
+"S0_null_normal","Null: N(0,1) vs N(0,1)",50,"Anderson-Darling",0.0462,0.00296868859936505,1.0458
+"S0_null_normal","Null: N(0,1) vs N(0,1)",50,"Smooth k=2",0.0508,0.00310545842026584,1.0458
+"S0_null_normal","Null: N(0,1) vs N(0,1)",50,"Smooth k=4",0.0542,0.00320194815698193,1.0458
+"S0_null_normal","Null: N(0,1) vs N(0,1)",50,"Smooth data-driven (BIC)",0.0494,0.0030646252625729,1.0458
+"S0b_null_lognormal","Null: lognormal vs lognormal",50,"t-test (Welch)",0.0412,0.00281078494374792,1.0458
+"S0b_null_lognormal","Null: lognormal vs lognormal",50,"Wilcoxon",0.046,0.00296256645495084,1.0458
+"S0b_null_lognormal","Null: lognormal vs lognormal",50,"Kolmogorov-Smirnov",0.0354,0.00261330595223751,1.0458
+"S0b_null_lognormal","Null: lognormal vs lognormal",50,"Anderson-Darling",0.0462,0.00296868859936505,1.0458
+"S0b_null_lognormal","Null: lognormal vs lognormal",50,"Smooth k=2",0.0508,0.00310545842026584,1.0458
+"S0b_null_lognormal","Null: lognormal vs lognormal",50,"Smooth k=4",0.0542,0.00320194815698193,1.0458
+"S0b_null_lognormal","Null: lognormal vs lognormal",50,"Smooth data-driven (BIC)",0.0494,0.0030646252625729,1.0458
+"S1_location","Location shift (delta = 0.35 SD)",50,"t-test (Welch)",0.4058,0.00694444180622172,1.034
+"S1_location","Location shift (delta = 0.35 SD)",50,"Wilcoxon",0.3872,0.00688877579835489,1.034
+"S1_location","Location shift (delta = 0.35 SD)",50,"Kolmogorov-Smirnov",0.2812,0.0063580902793213,1.034
+"S1_location","Location shift (delta = 0.35 SD)",50,"Anderson-Darling",0.3814,0.00686926546291523,1.034
+"S1_location","Location shift (delta = 0.35 SD)",50,"Smooth k=2",0.3098,0.00653947948999001,1.034
+"S1_location","Location shift (delta = 0.35 SD)",50,"Smooth k=4",0.234,0.00598738674214385,1.034
+"S1_location","Location shift (delta = 0.35 SD)",50,"Smooth data-driven (BIC)",0.2772,0.00633024738853072,1.034
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",50,"t-test (Welch)",0.1916,0.00556577829238643,1.0472
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",50,"Wilcoxon",0.2756,0.00631893408732834,1.0472
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",50,"Kolmogorov-Smirnov",0.2278,0.00593139376538095,1.0472
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",50,"Anderson-Darling",0.2724,0.00629600254129555,1.0472
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",50,"Smooth k=2",0.2206,0.00586405388788336,1.0472
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",50,"Smooth k=4",0.1668,0.0052721487080696,1.0472
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",50,"Smooth data-driven (BIC)",0.1938,0.00559001896240075,1.0472
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",50,"t-test (Welch)",0.0484,0.00303504332753257,1.755
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",50,"Wilcoxon",0.0494,0.0030646252625729,1.755
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",50,"Kolmogorov-Smirnov",0.1678,0.00528475467737151,1.755
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",50,"Anderson-Darling",0.358,0.00677991150384723,1.755
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",50,"Smooth k=2",0.7002,0.00647950553669028,1.755
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",50,"Smooth k=4",0.643,0.00677570660521838,1.755
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",50,"Smooth data-driven (BIC)",0.707,0.00643662955280168,1.755
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",50,"t-test (Welch)",0.4198,0.00697951230387912,1.153
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",50,"Wilcoxon",0.353,0.00675856493643436,1.153
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",50,"Kolmogorov-Smirnov",0.2686,0.00626823802994111,1.153
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",50,"Anderson-Darling",0.3958,0.00691581318429004,1.153
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",50,"Smooth k=2",0.3854,0.00688283139412844,1.153
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",50,"Smooth k=4",0.3234,0.00661532221437475,1.153
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",50,"Smooth data-driven (BIC)",0.3402,0.00670020835496927,1.153
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",50,"t-test (Welch)",0.0468,0.00298696367570816,1.219
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",50,"Wilcoxon",0.063,0.00343601513384327,1.219
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",50,"Kolmogorov-Smirnov",0.0852,0.0039481884453506,1.219
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",50,"Anderson-Darling",0.087,0.00398574961581884,1.219
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",50,"Smooth k=2",0.0688,0.00357956868910208,1.219
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",50,"Smooth k=4",0.2218,0.00587545334421098,1.219
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",50,"Smooth data-driven (BIC)",0.1458,0.00499083880725475,1.219
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",50,"t-test (Welch)",0.1642,0.00523905258610753,1.0384
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",50,"Wilcoxon",0.2246,0.00590177668164427,1.0384
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",50,"Kolmogorov-Smirnov",0.1606,0.00519244913311628,1.0384
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",50,"Anderson-Darling",0.225,0.00590550590550886,1.0384
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",50,"Smooth k=2",0.1734,0.00535410944975913,1.0384
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",50,"Smooth k=4",0.1368,0.00485974814162216,1.0384
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",50,"Smooth data-driven (BIC)",0.156,0.00513154947359957,1.0384
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",50,"t-test (Welch)",0.2274,0.0059277186168036,1.8008
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",50,"Wilcoxon",0.2128,0.00578819764693639,1.8008
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",50,"Kolmogorov-Smirnov",0.377,0.00685377268371223,1.8008
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",50,"Anderson-Darling",0.5728,0.0069957152600717,1.8008
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",50,"Smooth k=2",0.822,0.0054095471159793,1.8008
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",50,"Smooth k=4",0.7714,0.00593872107444019,1.8008
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",50,"Smooth data-driven (BIC)",0.8022,0.00563338548299333,1.8008
+"S0_null_normal","Null: N(0,1) vs N(0,1)",100,"t-test (Welch)",0.0514,0.00312275647465504,1.0308
+"S0_null_normal","Null: N(0,1) vs N(0,1)",100,"Wilcoxon",0.0484,0.00303504332753257,1.0308
+"S0_null_normal","Null: N(0,1) vs N(0,1)",100,"Kolmogorov-Smirnov",0.0348,0.00259187036712873,1.0308
+"S0_null_normal","Null: N(0,1) vs N(0,1)",100,"Anderson-Darling",0.0502,0.00308804015517933,1.0308
+"S0_null_normal","Null: N(0,1) vs N(0,1)",100,"Smooth k=2",0.0548,0.00321860093829602,1.0308
+"S0_null_normal","Null: N(0,1) vs N(0,1)",100,"Smooth k=4",0.054,0.00319637294444813,1.0308
+"S0_null_normal","Null: N(0,1) vs N(0,1)",100,"Smooth data-driven (BIC)",0.053,0.00316831185333767,1.0308
+"S0b_null_lognormal","Null: lognormal vs lognormal",100,"t-test (Welch)",0.0494,0.0030646252625729,1.0308
+"S0b_null_lognormal","Null: lognormal vs lognormal",100,"Wilcoxon",0.0484,0.00303504332753257,1.0308
+"S0b_null_lognormal","Null: lognormal vs lognormal",100,"Kolmogorov-Smirnov",0.0348,0.00259187036712873,1.0308
+"S0b_null_lognormal","Null: lognormal vs lognormal",100,"Anderson-Darling",0.0502,0.00308804015517933,1.0308
+"S0b_null_lognormal","Null: lognormal vs lognormal",100,"Smooth k=2",0.0548,0.00321860093829602,1.0308
+"S0b_null_lognormal","Null: lognormal vs lognormal",100,"Smooth k=4",0.054,0.00319637294444813,1.0308
+"S0b_null_lognormal","Null: lognormal vs lognormal",100,"Smooth data-driven (BIC)",0.053,0.00316831185333767,1.0308
+"S1_location","Location shift (delta = 0.35 SD)",100,"t-test (Welch)",0.6928,0.00652423420793583,1.031
+"S1_location","Location shift (delta = 0.35 SD)",100,"Wilcoxon",0.6714,0.00664262056721592,1.031
+"S1_location","Location shift (delta = 0.35 SD)",100,"Kolmogorov-Smirnov",0.5114,0.00706922966100268,1.031
+"S1_location","Location shift (delta = 0.35 SD)",100,"Anderson-Darling",0.6634,0.00668282036269119,1.031
+"S1_location","Location shift (delta = 0.35 SD)",100,"Smooth k=2",0.5694,0.00700262293715719,1.031
+"S1_location","Location shift (delta = 0.35 SD)",100,"Smooth k=4",0.4578,0.00704583792036121,1.031
+"S1_location","Location shift (delta = 0.35 SD)",100,"Smooth data-driven (BIC)",0.5814,0.00697673333301481,1.031
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",100,"t-test (Welch)",0.3274,0.00663640324272117,1.0336
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",100,"Wilcoxon",0.4822,0.00706658559701926,1.0336
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",100,"Kolmogorov-Smirnov",0.4056,0.00694389861677142,1.0336
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",100,"Anderson-Darling",0.4802,0.00706552135372897,1.0336
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",100,"Smooth k=2",0.397,0.0069194074890846,1.0336
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",100,"Smooth k=4",0.3112,0.00654758825828259,1.0336
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",100,"Smooth data-driven (BIC)",0.4034,0.00693784462207104,1.0336
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",100,"t-test (Welch)",0.0522,0.00314563697841947,1.99
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",100,"Wilcoxon",0.0564,0.00326248494249399,1.99
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",100,"Kolmogorov-Smirnov",0.3472,0.00673278783268863,1.99
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",100,"Anderson-Darling",0.7704,0.00594783725399409,1.99
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",100,"Smooth k=2",0.9524,0.00301112072159188,1.99
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",100,"Smooth k=4",0.944,0.00325158422926425,1.99
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",100,"Smooth data-driven (BIC)",0.9536,0.00297479545515318,1.99
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",100,"t-test (Welch)",0.7164,0.00637449668601373,1.237
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",100,"Wilcoxon",0.6234,0.00685233449271122,1.237
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",100,"Kolmogorov-Smirnov",0.516,0.00706744649785196,1.237
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",100,"Anderson-Darling",0.7032,0.00646080118870717,1.237
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",100,"Smooth k=2",0.6936,0.00651949445892855,1.237
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",100,"Smooth k=4",0.649,0.00674979999703695,1.237
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",100,"Smooth data-driven (BIC)",0.6352,0.0068076568656183,1.237
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",100,"t-test (Welch)",0.0484,0.00303504332753257,1.4252
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",100,"Wilcoxon",0.0894,0.00403503754629371,1.4252
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",100,"Kolmogorov-Smirnov",0.1428,0.00494789167221757,1.4252
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",100,"Anderson-Darling",0.161,0.00519767255605814,1.4252
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",100,"Smooth k=2",0.0846,0.00393555180375002,1.4252
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",100,"Smooth k=4",0.464,0.00705271578897094,1.4252
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",100,"Smooth data-driven (BIC)",0.2542,0.00615763526039014,1.4252
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",100,"t-test (Welch)",0.2902,0.00641847271552976,1.0322
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",100,"Wilcoxon",0.4,0.00692820323027551,1.0322
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",100,"Kolmogorov-Smirnov",0.2862,0.00639201939921962,1.0322
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",100,"Anderson-Darling",0.3976,0.00692118833727273,1.0322
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",100,"Smooth k=2",0.318,0.0065859851199346,1.0322
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",100,"Smooth k=4",0.245,0.00608235151894397,1.0322
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",100,"Smooth data-driven (BIC)",0.3288,0.00664365200774393,1.0322
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",100,"t-test (Welch)",0.3928,0.00690663680817227,2.0044
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",100,"Wilcoxon",0.3798,0.00686370104244059,2.0044
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",100,"Kolmogorov-Smirnov",0.72,0.00634980314655502,2.0044
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",100,"Anderson-Darling",0.939,0.00338464178311384,2.0044
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",100,"Smooth k=2",0.9918,0.00127536347760158,2.0044
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",100,"Smooth k=4",0.9902,0.0013931231101378,2.0044
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",100,"Smooth data-driven (BIC)",0.9836,0.00179616480312915,2.0044
+"S0_null_normal","Null: N(0,1) vs N(0,1)",200,"t-test (Welch)",0.0496,0.00307049963361014,1.0132
+"S0_null_normal","Null: N(0,1) vs N(0,1)",200,"Wilcoxon",0.051,0.00311123769583746,1.0132
+"S0_null_normal","Null: N(0,1) vs N(0,1)",200,"Kolmogorov-Smirnov",0.0384,0.00271755183943195,1.0132
+"S0_null_normal","Null: N(0,1) vs N(0,1)",200,"Anderson-Darling",0.0476,0.00301112072159188,1.0132
+"S0_null_normal","Null: N(0,1) vs N(0,1)",200,"Smooth k=2",0.0456,0.00295027591929975,1.0132
+"S0_null_normal","Null: N(0,1) vs N(0,1)",200,"Smooth k=4",0.0502,0.00308804015517933,1.0132
+"S0_null_normal","Null: N(0,1) vs N(0,1)",200,"Smooth data-driven (BIC)",0.0412,0.00281078494374792,1.0132
+"S0b_null_lognormal","Null: lognormal vs lognormal",200,"t-test (Welch)",0.0438,0.00289418589589542,1.0132
+"S0b_null_lognormal","Null: lognormal vs lognormal",200,"Wilcoxon",0.051,0.00311123769583746,1.0132
+"S0b_null_lognormal","Null: lognormal vs lognormal",200,"Kolmogorov-Smirnov",0.0384,0.00271755183943195,1.0132
+"S0b_null_lognormal","Null: lognormal vs lognormal",200,"Anderson-Darling",0.0476,0.00301112072159188,1.0132
+"S0b_null_lognormal","Null: lognormal vs lognormal",200,"Smooth k=2",0.0456,0.00295027591929975,1.0132
+"S0b_null_lognormal","Null: lognormal vs lognormal",200,"Smooth k=4",0.0502,0.00308804015517933,1.0132
+"S0b_null_lognormal","Null: lognormal vs lognormal",200,"Smooth data-driven (BIC)",0.0412,0.00281078494374792,1.0132
+"S1_location","Location shift (delta = 0.35 SD)",200,"t-test (Welch)",0.9336,0.00352110891623647,1.019
+"S1_location","Location shift (delta = 0.35 SD)",200,"Wilcoxon",0.9218,0.00379696615734194,1.019
+"S1_location","Location shift (delta = 0.35 SD)",200,"Kolmogorov-Smirnov",0.829,0.00532464083295766,1.019
+"S1_location","Location shift (delta = 0.35 SD)",200,"Anderson-Darling",0.9174,0.00389299987156434,1.019
+"S1_location","Location shift (delta = 0.35 SD)",200,"Smooth k=2",0.8624,0.00487167815028867,1.019
+"S1_location","Location shift (delta = 0.35 SD)",200,"Smooth k=4",0.7956,0.00570299289847007,1.019
+"S1_location","Location shift (delta = 0.35 SD)",200,"Smooth data-driven (BIC)",0.8988,0.00426517432234604,1.019
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",200,"t-test (Welch)",0.548,0.00703840891111052,1.0252
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",200,"Wilcoxon",0.7872,0.00578819764693639,1.0252
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",200,"Kolmogorov-Smirnov",0.72,0.00634980314655502,1.0252
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",200,"Anderson-Darling",0.781,0.00584874345479437,1.0252
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",200,"Smooth k=2",0.684,0.00657486121526531,1.0252
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",200,"Smooth k=4",0.6038,0.00691701611968629,1.0252
+"S2_heavytail_loc","Location shift, heavy tails (t3, delta = 0.35)",200,"Smooth data-driven (BIC)",0.742,0.00618766514931117,1.0252
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",200,"t-test (Welch)",0.052,0.00313993630508646,2.0828
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",200,"Wilcoxon",0.0566,0.00326791799162709,2.0828
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",200,"Kolmogorov-Smirnov",0.7794,0.00586405388788336,2.0828
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",200,"Anderson-Darling",0.9934,0.00114511484140239,2.0828
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",200,"Smooth k=2",0.9996,0.000282786138274123,2.0828
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",200,"Smooth k=4",0.9996,0.000282786138274123,2.0828
+"S3_scale_only","Scale only (SD 1.0 vs 1.6, equal mean & median)",200,"Smooth data-driven (BIC)",0.9992,0.000399839967987199,2.0828
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",200,"t-test (Welch)",0.9504,0.00307049963361014,1.4366
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",200,"Wilcoxon",0.9018,0.00420848571341284,1.4366
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",200,"Kolmogorov-Smirnov",0.8604,0.00490126187833297,1.4366
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",200,"Anderson-Darling",0.9562,0.00289418589589542,1.4366
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",200,"Smooth k=2",0.948,0.00313993630508646,1.4366
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",200,"Smooth k=4",0.9452,0.00321860093829602,1.4366
+"S4_responder","Responder subgroup (25% shifted by 1.6 SD)",200,"Smooth data-driven (BIC)",0.9246,0.00373402838767999,1.4366
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",200,"t-test (Welch)",0.0476,0.00301112072159188,1.9072
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",200,"Wilcoxon",0.1226,0.00463830227561766,1.9072
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",200,"Kolmogorov-Smirnov",0.2448,0.00608067364689144,1.9072
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",200,"Anderson-Darling",0.3234,0.00661532221437475,1.9072
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",200,"Smooth k=2",0.1076,0.00438228798688539,1.9072
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",200,"Smooth k=4",0.8042,0.00561181539254456,1.9072
+"S5_shape_only","Shape only (skew-normal, equal mean & SD)",200,"Smooth data-driven (BIC)",0.489,0.00706935640634987,1.9072
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",200,"t-test (Welch)",0.492,0.00707016265725195,1.0168
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",200,"Wilcoxon",0.6704,0.00664776413540673,1.0168
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",200,"Kolmogorov-Smirnov",0.5206,0.00706506390629271,1.0168
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",200,"Anderson-Darling",0.661,0.00669446039647708,1.0168
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",200,"Smooth k=2",0.562,0.00701649485141976,1.0168
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",200,"Smooth k=4",0.472,0.00705997167133127,1.0168
+"S6_lognormal_shift","Right-skewed endpoint, lognormal shift (0.25 on log scale)",200,"Smooth data-driven (BIC)",0.6214,0.00685947578171977,1.0168
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",200,"t-test (Welch)",0.666,0.00666999250374391,2.0618
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",200,"Wilcoxon",0.6434,0.00677401564804806,2.0618
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",200,"Kolmogorov-Smirnov",0.984,0.00177448584102551,2.0618
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",200,"Anderson-Darling",1,0,2.0618
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",200,"Smooth k=2",1,0,2.0618
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",200,"Smooth k=4",1,0,2.0618
+"S7_stabilising","Mean shift 0.2 with variance reduction (SD 1.0 vs 0.6)",200,"Smooth data-driven (BIC)",1,0,2.0618

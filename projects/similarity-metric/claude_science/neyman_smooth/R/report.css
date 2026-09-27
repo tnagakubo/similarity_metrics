@@ -1,0 +1,43 @@
+html { font-size: 16px; }
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo",
+               "Noto Sans JP", system-ui, sans-serif;
+  line-height: 1.75;
+  max-width: 46rem;
+  margin: 2rem auto 6rem;
+  padding: 0 1.25rem;
+  color: #1a1a1a;
+}
+h1 { font-size: 1.7rem; line-height: 1.35; margin-top: 2.5rem; }
+h2 { font-size: 1.3rem; margin-top: 2.5rem;
+     border-bottom: 1px solid #ddd; padding-bottom: 0.3rem; }
+h3 { font-size: 1.08rem; margin-top: 1.8rem; }
+h4 { font-size: 1rem; margin-top: 1.4rem; }
+p, li { text-align: justify; }
+img { max-width: 100%; height: auto; display: block; margin: 1.2rem auto; }
+figure { margin: 1.8rem 0; }
+figcaption { font-size: 0.86rem; color: #555; text-align: left;
+             margin-top: 0.4rem; }
+table { border-collapse: collapse; width: 100%; font-size: 0.86rem;
+        margin: 1.2rem 0; }
+th, td { border: none; padding: 0.35rem 0.6rem; text-align: right; }
+th { border-bottom: 1.5px solid #333; border-top: 1.5px solid #333;
+     font-weight: 600; }
+tbody tr:last-child td { border-bottom: 1.5px solid #333; }
+td:first-child, th:first-child { text-align: left; }
+caption { caption-side: bottom; font-size: 0.84rem; color: #555;
+          text-align: left; padding-top: 0.5rem; }
+blockquote { border-left: 3px solid #bbb; margin-left: 0;
+             padding: 0.2rem 0 0.2rem 1rem; color: #444; }
+code { font-size: 0.88em; background: #f4f4f4; padding: 0.1em 0.3em;
+       border-radius: 3px; }
+pre { background: #f7f7f7; padding: 0.8rem 1rem; overflow-x: auto;
+      border-radius: 4px; }
+pre code { background: none; padding: 0; }
+div.callout-note {
+  border-left: 3px solid #4e575f; background: #f6f7f8;
+  padding: 0.8rem 1rem; margin: 1.5rem 0; font-size: 0.93rem;
+}
+#TOC { font-size: 0.9rem; background: #fafafa; padding: 1rem 1.2rem;
+       border: 1px solid #e5e5e5; border-radius: 4px; }
+#TOC ul { padding-left: 1.2rem; }

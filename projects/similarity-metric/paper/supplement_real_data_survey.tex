@@ -1,0 +1,62 @@
+% 2026-09-27: now the only supplement (A and B dropped); title relabelled.
+% Reviewed 2026-09-27 (decision round under Tak's instruction): read through once; CRASH-2 sentence reworded; r = 0.13 sentence added for the Discussion.
+% Protocol: PROTOCOL_real_data_survey.md. Numbers: results/real_data_survey_summary.csv,
+% results/real_data_survey_pairs.csv (R/real_data_survey.R, seed 2026, B = 1,000).
+% Verified 2026-09-26: Spearman ranges and counts recomputed from the pairs CSV;
+% GUSTO-I anchor distances (R8 vs R1, R5) identical to results/gusto_r8_w1_per_pair.csv.
+% Verified 2026-09-27: age-SBP correlation of W1 across the 120 GUSTO-I pairs recomputed from the pairs CSV (Pearson 0.1331, Spearman 0.1533).
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\geometry{margin=1in}
+
+\title{Supporting Information: Agreement Between $W_1$ and Existing Measures in Available Trial Data}
+\date{}
+
+\begin{document}
+\maketitle
+
+This document reports, for every trial dataset with individual patient data available to us and every continuous baseline characteristic in it, how closely the ordering of region pairs by $W_1$ agrees with the ordering by the standardized mean difference (SMD) and by the Kolmogorov--Smirnov (KS) statistic. The survey was specified in a protocol before the confirmatory run. An exploratory scan of the same data preceded the protocol, and the negligible-imbalance cut used for the secondary outcome was fixed after that scan; the primary outcome does not depend on any cut. Real data have no ground truth, so a disagreement between measures does not indicate which measure is correct; the identification comparison rests on Study~2 of the main paper.
+
+\section{Data and measures}
+
+Three trials were included: GUSTO-I (16 regions; age, systolic blood pressure, pulse, height, weight), IST-3 (countries other than the pooled ``other'' category; age, NIHSS, time to treatment, systolic blood pressure, weight) and IST-1 (countries; age, systolic blood pressure, time from onset to randomisation). A fourth dataset, CRASH-2, could not be included because the available file could not be read as a data file. For each characteristic, regions with at least 100 non-missing values were retained, and all unordered pairs of retained regions were compared. $W_1$ was computed in its exact CDF-area form, the SMD as the absolute mean difference over the pooled standard deviation,\cite{austin2011} and the KS statistic as the largest absolute difference between the empirical CDFs. For each pair, the null floor of $\widehat{W}_1$ was obtained from 1,000 pairs of resamples drawn from the combined sample of the two regions at their observed sizes, and a pair was called resolved when its observed $\widehat{W}_1$ exceeded the 95th percentile. Because the survey has no anchor, this null draws from the combined sample of the two regions, whereas the null floor of the main paper's GUSTO-I analysis draws from the anchor region; the SMD cut of 0.1 is the conventional threshold for negligible imbalance.\cite{austin2009}
+
+\section{Results}
+
+\begin{table}[ht]
+\centering
+\caption{Agreement between $W_1$ and existing measures across all region pairs, by trial and characteristic. Spearman correlations are between the orderings of region pairs. The last three columns count pairs with SMD below 0.1 whose $\widehat{W}_1$ is or is not resolved against its null floor, and give the largest ratio of regional standard deviations among the pairs.}
+\label{tab:supE}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrrrr}
+\toprule
+Trial & Characteristic & Regions & Pairs & $\rho_S(W_1,\text{SMD})$ & $\rho_S(W_1,\text{KS})$ & SMD$<$0.1, resolved & SMD$<$0.1, unresolved & Max SD ratio \\
+\midrule
+GUSTO-I & Age & 16 & 120 & 0.906 & 0.953 & 42 & 33 & 1.12 \\
+        & Height & 16 & 120 & 0.960 & 0.967 & 20 & 19 & 1.29 \\
+        & Pulse & 16 & 120 & 0.965 & 0.959 & 49 & 28 & 1.12 \\
+        & SBP & 16 & 120 & 0.958 & 0.935 & 35 & 18 & 1.16 \\
+        & Weight & 16 & 120 & 0.985 & 0.989 & 21 & 16 & 1.47 \\
+IST-3   & Age & 6 & 15 & 0.961 & 0.900 & 0 & 3 & 1.27 \\
+        & NIHSS & 6 & 15 & 0.996 & 0.971 & 0 & 1 & 1.18 \\
+        & SBP & 6 & 15 & 0.961 & 0.882 & 0 & 4 & 1.16 \\
+        & Time to treatment & 6 & 15 & 0.886 & 0.964 & 0 & 2 & 1.65 \\
+        & Weight & 6 & 15 & 0.839 & 0.879 & 0 & 6 & 1.27 \\
+IST-1   & Age & 24 & 276 & 0.976 & 0.965 & 7 & 38 & 1.56 \\
+        & Onset to randomisation & 24 & 276 & 0.992 & 0.965 & 4 & 40 & 1.31 \\
+        & SBP & 24 & 276 & 0.940 & 0.934 & 6 & 78 & 1.41 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+Across the thirteen characteristics, the rank correlation of $W_1$ with the SMD ranged from 0.839 to 0.996 and with the KS statistic from 0.879 to 0.989 (Table~\ref{tab:supE}). Regional standard deviations differed by at most a factor of 1.65, so the regional differences in these trials were predominantly differences in location, as in the GUSTO-I analysis of the main paper. Across the 120 GUSTO-I region pairs, the $\widehat{W}_1$ distances for age and for systolic blood pressure, the two candidate effect modifiers of the main paper, were weakly correlated (Pearson $r = 0.13$; Spearman 0.15).
+
+Of the 470 pairs with SMD below 0.1, 184 had a $\widehat{W}_1$ resolved against its null floor: 167 in GUSTO-I, 17 in IST-1 and none in IST-3. These counts should be read with the sample sizes, which we add here as a descriptor not specified in the protocol. The SMD cut is a statement of effect size, whereas resolution against the null floor is a statement of detectability, which grows with $n$; the median regional size was about 2,300 to 2,900 in GUSTO-I, against about 200 to 350 in IST-3. Among the resolved pairs with SMD below 0.1, $\widehat{W}_1$ was at most 0.19 overall standard deviations in GUSTO-I and at most 0.31 in IST-1. Such pairs show small distributional differences that the data detect and that the SMD, by its conventional cut, calls negligible; whether any of them matters clinically is a question for the calibration of the main paper, not for this survey.
+
+\bibliographystyle{unsrt}
+\bibliography{per_em_W1_wiley}
+
+\end{document}

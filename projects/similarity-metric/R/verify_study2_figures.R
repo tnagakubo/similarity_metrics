@@ -63,7 +63,7 @@ g_rqc <- function(set, method, col) {
   stopifnot(length(v) == 1); v
 }
 
-say("== Study 2 numbers gate (2026-08-30) ==")
+say("== Study 2 numbers gate (2026-08-30; extended 2026-09-27) ==")
 
 # ---- A. required n for AUC >= 0.9, decisive cells ---------------------------
 say("\n-- A. required n, selection AUC >= 0.9 --")
@@ -191,14 +191,75 @@ check("Set3: near-zero-ARI methods (RV1, SMD) hit k=3 at least as often as W1",
 say("\n-- G. Set 4 true W1 / KS (recomputed from build_set4) --")
 source("R/selection_simulation.R", chdir = FALSE)  # source-safe: main() guarded
 r4 <- build_set4(); lo <- -400; hi <- 600           # bounds as in the driver
-ids <- c("T1", "T2", "P2", "S1")
+# 2026-09-27: all six discordant regions (the prose previously quoted four).
+ids <- c("T1", "T2", "P1", "P2", "S1", "S2")
 tw <- vapply(ids, function(id) true_w1(r4$A0, r4[[id]], lo, hi), numeric(1))
 tk <- vapply(ids, function(id) true_ks(r4$A0, r4[[id]], lo, hi), numeric(1))
-check("true W1 (T1,T2,P2,S1)", tw, c(3.000, 6.000, 3.000, 2.000), 3)
-check("true KS (T1,T2,P2,S1)", tk, c(0.047, 0.050, 0.050, 0.072), 3)
-check("rank reversal: S1 has the largest true KS", names(which.max(tk)), "S1")
+check("true W1 (T1,T2,P1,P2,S1,S2)", round(tw, 2), c(3.00, 6.00, 4.48, 3.00, 2.00, 3.00))
+check("true KS (T1,T2,P1,P2,S1,S2)", tk, c(0.047, 0.050, 0.067, 0.050, 0.072, 0.107), 3)
+check("bulk-shift regions S1, S2 are the two largest true KS",
+      sort(names(sort(tk, decreasing = TRUE))[1:2]), c("S1", "S2"))
+check("KS gap between W1-largest (T2) and KS-smallest (T1) = 0.003",
+      round(tk["T2"], 3) - round(tk["T1"], 3), 0.003, 3)
+# for every c in [3, 6): {W1 <= c} contains the KS-largest region but excludes T2,
+# whose KS is smaller -- so no KS threshold retains exactly that set.
+imp <- vapply(c(3, 4, 4.48, 5, 5.99), function(cc) {
+  inn <- tw <= cc + 1e-9; any(inn) && any(!inn) && min(tk[!inn]) < max(tk[inn])
+}, logical(1))
+check("no KS threshold retains exactly {W1 <= c}, c in [3, 6)", all(imp), TRUE)
 check("no KS threshold separates T1(in) from T2(out): |KS gap| <= 0.006",
       abs(tk["T2"] - tk["T1"]) <= 0.006, TRUE)
+
+# ---- I. numbers added in the 2026-09-27 paragraph review --------------------
+say("\n-- I. 2026-09-27 additions --")
+pr_w1 <- g_sel("Set4_Extremes", 100, "W1", "precision_at_k", "overall")
+pr_ks <- g_sel("Set4_Extremes", 100, "KS", "precision_at_k", "overall")
+check("per-slot discordant proportion W1, KS (0.30, 0.58)", round(1 - c(pr_w1, pr_ks), 2), c(0.30, 0.58))
+check("chance: P(any discordant among 3 of 9) = 0.988", round(1 - 1/choose(9, 3), 3), 0.988)
+check("chance: per-slot discordant = 0.67", round(6/9, 2), 0.67)
+check("false_pooling_at_k is P(ncm < k): W1 0.718 = P(any discordant)", fp_w1, 0.718, 3)
+new_cells <- list(
+  c("Set4_Extremes / sym_prevalence", "W1", 98), c("Set4_Extremes / sym_prevalence", "KS", 367),
+  c("Set4_Extremes / sym_prevalence", "RV2", 412), c("Set4_Extremes / sym_prevalence", "RV3", 527),
+  c("Set3_Mixture / shape_skew", "W1", 537), c("Set3_Mixture / shape_skew", "KS", 905),
+  c("Set4_Extremes / bulk_shift", "SMD", 489), c("Set4_Extremes / bulk_shift", "RV1", 491),
+  c("Set4_Extremes / bulk_shift", "RV2", 490), c("Set4_Extremes / bulk_shift", "RV3", 491),
+  c("Set4_Extremes / sym_severity", "RV2", 76), c("Set4_Extremes / sym_severity", "RV3", 83))
+for (v in new_cells)
+  check(sprintf("req n 0.9: %s %s", v[1], v[2]), g_rqs(v[1], v[2], "required_n"), as.numeric(v[3]))
+for (m in c("SMD")) check("blind: sym_prevalence SMD", g_rqs("Set4_Extremes / sym_prevalence", m, "status"), "blind")
+check("partial: sym_prevalence RV1 max AUC 0.57", g_rqs("Set4_Extremes / sym_prevalence", "RV1", "max_auc"), 0.57, 2)
+for (m in c("SMD", "RV1", "RV2"))
+  check(sprintf("blind: shape_skew %s", m), g_rqs("Set3_Mixture / shape_skew", m, "status"), "blind")
+check("partial: shape_skew RV3 max AUC 0.79", g_rqs("Set3_Mixture / shape_skew", "RV3", "max_auc"), 0.79, 2)
+for (m in c("RV1", "RV2", "SMD"))
+  check(sprintf("blind: shape_sym %s", m), g_rqs("Set3_Mixture / shape_sym", m, "status"), "blind")
+check("blind: shape_sym RV3", g_rqs("Set3_Mixture / shape_sym", "RV3", "status"), "blind")
+check("shape_sym RV2/RV3 max AUC within 0.44-0.46",
+      all(round(c(g_rqs("Set3_Mixture / shape_sym", "RV2", "max_auc"),
+                  g_rqs("Set3_Mixture / shape_sym", "RV3", "max_auc")), 2) >= 0.44 &
+          round(c(g_rqs("Set3_Mixture / shape_sym", "RV2", "max_auc"),
+                  g_rqs("Set3_Mixture / shape_sym", "RV3", "max_auc")), 2) <= 0.46), TRUE)
+all34 <- c("Set4_Extremes / sym_severity", "Set4_Extremes / sym_prevalence", "Set4_Extremes / asym_severity",
+           "Set4_Extremes / bulk_shift", "Set3_Mixture / combined", "Set3_Mixture / shape_skew",
+           "Set3_Mixture / shape_sym")
+w1n <- vapply(all34, function(cl) g_rqs(cl, "W1", "required_n"), numeric(1))
+ksn <- vapply(all34, function(cl) g_rqs(cl, "KS", "required_n"), numeric(1))
+check("W1 range across all Set 3/4 cells 42-690", range(w1n), c(42, 690))
+check("W1 needs fewer n than KS in every Set 3/4 cell except bulk_shift",
+      names(which(w1n >= ksn)), "Set4_Extremes / bulk_shift")
+check("KS selection AUC sym_severity at n=2000 = 0.99",
+      g_sel("Set4_Extremes", 2000, "KS", "auc", "sym_severity"), 0.99, 2)
+check("SMD_log Set2 shape AUC@2000 = 1.00", g_sel("Set2_LogNormal", 2000, "SMD_log", "auc", "shape"), 1.00, 2)
+check("SMD_log Set2 combined AUC@2000 = 0.51", g_sel("Set2_LogNormal", 2000, "SMD_log", "auc", "combined"), 0.51, 2)
+check("W1 clustering required n (ARI 0.8) range 41-376",
+      range(vapply(sets4, function(s) g_rqc(s, "W1", "required_n"), numeric(1))), c(41, 376))
+check("silhouette ARI Set2 n=100: W1, RV2, KS",
+      c(g_nok("Set2_LogNormal", "W1", "ari"), g_nok("Set2_LogNormal", "RV2", "ari"),
+        g_nok("Set2_LogNormal", "KS", "ari")), c(0.621, 0.716, 0.670), 3)
+check("RV1 sym_severity AUC flat 0.61-0.63 across grid",
+      all(abs(sel$value[sel$set == "Set4_Extremes" & sel$method == "RV1" & sel$measure == "auc" &
+                        sel$type == "sym_severity"] - 0.62) <= 0.013), TRUE)
 
 # ---- H. design constants quoted in prose ------------------------------------
 say("\n-- H. design constants --")
