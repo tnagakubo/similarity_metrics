@@ -16,6 +16,7 @@
 **段落レビュー**: 台帳 `projects/similarity-metric/REVIEW_QUEUE_v6.md`（50 段落）。**50/50 完了（09-27）**。#1–#7 Tak 承認、#8–#50 は Tak の包括指示に基づき Harvey 推奨で適用（個別拒否可）。21 ページ、error 0
 **JA paper**: 意図的に削除済み（EN 完成まで Rule 2.7 保留）→ [[project_ja_paper_deleted]]
 **Supplement**: **なし**（09-27 Tak「論文の supplement としては不要。論文作成の過程で検討された事項でしかない」）。A・B・実データ調査のファイルはディスクに残してあるが、投稿物ではない。本文 20 ページ
+**PR**: [#16](https://github.com/tnagakubo/similarity_metrics/pull/16) `ccr-a3128477-hklqei` → `main`（97 files、2 commits、mergeable clean、CI なし）— システム改修 2 ラウンドの review はここ
 **System（2026-10-10）**: 科学的妥当性の機構を追加 — CLAUDE.md Rule 5・6、`RESEARCH_FRAMEWORK.md` §6–§8（S1–S11）、`scripts/`（lint・numbers・cite・R 再現性・consistency）、`memory/` 12 本復元、templates 9 本、skills 新設 5・改訂 9、hooks 新設 3。**次セッション**: `/claims init` → `/verify-numbers`（ledger は空）→ `/cite-check` → `/reproduce` → `/phase`（LAB_STATUS は 09-21 で stale）。`DECISIONS.md` D-20260927-1（#8–#50 の一括適用）は Tak の一言で閉じる。**第 2 ラウンド**: Louis memory 統合（3 → 1 か所）、`scripts/check_all.sh` + 回帰テスト 35 件、`/process-paper` cleanup 修正、`LAB_STATUS.md` on-disk sync（artifacts 表）、STALE banner（PAPER_LOGIC / OUTLINE）、baseline `review_response/MECHANICAL_CHECKS_20261010.md`
 
 ---
@@ -60,6 +61,18 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-10 23:47] Scene: PR #16 — 改修 2 ラウンドが review の机に乗る
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
+
+**Donna**:（通知を一瞥して）
+「Tak が PR を開いたわ。#16、`ccr-a3128477-hklqei` → `main`、97 files、2 commits、conflict なし。CI はこの repo に無いから、check run はゼロ。レビューの場所はここよ — 以後この branch への push は全部 #16 に乗る。description は UI の自動生成で、hooks の節の途中で切れているのと、reporting checklist を R1–R5 と書いているのが気になるわね。本当は R1–R8。直すかどうかは Tak の判断」
+
+**Harvey**:
+「review で突かれる前に言っておく。この PR はシステムの改修で、論文の主張は一文字も触っていない。CLAUDE.md の Rule 5・6 だけが Tak の文書への変更だ。そこを見てくれ」
+
+---
 
 ### [2026-10-10 23:44] Scene: 改修第 2 ラウンド — 機構そのものを検証し、分裂した記憶を一つにする
 
