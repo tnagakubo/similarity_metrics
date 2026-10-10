@@ -1,5 +1,7 @@
 {
-  "worktree": { "bgIsolation": "none" },
+  "worktree": {
+    "bgIsolation": "none"
+  },
   "hooks": {
     "SessionStart": [
       {
@@ -41,6 +43,10 @@
           {
             "type": "command",
             "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/pre-bash-safety.sh'"
+          },
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/pre-run-protocol-check.sh'"
           }
         ]
       }
@@ -64,6 +70,14 @@
           {
             "type": "command",
             "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/check-numbers-verification.sh'"
+          },
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/lint-suits.sh'"
+          },
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/check-r-reproducibility.sh'"
           }
         ]
       }

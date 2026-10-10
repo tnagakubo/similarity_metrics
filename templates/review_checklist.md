@@ -81,3 +81,16 @@ Tak への修正提案は **3 軸** で options を並べると判断が早い:
 ---
 
 **判定**: 全 Yes → Tak に提示可 / No あり → 修正後に再チェック
+
+---
+
+## S: Scientific-reporting checks（team 追加 2026-10-10 — Tak の 5 原則の下位。数値・証拠を含む段落に適用）
+
+- [ ] 段落の主張は `CLAIMS.md` のどの行か言えるか?（言えなければ台帳に起票するか、主張を削る）
+- [ ] 数値は `results/NUMBERS_LEDGER.csv` に行があるか?（producer ≠ verifier）
+- [ ] 推定値に CI / SE、性能指標に Monte Carlo SE が付いているか?
+- [ ] estimand・仮定が定義されているか?（命題の仮定が落ちていないか — Louis memory: Prop. 1 の「その EM だけに依存する」）
+- [ ] protocol 外の結果なら "exploratory" と書いてあるか?
+- [ ] 引用は `CITATION_AUDIT` で "supports the claim? = yes" か?
+
+**判定**: 全 Yes → Tak に提示可 / No あり → 修正後に再チェック

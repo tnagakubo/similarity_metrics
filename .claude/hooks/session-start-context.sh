@@ -38,4 +38,9 @@ if [ -f "$SNAP" ]; then
   echo "Donna: 前回の compaction snapshot が在るわ → .claude/state/precompact_snapshot.md（復帰時はまず 5-step verification）" >&2
 fi
 
+# Cross-file consistency (phase sync, stale state, undefined \ref, missing lifecycle artifacts)
+if command -v python3 >/dev/null 2>&1 && [ -f "$PROJECT_DIR/scripts/check_consistency.sh" ]; then
+  ( cd "$PROJECT_DIR" && bash scripts/check_consistency.sh --quiet ) 2>/dev/null | head -12 >&2
+fi
+
 exit 0

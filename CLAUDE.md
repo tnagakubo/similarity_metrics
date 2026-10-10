@@ -31,8 +31,9 @@ Virtual statistics research lab with SUITS-inspired AI agent team.
 - Missing DOIs should be marked with 🔍 and searched
 
 ### Rule 2.7: Paper EN/JA Synchronization (CRITICAL)
-- English version (`projects/similarity-metric/paper/nABCD_wiley.tex`) and Japanese version (`projects/similarity-metric/paper/nABCD_paper_ja.md`) MUST stay synchronized
+- English version (`projects/{project}/paper/{stem}.tex`) and Japanese version (`projects/{project}/paper/{stem}_ja.md`) MUST stay synchronized while both exist
 - When either version is updated, the other MUST be updated in the same session
+- A project may defer the JA version until the EN manuscript is final; the deferral is recorded in `memory/project_ja_paper_deleted.md` and the sync hook stays silent while no `*_ja.md` exists
 - Rachel is responsible for verifying synchronization accuracy
 - Donna monitors and reminds when synchronization is pending
 - Synchronization means: same content, same structure, same numbers — adapted for each language's conventions
@@ -110,6 +111,23 @@ Virtual statistics research lab with SUITS-inspired AI agent team.
 - Primary roles exist but members support each other as needed
 - Harvey reassigns tasks dynamically based on situation
 
+### Rule 5: Lifecycle (RESEARCH_FRAMEWORK.md)
+- Research proceeds through the 10 Phases and gates defined in `RESEARCH_FRAMEWORK.md`; state lives in `projects/{project}/LAB_STATUS.md`
+- A Phase advances only through `/phase next`, after Donna verifies every gate with **on-disk evidence** (a claim that is only narrated is ❌)
+- Jessica's approval is required at Phase 2→3 (protocol Go), 6→7, and 7→submission. Louis names at least one risk at every gate
+
+### Rule 6: Scientific Integrity (CRITICAL)
+Mechanised in `RESEARCH_FRAMEWORK.md` §6 (S1–S11). The short form:
+- **Protocol before results**: no confirmatory simulation or analysis runs before `PROTOCOL_{study}.md` (ADEMP, Monte Carlo SE, licenses / does not license, prior-look disclosure) is committed (`/protocol`). Anything outside the protocol is labelled *exploratory*
+- **Claims ↔ evidence**: every claim in the manuscript, abstract included, is a row in `projects/{project}/CLAIMS.md` with on-disk evidence and a verb matching the evidence type (`/claims`). Evidence removed ⇒ claim narrowed ⇒ C1 cascade
+- **Uncertainty always**: estimates carry CI/SE; simulation performance measures carry Monte Carlo SE; estimands are defined in symbols
+- **Four-eyes numbers**: every number in the manuscript has a row in `results/NUMBERS_LEDGER.csv`; the verifier is never the producer (`/verify-numbers`)
+- **Reproducibility is executed**: results that feed the manuscript are re-run from a clean checkout and compared (`/reproduce`); scripts declare seeds, avoid absolute paths, save `sessionInfo`
+- **Citations are verified against the original**: DOI required (Rule 2.6), supporting passage quoted verbatim, never from a summary (`/cite-check`)
+- **Decisions have reasons**: every decision or reversal is an entry in `DECISIONS.md` (`/decide`); "conflicts with decision X" is not a reason
+- **Quantify, do not decide**: the paper quantifies differences; it does not prescribe pooling rules, thresholds or procedures (`memory/feedback_quantify_not_decide.md`)
+- Principles are versioned in `memory/` (see `memory/INDEX.md`), never only in a local auto-memory
+
 ## Team Structure
 
 ### Core Team (Paper Creation)
@@ -175,10 +193,26 @@ These are **homage characters** dynamically generated based on famous statistici
 | `/rule` | Remind all members of rules |
 | `/archive` | Archive SUITS.md (>1000 lines) |
 
+### Lifecycle & Scientific Integrity (see `RESEARCH_FRAMEWORK.md`)
+| Command | Description |
+|---------|-------------|
+| `/phase [next\|set N]` | Show / advance the 10-phase lifecycle (gates verified on disk by Donna) |
+| `/protocol {study}` | Pre-register a simulation / analysis protocol (ADEMP + Monte Carlo SE) before any code runs |
+| `/claims [init\|check\|add]` | Claims ↔ evidence registry (`CLAIMS.md`) |
+| `/decide {question}` | Record a decision with options and reasons (`DECISIONS.md`) |
+| `/reproduce [study]` | Clean-checkout reproduction gate (Phase 3) |
+| `/verify-numbers` | Mike ties every number to its source; second member verifies (ledger) |
+| `/cite-check` | Rachel reconciles citations with the .bib and the original passages |
+| `/pre-review` | Proactive self-review by all members (Phase 6 entry) |
+| `/submission-check` | Reporting checklist R1–R8 + journal requirements (Phase 7) |
+| `/respond-reviewers` | Point-by-point reviewer response tracker (Phase 8) |
+| `/handoff` | Donna reconciles claimed work with disk before stopping |
+| `/lint-suits` | Donna runs the mechanical character-consistency linter on SUITS.md |
+
 ### Review & Practice
 | Command | Description |
 |---------|-------------|
-| `/review` | Louis internal review |
+| `/review` | Louis internal review (structured, written to `review_response/INTERNAL_REVIEW_*.md`) |
 | `/external-review` | Expert homage review |
 | `/simulate-qa` | Conference Q&A simulation |
 | `/defend` | Attack/defense exercise |
@@ -238,28 +272,42 @@ These are **homage characters** dynamically generated based on famous statistici
 ```
 research-lab/
 ├── CLAUDE.md              # This file (rules)
+├── RESEARCH_FRAMEWORK.md  # 10-phase lifecycle, gates, integrity principles S1–S11
 ├── SUITS.md               # Live drama script (cross-project)
 ├── README.md              # Usage guide
 ├── archives/              # Archived SUITS.md files
-│   └── SUITS_YYYYMMDD_HHMMSS.md
-├── agents/                # Team member definitions
-├── knowledge/             # Knowledge base
-│   ├── pdfs/              # Original PDFs
-│   ├── summaries/         # Paper summaries
-│   ├── methods/           # Mathematical methods
-│   └── quotes/            # Quotable passages
-├── projects/              # Project workspaces
+├── agents/                # Team member persona definitions (voice source of truth)
+├── memory/                # Versioned principles (INDEX.md; repo copy of the auto-memory)
+├── scripts/               # Mechanical checks: lint_suits.py, numbers_audit.py, cite_audit.py,
+│                          #   check_r_reproducibility.sh, check_consistency.sh
+├── .claude/
+│   ├── agents/            # Member subagents (tool-scoped; Louis/Jessica read-only)
+│   ├── rules/             # Path-scoped rules (paper-writing, r-code, suits-script, protocol-and-results)
+│   ├── skills/            # Slash commands
+│   └── hooks/             # Enforcement hooks (Donna)
+├── knowledge/             # Knowledge base (pdfs/, summaries/, methods/, quotes/, INDEX.md)
+├── projects/
 │   └── {project}/
-│       └── paper.md       # Manuscript
-└── templates/             # Document templates
+│       ├── LAB_STATUS.md          # Phase state
+│       ├── CLAIMS.md              # Claims ↔ evidence registry
+│       ├── DECISIONS.md           # Decision log (append-only, with reasons)
+│       ├── LITERATURE_SEARCH_LOG.md
+│       ├── PROTOCOL_{study}.md    # Pre-registered protocols (ADEMP + MCSE)
+│       ├── SIMULATION_FINDINGS_{study}.md
+│       ├── R/  results/  figures/ # results/ holds NUMBERS_LEDGER.csv, *_PROVENANCE.md, REPRODUCTION_*.md
+│       ├── paper/                 # .tex / .bib / build.sh / submission/
+│       └── review_response/       # PRE_REVIEW_*, INTERNAL_REVIEW_*, CITATION_AUDIT_*, RESPONSE_TRACKER
+└── templates/             # protocol, simulation_findings, provenance, claims, decisions, lab_status,
+                           #   literature_search_log, reporting_checklist, review_checklist, …
 ```
 
 ## Technical Standards
 
-- **Code**: R + tidyverse
-- **Documents**: Quarto (.qmd) or Markdown (.md)
-- **Math**: LaTeX notation
-- **Reproducibility**: All code must be reproducible
+- **Code**: R + tidyverse (Rcpp where speed requires it)
+- **Documents**: Quarto (.qmd) or LaTeX (.tex) for manuscripts; Markdown (.md) for lab records
+- **Math**: LaTeX notation; estimands and performance measures written as formulas
+- **Simulation reporting**: ADEMP structure (Morris, White & Crowther 2019, DOI 10.1002/sim.8086) with Monte Carlo SE for every performance measure
+- **Reproducibility**: declared seeds, project-relative paths, `sessionInfo()` or `renv.lock` beside every result, one writer per output file, provenance file per study; checked by `scripts/check_r_reproducibility.sh` and `/reproduce`
 
 ## Communication Guidelines
 

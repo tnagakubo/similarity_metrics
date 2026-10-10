@@ -28,9 +28,11 @@ $$
 
 ## 3. Results
 
-### 3.1 Simulation Study
+### 3.1 Simulation Study（ADEMP: Morris, White & Crowther 2019, DOI 10.1002/sim.8086）
 
-{simulation results}
+- **Aims** / **Data-generating mechanisms** / **Estimands** / **Methods** / **Performance measures**（各指標に Monte Carlo SE、$n_{\mathrm{sim}}$、seed、software version）
+- Protocol: `PROTOCOL_{study}.md`（registered {date}）。Deviations: protocol §9
+- {simulation results — every number traces to `results/*.csv` and `results/NUMBERS_LEDGER.csv`}
 
 ### 3.2 {Additional Results}
 
@@ -42,9 +44,13 @@ $$
 
 ### 4.1 Limitations
 
-{limitations}
+{limitations — must cover every "does not license" line of the protocols and every assumption of the propositions}
 
-### 4.2 Future Work
+### 4.2 Exploratory analyses
+
+{anything outside the protocol, labelled exploratory, or "none"}
+
+### 4.3 Future Work
 
 {future directions}
 
@@ -52,9 +58,13 @@ $$
 
 {conclusion}
 
+## Data and code availability
+
+{data source with DOI/URL; code location; seeds; `sessionInfo` / `renv.lock`}
+
 ## References
 
-{references}
+{references — every entry with DOI (Rule 2.6); audited by `/cite-check`}
 
 ## Supplementary Material
 
