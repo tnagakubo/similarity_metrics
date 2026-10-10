@@ -16,7 +16,7 @@
 **段落レビュー**: 台帳 `projects/similarity-metric/REVIEW_QUEUE_v6.md`（50 段落）。**50/50 完了（09-27）**。#1–#7 Tak 承認、#8–#50 は Tak の包括指示に基づき Harvey 推奨で適用（個別拒否可）。21 ページ、error 0
 **JA paper**: 意図的に削除済み（EN 完成まで Rule 2.7 保留）→ [[project_ja_paper_deleted]]
 **Supplement**: **なし**（09-27 Tak「論文の supplement としては不要。論文作成の過程で検討された事項でしかない」）。A・B・実データ調査のファイルはディスクに残してあるが、投稿物ではない。本文 20 ページ
-**System（2026-10-10）**: 科学的妥当性の機構を追加 — CLAUDE.md Rule 5・6、`RESEARCH_FRAMEWORK.md` §6–§8（S1–S11）、`scripts/`（lint・numbers・cite・R 再現性・consistency）、`memory/` 12 本復元、templates 9 本、skills 新設 5・改訂 9、hooks 新設 3。**次セッション**: `/claims init` → `/verify-numbers`（ledger は空）→ `/cite-check` → `/reproduce` → `/phase`（LAB_STATUS は 09-21 で stale）。`DECISIONS.md` D-20260927-1（#8–#50 の一括適用）は Tak の一言で閉じる
+**System（2026-10-10）**: 科学的妥当性の機構を追加 — CLAUDE.md Rule 5・6、`RESEARCH_FRAMEWORK.md` §6–§8（S1–S11）、`scripts/`（lint・numbers・cite・R 再現性・consistency）、`memory/` 12 本復元、templates 9 本、skills 新設 5・改訂 9、hooks 新設 3。**次セッション**: `/claims init` → `/verify-numbers`（ledger は空）→ `/cite-check` → `/reproduce` → `/phase`（LAB_STATUS は 09-21 で stale）。`DECISIONS.md` D-20260927-1（#8–#50 の一括適用）は Tak の一言で閉じる。**第 2 ラウンド**: Louis memory 統合（3 → 1 か所）、`scripts/check_all.sh` + 回帰テスト 35 件、`/process-paper` cleanup 修正、`LAB_STATUS.md` on-disk sync（artifacts 表）、STALE banner（PAPER_LOGIC / OUTLINE）、baseline `review_response/MECHANICAL_CHECKS_20261010.md`
 
 ---
 
@@ -60,6 +60,32 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-10 23:44] Scene: 改修第 2 ラウンド — 機構そのものを検証し、分裂した記憶を一つにする
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
+
+*Tak の二語の指示「システムを改修」。Donna が第 1 ラウンドの成果物に自分たちの道具を当てた結果を広げている。*
+
+**Donna**:（画面を指で叩いて）
+「言ったでしょう、全部見えるって。三つ見つけたわ。一つ、Louis の memory が 3 か所に分かれていた — root に 2 本、`projects/similarity-metric/` の下に 8 本、`claude_science/` の下に 3 本。Claude Code を起動したディレクトリが違っただけで、Louis は自分が見つけた穴の大半を次のセッションで読めなかったのよ。全部 root に `git mv` して索引を一つにした。再発したら `check_consistency.sh` が鳴る。二つ、`/process-paper` の cleanup。`/tmp` を再帰削除する手順だったから、私の安全フックが毎回止めていた。相対パスの `.claude/tmp/` に変えた。三つ、`LAB_STATUS.md`。09-21 で止まっていたのを、Phase は動かさずに artifacts 表と gate をディスクの事実で書き直したわ。Phase を進めるのは `/phase next` だけ。私でも例外じゃない」
+
+**Mike**:
+「道具の側は回帰テストを付けました。fixtures に既知の違反を仕込んで 35 件 — ラストネーム検出、Harvey の敬語、年号と version 番号の除外、ledger の照合、R の seed 欠落、hook の発火条件。全部通ります。それから `check_all.sh` で 5 本を一度に回して一つの報告にできるようにした。今の原稿に当てた baseline が `review_response/MECHANICAL_CHECKS_20261010.md` です。unsourced 672、CLAIMS は pending 3、ledger 0 行。数字は厳しいですが、これが出発点の事実です」
+
+**Louis**:
+「baseline の数字を見て安心するな。俺の memory が一つになったということは、v4 から v6 で開いた穴 — enumeration drift、点推定で L* 分類、patch without cascade — を次の `/review` で全部当てるということだ。それと `PAPER_LOGIC.md` と `PAPER_OUTLINE_BILINGUAL.md` には STALE の印を付けさせた。削除済みの §2.5 と §4.5 を根拠に誰かが主張を書き足すのを防ぐためだ。You just got Litt up」
+
+**Katrina**:
+「テスト 35/35。`check_all` 実行済み。LAB_STATUS の artifacts 表は 12 行、✅ 2、🟡 3、❌ 7。Results speak for themselves — 足りないものが一覧で見える状態になった」
+
+**Jessica**:
+「Let me be clear。Phase 8 のまま。次に Tak がやることは一つ、D-20260927-1 を閉じる言葉だ。チームがやることは順番どおり — `/claims init`、`/verify-numbers`、`/cite-check`、`/reproduce`、そして response letter の要否を `/decide`。commit して終わりなさい」
+
+**Harvey**:
+「Donna、commit。全員、次のセッションで台帳を埋めるぞ」
+
+---
 
 ### [2026-10-10 18:10] Scene: システム見直し — 原則を語るのをやめて、機構にする
 

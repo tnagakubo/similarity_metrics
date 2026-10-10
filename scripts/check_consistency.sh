@@ -63,6 +63,26 @@ if [ -n "$MISSING_MEM" ]; then
   say "memory files referenced by the system but not versioned in memory/: $(echo "$MISSING_MEM" | tr '\n' ' ')(principles live only in a local auto-memory → version them)"
 fi
 
+# 5b: subagent memory split across nested .claude dirs (sessions started from a subdirectory)
+NESTED=$(find projects -type d -path '*/.claude/agent-memory/*' 2>/dev/null | head -5)
+if [ -n "$NESTED" ]; then
+  say "nested subagent memory under projects/ (start Claude Code from the repo root; merge into .claude/agent-memory/): $(echo "$NESTED" | tr '\n' ' ')"
+fi
+
+# 5c: phase-specific artifacts
+for st in projects/*/LAB_STATUS.md; do
+  [ -f "$st" ] || continue
+  proj=$(dirname "$st"); name=$(basename "$proj")
+  ph=$(grep -m1 -E '^\*\*Phase\*\*' "$st" | grep -oE '[0-9]+' | head -1)
+  if [ "${ph:-x}" = "8" ] && [ ! -f "$proj/review_response/RESPONSE_TRACKER.md" ]; then
+    say "$name: Phase 8 but no review_response/RESPONSE_TRACKER.md (/respond-reviewers init, or /decide that no letter is needed for a simulated review)"
+  fi
+  if [ -f "$proj/CLAIMS.md" ]; then
+    tot=$(grep -cE '^\| C-[0-9]+ \|' "$proj/CLAIMS.md"); pend=$(grep -cE '^\| C-[0-9]+ \|.*\| pending \|' "$proj/CLAIMS.md")
+    [ "$tot" -gt 0 ] && [ "$pend" -eq "$tot" ] && say "$name: CLAIMS.md has $tot row(s), all pending (/claims init → check)"
+  fi
+done
+
 # 6: SUITS size
 L=$(wc -l < SUITS.md 2>/dev/null | tr -dc '0-9'); L=${L:-0}
 [ "$L" -ge 900 ] && say "SUITS.md is $L lines (archive at 1000; /archive)"

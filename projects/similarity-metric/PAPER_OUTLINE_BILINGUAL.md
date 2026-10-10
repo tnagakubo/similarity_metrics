@@ -1,5 +1,8 @@
 # Paper Outline — Section Structure and Content / 論文アウトライン — セクション構成と内容
 
+> ⚠ **STALE（2026-10-10, Donna）**: v6（2026-09-26）で削除・移動された §2.5 operability・§4.5・判定の仕組み（τ_clin、AND 規則、eligible partners）を参照している。主張の正本は `CLAIMS.md`、判断は `DECISIONS.md`。本書は履歴として残す。使うなら v6 後の原稿（20 pp）から書き直すこと。
+
+
 **Created / 作成**: 2026-07-26
 **Status / 状態**: Pre-drafting outline. Not the manuscript. / 執筆前アウトライン。原稿ではない
 **Sources / 出所**: `SIMULATION_FINDINGS.md`, `PAPER_RESTRUCTURE_PROPOSAL.md`, `results/*.csv`, `paper/per_em_W1_wiley.tex`, `paper_logic_ja.drawio`

@@ -1,5 +1,8 @@
 # PAPER_LOGIC — per-EM W₁ paper argument map
 
+> ⚠ **STALE（2026-10-10, Donna）**: v6（2026-09-26）で削除・移動された §2.5 operability・§4.5・判定の仕組み（τ_clin、AND 規則、eligible partners）を参照している。主張の正本は `CLAIMS.md`、判断は `DECISIONS.md`。本書は履歴として残す。使うなら v6 後の原稿（20 pp）から書き直すこと。
+
+
 **Date**: 2026-09-06（旧 `paper_logic_ja.drawio` / `paper_logic_ja.html` は `archive/` へ — 本書が後継）
 **Manuscript**: `paper/per_em_W1_wiley.tex`（23 pp、本文 TODO 0、abstract は Terminal pass 待ち）
 

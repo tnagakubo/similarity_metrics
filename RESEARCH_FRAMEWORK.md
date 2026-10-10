@@ -57,7 +57,7 @@
 | **Skills（`.claude/skills/*/SKILL.md`）** | 32 本。10-10 新設 5 本: `/claims` `/reproduce` `/cite-check` `/decide` `/lint-suits`。改訂 9 本: `/protocol`（ADEMP+MCSE）`/review`（構造化・on-disk）`/verify-numbers`（ledger・four-eyes）`/start`（scaffold）`/meeting`（decision record）`/phase`（機械的 gate）`/submission-check`（R1–R8）`/pre-review` `/handoff` | Phase gate と各段階の手順書 |
 | **Subagents（`.claude/agents/*.md`）** | 7 本。persona は `agents/*.md`。Louis/Jessica は `disallowedTools: Edit, Write`。Louis は `memory: project`。10-10 に scientific-method duties を各 agent に追記 | `@bg @katrina` や `/pre-review` の並列を persona・tool 範囲固定で実行 |
 | **Hooks** | 15 本（下表） | Donna の enforcement |
-| **Scripts（`scripts/`）** | **新設 5 本**（§7） | hook と skill の両方から呼ぶ機械的検証 |
+| **Scripts（`scripts/`）** | **新設 6 本 + 回帰テスト**（§7） | hook と skill の両方から呼ぶ機械的検証 |
 | **Versioned memory（`memory/`）** | **13 本 + INDEX**（10-10 に 12 本を復元） | ローカル auto-memory に依存しない原則。cloud session・clone でも消えない |
 | **Templates（`templates/`）** | 18 本。10-10 新設 9 本（protocol / simulation_findings / provenance / claims / decisions / lab_status / literature_search_log / reporting_checklist / numbers_ledger_header） | 研究記録の型 |
 | **Auto memory（`~/.claude/projects/.../memory/`）** | ローカル 25 件 | Tak の feedback pattern。Phase 9 で `memory/` に反映 |
@@ -136,8 +136,10 @@ gate が揃った  → /phase next（Donna 検証、Louis risk、必要なら Je
 | `cite_audit.py` | `\cite` ↔ `.bib` 照合（missing / uncited / DOI / 重複）+ citation–claim 表の雛形 | `/cite-check`、`/submission-check` R5 |
 | `check_r_reproducibility.sh` | R スクリプトの静的 lint（seed・parallel RNG・絶対パス・sessionInfo・install.packages） | hook `check-r-reproducibility.sh`、`/reproduce`、`/submission-check` R6 |
 | `check_consistency.sh` | Phase 同期、stale LAB_STATUS、undefined `\ref`、欠けた lifecycle artifacts、未バージョンの memory 参照、SUITS 行数 | hook `session-start-context.sh`、`/phase`、`/handoff` |
+| `check_all.sh` | 上の 5 本を一度に回し、`review_response/MECHANICAL_CHECKS_{date}.md` に 1 本の報告（artifacts の有無・CLAIMS の supported/pending も） | `/submission-check`、`/handoff`、`/phase`、Donna |
+| `tests/run_tests.sh` | fixtures に対する回帰テスト（各 script の検出・除外・strict exit、hooks の発火条件）。script や hook を触ったら必ず回す | 開発時、`/handoff` |
 
-すべて advisory（exit 0）。strict 判定は `--strict` / `STRICT=1` で `/submission-check` が使う。R が無い環境でも動く（静的解析のみ）。
+すべて advisory（exit 0）。strict 判定は `--strict` / `STRICT=1` で `/submission-check` が使う。R が無い環境でも動く（静的解析のみ）。**Claude Code は repo root から起動する**（subagent の `memory: project` と hooks のパス解決が cwd に依存する。10-10 に Louis の memory が 3 か所に分裂していたのを統合した）。
 
 ---
 
@@ -148,4 +150,7 @@ gate が揃った  → /phase next（Donna 検証、Louis risk、必要なら Je
 - 段落レビュー #8–#50 は Tak の包括指示で Harvey 推奨を適用（個別拒否権が開いたまま）→ 投稿前に `DECISIONS.md` で閉じる
 - 原稿 `per_em_W1_wiley.tex`: 数値トークン 672（355 の異なる値）に ledger なし／cited 25 keys は全件 .bib に存在、DOI 欠落は E17 guideline 1 件（URL あり）／`.bib` の 19 entries は未引用
 - R スクリプト 83 本中、絶対パス 20 本、結果を書くのに `sessionInfo` 無し 50 本超、seed 無しで乱数 3 本
+- Louis の subagent memory が `.claude/agent-memory/louis/`（2 本）、`projects/similarity-metric/.claude/…`（8 本）、`projects/similarity-metric/claude_science/.claude/…`（3 本）に分裂していた（起動ディレクトリ違い）→ root に統合、`check_consistency.sh` が再発を検出
+- `/process-paper` の cleanup が `/tmp` の再帰削除だったため、安全フック `pre-bash-safety.sh` に必ず止められていた → `.claude/tmp/`（gitignored、相対パス）に変更
+- `PAPER_LOGIC.md` と `PAPER_OUTLINE_BILINGUAL.md` に STALE banner、`LAB_STATUS.md` を on-disk sync（Phase は 8 のまま、gate は再表現）
 - これらは**プロジェクトの作業**であり、本書の改訂では直していない。次セッションで `/claims init` → `/verify-numbers` → `/cite-check` → `/reproduce` → `/phase` の順に消化する

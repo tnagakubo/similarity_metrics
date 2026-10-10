@@ -110,7 +110,12 @@ python3 scripts/numbers_audit.py projects/<p>/paper/<m>.tex   # numbers vs resul
 python3 scripts/cite_audit.py <m>.tex <m>.bib --out …    # \cite vs .bib, DOI, citation–claim table
 bash scripts/check_r_reproducibility.sh                  # seeds, parallel RNG, absolute paths, sessionInfo
 bash scripts/check_consistency.sh                        # phase sync, stale state, undefined \ref, artifacts
+bash scripts/check_all.sh                                # all of the above → review_response/MECHANICAL_CHECKS_<date>.md
+bash scripts/tests/run_tests.sh                          # regression tests for the scripts and hooks
 ```
+
+Start Claude Code from the repository root: subagent memory (`memory: project`) and hook paths resolve
+against the current directory.
 
 Phase state lives in `projects/{project}/LAB_STATUS.md`. Member subagents are defined in
 `.claude/agents/` (persona source: `agents/*.md`); path-scoped rules in `.claude/rules/`;

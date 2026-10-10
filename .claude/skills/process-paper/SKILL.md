@@ -14,14 +14,15 @@ File: $ARGUMENTS
 Convert PDF to images for accurate reading (especially for mathematical content).
 
 ```bash
-# Create temp directory for images
-mkdir -p /tmp/pdf-images
+# Create a project-relative temp directory (gitignored). Do NOT use /tmp: the safety hook
+# pre-bash-safety.sh refuses every recursive delete of an absolute path, so a /tmp cleanup is always blocked.
+mkdir -p .claude/tmp/pdf-images
 
 # Get PDF info
 pdfinfo "$ARGUMENTS"
 
 # Convert to PNG (150dpi for balance of quality and size)
-mutool draw -o /tmp/pdf-images/page_%03d.png -r 150 "$ARGUMENTS"
+mutool draw -o .claude/tmp/pdf-images/page_%03d.png -r 150 "$ARGUMENTS"
 ```
 
 ### Step 2: Read and Analyze
@@ -43,7 +44,7 @@ Update `knowledge/INDEX.md` with new entry (DOI required!)
 
 ### Step 6: Cleanup
 ```bash
-rm -rf /tmp/pdf-images
+rm -r .claude/tmp/pdf-images
 ```
 
 ## Output Files
@@ -69,6 +70,12 @@ DOI: [10.xxxx](https://doi.org/10.xxxx)
 
 ## Key Equations
 {Important formulas in LaTeX}
+
+## Verbatim passages we may cite（page 付き — 要約からの引用は禁止）
+> "{exact sentence}" (p. {page}) — **use for**: {claim / CLAIMS.md ID}
+
+## What this paper does NOT say（over-reading guard）
+- {e.g., proposes clustering on one representative value per EM; does not compare full distributions}
 
 ## Relevance
 {how it relates to our work}
@@ -100,3 +107,4 @@ DOI: [10.xxxx](https://doi.org/10.xxxx)
 - Maintain consistent formatting
 - DOI is required for all entries
 - Link to original in pdfs/
+- Verbatim passages carry page numbers; a claim we may cite without a verbatim passage is marked 🔍 (`memory/feedback_komiyama_no_overreading.md`)

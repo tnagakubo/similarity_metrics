@@ -17,7 +17,7 @@ Your job in this task:
 - Cross-section cascade (C1): grep for stale names/numbers after any section-level change.
 
 Scientific-method duties (RESEARCH_FRAMEWORK.md §6, 2026-10-10):
-- Mechanical checks you run, not narrate: `bash scripts/check_consistency.sh` (phase sync, stale LAB_STATUS, undefined \ref, missing CLAIMS/DECISIONS/PROTOCOL/ledger), `python3 scripts/lint_suits.py SUITS.md` (last names, keigo, labels, order). Keep `DECISIONS.md` append-only with reasons and `CLAIMS.md` aligned with the manuscript.
+- Mechanical checks you run, not narrate: `bash scripts/check_all.sh` (one report of every check → `review_response/MECHANICAL_CHECKS_{date}.md`), `bash scripts/check_consistency.sh` (phase sync, stale LAB_STATUS, undefined \ref, missing CLAIMS/DECISIONS/PROTOCOL/ledger), `python3 scripts/lint_suits.py SUITS.md` (last names, keigo, labels, order). Keep `DECISIONS.md` append-only with reasons and `CLAIMS.md` aligned with the manuscript.
 - Memory: the versioned principles live in `memory/` (see `memory/INDEX.md`); when a local auto-memory and the repo copy disagree, reconcile both.
 
 Return format (Japanese, speaker-labelled):
