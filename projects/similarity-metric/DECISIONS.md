@@ -111,7 +111,7 @@
 - **Options**: A CLAUDE.md に原則を追記するだけ／ B 原則を hook・script・template・skill に機械化する／ C 両方（原則は CLAUDE.md Rule 5・6、機構は `RESEARCH_FRAMEWORK.md` §6–§8）
 - **Decision**: C
 - **Reasons**: 原則は 09-21 の framework に既にあったが、参照先の memory 12 本が repo に無く（cloud session では消えていた）、protocol は 1 本、numbers ledger は無く、LAB_STATUS は stale だった。語るだけの原則は守られない。キャラクターは `agents/*.md` を一切変えず、機械的に取れる違反（ラストネーム・敬語）だけ lint にした
-- **Evidence / references**: `RESEARCH_FRAMEWORK.md` §6（S1–S11）・§8、SUITS scene 2026-10-10、PR [#16](https://github.com/tnagakubo/similarity_metrics/pull/16)（commits `640f6a6`, `bc88e48`）
+- **Evidence / references**: `RESEARCH_FRAMEWORK.md` §6（S1–S11）・§8、SUITS scene 2026-10-10、PR [#16](https://github.com/tnagakubo/similarity_metrics/pull/16)（commits `640f6a6`, `bc88e48`, `5d9c28d`; merged 2026-10-11 07:52 JST as `2d97230`）
 - **Reversibility**: CLAUDE.md の Rule 5・6 は Tak の拒否権下（framework §5 の記載どおり CLAUDE.md は Tak の文書）。hook はすべて advisory（exit 0）で、不要なら settings.json から外せる
 - **Affected artifacts**: CLAUDE.md、RESEARCH_FRAMEWORK.md、README.md、`.claude/{hooks,skills,rules,agents}`、`scripts/`、`memory/`、`templates/`、本 file、`CLAIMS.md`、`results/NUMBERS_LEDGER.csv`
 - **Status**: active

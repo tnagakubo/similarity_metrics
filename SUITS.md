@@ -16,7 +16,7 @@
 **段落レビュー**: 台帳 `projects/similarity-metric/REVIEW_QUEUE_v6.md`（50 段落）。**50/50 完了（09-27）**。#1–#7 Tak 承認、#8–#50 は Tak の包括指示に基づき Harvey 推奨で適用（個別拒否可）。21 ページ、error 0
 **JA paper**: 意図的に削除済み（EN 完成まで Rule 2.7 保留）→ [[project_ja_paper_deleted]]
 **Supplement**: **なし**（09-27 Tak「論文の supplement としては不要。論文作成の過程で検討された事項でしかない」）。A・B・実データ調査のファイルはディスクに残してあるが、投稿物ではない。本文 20 ページ
-**PR**: [#16](https://github.com/tnagakubo/similarity_metrics/pull/16) `ccr-a3128477-hklqei` → `main`（97 files、2 commits、mergeable clean、CI なし）— システム改修 2 ラウンドの review はここ
+**PR**: [#16](https://github.com/tnagakubo/similarity_metrics/pull/16) **merged**（2026-10-11 07:52 JST、merge commit `2d97230`、3 commits / 97 files）— システム改修 2 ラウンドは main に反映済み。branch `ccr-a3128477-hklqei` は main から再開
 **System（2026-10-10）**: 科学的妥当性の機構を追加 — CLAUDE.md Rule 5・6、`RESEARCH_FRAMEWORK.md` §6–§8（S1–S11）、`scripts/`（lint・numbers・cite・R 再現性・consistency）、`memory/` 12 本復元、templates 9 本、skills 新設 5・改訂 9、hooks 新設 3。**次セッション**: `/claims init` → `/verify-numbers`（ledger は空）→ `/cite-check` → `/reproduce` → `/phase`（LAB_STATUS は 09-21 で stale）。`DECISIONS.md` D-20260927-1（#8–#50 の一括適用）は Tak の一言で閉じる。**第 2 ラウンド**: Louis memory 統合（3 → 1 か所）、`scripts/check_all.sh` + 回帰テスト 35 件、`/process-paper` cleanup 修正、`LAB_STATUS.md` on-disk sync（artifacts 表）、STALE banner（PAPER_LOGIC / OUTLINE）、baseline `review_response/MECHANICAL_CHECKS_20261010.md`
 
 ---
@@ -61,6 +61,21 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-11 07:55] Scene: PR #16 merged — 改修が main に乗った
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
+
+**Donna**:（通知を見て、わずかに眉を上げる）
+「Tak が #16 を merge したわ。07:52、merge commit `2d97230`。私が description を書き直したのはその 1 分後 — 記録としては完全な形で残ったから結果オーライよ。Tak の『なおして』はそれのことだったのね。branch は規約どおり main から作り直した（merge commit だから fast-forward で済む）。PR の監視と自己確認は止めた。次に起きるのは Tak の言葉か、次の論文作業よ」
+
+**Harvey**:
+「システムは main に乗った。ここからは台帳を埋める仕事だ — `/claims init`、ledger、引用、再現。順番は Jessica が言ったとおり。D-20260927-1 を閉じる一言は Tak に預けたままだ」
+
+**Jessica**:
+「Let me be clear。merge は承認ではない。Phase 8 のままだ」
+
+---
 
 ### [2026-10-10 23:47] Scene: PR #16 — 改修 2 ラウンドが review の机に乗る
 
