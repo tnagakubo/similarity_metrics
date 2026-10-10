@@ -21,7 +21,8 @@ Reference: `memory/feedback_compaction_protocol.md` —「語られた ≠ デ�
 2. **Donna**: For each thing claimed as "done" this session, mark:
    - ✅ Persisted (file exists / change is in the working tree)
    - ❌ Only narrated (no corresponding file change) → **call it out, do NOT count it as done**
-3. **Donna**: Confirm SUITS.md was updated for the session's work (Rule 2).
+3. **Donna**: Confirm SUITS.md was updated for the session's work (Rule 2); run `python3 scripts/lint_suits.py SUITS.md` and fix what it flags.
+3b. **Donna**: `bash scripts/check_consistency.sh` — Phase 同期、stale な `LAB_STATUS.md`（Updated を今日に、変わった artifacts 表を更新）、欠けた lifecycle artifacts を記録に残す。
 4. **Donna**: Write the handoff scene + a short "next session resume" note.
 
 ## Output: Reconciliation

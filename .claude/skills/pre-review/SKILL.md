@@ -11,15 +11,15 @@ External review・投稿・Phase 6 の入口で必ず実行。Tak 指示 (2026-0
 
 ## Execution
 
-1. **Donna**: Pre-Review Check — `memory/feedback_tak_feedback_patterns.md` と `templates/review_checklist.md` を読み、該当パターンを列挙
+1. **Donna**: Pre-Review Check — `memory/feedback_tak_feedback_patterns.md`、`templates/review_checklist.md`、`CLAIMS.md`（pending / narrowed 行）、`.claude/agent-memory/louis/`（recurring holes）を読み、該当パターンを列挙。`/claims check` が FAIL なら先にそれを直す
 2. **並列**（Agent tool、各メンバー 1 つ。`.claude/agents/{name}.md` を使う）: 「自分が *Statistics in Medicine* の reviewer なら、この原稿のどこを突くか」を独立に書く
    - **Harvey**: message strength、章間論理、overclaim
-   - **Mike**: 数学・推定論理・bootstrap 妥当性・P4
+   - **Mike**: 数学・推定論理・bootstrap 妥当性・P4・ADEMP / MCSE の報告・estimand の定義
    - **Rachel**: 文献整合、引用の accuracy、DOI、E17 の文言
    - **Katrina**: 図表・数値表記・caption・形式
    - **Louis**: 最も攻撃的に。fatal flaw 候補を優先
    - **Jessica**: regulatory message と「この論文が要る理由」
-   各 agent の返答は **指摘 3 件以内、各 1–2 文、§/行番号付き**
+   各 agent には対象ファイルと `CLAIMS.md` のパスを渡す。返答は **指摘 3 件以内、各 1–2 文、§/行番号付き**
 3. **Louis**: 全指摘を Critical / Major / Minor に分類し、重複を統合
 4. **Harvey**: 各 Critical/Major に対し「直す / 反論を書く / 受け入れて narrow」を決める
 5. **Donna**: 結果を `projects/{project}/review_response/PRE_REVIEW_{YYYYMMDD}.md` に表で保存（指摘 / 分類 / 担当 / 方針 / 状態）

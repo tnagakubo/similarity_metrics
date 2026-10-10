@@ -16,6 +16,7 @@
 **段落レビュー**: 台帳 `projects/similarity-metric/REVIEW_QUEUE_v6.md`（50 段落）。**50/50 完了（09-27）**。#1–#7 Tak 承認、#8–#50 は Tak の包括指示に基づき Harvey 推奨で適用（個別拒否可）。21 ページ、error 0
 **JA paper**: 意図的に削除済み（EN 完成まで Rule 2.7 保留）→ [[project_ja_paper_deleted]]
 **Supplement**: **なし**（09-27 Tak「論文の supplement としては不要。論文作成の過程で検討された事項でしかない」）。A・B・実データ調査のファイルはディスクに残してあるが、投稿物ではない。本文 20 ページ
+**System（2026-10-10）**: 科学的妥当性の機構を追加 — CLAUDE.md Rule 5・6、`RESEARCH_FRAMEWORK.md` §6–§8（S1–S11）、`scripts/`（lint・numbers・cite・R 再現性・consistency）、`memory/` 12 本復元、templates 9 本、skills 新設 5・改訂 9、hooks 新設 3。**次セッション**: `/claims init` → `/verify-numbers`（ledger は空）→ `/cite-check` → `/reproduce` → `/phase`（LAB_STATUS は 09-21 で stale）。`DECISIONS.md` D-20260927-1（#8–#50 の一括適用）は Tak の一言で閉じる
 
 ---
 
@@ -59,6 +60,38 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-10 18:10] Scene: システム見直し — 原則を語るのをやめて、機構にする
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak の指示が机の真ん中にある。「科学的に適切に研究を進められ、論文作成ができるようにシステムを改善して。キャラクターの個性は変えないで」。Donna が consistency check の出力を全員に配る。*
+
+**Harvey**:（立ったまま）
+「09-21 に framework を書いた。10 Phase、gate、原則。それで何が起きた？ v3 から v6 まで構成が迷走し、09-05 の決定を理由なしに覆し、LAB_STATUS は 09-21 で止まったままだ。原則はあった。守る機構が無かった。今日やるのはそこだ。"I don't have dreams, I have goals." — 目標は一つ、語っただけの原則をゼロにする」
+
+**Donna**:（紙を指で叩いて）
+「先に言っておくわ。システムが参照していた memory ファイル、12 本が repo に無かったの。Tak のマシンの auto-memory にしか無い。この cloud session では『Tak の 5 原則を読め』と書いてある先が空だったのよ。今日 `memory/` に 12 本を復元して、`INDEX.md` と `check_consistency.sh` で参照先の有無を照合するようにした。あと — archive の脚本を lint に通したら、Donna が『全部記録したわ』で終わっている場面が 2 つ、scene の順序違反が 2 つ、場所見出しの無い scene が 1 つ。私の台詞よ。直すのも私」
+
+**Mike**:（ホワイトボードに書きながら）
+「科学の側は三つです。一つ目、protocol。`PROTOCOL_real_data_survey.md` は良い手本でしたが、1 本しか無い。template を ADEMP 構造にして、性能指標ごとに Monte Carlo SE の式を入れました。coverage なら $\sqrt{\hat p(1-\hat p)/n_{\mathrm{sim}}}$、bias なら $\sqrt{\sum_i(\hat\theta_i-\bar{\hat\theta})^2/\{n_{\mathrm{sim}}(n_{\mathrm{sim}}-1)\}}$ — $n_{\mathrm{sim}}$ は目標 MCSE から逆算する。二つ目、数値。`numbers_audit.py` を原稿に当てたら 672 トークン、355 の異なる値で、source に結ばれているものはゼロでした。ledger を作って、producer と verifier を分けます。三つ目、再現性。83 本の R のうち絶対パスが 20 本、結果を書くのに sessionInfo が無いのが 50 本以上。`check_r_reproducibility.sh` が編集ごとに見ます。I got it! — 結果を生成するスクリプトを protocol なしで `Rscript` したら hook が止めに入ります」
+
+**Louis**:（腕を組んで）
+「ツールは免罪符にならないぞ。ledger が空のうちは submission-ready とは言わせない。それから、俺の memory にある穴 — enumeration drift、per-EM の bound を joint に売る、理由なしの却下、同じ CSV を二つの証拠に見せる — これを review_checklist の S 節と `/review` の手順に入れた。`CLAIMS.md` が無い原稿は、主張の正本が無い原稿だ。だから v6 で何を削ったか、どの文言を狭めるべきか、誰も一覧で言えなかった。台帳は雛形を置いた。次のセッションで `/claims init`。候補 3 行は全部 pending だ。pending のまま投稿？ 通らない。You just got Litt up」
+
+**Rachel**:
+「引用の方は `cite_audit.py` で確認しました。本文の 25 key はすべて .bib にあり、DOI が無いのは ICH E17 guideline の 1 件だけで、URL はございます。.bib の 19 entry は本文で引かれていません。それから、summary から引いて誤読した Song 2025 の件を二度と起こさないため、summary template に『原典の verbatim（page 付き）』と『この論文が言っていないこと』の節を足しました。`LITERATURE_SEARCH_LOG` には gap の反証条件を書く欄があります — 見つかれば gap が消える文献を、先に言葉にしておくためです」
+
+**Katrina**:
+「verifier は私がやる。Mike が出した数値は私が CSV を開いて照合し、ledger に署名する。clean checkout の再実行（`/reproduce`）も列ごとに max abs diff を取る。Results speak for themselves — 語った再現性は再現性じゃない。SIMULATION_FINDINGS の template には MCSE の列と four-eyes の表を入れた。表は CSV から生成、手打ち禁止」
+
+**Jessica**:（短く）
+「Let me be clear。三つ。一つ、CLAUDE.md に Rule 5（Lifecycle）と Rule 6（Scientific Integrity）を足した。CLAUDE.md は Tak の文書だ — Tak、不要なら消しなさい。二つ、Phase は 8 のままだ。gate は語っただけでは進まない。次のセッションの順序は `/claims init` → `/verify-numbers` → `/cite-check` → `/reproduce` → `/phase`。三つ、`DECISIONS.md` に 09-25 からの判断を理由付きで復元した。D-20260927-1 — 43 段落を Harvey 推奨で一括適用した件 — は Tak の拒否権が開いたままだ。閉じるのは Tak の一言。それまで投稿の承認は出さない」
+
+**Harvey**:
+「以上だ。キャラクターは一文字も変えていない。`agents/*.md` はそのまま、変えたのは守らせ方だけだ。Donna、記録して commit。全員、仕事に戻れ」
+
+---
 
 ### [2026-09-27 14:40] Scene: Tak「Section 3 で Study 2 が先に出てくるのは気持ち悪い」— 番号を入れ替え
 

@@ -16,6 +16,10 @@ Your job in this task:
 - Pre-Review Check: read `memory/feedback_tak_feedback_patterns.md` and list the patterns that apply before any paragraph goes to Tak.
 - Cross-section cascade (C1): grep for stale names/numbers after any section-level change.
 
+Scientific-method duties (RESEARCH_FRAMEWORK.md §6, 2026-10-10):
+- Mechanical checks you run, not narrate: `bash scripts/check_consistency.sh` (phase sync, stale LAB_STATUS, undefined \ref, missing CLAIMS/DECISIONS/PROTOCOL/ledger), `python3 scripts/lint_suits.py SUITS.md` (last names, keigo, labels, order). Keep `DECISIONS.md` append-only with reasons and `CLAIMS.md` aligned with the manuscript.
+- Memory: the versioned principles live in `memory/` (see `memory/INDEX.md`); when a local auto-memory and the repo copy disagree, reconcile both.
+
 Return format (Japanese, speaker-labelled):
 1. **Donna**:「観察」 — what is actually true on disk, one paragraph with a pointed remark.
 2. Reconciliation table: claimed | on disk? | verdict.

@@ -7,7 +7,7 @@ paths:
 
 # Paper-writing rules（原稿ファイルを触るときだけ読み込まれる）
 
-Source of truth: `templates/review_checklist.md`（Tak の 5 原則）と `memory/feedback_tak_feedback_patterns.md`。
+Source of truth: `templates/review_checklist.md`（Tak の 5 原則 + S 節）と `memory/feedback_tak_feedback_patterns.md`。主張の正本は `projects/{project}/CLAIMS.md`。
 
 ## 提示前チェック（Harvey + Mike、必須）
 - 段落単位で提示する。一文単位は不可
@@ -26,6 +26,14 @@ Source of truth: `templates/review_checklist.md`（Tak の 5 原則）と `memor
 - 本体 §1–§4 → Discussion 整合 → 最後に Abstract / 略語 / Data availability（Terminal pass）
 - セクション単位の書き換えは C1 Cross-Section Cascade Check を実行（grep で旧名称・旧番号を全洗い出し）
 
+## 主張・数値・不確かさ
+- 原稿に書く主張は `CLAIMS.md` の行に対応させる。台帳に無い主張は書かない（先に `/claims add`）
+- 推定値には CI か SE、simulation の性能指標には Monte Carlo SE を付ける。点推定だけの数値を書かない
+- estimand は記号と式で定義する。命題・定理は仮定を明示し、仮定が落ちる場合を limitations に書く
+- protocol 外の解析は "exploratory" と明記する。confirmatory に見せない
+- 「論文は違いを定量化するだけ。判定規則は規定しない」（`memory/feedback_quantify_not_decide.md`）— 判定・閾値・手続きの推奨を書かない
+
 ## 適用後
 - 適用 → 検証 grep（旧文言の残存 0）→ コンパイル error 0 をワンセットで行う
-- 数値を含む編集は `/verify-numbers`
+- 数値を含む編集は `/verify-numbers`（`results/NUMBERS_LEDGER.csv` に行、verifier ≠ producer）
+- 引用を足したら `/cite-check`（原典の verbatim で支えられるか）
