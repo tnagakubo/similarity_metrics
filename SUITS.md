@@ -60,6 +60,26 @@
 
 ## 🎬 Live Script
 
+### [2026-10-10 10:00] Scene: 再開 — commit は済んでいた。Phase 7 の Submission Check へ
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
+
+*二週間ぶりの再開。Donna が git log を開く。09-27 の作業は Tak が `6ec5a16` ですべて commit 済み、working tree は clean。*
+
+**Donna**:（画面を指で叩いて）
+「Current Status の『未 commit』は古いわ。Tak が 09-27 14:49 に全部 commit してる。拒否権の期間も事実上閉じた。LAB_STATUS はまだ 09-21 のまま、Phase 8 の Open gates も v6 の前の話よ。私が直す」
+
+**Harvey**:
+「段落レビューは 50/50 で終わった。abstract も終わった。残っているのは投稿前の最終確認だ。Phase 7 に戻して `/submission-check` を回す。Louis は新しい目で全文を読め。Rachel は引用を一本ずつ DOI で照合しろ。コンパイルと数値のゲートは、R と TeX が入りしだい Katrina と Mike がやる」
+
+**Mike**:
+「このコンテナには R も TeX もありません。今インストールしています。終わったら、`verify_study1_app_numbers.R` と `verify_study2_figures.R` の二本を回し直します」
+
+**Donna**:
+「claude_science/neyman_smooth は Tak の別テーマ。論文とは関係ないから、Tak の指示があるまで触らないわ」
+
+---
+
 ### [2026-09-27 14:40] Scene: Tak「Section 3 で Study 2 が先に出てくるのは気持ち悪い」— 番号を入れ替え
 
 **INT. PEARSON SPECTER LITT - BULLPEN - DAY**
