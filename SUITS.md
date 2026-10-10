@@ -60,6 +60,35 @@
 
 ## 🎬 Live Script
 
+### [2026-10-10 11:30] Scene: Submission Check — コンパイルと数値は通った。Louis が 27 件持ってきた
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*R と TeX のインストールが終わった。Katrina が scratchpad のコピーでコンパイルし、Mike が二つのゲートを回す。Rachel と Louis の報告が机に並ぶ。*
+
+**Katrina**:
+「compile error 0、undefined 0、20 ページ。Overfull の 3 件は前からあるもの。abstract は 247 語」
+
+**Mike**:
+「ゲートは二本とも ALL PASS です。predtools 0.0.3 は CRAN から入れました。それと、一つ直しました。`study1_miss_side.R` が S6 と S7 の真値に、rds に残っていた古い Monte Carlo の値を使っていたんです。exact quadrature の値に切り替えて回し直すと、S7 の被覆率は 0.928、0.935、0.943 で Table 5 と一致しました。上側に外れる率は最大 1.12% なので、本文の "at most 1.1%" はそのまま成り立ちます。本文は変えていません。I got it!」
+
+**Rachel**:
+「25 件の引用はすべて Crossref で確認いたしました。DOI がないのは ICH E17 だけで、これはガイドライン文書なので DOI が発行されておりません。それから、del Barrio 1999 は 1 標本の結果です。L185 で使っている条件 ∫√(F(1−F))dx < ∞ が、本文には書かれておりません」
+
+**Louis**:（束を叩きつけて）
+「27 件だ。Blocker は 3 つ。一つ目、存在しない Supporting information に R code があると書いてある。二つ目、tex のコメントに Tak の日本語も Supplement C の亡霊も残っている。三つ目、cover letter はまだ nABCD の時代のままだ。Major で一番痛いのは #7 だ。null floor の 95th percentile ラベルは、30 回やる片側 5% の検定だ。それで "not driven by a significance test" とは言わせない。You just got Litt up!」
+
+**Harvey**:
+「Louis の数学は当たっている。#7 は俺たちの原則の核心に触れる。だから Option を出して Tak に選ばせる。Blocker の 3 件は判断の要らない後始末だ。Tak の OK が出たらすぐやる」
+
+**Jessica**:
+「Let me be clear。今日は承認しない。差し戻しだ。数値もコンパイルも通っている。足りないのは整合だ。判断が要る 7 件は一件ずつ、09-26 と同じやり方で決めろ」
+
+**Donna**:
+「報告は `paper/submission/SUBMISSION_CHECK_20261010.md` に置いたわ。Louis の指摘は、disk で確かめたもの（✔）と、まだ主張だけのもの（—）に分けてある。それと Louis の memory に再発パターンを三つ足すこと。supplement を消したのに "not shown" の証拠に頼っている本文、exact truth に追いつかない派生スクリプト、改名に取り残された図の文字列よ」
+
+---
+
 ### [2026-10-10 10:00] Scene: 再開 — commit は済んでいた。Phase 7 の Submission Check へ
 
 **INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**

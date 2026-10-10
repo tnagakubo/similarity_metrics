@@ -4,6 +4,10 @@
 # Written 2026-09-27 for the v6 paragraph review (queue #23, #25, #33).
 x <- readRDS("results/w1_raw_simulation.rds")
 tr <- setNames(x$summary$true_W1, names(x$rep_data))
+# S6/S7: use the exact quadrature truths of R/study1_summary_exact.R (Table 3),
+# not the superseded Monte-Carlo references stored in the rds (fixed 2026-10-10).
+exact <- c(S6 = 12.159806, S7 = 5.833155)
+for (k in names(tr)) if (sub("-.*", "", k) %in% names(exact)) tr[[k]] <- exact[[sub("-.*", "", k)]]
 out <- do.call(rbind, lapply(names(x$rep_data), function(k) {
   d <- x$rep_data[[k]]; t <- tr[[k]]
   data.frame(cell = k, true_W1 = t,
