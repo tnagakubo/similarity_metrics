@@ -153,3 +153,37 @@
 - **Decision / Reasons**: (a) `build.sh` の `bibtex` を相対パスに — TeX Live は `openout_any = p` で絶対パスの .bbl/.blg を書かない。Windows でも動く。(b) 生成ファイルは `\begin{tabular}` 〜 `\end{tabular}` を丸ごと持ち、原稿は 1 行の `\input{generated/tab_x}`。表の構造（列指定・見出し・罫線）も single writer の責任にする
 - **Evidence / references**: `paper/build.sh`、`R/make_paper_tables.R`、build log（error 0・undefined 0・20 pp）
 - **Status**: active
+
+### D-20261011-4: 原稿の数値を全件「生成」に切り替える（表 9 本 = single writer、prose 120 値 = registry、設計定数 27 = 台帳）
+
+- **Date**: 2026-10-11  **Raised by**: Mike  **Decided by**: Harvey（Tak の「すすめて」= LAB_STATUS Next 2 の実行）
+- **Question**: `numbers_audit.py` の未ソース 526 値（表 344 + prose 182）をどう消すか。表の数値・prose の結果数値・設計定数は同じ機構で扱うべきか
+- **Options**: A 全部を registry（`\numval{}`）にする／ B 表は single writer（`R/make_paper_tables.R` が tabular 全体を書く）、prose の結果数値は registry、設計定数（n grid、B、反復数、目標 AUC/ARI、CI 水準、margin、Set 4 の設計値）は `results/NUMBERS_LEDGER.csv` に出所付きで記録／ C 設計定数も registry にする
+- **Decision**: B。設計定数は protocol が決めた値で「結果」ではない。`$n = \numval{nMid}$` と書くと本文が読めなくなり、生成の利益もない。台帳行は source_locator（R スクリプトの行、config CSV の列、provenance の表）を持ち、Katrina が producer（Mike）と別に検証する（four eyes）。CSV に無い導出量（grid 全体の AUC range、oracle と silhouette の差、Set 4 の母集団 W₁/KS、GUSTO の Spearman と SD 比、S6 の閉形式定数、N と n_R8）は新しい single writer `R/make_derived_numbers.R` → `results/derived/*.csv` に書き、registry はそこから引く（prose に算術を持たせない）
+- **Reasons**: (1) 原稿の数値が「生成」になる割合: 672 → 526 → **2**（残り 2 は下記 finding）。(2) 生成した 6 表は旧 tabular と whitespace 正規化後に byte 一致、`\input{…}%` の後に空白 token を残さない書き方で `pdftotext` 差分 0 行、PDF サイズまで同一（373,705 bytes）。(3) 導出量を R に置くことで「prose に計算式を隠す」ことがなくなり、CI が `results/derived` の鮮度を検査できる
+- **Findings（本文の変更は Tak の判断）**: tab:study2_required_n の注「RV2 and RV3 sit slightly below chance (0.44--0.46) through n = 2,000」は再現しない。grid 全体では RV2 0.444–0.458、RV3 **0.426**–0.452（n = 50, 75, 100, 150, 400 で 0.43 台）。正しくは 0.43--0.46（または RV2 だけなら 0.44--0.46）。2 token を未ソースのまま残し、ratchet baseline = 2
+- **Tooling fixes（同時）**: `numbers_registry.py apply` は同じ行の token を後ろの出現から置換する（先に置換すると occ がずれる）；`1,047` と `1{,}047` を同一視；`numbers_audit.py --draft-registry` の occ は正規化値ではなく literal で数える；台帳の照合は「台帳の値（高精度）を本文の桁に丸めて一致」のみ許す（0.5 が 0.46 を吸収していた）。回帰テスト 66 本
+- **Evidence / references**: `paper/numbers_registry.csv`（154 keys）、`paper/generated/tab_*.tex`（9 本）、`results/derived/`、`results/NUMBERS_LEDGER.csv`、`scripts/baseline/similarity-metric_numbers_unsourced.txt` = 2、`verify-draft` 154/154 一致、`check` PASS（R と Python の macros 一致）
+- **Affected artifacts**: `paper/per_em_W1_wiley.tex`（文言不変、数値は `\numval{}` と `\input{}`）、`R/make_paper_tables.R`、`R/make_derived_numbers.R`、`R/verify_study1_app_numbers.R`（生成表を読む、predtools 無しでも走る）、`.github/workflows/r-and-tex.yml`
+- **Status**: active。0.44--0.46 の訂正は Tak の承認待ち
+
+### D-20261011-5: Study 2 の clean-room replication は PASS、Methods 本文に 2 件の Major な欠落
+
+- **Date**: 2026-10-11  **Raised by**: Louis（replication）/ Katrina（比較）  **Decided by**: Mike（root cause）、Harvey（扱い）
+- **Question**: `/replicate` の結果をどう読むか。true_W1 の FAIL は再現失敗か
+- **Decision**: 推定量と区間の性質（coverage、bias、mean_est、rmse、mean_ci_width）は事前宣言の許容差内で再現 → **PASS**。true_W1 の FAIL（最大差 0.003155、S7）は Methods 本文が true W₁ を 2 桁で印字していることが原因（Louis は本文どおりの値を使った）。本文の欠落として扱い、再現失敗とはしない
+- **Methods への action（Tak の判断で本文を直す）**: (A1 Major) two-sample bootstrap で何を resample するか（region 内で独立に size n_r）を書く；(A2 Major) S1（true W₁ = 0）の coverage の扱い（構造的に 0）を書く；true W₁ は閉形式か正確値で与える；quantile rule、seed と RNG、`sd_est`/`n_valid` の定義；`\label{sec:study1}` の付け間違い；「MCSE below 0.005」→「at most」、bias/RMSE/width の MCSE も報告；S6 のラベル "Skew" は scale も変えている
+- **Reasons**: RESEARCH_FRAMEWORK S14 — Methods 本文だけで再実装できることが再現可能性の定義。許容差は run 前に Mike が宣言（`results/replication/TOLERANCE_study2_estimation.md`）
+- **Evidence / references**: `results/REPLICATION_20261011.md`、`results/replication/compare_{coverage,moments,truth}_20261011.md`、`R/replication/study2_estimation_louis.R`（Ambiguities block 1–72 行）、`review_response/METHODS_ONLY_20261011.tex`
+- **Affected artifacts**: Methods §2.3–§3.2（Tak 承認後）、`CLAIMS.md` C-09/C-17/C-22 の evidence に replication を追加
+- **Status**: active
+
+### D-20261011-6: `/claims init` の 3 本の弱い主張（C-34 BCa、C-35 application の動詞、C-08 abstract の効率比較）— Harvey の提案を記録、適用は Tak
+
+- **Date**: 2026-10-11  **Raised by**: Harvey（`/claims init`、39 行起票、全行 pending）  **Decided by**: 未決（Tak）
+- **Question**: 証拠を超えている 3 本をどう直すか
+- **Options / Harvey の推奨**: C-34（§3.2.2 BCa の段落）: A 削除（BCa の coverage はディスクに無い）**← 推奨**／B protocol を書いて BCa を再計算／C 1 文残して exploratory と明記。C-35（§4.3 "shows"、"Section 5 quantifies this across all region pairs"）: A 動詞と参照先を直す／B 120 ペア分析を本文に戻す（D-20260927-2 を覆す）／C A + Spearman −0.30（n = 15）に CI を registry 経由で付ける **← 推奨**。C-08（abstract「fewer patients than KS in all but a uniform-shift control」）: A cell ごとの倍率で書き直す／B required n の Monte Carlo 不確かさ（delta 法、既存 CSV の mc_se から）を出して区間で比較 **← 推奨**／C 近い 4 cell に限る
+- **Also flagged（⚠ 7 行）**: C-07, C-09, C-18, C-24, C-32, C-33, C-35 — 動詞が許容表（theory: shows / simulation: demonstrates, illustrates / application: illustrates, is consistent with）を超える
+- **Reasons**: Rule 6「主張 ↔ 証拠」。原稿は触っていない（Harvey）。文言の変更は Tak の段落承認が必要（D-20260927-1 の運用）
+- **Evidence / references**: `CLAIMS.md`（39 行、行番号は commit `0d70baf` 基準、作業ツリーへの対応表はヘッダ）
+- **Status**: pending（Tak）

@@ -127,7 +127,7 @@ gate が揃った  → /phase next（Donna 検証、Louis risk、必要なら Je
 | S9 | **Quantify, do not decide**: 判定規則・閾値・手続きの推奨を書かない | v6 で判定の仕組みを全削除（Tak 09-25） | `memory/feedback_quantify_not_decide.md`、`paper-writing.md` |
 | S10 | **Principles are versioned**: 原則はローカル auto-memory ではなく repo の `memory/` に | 参照先 12 本が repo に無く、cloud session では原則が消えていた | `memory/INDEX.md`、`check_consistency.sh` の参照照合 |
 | S11 | **Character consistency is checked mechanically where it can be** | ラストネーム・敬語・「全部記録したわ」が再発 | `scripts/lint_suits.py` + hook `lint-suits.sh` + `/lint-suits` |
-| S12 | **Numbers are generated, never typed**（10-11）: 結果に由来する数値は registry の 1 行、原稿は `\numval{key}` / `num("key")`、表は single writer が `paper/generated/` に tabular 全体を書く。丸めは decimal half-even | 原稿 672 数値に source なし。0.9425 が機械によって 0.942 / 0.943 に割れた（formatC は binary の丸め） | `paper/numbers_registry.csv` + `scripts/numbers_registry.py` + `scripts/r/numbers_registry.R` + `scripts/make_numbers_macros.R` + `R/make_paper_tables.R` |
+| S12 | **Numbers are generated, never typed**（10-11）: 結果に由来する数値は registry の 1 行、原稿は `\numval{key}` / `num("key")`、表は single writer が `paper/generated/` に tabular 全体を書く。CSV の 1 セルに無い導出量（grid の range、run 間の差、順位相関、閉形式の設計定数）は第二の single writer `R/make_derived_numbers.R` → `results/derived/*.csv`。設計定数は `NUMBERS_LEDGER.csv` に source_locator 付き。丸めは decimal half-even | 原稿 672 数値に source なし。0.9425 が機械によって 0.942 / 0.943 に割れた（formatC は binary の丸め） | `paper/numbers_registry.csv` + `scripts/numbers_registry.py` + `scripts/r/numbers_registry.R` + `scripts/make_numbers_macros.R` + `R/make_paper_tables.R` |
 | S13 | **Protocols compile**（10-11）: ADEMP の機械可読部（YAML front matter）から R の骨格（seed・grid・MCSE・出力・provenance・findings）を生成。人が書くのは data draw と推定量だけ | protocol は文書、コードは別に手書き → 乖離（prose vs code） | `scripts/protocol_compile.py` + `templates/protocol_template.md` |
 | S14 | **Replication from the Methods text**（10-11）: Louis が Methods 本文だけから推定量を再実装し、canonical と列ごとに比較 | 一度だけの `louis_independent_replication.R` | `/replicate` + `louis-replication` agent + `scripts/extract_methods.py` + `scripts/compare_results.py` |
 | S15 | **Gates block in CI**（10-11）: 全チェックを push ごとに実行。ratchet baseline は下がるだけ | hook は advisory、語っただけでも merge できた | `.github/workflows/*.yml` + `scripts/ci_ratchet.sh` + `scripts/baseline/` |
@@ -139,7 +139,7 @@ gate が揃った  → /phase next（Donna 検証、Louis risk、必要なら Je
 | script | 役割 | 呼ぶ場所 |
 |---|---|---|
 | `lint_suits.py` | SUITS.md の機械的 character lint（ラストネーム・Harvey/Louis/Jessica の敬語・speaker label・Donna scribe・scene 順・場所見出し・silent メンバー） | hook `lint-suits.sh`、`/lint-suits`、`/handoff` |
-| `numbers_audit.py` | 原稿の全数値を抽出し `results/NUMBERS_LEDGER.csv` と照合。`--draft-ledger` で雛形 | `/verify-numbers`、`/submission-check` R4 |
+| `numbers_audit.py` | 原稿の全数値を抽出し `results/NUMBERS_LEDGER.csv` と照合（台帳の高精度値を本文の桁に half-even で丸めて一致した時だけ sourced。粗い設計定数が近い結果を吸収しない）。`--draft-ledger` / `--draft-registry` で雛形 | `/verify-numbers`、`/submission-check` R4 |
 | `cite_audit.py` | `\cite` ↔ `.bib` 照合（missing / uncited / DOI / 重複）+ citation–claim 表の雛形 | `/cite-check`、`/submission-check` R5 |
 | `check_r_reproducibility.sh` | R スクリプトの静的 lint（seed・parallel RNG・絶対パス・sessionInfo・install.packages） | hook `check-r-reproducibility.sh`、`/reproduce`、`/submission-check` R6 |
 | `check_consistency.sh` | Phase 同期、stale LAB_STATUS、undefined `\ref`、欠けた lifecycle artifacts、未バージョンの memory 参照、SUITS 行数 | hook `session-start-context.sh`、`/phase`、`/handoff` |
@@ -189,6 +189,7 @@ R/{study}.R（seed・grid・per-task seeding・MCSE 付き性能指標・CSV/rds
    ▼
 results/{study}_summary.csv（estimate + mcse）＋ results/{STUDY}_PROVENANCE.md ＋ SIMULATION_FINDINGS_{study}.md
    │  paper/numbers_registry.csv に行（key → file・filter・column・agg・fmt）／ R/make_paper_tables.R が tabular 全体を生成
+   │  CSV の 1 セルに無い量は R/make_derived_numbers.R → results/derived/*.csv（prose の中で計算しない）；設計定数は results/NUMBERS_LEDGER.csv
    ▼
 paper/numbers_macros.tex（Rscript scripts/make_numbers_macros.R）＋ paper/generated/*.tex
    │  原稿は \numval{key} と \input{generated/tab_x} だけ（Quarto なら `r num("key")`）

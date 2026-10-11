@@ -83,6 +83,13 @@ def decimals(s: str) -> int:
     return len(s.split(".")[1]) if "." in s else 0
 
 
+def round_dec(x: float, dp: int) -> float:
+    """The lab's one rounding rule (decimal round-half-even on the 15-significant-digit value; see
+    scripts/numbers_registry.py::round_dec and DECISIONS D-20261011-2) — 0.9425 → 0.942, never 0.943."""
+    from decimal import Decimal, ROUND_HALF_EVEN
+    return float(Decimal(format(x, ".15g")).quantize(Decimal(1).scaleb(-dp), rounding=ROUND_HALF_EVEN))
+
+
 def load_ledger(path: Path):
     rows = []
     if not path or not path.exists():
@@ -98,6 +105,9 @@ def load_ledger(path: Path):
 
 
 def match_ledger(norm: str, ledger):
+    """A token is sourced by a ledger row when the two values are equal, or when the LEDGER value — recorded at
+    higher precision — rounds to the token at the token's own precision (ledger 0.9425, text 0.943). Never the other
+    way round: a coarse design constant (0.5, 0.9, 1.0) must not absorb nearby results (0.46, 0.862, 0.95)."""
     for r in ledger:
         if r["_norm"] == norm:
             return r
@@ -105,12 +115,13 @@ def match_ledger(norm: str, ledger):
         f = float(norm)
     except ValueError:
         return None
+    dec_tok = decimals(norm)
     for r in ledger:
         try:
             lv = float(r["_norm"])
         except ValueError:
             continue
-        if abs(f - lv) < 1e-9 or (r["_dec"] > 0 and round(f, r["_dec"]) == lv):
+        if abs(f - lv) < 1e-9 or (r["_dec"] > dec_tok and abs(round_dec(lv, dec_tok) - f) < 1e-9):
             return r
     return None
 
@@ -262,9 +273,9 @@ def main():
             w = csv.writer(fh)
             w.writerow(["key", "source_file", "filter", "column", "agg", "fmt", "scale", "note", "line", "token", "occ"])
             for f, _ in unsourced:
-                k = (f["line"], f["norm"])
-                seen_on_line[k] = seen_on_line.get(k, 0) + 1
                 tok = f["token"].replace("\\%", "").strip()
+                k = (f["line"], tok)   # literal token, as numbers_registry.apply searches for it (not the normalised value)
+                seen_on_line[k] = seen_on_line.get(k, 0) + 1
                 dec = len(tok.split(".")[1]) if "." in tok else 0
                 fmt = f".{dec}f" if dec else ("{,}d" if "," in tok else "d")
                 w.writerow([f"TODO.L{f['line']}.{seen_on_line[k]}", "", "", "", "value", fmt, "1",

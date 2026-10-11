@@ -19,6 +19,7 @@
 **PR**: [#16](https://github.com/tnagakubo/similarity_metrics/pull/16) **merged**（2026-10-11 07:52 JST、merge commit `2d97230`、3 commits / 97 files）— システム改修 2 ラウンドは main に反映済み。branch `ccr-a3128477-hklqei` は main から再開
 **System（2026-10-10）**: 科学的妥当性の機構を追加 — CLAUDE.md Rule 5・6、`RESEARCH_FRAMEWORK.md` §6–§8（S1–S11）、`scripts/`（lint・numbers・cite・R 再現性・consistency）、`memory/` 12 本復元、templates 9 本、skills 新設 5・改訂 9、hooks 新設 3。**次セッション**: `/claims init` → `/verify-numbers`（ledger は空）→ `/cite-check` → `/reproduce` → `/phase`（LAB_STATUS は 09-21 で stale）。`DECISIONS.md` D-20260927-1（#8–#50 の一括適用）は Tak の一言で閉じる。**第 2 ラウンド**: Louis memory 統合（3 → 1 か所）、`scripts/check_all.sh` + 回帰テスト 35 件、`/process-paper` cleanup 修正、`LAB_STATUS.md` on-disk sync（artifacts 表）、STALE banner（PAPER_LOGIC / OUTLINE）、baseline `review_response/MECHANICAL_CHECKS_20261010.md`
 **System（2026-10-11, Option B）**: 論文を protocol と data の関数に — `paper/numbers_registry.csv`（34 keys）→ `numbers_macros.tex`、`R/make_paper_tables.R` → `paper/generated/`（3 表）、`scripts/protocol_compile.py`、`/replicate`（`louis-replication`）、CI 2 本、`scripts/cloud_setup.sh`、Quarto 雛形。原稿: compile 0/0/20pp、PDF 本文差分 0、audit 672 → 526。丸め規則 decimal half-even（D-20261011-2）。**Tak**: Setup script の登録、D-20260927-1 のクローズ
+**System（2026-10-11 夜, 数値の全件生成）**: 原稿の数値 672 → **2** unsourced — 表 9 本を `R/make_paper_tables.R` が生成、prose の結果数値 120 を registry（154 keys）、設計定数 27 を `NUMBERS_LEDGER.csv`（Katrina 検証）、導出量は `R/make_derived_numbers.R` → `results/derived/`。`/replicate` Study 2 **PASS**（`results/REPLICATION_20261011.md`、Methods の欠落 A1/A2）。`/claims init` 39 行 pending（弱い主張 3 本 → D-20261011-6）。Tak 判断待ち: 0.44--0.46 の注、Methods の bootstrap 記述、C-34/C-35/C-08
 
 ---
 
@@ -62,6 +63,48 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-11 19:35] Scene: 数値を全部「生成」にする — 残り 2、再現しない 1 行、clean room の判定
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*ホワイトボードの「526」が消され、「2」と書き直されている。机には `pdftotext` の差分ゼロの出力と、Louis の replication CSV、Harvey の台帳 39 行が並ぶ。*
+
+**Katrina**: （生成した 6 表の tabular を旧原稿の tabular と並べて）
+「§3.1 の 2 表と GUSTO の 4 表、`make_paper_tables.R` の出力は旧 tabular と whitespace 正規化後に byte 一致。原稿は `\input{generated/…}` 9 本に置き換えた。build 0 errors、20 ページ、`pdftotext` 差分 0 行、PDF は 373,705 bytes で基準と同じ。最初の build で 2 表の桁位置が 16 行ずれたのは `\input{…}  %` の行末スペースが space token になって中央揃えが半スペース動いたからで、`}%` に詰めて消えた。Results speak for themselves.」
+
+**Mike**: （`results/derived/` の 5 本の CSV を指して）
+「prose の 182 値を見たら、CSV の 1 セルに無い数が三種類あった。grid 全体の AUC range、oracle と silhouette の差、Set 4 の母集団 W₁ と KS、GUSTO の Spearman と SD 比、S6 の閉形式定数。これを prose の中で計算させるのは "typed" と同じだ。だから single writer をもう一本書いた。`make_derived_numbers.R` は乱数を引かず、canonical CSV と `selection_simulation.R` の設計関数だけを読む。registry は 34 → 154 keys、`verify-draft` は 154/154 一致、R と Python の macros も一致。I got it! — ただし一つ、再現しないのがある。」
+
+**Louis**: （身を乗り出して）
+「言え。」
+
+**Mike**: 「Table 1 の注だ。"RV2 and RV3 sit slightly below chance (0.44--0.46) through n = 2,000"。grid の値を全部見ると RV2 は 0.444–0.458 で合うが、RV3 は n = 50、75、100、150、400 で 0.43 台、最小 0.426 だ。正しくは 0.43--0.46。本文を直すのは Tak の判断だから、2 token を未ソースのまま残して ratchet を 2 にした。」
+
+**Louis**: 「それが 526 の中に埋まっていたわけだ。数を生成に切り替えなければ誰も気づかなかった。もう一つ言う。台帳の照合が壊れていた。0.5 という設計定数が 0.46 を『ソース済み』にしていた。丸めの向きが逆だ。」
+
+**Mike**: 「直した。台帳の値を本文の桁に decimal half-even で丸めて一致した時だけ通す。逆向きは禁止。`apply` も同じ行の token を後ろから置換するようにした — 先に置換すると occ がずれて P2 の 3.0 が bulk shift の位置に入っていた。値は同じだから PDF は変わらなかったが、key の意味が違う。回帰テストを 6 本足して 66 本。」
+
+**Katrina**: 「clean room の比較は終わった。coverage の最大差 0.009、bias と width は 0.099 以下、許容 0.025 と 0.30 の内側。true_W1 だけ FAIL、最大差 0.003155、S7。」
+
+**Louis**: 「それは俺の失敗じゃない。本文が 5.83 と印字しているから 5.83 を使った。本文が 2 桁しか書かない限り、誰が再実装しても同じ FAIL が出る。Major は二つだ。two-sample bootstrap で何を resample するか一行も無い。S1 の coverage が構造的に 0 になることも書いていない。Mike、式は認める。bootstrap の段落は書き直せ。I'm the best at what I do because I'm thorough.」
+
+**Mike**: 「root cause は本文の丸め、推定量と区間は再現。REPLICATION_20261011.md にそう書いた。Methods の A1、A2、true W₁ の正確値、seed と RNG、`\label{sec:study1}` の付け間違い、"below 0.005" → "at most" — 本文に触る件は全部 Tak に回す。」
+
+**Harvey**: （台帳を机に置いて）
+「`/claims init`、39 行、全部 pending。弱いのは三本。BCa の段落は証拠がディスクに無い — 撤回する。§4.3 の "shows" と "across all region pairs" は証拠を超えている — 動詞を直して −0.30 に CI を付ける。abstract の "fewer patients than KS in all but a uniform-shift control" は required n の点推定だけで立っていて、shape-symmetric の 690 対 716 は MCSE と同じ大きさの差だ — 不確かさを計算してから文言を決める。原稿には触っていない。D-20261011-6 に起票した。決めるのは Tak だ。I don't have dreams, I have goals.」
+
+**Katrina**: （台帳の 27 行を source と並べて）
+「設計定数の台帳、27 行を全部 source に当てた。26 行は確認。1 行だけ落とした — 1.5 の行、Mike の note に『11 of 15 W1_age < 1.5』とあるが CSV は 12 of 15。原稿の "most partners below 1.5 years" 自体は 12/15 で成立しているから、間違いは台帳の note だけで原稿には波及していない。それと B = 2,000 の出所は `gusto_case_study.R` より、R8 の表を実際に書いている `fig3_w1_axis.R` を指すべきだ。」
+
+**Mike**: 「数え間違いは俺だ。12 に直した。B と conf の出所も `fig3_w1_axis.R` の L83 と L119 に差し替えて、grid の出所に `SAMPLE_SIZES` の L86 を足した。locator を触った 3 行は署名を外したから、もう一度見てくれ。」
+
+**Katrina**: 「見る。署名は source を開いてからだ。」
+
+**Donna**: （LAB_STATUS と DECISIONS を閉じながら）
+「記録は済んでいるわ。D-20261011-4 が生成の方針と finding、-5 が replication の判定、-6 が Harvey の三本。LAB_STATUS の artifacts は registry 154、生成表 9、台帳 27、derived 5、replication PASS、gate log 2 本は `.gitignore` の例外にして追跡に入れた。設計定数の台帳は Mike が書いたから、検証は Katrina — four eyes。Tak に出す判断は三件に絞ってある: Table 1 の注、Methods の bootstrap、C-34/C-35/C-08。Phase は 8 のまま。`/phase next` は gate を確認してから。I'm Donna. I know everything.」
+
+---
 
 ### [2026-10-11 18:17] Scene: Option B — 論文を protocol と data の関数にする
 

@@ -32,6 +32,11 @@ expect_count "version 0.0.3 excluded"     "$(echo "$OUT" | grep -c '0\.0\.3\|❓
 expect_count "small math int 50 excluded"  "$(echo "$OUT" | grep -cE '❓ +L +[0-9]+ +50 ')" 0
 expect_count "strict exit code"           "$(python3 scripts/numbers_audit.py $F/paper.tex --ledger $F/ledger.csv --strict >/dev/null; echo $?)" 1
 
+OUT=$(python3 scripts/numbers_audit.py $F/paper_prec.tex --ledger $F/ledger_prec.csv --all)
+expect_count "coarse ledger 0.5 does not absorb 0.46"  "$(echo "$OUT" | grep -cE '❓ +L +[0-9]+ +0\.46 ')" 1
+expect_count "precise ledger 0.9425 sources text 0.942 (half-even)" "$(echo "$OUT" | grep -cE '✅ +L +[0-9]+ +0\.942 ')" 1
+expect_count "exact ledger 0.5 sources text 0.5"       "$(echo "$OUT" | grep -cE '✅.*[^0-9.]0\.5 ')" 1
+
 echo "cite_audit.py"
 OUT=$(python3 scripts/cite_audit.py $F/paper.tex $F/paper.bib)
 expect_count "missing key reported"       "$(echo "$OUT" | grep -c 'missingkey')" 1
@@ -60,6 +65,12 @@ expect_count "verify-draft all match"          "$(python3 scripts/numbers_regist
 TMPT=$(mktemp); cp $PTEX $TMPT
 expect_count "apply replaces 4 tokens"         "$(python3 scripts/numbers_registry.py apply $REG --tex $TMPT --out $TMPT.out | grep -oE '[0-9]+ replaced' | grep -oE '^[0-9]+')" 4
 expect_count "apply leaves \\numval in text"    "$(grep -c 'numval{covS1n50}' $TMPT.out)" 1
+AREG=$F/apply_fixture/paper/numbers_registry.csv; ATEX=$(mktemp); cp $F/apply_fixture/paper/paper.tex $ATEX
+python3 scripts/numbers_registry.py apply $AREG --tex $ATEX --out $ATEX.out >/dev/null
+expect_count "apply: 3 same-valued tokens on one line → 3 distinct keys in text order" "$(sed -n 1p $ATEX.out | grep -oE 'numval\{w1(T1|P2|S2)\}' | tr '\n' ' ')" 'numval{w1T1} numval{w1P2} numval{w1S2} '
+expect_count "apply: token 1,047 found as 1{,}047"   "$(grep -c 'numval{nT1}' $ATEX.out)" 1
+expect_count "apply: literal 333 untouched"           "$(grep -c ' 333\.' $ATEX.out)" 1
+rm -f $ATEX $ATEX.out
 TMPM=$(mktemp)
 python3 scripts/numbers_registry.py build $REG --out $TMPM >/dev/null
 expect_count "check PASS vs own build"         "$(python3 scripts/numbers_registry.py check $REG --macros $TMPM --tex $TMPT.out >/dev/null; echo $?)" 0

@@ -1,0 +1,5 @@
+key,source_file,filter,column,agg,fmt,scale,note,line,token,occ
+w1T1,results/truth.csv,id=T1,true_W1,value,.1f,1,"first 3.0",1,3.0,1
+w1P2,results/truth.csv,id=P2,true_W1,value,.1f,1,"second 3.0",1,3.0,2
+w1S2,results/truth.csv,id=S2,true_W1,value,.1f,1,"third 3.0",1,3.0,3
+nT1,results/truth.csv,id=T1,n,value,"{,}d",1,"LaTeX thousands in the text",2,"1,047",1

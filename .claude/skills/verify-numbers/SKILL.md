@@ -17,7 +17,8 @@ Ledger: `projects/{project}/results/NUMBERS_LEDGER.csv`（header: `templates/num
 1. **Mike**: `python3 scripts/numbers_audit.py <tex> --draft-registry draft.csv` — 全数値を抽出（`\numval{}` と生成表は除外済み）。draft の各行に key・`source_file`・`filter`・`column`・`agg`・`fmt` を書く（丸めは **decimal round-half-even**、両実装共通）
 1b. **Katrina**（verifier）: `python3 scripts/numbers_registry.py verify-draft draft.csv --tex <tex>` — 原稿の literal と CSV の値が一致するか。⚠️ は「原稿か CSV のどちらが誤りか」を決めてから進む（0.9425 のような丸め境界も表に出る）
 1c. **Mike**: `apply`（literal を `\numval{}` に置換）→ registry に追記 → `Rscript scripts/make_numbers_macros.R <registry>` → `python3 scripts/numbers_registry.py check <registry> --macros <macros> --tex <tex>` → `build.sh` で error 0、`pdftotext` の差分 0 を確認
-2. **Mike**（producer）: registry に載らない残りの unsourced に source を書く（ledger） — `source_file`（CSV / script / provenance）と `source_locator`（行・列・object / 式）。手計算は式を `note` に書き、**独立に再導出**する
+1d. **Mike**: CSV の 1 セルに無い量（range・差・順位相関・閉形式）は prose で計算せず、`R/make_derived_numbers.R` に関数を足して `results/derived/*.csv` に書き、registry はそこから引く
+2. **Mike**（producer）: 設計定数と、それでも registry に載らない unsourced に source を書く（ledger） — `source_file`（CSV / script / provenance）と `source_locator`（行・列・object / 式）。手計算は式を `note` に書き、**独立に再導出**する
 3. **Katrina または Louis**（verifier、**producer と別人**）: source を開いて値を照合（再実行または再計算。記憶で承認しない）。`verified_by` / `verified_date` を記入
 4. **Mike**: 閾値比較・boolean・sort・単位換算・proportion vs percent を特に再確認
 5. 分類: ✅ verified / ⚠️ mismatch（source ≠ paper → **大きく flag**、原稿か source のどちらが正か決めてから直す）/ ❓ unsourced

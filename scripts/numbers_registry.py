@@ -16,7 +16,8 @@ macro key to a value computed from a canonical results CSV:
   fmt          d | ,d | {,}d | .Nf | .Ng   with optional modifiers after '!': m (wrap a negative in $…$), a (abs)
   scale        multiplier applied before formatting (default 1)
   line,token,occ  optional audit-trail columns written by `numbers_audit.py --draft-registry` and used by
-                  `verify-draft` / `apply` (the literal `token` at the `occ`-th occurrence on `line` of the .tex)
+                  `verify-draft` / `apply` (the literal `token` at the `occ`-th occurrence on `line` of the .tex, counted
+                  in the line before any replacement; `apply` works through a line from its last occurrence backwards)
 
 The same semantics are implemented in R (scripts/r/numbers_registry.R → scripts/make_numbers_macros.R);
 `check` asserts the two implementations agree, which is the four-eyes principle applied to the generator.
@@ -273,7 +274,8 @@ def cmd_check(a):
 
 def _find_token(line_text: str, token: str, occ: int):
     """Return (start, end) of the occ-th (1-based) occurrence of token as a standalone number."""
-    pat = re.compile(r"(?<![A-Za-z0-9.\\{}])" + re.escape(token) + r"(?![0-9])")
+    body = re.escape(token).replace(r"\{,\}", ",").replace(",", r"(?:,|\{,\})")  # 1,047 ≡ 1{,}047
+    pat = re.compile(r"(?<![A-Za-z0-9.\\{}])" + body + r"(?![0-9])")
     for i, m in enumerate(pat.finditer(line_text), start=1):
         if i == occ:
             return m.start(), m.end()
@@ -312,12 +314,11 @@ def cmd_apply(a):
     only = set(a.keys.split(",")) if a.keys else None
     tex_path = Path(a.tex); lines = tex_path.read_text(encoding="utf-8").splitlines(keepends=True)
     applied, refused = 0, 0
-    # apply from the bottom of each line rightwards-first is unnecessary: tokens replaced one at a time with re-search
-    for r in rows:
-        if only and r["key"] not in only:
-            continue
-        if not (r.get("line") and r.get("token")):
-            continue
+    # `occ` counts occurrences in the ORIGINAL line (as numbers_audit --draft-registry numbers them). Replacing an earlier
+    # occurrence would renumber the later ones, so a line's rows are applied from the last occurrence backwards.
+    todo = [r for r in rows if (not only or r["key"] in only) and r.get("line") and r.get("token")]
+    todo.sort(key=lambda r: (int(r["line"]), -int(r.get("occ") or 1)))
+    for r in todo:
         ln = int(r["line"]); occ = int(r.get("occ") or 1)
         if ln < 1 or ln > len(lines):
             print(f"  ❌ {r['key']}: line {ln} out of range"); refused += 1; continue

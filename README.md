@@ -122,6 +122,7 @@ against the current directory.
 python3 scripts/protocol_compile.py projects/<p>/PROTOCOL_<study>.md   # ADEMP front matter → R/<study>.R skeleton (seed, grid, MCSE, outputs)
 Rscript projects/<p>/R/<study>.R                                       # you wrote draw_sample() and the estimator only
 Rscript projects/<p>/R/make_paper_tables.R                             # single writer → paper/generated/*.tex (complete tabulars)
+Rscript projects/<p>/R/make_derived_numbers.R                          # single writer → results/derived/*.csv (ranges, differences, correlations the prose cites)
 Rscript scripts/make_numbers_macros.R projects/<p>/paper/numbers_registry.csv   # registry → paper/numbers_macros.tex (\numval{key})
 python3 scripts/numbers_registry.py check projects/<p>/paper/numbers_registry.csv --macros … --tex …
 python3 scripts/numbers_registry.py verify-draft … --tex …            # literal in the text vs the CSV value (finds 0.942 vs 0.943)

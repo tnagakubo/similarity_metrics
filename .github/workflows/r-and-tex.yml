@@ -26,6 +26,11 @@ jobs:
             Rscript "$g"
           done
           git diff --exit-code -- 'projects/*/paper/generated/*.tex' || { echo "paper/generated/*.tex is stale — rerun R/make_paper_tables.R and commit"; exit 1; }
+          for g in projects/*/R/make_derived_numbers.R; do
+            [ -f "$g" ] || continue
+            Rscript "$g"
+          done
+          git diff --exit-code -- 'projects/*/results/derived/*.csv' || { echo "results/derived/*.csv is stale — rerun R/make_derived_numbers.R and commit"; exit 1; }
       - name: Numbers macros — R generator must agree with the Python checker
         run: |
           set -e

@@ -1,0 +1,26 @@
+study2_estimation_louis.R -- clean-room replication of Study 2 (Louis)
+finished: 2026-10-11 10:10:29 UTC
+n_sim = 1000 per cell; B = 2000; CI = order statistics 50 and 1950 of B (quantile type 1)
+BASE_SEED = 20261011; cell seed = BASE_SEED + 100*s + j (s = 1..7 for S1..S7; j = 1..3 for n = 50, 100, 200)
+RNGkind: Mersenne-Twister / Inversion / Rejection
+elapsed: 585.1 s
+
+R version 4.3.3 (2024-02-29)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 24.04.5 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.12.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.12.0
+
+locale:
+[1] C
+
+time zone: Etc/UTC
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+loaded via a namespace (and not attached):
+[1] compiler_4.3.3
