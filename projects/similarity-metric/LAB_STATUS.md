@@ -23,7 +23,7 @@
 | Paragraph ledger | `REVIEW_QUEUE_v6.md` | ✅ 50/50（#1–#7 Tak 個別承認、#8–#50 包括指示 → D-20260927-1） |
 | Numbers registry（生成） | `paper/numbers_registry.csv` → `paper/numbers_macros.tex` | ✅ **172 keys**。`numbers_audit.py`: 672 → 526 → 2 → **0** unsourced（Table 1 の注を registry 化、D-20261011-7）。`check` PASS（R = Python） |
 | Generated tables | `paper/generated/tab_*.tex`（**10 本**、`R/make_paper_tables.R`） | ✅ 9 本は旧 tabular と byte 一致；10 本目 tab:study2_required_n_mc（W₁ vs KS の required n と 95% Monte Carlo 区間、`R/required_n.R` の delta 法）を新設 |
-| Numbers ledger（設計定数） | `results/NUMBERS_LEDGER.csv` | ✅ 30 行、**Katrina 署名 30/30**（Methods 補強で加えた 97.5 / 1,000 / 42 も source で確認、2026-10-11） |
+| Numbers ledger（設計定数） | `results/NUMBERS_LEDGER.csv` | ✅ 31 行、**Katrina 署名 31/31**（Methods 補強で加えた 97.5 / 1,000 / 42 と Louis review で加えた $z_{0.975}$ も source で確認、2026-10-11） |
 | Derived numbers（single writer） | `R/make_derived_numbers.R` → `results/derived/*.csv`（AUC range、error rate と chance、Set 4 母集団 W₁/KS、oracle−silhouette、GUSTO Spearman/SD 比、S6 閉形式、N/n_R8） | ✅ 乱数なし、`sessionInfo` 併置。CI が鮮度を検査 |
 | Replication report | `results/REPLICATION_20261011.md`（+ `results/replication/`） | ✅ **PASS**（coverage 0.009、moments ≤ 0.099 vs 許容 0.025/0.30）。true_W1 FAIL は本文の 2 桁丸めが原因 → Methods を補強（A1 resampling scheme、A2 S1 coverage、正確な true W₁、seed/RNG、type-7 quantile；D-20261011-7） |
 | Numbers gates | `results/verify_study2.log`, `results/verify_study1_app.log` | ✅ ALL PASS（2026-10-11 再実行；`verify_study1_app_numbers.R` は生成表を読み predtools 無しで走る） |
