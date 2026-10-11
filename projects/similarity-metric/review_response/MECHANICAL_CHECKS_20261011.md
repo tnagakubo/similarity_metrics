@@ -1,4 +1,4 @@
-# Mechanical checks — similarity-metric (2026-10-11 10:59, commit 811359d)
+# Mechanical checks — similarity-metric (2026-10-11 11:21, commit f8c01f7)
 
 All advisory. Red items are gates for `/phase next` and `/submission-check` (RESEARCH_FRAMEWORK §6).
 
@@ -11,12 +11,12 @@ Donna: consistency check — 1 finding(s) above.
 ## 2. SUITS.md character lint (all scenes)
 ```
 Donna: SUITS.md lint — clean (all scenes).
-  speakers: Donna 10, Harvey 11, Jessica 7, Katrina 12, Louis 9, Mike 12, Rachel 4
+  speakers: Donna 12, Harvey 14, Jessica 7, Katrina 14, Louis 11, Mike 15, Rachel 4
 ```
 
 ## 3. Numbers audit — per_em_W1_wiley.tex
 ```
-Mike: numbers audit of per_em_W1_wiley.tex — 112 numeric tokens, 112 sourced, 0 unsourced (0 distinct values). Ledger: projects/similarity-metric/results/NUMBERS_LEDGER.csv (30 rows)
+Mike: numbers audit of per_em_W1_wiley.tex — 113 numeric tokens, 113 sourced, 0 unsourced (0 distinct values). Ledger: projects/similarity-metric/results/NUMBERS_LEDGER.csv (31 rows)
 ```
 Detail: `python3 scripts/numbers_audit.py projects/similarity-metric/paper/per_em_W1_wiley.tex` · ledger `projects/similarity-metric/results/NUMBERS_LEDGER.csv`
 
@@ -64,7 +64,7 @@ files with ❌: 22   files with ⚠️ only: 37
 | LAB_STATUS.md | ✅ | |
 | PROTOCOL_*.md | ✅ | 2 file(s) |
 | SIMULATION_FINDINGS*.md | ❌ | 0 file(s) |
-| results/NUMBERS_LEDGER.csv | ✅ | 30 row(s) |
+| results/NUMBERS_LEDGER.csv | ✅ | 31 row(s) |
 | results/REPRODUCTION_*.md | ❌ | 0 report(s) |
 | review_response/CITATION_AUDIT_*.md | ❌ | 0 audit(s) |
 | CLAIMS.md rows | — | supported 0 · pending 35 |

@@ -16,3 +16,4 @@
 "s6_sd",26.6470175013894,"S6 log-normal SD = mean x CV (Distribution 1 has SD 10)"
 "s6_skewness",1.75018965506972,"S6 log-normal skewness: (exp(sigma_log^2) + 2) sqrt(exp(sigma_log^2) - 1)"
 "mcse_bound_proportion_10000",0.005,"largest Monte Carlo SE of a proportion at n_sim = 10,000: sqrt(0.5 * 0.5 / n_sim)"
+"z975_sqrt2",2.77180764869936,"noise factor for the difference of two independent Monte Carlo estimates: z_0.975 * sqrt(2)"

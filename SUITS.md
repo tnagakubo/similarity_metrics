@@ -20,7 +20,7 @@
 **System（2026-10-10）**: 科学的妥当性の機構を追加 — CLAUDE.md Rule 5・6、`RESEARCH_FRAMEWORK.md` §6–§8（S1–S11）、`scripts/`（lint・numbers・cite・R 再現性・consistency）、`memory/` 12 本復元、templates 9 本、skills 新設 5・改訂 9、hooks 新設 3。**次セッション**: `/claims init` → `/verify-numbers`（ledger は空）→ `/cite-check` → `/reproduce` → `/phase`（LAB_STATUS は 09-21 で stale）。`DECISIONS.md` D-20260927-1（#8–#50 の一括適用）は Tak の一言で閉じる。**第 2 ラウンド**: Louis memory 統合（3 → 1 か所）、`scripts/check_all.sh` + 回帰テスト 35 件、`/process-paper` cleanup 修正、`LAB_STATUS.md` on-disk sync（artifacts 表）、STALE banner（PAPER_LOGIC / OUTLINE）、baseline `review_response/MECHANICAL_CHECKS_20261010.md`
 **System（2026-10-11, Option B）**: 論文を protocol と data の関数に — `paper/numbers_registry.csv`（34 keys）→ `numbers_macros.tex`、`R/make_paper_tables.R` → `paper/generated/`（3 表）、`scripts/protocol_compile.py`、`/replicate`（`louis-replication`）、CI 2 本、`scripts/cloud_setup.sh`、Quarto 雛形。原稿: compile 0/0/20pp、PDF 本文差分 0、audit 672 → 526。丸め規則 decimal half-even（D-20261011-2）。**Tak**: Setup script の登録、D-20260927-1 のクローズ
 **System（2026-10-11 夜, 数値の全件生成）**: 原稿の数値 672 → **2** unsourced — 表 9 本を `R/make_paper_tables.R` が生成、prose の結果数値 120 を registry（154 keys）、設計定数 27 を `NUMBERS_LEDGER.csv`（Katrina 検証）、導出量は `R/make_derived_numbers.R` → `results/derived/`。`/replicate` Study 2 **PASS**（`results/REPLICATION_20261011.md`、Methods の欠落 A1/A2）。`/claims init` 39 行 pending（弱い主張 3 本 → D-20261011-6）。Tak 判断待ち: 0.44--0.46 の注、Methods の bootstrap 記述、C-34/C-35/C-08
-**Paper（2026-10-11 夜, Tak の 3 判断を適用）**: Table 1 の注 0.43--0.46（生成）；Methods に bootstrap scheme・S1 coverage・正確な true W₁・seed/RNG・MCSE（at most、bias/RMSE/幅も）；BCa 段落削除（C-34 retracted）；C-35 動詞 + Spearman −0.30 の 95% 区間 [−0.71, 0.26]；C-08 required n に delta 法の MC 区間、新表 tab:study2_required_n_mc、abstract 249 語「five of seven cells」；`PROTOCOL_study1_identification.md`（事後登録）。unsourced **0**、ledger 30/30。Louis の review 待ち
+**Paper（2026-10-11 夜, Tak の 3 判断を適用）**: Table 1 の注 0.43--0.46（生成）；Methods に bootstrap scheme・S1 coverage・正確な true W₁・seed/RNG・MCSE（at most、bias/RMSE/幅も）；BCa 段落削除（C-34 retracted）；C-35 動詞 + Spearman −0.30 の 95% 区間 [−0.71, 0.26]；C-08 required n に delta 法の MC 区間、新表 tab:study2_required_n_mc、abstract 249 語「five of seven cells」；`PROTOCOL_study1_identification.md`（事後登録）。unsourced **0**、ledger 30/30。Louis review（Major 8 / Minor 9、Critical 0）を反映: "indistinguishable" 除去、MCSE の noise 幅、S8 開示、ERRFIX（combined）、protocol の訂正；残り 6 件は Tak へ（D-20261011-7 addendum）
 
 ---
 
@@ -64,6 +64,30 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-11 20:40] Scene: Louis の review — 数値は堅い、動詞が緩い
+
+**INT. PEARSON SPECTER LITT - LOUIS'S OFFICE - NIGHT**
+
+*机の上に 11 項目の判定表。Louis は赤ペンで "indistinguishable" を三か所丸で囲んでいる。*
+
+**Louis**: 「数値は全部 CSV と rds に当てた。合っている。S5–S7 の true W₁ も S6 の SD も俺が quadrature し直して一致した。MCSE の最大値も rds から再現した。だから数値の話はしない。動詞の話をする。"indistinguishable" が abstract と §3.1 と §5 に載っている。重なった marginal 区間から同等性は出ない。しかも W₁ と KS は同じ replicate の上の paired 推定で、相関は捨てた per-replicate に埋まっていて出せない。おまけに CSV が反証している — shape-symmetric では曲線が交差していて、n = 25 では KS が上、n = 2,000 では W₁ が上、閾値 0.8 なら KS の点推定が小さく、0.95 なら W₁ が分離して勝つ。区別できないのは AUC 0.9 の交点であって、測度じゃない。You just got Litt up!」
+
+**Mike**: 「……そのとおりだ。"was not separated from it in one" に変えて、§3.1 には曲線が目標付近で交差することを書く。§5 の列挙からも引き分けと負けを外して、別の文で『一様に効率が良いわけではない』と言う。」
+
+**Louis**: 「二つ目。Spearman の "not closely related" は自分の下限 −0.71 と矛盾する。masking の論証に要るのは『強い正の一致が無い』ことで、それを支えるのは上限 0.26 だ。三つ目。MCSE の『twice』— 二つの cell の差なら 1.96√2、約 2.8 倍だ。その物差しで見ると S5 と S7 の n = 100 は nominal を noise 以上に下回っている。それを本文は near-nominal と呼んでいる。内部の穴も二つ。事後に決めた grid と閾値を原稿が開示していない。事後 protocol の『閾値を変えても順序は不変』は shape-symmetric で偽だ — 走らせていない確認を根拠にしている。」
+
+**Harvey**: （判定表を取って）
+「Critical 0、Major 8、Minor 9。文言で直せるものは今夜直す。既存の段落に手が入るもの — near-nominal の定義、BCa を見た事実の一文、Sets 1–2 の一文、per-replicate の再 run、Spearman の joint bootstrap — は Tak に回す。それが順序だ。」
+
+**Mike**: 「直した。abstract は『stayed at or below chance … never did … was not separated from it in one』で 249 語。MCSE の文は 2 cell の差で $z_{0.975}\sqrt{2}$ 倍、1 cell なら 2 倍と分けた。S1 の coverage の文言は Table 6 の注と揃えた。S6 の cascade を summary と Discussion と C-09 に通した。Table 1 の注の『combined pools』は ERRFIX — combined は C1/C2 という discordant role で、pool じゃない。§3.1 Design に『grid 拡張・閾値・三行動の定義は base grid の結果を見た後に決めた、MC 区間はさらに後』と開示した。区間は下限を floor にして外側へ丸めた。protocol の偽の一文は CSV で確認した文に差し替え、§8 に deviation として残した。」
+
+**Katrina**: 「再 build: 0 errors、最終 pass の undefined 0、overfull は基準と同数。audit は unsourced 0。registry 173 keys。C-38 の cascade 漏れも直した。」
+
+**Donna**: （memory を開いて）
+「再発の型は三つ、`memory/feedback_review_recurrence_patterns.md` に入れた。区間の overlap を同等と言わない、弁明の文書は実行した確認だけ引用する、cascade は台帳と凡例と protocol まで。D-20261011-7 に Louis の判定と、Tak に回す 6 件を書いたわ。Tak の段落レビューの対象は、今日の 3 判断で変わった 6 箇所に Louis の修正が乗った状態。」
+
+---
 
 ### [2026-10-11 20:05] Scene: Tak の判断 3 件 — 「正しく修正、推奨通り、推奨通り」
 

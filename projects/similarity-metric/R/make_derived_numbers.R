@@ -110,6 +110,7 @@ sc("s6_cv", sqrt(exp(sigma_log^2) - 1), "S6 log-normal coefficient of variation:
 sc("s6_sd", mean_s6 * sqrt(exp(sigma_log^2) - 1), "S6 log-normal SD = mean x CV (Distribution 1 has SD 10)")
 sc("s6_skewness", (exp(sigma_log^2) + 2) * sqrt(exp(sigma_log^2) - 1), "S6 log-normal skewness: (exp(sigma_log^2) + 2) sqrt(exp(sigma_log^2) - 1)")
 sc("mcse_bound_proportion_10000", sqrt(0.25 / n_sim), "largest Monte Carlo SE of a proportion at n_sim = 10,000: sqrt(0.5 * 0.5 / n_sim)")
+sc("z975_sqrt2", qnorm(0.975) * sqrt(2), "noise factor for the difference of two independent Monte Carlo estimates: z_0.975 * sqrt(2)")
 
 wr(do.call(rbind, scalars), "derived_scalars.csv")
 writeLines(capture.output(sessionInfo()), file.path(OUT, "make_derived_numbers_sessionInfo.txt"))

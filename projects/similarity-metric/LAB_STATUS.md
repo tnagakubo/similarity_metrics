@@ -64,7 +64,8 @@
 
 ## Next
 
-1. **Tak**: D-20260927-1 を閉じる（拒否なし、または拒否する段落番号）；今日の 3 判断で変わった段落（abstract、§2.3、§3.1 selection、§3.2 design/results、§4.3、§5 ¶2–¶4）を段落レビューで確認（Louis の review は SUITS 2026-10-11 の scene）
+1. **Tak**: D-20260927-1 を閉じる（拒否なし、または拒否する段落番号）；今日の 3 判断と Louis review で変わった段落（abstract、§2.3、§3.1 design/selection と Table 1–2 の注、§3.2 design/results/summary、§4.3、§5 ¶1 (iii)・¶2–¶4）を段落レビューで確認
+1b. **Tak**: Louis review の残り 6 件（D-20261011-7 addendum）— 特に "near-nominal" の扱い（C-09）と BCa の一文開示
 2. **Mike**: `/claims check` — 39 行の evidence を 1 行ずつ verify（supported / narrowed）；`/verify-numbers` の最終 PASS を宣言（ledger 30/30 署名済み）
 3. **Rachel**: `/cite-check`（26 keys、新規 `bonett2000` を含む；DOI 欠落 1）→ `review_response/CITATION_AUDIT_*.md`
 4. **Mike / Katrina**: `/reproduce`（絶対パス 20 本・sessionInfo 欠落を先に直す；R lint baseline 22 は下げるだけ）

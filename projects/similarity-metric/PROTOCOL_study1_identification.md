@@ -49,7 +49,7 @@ prior_look: "yes — post-hoc registration; the extension grid, the three-behavi
 | 2026-09-27 | 論文の headline 閾値を AUC 0.9 / ARI 0.8（三段の中央）に固定、Study 番号を入れ替え（identification = Study 1） | 後 | D-20260927-3 |
 | 2026-10-11 | required n に delta 法の 95% Monte Carlo 区間を付与（`required_n_lower/upper`）、比較を「区間が分かれる cell」に限定 | 後（C-08 の MC 不確かさ欠落を `/claims init` が指摘） | D-20261011-7、`R/required_n.R` |
 
-**結果を見た後に決めた事項とその扱い**: (a) 拡張 grid — 三行動の分類は n = 2,000 まで見なければ成立しないため追加した。識別失敗（blind）の判定は母集団距離が構成ラベルと無関係であることに基づく（Set 3 の mean/SD 一致は構成で保証）ので、grid の長さに依存しない。(b) 閾値 — 三段をすべて CSV に出し、本文は中央の段を報告する。別の段を選んでも W₁ と KS の順序は変わらない（`required_n_selection.csv` の threshold 0.8 / 0.95 行で確認可能）。(c) 分類の定数（0.02、0.05）— `R/required_n.R` に固定；"blind" は plateau が chance ± 0.05 以内、"partial" はそれ以上で閾値未満。(d) **primary outcome は閾値非依存**: 「W₁ と KS は全 world で recovering、SMD/RV1/RV2 は Set 3 で blind」は AUC 曲線の形（chance への plateau か、単調増加か）であり、cut に依らない。
+**結果を見た後に決めた事項とその扱い**: (a) 拡張 grid — 三行動の分類は n = 2,000 まで見なければ成立しないため追加した。識別失敗（blind）の判定は母集団距離が構成ラベルと無関係であることに基づく（Set 3 の mean/SD 一致は構成で保証）ので、grid の長さに依存しない。(b) 閾値 — 三段をすべて CSV に出し、本文は中央の段を報告する。W₁ と KS の順序は shape-symmetric mixture を除いて三段で不変（`required_n_selection.csv`、2026-10-11 に確認）；shape-symmetric では 0.8 で点推定が逆転し（W₁ 204 [189, 220] vs KS 184 [165, 206]、区間は重なる）、0.9 で重なり（690 vs 716）、0.95 で W₁ が分離して少ない（1,199 [1,152, 1,246] vs 1,320 [1,263, 1,379]）— 曲線が目標付近で交差するためで、本文はこの cell の優劣を主張しない。(c) 分類の定数（0.02、0.05）— `R/required_n.R` に固定；"blind" は plateau が chance ± 0.05 以内、"partial" はそれ以上で閾値未満。(d) **primary outcome は閾値非依存**: 「W₁ と KS は全 world で recovering、SMD/RV1/RV2 は Set 3 で blind」は AUC 曲線の形（chance への plateau か、単調増加か）であり、cut に依らない。
 
 ## 1. Claim（Harvey）
 
@@ -93,8 +93,8 @@ W₁、KS、SMD（Set 2 は log scale も）、RV1（Komiyama et al. as written�
 
 ## 5. Louis の攻撃と回答
 1. 「grid 拡張と分類は結果を見てから」— 事実。§0 に開示。分類の根拠（母集団距離 0）は grid に依らず、primary outcome は閾値非依存。
-2. 「閾値の選択で勝敗が変わる」— threshold 0.8 / 0.95 行で W₁ と KS の順序は不変（CSV で確認可）。
-3. 「required n の差は Monte Carlo ノイズでは」— 2026-10-11 に区間を付与。shape-symmetric mixture（690 [662, 718] vs 716 [688, 747]）は区別不能と明記し、主張を 5 of 7 に狭めた（C-08 narrowed）。
+2. 「閾値の選択で勝敗が変わる」— shape-symmetric mixture 以外では threshold 0.8 / 0.9 / 0.95 のどれでも W₁ と KS の順序は不変。shape-symmetric では閾値で順位が入れ替わる（§0(b)）ので、その cell の優劣は主張しない（§2 Does not license）。
+3. 「required n の差は Monte Carlo ノイズでは」— 2026-10-11 に区間を付与（外側丸め）。shape-symmetric mixture（690 [661, 718] vs 716 [687, 747]）は区間が重なり、曲線が目標付近で交差するため「分離しない」と書く（同等とは書かない）。主張は 5 of 7 に狭めた（C-08 narrowed）。W₁ と KS は同じ replicate 上の paired 推定だが per-replicate 値は保存されていないので paired 区間は出せない — 非重なりは保守的、重なりは同等性の根拠にならない。
 4. 「Set 3・4 は W₁ に有利に作ってある」— そのとおり。summary measure の構造的盲点を示すための world であり、Set 1・2 と control（bulk shift、KS が勝つ）を同時に報告する。
 5. 「k は oracle」— 本文に明記；clustering の silhouette 版で oracle を外した結果も報告。
 
@@ -105,4 +105,5 @@ W₁、KS、SMD（Set 2 は log scale も）、RV1（Komiyama et al. as written�
 事後登録のため Go/No-Go は無い。Let me be clear: この protocol が license するのは §2 の範囲だけだ。それを超える文言は CLAIMS.md で narrow する。
 
 ## 8. Deviations
-登録（2026-10-11）以降の逸脱なし。再 run は同じ seed（config CSV）で行い、差分は `scripts/compare_results.py` で比較する。
+- 2026-10-11（登録当日、Louis review B3）: §0(b)・§5.2 の「閾値を変えても順序は不変」は shape-symmetric mixture で偽だった（0.8 で逆転）。確認せずに書いた文を、CSV で確認した文に差し替えた。
+- 再 run は同じ seed（config CSV）で行い、差分は `scripts/compare_results.py` で比較する。paired 比較を行うなら per-replicate の W₁・KS の AUC 差を保存する再 run が要る（未実施）。

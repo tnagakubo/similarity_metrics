@@ -86,7 +86,7 @@ load_grid <- function(prod_file, ext_file, measure_keep) {
 #   d x*/d y0 = (x1 - x0)(cut - y1)/(y1 - y0)^2,  d x*/d y1 = -(x1 - x0)(cut - y0)/(y1 - y0)^2,
 #   Var(x*) = (d x*/d y0)^2 se0^2 + (d x*/d y1)^2 se1^2   (the two bracketing cells are independent runs),
 # and a two-sided 95% interval exp(x* -/+ z_0.975 sqrt(Var)). It is local to the bracketing grid interval (it does not
-# move the crossing to a neighbouring interval) and is reported as an approximation, rounded up to whole patients.
+# move the crossing to a neighbouring interval), carries no interpolation error, and is rounded outward to whole patients.
 required_n <- function(n, v, cut, chance = 0, se = NULL) {
   stopifnot(length(n) == length(v), !is.unsorted(n))
   if (any(v >= cut)) {
@@ -100,7 +100,7 @@ required_n <- function(n, v, cut, chance = 0, se = NULL) {
       d1 <- -(x1 - x0) * (cut - y0) / (y1 - y0)^2
       se_x <- sqrt(d0^2 * se[i-1]^2 + d1^2 * se[i]^2)
       z <- qnorm(0.975)
-      lo <- ceiling(exp(log(nn) - z * se_x)); hi <- ceiling(exp(log(nn) + z * se_x))
+      lo <- floor(exp(log(nn) - z * se_x)); hi <- ceiling(exp(log(nn) + z * se_x))   # rounded outward to whole patients
     }
     return(list(n = ceiling(nn), note = "", status = "reached", lower = lo, upper = hi))
   }
