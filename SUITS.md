@@ -99,7 +99,7 @@
 
 **Mike**: 「数え間違いは俺だ。12 に直した。B と conf の出所も `fig3_w1_axis.R` の L83 と L119 に差し替えて、grid の出所に `SAMPLE_SIZES` の L86 を足した。locator を触った 3 行は署名を外したから、もう一度見てくれ。」
 
-**Katrina**: 「見る。署名は source を開いてからだ。」
+**Katrina**: 「見た。3 行とも source で成立、署名した。台帳は 27 行中 27 署名、未署名 0。再照合は 30 checks で fail 0。」
 
 **Donna**: （LAB_STATUS と DECISIONS を閉じながら）
 「記録は済んでいるわ。D-20261011-4 が生成の方針と finding、-5 が replication の判定、-6 が Harvey の三本。LAB_STATUS の artifacts は registry 154、生成表 9、台帳 27、derived 5、replication PASS、gate log 2 本は `.gitignore` の例外にして追跡に入れた。設計定数の台帳は Mike が書いたから、検証は Katrina — four eyes。Tak に出す判断は三件に絞ってある: Table 1 の注、Methods の bootstrap、C-34/C-35/C-08。Phase は 8 のまま。`/phase next` は gate を確認してから。I'm Donna. I know everything.」
