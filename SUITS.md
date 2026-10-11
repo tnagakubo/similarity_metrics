@@ -16,7 +16,7 @@
 **段落レビュー**: 台帳 `projects/similarity-metric/REVIEW_QUEUE_v6.md`（50 段落）。**50/50 完了（09-27）**。#1–#7 Tak 承認、#8–#50 は Tak の包括指示に基づき Harvey 推奨で適用（個別拒否可）。21 ページ、error 0
 **JA paper**: 意図的に削除済み（EN 完成まで Rule 2.7 保留）→ [[project_ja_paper_deleted]]
 **Supplement**: **なし**（09-27 Tak「論文の supplement としては不要。論文作成の過程で検討された事項でしかない」）。A・B・実データ調査のファイルはディスクに残してあるが、投稿物ではない。本文 20 ページ
-**PR**: [#16](https://github.com/tnagakubo/similarity_metrics/pull/16) **merged**（2026-10-11 07:52 JST、merge commit `2d97230`、3 commits / 97 files）— システム改修 2 ラウンドは main に反映済み。branch `ccr-a3128477-hklqei` は main から再開
+**PR**: [#17](https://github.com/tnagakubo/similarity_metrics/pull/17) **open**（2026-10-11 21:10、`ccr-a3128477-hklqei` → `main`、7 commits / 102 files: Option B・数値の全件生成・replication・claims・Tak の 3 判断・Louis review）；[#16](https://github.com/tnagakubo/similarity_metrics/pull/16) **merged**（2026-10-11 07:52 JST、merge commit `2d97230`、3 commits / 97 files）— システム改修 2 ラウンドは main に反映済み。branch `ccr-a3128477-hklqei` は main から再開
 **System（2026-10-10）**: 科学的妥当性の機構を追加 — CLAUDE.md Rule 5・6、`RESEARCH_FRAMEWORK.md` §6–§8（S1–S11）、`scripts/`（lint・numbers・cite・R 再現性・consistency）、`memory/` 12 本復元、templates 9 本、skills 新設 5・改訂 9、hooks 新設 3。**次セッション**: `/claims init` → `/verify-numbers`（ledger は空）→ `/cite-check` → `/reproduce` → `/phase`（LAB_STATUS は 09-21 で stale）。`DECISIONS.md` D-20260927-1（#8–#50 の一括適用）は Tak の一言で閉じる。**第 2 ラウンド**: Louis memory 統合（3 → 1 か所）、`scripts/check_all.sh` + 回帰テスト 35 件、`/process-paper` cleanup 修正、`LAB_STATUS.md` on-disk sync（artifacts 表）、STALE banner（PAPER_LOGIC / OUTLINE）、baseline `review_response/MECHANICAL_CHECKS_20261010.md`
 **System（2026-10-11, Option B）**: 論文を protocol と data の関数に — `paper/numbers_registry.csv`（34 keys）→ `numbers_macros.tex`、`R/make_paper_tables.R` → `paper/generated/`（3 表）、`scripts/protocol_compile.py`、`/replicate`（`louis-replication`）、CI 2 本、`scripts/cloud_setup.sh`、Quarto 雛形。原稿: compile 0/0/20pp、PDF 本文差分 0、audit 672 → 526。丸め規則 decimal half-even（D-20261011-2）。**Tak**: Setup script の登録、D-20260927-1 のクローズ
 **System（2026-10-11 夜, 数値の全件生成）**: 原稿の数値 672 → **2** unsourced — 表 9 本を `R/make_paper_tables.R` が生成、prose の結果数値 120 を registry（154 keys）、設計定数 27 を `NUMBERS_LEDGER.csv`（Katrina 検証）、導出量は `R/make_derived_numbers.R` → `results/derived/`。`/replicate` Study 2 **PASS**（`results/REPLICATION_20261011.md`、Methods の欠落 A1/A2）。`/claims init` 39 行 pending（弱い主張 3 本 → D-20261011-6）。Tak 判断待ち: 0.44--0.46 の注、Methods の bootstrap 記述、C-34/C-35/C-08
@@ -64,6 +64,18 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-11 21:10] Scene: PR #17 — 7 commits を review の机に乗せる
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
+
+*Tak「すべて push されてるの？」「PR を作って」。Donna が remote を fetch し、HEAD の一致を確認してから PR を開く。*
+
+**Donna**: 「ローカルも remote も `96e3ec7`、未 commit 0。PR [#17](https://github.com/tnagakubo/similarity_metrics/pull/17) を `main` 向けに開いたわ。7 commits、102 files。本文には Option B、数値の全件生成、replication PASS、`/claims init`、Tak の 3 判断、Louis review、そして Tak に残る判断を書いた。」
+
+**Harvey**: 「review の対象は原稿の文言が変わった 6 箇所と、Louis の残り 6 件だ。それ以外は内容保存変換で、`pdftotext` 差分 0 が証拠になっている。PR の説明にそう書いてあることを確認した。I don't have dreams, I have goals.」
+
+---
 
 ### [2026-10-11 20:40] Scene: Louis の review — 数値は堅い、動詞が緩い
 
