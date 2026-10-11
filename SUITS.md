@@ -20,6 +20,7 @@
 **System（2026-10-10）**: 科学的妥当性の機構を追加 — CLAUDE.md Rule 5・6、`RESEARCH_FRAMEWORK.md` §6–§8（S1–S11）、`scripts/`（lint・numbers・cite・R 再現性・consistency）、`memory/` 12 本復元、templates 9 本、skills 新設 5・改訂 9、hooks 新設 3。**次セッション**: `/claims init` → `/verify-numbers`（ledger は空）→ `/cite-check` → `/reproduce` → `/phase`（LAB_STATUS は 09-21 で stale）。`DECISIONS.md` D-20260927-1（#8–#50 の一括適用）は Tak の一言で閉じる。**第 2 ラウンド**: Louis memory 統合（3 → 1 か所）、`scripts/check_all.sh` + 回帰テスト 35 件、`/process-paper` cleanup 修正、`LAB_STATUS.md` on-disk sync（artifacts 表）、STALE banner（PAPER_LOGIC / OUTLINE）、baseline `review_response/MECHANICAL_CHECKS_20261010.md`
 **System（2026-10-11, Option B）**: 論文を protocol と data の関数に — `paper/numbers_registry.csv`（34 keys）→ `numbers_macros.tex`、`R/make_paper_tables.R` → `paper/generated/`（3 表）、`scripts/protocol_compile.py`、`/replicate`（`louis-replication`）、CI 2 本、`scripts/cloud_setup.sh`、Quarto 雛形。原稿: compile 0/0/20pp、PDF 本文差分 0、audit 672 → 526。丸め規則 decimal half-even（D-20261011-2）。**Tak**: Setup script の登録、D-20260927-1 のクローズ
 **System（2026-10-11 夜, 数値の全件生成）**: 原稿の数値 672 → **2** unsourced — 表 9 本を `R/make_paper_tables.R` が生成、prose の結果数値 120 を registry（154 keys）、設計定数 27 を `NUMBERS_LEDGER.csv`（Katrina 検証）、導出量は `R/make_derived_numbers.R` → `results/derived/`。`/replicate` Study 2 **PASS**（`results/REPLICATION_20261011.md`、Methods の欠落 A1/A2）。`/claims init` 39 行 pending（弱い主張 3 本 → D-20261011-6）。Tak 判断待ち: 0.44--0.46 の注、Methods の bootstrap 記述、C-34/C-35/C-08
+**Paper（2026-10-11 夜, Tak の 3 判断を適用）**: Table 1 の注 0.43--0.46（生成）；Methods に bootstrap scheme・S1 coverage・正確な true W₁・seed/RNG・MCSE（at most、bias/RMSE/幅も）；BCa 段落削除（C-34 retracted）；C-35 動詞 + Spearman −0.30 の 95% 区間 [−0.71, 0.26]；C-08 required n に delta 法の MC 区間、新表 tab:study2_required_n_mc、abstract 249 語「five of seven cells」；`PROTOCOL_study1_identification.md`（事後登録）。unsourced **0**、ledger 30/30。Louis の review 待ち
 
 ---
 
@@ -63,6 +64,27 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-11 20:05] Scene: Tak の判断 3 件 — 「正しく修正、推奨通り、推奨通り」
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - NIGHT**
+
+*Tak からの返事は三行。Harvey がそれを読み上げ、Mike と Katrina が同時に動き出す。*
+
+**Harvey**: 「1 は『正しく修正』、2 と 3 は『推奨通り』。つまり Table 1 の注は 0.43--0.46 に、Methods は Louis の穴を全部埋める、BCa の段落は消す、§4.3 と Discussion の動詞を直して −0.30 に区間を付ける、required n に Monte Carlo の区間を付けて比較を区間が分かれる cell に限る。原稿に触る権限は今ある。やれ。」
+
+**Mike**: （`W1_raw_rcpp.cpp` を開いて）
+「bootstrap は code どおりに書く。各 region で独立に $n_r$ 個を復元抽出、percentile は 2.5 と 97.5、R の type 7。S1 の coverage は $[L, U]$ の定義と一緒に『構造的に 0』と measures の項目に入れた。true W₁ は 2 桁の表の下に正確値、seed は $42 + 1{,}000k$ と L'Ecuyer-CMRG、replicate 単位では bit 再現しないことも書いた。MCSE は『at most 0.005』にして、bias・RMSE・幅の MCSE 最大値 0.026 / 0.021 / 0.024 を新しい single writer `study2_mcse.R` から引いた。required n の区間は delta 法だ — 補間の両端の AUC の mc_se を log n 上で伝播させる。結果: 7 cell のうち 5 で W₁ と KS の区間が分かれ、shape-symmetric は 690 [662, 718] 対 716 [688, 747] で重なる。control は KS が少ない。abstract は『five of seven cells, indistinguishable in one, needed more in a uniform-shift control』、249 語。I got it!」
+
+**Katrina**: （build log と生成表を並べて）
+「表は 10 本目 `tab_study2_required_n_mc` を Table 1 の直後に置いた。7 cell × 6 measure に区間を入れると本文幅を超えるから、比較の対象である W₁ と KS の 2 列だけだ。build は 0 errors、最終 pass の undefined 0、21 ページ、overfull 9 は基準と同数。sentence 単位の `pdftotext` 差分は編集した文だけ。audit は 112 token 全部 sourced、unsourced 0。台帳は 97.5 / 1,000 / 42 を足して 30 行、全部 source で確認して署名した。Bonett–Wright の DOI は Crossref で確認済み。」
+
+**Harvey**: 「C-34 は retracted、C-08・C-33・C-35 は narrowed、C-11 に区間。CLAIMS の log に旧文言を残した。Study 1 の事後 protocol も書いた — plan が 07-11、本番が 07-11 と 12、grid 拡張と閾値が 07-20、つまり結果を見てから決めた事項を §0 に全部並べてある。隠すより先に書く。」
+
+**Donna**: （DECISIONS に D-20261011-7 を書き終えて）
+「D-4 と D-6 は閉じた。LAB_STATUS は registry 172、生成表 10、台帳 30/30、protocol 2 本。Louis には編集した 11 箇所を攻撃させている — 彼の verdict が戻ったら次の scene に書くわ。それまでは Tak の判断で変わった段落が 6 箇所あることだけ覚えておいて。段落レビューの対象よ。」
+
+---
 
 ### [2026-10-11 19:35] Scene: 数値を全部「生成」にする — 残り 2、再現しない 1 行、clean room の判定
 

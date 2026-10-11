@@ -153,3 +153,21 @@ spearmanW1SMDage,results/app_all_methods_ranks.csv,em=age;method=SMD,spearman_vs
 spearmanW1SMDsbp,results/app_all_methods_ranks.csv,em=sysbp;method=SMD,spearman_vs_W1,value,.2f,1,§5: the same for systolic blood pressure,554,0.95,1
 covS2n50disc,results/w1_raw_summary.csv,scenario=S2;n=50,coverage_pct,value,.3f,1,§6 limitations: S2 coverage at n=50,569,0.703,1
 covS5n50disc,results/w1_raw_summary.csv,scenario=S5;n=50,coverage_pct,value,.3f,1,§6 limitations: S5 coverage at n=50,569,0.862,1
+aucShapeSymRV23min,results/derived/selection_cell_auc_range.csv,set=Set3_Mixture;type=shape_sym;method=RV2|RV3,auc_min,min,.2f,1,"tab:study2_required_n note: smallest AUC over the full grid, RV2 and RV3 in the shape-symmetric cell (corrected from the typed 0.44, D-20261011-7)",,,
+aucShapeSymRV23max,results/derived/selection_cell_auc_range.csv,set=Set3_Mixture;type=shape_sym;method=RV2|RV3,auc_max,max,.2f,1,"tab:study2_required_n note: largest AUC over the full grid, RV2 and RV3 in the shape-symmetric cell",,,
+trueW1S5exact,results/w1_raw_summary.csv,scenario=S5;n=50,true_W1,value,.6f,1,"tab:scenarios note: exact true W1 used in all computations, S5 = sqrt(2/pi)*5",,,
+trueW1S6exact,results/w1_raw_summary.csv,scenario=S6;n=50,true_W1,value,.6f,1,"tab:scenarios note: exact true W1, S6 (quadrature)",,,
+trueW1S7exact,results/w1_raw_summary.csv,scenario=S7;n=50,true_W1,value,.6f,1,"tab:scenarios note: exact true W1, S7 (quadrature)",,,
+sdS6,results/derived/derived_scalars.csv,quantity=s6_sd,value,value,.1f,1,tab:scenarios note: S6 log-normal SD (mean x CV),,,
+mcseBiasMax,results/study2_mcse.csv,,mcse_bias,max,.3f,1,§3.2 design: largest Monte Carlo SE of bias over the 21 cells,,,
+mcseRmseMax,results/study2_mcse.csv,,mcse_rmse,max,.3f,1,§3.2 design: largest Monte Carlo SE of RMSE over the 21 cells,,,
+mcseWidthMax,results/study2_mcse.csv,,mcse_ci_width,max,.3f,1,§3.2 design: largest Monte Carlo SE of mean CI width over the 21 cells,,,
+mcseCovMax,results/study2_mcse.csv,,mcse_coverage,max,.4f,1,§3.2 coverage: largest observed Monte Carlo SE of coverage over the 21 cells,,,
+spearmanAgeVsSbpLo,results/derived/derived_scalars.csv,quantity=gusto_spearman_w1age_vs_w1sbp_lower,value,value,.2f,1,"§5: lower 95% limit of the Spearman correlation (Fisher z, Bonett-Wright SE, n = 15); printed inside math so the minus sign renders",,,
+spearmanAgeVsSbpHi,results/derived/derived_scalars.csv,quantity=gusto_spearman_w1age_vs_w1sbp_upper,value,value,.2f,1,§5: upper 95% limit of the Spearman correlation,,,
+reqnW1Set3shapesym,results/required_n_selection.csv,set=Set3_Mixture / shape_sym;method=W1;threshold=0.9,required_n,value,d,1,"§3.1 selection: W1 required n, shape-symmetric mixture",,,
+reqnW1Set3shapesymLo,results/required_n_selection.csv,set=Set3_Mixture / shape_sym;method=W1;threshold=0.9,required_n_lower,value,d,1,"§3.1 selection: lower 95% Monte Carlo limit of the W1 required n, shape-symmetric mixture",,,
+reqnW1Set3shapesymHi,results/required_n_selection.csv,set=Set3_Mixture / shape_sym;method=W1;threshold=0.9,required_n_upper,value,d,1,"§3.1 selection: upper 95% Monte Carlo limit of the W1 required n, shape-symmetric mixture",,,
+reqnKSSet3shapesym,results/required_n_selection.csv,set=Set3_Mixture / shape_sym;method=KS;threshold=0.9,required_n,value,d,1,"§3.1 selection: KS required n, shape-symmetric mixture",,,
+reqnKSSet3shapesymLo,results/required_n_selection.csv,set=Set3_Mixture / shape_sym;method=KS;threshold=0.9,required_n_lower,value,d,1,"§3.1 selection: lower 95% Monte Carlo limit of the KS required n, shape-symmetric mixture",,,
+reqnKSSet3shapesymHi,results/required_n_selection.csv,set=Set3_Mixture / shape_sym;method=KS;threshold=0.9,required_n_upper,value,d,1,"§3.1 selection: upper 95% Monte Carlo limit of the KS required n, shape-symmetric mixture",,,

@@ -146,7 +146,7 @@ gate が揃った  → /phase next（Donna 検証、Louis risk、必要なら Je
 | `check_all.sh` | 上の 5 本を一度に回し、`review_response/MECHANICAL_CHECKS_{date}.md` に 1 本の報告（artifacts の有無・CLAIMS の supported/pending も） | `/submission-check`、`/handoff`、`/phase`、Donna |
 | `numbers_registry.py` | registry（key → CSV の source・filter・column・agg・fmt）を評価: `build` / `check`（macros ↔ registry ↔ 原稿の `\numval`）/ `verify-draft`（原稿の literal vs CSV）/ `apply`（literal → `\numval{}`）/ `value` | `/verify-numbers`、CI |
 | `r/numbers_registry.R` + `make_numbers_macros.R` | 同じ semantics の R 実装（canonical generator）。`num("key")` は Quarto 原稿の inline 用。丸めは `.num_round_dec()`（decimal half-even） | `R/make_paper_tables.R`、Quarto、CI（R vs Python 一致を `cmp`） |
-| `protocol_compile.py` | protocol の YAML front matter を検証（$n_{\mathrm{sim}}$ vs 目標 MCSE、owner、true_value）し `R/{study}.R` / provenance / findings の骨格を生成 | `/protocol`、CI（dry-run） |
+| `protocol_compile.py` | protocol の YAML front matter を検証（$n_{\mathrm{sim}}$ vs 目標 MCSE、owner、true_value）し `R/{study}.R` / provenance / findings の骨格を生成。`post_hoc: true` は gate 以前に走った study の事後登録（task 固有の measure は文書化のみ） | `/protocol`、CI（dry-run） |
 | `extract_methods.py` | 原稿から Methods（+ Appendix）だけを切り出す（comment・`\input` を除去）。clean-room replicator への入力 | `/replicate` |
 | `compare_results.py` | 2 つの CSV を key で突き合わせ、列ごとに max abs / rel diff と欠損行を報告（PASS/FAIL、markdown） | `/replicate`、`/reproduce` |
 | `ci_ratchet.sh` | numbers unsourced と R lint ❌ の件数が `scripts/baseline/` を超えたら FAIL。`--update` で現在値を baseline に | CI、Donna |

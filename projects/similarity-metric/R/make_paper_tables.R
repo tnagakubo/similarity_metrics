@@ -69,6 +69,20 @@ writeLines(c(hdr("tab:study2_required_n (threshold 0.9; reached = n with {,}; bl
              "\\textbf{Cell} & $\\boldsymbol{W_1}$ & \\textbf{KS} & \\textbf{SMD} & \\textbf{RV1} & \\textbf{RV2} & \\textbf{RV3} \\\\",
              "\\midrule", reqn, F), file.path(OUT, "tab_study2_required_n.tex"))
 
+# Monte Carlo uncertainty of the required n (W1 vs KS): 95% interval columns written by R/required_n.R (delta method on log n)
+mc <- rn[rn$threshold == 0.9 & rn$method %in% c("W1", "KS"), ]
+fmtn <- function(x) format(as.integer(x), big.mark = "{,}", trim = TRUE)
+cellmc <- function(set, m) { r <- mc[mc$set == set & mc$method == m, ]; stopifnot(nrow(r) == 1)
+  if (r$status != "reached" || is.na(r$required_n_lower)) return(if (r$status == "reached") fmtn(r$required_n) else r$status)
+  sprintf("%s [%s, %s]", fmtn(r$required_n), fmtn(r$required_n_lower), fmtn(r$required_n_upper)) }
+sepmc <- function(set) { a <- mc[mc$set == set & mc$method == "W1", ]; b <- mc[mc$set == set & mc$method == "KS", ]
+  if (any(is.na(c(a$required_n_lower, b$required_n_lower)))) return("---")
+  if (a$required_n_upper < b$required_n_lower) "separate ($W_1$ fewer)" else if (b$required_n_upper < a$required_n_lower) "separate (KS fewer)" else "overlap" }
+mcrows <- vapply(names(cells), function(set) sprintf("%s & %s & %s & %s \\\\", cells[[set]], cellmc(set, "W1"), cellmc(set, "KS"), sepmc(set)), "")
+writeLines(c(hdr("tab:study2_required_n_mc (required n with 95% Monte Carlo interval, W1 vs KS, threshold 0.9; separate / overlap)", "results/required_n_selection.csv"), H("llll"),
+             "\\textbf{Cell} & $\\boldsymbol{W_1}$ \\textbf{[95\\% MC interval]} & \\textbf{KS [95\\% MC interval]} & \\textbf{Intervals} \\\\",
+             "\\midrule", mcrows, F), file.path(OUT, "tab_study2_required_n_mc.tex"))
+
 cl  <- read.csv(file.path(proj, "results", "clustering_sim_summary.csv"), stringsAsFactors = FALSE)
 clx <- read.csv(file.path(proj, "results", "clustering_sim_summary_ext.csv"), stringsAsFactors = FALSE)
 ari <- function(d, set, m, n) { v <- d$value[d$set == set & d$method == m & d$n == n & d$measure == "ari"]; stopifnot(length(v) == 1); v }
@@ -118,4 +132,4 @@ writeLines(c(hdr("tab:gusto_lstar_joint (W1 2 dp with dagger when unresolved aga
              "\\midrule", lstar, F), file.path(OUT, "tab_gusto_lstar_joint.tex"))
 
 writeLines(capture.output(sessionInfo()), file.path(OUT, "make_paper_tables_sessionInfo.txt"))
-cat("make_paper_tables: wrote 9 complete tabulars to", OUT, "\n")
+cat("make_paper_tables: wrote 10 complete tabulars to", OUT, "\n")

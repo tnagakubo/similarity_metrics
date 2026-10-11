@@ -20,6 +20,8 @@ measures: [bias, empse, mse, coverage, ci_width]
 outputs: {summary_csv: results/example_study_summary.csv, per_rep_rds: results/example_study.rds, log: results/example_study.log}
 parallel: {workers: 1, rng: per_task_seed}
 prior_look: none                # or: "scratchpad/scan.R 2026-09-26 — see §0"
+# post_hoc: true                # only for registering a study that was run before this gate existed: task-specific measures are
+#                               # then documented, not compiled (projects/similarity-metric/PROTOCOL_study1_identification.md is the model)
 ---
 
 # PROTOCOL — {study name}

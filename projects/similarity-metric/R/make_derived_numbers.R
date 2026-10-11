@@ -88,8 +88,14 @@ sc("gusto_N", nrow(g), "GUSTO-I patients in data/gusto.csv")
 sc("gusto_n_regions", length(unique(g$regl)), "GUSTO-I regions (regl)")
 sc("gusto_n_R8", nrow(r8), "Region 8 (anchor) patients")
 pp <- rd("results", "gusto_r8_w1_per_pair.csv")
-sc("gusto_spearman_w1age_vs_w1sbp", cor(pp$W1_age, pp$W1_sysbp, method = "spearman"),
+rho <- cor(pp$W1_age, pp$W1_sysbp, method = "spearman"); n_p <- nrow(pp)
+sc("gusto_spearman_w1age_vs_w1sbp", rho,
    "Spearman correlation between the 15 partners' W1 on age and their W1 on SBP (results/gusto_r8_w1_per_pair.csv)")
+# 95% interval for a Spearman correlation: Fisher z with the rank-correlation variance (1 + rho^2/2)/(n - 3)
+# (Bonett & Wright 2000, Psychometrika 65:23-28, DOI 10.1007/BF02294183); normal quantile, two-sided 95%.
+se_z <- sqrt((1 + rho^2 / 2) / (n_p - 3)); zq <- qnorm(0.975)
+sc("gusto_spearman_w1age_vs_w1sbp_lower", tanh(atanh(rho) - zq * se_z), "lower 95% limit of the Spearman correlation above (Fisher z, Bonett-Wright SE, n = 15)")
+sc("gusto_spearman_w1age_vs_w1sbp_upper", tanh(atanh(rho) + zq * se_z), "upper 95% limit of the Spearman correlation above (Fisher z, Bonett-Wright SE, n = 15)")
 dm <- rd("results", "app_all_methods_distances.csv")
 for (em in c("age", "sysbp")) { d <- dm[dm$em == em, ]
   sc(sprintf("gusto_spearman_rv1_vs_smd_%s", em), cor(d$RV1, d$SMD, method = "spearman"),
@@ -101,6 +107,7 @@ sc("gusto_max_sd_ratio_partner_vs_anchor", max(sdr), "largest ratio (either dire
 sigma_log <- 0.5; mean_s6 <- 50; n_sim <- 10000            # S6: LogN(mu_log, sigma_log^2) with mean 50 (PROTOCOL / STUDY1_PROVENANCE.md)
 sc("s6_mu_log", log(mean_s6) - sigma_log^2 / 2, "S6 log-normal: mu_log = log 50 - sigma_log^2 / 2")
 sc("s6_cv", sqrt(exp(sigma_log^2) - 1), "S6 log-normal coefficient of variation: sqrt(exp(sigma_log^2) - 1)")
+sc("s6_sd", mean_s6 * sqrt(exp(sigma_log^2) - 1), "S6 log-normal SD = mean x CV (Distribution 1 has SD 10)")
 sc("s6_skewness", (exp(sigma_log^2) + 2) * sqrt(exp(sigma_log^2) - 1), "S6 log-normal skewness: (exp(sigma_log^2) + 2) sqrt(exp(sigma_log^2) - 1)")
 sc("mcse_bound_proportion_10000", sqrt(0.25 / n_sim), "largest Monte Carlo SE of a proportion at n_sim = 10,000: sqrt(0.5 * 0.5 / n_sim)")
 

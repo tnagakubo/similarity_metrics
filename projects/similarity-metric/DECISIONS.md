@@ -165,7 +165,7 @@
 - **Tooling fixes（同時）**: `numbers_registry.py apply` は同じ行の token を後ろの出現から置換する（先に置換すると occ がずれる）；`1,047` と `1{,}047` を同一視；`numbers_audit.py --draft-registry` の occ は正規化値ではなく literal で数える；台帳の照合は「台帳の値（高精度）を本文の桁に丸めて一致」のみ許す（0.5 が 0.46 を吸収していた）。回帰テスト 66 本
 - **Evidence / references**: `paper/numbers_registry.csv`（154 keys）、`paper/generated/tab_*.tex`（9 本）、`results/derived/`、`results/NUMBERS_LEDGER.csv`、`scripts/baseline/similarity-metric_numbers_unsourced.txt` = 2、`verify-draft` 154/154 一致、`check` PASS（R と Python の macros 一致）
 - **Affected artifacts**: `paper/per_em_W1_wiley.tex`（文言不変、数値は `\numval{}` と `\input{}`）、`R/make_paper_tables.R`、`R/make_derived_numbers.R`、`R/verify_study1_app_numbers.R`（生成表を読む、predtools 無しでも走る）、`.github/workflows/r-and-tex.yml`
-- **Status**: active。0.44--0.46 の訂正は Tak の承認待ち
+- **Status**: closed（Tak 2026-10-11「正しく修正」→ D-20261011-7）
 
 ### D-20261011-5: Study 2 の clean-room replication は PASS、Methods 本文に 2 件の Major な欠落
 
@@ -186,4 +186,14 @@
 - **Also flagged（⚠ 7 行）**: C-07, C-09, C-18, C-24, C-32, C-33, C-35 — 動詞が許容表（theory: shows / simulation: demonstrates, illustrates / application: illustrates, is consistent with）を超える
 - **Reasons**: Rule 6「主張 ↔ 証拠」。原稿は触っていない（Harvey）。文言の変更は Tak の段落承認が必要（D-20260927-1 の運用）
 - **Evidence / references**: `CLAIMS.md`（39 行、行番号は commit `0d70baf` 基準、作業ツリーへの対応表はヘッダ）
-- **Status**: pending（Tak）
+- **Status**: closed（Tak 2026-10-11「推奨通り修正」→ D-20261011-7）
+
+### D-20261011-7: Tak の判断 3 件を適用 — Table 1 の注を訂正、Methods を replication の欠落どおりに補強、C-34/C-35/C-08 を Harvey の推奨どおりに直す
+
+- **Date**: 2026-10-11  **Raised by**: Mike / Louis / Harvey（D-20261011-4・5・6）  **Decided by**: **Tak**（「1. 正しく修正 2. 推奨通り修正 3. 推奨通り修正」）
+- **Decision**: (1) tab:study2_required_n の注「(0.44--0.46)」を registry key（`aucShapeSymRV23min/max` ← `results/derived/selection_cell_auc_range.csv`）に置き換え、印字は 0.43--0.46。(2) Methods: two-sample bootstrap は各 region 内で独立に $n_r$ 個を復元抽出、95% 区間は 2.5/97.5 percentile（R type 7）と明記；coverage の定義 $[L, U] \ni W_1$ と S1 の構造的 0 を Study 2 の performance measures に明記；true $W_1$ の正確値（S5 3.989423、S6 12.159806、S7 5.833155）を表の注に；seed（$42 + 1{,}000k$）と L'Ecuyer–CMRG streams、bit 再現不能の開示；MCSE は「at most 0.005」とし bias/RMSE/幅の MCSE 最大値（0.026/0.021/0.024、新 single writer `R/study2_mcse.R` → `results/study2_mcse.csv`）を報告；S6 ラベルを "Skew + scale"、SD 26.6 を注に；`\label{sec:study1}`/`sec:study2` の入れ替えを修正（`sec:study2_*` → `sec:study1_*`）。(3) C-34: BCa 段落を削除（retracted）。C-35: 動詞を illustrates / need not に、参照先を 15 partners に、Spearman −0.30 に Fisher z + Bonett–Wright 分散の 95% 区間 [−0.71, 0.26]（`\cite{bonett2000}`、DOI 10.1007/BF02294183 を Crossref で確認）。C-08: `R/required_n.R` に delta 法の 95% Monte Carlo 区間（log n 上、bracketing cell の mc_se）を追加し `required_n_lower/upper` 列を出力、新表 tab:study2_required_n_mc（W₁ vs KS、separate/overlap）を Table 1 の直後に置き、abstract・§3.1・§5 ¶4 を「5 of 7 cells separate、shape-symmetric は indistinguishable（690 [662, 718] vs 716 [688, 747]）、control は KS fewer」に書き換え（abstract 249 語）。Study 1 の事後 protocol `PROTOCOL_study1_identification.md` を prior-look 開示付きで登録
+- **Reasons**: Tak の指示。Harvey の推奨（D-20261011-6）のうち Table 1 への区間併記は、7 cell × 6 measure に区間を入れると本文幅を超えるため、隣接する表（W₁ と KS の 2 列）に置いた — 比較の対象はこの 2 列であり、他 4 measure の区間は CSV にある
+- **C1 cascade**: C-08 の文言変更は abstract・§3.1 selection・§5 ¶4 の 3 箇所で同時に行い、`CLAIMS.md` の C-08/C-33/C-34/C-35/C-11 と Narrowed/retracted log に記録。C-33 は「ensuring … genuine」を削除（narrowed）
+- **Evidence / references**: `results/required_n_selection.csv`（旧列は byte 一致、新列 2 本）、`results/study2_mcse.csv`、`results/derived/derived_scalars.csv`（spearman CI、s6_sd）、`paper/generated/tab_study2_required_n_mc.tex`、`paper/numbers_registry.csv`（172 keys）、build log（0 errors）、`pdftotext` 差分（変更箇所のみ）、Louis の review（SUITS 2026-10-11）
+- **Affected artifacts**: `paper/per_em_W1_wiley.tex`（abstract、§2.3、§3.1 selection、§3.2 design/results、§4.3、§5 ¶2–¶4）、`paper/per_em_W1_wiley.bib`、`R/required_n.R`、`R/study2_mcse.R`、`R/make_derived_numbers.R`、`R/make_paper_tables.R`、`CLAIMS.md`、`PROTOCOL_study1_identification.md`
+- **Status**: active（D-20261011-4・5・6 を閉じる）

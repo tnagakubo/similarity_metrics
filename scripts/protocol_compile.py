@@ -79,8 +79,11 @@ def validate(p: dict):
         if "fn" not in m:
             errors.append(f"method {m.get('name')}: fn (R function name) missing")
     bad = [m for m in p["measures"] if str(m).lower() not in MEASURES]
-    if bad:
-        errors.append(f"unknown measures {bad}; known: {sorted(MEASURES)}")
+    if bad and not p.get("post_hoc"):
+        errors.append(f"unknown measures {bad}; known: {sorted(MEASURES)} (a post-hoc registration of an existing study may "
+                      f"declare task-specific measures with post_hoc: true; the compiled skeleton then computes no MCSE for them)")
+    elif bad:
+        warnings.append(f"post-hoc protocol: task-specific measures {bad} are documented, not compiled (no MCSE formula in the skeleton)")
     for k in ("summary_csv", "per_rep_rds", "log"):
         if k not in p["outputs"]:
             errors.append(f"outputs.{k} missing")

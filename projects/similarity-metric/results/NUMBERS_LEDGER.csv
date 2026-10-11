@@ -26,3 +26,6 @@ value,label,source_file,source_locator,verified_by,verified_date,note
 40,Set 4: extremes 40 units from the centre,R/selection_simulation.R,"L239–L242 ext_c(..., 40, 0.05, 40)",Katrina,2026-10-11,design constant
 70,Set 4: displaced extremes at 70 units,R/selection_simulation.R,"L245 ext_c('sym_severity', 50, 0.05, 70, 0.05, 70)",Katrina,2026-10-11,design constant
 16,GUSTO-I regions,results/derived/derived_scalars.csv,quantity gusto_n_regions,Katrina,2026-10-11,data constant
+97.5,upper percentile of the 95% percentile interval ((1 + 0.95)/2),R/W1_raw_rcpp.cpp,L118-L121 alpha = 1 - conf; quantile7 at alpha/2 and 1 - alpha/2,Katrina,2026-10-11,"derived design constant (added 2026-10-11 with the Methods bootstrap description, D-20261011-7)"
+"1,000",seed stride between Study 2 cells (seed = 42 + 1000 k),R/w1_raw_simulation.R,L290 seed = 42L + 1000L * k; results/w1_raw_simulation.rds $config$seed_base = 42,Katrina,2026-10-11,"design constant (added 2026-10-11, D-20261011-7)"
+42,Study 2 base seed,R/w1_raw_simulation.R,"L142 default seed = 42, L290, L322 seed_base = 42L; rds $config$seed_base",Katrina,2026-10-11,"design constant (added 2026-10-11, D-20261011-7)"
