@@ -11,7 +11,7 @@
 
 **Active Project**: similarity-metric (per-EM W₁ paper, target *Statistics in Medicine*)
 **Phase**: 8 — Revision → `projects/similarity-metric/LAB_STATUS.md`（**2026-09-26 時点で未同期**。v6 構成変更を反映要）
-**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — **v6 + Terminal pass + Tak の 09-27 決定（RV1–RV3 を外す／clustering を外す／W₁ で順位付け）を origin/main の生成基盤（`\numval{}`・`\input{generated/}`）の上に載せ直してマージ（2026-10-11 22:00、D-20261011-8）**。20 ページ、error 0、undefined 0、abstract 247 語。registry 132 keys（全 key 使用）、生成表 9 本、unsourced 0、両ゲート ALL PASS。branch `wip/local-2026-10-11` で merge → `main` に fast-forward（push は Tak の指示待ち）
+**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — **v6 + Terminal pass + Tak の 09-27 決定（RV1–RV3 を外す／clustering を外す／W₁ で順位付け）を origin/main の生成基盤（`\numval{}`・`\input{generated/}`）の上に載せ直してマージ（2026-10-11 22:00、D-20261011-8）**。20 ページ、error 0、undefined 0、abstract 247 語。registry 132 keys（全 key 使用）、生成表 9 本、unsourced 0、両ゲート ALL PASS。branch `wip/local-2026-10-11` で merge → `main` に fast-forward → **push 済み**（2026-10-11 22:05、`ce1cd18..6895793`、Tak「push して」）。CI の初回 run は要確認
 **原則（Tak 09-25）**: 論文は違いを定量化するだけ。併合の判定規則は規定しない（規定できない）→ [[feedback_quantify_not_decide]]
 **段落レビュー**: 台帳 `projects/similarity-metric/REVIEW_QUEUE_v6.md`（50 段落）。**50/50 完了（09-27）**。#1–#7 Tak 承認、#8–#50 は Tak の包括指示に基づき Harvey 推奨で適用（個別拒否可）。21 ページ、error 0
 **JA paper**: 意図的に削除済み（EN 完成まで Rule 2.7 保留）→ [[project_ja_paper_deleted]]
@@ -64,6 +64,18 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-11 22:05] Scene: push — main が remote に乗る
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
+
+**Donna**: 「Tak の一言『push して』。`ce1cd18..6895793 main -> main`、ローカルと remote は一致。退避 branch `wip/local-2026-10-11` は残してあるわ — 消すのはいつでもできる。」
+
+**Louis**: 「喜ぶな。push は CI の入口だ。`lab-checks` と `r-and-tex` の初回 run を見るまで『通った』とは言わない。ローカルで落ちた 6 本（PyYAML、CRLF）が Linux で消えるかどうか、それが答えだ。」
+
+**Harvey**: 「見てから言え、の順番は正しい。次のセッションで run を確認する。I don't have dreams, I have goals.」
+
+---
 
 ### [2026-10-11 22:00] Scene: `git pull` が衝突 — 09-27 の判断を、10-11 の機構の上に載せ直す
 
