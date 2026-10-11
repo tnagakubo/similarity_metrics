@@ -31,8 +31,9 @@ Virtual statistics research lab with SUITS-inspired AI agent team.
 - Missing DOIs should be marked with 🔍 and searched
 
 ### Rule 2.7: Paper EN/JA Synchronization (CRITICAL)
-- English version (`projects/similarity-metric/paper/nABCD_wiley.tex`) and Japanese version (`projects/similarity-metric/paper/nABCD_paper_ja.md`) MUST stay synchronized
+- English version (`projects/{project}/paper/{stem}.tex`) and Japanese version (`projects/{project}/paper/{stem}_ja.md`) MUST stay synchronized while both exist
 - When either version is updated, the other MUST be updated in the same session
+- A project may defer the JA version until the EN manuscript is final; the deferral is recorded in `memory/project_ja_paper_deleted.md` and the sync hook stays silent while no `*_ja.md` exists
 - Rachel is responsible for verifying synchronization accuracy
 - Donna monitors and reminds when synchronization is pending
 - Synchronization means: same content, same structure, same numbers — adapted for each language's conventions
@@ -110,6 +111,26 @@ Virtual statistics research lab with SUITS-inspired AI agent team.
 - Primary roles exist but members support each other as needed
 - Harvey reassigns tasks dynamically based on situation
 
+### Rule 5: Lifecycle (RESEARCH_FRAMEWORK.md)
+- Research proceeds through the 10 Phases and gates defined in `RESEARCH_FRAMEWORK.md`; state lives in `projects/{project}/LAB_STATUS.md`
+- A Phase advances only through `/phase next`, after Donna verifies every gate with **on-disk evidence** (a claim that is only narrated is ❌)
+- Jessica's approval is required at Phase 2→3 (protocol Go), 6→7, and 7→submission. Louis names at least one risk at every gate
+
+### Rule 6: Scientific Integrity (CRITICAL)
+Mechanised in `RESEARCH_FRAMEWORK.md` §6 (S1–S11). The short form:
+- **Protocol before results**: no confirmatory simulation or analysis runs before `PROTOCOL_{study}.md` (ADEMP, Monte Carlo SE, licenses / does not license, prior-look disclosure) is committed (`/protocol`). Anything outside the protocol is labelled *exploratory*
+- **Claims ↔ evidence**: every claim in the manuscript, abstract included, is a row in `projects/{project}/CLAIMS.md` with on-disk evidence and a verb matching the evidence type (`/claims`). Evidence removed ⇒ claim narrowed ⇒ C1 cascade
+- **Uncertainty always**: estimates carry CI/SE; simulation performance measures carry Monte Carlo SE; estimands are defined in symbols
+- **Numbers are generated, never typed**: a number that comes from results is a row of `paper/numbers_registry.csv` and enters the manuscript only as `\numval{key}` (LaTeX) or `num("key")` (Quarto); tables are written by a single-writer script into `paper/generated/`; quantities no CSV holds as one cell (ranges over a grid, differences between runs, rank correlations, closed-form design constants) are computed by a second single writer (`R/make_derived_numbers.R` → `results/derived/*.csv`), never in the prose; rounding is decimal round-half-even (`scripts/r/numbers_registry.R`). `results/NUMBERS_LEDGER.csv` records design constants (grid, replications, B, targets, margins) and numbers with no CSV source, each with a `source_locator`. Four eyes: the verifier is never the producer (`/verify-numbers`)
+- **Protocols compile**: `PROTOCOL_{study}.md` carries machine-readable ADEMP front matter; `scripts/protocol_compile.py` generates the R skeleton (seed, grid, Monte Carlo SE, outputs, provenance, findings). People write the data draw and the estimator, nothing else twice
+- **Replication from the Methods text**: before Phase 4 and before submission, `/replicate` has Louis re-implement the estimator from the Methods section alone (no project code, no results) and `scripts/compare_results.py` compares with the canonical CSV
+- **Gates block in CI**: `.github/workflows/` runs every check on every push; `scripts/baseline/` ratchets (unsourced numbers, R lint errors) may only decrease
+- **Reproducibility is executed**: results that feed the manuscript are re-run from a clean checkout and compared (`/reproduce`); scripts declare seeds, avoid absolute paths, save `sessionInfo`
+- **Citations are verified against the original**: DOI required (Rule 2.6), supporting passage quoted verbatim, never from a summary (`/cite-check`)
+- **Decisions have reasons**: every decision or reversal is an entry in `DECISIONS.md` (`/decide`); "conflicts with decision X" is not a reason
+- **Quantify, do not decide**: the paper quantifies differences; it does not prescribe pooling rules, thresholds or procedures (`memory/feedback_quantify_not_decide.md`)
+- Principles are versioned in `memory/` (see `memory/INDEX.md`), never only in a local auto-memory
+
 ## Team Structure
 
 ### Core Team (Paper Creation)
@@ -175,10 +196,27 @@ These are **homage characters** dynamically generated based on famous statistici
 | `/rule` | Remind all members of rules |
 | `/archive` | Archive SUITS.md (>1000 lines) |
 
+### Lifecycle & Scientific Integrity (see `RESEARCH_FRAMEWORK.md`)
+| Command | Description |
+|---------|-------------|
+| `/phase [next\|set N]` | Show / advance the 10-phase lifecycle (gates verified on disk by Donna) |
+| `/protocol {study}` | Pre-register a simulation / analysis protocol (ADEMP + Monte Carlo SE) before any code runs |
+| `/claims [init\|check\|add]` | Claims ↔ evidence registry (`CLAIMS.md`) |
+| `/decide {question}` | Record a decision with options and reasons (`DECISIONS.md`) |
+| `/reproduce [study]` | Clean-checkout reproduction gate (Phase 3) |
+| `/verify-numbers` | Mike ties every number to its source; second member verifies (ledger) |
+| `/cite-check` | Rachel reconciles citations with the .bib and the original passages |
+| `/pre-review` | Proactive self-review by all members (Phase 6 entry) |
+| `/submission-check` | Reporting checklist R1–R8 + journal requirements (Phase 7) |
+| `/replicate {study}` | Clean-room replication: Louis re-implements from the Methods text; Katrina compares with canonical results |
+| `/respond-reviewers` | Point-by-point reviewer response tracker (Phase 8) |
+| `/handoff` | Donna reconciles claimed work with disk before stopping |
+| `/lint-suits` | Donna runs the mechanical character-consistency linter on SUITS.md |
+
 ### Review & Practice
 | Command | Description |
 |---------|-------------|
-| `/review` | Louis internal review |
+| `/review` | Louis internal review (structured, written to `review_response/INTERNAL_REVIEW_*.md`) |
 | `/external-review` | Expert homage review |
 | `/simulate-qa` | Conference Q&A simulation |
 | `/defend` | Attack/defense exercise |
@@ -238,28 +276,50 @@ These are **homage characters** dynamically generated based on famous statistici
 ```
 research-lab/
 ├── CLAUDE.md              # This file (rules)
+├── RESEARCH_FRAMEWORK.md  # 10-phase lifecycle, gates, integrity principles S1–S11
 ├── SUITS.md               # Live drama script (cross-project)
 ├── README.md              # Usage guide
 ├── archives/              # Archived SUITS.md files
-│   └── SUITS_YYYYMMDD_HHMMSS.md
-├── agents/                # Team member definitions
-├── knowledge/             # Knowledge base
-│   ├── pdfs/              # Original PDFs
-│   ├── summaries/         # Paper summaries
-│   ├── methods/           # Mathematical methods
-│   └── quotes/            # Quotable passages
-├── projects/              # Project workspaces
+├── agents/                # Team member persona definitions (voice source of truth)
+├── memory/                # Versioned principles (INDEX.md; repo copy of the auto-memory)
+├── scripts/               # Mechanical checks and generators: lint_suits.py, numbers_audit.py, cite_audit.py,
+│   │                      #   check_r_reproducibility.sh, check_consistency.sh, check_all.sh, ci_ratchet.sh,
+│   │                      #   numbers_registry.py, protocol_compile.py, extract_methods.py, compare_results.py,
+│   │                      #   make_numbers_macros.R, cloud_setup.sh
+│   ├── r/                 # numbers_registry.R (shared R formatter: num(), decimal half-even rounding)
+│   ├── tests/             # run_tests.sh + fixtures (60 regression tests)
+│   └── baseline/          # ratchet baselines (counts that may only go down)
+├── .github/workflows/     # lab-checks.yml (gates on every push), r-and-tex.yml (R parse, generated files, LaTeX build)
+├── .claude/
+│   ├── agents/            # Member subagents (tool-scoped; Louis/Jessica read-only)
+│   ├── rules/             # Path-scoped rules (paper-writing, r-code, suits-script, protocol-and-results)
+│   ├── skills/            # Slash commands
+│   └── hooks/             # Enforcement hooks (Donna)
+├── knowledge/             # Knowledge base (pdfs/, summaries/, methods/, quotes/, INDEX.md)
+├── projects/
 │   └── {project}/
-│       └── paper.md       # Manuscript
-└── templates/             # Document templates
+│       ├── LAB_STATUS.md          # Phase state
+│       ├── CLAIMS.md              # Claims ↔ evidence registry
+│       ├── DECISIONS.md           # Decision log (append-only, with reasons)
+│       ├── LITERATURE_SEARCH_LOG.md
+│       ├── PROTOCOL_{study}.md    # Pre-registered protocols (ADEMP + MCSE)
+│       ├── SIMULATION_FINDINGS_{study}.md
+│       ├── R/  results/  figures/ # results/ holds NUMBERS_LEDGER.csv, *_PROVENANCE.md, REPRODUCTION_*.md
+│       ├── paper/                 # .tex or .qmd / .bib / build.sh / numbers_registry.csv / numbers_macros.tex / generated/ / submission/
+│       └── review_response/       # PRE_REVIEW_*, INTERNAL_REVIEW_*, CITATION_AUDIT_*, RESPONSE_TRACKER
+└── templates/             # protocol, simulation_findings, provenance, claims, decisions, lab_status,
+                           #   literature_search_log, reporting_checklist, review_checklist, …
 ```
 
 ## Technical Standards
 
-- **Code**: R + tidyverse
-- **Documents**: Quarto (.qmd) or Markdown (.md)
-- **Math**: LaTeX notation
-- **Reproducibility**: All code must be reproducible
+- **Code**: R + tidyverse (Rcpp where speed requires it)
+- **Documents**: new manuscripts in Quarto (.qmd, `templates/paper_template.qmd`, numbers via `num()`); existing LaTeX manuscripts use `\numval{}` and `\input{generated/…}`; Markdown (.md) for lab records
+- **Rounding**: decimal round-half-even everywhere a number is printed for the manuscript (`scripts/r/numbers_registry.R`, `scripts/numbers_registry.py`); never `formatC`/`sprintf` on the binary double
+- **Cloud sessions**: `scripts/cloud_setup.sh` is the environment's setup script (R 4.3, TeX Live, PyYAML) so simulations, reproduction and the LaTeX build run in the cloud
+- **Math**: LaTeX notation; estimands and performance measures written as formulas
+- **Simulation reporting**: ADEMP structure (Morris, White & Crowther 2019, DOI 10.1002/sim.8086) with Monte Carlo SE for every performance measure
+- **Reproducibility**: declared seeds, project-relative paths, `sessionInfo()` or `renv.lock` beside every result, one writer per output file, provenance file per study; checked by `scripts/check_r_reproducibility.sh` and `/reproduce`
 
 ## Communication Guidelines
 

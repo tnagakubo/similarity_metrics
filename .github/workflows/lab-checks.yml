@@ -1,0 +1,48 @@
+name: lab-checks
+# Mechanical gates of the SUITS research lab (RESEARCH_FRAMEWORK §6). Python/bash only — every step also runs
+# locally with `bash scripts/check_all.sh`. Advisory locally, blocking here.
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install PyYAML (protocol compiler)
+        run: python3 -m pip install --quiet pyyaml
+      - name: Regression tests for scripts and hooks
+        run: bash scripts/tests/run_tests.sh
+      - name: Cross-file consistency (phase sync, undefined refs, lifecycle artifacts, memory references)
+        run: bash scripts/check_consistency.sh
+      - name: SUITS.md character lint (newest 5 scenes, strict)
+        run: python3 scripts/lint_suits.py SUITS.md --scenes 5 --strict
+      - name: Citation audit (strict) for every project manuscript
+        run: |
+          set -e
+          for proj in projects/*/; do
+            tex=$(ls "$proj"paper/*.tex 2>/dev/null | grep -vE 'supplement|template|numbers_macros' | head -1) || true
+            bib=$(ls "$proj"paper/*.bib 2>/dev/null | head -1) || true
+            if [ -n "$tex" ] && [ -n "$bib" ]; then python3 scripts/cite_audit.py "$tex" "$bib" --strict; fi
+          done
+      - name: Numbers registry consistency (macros file ↔ registry ↔ manuscript)
+        run: |
+          set -e
+          for reg in projects/*/paper/numbers_registry.csv; do
+            [ -f "$reg" ] || continue
+            d=$(dirname "$reg"); tex=$(ls "$d"/*.tex | grep -vE 'supplement|template|numbers_macros' | head -1)
+            python3 scripts/numbers_registry.py check "$reg" --macros "$d/numbers_macros.tex" --tex "$tex"
+          done
+      - name: Ratchet (numbers unsourced, R lint errors may only decrease)
+        run: bash scripts/ci_ratchet.sh
+      - name: Protocol front matter compiles (dry run)
+        run: |
+          set -e
+          for p in projects/*/PROTOCOL_*.md; do
+            head -1 "$p" | grep -q '^---$' && python3 scripts/protocol_compile.py "$p" --dry-run || echo "skip (no front matter): $p"
+          done

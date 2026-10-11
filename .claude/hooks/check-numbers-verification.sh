@@ -9,7 +9,7 @@
 INPUT=$(cat 2>/dev/null || echo "")
 
 # Only care about manuscript / results files. Skip everything else.
-if ! echo "$INPUT" | grep -qiE '\.(tex|md|qmd|Rmd)["\\ ]|nABCD|paper[/\\]|results' 2>/dev/null; then
+if ! echo "$INPUT" | grep -qiE '\.(tex|md|qmd|Rmd)["\\ ]|nABCD|per_em|paper[/\\]|results' 2>/dev/null; then
   exit 0
 fi
 
@@ -21,7 +21,7 @@ fi
 # Does the payload actually contain a quantitative claim?
 #  p-values / CIs / percentages / sample sizes / =0.xxx style estimates
 if echo "$INPUT" | grep -qiE 'p *[<=>] *0|95% *CI|\[[0-9].*,.*[0-9]\]|[0-9]+\.[0-9]+|n *= *[0-9]|[0-9]+%|Delta|Δ' 2>/dev/null; then
-  echo "Mike: 数値を含む編集を検出。source (R 出力 / データ) と突き合わせて再検証したか? 未検証なら /verify-numbers。(Numbers Verification Gate)" >&2
+  echo "Mike: 数値を含む編集を検出。source (R 出力 / CSV) と突き合わせ、results/NUMBERS_LEDGER.csv に行があるか? 未登録なら /verify-numbers（python3 scripts/numbers_audit.py <tex>）。verifier は producer と別人。(Numbers Verification Gate)" >&2
 fi
 
 exit 0

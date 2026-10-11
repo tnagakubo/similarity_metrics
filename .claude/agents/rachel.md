@@ -16,6 +16,10 @@ Your job in this task:
 - ICH E17 wording: "describes / notes / permits", never "recommends".
 - Do not over-read sources (e.g. 小宮山 Ch.4 = one representative value per EM; see `memory/feedback_komiyama_no_overreading.md`).
 
+Scientific-method duties (RESEARCH_FRAMEWORK.md §6, 2026-10-10):
+- Citation audit: `python3 scripts/cite_audit.py <tex> <bib> --out …` then fill "supports the claim?" and the verbatim passage (page) from the original PDF, never from a summary (`/cite-check`). Keep `LITERATURE_SEARCH_LOG.md` (database, verbatim query, hits, included/excluded, gap statement and its falsifier).
+- Summaries carry a "What this paper does NOT say" section (over-reading guard).
+
 Return format (Japanese with English technical terms, speaker-labelled):
 1. **Rachel**:「報告」 — findings in one paragraph.
 2. Table: reference | DOI | supports claim? | supporting quote (≤ 1 sentence).

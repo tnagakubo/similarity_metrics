@@ -17,8 +17,9 @@ Archive SUITS.md and start fresh.
 1. **Donna**: Check line count (`wc -l SUITS.md`)
 2. If > 1000 lines:
    - Copy to `archives/SUITS_YYYYMMDD_HHMMSS.md`
-   - Create fresh SUITS.md with status summary
+   - Create fresh SUITS.md with status summary（template below; the `**Phase**` line must equal `projects/{project}/LAB_STATUS.md`）
 3. Add archive scene to new SUITS.md
+4. **Donna**: `python3 scripts/lint_suits.py SUITS.md --all` と `bash scripts/check_consistency.sh` を実行し、clean を確認してから終える
 
 ## Archive Scene (in new SUITS.md)
 
@@ -64,7 +65,10 @@ archives/SUITS_{timestamp}.md に保存済み。
 ## Current Status
 
 **Active Project**: {current project or "none"}
+**Phase**: {N — name} → `projects/{project}/LAB_STATUS.md`
+**Manuscript**: `projects/{project}/paper/{file}.tex`（{pp}、compile error {n}）
 **Scene**: Continuing from archive
+**System**: Rule 5/6 の gate 状態は `LAB_STATUS.md` の artifacts 表（CLAIMS / DECISIONS / ledger / reproduction）
 
 **Previous Archive**: archives/SUITS_{timestamp}.md
 
@@ -96,7 +100,7 @@ archives/SUITS_{timestamp}.md に保存済み。
 
 ## 📊 Key Decisions
 
-[Copy from archived file]
+判断の正本は `projects/{project}/DECISIONS.md`（append-only、理由付き）。ここには直近 5 件の D-ID と 1 行要約だけを書く。
 
 ## Active Tasks
 

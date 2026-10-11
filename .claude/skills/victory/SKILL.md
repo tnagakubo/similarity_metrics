@@ -11,7 +11,14 @@ Celebrate a project milestone or completion.
 1. **Harvey**: Announce achievement
 2. Team members: Brief celebration
 3. **Donna**: Add scene to SUITS.md
-4. Update project status
+4. Update project status（`LAB_STATUS.md`、Phase 9 Closeout なら下の duties）
+
+## Phase 9 Closeout duties（milestone が Accepted / Published のとき）
+- **Donna**: lessons を `DECISIONS.md` の末尾に `D-…: Lessons` として 1 entry（何が効いたか・何が遅らせたか）
+- **Donna**: 繰り返した feedback を `memory/`（repo 版）に追記し、ローカル auto-memory と揃える（`memory/INDEX.md`）
+- **Louis**: 自分の memory（`.claude/agent-memory/louis/`）の穴一覧を次の論文向けに整理
+- **Harvey**: 次の Question を `IDEAS_BACKLOG.md` に 1 行
+- **Donna**: `/archive`（SUITS.md）と `/handoff`
 
 ## SUITS.md Scene (add at TOP)
 

@@ -1,0 +1,8 @@
+key,source_file,filter,column,agg,fmt,scale,note,line,token,occ
+covS1n50,results/summary.csv,scenario=S1;n=50,coverage,value,.3f,1,tie 0.9425 -> half-even 0.942,3,0.942,1
+covS1n100,results/summary.csv,scenario=S1;n=100,coverage,value,.3f,1,tie 0.9285 -> 0.928,3,0.928,1
+biasS1n50abs,results/summary.csv,scenario=S1;n=50,bias,value,.3f!a,1,abs,4,0.013,1
+biasS1n50m,results/summary.csv,scenario=S1;n=50,bias,value,.3f!m,1,math-wrapped negative,,,
+covRangeS1,results/summary.csv,scenario=S1,coverage,range,.2f,1,range,,,
+nTotal,results/summary.csv,,count,sum,"{,}d",1,thousands,4,"3{,}533",1
+covS2n50pct,results/summary.csv,scenario=S2;n=50,coverage,value,.1f,100,percent,,,

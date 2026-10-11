@@ -1,0 +1,73 @@
+---
+title: "{Title}"
+author:
+  - name: "{Author}"
+    affiliations: "{Affiliation}"
+abstract: |
+  {Abstract — every sentence corresponds to a row of CLAIMS.md; numbers come from `r num()` only.}
+keywords: [keyword1, keyword2]
+bibliography: "{project}.bib"
+format:
+  pdf:
+    documentclass: article
+    keep-tex: true          # the kept .tex is what goes into the journal class at submission (Phase 7)
+    number-sections: true
+    fig-width: 7            # .claude/rules/r-code.md figure standard
+    fig-height: 4.5
+execute:
+  echo: false
+  warning: false
+  message: false
+  freeze: auto              # results come from results/*.csv, never recomputed at render time
+---
+
+```{r setup}
+#| include: false
+# Numbers are generated, never typed (CLAUDE.md Rule 6). The registry is the single source for every number
+# in this manuscript; the same registry drives \numval{} in LaTeX manuscripts.
+source(file.path(rprojroot::find_root(rprojroot::has_file("CLAUDE.md")), "scripts", "r", "numbers_registry.R"))
+num_registry_load("numbers_registry.csv")                 # paper/numbers_registry.csv
+res <- function(f) read.csv(file.path("..", "results", f))  # tables are read from CSV, not retyped
+library(knitr)
+```
+
+# Introduction
+
+{Gap statement from LITERATURE_SEARCH_LOG.md §3, with its falsifier stated in the Discussion. Choices → choice → reason.}
+
+# Methods
+
+## Estimand
+
+{Define the estimand in symbols, e.g. $W_1(F_1,F_2)=\int_{-\infty}^{\infty}\lvert F_1(t)-F_2(t)\rvert\,dt$. State every assumption of every proposition.}
+
+## Simulation study (ADEMP; @morris2019)
+
+{Aims / Data-generating mechanisms / Estimands / Methods / Performance measures — copied from `PROTOCOL_{study}.md`, registered on {date}. Deviations: protocol §9.}
+
+# Results
+
+The coverage of the percentile bootstrap interval was `r num("covS3n100")` at $n = 100$ in scenario S3
+(Monte Carlo SE `r num("covS3n100mcse")`; $n_{\mathrm{sim}} = `r num("nSim")`$).
+
+```{r tab-summary}
+#| label: tbl-summary
+#| tbl-cap: "Performance measures by scenario and sample size (Monte Carlo SE in parentheses)."
+d <- res("{study}_summary.csv")
+d$cell <- sprintf("%.3f (%.4f)", d$estimate, d$mcse)
+kable(reshape(d[, c("scenario", "n", "measure", "cell")], idvar = c("scenario", "n"), timevar = "measure", direction = "wide"),
+      row.names = FALSE)
+```
+
+# Discussion
+
+{Limitations must cover every "does not license" line of the protocols. Anything outside the protocol is labelled exploratory.}
+
+# Data and code availability
+
+{Data source with DOI/URL; `R/` scripts; seeds; `results/*_PROVENANCE.md`; `sessionInfo` / `renv.lock`.}
+
+# References
+
+::: {#refs}
+:::

@@ -14,7 +14,7 @@ Topic: $ARGUMENTS
 - **Harvey**: State the topic and frame the question for the team
 
 ### Phase 2: Parallel Individual Analysis (Agent tool)
-Launch **parallel agents** for each relevant member to independently analyze the topic:
+Launch **parallel agents** for each relevant member to independently analyze the topic (`Agent(subagent_type: "mike" | "rachel" | "katrina" | "louis")` — persona・tool 範囲は `.claude/agents/*.md`):
 
 - **Mike** (Agent): Technical/methodological perspective
 - **Rachel** (Agent): Literature and evidence perspective
@@ -42,6 +42,8 @@ This is the core of the meeting. After collecting all individual analyses:
 
 ### Phase 4: Record
 - **Donna**: Add scene to SUITS.md (at TOP)
+- 方針が決まったら **`/decide` の形式で `projects/{project}/DECISIONS.md` に追記**（Question / Options / Decision / Reasons / Affected artifacts）。会議の結論を会話に流さない
+- 主張の文言や証拠に触れる結論は `CLAIMS.md` の該当行を更新
 
 ## SUITS.md Scene (add at TOP)
 
@@ -85,7 +87,7 @@ This is the core of the meeting. After collecting all individual analyses:
 「{final decision with reasoning}」
 
 **Donna**: （記録を見せて）
-「全部記録したわ。"I'm Donna. I know everything."」
+「D-{id} として残したわ。{observation — 誰が何を譲ったか、次に効いてくる点}。"I'm Donna. I know everything."」
 
 ---
 ```
@@ -95,4 +97,4 @@ This is the core of the meeting. After collecting all individual analyses:
 - Phase 3 discussion is the **primary value** of the meeting - invest the most effort here
 - Let disagreements surface and be debated, not smoothed over
 - Harvey's decision should reflect the discussion, not just his initial view
-- All dialogue recorded in SUITS.md
+- All dialogue recorded in SUITS.md; the decision itself goes to `DECISIONS.md` with reasons (a reversal later must answer those reasons)

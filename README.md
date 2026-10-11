@@ -89,16 +89,55 @@ Progress is recorded as a Japanese drama script in `SUITS.md`:
 - `/motivate` - Encouragement
 - `/victory` - Celebrate
 
-### Lifecycle (see `RESEARCH_FRAMEWORK.md`)
+### Lifecycle & Scientific Integrity (see `RESEARCH_FRAMEWORK.md`)
 - `/phase [next | set N]` - Show / advance the 10-phase lifecycle (gates verified on disk by Donna)
-- `/protocol {study}` - Pre-register a simulation / analysis protocol (Phase 2)
+- `/protocol {study}` - Pre-register a protocol: ADEMP, Monte Carlo SE, licenses / does not license, prior-look disclosure (Phase 2)
+- `/claims [init | check | add]` - Claims ↔ evidence registry `CLAIMS.md` (every claim has a row; verbs match evidence)
+- `/decide {question}` - Decision record with options and reasons in `DECISIONS.md`
+- `/reproduce [study]` - Clean-checkout reproduction gate (Phase 3)
+- `/verify-numbers` - Every number tied to its source in `results/NUMBERS_LEDGER.csv`; verifier ≠ producer
+- `/cite-check` - Citations reconciled with the .bib and verified against the original passage
 - `/pre-review [section]` - Proactive self-review by all members (Phase 6 entry)
-- `/submission-check` - Terminal pass before submission (Phase 7)
+- `/review` - Louis's structured internal review, written to `review_response/INTERNAL_REVIEW_*.md`
+- `/submission-check` - Reporting checklist R1–R8 + journal requirements (Phase 7)
 - `/respond-reviewers [init|status|close]` - Point-by-point reviewer response tracker (Phase 8)
-- `/verify-numbers`, `/handoff` - Numbers gate / persistence guard (any phase)
+- `/handoff`, `/lint-suits` - Persistence guard / mechanical character lint (any phase)
+
+### Mechanical checks (`scripts/`, no R required)
+```bash
+python3 scripts/lint_suits.py SUITS.md --scenes 3        # last names, keigo, labels, scene order
+python3 scripts/numbers_audit.py projects/<p>/paper/<m>.tex   # numbers vs results/NUMBERS_LEDGER.csv
+python3 scripts/cite_audit.py <m>.tex <m>.bib --out …    # \cite vs .bib, DOI, citation–claim table
+bash scripts/check_r_reproducibility.sh                  # seeds, parallel RNG, absolute paths, sessionInfo
+bash scripts/check_consistency.sh                        # phase sync, stale state, undefined \ref, artifacts
+bash scripts/check_all.sh                                # all of the above → review_response/MECHANICAL_CHECKS_<date>.md
+bash scripts/tests/run_tests.sh                          # regression tests for the scripts and hooks
+```
+
+Start Claude Code from the repository root: subagent memory (`memory: project`) and hook paths resolve
+against the current directory.
+
+### Pipeline (Option B, 2026-10-11): the paper is a function of protocol and data
+```bash
+python3 scripts/protocol_compile.py projects/<p>/PROTOCOL_<study>.md   # ADEMP front matter → R/<study>.R skeleton (seed, grid, MCSE, outputs)
+Rscript projects/<p>/R/<study>.R                                       # you wrote draw_sample() and the estimator only
+Rscript projects/<p>/R/make_paper_tables.R                             # single writer → paper/generated/*.tex (complete tabulars)
+Rscript projects/<p>/R/make_derived_numbers.R                          # single writer → results/derived/*.csv (ranges, differences, correlations the prose cites)
+Rscript scripts/make_numbers_macros.R projects/<p>/paper/numbers_registry.csv   # registry → paper/numbers_macros.tex (\numval{key})
+python3 scripts/numbers_registry.py check projects/<p>/paper/numbers_registry.csv --macros … --tex …
+python3 scripts/numbers_registry.py verify-draft … --tex …            # literal in the text vs the CSV value (finds 0.942 vs 0.943)
+bash projects/<p>/paper/build.sh && pdftotext -layout …                # a content-preserving change has a 0-line text diff
+```
+`/replicate` has Louis re-implement the estimator from the Methods text alone; `scripts/compare_results.py` compares.
+Rounding is decimal round-half-even in both R and Python (`scripts/r/numbers_registry.R`).
+
+### Cloud sessions and CI
+- Environment → **Setup script**: `bash scripts/cloud_setup.sh` (R 4.3, TeX Live, PyYAML) — then simulations, `/reproduce` and the LaTeX build run in the cloud.
+- `.github/workflows/lab-checks.yml` runs the gates on every push; `r-and-tex.yml` parses every R file, checks that generated tables and macros are current, and builds the manuscript. `scripts/ci_ratchet.sh` baselines may only decrease.
 
 Phase state lives in `projects/{project}/LAB_STATUS.md`. Member subagents are defined in
-`.claude/agents/` (persona source: `agents/*.md`); path-scoped rules in `.claude/rules/`.
+`.claude/agents/` (persona source: `agents/*.md`); path-scoped rules in `.claude/rules/`;
+versioned principles in `memory/` (`memory/INDEX.md`).
 
 ## External Experts
 
@@ -116,8 +155,10 @@ These are fictional characters paying tribute to statistical giants, not the act
 
 ```
 research-lab/
-├── CLAUDE.md              # Project rules
-├── RESEARCH_FRAMEWORK.md  # 10-phase research → paper lifecycle + Claude Code feature map
+├── CLAUDE.md              # Project rules (Rule 1–6)
+├── RESEARCH_FRAMEWORK.md  # 10-phase lifecycle + integrity principles S1–S11 + feature map
+├── memory/                # Versioned principles (repo copy of the auto-memory)
+├── scripts/               # Mechanical checks (lint, numbers, citations, reproducibility, consistency)
 ├── SUITS.md               # Live drama script
 ├── README.md              # This file
 ├── .claude/
@@ -144,7 +185,7 @@ A: Live drama script showing team progress. Newest scenes at top. Japanese dialo
 A: When it exceeds 1000 lines. Archived to `archives/SUITS_YYYYMMDD_HHMMSS.md`, then fresh start.
 
 **Q: What format for papers?**
-A: Markdown (.md) with LaTeX math.
+A: LaTeX (.tex, journal template) or Quarto (.qmd); lab records in Markdown (.md) with LaTeX math.
 
 **Q: What language for code?**
 A: R with tidyverse.

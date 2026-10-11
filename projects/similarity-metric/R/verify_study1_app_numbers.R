@@ -65,7 +65,8 @@ check("shortfall comes from below in S2, S5, S7 (below > 2.5% where coverage < 0
 
 # ---- Application: data ------------------------------------------------------
 say("\n-- Application --")
-data(gusto, package = "predtools", envir = environment())
+if (requireNamespace("predtools", quietly = TRUE)) data(gusto, package = "predtools", envir = environment()) else
+  gusto <- read.csv("data/gusto.csv")   # same table, shipped with the project (cloud sessions have no predtools)
 check("GUSTO-I N = 40,830; 16 regions", c(nrow(gusto), length(unique(gusto$regl))), c(40830, 16))
 r8 <- gusto[gusto$regl == 8, ]
 sk <- function(x) { x <- x[!is.na(x)]; mean(((x - mean(x)) / sd(x))^3) }
@@ -104,10 +105,11 @@ check("R6 9th-smallest age 0.91", ra[["R6"]], 9)
 check("R6 SBP CI [2.06, 4.77]", round(c(p$ci_lower_sysbp[p$R=="R6"], p$ci_upper_sysbp[p$R=="R6"]), 2), c(2.06, 4.77))
 check("R2 second-largest age, smallest SBP", c(ra[["R2"]], rs[["R2"]]), c(14, 1))
 check("R9 among six smallest age (unresolved), largest SBP", c(ra[["R9"]] <= 6, rs[["R9"]]), c(1, 15))
-# 2026-09-27: Table 5 rank columns (unresolved distances share the range 1--6 / 1)
-tex5 <- readLines("paper/per_em_W1_wiley.tex", encoding = "UTF-8")
-j0 <- grep("label{tab:gusto_nabcd}", tex5, fixed = TRUE); j1 <- j0 + grep("^\\\\bottomrule", tex5[j0:length(tex5)])[1]
-r5 <- grep("^R[0-9]+ +&", tex5[j0:j1], value = TRUE)
+# 2026-09-27: Table 5 rank columns (unresolved distances share the range 1--6 / 1).
+# Since 2026-10-11 the table body is generated (R/make_paper_tables.R) and pulled in by \input{generated/tab_gusto_nabcd}.
+tex5 <- readLines("paper/generated/tab_gusto_nabcd.tex", encoding = "UTF-8")
+r5 <- grep("^R[0-9]+ +&", tex5, value = TRUE)
+check("Table 5 (generated) has 15 partner rows with 6 columns", c(length(r5), unique(lengths(strsplit(r5, "&")))), c(15, 6))
 cells <- t(sapply(strsplit(sub("\\\\\\\\\\s*$", "", r5), "&"), trimws))
 rid <- cells[, 1]
 exp_rank <- function(w, un) { r <- rank(w); ifelse(un, NA, r) }
@@ -128,9 +130,9 @@ check("L* interval = 0.01 / CI of W1 (reversed)",
       isTRUE(all.equal(l$lstar_age_lower, 0.01 / p$ci_upper_age[match(l$partner, p$R)])) &&
       isTRUE(all.equal(l$lstar_sbp_upper, 0.01 / p$ci_lower_sysbp[match(l$partner, p$R)])), TRUE)
 check("R1 SBP lower L* = 0.00203 (> L_UB,SBP 0.002)", c(round(l$lstar_sbp_lower[l$partner=="R1"], 5), l$lstar_sbp_lower[l$partner=="R1"] > 0.002), c(0.00203, 1))
-tex <- readLines("paper/per_em_W1_wiley.tex", encoding = "UTF-8")
-i0 <- grep("label\\{tab:gusto_lstar_joint\\}", tex); i1 <- i0 + grep("^\\\\bottomrule", tex[i0:length(tex)])[1]
-rows <- grep("^R[0-9]+ &", tex[i0:i1], value = TRUE)
+# Since 2026-10-11 the table body is generated (R/make_paper_tables.R) and pulled in by \input{generated/tab_gusto_lstar_joint}.
+tab <- readLines("paper/generated/tab_gusto_lstar_joint.tex", encoding = "UTF-8")
+rows <- grep("^R[0-9]+ &", tab, value = TRUE)
 num <- function(x) as.numeric(regmatches(x, gregexpr("[0-9]+\\.[0-9]+", x))[[1]])
 got <- t(sapply(rows, function(r) { cs <- strsplit(r, "&")[[1]]; c(num(cs[2])[1], num(cs[3])[1], num(cs[4]), num(cs[5])) }))
 want <- cbind(round(l$w1_age,2), round(l$w1_sbp,2), round(l$lstar_age,4), round(l$lstar_age_lower,4), round(l$lstar_age_upper,4),

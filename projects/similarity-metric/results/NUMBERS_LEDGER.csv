@@ -1,0 +1,32 @@
+value,label,source_file,source_locator,verified_by,verified_date,note
+50,Study 2 grid: n = 50 per region,results/w1_raw_summary.csv,"column n ∈ {50, 100, 200}; R/w1_raw_simulation.R L23 (header), L86 SAMPLE_SIZES <- c(50L, 100L, 200L); results/STUDY1_PROVENANCE.md L16 (grid)",Katrina,2026-10-11,design constant (Study 2 grid; no pre-registered protocol — grid evidenced by the script and the provenance file)
+100,n = 100 per region (Study 2 grid value and estimation criterion n ≥ 100); Study 1 base-grid upper end; Set 4 displacement to 100 units; percent-to-proportion divisor,results/w1_raw_summary.csv,"column n; results/selection_sim_config.csv and clustering_sim_config.csv column n (25–100); R/selection_simulation.R L246 (T2 extremes at 100), L251 (P2 upper extreme at 100); §2.4 divides percentage points by 100",Katrina,2026-10-11,design constant
+200,Study 2 grid: n = 200 per region,results/w1_raw_summary.csv,column n,Katrina,2026-10-11,design constant (Study 2 grid; evidenced by R/w1_raw_simulation.R L86 and results/STUDY1_PROVENANCE.md L16)
+"2,000","B = 2,000 bootstrap resamples (Study 2 and application); null-floor replications; extended grid n = 2,000; clustering extended-grid replications",R/w1_raw_simulation.R,"L25 (B = 2000); R/fig3_w1_axis.R L83 and L119 (B = 2000 — the script that writes results/gusto_r8_w1_per_pair.csv, anchor R8); R/gusto_operability_check.R L39 (B <- 2000L, null floor); results/selection_sim_config_ext.csv and clustering_sim_config_ext.csv column n (max 2000); clustering_sim_config_ext.csv column reps (2000)",Katrina,2026-10-11,design constant
+"10,000",replications per cell: Study 2; selection task base grid,results/w1_raw_summary.csv,column n_valid = 10000 in all 21 cells; results/selection_sim_config.csv column reps = 10000,Katrina,2026-10-11,design constant
+"3,000","replications per cell: selection task, extended grid",results/selection_sim_config_ext.csv,column reps = 3000,Katrina,2026-10-11,design constant
+"5,000","replications per cell: clustering task, base grid",results/clustering_sim_config.csv,column reps = 5000,Katrina,2026-10-11,design constant
+150,"extended grid lower end (n = 150–2,000)",results/selection_sim_config_ext.csv,column n (min 150),Katrina,2026-10-11,design constant
+25,base grid lower end (n = 25–100),results/selection_sim_config.csv,column n (min 25),Katrina,2026-10-11,design constant
+0.9,selection accuracy target: AUC 0.9,results/required_n_selection.csv,column threshold = 0.9 (R/required_n.R),Katrina,2026-10-11,design constant
+0.8,clustering accuracy target: ARI 0.8,results/required_n_clustering.csv,column threshold = 0.8 (R/required_n.R),Katrina,2026-10-11,design constant
+0.5,chance AUC (definition); S6 sigma_log = 0.5; S3 location shift 0.5 sigma,results/STUDY1_PROVENANCE.md,"Reference (true) W1 table: S3 N(55, 10^2) = 0.5 sigma; S6 LogN(3.787023, 0.5^2); chance AUC = 0.5 by definition",Katrina,2026-10-11,design constant / definition
+0.2,S2 location shift 0.2 sigma,results/STUDY1_PROVENANCE.md,"Reference (true) W1 table: S2 N(52, 10^2)",Katrina,2026-10-11,design constant
+1.0,S4 location shift 1.0 sigma,results/STUDY1_PROVENANCE.md,"Reference (true) W1 table: S4 N(60, 10^2)",Katrina,2026-10-11,design constant
+1.5,S5 scale factor 1.5; prose descriptor 'most partners below 1.5 years',results/STUDY1_PROVENANCE.md,"Reference (true) W1 table: S5 N(50, 15^2) (STUDY1_PROVENANCE.md L34); descriptor checked against results/gusto_r8_w1_per_pair.csv (12 of 15 W1_age < 1.5)",Katrina,2026-10-11,"design constant + descriptive cut-off (count corrected 11 → 12 after Katrina's four-eyes check flagged the count, 2026-10-11)"
+0.95,nominal coverage / confidence level,R/w1_raw_simulation.R,R/w1_raw_simulation.R L141 conf = 0.95; R/fig3_w1_axis.R L83 conf = 0.95 (writes results/gusto_r8_w1_per_pair.csv),Katrina,2026-10-11,design constant
+95,95% confidence intervals,R/w1_raw_simulation.R,L141 conf = 0.95,Katrina,2026-10-11,design constant (percent form)
+2.5,nominal one-sided miss probability (1 − 0.95)/2 = 2.5%,R/w1_raw_simulation.R,L141 conf = 0.95,Katrina,2026-10-11,derived design constant
+1,Delta_clin = 1 percentage point (absolute 30-day mortality),R/gusto_lstar_table.R,L6 DELTA_CLIN <- 0.01; R/gusto_case_study.R L383,Katrina,2026-10-11,design constant (clinical margin)
+0.01,"L_UB,age = 0.01 per year (illustrative sponsor bound)",R/gusto_operability_check.R,"L43 TAU <- c(age = 1.0, sysbp = 5.0) = Delta_clin / L_UB with Delta_clin = 0.01",Katrina,2026-10-11,illustrative input
+10,"10 percentage points per decade = L_UB,age × 10 years × 100",R/gusto_operability_check.R,"L43 (L_UB,age = 0.01/yr)",Katrina,2026-10-11,derived from the illustrative bound
+2,"2 percentage points per 10 mmHg = L_UB,SBP × 10 mmHg × 100",R/gusto_operability_check.R,"L43 (L_UB,SBP = 0.01 / 5.0 = 0.002/mmHg)",Katrina,2026-10-11,derived from the illustrative bound
+5,Set 4: 5% subgroup in each tail,R/selection_simulation.R,"L239–L246 build_set4, ext_c(..., 0.05, ...)",Katrina,2026-10-11,design constant
+12,Set 4: raised tail prevalence 12%,R/selection_simulation.R,"L248 ext_c('sym_prevalence', 50, 0.12, 40, 0.12, 40)",Katrina,2026-10-11,design constant
+40,Set 4: extremes 40 units from the centre,R/selection_simulation.R,"L239–L242 ext_c(..., 40, 0.05, 40)",Katrina,2026-10-11,design constant
+70,Set 4: displaced extremes at 70 units,R/selection_simulation.R,"L245 ext_c('sym_severity', 50, 0.05, 70, 0.05, 70)",Katrina,2026-10-11,design constant
+16,GUSTO-I regions,results/derived/derived_scalars.csv,quantity gusto_n_regions,Katrina,2026-10-11,data constant
+97.5,upper percentile of the 95% percentile interval ((1 + 0.95)/2),R/W1_raw_rcpp.cpp,L118-L121 alpha = 1 - conf; quantile7 at alpha/2 and 1 - alpha/2,Katrina,2026-10-11,"derived design constant (added 2026-10-11 with the Methods bootstrap description, D-20261011-7)"
+"1,000",seed stride between Study 2 cells (seed = 42 + 1000 k),R/w1_raw_simulation.R,L290 seed = 42L + 1000L * k; results/w1_raw_simulation.rds $config$seed_base = 42,Katrina,2026-10-11,"design constant (added 2026-10-11, D-20261011-7)"
+42,Study 2 base seed,R/w1_raw_simulation.R,"L142 default seed = 42, L290, L322 seed_base = 42L; rds $config$seed_base",Katrina,2026-10-11,"design constant (added 2026-10-11, D-20261011-7)"
+1.96,"z_0.975, the two-sided 95% normal quantile (rounded)",definition,qnorm(0.975) = 1.959964; used in R/required_n.R (z <- qnorm(0.975)) and R/make_derived_numbers.R,Katrina,2026-10-11,"definition constant (added 2026-10-11 with the Monte Carlo noise sentence, Louis review item 6)"

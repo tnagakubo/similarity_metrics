@@ -1,0 +1,3 @@
+value,label,source_file,source_locator,verified_by,verified_date,note
+0.5,chance AUC,design,,,,"coarse design constant"
+0.9425,coverage S4 n=50,results/x.csv,,,,"precise ledger value"

@@ -1,0 +1,159 @@
+== Study 2 numbers gate (2026-08-30; extended 2026-09-27) ==
+
+-- A. required n, selection AUC >= 0.9 --
+[verify] req n 0.9: Set4_Extremes / sym_severity W1                 PASS
+[verify] req n 0.9: Set4_Extremes / sym_severity KS                 PASS
+[verify] req n 0.9: Set4_Extremes / sym_severity RV2                PASS
+[verify] req n 0.9: Set4_Extremes / sym_severity RV3                PASS
+[verify] req n 0.9: Set4_Extremes / asym_severity W1                PASS
+[verify] req n 0.9: Set4_Extremes / asym_severity KS                PASS
+[verify] req n 0.9: Set4_Extremes / asym_severity RV1               PASS
+[verify] req n 0.9: Set4_Extremes / asym_severity RV2               PASS
+[verify] req n 0.9: Set4_Extremes / asym_severity RV3               PASS
+[verify] req n 0.9: Set4_Extremes / asym_severity SMD               PASS
+[verify] req n 0.9: Set4_Extremes / bulk_shift KS                   PASS
+[verify] req n 0.9: Set4_Extremes / bulk_shift W1                   PASS
+[verify] req n 0.9: Set3_Mixture / combined W1                      PASS
+[verify] req n 0.9: Set3_Mixture / combined KS                      PASS
+[verify] req n 0.9: Set3_Mixture / shape_sym W1                     PASS
+[verify] req n 0.9: Set3_Mixture / shape_sym KS                     PASS
+[verify] blind: sym_severity SMD never reaches 0.9                  PASS
+[verify] partial: sym_severity RV1 max AUC                          PASS
+[verify] partial: Set3 combined RV3 max AUC                         PASS
+[verify] W1 range across decisive cells 42-690                      PASS
+[verify] task floor range across decisive cells 41-690              PASS
+
+-- B. AUC plateaus, blind / partial --
+[verify] blind Set3_Mixture / combined RV1: max_auc <= 0.51         PASS
+[verify] blind Set3_Mixture / combined RV1: AUC@2000 in 0.49-0.51   PASS
+[verify] blind Set3_Mixture / combined RV2: max_auc <= 0.51         PASS
+[verify] blind Set3_Mixture / combined RV2: AUC@2000 in 0.49-0.51   PASS
+[verify] blind Set3_Mixture / combined SMD: max_auc <= 0.51         PASS
+[verify] blind Set3_Mixture / combined SMD: AUC@2000 in 0.49-0.51   PASS
+[verify] blind Set4_Extremes / sym_severity SMD: max_auc <= 0.51    PASS
+[verify] blind Set4_Extremes / sym_severity SMD: AUC@2000 in 0.49-0.51 PASS
+[verify] S3 combined RV3 (partial)                                  PASS
+[verify] S3 shape_sym RV1: AUC@2000 in 0.43-0.51                    PASS
+[verify] S3 shape_sym RV2: AUC@2000 in 0.43-0.51                    PASS
+[verify] S3 shape_sym RV3: AUC@2000 in 0.43-0.51                    PASS
+[verify] S3 shape_sym SMD: AUC@2000 in 0.43-0.51                    PASS
+[verify] S4 sym_severity RV1 plateau 0.60-0.64                      PASS
+
+-- C. harm / false-pooling, n = 100, overall --
+[verify] harm Set1_Gaussian W1                                      PASS
+[verify] harm Set1_Gaussian RV2                                     PASS
+[verify] harm Set2_LogNormal W1                                     PASS
+[verify] harm Set3_Mixture W1                                       PASS
+[verify] harm Set4_Extremes W1                                      PASS
+[verify] harm Set4_Extremes KS                                      PASS
+[verify] harm ratio KS/W1 Set4                                      PASS
+[verify] false-pooling Set4 W1                                      PASS
+[verify] false-pooling Set4 KS                                      PASS
+[verify] false-pooling ratio KS/W1                                  PASS
+[verify] W1 harm smallest in Sets 2-4 at n=100                      PASS
+
+-- D. clustering ARI (n = 100 / n = 2000) --
+[verify] ARI W1 (4 sets x n=100,2000)                               PASS
+[verify] ARI KS (4 sets x n=100,2000)                               PASS
+[verify] ARI RV1 (4 sets x n=100,2000)                              PASS
+[verify] ARI RV2 (4 sets x n=100,2000)                              PASS
+[verify] ARI RV3 (4 sets x n=100,2000)                              PASS
+[verify] ARI SMD (4 sets x n=100,2000)                              PASS
+
+-- E. required n, clustering ARI >= 0.8 --
+[verify] W1 per set                                                 PASS
+[verify] KS per set                                                 PASS
+[verify] task floor per set                                         PASS
+[verify] Set1 floor achieved by RV2                                 PASS
+
+-- F. silhouette k-hat vs oracle k = 3, n = 100 --
+[verify] W1 delta per set                                           PASS
+[verify] KS delta Set1                                              PASS
+[verify] KS delta Set2                                              PASS
+[verify] max P(k-hat=3) Set3                                        PASS
+[verify] max P(k-hat=3) Set4                                        PASS
+[verify] k-hat mode = 2 for every method, Set3                      PASS
+[verify] k-hat mode = 2 for every method, Set4                      PASS
+[verify] Set3 KS silhouette ARI                                     PASS
+[verify] Set3: near-zero-ARI methods (RV1, SMD) hit k=3 at least as often as W1 PASS
+
+-- G. Set 4 true W1 / KS (recomputed from build_set4) --
+[verify] true W1 (T1,T2,P1,P2,S1,S2)                                PASS
+[verify] true KS (T1,T2,P1,P2,S1,S2)                                PASS
+[verify] bulk-shift regions S1, S2 are the two largest true KS      PASS
+[verify] KS gap between W1-largest (T2) and KS-smallest (T1) = 0.003 PASS
+[verify] no KS threshold retains exactly {W1 <= c}, c in [3, 6)     PASS
+[verify] no KS threshold separates T1(in) from T2(out): |KS gap| <= 0.006 PASS
+
+-- I. 2026-09-27 additions --
+[verify] per-slot discordant proportion W1, KS (0.30, 0.58)         PASS
+[verify] chance: P(any discordant among 3 of 9) = 0.988             PASS
+[verify] chance: per-slot discordant = 0.67                         PASS
+[verify] false_pooling_at_k is P(ncm < k): W1 0.718 = P(any discordant) PASS
+[verify] req n 0.9: Set4_Extremes / sym_prevalence W1               PASS
+[verify] req n 0.9: Set4_Extremes / sym_prevalence KS               PASS
+[verify] req n 0.9: Set4_Extremes / sym_prevalence RV2              PASS
+[verify] req n 0.9: Set4_Extremes / sym_prevalence RV3              PASS
+[verify] req n 0.9: Set3_Mixture / shape_skew W1                    PASS
+[verify] req n 0.9: Set3_Mixture / shape_skew KS                    PASS
+[verify] req n 0.9: Set4_Extremes / bulk_shift SMD                  PASS
+[verify] req n 0.9: Set4_Extremes / bulk_shift RV1                  PASS
+[verify] req n 0.9: Set4_Extremes / bulk_shift RV2                  PASS
+[verify] req n 0.9: Set4_Extremes / bulk_shift RV3                  PASS
+[verify] req n 0.9: Set4_Extremes / sym_severity RV2                PASS
+[verify] req n 0.9: Set4_Extremes / sym_severity RV3                PASS
+[verify] blind: sym_prevalence SMD                                  PASS
+[verify] partial: sym_prevalence RV1 max AUC 0.57                   PASS
+[verify] blind: shape_skew SMD                                      PASS
+[verify] blind: shape_skew RV1                                      PASS
+[verify] blind: shape_skew RV2                                      PASS
+[verify] partial: shape_skew RV3 max AUC 0.79                       PASS
+[verify] blind: shape_sym RV1                                       PASS
+[verify] blind: shape_sym RV2                                       PASS
+[verify] blind: shape_sym SMD                                       PASS
+[verify] blind: shape_sym RV3                                       PASS
+[verify] shape_sym RV2/RV3 max AUC within 0.44-0.46                 PASS
+[verify] W1 range across all Set 3/4 cells 42-690                   PASS
+[verify] W1 needs fewer n than KS in every Set 3/4 cell except bulk_shift PASS
+[verify] KS selection AUC sym_severity at n=2000 = 0.99             PASS
+[verify] SMD_log Set2 shape AUC@2000 = 1.00                         PASS
+[verify] SMD_log Set2 combined AUC@2000 = 0.51                      PASS
+[verify] W1 clustering required n (ARI 0.8) range 41-376            PASS
+[verify] silhouette ARI Set2 n=100: W1, RV2, KS                     PASS
+[verify] RV1 sym_severity AUC flat 0.61-0.63 across grid            PASS
+
+-- J. estimated-k clustering at n = 600-2,000 --
+[verify] W1 ARI at n=2000 in Sets 1, 2, 4: 0.998-1.000              PASS
+[verify] W1 P(k-hat=3) at n=2000 in Sets 1, 2, 4: 98.6-100%         PASS
+[verify] Set 3 W1 at n=2000: P(k-hat=3) 26%, ARI 0.646              PASS
+[verify] Set 3 modal k-hat = 2 for W1 at every extended n           PASS
+[verify] Set 3 at n=2000: W1 has the highest ARI of any measure     PASS
+[verify] W1 and KS reach selection AUC 0.9 in every cell (Sets 1-4) PASS
+[verify] W1 needs fewer n than KS in every cell but bulk_shift (Sets 1-4) PASS
+[verify] Set 3 W1 minus KS ARI (estimated k) at n=2000 = +0.119     PASS
+[verify] Set 3 n=100: near-zero-ARI measures hit k=3 at least as often as W1 (text scoped to n=100) PASS
+[verify] protocol criterion (all four worlds ARI>=0.8 & P>=0.8) NOT met -> no-cut branch PASS
+
+-- K. three measures (W1, KS, SMD) --
+[verify] SMD blind in 7 of 13 selection cells                       PASS
+[verify] SMD blind cells = all Set 3, Set 4 sym_severity/sym_prevalence, Set 1 scale, Set 2 shape PASS
+[verify] SMD AUC in all seven blind cells within 0.49-0.51 over the full grid PASS
+[verify] clustering (k supplied) SMD ARI at n=2000: Set 3 0.001, Set 4 0.014 PASS
+[verify] clustering (k supplied) SMD plateau 0.46 in Sets 1 and 2   PASS
+[verify] silhouette n=100 Set 2: KS 0.670 vs W1 0.621               PASS
+[verify] highest P(k-hat=3) at n=100 among W1/KS/SMD: 0.209 (Set 3), 0.218 (Set 4) PASS
+[verify] Set 3 n=100: SMD hits k=3 more often than W1 (0.21 vs 0.13; W1 is 0.1325, a rounding tie) PASS
+[verify] modal k-hat = 2 for W1, KS, SMD in Sets 3 and 4 at n=100   PASS
+
+-- H. design constants --
+[verify] selection production reps = 10000                          PASS
+[verify] selection extension reps = 3000                            PASS
+[verify] clustering production reps = 5000                          PASS
+[verify] clustering extension reps = 2000                           PASS
+[verify] production n grid                                          PASS
+[verify] extension n grid tops out at 2000                          PASS
+[verify] clustering oracle k_true = 3                               PASS
+[verify] 9 candidates in every set                                  PASS
+
+[verify] overall: ALL PASS (0 failures)
+[save] results/verify_study2.log

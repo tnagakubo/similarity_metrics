@@ -1,0 +1,68 @@
+== Study 1 / Application numbers gate (2026-09-27) ==
+
+-- Study 1 prose --
+[verify] S1 bias 2.46 (n=50), 1.26 (n=200)                              PASS
+[verify] S1 bias 1.76 at n=100 (summary list)                           PASS
+[verify] max bias S3-S7 at n=200 = 0.193 (S7)                           PASS
+[verify] S4 bias 0.034 (n=50), 0.005 (n=200)                            PASS
+[verify] S3 bias 0.051, S4 -0.013 at n=100                              PASS
+[verify] coverage S3 0.948-0.951                                        PASS
+[verify] coverage S4 0.945-0.948 (n>=100)                               PASS
+[verify] coverage S4 0.942-0.948 (all n, table note; tie at 0.9425)     PASS
+[verify] coverage S6 0.942-0.947                                        PASS
+[verify] coverage S7 0.935-0.943 (n>=100)                               PASS
+[verify] coverage S5 0.862 (50), 0.946 (200)                            PASS
+[verify] coverage S2 0.703 (50), 0.947 (200)                            PASS
+[verify] coverage S3-S7 at n>=100 within 0.92-0.95                      PASS
+[verify] RMSE S3 1.83 (50) -> 0.98 (200)                                PASS
+[verify] RMSE at n=200 from 0.77 (S5) to 1.34 (S1)                      PASS
+[verify] CI width at n=100, non-null, roughly 3.6-7.0                   PASS
+[verify] S3 CI width 4.96 at n=100                                      PASS
+[verify] Delta_max width 0.01*4.96 = 0.050                              PASS
+[verify] S1 CI width 4.19 (50), 2.07 (200)                              PASS
+[verify] S1 q95 4.21, 2.97, 2.11                                        PASS
+[verify] miss above upper limit <= 1.1% in S2, S5, S7                   PASS
+[verify] miss above upper limit never in S2                             PASS
+[verify] shortfall comes from below in S2, S5, S7 (below > 2.5% where coverage < 0.94) PASS
+
+-- Application --
+[verify] GUSTO-I N = 40,830; 16 regions                                 PASS
+[verify] R8 n = 2,916                                                   PASS
+[verify] R8 age mean, SD, skew = 60.2, 12.1, -0.17                      PASS
+[verify] R8 SBP mean, SD, skew = 132.4, 22.9, 0.20                      PASS
+[verify] SBP recorded in whole mmHg                                     PASS
+[verify] null 95th pct age 0.618-0.900                                  PASS
+[verify] null 95th pct SBP 1.176-1.691                                  PASS
+[verify] unresolved age = R1,R4,R5,R7,R9,R15                            PASS
+[verify] unresolved SBP = R2                                            PASS
+[verify] unresolved <=> w1_obs <= null_q95                              PASS
+[verify] partner-source null gives identical readings                   PASS
+[verify] partner n range 1,231-4,352                                    PASS
+[verify] 15 partners                                                    PASS
+[verify] Table W1 age point estimates                                   PASS
+[verify] Table W1 SBP point estimates                                   PASS
+[verify] age min R5 0.39, max R3 2.61                                   PASS
+[verify] SBP min R2 0.95, max R9 6.80                                   PASS
+[verify] most partners below 1.5 years (> half)                         PASS
+[verify] R16 13th-smallest age; CI [1.16, 2.47]                         PASS
+[verify] R6 9th-smallest age 0.91                                       PASS
+[verify] R6 SBP CI [2.06, 4.77]                                         PASS
+[verify] R2 second-largest age, smallest SBP                            PASS
+[verify] R9 among six smallest age (unresolved), largest SBP            PASS
+[verify] Table 5 (generated) has 15 partner rows with 6 columns         PASS
+[verify] Table 5 age ranks match W1 order (unresolved share 1--6)       PASS
+[verify] Table 5 SBP ranks match W1 order (unresolved R2 = 1)           PASS
+[verify] unresolved age distances are exactly the six smallest          PASS
+[verify] L* = 0.01 / W1 (age) and 0.01 / W1 (SBP)                       PASS
+[verify] L* interval = 0.01 / CI of W1 (reversed)                       PASS
+[verify] R1 SBP lower L* = 0.00203 (> L_UB,SBP 0.002)                   PASS
+[verify] L* table: all 15 rows x 8 numbers match the CSV                PASS
+[verify] daggers (age) = unresolved age distances                       PASS
+[verify] daggers (SBP) = unresolved SBP distances                       PASS
+
+-- Discussion --
+[verify] age vs SBP distance ordering across the 15 partners: Spearman -0.30 PASS
+[verify] W1 vs SMD ordering of the 15 partners: Spearman 0.90 (age), 0.95 (SBP) PASS
+[verify] partner SDs within a factor of 1.11 of the anchor's            PASS
+
+[verify] overall: ALL PASS (0 failures)
