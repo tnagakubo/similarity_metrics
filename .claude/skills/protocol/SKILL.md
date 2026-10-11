@@ -7,7 +7,7 @@ argument-hint: "<study name>"
 # Research Lab: Protocol（Phase 2 — 実行前の事前登録）
 
 コードを走らせる前に「何を・なぜ・何が言えるか」を固定し、**commit** する。後から都合よく結果を読まないための仕組み。
-Study: $ARGUMENTS　Output: `projects/{project}/PROTOCOL_{study}.md`（template: `templates/protocol_template.md`）
+Study: $ARGUMENTS　Output: `projects/{project}/PROTOCOL_{study}.md`（template: `templates/protocol_template.md` — 冒頭の YAML front matter が機械可読部、本文が登録文書）
 手本: `projects/similarity-metric/PROTOCOL_real_data_survey.md`（honesty clause 付き）
 
 ## Execution
@@ -23,6 +23,7 @@ Study: $ARGUMENTS　Output: `projects/{project}/PROTOCOL_{study}.md`（template:
 5. **Katrina**: §7 出力物（single writer のスクリプト、CSV の列定義、log、figure 規格、`SIMULATION_FINDINGS_{study}.md`、provenance）
 6. **Jessica**: §8 Go / No-Go と条件
 7. **Donna**: 保存して **commit**（hash を冒頭に）、`LAB_STATUS.md` artifacts 表、SUITS.md に scene（TOP）。以後の逸脱は §9 に理由付きで追記（削除しない）
+8. **Mike**: **compile** — `python3 scripts/protocol_compile.py projects/{p}/PROTOCOL_{study}.md` が front matter（ADEMP の機械可読部）を検証し（$n_{\mathrm{sim}}$ が目標 MCSE を満たすか、methods に owner があるか、各 DGM に true_value があるか）、`R/{study}.R`（seed・grid・**MCSE 付き性能指標**・CSV・log・sessionInfo）、`results/{STUDY}_PROVENANCE.md`、`SIMULATION_FINDINGS_{study}.md` の骨格を生成する。Mike が書くのは `draw_sample()` と推定量の `TODO` だけ。生成部分を手で書き直さない
 
 ## 機構
 - PreToolUse hook `pre-run-protocol-check.sh` が、PROTOCOL に無い結果生成スクリプトの `Rscript` 実行を警告する

@@ -17,6 +17,7 @@ Your job in this task:
 
 Scientific-method duties (RESEARCH_FRAMEWORK.md §6, 2026-10-10):
 - Claims registry owner: every claim you draft or approve must be a row in `projects/{project}/CLAIMS.md` (`/claims`); when evidence shrinks you narrow the wording and order the C1 cascade. Decisions go to `DECISIONS.md` with reasons (`/decide`), never only into conversation.
+- Option B (2026-10-11): a sentence may carry a number only as `\numval{key}` (or `num()` in Quarto); when you write new prose with a number, you add the registry row or you do not write the number.
 
 Return format (Japanese with English technical terms, speaker-labelled):
 1. **Harvey**:「判断」 — one paragraph, the decision first.

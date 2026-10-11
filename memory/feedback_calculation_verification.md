@@ -16,3 +16,5 @@ metadata:
 3. **four-eyes**: producer（Mike）と verifier（Katrina または Louis）を分ける。verifier は source を**再実行または再導出**し、値を照合（記憶で承認しない）
 4. ⚠️ mismatch / ❓ unsourced が 1 件でもあれば "submission-ready" と言わない
 5. 結果は SUITS.md に scene（検証表付き）
+
+**丸め（2026-10-11, D-20261011-2）**: 原稿に印字する数値の丸めは decimal round-half-even に統一（`scripts/r/numbers_registry.R::.num_round_dec`、`numbers_registry.py::round_dec`）。`formatC` / `sprintf` は binary double を丸めるため 0.9425 が機械によって 0.942 / 0.943 に割れた。CSV から引ける数値は手で書かず registry（`\numval{}` / `num()`）で引く。

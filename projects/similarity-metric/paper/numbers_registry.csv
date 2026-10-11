@@ -1,0 +1,35 @@
+key,source_file,filter,column,agg,fmt,scale,note,line,token,occ
+biasS1n50,results/w1_raw_summary.csv,scenario=S1;n=50,bias,value,.2f,1,"§3.2 bias paragraph: positive bias under S1 at n=50",391,2.46,1
+biasS1n200,results/w1_raw_summary.csv,scenario=S1;n=200,bias,value,.2f,1,"§3.2 bias paragraph: S1 at n=200",391,1.26,1
+biasMaxS3toS7n200,results/w1_raw_summary.csv,scenario=S3|S4|S5|S6|S7;n=200,bias,max,.3f,1,"§3.2: largest bias among S3–S7 at n=200 (S7)",414,0.193,1
+biasS4n50,results/w1_raw_summary.csv,scenario=S4;n=50,bias,value,.3f,1,"§3.2: S4 bias at n=50",414,0.034,1
+biasS4n200,results/w1_raw_summary.csv,scenario=S4;n=200,bias,value,.3f,1,"§3.2: S4 bias at n=200",414,0.005,1
+covS3rangeN100up,results/w1_raw_summary.csv,scenario=S3;n=100|200,coverage_pct,range,.3f,1,"§3.2 coverage: S3 range over n>=100",421,0.948--0.951,1
+covS4rangeN100up,results/w1_raw_summary.csv,scenario=S4;n=100|200,coverage_pct,range,.3f,1,"§3.2 coverage: S4 range over n>=100",421,0.945--0.948,1
+covS6rangeN100up,results/w1_raw_summary.csv,scenario=S6;n=100|200,coverage_pct,range,.3f,1,"§3.2 coverage: S6 range over n>=100",421,0.942--0.947,1
+covS7rangeN100up,results/w1_raw_summary.csv,scenario=S7;n=100|200,coverage_pct,range,.3f,1,"§3.2 coverage: S7 range over n>=100",421,0.935--0.943,1
+covS5n50,results/w1_raw_summary.csv,scenario=S5;n=50,coverage_pct,value,.3f,1,"§3.2 coverage: S5 at n=50",421,0.862,1
+covS5n200,results/w1_raw_summary.csv,scenario=S5;n=200,coverage_pct,value,.3f,1,"§3.2 coverage: S5 at n=200",421,0.946,1
+covS2n50,results/w1_raw_summary.csv,scenario=S2;n=50,coverage_pct,value,.3f,1,"§3.2 coverage: S2 at n=50",421,0.703,1
+covS2n200,results/w1_raw_summary.csv,scenario=S2;n=200,coverage_pct,value,.3f,1,"§3.2 coverage: S2 at n=200",421,0.947,1
+missAboveMaxS2S5S7pct,results/study1_miss_side.csv,cell=S2-50|S2-100|S2-200|S5-50|S5-100|S5-200|S7-50|S7-100|S7-200,miss_above,max,.1f,100,"§3.2 miss side: max share of replications with truth above the upper limit (S2,S5,S7), percent",425,1.1,1
+covS4rangeAllN,results/w1_raw_summary.csv,scenario=S4;n=50|100|200,coverage_pct,range,.3f,1,"tab:coverage note: S4 range over all n",448,0.942--0.948,1
+covS2n50note,results/w1_raw_summary.csv,scenario=S2;n=50,coverage_pct,value,.3f,1,"tab:coverage note: S2 at n=50",448,0.703,1
+covS5n50note,results/w1_raw_summary.csv,scenario=S5;n=50,coverage_pct,value,.3f,1,"tab:coverage note: S5 at n=50",448,0.862,1
+rmseS3n50,results/w1_raw_summary.csv,scenario=S3;n=50,rmse,value,.2f,1,"§3.2 precision: S3 RMSE at n=50",453,1.83,1
+rmseS3n200,results/w1_raw_summary.csv,scenario=S3;n=200,rmse,value,.2f,1,"§3.2 precision: S3 RMSE at n=200",453,0.98,1
+ciwRangeNonNullN100,results/w1_raw_summary.csv,scenario=S2|S3|S4|S5|S6|S7;n=100,mean_ci_width,range,.1f,1,"§3.2 precision: CI width range at n=100 for non-null scenarios",453,3.6--7.0,1
+ciwS3n100,results/w1_raw_summary.csv,scenario=S3;n=100,mean_ci_width,value,.2f,1,"§3.2 precision: S3 CI width at n=100 (years on the age scale)",453,4.96,1
+dmaxWidthS3n100,results/w1_raw_summary.csv,scenario=S3;n=100,mean_ci_width,value,.3f,0.01,"§3.2 precision: Delta_max CI width = L_UB(0.01/yr) × CI width",453,0.050,1
+dmaxWidthS3n100pct,results/w1_raw_summary.csv,scenario=S3;n=100,mean_ci_width,value,.1f,1,"§3.2 precision: the same in percentage points (0.01 × width × 100)",453,5.0,1
+ciwS1n50,results/w1_raw_summary.csv,scenario=S1;n=50,mean_ci_width,value,.2f,1,"§3.2 null floor: S1 CI width at n=50",480,4.19,1
+ciwS1n200,results/w1_raw_summary.csv,scenario=S1;n=200,mean_ci_width,value,.2f,1,"§3.2 null floor: S1 CI width at n=200",480,2.07,1
+q95S1n50,results/study1_miss_side.csv,cell=S1-50,q95_est,value,.2f,1,"§3.2 null floor: 95th percentile of W1-hat under S1, n=50",480,4.21,1
+q95S1n100,results/study1_miss_side.csv,cell=S1-100,q95_est,value,.2f,1,"§3.2 null floor: n=100",480,2.97,1
+q95S1n200,results/study1_miss_side.csv,cell=S1-200,q95_est,value,.2f,1,"§3.2 null floor: n=200",480,2.11,1
+biasS1n100,results/w1_raw_summary.csv,scenario=S1;n=100,bias,value,.2f,1,"§3.2 summary: S1 bias at n=100",488,1.76,1
+biasS3n100,results/w1_raw_summary.csv,scenario=S3;n=100,bias,value,.3f,1,"§3.2 summary: S3 bias at n=100",488,0.051,1
+biasS4n100abs,results/w1_raw_summary.csv,scenario=S4;n=100,bias,value,.3f!a,1,"§3.2 summary: |S4 bias| at n=100 — the text carries the minus sign inside $-…$",488,0.013,1
+covRangeS3toS7N100up2dp,results/w1_raw_summary.csv,scenario=S3|S4|S5|S6|S7;n=100|200,coverage_pct,range,.2f,1,"§3.2 summary: coverage range S3–S7 at n>=100 (2 dp)",489,0.92--0.95,1
+rmseMinN200,results/w1_raw_summary.csv,n=200,rmse,min,.2f,1,"§3.2 summary: smallest RMSE at n=200 (S5)",490,0.77,1
+rmseMaxN200,results/w1_raw_summary.csv,n=200,rmse,max,.2f,1,"§3.2 summary: largest RMSE at n=200 (S1)",490,1.34,1

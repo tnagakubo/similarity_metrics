@@ -117,6 +117,23 @@ bash scripts/tests/run_tests.sh                          # regression tests for 
 Start Claude Code from the repository root: subagent memory (`memory: project`) and hook paths resolve
 against the current directory.
 
+### Pipeline (Option B, 2026-10-11): the paper is a function of protocol and data
+```bash
+python3 scripts/protocol_compile.py projects/<p>/PROTOCOL_<study>.md   # ADEMP front matter → R/<study>.R skeleton (seed, grid, MCSE, outputs)
+Rscript projects/<p>/R/<study>.R                                       # you wrote draw_sample() and the estimator only
+Rscript projects/<p>/R/make_paper_tables.R                             # single writer → paper/generated/*.tex (complete tabulars)
+Rscript scripts/make_numbers_macros.R projects/<p>/paper/numbers_registry.csv   # registry → paper/numbers_macros.tex (\numval{key})
+python3 scripts/numbers_registry.py check projects/<p>/paper/numbers_registry.csv --macros … --tex …
+python3 scripts/numbers_registry.py verify-draft … --tex …            # literal in the text vs the CSV value (finds 0.942 vs 0.943)
+bash projects/<p>/paper/build.sh && pdftotext -layout …                # a content-preserving change has a 0-line text diff
+```
+`/replicate` has Louis re-implement the estimator from the Methods text alone; `scripts/compare_results.py` compares.
+Rounding is decimal round-half-even in both R and Python (`scripts/r/numbers_registry.R`).
+
+### Cloud sessions and CI
+- Environment → **Setup script**: `bash scripts/cloud_setup.sh` (R 4.3, TeX Live, PyYAML) — then simulations, `/reproduce` and the LaTeX build run in the cloud.
+- `.github/workflows/lab-checks.yml` runs the gates on every push; `r-and-tex.yml` parses every R file, checks that generated tables and macros are current, and builds the manuscript. `scripts/ci_ratchet.sh` baselines may only decrease.
+
 Phase state lives in `projects/{project}/LAB_STATUS.md`. Member subagents are defined in
 `.claude/agents/` (persona source: `agents/*.md`); path-scoped rules in `.claude/rules/`;
 versioned principles in `memory/` (`memory/INDEX.md`).

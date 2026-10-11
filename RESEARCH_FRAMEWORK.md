@@ -2,7 +2,7 @@
 
 > *"I don't have dreams, I have goals."* — 研究を 10 の Phase と gate に分け、各 gate を Claude Code の機構で機械化する。
 > State は `projects/{project}/LAB_STATUS.md`、記録は `SUITS.md`、操作は `/phase`。
-> 作成: 2026-09-21。改訂: **2026-10-10（科学的妥当性の機構を追加 — §6–§8）**。CLAUDE.md（Rule 1–6）を上書きしない。CLAUDE.md が「何を守るか」、本書は「どの順で・何を証拠に進めるか」。
+> 作成: 2026-09-21。改訂: 2026-10-10（科学的妥当性の機構 — §6–§8）、**2026-10-11（Option B: 生成 pipeline・protocol compiler・replication・CI — §9）**。CLAUDE.md（Rule 1–6）を上書きしない。CLAUDE.md が「何を守るか」、本書は「どの順で・何を証拠に進めるか」。
 
 ---
 
@@ -54,10 +54,13 @@
 |---|---|---|
 | **CLAUDE.md** | Rule 1–6（10-10 に Rule 5 Lifecycle・Rule 6 Scientific Integrity を追加） | 憲法。本書と rules は CLAUDE.md を補う位置 |
 | **`.claude/rules/*.md`（`paths:` で範囲限定）** | 4 本: `paper-writing.md` / `r-code.md` / `suits-script.md` / **`protocol-and-results.md`**（新） | 原稿・R・脚本・研究記録を触るときだけ該当規則を注入 |
-| **Skills（`.claude/skills/*/SKILL.md`）** | 32 本。10-10 新設 5 本: `/claims` `/reproduce` `/cite-check` `/decide` `/lint-suits`。改訂 9 本: `/protocol`（ADEMP+MCSE）`/review`（構造化・on-disk）`/verify-numbers`（ledger・four-eyes）`/start`（scaffold）`/meeting`（decision record）`/phase`（機械的 gate）`/submission-check`（R1–R8）`/pre-review` `/handoff` | Phase gate と各段階の手順書 |
+| **Skills（`.claude/skills/*/SKILL.md`）** | 33 本。10-11 新設 `/replicate`。10-10 新設 5 本: `/claims` `/reproduce` `/cite-check` `/decide` `/lint-suits`。改訂 9 本: `/protocol`（ADEMP+MCSE）`/review`（構造化・on-disk）`/verify-numbers`（ledger・four-eyes）`/start`（scaffold）`/meeting`（decision record）`/phase`（機械的 gate）`/submission-check`（R1–R8）`/pre-review` `/handoff` | Phase gate と各段階の手順書 |
 | **Subagents（`.claude/agents/*.md`）** | 7 本。persona は `agents/*.md`。Louis/Jessica は `disallowedTools: Edit, Write`。Louis は `memory: project`。10-10 に scientific-method duties を各 agent に追記 | `@bg @katrina` や `/pre-review` の並列を persona・tool 範囲固定で実行 |
 | **Hooks** | 15 本（下表） | Donna の enforcement |
-| **Scripts（`scripts/`）** | **新設 6 本 + 回帰テスト**（§7） | hook と skill の両方から呼ぶ機械的検証 |
+| **Scripts（`scripts/`）** | 12 本 + R 2 本 + 回帰テスト 60 件（§7） | hook・skill・CI から呼ぶ機械的検証と生成 |
+| **CI（`.github/workflows/`）** | **新設 2 本**（10-11）: `lab-checks.yml`（tests・consistency・lint・cite・registry・ratchet・protocol dry-run）、`r-and-tex.yml`（全 R の parse、生成表と macros の鮮度、LaTeX build） | gate を advisory から **blocking** に |
+| **Cloud setup（`scripts/cloud_setup.sh`）** | **新設**（10-11）: R 4.3 + TeX Live + PyYAML。環境設定 → Setup script に登録（Tak） | cloud session で sim・再現・compile を実行できる |
+| **Quarto（`templates/paper_template.qmd`, `_quarto.yml`）** | **新設**（10-11）。`/start` が scaffold | 新論文は数値を `num()` で引く executable manuscript |
 | **Versioned memory（`memory/`）** | **13 本 + INDEX**（10-10 に 12 本を復元） | ローカル auto-memory に依存しない原則。cloud session・clone でも消えない |
 | **Templates（`templates/`）** | 18 本。10-10 新設 9 本（protocol / simulation_findings / provenance / claims / decisions / lab_status / literature_search_log / reporting_checklist / numbers_ledger_header） | 研究記録の型 |
 | **Auto memory（`~/.claude/projects/.../memory/`）** | ローカル 25 件 | Tak の feedback pattern。Phase 9 で `memory/` に反映 |
@@ -124,6 +127,10 @@ gate が揃った  → /phase next（Donna 検証、Louis risk、必要なら Je
 | S9 | **Quantify, do not decide**: 判定規則・閾値・手続きの推奨を書かない | v6 で判定の仕組みを全削除（Tak 09-25） | `memory/feedback_quantify_not_decide.md`、`paper-writing.md` |
 | S10 | **Principles are versioned**: 原則はローカル auto-memory ではなく repo の `memory/` に | 参照先 12 本が repo に無く、cloud session では原則が消えていた | `memory/INDEX.md`、`check_consistency.sh` の参照照合 |
 | S11 | **Character consistency is checked mechanically where it can be** | ラストネーム・敬語・「全部記録したわ」が再発 | `scripts/lint_suits.py` + hook `lint-suits.sh` + `/lint-suits` |
+| S12 | **Numbers are generated, never typed**（10-11）: 結果に由来する数値は registry の 1 行、原稿は `\numval{key}` / `num("key")`、表は single writer が `paper/generated/` に tabular 全体を書く。丸めは decimal half-even | 原稿 672 数値に source なし。0.9425 が機械によって 0.942 / 0.943 に割れた（formatC は binary の丸め） | `paper/numbers_registry.csv` + `scripts/numbers_registry.py` + `scripts/r/numbers_registry.R` + `scripts/make_numbers_macros.R` + `R/make_paper_tables.R` |
+| S13 | **Protocols compile**（10-11）: ADEMP の機械可読部（YAML front matter）から R の骨格（seed・grid・MCSE・出力・provenance・findings）を生成。人が書くのは data draw と推定量だけ | protocol は文書、コードは別に手書き → 乖離（prose vs code） | `scripts/protocol_compile.py` + `templates/protocol_template.md` |
+| S14 | **Replication from the Methods text**（10-11）: Louis が Methods 本文だけから推定量を再実装し、canonical と列ごとに比較 | 一度だけの `louis_independent_replication.R` | `/replicate` + `louis-replication` agent + `scripts/extract_methods.py` + `scripts/compare_results.py` |
+| S15 | **Gates block in CI**（10-11）: 全チェックを push ごとに実行。ratchet baseline は下がるだけ | hook は advisory、語っただけでも merge できた | `.github/workflows/*.yml` + `scripts/ci_ratchet.sh` + `scripts/baseline/` |
 
 ---
 
@@ -137,7 +144,14 @@ gate が揃った  → /phase next（Donna 検証、Louis risk、必要なら Je
 | `check_r_reproducibility.sh` | R スクリプトの静的 lint（seed・parallel RNG・絶対パス・sessionInfo・install.packages） | hook `check-r-reproducibility.sh`、`/reproduce`、`/submission-check` R6 |
 | `check_consistency.sh` | Phase 同期、stale LAB_STATUS、undefined `\ref`、欠けた lifecycle artifacts、未バージョンの memory 参照、SUITS 行数 | hook `session-start-context.sh`、`/phase`、`/handoff` |
 | `check_all.sh` | 上の 5 本を一度に回し、`review_response/MECHANICAL_CHECKS_{date}.md` に 1 本の報告（artifacts の有無・CLAIMS の supported/pending も） | `/submission-check`、`/handoff`、`/phase`、Donna |
-| `tests/run_tests.sh` | fixtures に対する回帰テスト（各 script の検出・除外・strict exit、hooks の発火条件）。script や hook を触ったら必ず回す | 開発時、`/handoff` |
+| `numbers_registry.py` | registry（key → CSV の source・filter・column・agg・fmt）を評価: `build` / `check`（macros ↔ registry ↔ 原稿の `\numval`）/ `verify-draft`（原稿の literal vs CSV）/ `apply`（literal → `\numval{}`）/ `value` | `/verify-numbers`、CI |
+| `r/numbers_registry.R` + `make_numbers_macros.R` | 同じ semantics の R 実装（canonical generator）。`num("key")` は Quarto 原稿の inline 用。丸めは `.num_round_dec()`（decimal half-even） | `R/make_paper_tables.R`、Quarto、CI（R vs Python 一致を `cmp`） |
+| `protocol_compile.py` | protocol の YAML front matter を検証（$n_{\mathrm{sim}}$ vs 目標 MCSE、owner、true_value）し `R/{study}.R` / provenance / findings の骨格を生成 | `/protocol`、CI（dry-run） |
+| `extract_methods.py` | 原稿から Methods（+ Appendix）だけを切り出す（comment・`\input` を除去）。clean-room replicator への入力 | `/replicate` |
+| `compare_results.py` | 2 つの CSV を key で突き合わせ、列ごとに max abs / rel diff と欠損行を報告（PASS/FAIL、markdown） | `/replicate`、`/reproduce` |
+| `ci_ratchet.sh` | numbers unsourced と R lint ❌ の件数が `scripts/baseline/` を超えたら FAIL。`--update` で現在値を baseline に | CI、Donna |
+| `cloud_setup.sh` | cloud session の Setup script（R・TeX Live・PyYAML） | 環境設定（Tak） |
+| `tests/run_tests.sh` | fixtures に対する回帰テスト 60 件（各 script の検出・除外・strict exit、丸め境界、R と Python の一致、hooks の発火条件）。script や hook を触ったら必ず回す | 開発時、`/handoff`、CI |
 
 すべて advisory（exit 0）。strict 判定は `--strict` / `STRICT=1` で `/submission-check` が使う。R が無い環境でも動く（静的解析のみ）。**Claude Code は repo root から起動する**（subagent の `memory: project` と hooks のパス解決が cwd に依存する。10-10 に Louis の memory が 3 か所に分裂していたのを統合した）。
 
@@ -154,3 +168,41 @@ gate が揃った  → /phase next（Donna 検証、Louis risk、必要なら Je
 - `/process-paper` の cleanup が `/tmp` の再帰削除だったため、安全フック `pre-bash-safety.sh` に必ず止められていた → `.claude/tmp/`（gitignored、相対パス）に変更
 - `PAPER_LOGIC.md` と `PAPER_OUTLINE_BILINGUAL.md` に STALE banner、`LAB_STATUS.md` を on-disk sync（Phase は 8 のまま、gate は再表現）
 - これらは**プロジェクトの作業**であり、本書の改訂では直していない。次セッションで `/claims init` → `/verify-numbers` → `/cite-check` → `/reproduce` → `/phase` の順に消化する
+
+### 10-11（Option B の作業で見つかった事実）
+- **丸めが機械依存だった**: S4, n=50 の coverage 0.9425（10,000 回の 9,425 回、decimal の正確な境界）が、同じ `formatC(x, "f", 3)` で Tak のマシンでは 0.942、Linux では 0.943 と印字された（binary の double は 0.9425 のわずか上）。S7, n=50 の 0.9285 も境界。registry は **decimal round-half-even** を両実装に固定し、原稿の 0.942 / 0.928 を再現する（`DECISIONS.md` D-20261011-2）
+- `build.sh` の `bibtex` が絶対パスで、Linux の TeX Live（`openout_any = p`）では .bbl を書かず引用が全て undefined になっていた → 相対パスに修正（Windows でも動く）
+- tabular の中に行だけを `\input` すると `\bottomrule` の `\noalign` が壊れる → 生成ファイルは **tabular 全体**を持つ
+- §3.2（推定の結果）の 34 数値を registry 化、3 表を生成に置換: numbers audit 672 → **526**、compile error 0・undefined 0・20 pp、`pdftotext` の本文差分 **0 行**（内容を変えずに構造だけ変えた証拠）
+- 全 R スクリプト 123 本は parse OK（CI の R job が通る前提）
+
+---
+
+## 9. Pipeline（Option B, 2026-10-11）— 論文を protocol と data の関数にする
+
+```
+PROTOCOL_{study}.md（YAML front matter = ADEMP の機械可読部 + 登録文書）
+   │  python3 scripts/protocol_compile.py            ← n_sim ≥ p(1−p)/ε² を検証、owner・true_value 必須
+   ▼
+R/{study}.R（seed・grid・per-task seeding・MCSE 付き性能指標・CSV/rds/log・sessionInfo）  ← Mike は draw_sample() と推定量だけ書く
+   │  Rscript R/{study}.R
+   ▼
+results/{study}_summary.csv（estimate + mcse）＋ results/{STUDY}_PROVENANCE.md ＋ SIMULATION_FINDINGS_{study}.md
+   │  paper/numbers_registry.csv に行（key → file・filter・column・agg・fmt）／ R/make_paper_tables.R が tabular 全体を生成
+   ▼
+paper/numbers_macros.tex（Rscript scripts/make_numbers_macros.R）＋ paper/generated/*.tex
+   │  原稿は \numval{key} と \input{generated/tab_x} だけ（Quarto なら `r num("key")`）
+   ▼
+build.sh → PDF；pdftotext の差分で「内容を変えない変更」を証明
+   │
+   ├─ gate: numbers_registry.py check（macros ↔ registry ↔ 原稿）、numbers_audit（残る literal の件数は ratchet で下がるだけ）
+   ├─ gate: /replicate — Methods 本文だけから Louis が再実装 → compare_results.py
+   ├─ gate: /reproduce — clean checkout で再実行 → compare_results.py、生成物の git diff 0
+   └─ CI: lab-checks.yml（毎 push）、r-and-tex.yml（R parse・生成物の鮮度・LaTeX build）
+```
+
+**何が変わるか**: 数値の転記という作業と事故が消える。結果を再実行すれば原稿の数値が自動で変わり、変わらなかった箇所は `pdftotext` の差分で確認できる。protocol を書くことがコードを得る最短経路になるので、事前登録が default になる。Methods の記述不足は Louis の replication で毎回露出する。
+
+**何が変わらないか**: 問いの質、臨床的判断、主張の射程は Tak と team の仕事。Louis も homage も同じモデルで、独立性は人の査読に劣る。pipeline は「正しい」を保証せず、「証拠なしに前へ進めない」ことと「同じ入力から同じ原稿が出る」ことを保証する。
+
+**残作業（project）**: 残り 526 の literal を registry へ（§3.1 identification の表と GUSTO の表が大半 — single writer の R を 2 本書く）、`/claims init`、`/replicate` を Study 2 で初回実施、Tak が `scripts/cloud_setup.sh` を環境に登録、CI の初回 green を見て `r-and-tex.yml` の `continue-on-error` を外す

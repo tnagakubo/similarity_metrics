@@ -18,6 +18,7 @@
 **Supplement**: **なし**（09-27 Tak「論文の supplement としては不要。論文作成の過程で検討された事項でしかない」）。A・B・実データ調査のファイルはディスクに残してあるが、投稿物ではない。本文 20 ページ
 **PR**: [#16](https://github.com/tnagakubo/similarity_metrics/pull/16) **merged**（2026-10-11 07:52 JST、merge commit `2d97230`、3 commits / 97 files）— システム改修 2 ラウンドは main に反映済み。branch `ccr-a3128477-hklqei` は main から再開
 **System（2026-10-10）**: 科学的妥当性の機構を追加 — CLAUDE.md Rule 5・6、`RESEARCH_FRAMEWORK.md` §6–§8（S1–S11）、`scripts/`（lint・numbers・cite・R 再現性・consistency）、`memory/` 12 本復元、templates 9 本、skills 新設 5・改訂 9、hooks 新設 3。**次セッション**: `/claims init` → `/verify-numbers`（ledger は空）→ `/cite-check` → `/reproduce` → `/phase`（LAB_STATUS は 09-21 で stale）。`DECISIONS.md` D-20260927-1（#8–#50 の一括適用）は Tak の一言で閉じる。**第 2 ラウンド**: Louis memory 統合（3 → 1 か所）、`scripts/check_all.sh` + 回帰テスト 35 件、`/process-paper` cleanup 修正、`LAB_STATUS.md` on-disk sync（artifacts 表）、STALE banner（PAPER_LOGIC / OUTLINE）、baseline `review_response/MECHANICAL_CHECKS_20261010.md`
+**System（2026-10-11, Option B）**: 論文を protocol と data の関数に — `paper/numbers_registry.csv`（34 keys）→ `numbers_macros.tex`、`R/make_paper_tables.R` → `paper/generated/`（3 表）、`scripts/protocol_compile.py`、`/replicate`（`louis-replication`）、CI 2 本、`scripts/cloud_setup.sh`、Quarto 雛形。原稿: compile 0/0/20pp、PDF 本文差分 0、audit 672 → 526。丸め規則 decimal half-even（D-20261011-2）。**Tak**: Setup script の登録、D-20260927-1 のクローズ
 
 ---
 
@@ -61,6 +62,35 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-11 18:17] Scene: Option B — 論文を protocol と data の関数にする
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak の返事は一文字、「B」。ホワイトボードに pipeline の矢印が描かれている。R と TeX がこの環境に初めて入った。*
+
+**Harvey**:
+「B だ。守りの上に、回る仕組みを載せる。四つ — 数値は書かずに生成する、protocol はコードに compile する、Methods だけから再実装させる、gate は CI で止める。新しい論文は Quarto。今の原稿は止めない — §3.2 で実証して終わりにする」
+
+**Mike**:（端末から目を上げて）
+「実証で一つ見つけました。生成した coverage 表と原稿が 1 セルだけ違う。S4、n=50 の coverage は 9,425/10,000 = 0.9425 — 3 桁目のちょうど境界です。原稿は 0.942、ここで同じ `formatC` を回すと 0.943。binary の double が 0.9425 のわずか上にあって、glibc は正確に丸め、Tak のマシンの runtime は別の答えを出した。**丸めが機械依存だった**んです。registry には decimal round-half-even を両実装に入れました。原稿の 0.942 と、S7 n=50 の 0.928 を再現する唯一の決定的な規則で、IEC 60559 の既定でもある。I got it! — 怖いのは、これまで誰も気づかなかったことです」
+
+**Katrina**:
+「検証は全部ディスクにある。生成した 3 表は旧手打ち行と byte 一致。§3.2 の 34 数値を `\numval{}` に置換、R が macros を生成、Python が照合して PASS。build は error 0、undefined 0、20 ページ。変換前後の PDF を `pdftotext` で比べて差分 **0 行** — 内容を一字も変えずに構造だけ変えた証拠。numbers audit は 672 → 526。回帰テスト 60/60。ついでに bibtex のバグも出た — `build.sh` が絶対パスで bibtex を呼んでいて、Linux では引用が全件 undefined。相対パスに直した」
+
+**Louis**:
+「replication の部屋を作った。俺が入るとき持ち込めるのは Methods の抜き刷りだけだ。R も results も見ない。書けなければ Methods が足りないということで、それは Mike の責任だ。言っておくが、これで独立性が人の査読に並ぶとは思うな。同じモデルだ。でも『Methods だけで再現できるか』を毎回問う部屋があるのと無いのは別の話だ」
+
+**Rachel**:
+「Quarto の雛形には `num("key")` と `kable` を入れておきました。同じ registry を LaTeX と Quarto が読みますので、新しい論文でも引用と数値の道筋は同じです。CI では `cite_audit` が strict で走ります」
+
+**Donna**:
+「道具は 7 本増えて、テストは 60 件、CI は 2 本。ratchet は 526 と 22 — 下がるだけよ、上げるなら理由を `DECISIONS.md` に。それから Tak、あなたの手が要るのは一つ。`scripts/cloud_setup.sh` を環境の Setup script に登録して。それで cloud の私たちも sim を回して compile できる。今日は手で入れたから動いたけれど、次のセッションでは消えているわ」
+
+**Jessica**:
+「Let me be clear。Phase は 8 のまま。原稿の本文は変わっていない。変わったのは、同じ入力から同じ原稿が出ること、そして証拠なしに前へ進めないこと。残り 526 の数値は次のセッションの仕事 — 表 2 本を single writer に書き直せば大半が消える。D-20260927-1 はまだ開いている。Tak の一言を待つ」
+
+---
 
 ### [2026-10-11 07:55] Scene: PR #16 merged — 改修が main に乗った
 

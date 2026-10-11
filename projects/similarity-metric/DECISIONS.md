@@ -115,3 +115,41 @@
 - **Reversibility**: CLAUDE.md の Rule 5・6 は Tak の拒否権下（framework §5 の記載どおり CLAUDE.md は Tak の文書）。hook はすべて advisory（exit 0）で、不要なら settings.json から外せる
 - **Affected artifacts**: CLAUDE.md、RESEARCH_FRAMEWORK.md、README.md、`.claude/{hooks,skills,rules,agents}`、`scripts/`、`memory/`、`templates/`、本 file、`CLAIMS.md`、`results/NUMBERS_LEDGER.csv`
 - **Status**: active
+
+### D-20261011-1: 研究システムを「論文 = protocol と data の関数」の pipeline にする（Option B）
+
+- **Date**: 2026-10-11  **Raised by**: Tak（「劇的に科学的研究が進むような改修はできるか」）  **Decided by**: Tak（「B」）
+- **Question**: 守りの機構（10-10）の上に、研究サイクルを速く・自動で・証拠付きで回す梃子をどこまで入れるか
+- **Options**:
+  - A（最小）: 数値のマクロ化 + CI（R なし）。半日〜1 日。traceability だけ片付く
+  - B（構造）: 数値の生成（registry / single-writer 表）、protocol compiler、clean-room replication、R/TeX を入れた CI と cloud 環境、新論文は Quarto。システムの種類が変わる
+  - C（折衷）: B のうち Quarto 移行だけ次の論文から
+- **Decision**: B
+- **Reasons**: Harvey「劇的に進むのは守りではなく、一回の研究サイクルが安く・速く・自動で回り、一周ごとに証拠が増るとき」。Jessica「劇的を約束するのは一つ — 数値を手で書かなくなること。構造の変化で、努力の変化ではない」。Louis の留保（アイデアの質・独立性・臨床判断は速くならない）は `RESEARCH_FRAMEWORK.md` §9「何が変わらないか」に明記
+- **Evidence / references**: `RESEARCH_FRAMEWORK.md` §9・§6 S12–S15、`scripts/numbers_registry.py` / `scripts/r/numbers_registry.R` / `scripts/make_numbers_macros.R` / `scripts/protocol_compile.py` / `scripts/extract_methods.py` / `scripts/compare_results.py` / `scripts/ci_ratchet.sh` / `scripts/cloud_setup.sh`、`.github/workflows/`、`templates/paper_template.qmd`、`/replicate`。§3.2 で実証: 34 数値を registry 化、3 表を生成に置換、compile error 0、`pdftotext` 差分 0 行、numbers audit 672 → 526、回帰テスト 60/60
+- **Reversibility**: `\numval{key}` は `numbers_macros.tex` の値で機械的に literal に戻せる。CI は workflow を消せば止まる。原稿の本文は 1 文字も変えていない（PDF テキスト同一）
+- **Affected artifacts**: CLAUDE.md Rule 6・Technical Standards、`RESEARCH_FRAMEWORK.md`、README、skills（`/protocol` `/verify-numbers` `/start` `/reproduce` `/replicate`）、rules、agents、`paper/per_em_W1_wiley.tex`（§3.2 と preamble）、`paper/numbers_registry.csv`、`paper/numbers_macros.tex`、`paper/generated/`、`R/make_paper_tables.R`、`paper/build.sh`
+- **Status**: active
+
+### D-20261011-2: 原稿に印字する数値の丸めは decimal round-half-even に固定する
+
+- **Date**: 2026-10-11  **Raised by**: Katrina（生成した coverage 表と原稿が 1 セル違った）  **Decided by**: Harvey（Mike・Katrina の検証後）
+- **Question**: S4, n = 50 の coverage は 9,425 / 10,000 = 0.9425 で 3 桁目の正確な境界。原稿（09-21 に Tak のマシンで `formatC(x, "f", 3)` が生成）は 0.942、本環境（Linux, R 4.3.3）の同じコードは 0.943。どちらを正とするか、規則は何か
+- **Options**:
+  - A: `formatC` / `sprintf` のまま（binary double を丸める → 0.9425 の double は 0.9425 のわずか上なので glibc では 0.943、別の runtime では 0.942。**機械依存**）
+  - B: decimal round-half-up（0.943、0.929）— 原稿の 2 セルが変わる
+  - C: decimal round-half-even（IEC 60559 の既定、「偶数へ」）— 0.942、0.928。原稿を再現する
+- **Decision**: C。15 有効桁の decimal 表現に対して half-even。R と Python に同一実装（`.num_round_dec` / `round_dec`）、回帰テスト 9 値で一致を確認
+- **Reasons**: 原稿の既存表示（0.942、S7 n=50 の 0.928）と一致する唯一の決定的規則であり、IEEE/IEC の既定と同じ。規則を 1 つ決めて両実装に置くことが、どの機械で生成しても同じ原稿が出る条件
+- **Evidence / references**: `scripts/r/numbers_registry.R::.num_round_dec`、`scripts/numbers_registry.py::round_dec`、`scripts/tests/run_tests.sh`「tie 0.9425 → 0.942」、`paper/generated/tab_coverage.tex`（原稿の旧行と byte 一致）
+- **Reversibility**: 規則を変えるときは本 entry を supersede し、全生成物を再生成して `pdftotext` 差分で影響セルを列挙する
+- **Affected artifacts**: `R/make_paper_tables.R`、registry 両実装、Discussion には影響なし。**付記（Mike）**: coverage は 10,000 回の割合なので 4 桁目が 5 のセル（S4 n=50、S7 n=50）は 3 桁表示で必ず境界に乗る。4 桁表示にするか否かは Tak の判断（現状維持）
+- **Status**: active
+
+### D-20261011-3: build と生成表の規約（bibtex の相対パス、tabular 全体の生成）
+
+- **Date**: 2026-10-11  **Raised by**: Katrina  **Decided by**: Harvey
+- **Question**: Linux で初めて compile したら (a) 引用が全件 undefined、(b) 行だけを `\input` した表で `Misplaced \noalign`
+- **Decision / Reasons**: (a) `build.sh` の `bibtex` を相対パスに — TeX Live は `openout_any = p` で絶対パスの .bbl/.blg を書かない。Windows でも動く。(b) 生成ファイルは `\begin{tabular}` 〜 `\end{tabular}` を丸ごと持ち、原稿は 1 行の `\input{generated/tab_x}`。表の構造（列指定・見出し・罫線）も single writer の責任にする
+- **Evidence / references**: `paper/build.sh`、`R/make_paper_tables.R`、build log（error 0・undefined 0・20 pp）
+- **Status**: active

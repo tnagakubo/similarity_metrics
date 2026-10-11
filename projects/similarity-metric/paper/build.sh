@@ -11,7 +11,7 @@ cd "$SCRIPT_DIR" || exit 1
 TARGET="per_em_W1_wiley"
 
 pdflatex -interaction=nonstopmode "$SCRIPT_DIR/${TARGET}.tex"
-bibtex "$SCRIPT_DIR/${TARGET}"
+bibtex "${TARGET}"   # relative: TeX Live refuses to write .bbl/.blg for an absolute path (openout_any = p); cwd is already paper/
 pdflatex -interaction=nonstopmode "$SCRIPT_DIR/${TARGET}.tex"
 pdflatex -interaction=nonstopmode "$SCRIPT_DIR/${TARGET}.tex"
 
