@@ -1,0 +1,13 @@
+"set","group_pair","true_W1"
+"Set1_Gaussian","A-B",8.006856
+"Set1_Gaussian","A-C",7.990302
+"Set1_Gaussian","B-C",10.402544
+"Set2_LogNormal","A-B",7.991804
+"Set2_LogNormal","A-C",13.988305
+"Set2_LogNormal","B-C",16.408444
+"Set3_Mixture","A-B",3.018577
+"Set3_Mixture","A-C",1.267842
+"Set3_Mixture","B-C",3.435909
+"Set4_Extremes","A-B",3.028696
+"Set4_Extremes","A-C",6.000542
+"Set4_Extremes","B-C",3.016411

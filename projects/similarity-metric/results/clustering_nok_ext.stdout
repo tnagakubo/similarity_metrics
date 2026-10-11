@@ -1,0 +1,52 @@
+== Pooled-region formation WITHOUT oracle k == 
+reps=2000  truth_n=1000000  n grid=600,1000,1500,2000  started=2026-09-27 15:08:30 
+Rule A: silhouette k-hat, average linkage, scored by ARI (all methods) 
+Rule B: clinical tau cut, COMPLETE linkage, scored by violation/sensitivity (W1) 
+rosters and distances sourced from clustering_simulation.R (identical constructions) 
+
+-- Set1_Gaussian: true between-group W1 -- 
+       A       B       C
+A 0.0000  8.0069  7.9903
+B 8.0069  0.0000 10.4025
+C 7.9903 10.4025  0.0000 
+   tau grid: 3.995, 7.999, 9.205, 11.963 
+[Set1_Gaussian n=600] (113s)  W1=1.000(k=3) KS=1.000(k=3) RV1=0.522(k=2) RV2=0.999(k=3) RV3=0.761(k=4) SMD=0.521(k=2) 
+[Set1_Gaussian n=1000] (140s)  W1=1.000(k=3) KS=1.000(k=3) RV1=0.522(k=2) RV2=0.999(k=3) RV3=0.762(k=4) SMD=0.521(k=2) 
+[Set1_Gaussian n=1500] (133s)  W1=1.000(k=3) KS=1.000(k=3) RV1=0.522(k=2) RV2=1.000(k=3) RV3=0.753(k=5) SMD=0.521(k=2) 
+[Set1_Gaussian n=2000] (150s)  W1=1.000(k=3) KS=1.000(k=3) RV1=0.522(k=2) RV2=1.000(k=3) RV3=0.753(k=5) SMD=0.521(k=2) 
+
+-- Set2_LogNormal: true between-group W1 -- 
+        A       B       C
+A  0.0000  7.9918 13.9883
+B  7.9918  0.0000 16.4084
+C 13.9883 16.4084  0.0000 
+   tau grid: 3.996, 10.990, 15.198, 18.870 
+[Set2_LogNormal n=600] (101s)  W1=0.997(k=3) KS=0.987(k=3) RV1=0.516(k=2) RV2=0.982(k=3) RV3=0.944(k=3) SMD=0.513(k=2) 
+[Set2_LogNormal n=1000] (116s)  W1=1.000(k=3) KS=1.000(k=3) RV1=0.521(k=2) RV2=0.992(k=3) RV3=0.967(k=3) SMD=0.519(k=2) 
+[Set2_LogNormal n=1500] (147s)  W1=1.000(k=3) KS=1.000(k=3) RV1=0.522(k=2) RV2=0.996(k=3) RV3=0.975(k=3) SMD=0.521(k=2) 
+[Set2_LogNormal n=2000] (149s)  W1=1.000(k=3) KS=1.000(k=3) RV1=0.522(k=2) RV2=0.997(k=3) RV3=0.983(k=3) SMD=0.521(k=2) 
+
+-- Set3_Mixture: true between-group W1 -- 
+       A      B      C
+A 0.0000 3.0186 1.2678
+B 3.0186 0.0000 3.4359
+C 1.2678 3.4359 0.0000 
+   tau grid: 0.634, 2.143, 3.227, 3.951 
+[Set3_Mixture n=600] (103s)  W1=0.524(k=2) KS=0.522(k=2) RV1=-0.003(k=2) RV2=0.015(k=2) RV3=0.277(k=2) SMD=-0.003(k=2) 
+[Set3_Mixture n=1000] (105s)  W1=0.538(k=2) KS=0.523(k=2) RV1=0.004(k=2) RV2=0.023(k=2) RV3=0.300(k=2) SMD=0.004(k=2) 
+[Set3_Mixture n=1500] (123s)  W1=0.572(k=2) KS=0.526(k=2) RV1=-0.001(k=2) RV2=0.019(k=2) RV3=0.309(k=4) SMD=-0.001(k=2) 
+[Set3_Mixture n=2000] (142s)  W1=0.646(k=2) KS=0.527(k=2) RV1=-0.001(k=2) RV2=0.019(k=2) RV3=0.313(k=4) SMD=-0.001(k=2) 
+
+-- Set4_Extremes: true between-group W1 -- 
+       A      B      C
+A 0.0000 3.0287 6.0005
+B 3.0287 0.0000 3.0164
+C 6.0005 3.0164 0.0000 
+   tau grid: 1.508, 3.023, 4.515, 6.901 
+[Set4_Extremes n=600] (94s)  W1=0.922(k=3) KS=0.361(k=2) RV1=0.024(k=2) RV2=0.434(k=3) RV3=0.215(k=2) SMD=0.018(k=2) 
+[Set4_Extremes n=1000] (112s)  W1=0.986(k=3) KS=0.775(k=4) RV1=0.019(k=2) RV2=0.462(k=6) RV3=0.217(k=2) SMD=0.017(k=2) 
+[Set4_Extremes n=1500] (155s)  W1=0.995(k=3) KS=0.916(k=3) RV1=0.018(k=2) RV2=0.485(k=6) RV3=0.220(k=2) SMD=0.015(k=2) 
+[Set4_Extremes n=2000] (179s)  W1=0.998(k=3) KS=0.962(k=3) RV1=0.019(k=2) RV2=0.497(k=6) RV3=0.221(k=2) SMD=0.012(k=2) 
+
+[save] clustering_nok_{silhouette,clinical,truth}_ext.csv 
+[done] finished=2026-09-27 15:42:53 

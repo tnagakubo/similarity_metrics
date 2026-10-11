@@ -5,3 +5,5 @@
 - [Prose vs code metric & roster subset](feedback_prose_vs_code_metric_and_roster_subset.md) — false-pooling 定義がコードと別物 / roster の部分引用 / AUC ラベル vs population 定義
 - [Sim/App seam holes](feedback_sim_app_seam_holes.md) — σ=10 に years をつける / n≥100 と 5x margin の矛盾 / IQR で EM 間比較 / partner と distance のラベル混同 / near-null で upper CL
 - [Abstract compression & back matter](feedback_abstract_compression_and_backmatter.md) — abstract が Prop 仮定・判定基準・body 免責を落とす / Data availability と SI ファイル実体の乖離
+- [No-cut prose & sim scope leak](feedback_nocut_prose_and_sim_scope_leak.md) — uncut dendrogram 散文が cutree(k) を語る / unresolved partner を closest と呼ぶ / n=100 限定句が n=2000 に漏れる
+- [Competitor-removal residue](feedback_competitor_removal_residue.md) — 削除した比較手法が支えていた主張の残存 / 単一手法で複数形一般化 / 引用元の scope caveat 消失

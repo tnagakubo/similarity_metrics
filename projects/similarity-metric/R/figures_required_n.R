@@ -48,7 +48,10 @@ suppressPackageStartupMessages({ library(ggplot2); library(dplyr); library(readr
 
 # Shared with figures_selection.R -- RV2/RV3 are labelled "RV", never
 # "Komiyama": the chapter proposes RV1 only (EXISTING_METHODS_AND_NOVELTY.md).
-METHOD_LEVELS <- c("W1", "KS", "RV1", "RV2", "RV3", "SMD")
+# 2026-09-27 (Tak): RV1-RV3 removed from the paper -- the chapter introduces one
+# example approach, not an evaluated method, and (mean, SD) Euclidean distances
+# have no principled weighting. The paper compares W1, KS and SMD only.
+METHOD_LEVELS <- c("W1", "KS", "SMD")
 METHOD_LABELS <- c(W1 = "W[1]", KS = "KS", RV1 = "'RV: mean (Ch.4)'",
                    RV2 = "'RV: +SD'", RV3 = "'RV: +SD, skew'", SMD = "'SMD'")
 FAMILY_LABELS <- c(Set1_Gaussian  = "Set 1: Gaussian world",

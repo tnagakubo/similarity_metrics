@@ -103,7 +103,22 @@ check("R16 13th-smallest age; CI [1.16, 2.47]", c(ra[["R16"]], round(p$ci_lower_
 check("R6 9th-smallest age 0.91", ra[["R6"]], 9)
 check("R6 SBP CI [2.06, 4.77]", round(c(p$ci_lower_sysbp[p$R=="R6"], p$ci_upper_sysbp[p$R=="R6"]), 2), c(2.06, 4.77))
 check("R2 second-largest age, smallest SBP", c(ra[["R2"]], rs[["R2"]]), c(14, 1))
-check("R9 4th-smallest age, largest SBP", c(ra[["R9"]], rs[["R9"]]), c(4, 15))
+check("R9 among six smallest age (unresolved), largest SBP", c(ra[["R9"]] <= 6, rs[["R9"]]), c(1, 15))
+# 2026-09-27: Table 5 rank columns (unresolved distances share the range 1--6 / 1)
+tex5 <- readLines("paper/per_em_W1_wiley.tex", encoding = "UTF-8")
+j0 <- grep("label{tab:gusto_nabcd}", tex5, fixed = TRUE); j1 <- j0 + grep("^\\\\bottomrule", tex5[j0:length(tex5)])[1]
+r5 <- grep("^R[0-9]+ +&", tex5[j0:j1], value = TRUE)
+cells <- t(sapply(strsplit(sub("\\\\\\\\\\s*$", "", r5), "&"), trimws))
+rid <- cells[, 1]
+exp_rank <- function(w, un) { r <- rank(w); ifelse(un, NA, r) }
+ua_set <- p$R %in% ua; us_set <- p$R %in% us
+ea <- exp_rank(p$W1_age, ua_set)[match(rid, p$R)]; es <- exp_rank(p$W1_sysbp, us_set)[match(rid, p$R)]
+ga <- cells[, 4]; gs <- cells[, 6]
+okA <- all(ifelse(is.na(ea), ga == "1--6$^\\dagger$", ga == as.character(ea)))
+okS <- all(ifelse(is.na(es), gs == "1$^\\dagger$", gs == as.character(es)))
+check("Table 5 age ranks match W1 order (unresolved share 1--6)", okA, TRUE)
+check("Table 5 SBP ranks match W1 order (unresolved R2 = 1)", okS, TRUE)
+check("unresolved age distances are exactly the six smallest", all(rank(p$W1_age)[ua_set] <= 6), TRUE)
 
 # ---- L* table ----------------------------------------------------------------
 l <- read.csv("results/gusto_lstar_intervals.csv")
@@ -125,6 +140,8 @@ dag_age <- sub(" .*", "", rows[grepl("^R[0-9]+ & [0-9.]+\\$\\^\\\\dagger", rows)
 dag_sbp <- sub(" .*", "", rows[grepl("^R[0-9]+ & [0-9.]+(\\$\\^\\\\dagger\\$)? & [0-9.]+\\$\\^\\\\dagger", rows)])
 check("daggers (age) = unresolved age distances", sort(dag_age), sort(ua))
 check("daggers (SBP) = unresolved SBP distances", dag_sbp, us)
+
+# (W1 dendrogram checks removed 2026-09-27: clustering is no longer reported in the paper.)
 
 # ---- Discussion (2026-09-27: the real-data survey supplement was dropped; ----
 # ---- the two Discussion statements are carried by the GUSTO-I application) --

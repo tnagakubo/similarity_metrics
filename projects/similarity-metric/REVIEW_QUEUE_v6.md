@@ -78,3 +78,9 @@ Tak 指示「Harvey の推奨で修正していき、すべての段落レビュ
 7. Supplement（09-27 Tak「あまり付けたくない」）→ A・B を外し、実データ調査（旧 C）1 本を Supporting Information として残した。0 本にする案は、09-26 の決定を覆すため Tak の判断に残す
 8. Supplement ゼロ（09-27 Tak「論文作成の過程で検討された事項でしかない」）→ 実データ調査も外した。Discussion の 2 文は GUSTO-I の 15 パートナーの数値（Spearman −0.30、0.90 / 0.95、SD 比 1.11）で支え直し、ゲートで照合した
 9. Study の番号を入れ替えた（09-27 Tak）→ Study 1 = identification、Study 2 = estimation。\label とスクリプト名は旧番号のまま
+10. 論文の流れを変更（09-27 Tak「シミュレーションで正しく併合地域を選べる手法を特定し、GUSTO-I に適用する」）
+   - 選択は順位付けまで。Table 5 に順位列を足した
+   - クラスタリングは延長シミュレーションを事前登録して実行した。群の数を推定する段は Set 3 で基準に届かず、事例は樹形図のみで切らない
+   - #10・#11・#14・#20・#21・#41・abstract・Introduction を開け直した。Louis の 19 項目を反映
+11. RV1–RV3 を外した（09-27 Tak）。比較する物差しは W₁・KS・SMD の 3 つ。Komiyama は「一例の紹介」（§4.6.1 "one of the approaches is introduced"）で、比較しない。図 2、表 2・3、§3.1、Introduction、Discussion、abstract を修正し、Louis の 10 項目を反映
+12. クラスタリングを本文から外した（09-27 Tak「不要」「Discussion にも残さない」）。シミュレーションは選択課題だけ。19 ページ

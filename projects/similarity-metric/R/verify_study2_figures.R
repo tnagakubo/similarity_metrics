@@ -261,6 +261,63 @@ check("RV1 sym_severity AUC flat 0.61-0.63 across grid",
       all(abs(sel$value[sel$set == "Set4_Extremes" & sel$method == "RV1" & sel$measure == "auc" &
                         sel$type == "sym_severity"] - 0.62) <= 0.013), TRUE)
 
+# ---- J. estimated-k extension (PROTOCOL_silhouette_extension.md) ------------
+say("\n-- J. estimated-k clustering at n = 600-2,000 --")
+nx <- unique(read.csv("results/clustering_nok_silhouette_ext.csv"))
+gx <- function(set, m, col) { v <- nx[[col]][nx$set == set & nx$n == 2000 & nx$method == m]; stopifnot(length(v) == 1); v }
+s124 <- c("Set1_Gaussian", "Set2_LogNormal", "Set4_Extremes")
+check("W1 ARI at n=2000 in Sets 1, 2, 4: 0.998-1.000",
+      round(range(vapply(s124, function(s) gx(s, "W1", "ari"), numeric(1))), 3), c(0.998, 1.000))
+check("W1 P(k-hat=3) at n=2000 in Sets 1, 2, 4: 98.6-100%",
+      round(range(vapply(s124, function(s) gx(s, "W1", "p_k_correct"), numeric(1))) * 100, 1), c(98.6, 100))
+check("Set 3 W1 at n=2000: P(k-hat=3) 26%, ARI 0.646",
+      c(round(gx("Set3_Mixture", "W1", "p_k_correct") * 100), round(gx("Set3_Mixture", "W1", "ari"), 3)), c(26, 0.646))
+check("Set 3 modal k-hat = 2 for W1 at every extended n",
+      all(nx$k_hat_mode[nx$set == "Set3_Mixture" & nx$method == "W1"] == 2), TRUE)
+check("Set 3 at n=2000: W1 has the highest ARI of any measure",
+      names(which.max(setNames(nx$ari[nx$set == "Set3_Mixture" & nx$n == 2000],
+                               nx$method[nx$set == "Set3_Mixture" & nx$n == 2000]))), "W1")
+allc <- unique(rqs$set)
+w1r <- vapply(allc, function(cl) g_rqs(cl, "W1", "required_n"), numeric(1))
+ksr <- vapply(allc, function(cl) g_rqs(cl, "KS", "required_n"), numeric(1))
+check("W1 and KS reach selection AUC 0.9 in every cell (Sets 1-4)", all(!is.na(w1r) & !is.na(ksr)), TRUE)
+check("W1 needs fewer n than KS in every cell but bulk_shift (Sets 1-4)", names(which(w1r >= ksr)), "Set4_Extremes / bulk_shift")
+check("Set 3 W1 minus KS ARI (estimated k) at n=2000 = +0.119",
+      gx("Set3_Mixture", "W1", "ari") - gx("Set3_Mixture", "KS", "ari"), 0.119, 3)
+check("Set 3 n=100: near-zero-ARI measures hit k=3 at least as often as W1 (text scoped to n=100)",
+      g_nok("Set3_Mixture", "RV1", "p_k_correct") >= g_nok("Set3_Mixture", "W1", "p_k_correct"), TRUE)
+check("protocol criterion (all four worlds ARI>=0.8 & P>=0.8) NOT met -> no-cut branch",
+      all(vapply(c(s124, "Set3_Mixture"), function(s) gx(s, "W1", "ari") >= 0.8 && gx(s, "W1", "p_k_correct") >= 0.8, logical(1))), FALSE)
+
+# ---- K. three-measure text (2026-09-27: RV1-RV3 removed from the paper) ------
+say("\n-- K. three measures (W1, KS, SMD) --")
+smd_st <- rqs[rqs$method == "SMD" & rqs$threshold == 0.9, ]
+check("SMD blind in 7 of 13 selection cells", c(sum(smd_st$status == "blind"), nrow(smd_st)), c(7, 13))
+check("SMD blind cells = all Set 3, Set 4 sym_severity/sym_prevalence, Set 1 scale, Set 2 shape",
+      sort(smd_st$set[smd_st$status == "blind"]),
+      sort(c(paste0("Set3_Mixture / ", c("shape_sym", "shape_skew", "combined")),
+             "Set4_Extremes / sym_severity", "Set4_Extremes / sym_prevalence",
+             "Set1_Gaussian / scale", "Set2_LogNormal / shape")))
+tb <- c("Set4_Extremes/sym_severity", "Set4_Extremes/sym_prevalence", "Set3_Mixture/combined",
+        "Set3_Mixture/shape_skew", "Set3_Mixture/shape_sym", "Set1_Gaussian/scale", "Set2_LogNormal/shape")
+av <- unlist(lapply(tb, function(cl) { z <- strsplit(cl, "/")[[1]]
+  sel$value[sel$set == z[1] & sel$method == "SMD" & sel$measure == "auc" & sel$type == z[2]] }))
+check("SMD AUC in all seven blind cells within 0.49-0.51 over the full grid", round(range(av), 2) >= 0.49 & round(range(av), 2) <= 0.51, c(TRUE, TRUE))
+check("clustering (k supplied) SMD ARI at n=2000: Set 3 0.001, Set 4 0.014",
+      round(c(g_ari("Set3_Mixture", 2000, "SMD"), g_ari("Set4_Extremes", 2000, "SMD")), 3), c(0.001, 0.014))
+check("clustering (k supplied) SMD plateau 0.46 in Sets 1 and 2",
+      round(c(g_ari("Set1_Gaussian", 2000, "SMD"), g_ari("Set2_LogNormal", 2000, "SMD")), 2), c(0.46, 0.46))
+check("silhouette n=100 Set 2: KS 0.670 vs W1 0.621",
+      round(c(g_nok("Set2_LogNormal", "KS", "ari"), g_nok("Set2_LogNormal", "W1", "ari")), 3), c(0.670, 0.621))
+pk3 <- function(s) max(vapply(c("W1", "KS", "SMD"), function(m) g_nok(s, m, "p_k_correct"), numeric(1)))
+check("highest P(k-hat=3) at n=100 among W1/KS/SMD: 0.209 (Set 3), 0.218 (Set 4)",
+      round(c(pk3("Set3_Mixture"), pk3("Set4_Extremes")), 3), c(0.209, 0.218))
+check("Set 3 n=100: SMD hits k=3 more often than W1 (0.21 vs 0.13; W1 is 0.1325, a rounding tie)",
+      round(c(g_nok("Set3_Mixture", "SMD", "p_k_correct"), g_nok("Set3_Mixture", "W1", "p_k_correct")), 2), c(0.21, 0.13))
+check("modal k-hat = 2 for W1, KS, SMD in Sets 3 and 4 at n=100",
+      all(vapply(c("Set3_Mixture", "Set4_Extremes"), function(s) all(vapply(c("W1", "KS", "SMD"),
+          function(m) g_nok(s, m, "k_hat_mode"), numeric(1)) == 2), logical(1))), TRUE)
+
 # ---- H. design constants quoted in prose ------------------------------------
 say("\n-- H. design constants --")
 # The recorded note said "5,000-10,000 / 2,000-3,000 reps" and "9-11 candidates";
