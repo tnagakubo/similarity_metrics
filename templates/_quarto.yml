@@ -1,0 +1,10 @@
+# _quarto.yml — place in projects/{project}/paper/ next to the .qmd (copied by /start).
+project:
+  type: default
+  output-dir: output
+execute:
+  freeze: auto
+format:
+  pdf:
+    keep-tex: true
+    cite-method: natbib     # journal classes (e.g. Wiley NJD) expect natbib; switch to citeproc if the class does not

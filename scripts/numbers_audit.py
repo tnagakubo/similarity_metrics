@@ -83,6 +83,13 @@ def decimals(s: str) -> int:
     return len(s.split(".")[1]) if "." in s else 0
 
 
+def round_dec(x: float, dp: int) -> float:
+    """The lab's one rounding rule (decimal round-half-even on the 15-significant-digit value; see
+    scripts/numbers_registry.py::round_dec and DECISIONS D-20261011-2) — 0.9425 → 0.942, never 0.943."""
+    from decimal import Decimal, ROUND_HALF_EVEN
+    return float(Decimal(format(x, ".15g")).quantize(Decimal(1).scaleb(-dp), rounding=ROUND_HALF_EVEN))
+
+
 def load_ledger(path: Path):
     rows = []
     if not path or not path.exists():
@@ -98,6 +105,9 @@ def load_ledger(path: Path):
 
 
 def match_ledger(norm: str, ledger):
+    """A token is sourced by a ledger row when the two values are equal, or when the LEDGER value — recorded at
+    higher precision — rounds to the token at the token's own precision (ledger 0.9425, text 0.943). Never the other
+    way round: a coarse design constant (0.5, 0.9, 1.0) must not absorb nearby results (0.46, 0.862, 0.95)."""
     for r in ledger:
         if r["_norm"] == norm:
             return r
@@ -105,12 +115,13 @@ def match_ledger(norm: str, ledger):
         f = float(norm)
     except ValueError:
         return None
+    dec_tok = decimals(norm)
     for r in ledger:
         try:
             lv = float(r["_norm"])
         except ValueError:
             continue
-        if abs(f - lv) < 1e-9 or (r["_dec"] > 0 and round(f, r["_dec"]) == lv):
+        if abs(f - lv) < 1e-9 or (r["_dec"] > dec_tok and abs(round_dec(lv, dec_tok) - f) < 1e-9):
             return r
     return None
 
@@ -133,8 +144,24 @@ def in_math_segments(line: str):
     return segs
 
 
+QMD_CHUNK_RE = re.compile(r"^```\{.*?^```\s*$", re.S | re.M)
+QMD_INLINE_RE = re.compile(r"`r [^`]*`|`\{r\}[^`]*`")
+QMD_FRONT_RE = re.compile(r"\A---\s*\n.*?\n---\s*\n", re.S)
+NUMVAL_USE_RE = re.compile(r"\\numval\{[A-Za-z0-9.-]+\}")
+
+
 def extract(tex_path: Path):
     text = tex_path.read_text(encoding="utf-8", errors="replace")
+    if tex_path.suffix.lower() == ".qmd":
+        # Quarto: numbers inside R chunks / inline `r …` are computed, hence sourced by construction.
+        # Blank them out (keep line count) so only typed literals in prose are reported.
+        def blank(m):
+            return "\n" * m.group(0).count("\n")
+        text = QMD_FRONT_RE.sub(blank, text)
+        text = QMD_CHUNK_RE.sub(blank, text)
+        text = QMD_INLINE_RE.sub(" ", text)
+    # \numval{key} is a registry lookup → sourced by construction
+    text = NUMVAL_USE_RE.sub(" ", text)
     lines = text.splitlines()
     # skip preamble
     body_start = 0
@@ -192,6 +219,7 @@ def main():
     ap.add_argument("tex")
     ap.add_argument("--ledger", default=None)
     ap.add_argument("--draft-ledger", default=None)
+    ap.add_argument("--draft-registry", default=None, help="write a numbers_registry.csv skeleton (key=TODO, line/token/occ filled) for Mike to source")
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--strict", action="store_true")
     args = ap.parse_args()
@@ -237,6 +265,23 @@ def main():
                 w.writerow([f["token"], f"L{f['line']}: {f['context']}", "", "", "", "", ""])
         print(f"\nDraft ledger written: {out} ({len(seen)} rows). Fill source_file/source_locator; "
               f"verifier must differ from producer (four-eyes).")
+    if args.draft_registry:
+        out = Path(args.draft_registry)
+        # occurrence index of the same token on the same line
+        seen_on_line = {}
+        with out.open("w", newline="", encoding="utf-8") as fh:
+            w = csv.writer(fh)
+            w.writerow(["key", "source_file", "filter", "column", "agg", "fmt", "scale", "note", "line", "token", "occ"])
+            for f, _ in unsourced:
+                tok = f["token"].replace("\\%", "").strip()
+                k = (f["line"], tok)   # literal token, as numbers_registry.apply searches for it (not the normalised value)
+                seen_on_line[k] = seen_on_line.get(k, 0) + 1
+                dec = len(tok.split(".")[1]) if "." in tok else 0
+                fmt = f".{dec}f" if dec else ("{,}d" if "," in tok else "d")
+                w.writerow([f"TODO.L{f['line']}.{seen_on_line[k]}", "", "", "", "value", fmt, "1",
+                            f"L{f['line']}: {f['context']}", f["line"], tok, seen_on_line[k]])
+        print(f"\nDraft registry written: {out} ({len(unsourced)} rows). Name the keys, fill source_file/filter/column; "
+              f"then: numbers_registry.py verify-draft → apply → build/check.")
     return 1 if (unsourced and args.strict) else 0
 
 

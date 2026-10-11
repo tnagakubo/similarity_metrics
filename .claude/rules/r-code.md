@@ -20,3 +20,5 @@ paths:
 - 論文に使う CSV は single writer。出力の隣に `sessionInfo()`（または `renv::snapshot()` の `renv.lock`）と `*_PROVENANCE.md`
 - 絶対パス（`C:/`, `/home/`, `setwd()`）禁止。静的チェック: `bash scripts/check_r_reproducibility.sh <file>`
 - 検証用の独立実装（`louis_independent_replication.R` の型）は project code を source しない。clean-room で書く
+- 論文に出る数値・表を書くスクリプトは `scripts/r/numbers_registry.R` を source し、丸めは `.num_round_dec()`（decimal half-even）。`formatC(x, "f")` / `sprintf("%.3f")` は binary の丸めで機械依存
+- 新しい sim は `/protocol` → `python3 scripts/protocol_compile.py` の骨格から始める。`draw_sample()` と推定量以外（seed・grid・MCSE・出力・provenance）を手で書き直さない

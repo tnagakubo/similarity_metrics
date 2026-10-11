@@ -1,0 +1,65 @@
+name: r-and-tex
+# R syntax of every script, R-vs-Python agreement of the numbers macros, and the LaTeX build.
+# First green run flips `continue-on-error` to false (DECISIONS.md entry).
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  r:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.3"
+          use-public-rspm: true
+      - name: Parse every R script (syntax only, no execution)
+        run: |
+          Rscript -e 'fs <- list.files(c("projects", "scripts"), pattern = "\\.R$", recursive = TRUE, full.names = TRUE); bad <- 0; for (f in fs) { r <- tryCatch({ parse(f); TRUE }, error = function(e) { message("PARSE ERROR ", f, ": ", conditionMessage(e)); FALSE }); if (!r) bad <- bad + 1 }; cat(length(fs), "files,", bad, "parse errors\n"); if (bad > 0) quit(status = 1)'
+      - name: Generated table bodies are up to date (single writer)
+        run: |
+          set -e
+          for g in projects/*/R/make_paper_tables.R; do
+            [ -f "$g" ] || continue
+            Rscript "$g"
+          done
+          git diff --exit-code -- 'projects/*/paper/generated/*.tex' || { echo "paper/generated/*.tex is stale — rerun R/make_paper_tables.R and commit"; exit 1; }
+          for g in projects/*/R/make_derived_numbers.R; do
+            [ -f "$g" ] || continue
+            Rscript "$g"
+          done
+          git diff --exit-code -- 'projects/*/results/derived/*.csv' || { echo "results/derived/*.csv is stale — rerun R/make_derived_numbers.R and commit"; exit 1; }
+      - name: Numbers macros — R generator must agree with the Python checker
+        run: |
+          set -e
+          for reg in projects/*/paper/numbers_registry.csv; do
+            [ -f "$reg" ] || continue
+            d=$(dirname "$reg")
+            Rscript scripts/make_numbers_macros.R "$reg" /tmp/macros_from_R.tex
+            python3 scripts/numbers_registry.py check "$reg" --macros /tmp/macros_from_R.tex
+            cmp /tmp/macros_from_R.tex "$d/numbers_macros.tex" || { echo "numbers_macros.tex is stale — regenerate with Rscript scripts/make_numbers_macros.R"; exit 1; }
+          done
+  tex:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-science texlive-bibtex-extra texlive-plain-generic
+      - name: Build every project manuscript
+        run: |
+          set -e
+          for b in projects/*/paper/build.sh; do
+            [ -f "$b" ] || continue
+            d=$(dirname "$b"); mkdir -p "$d/output"
+            bash "$b" > "$d/output/build.log" 2>&1 || true
+            stem=$(grep -oE 'TARGET="[^"]+"' "$b" | head -1 | sed 's/TARGET="//; s/"$//')
+            log="$d/${stem}.log"; [ -f "$log" ] || log="$d/output/build.log"
+            errs=$(grep -c '^!' "$log" || true); undef=$(grep -c 'undefined' "$log" || true)
+            echo "$d: LaTeX errors=$errs undefined=$undef"
+            [ "$errs" -eq 0 ] || { tail -40 "$log"; exit 1; }
+          done

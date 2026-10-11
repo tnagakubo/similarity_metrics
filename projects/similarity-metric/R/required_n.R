@@ -81,14 +81,28 @@ load_grid <- function(prod_file, ext_file, measure_keep) {
 # so interpolating on the log scale is the honest reading of a coarse grid.
 # Returned n is rounded UP to the next whole patient -- a required sample size
 # must not be rounded down.
-required_n <- function(n, v, cut, chance = 0) {
+# Monte Carlo uncertainty of the crossing (added 2026-10-11, D-20261011-7 / CLAIMS C-08): with `se` the Monte Carlo SEs of
+# the curve values, the delta method on x* = log n* gives
+#   d x*/d y0 = (x1 - x0)(cut - y1)/(y1 - y0)^2,  d x*/d y1 = -(x1 - x0)(cut - y0)/(y1 - y0)^2,
+#   Var(x*) = (d x*/d y0)^2 se0^2 + (d x*/d y1)^2 se1^2   (the two bracketing cells are independent runs),
+# and a two-sided 95% interval exp(x* -/+ z_0.975 sqrt(Var)). It is local to the bracketing grid interval (it does not
+# move the crossing to a neighbouring interval), carries no interpolation error, and is rounded outward to whole patients.
+required_n <- function(n, v, cut, chance = 0, se = NULL) {
   stopifnot(length(n) == length(v), !is.unsorted(n))
   if (any(v >= cut)) {
     i <- which(v >= cut)[1]
-    if (i == 1L) return(list(n = n[1], note = sprintf("<=%d", n[1]), status = "reached"))
+    if (i == 1L) return(list(n = n[1], note = sprintf("<=%d", n[1]), status = "reached", lower = NA_real_, upper = NA_real_))
     x0 <- log(n[i-1]); x1 <- log(n[i]); y0 <- v[i-1]; y1 <- v[i]
     nn <- if (y1 == y0) n[i] else exp(x0 + (cut - y0) * (x1 - x0) / (y1 - y0))
-    return(list(n = ceiling(nn), note = "", status = "reached"))
+    lo <- hi <- NA_real_
+    if (!is.null(se) && y1 != y0 && all(is.finite(se[c(i-1, i)]))) {
+      d0 <- (x1 - x0) * (cut - y1) / (y1 - y0)^2
+      d1 <- -(x1 - x0) * (cut - y0) / (y1 - y0)^2
+      se_x <- sqrt(d0^2 * se[i-1]^2 + d1^2 * se[i]^2)
+      z <- qnorm(0.975)
+      lo <- floor(exp(log(nn) - z * se_x)); hi <- ceiling(exp(log(nn) + z * se_x))   # rounded outward to whole patients
+    }
+    return(list(n = ceiling(nn), note = "", status = "reached", lower = lo, upper = hi))
   }
   # Never reached. Three outcomes, and conflating them would misreport the
   # finding: a plateau at chance is blindness, a plateau above chance is
@@ -98,12 +112,12 @@ required_n <- function(n, v, cut, chance = 0) {
     lvl <- mean(tail_v)
     if (lvl <= chance + CHANCE_MARGIN)
       list(n = NA_real_, note = sprintf("blind (plateau %.3f at chance %.2f)", lvl, chance),
-           status = "blind")
+           status = "blind", lower = NA_real_, upper = NA_real_)
     else
-      list(n = NA_real_, note = sprintf("partial (plateau %.3f)", lvl), status = "partial")
+      list(n = NA_real_, note = sprintf("partial (plateau %.3f)", lvl), status = "partial", lower = NA_real_, upper = NA_real_)
   } else {
     list(n = NA_real_, note = sprintf(">%d (still rising, %.3f at n=%d)", N_MAX, tail(v,1), tail(n,1)),
-         status = "unmeasured")
+         status = "unmeasured", lower = NA_real_, upper = NA_real_)
   }
 }
 
@@ -115,12 +129,14 @@ build_table <- function(d, cuts, value_label, chance = 0) {
     sub <- d[d$set == s & d$method == m, ]
     sub <- sub[order(sub$n), ]
     for (cut in cuts) {
-      r <- required_n(sub$n, sub$value, cut, chance = chance)
+      r <- required_n(sub$n, sub$value, cut, chance = chance,
+                      se = if ("mc_se" %in% names(sub)) sub$mc_se else NULL)
       out[[length(out)+1]] <- data.frame(
         set = s, method = m, threshold = cut,
         required_n = r$n, status = r$status, note = r$note,
         max_value = round(max(sub$value), 4),
         value_at_2000 = round(sub$value[sub$n == max(sub$n)][1], 4),
+        required_n_lower = r$lower, required_n_upper = r$upper,   # 95% Monte Carlo interval of the crossing (delta method on log n)
         stringsAsFactors = FALSE)
     }
   }
@@ -187,7 +203,7 @@ main <- function() {
   # AUC is reported per discordance type; the combined type is the headline.
   se$key <- paste(se$set, se$type, sep = " / ")
   se2 <- data.frame(set = se$key, method = se$method, n = se$n, value = se$value,
-                    measure = se$measure, stringsAsFactors = FALSE)
+                    measure = se$measure, mc_se = se$mc_se, stringsAsFactors = FALSE)
   say("\n[selection] %d rows over %d set/type cells", nrow(se2), length(unique(se2$set)))
   se_tab <- build_table(se2, AUC_CUTS, "auc", chance = 0.5)
   se_flr <- task_floor(se2, AUC_CUTS, chance = 0.5)
@@ -208,7 +224,8 @@ main <- function() {
   p <- cl_tab[cl_tab$threshold == 0.9 & cl_tab$status == "partial", ]
   say(paste(capture.output(print(p[, c("set","method","note")], row.names = FALSE)), collapse="\n"))
 
-  say("\n[save] results/required_n_{clustering,selection}[_floor].csv")
+  writeLines(capture.output(sessionInfo()), file.path(rd, "required_n_sessionInfo.txt"))
+  say("\n[save] results/required_n_{clustering,selection}[_floor].csv (+ required_n_sessionInfo.txt)")
   say("[done] finished=%s", format(Sys.time()))
   invisible(list(clustering = cl_tab, selection = se_tab,
                  cl_floor = cl_flr, se_floor = se_flr))

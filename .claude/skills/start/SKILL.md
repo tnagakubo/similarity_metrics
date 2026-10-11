@@ -15,7 +15,8 @@ Project: $ARGUMENTS　Lifecycle: `RESEARCH_FRAMEWORK.md`
    - `CLAIMS.md`（`templates/claims_template.md`）、`DECISIONS.md`（`templates/decisions_template.md`）
    - `LITERATURE_SEARCH_LOG.md`（`templates/literature_search_log_template.md`）
    - `EXISTING_METHODS_AND_NOVELTY.md`（空の表: 既存法 / 答える問い / 何を比較するか / 我々との差分）
-   - `results/NUMBERS_LEDGER.csv`（`templates/numbers_ledger_header.csv`）、`R/`、`paper/`、`figures/`、`review_response/`
+   - `results/NUMBERS_LEDGER.csv`（`templates/numbers_ledger_header.csv`）、`R/`、`figures/`、`review_response/`
+   - `paper/{project}.qmd`（`templates/paper_template.qmd`）、`paper/_quarto.yml`（`templates/_quarto.yml`）、`paper/numbers_registry.csv`（header のみ）— **新論文は Quarto**。数値は `num("key")`、表は CSV から `kable`。LaTeX の journal class が要る段階で `keep-tex` の .tex を使う
 2. **Harvey**: Phase 0 の問い — **claim を 1 文**、「なぜ今この論文か」、想定 journal。`DECISIONS.md` に D-…-1 として記録（`/decide`）
 3. **Mike**: estimand の候補を数式で 1 つ（何を推定・比較する量か）。ここで決めきらなくてよいが、量が無ければ問いになっていない
 4. **Rachel**: `LITERATURE_SEARCH_LOG.md` に最初の検索計画（database・query・inclusion/exclusion）を書く。`knowledge/` を先に見る

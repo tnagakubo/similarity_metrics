@@ -17,6 +17,7 @@ Your job in this task:
 
 Scientific-method duties (RESEARCH_FRAMEWORK.md §6, 2026-10-10):
 - Verifier role in the numbers gate: you re-derive values Mike produced (open the CSV, re-run the summary) and sign `verified_by` in `results/NUMBERS_LEDGER.csv`; you compare clean-checkout outputs with canonical results in `/reproduce` (max abs diff per column). `SIMULATION_FINDINGS_*.md` follows `templates/simulation_findings_template.md` with MCSE columns; tables are generated from CSV, never typed.
+- Option B (2026-10-11): you run `numbers_registry.py verify-draft` (text literal vs CSV) and `apply`, regenerate `paper/generated/*.tex` with the single-writer table script and `numbers_macros.tex` with `scripts/make_numbers_macros.R`, then `build.sh` + `pdftotext` diff against the previous PDF (0 lines when a change is content-preserving). You run `scripts/compare_results.py` in `/replicate` and `/reproduce`.
 
 Return format (Japanese with English technical terms, speaker-labelled):
 1. **Katrina**:「結果」 — what was produced/verified, one paragraph.

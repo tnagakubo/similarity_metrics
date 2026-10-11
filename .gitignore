@@ -26,3 +26,12 @@
 
 # Python bytecode from scripts/
 __pycache__/
+
+# numbers_registry.py apply backups
+*.bak_numbers
+
+# LaTeX build outputs (build.sh moves the PDF here; logs)
+projects/*/paper/output/
+# gate logs and replication run logs are CLAIMS evidence — tracked despite *.log
+!projects/*/results/verify_*.log
+!projects/*/results/replication/*_run.log

@@ -17,7 +17,7 @@ if [ -z "$PROJ" ]; then
   for d in projects/*/; do ls "$d"paper/*.tex >/dev/null 2>&1 && { PROJ="${d%/}"; break; }; done
 fi
 [ -z "$PROJ" ] && { echo "check_all: no project with paper/*.tex"; exit 0; }
-TEX=$(ls "$PROJ"/paper/*.tex 2>/dev/null | grep -vE 'supplement|template' | head -1)
+TEX=$(ls "$PROJ"/paper/*.tex 2>/dev/null | grep -vE 'supplement|template|numbers_macros' | head -1)
 BIB=$(ls "$PROJ"/paper/*.bib 2>/dev/null | head -1)
 DATE=$(date +%Y%m%d)
 [ -z "$OUT" ] && OUT="$PROJ/review_response/MECHANICAL_CHECKS_${DATE}.md"

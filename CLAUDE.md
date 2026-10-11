@@ -121,7 +121,10 @@ Mechanised in `RESEARCH_FRAMEWORK.md` §6 (S1–S11). The short form:
 - **Protocol before results**: no confirmatory simulation or analysis runs before `PROTOCOL_{study}.md` (ADEMP, Monte Carlo SE, licenses / does not license, prior-look disclosure) is committed (`/protocol`). Anything outside the protocol is labelled *exploratory*
 - **Claims ↔ evidence**: every claim in the manuscript, abstract included, is a row in `projects/{project}/CLAIMS.md` with on-disk evidence and a verb matching the evidence type (`/claims`). Evidence removed ⇒ claim narrowed ⇒ C1 cascade
 - **Uncertainty always**: estimates carry CI/SE; simulation performance measures carry Monte Carlo SE; estimands are defined in symbols
-- **Four-eyes numbers**: every number in the manuscript has a row in `results/NUMBERS_LEDGER.csv`; the verifier is never the producer (`/verify-numbers`)
+- **Numbers are generated, never typed**: a number that comes from results is a row of `paper/numbers_registry.csv` and enters the manuscript only as `\numval{key}` (LaTeX) or `num("key")` (Quarto); tables are written by a single-writer script into `paper/generated/`; quantities no CSV holds as one cell (ranges over a grid, differences between runs, rank correlations, closed-form design constants) are computed by a second single writer (`R/make_derived_numbers.R` → `results/derived/*.csv`), never in the prose; rounding is decimal round-half-even (`scripts/r/numbers_registry.R`). `results/NUMBERS_LEDGER.csv` records design constants (grid, replications, B, targets, margins) and numbers with no CSV source, each with a `source_locator`. Four eyes: the verifier is never the producer (`/verify-numbers`)
+- **Protocols compile**: `PROTOCOL_{study}.md` carries machine-readable ADEMP front matter; `scripts/protocol_compile.py` generates the R skeleton (seed, grid, Monte Carlo SE, outputs, provenance, findings). People write the data draw and the estimator, nothing else twice
+- **Replication from the Methods text**: before Phase 4 and before submission, `/replicate` has Louis re-implement the estimator from the Methods section alone (no project code, no results) and `scripts/compare_results.py` compares with the canonical CSV
+- **Gates block in CI**: `.github/workflows/` runs every check on every push; `scripts/baseline/` ratchets (unsourced numbers, R lint errors) may only decrease
 - **Reproducibility is executed**: results that feed the manuscript are re-run from a clean checkout and compared (`/reproduce`); scripts declare seeds, avoid absolute paths, save `sessionInfo`
 - **Citations are verified against the original**: DOI required (Rule 2.6), supporting passage quoted verbatim, never from a summary (`/cite-check`)
 - **Decisions have reasons**: every decision or reversal is an entry in `DECISIONS.md` (`/decide`); "conflicts with decision X" is not a reason
@@ -205,6 +208,7 @@ These are **homage characters** dynamically generated based on famous statistici
 | `/cite-check` | Rachel reconciles citations with the .bib and the original passages |
 | `/pre-review` | Proactive self-review by all members (Phase 6 entry) |
 | `/submission-check` | Reporting checklist R1–R8 + journal requirements (Phase 7) |
+| `/replicate {study}` | Clean-room replication: Louis re-implements from the Methods text; Katrina compares with canonical results |
 | `/respond-reviewers` | Point-by-point reviewer response tracker (Phase 8) |
 | `/handoff` | Donna reconciles claimed work with disk before stopping |
 | `/lint-suits` | Donna runs the mechanical character-consistency linter on SUITS.md |
@@ -278,8 +282,14 @@ research-lab/
 ├── archives/              # Archived SUITS.md files
 ├── agents/                # Team member persona definitions (voice source of truth)
 ├── memory/                # Versioned principles (INDEX.md; repo copy of the auto-memory)
-├── scripts/               # Mechanical checks: lint_suits.py, numbers_audit.py, cite_audit.py,
-│                          #   check_r_reproducibility.sh, check_consistency.sh
+├── scripts/               # Mechanical checks and generators: lint_suits.py, numbers_audit.py, cite_audit.py,
+│   │                      #   check_r_reproducibility.sh, check_consistency.sh, check_all.sh, ci_ratchet.sh,
+│   │                      #   numbers_registry.py, protocol_compile.py, extract_methods.py, compare_results.py,
+│   │                      #   make_numbers_macros.R, cloud_setup.sh
+│   ├── r/                 # numbers_registry.R (shared R formatter: num(), decimal half-even rounding)
+│   ├── tests/             # run_tests.sh + fixtures (60 regression tests)
+│   └── baseline/          # ratchet baselines (counts that may only go down)
+├── .github/workflows/     # lab-checks.yml (gates on every push), r-and-tex.yml (R parse, generated files, LaTeX build)
 ├── .claude/
 │   ├── agents/            # Member subagents (tool-scoped; Louis/Jessica read-only)
 │   ├── rules/             # Path-scoped rules (paper-writing, r-code, suits-script, protocol-and-results)
@@ -295,7 +305,7 @@ research-lab/
 │       ├── PROTOCOL_{study}.md    # Pre-registered protocols (ADEMP + MCSE)
 │       ├── SIMULATION_FINDINGS_{study}.md
 │       ├── R/  results/  figures/ # results/ holds NUMBERS_LEDGER.csv, *_PROVENANCE.md, REPRODUCTION_*.md
-│       ├── paper/                 # .tex / .bib / build.sh / submission/
+│       ├── paper/                 # .tex or .qmd / .bib / build.sh / numbers_registry.csv / numbers_macros.tex / generated/ / submission/
 │       └── review_response/       # PRE_REVIEW_*, INTERNAL_REVIEW_*, CITATION_AUDIT_*, RESPONSE_TRACKER
 └── templates/             # protocol, simulation_findings, provenance, claims, decisions, lab_status,
                            #   literature_search_log, reporting_checklist, review_checklist, …
@@ -304,7 +314,9 @@ research-lab/
 ## Technical Standards
 
 - **Code**: R + tidyverse (Rcpp where speed requires it)
-- **Documents**: Quarto (.qmd) or LaTeX (.tex) for manuscripts; Markdown (.md) for lab records
+- **Documents**: new manuscripts in Quarto (.qmd, `templates/paper_template.qmd`, numbers via `num()`); existing LaTeX manuscripts use `\numval{}` and `\input{generated/…}`; Markdown (.md) for lab records
+- **Rounding**: decimal round-half-even everywhere a number is printed for the manuscript (`scripts/r/numbers_registry.R`, `scripts/numbers_registry.py`); never `formatC`/`sprintf` on the binary double
+- **Cloud sessions**: `scripts/cloud_setup.sh` is the environment's setup script (R 4.3, TeX Live, PyYAML) so simulations, reproduction and the LaTeX build run in the cloud
 - **Math**: LaTeX notation; estimands and performance measures written as formulas
 - **Simulation reporting**: ADEMP structure (Morris, White & Crowther 2019, DOI 10.1002/sim.8086) with Monte Carlo SE for every performance measure
 - **Reproducibility**: declared seeds, project-relative paths, `sessionInfo()` or `renv.lock` beside every result, one writer per output file, provenance file per study; checked by `scripts/check_r_reproducibility.sh` and `/reproduce`

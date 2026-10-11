@@ -32,6 +32,11 @@ expect_count "version 0.0.3 excluded"     "$(echo "$OUT" | grep -c '0\.0\.3\|❓
 expect_count "small math int 50 excluded"  "$(echo "$OUT" | grep -cE '❓ +L +[0-9]+ +50 ')" 0
 expect_count "strict exit code"           "$(python3 scripts/numbers_audit.py $F/paper.tex --ledger $F/ledger.csv --strict >/dev/null; echo $?)" 1
 
+OUT=$(python3 scripts/numbers_audit.py $F/paper_prec.tex --ledger $F/ledger_prec.csv --all)
+expect_count "coarse ledger 0.5 does not absorb 0.46"  "$(echo "$OUT" | grep -cE '❓ +L +[0-9]+ +0\.46 ')" 1
+expect_count "precise ledger 0.9425 sources text 0.942 (half-even)" "$(echo "$OUT" | grep -cE '✅ +L +[0-9]+ +0\.942 ')" 1
+expect_count "exact ledger 0.5 sources text 0.5"       "$(echo "$OUT" | grep -cE '✅.*[^0-9.]0\.5 ')" 1
+
 echo "cite_audit.py"
 OUT=$(python3 scripts/cite_audit.py $F/paper.tex $F/paper.bib)
 expect_count "missing key reported"       "$(echo "$OUT" | grep -c 'missingkey')" 1
@@ -46,6 +51,61 @@ expect_count "bad.R: absolute path"       "$(echo "$OUT" | grep 'bad.R' | grep -
 expect_count "bad.R: sessionInfo missing" "$(echo "$OUT" | grep 'bad.R' | grep -c 'writes-results-no-sessionInfo')" 1
 expect_count "good.R: clean"              "$(echo "$OUT" | grep 'good.R' | grep -c '❌\|⚠️')" 0
 expect_count "strict exit code"           "$(STRICT=1 bash scripts/check_r_reproducibility.sh $F/bad.R >/dev/null; echo $?)" 1
+
+echo "numbers_registry.py (decimal half-even, agg, modifiers, apply/check)"
+REG=$F/proj_fixture/paper/numbers_registry.csv; PTEX=$F/proj_fixture/paper/paper.tex
+expect_count "tie 0.9425 → 0.942 (half-even)"  "$(python3 scripts/numbers_registry.py value $REG covS1n50)" 0.942
+expect_count "tie 0.9285 → 0.928"              "$(python3 scripts/numbers_registry.py value $REG covS1n100)" 0.928
+expect_count "abs modifier"                    "$(python3 scripts/numbers_registry.py value $REG biasS1n50abs)" 0.013
+expect_count "math-minus modifier"             "$(python3 scripts/numbers_registry.py value $REG biasS1n50m)" '$-0.013$'
+expect_count "range agg"                       "$(python3 scripts/numbers_registry.py value $REG covRangeS1)" "0.93--0.94"
+expect_count "sum + LaTeX thousands"           "$(python3 scripts/numbers_registry.py value $REG nTotal)" '3{,}533'
+expect_count "scale 100 percent"               "$(python3 scripts/numbers_registry.py value $REG covS2n50pct)" 70.3
+expect_count "verify-draft all match"          "$(python3 scripts/numbers_registry.py verify-draft $REG --tex $PTEX | grep -c '⚠️')" 0
+TMPT=$(mktemp); cp $PTEX $TMPT
+expect_count "apply replaces 4 tokens"         "$(python3 scripts/numbers_registry.py apply $REG --tex $TMPT --out $TMPT.out | grep -oE '[0-9]+ replaced' | grep -oE '^[0-9]+')" 4
+expect_count "apply leaves \\numval in text"    "$(grep -c 'numval{covS1n50}' $TMPT.out)" 1
+AREG=$F/apply_fixture/paper/numbers_registry.csv; ATEX=$(mktemp); cp $F/apply_fixture/paper/paper.tex $ATEX
+python3 scripts/numbers_registry.py apply $AREG --tex $ATEX --out $ATEX.out >/dev/null
+expect_count "apply: 3 same-valued tokens on one line → 3 distinct keys in text order" "$(sed -n 1p $ATEX.out | grep -oE 'numval\{w1(T1|P2|S2)\}' | tr '\n' ' ')" 'numval{w1T1} numval{w1P2} numval{w1S2} '
+expect_count "apply: token 1,047 found as 1{,}047"   "$(grep -c 'numval{nT1}' $ATEX.out)" 1
+expect_count "apply: literal 333 untouched"           "$(grep -c ' 333\.' $ATEX.out)" 1
+rm -f $ATEX $ATEX.out
+TMPM=$(mktemp)
+python3 scripts/numbers_registry.py build $REG --out $TMPM >/dev/null
+expect_count "check PASS vs own build"         "$(python3 scripts/numbers_registry.py check $REG --macros $TMPM --tex $TMPT.out >/dev/null; echo $?)" 0
+if command -v Rscript >/dev/null 2>&1; then
+  TMPR=$(mktemp)
+  Rscript scripts/make_numbers_macros.R $REG $TMPR >/dev/null 2>&1
+  expect_count "R generator agrees with Python"  "$(python3 scripts/numbers_registry.py check $REG --macros $TMPR >/dev/null; echo $?)" 0
+  expect_count "R output byte-identical"         "$(cmp -s $TMPM $TMPR && echo same || echo differ)" same
+else
+  echo "  skip R generator tests (Rscript not installed)"
+fi
+rm -f $TMPT $TMPT.out $TMPM
+
+echo "protocol_compile.py"
+TMPP=$(mktemp -d); cp -r $F/proj_fixture/. $TMPP/
+expect_count "dry run validates"               "$(python3 scripts/protocol_compile.py $TMPP/PROTOCOL_example_study.md --dry-run >/dev/null; echo $?)" 0
+python3 scripts/protocol_compile.py $TMPP/PROTOCOL_example_study.md >/dev/null
+expect_count "R skeleton written"              "$([ -f $TMPP/R/example_study.R ] && echo 1 || echo 0)" 1
+expect_count "provenance + findings written"   "$([ -f $TMPP/results/EXAMPLE_STUDY_PROVENANCE.md ] && [ -f $TMPP/SIMULATION_FINDINGS_example_study.md ] && echo 1 || echo 0)" 1
+expect_count "MCSE formulas present"           "$(grep -c 'sqrt(cov \* (1 - cov) / nsim)' $TMPP/R/example_study.R)" 1
+expect_count "n_sim too small is rejected"     "$(sed 's/^n_sim: 2000/n_sim: 500/' $TMPP/PROTOCOL_example_study.md > $TMPP/PROTOCOL_small.md; python3 scripts/protocol_compile.py $TMPP/PROTOCOL_small.md --dry-run >/dev/null; echo $?)" 1
+if command -v Rscript >/dev/null 2>&1; then
+  expect_count "generated R parses"            "$(Rscript -e "invisible(parse('$TMPP/R/example_study.R'))" >/dev/null 2>&1; echo $?)" 0
+fi
+
+echo "extract_methods.py / compare_results.py"
+TMPE=$(mktemp)
+python3 scripts/extract_methods.py $F/methods_paper.tex --out $TMPE --also "Appendix" >/dev/null
+expect_count "methods extracted, intro excluded" "$(grep -c 'Intro text' $TMPE)" 0
+expect_count "comments stripped"               "$(grep -c 'secret' $TMPE)" 0
+expect_count "input lines dropped"             "$(grep -c '\\\\input' $TMPE)" 0
+expect_count "appendix included"               "$(grep -c 'Proof' $TMPE)" 1
+expect_count "compare PASS within tol"         "$(python3 scripts/compare_results.py $F/canonical.csv $F/candidate_ok.csv --keys scenario,n --tol 1e-6 >/dev/null; echo $?)" 0
+expect_count "compare FAIL on diff + missing row" "$(python3 scripts/compare_results.py $F/canonical.csv $F/candidate_bad.csv --keys scenario,n --tol 1e-6 >/dev/null; echo $?)" 1
+rm -f $TMPE
 
 echo "check_consistency.sh / check_all.sh"
 expect_count "consistency runs"           "$(bash scripts/check_consistency.sh --quiet >/dev/null; echo $?)" 0

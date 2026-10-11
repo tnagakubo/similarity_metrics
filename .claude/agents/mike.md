@@ -18,6 +18,7 @@ Your job in this task:
 Scientific-method duties (RESEARCH_FRAMEWORK.md §6, 2026-10-10):
 - Protocol first: no confirmatory run without `PROTOCOL_{study}.md` (ADEMP, Monte Carlo SE formulas, licenses / does not license, §0 honesty clause; `templates/protocol_template.md`). Performance measures are reported with MCSE.
 - Tools: `python3 scripts/numbers_audit.py <tex>` + `results/NUMBERS_LEDGER.csv` (you are the producer; the verifier is Katrina or Louis), `bash scripts/check_r_reproducibility.sh <file>`, `/reproduce` for the clean-checkout gate. Write `*_PROVENANCE.md` beside every result that feeds the manuscript.
+- Option B (2026-10-11): new simulations start from `python3 scripts/protocol_compile.py PROTOCOL_{study}.md` (you write `draw_sample()` and the estimators; seeds, grid, MCSE, outputs, provenance are generated). Numbers that reach the manuscript go through `paper/numbers_registry.csv` (`\numval{}` / `num()`), never typed; rounding is decimal half-even via `scripts/r/numbers_registry.R`.
 
 Return format (Japanese with English technical terms, speaker-labelled):
 1. **Mike**:「結論」 — what is correct / incorrect and why, in one paragraph.

@@ -65,7 +65,8 @@ check("shortfall comes from below in S2, S5, S7 (below > 2.5% where coverage < 0
 
 # ---- Application: data ------------------------------------------------------
 say("\n-- Application --")
-data(gusto, package = "predtools", envir = environment())
+if (requireNamespace("predtools", quietly = TRUE)) data(gusto, package = "predtools", envir = environment()) else
+  gusto <- read.csv("data/gusto.csv")   # same table, shipped with the project (cloud sessions have no predtools)
 check("GUSTO-I N = 40,830; 16 regions", c(nrow(gusto), length(unique(gusto$regl))), c(40830, 16))
 r8 <- gusto[gusto$regl == 8, ]
 sk <- function(x) { x <- x[!is.na(x)]; mean(((x - mean(x)) / sd(x))^3) }
@@ -113,9 +114,9 @@ check("L* interval = 0.01 / CI of W1 (reversed)",
       isTRUE(all.equal(l$lstar_age_lower, 0.01 / p$ci_upper_age[match(l$partner, p$R)])) &&
       isTRUE(all.equal(l$lstar_sbp_upper, 0.01 / p$ci_lower_sysbp[match(l$partner, p$R)])), TRUE)
 check("R1 SBP lower L* = 0.00203 (> L_UB,SBP 0.002)", c(round(l$lstar_sbp_lower[l$partner=="R1"], 5), l$lstar_sbp_lower[l$partner=="R1"] > 0.002), c(0.00203, 1))
-tex <- readLines("paper/per_em_W1_wiley.tex", encoding = "UTF-8")
-i0 <- grep("label\\{tab:gusto_lstar_joint\\}", tex); i1 <- i0 + grep("^\\\\bottomrule", tex[i0:length(tex)])[1]
-rows <- grep("^R[0-9]+ &", tex[i0:i1], value = TRUE)
+# Since 2026-10-11 the table body is generated (R/make_paper_tables.R) and pulled in by \input{generated/tab_gusto_lstar_joint}.
+tab <- readLines("paper/generated/tab_gusto_lstar_joint.tex", encoding = "UTF-8")
+rows <- grep("^R[0-9]+ &", tab, value = TRUE)
 num <- function(x) as.numeric(regmatches(x, gregexpr("[0-9]+\\.[0-9]+", x))[[1]])
 got <- t(sapply(rows, function(r) { cs <- strsplit(r, "&")[[1]]; c(num(cs[2])[1], num(cs[3])[1], num(cs[4]), num(cs[5])) }))
 want <- cbind(round(l$w1_age,2), round(l$w1_sbp,2), round(l$lstar_age,4), round(l$lstar_age_lower,4), round(l$lstar_age_upper,4),
