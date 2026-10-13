@@ -57,6 +57,20 @@
 
 ## 🎬 Live Script
 
+### [2026-10-14 07:52] Scene: commit と push — 2 本に分けて
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - MORNING**
+
+*Tak「commit して」、続けて「push して」。*
+
+**Donna**: 「194 files には並走していた環境側の session の変更も混ざっていたから、2 本に分けたわ。1 本目は lab の環境 — hardening、referee-grade environment、Tak の三原則 S21–S23、concurrent-session protocol（73 files）。2 本目は論文 — cold-referee の三周（D-20261011-11 / D-20261012-2 / D-20261012-3）と本文の削減 D-20261014-1（200 files、+18,841 / −747）。working tree はクリーン。」
+
+**Harvey**: 「push した。fad1010..d32af02、origin/main と一致。CI（lab-checks / r-and-tex）が GitHub 側で回る。拒否権項目 15 件は commit 済みの原稿に印のまま — Tak が拒否した段落は pre-cut の控えから戻す。」
+
+**Jessica**: 「Let me be clear。commit は到達点の記録であって承認ではない。拒否権は開いたままだ。」
+
+---
+
 ### [2026-10-14 01:40] Scene: 切った後に戻す — Louis の Major 9 と、自分で見つけた飲み込み
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**

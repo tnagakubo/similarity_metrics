@@ -10,7 +10,7 @@
 **Results that answer A1**（目的と結果の対応 — Results の小節と CLAIMS の行はこの番号を持つ）: R1 指標の定義と性質（per-EM W₁、Prop. 1 Δ_max = L·W₁、既存指標 KS / SMD との関係）; R2 指標が EM 分布の違いに盲目でないこと（Study 1）; R3 指標の推定量と bootstrap 区間の性能（Study 2、MCSE 付き）; R4 指標の読み方の例示（GUSTO-I）。この四つのどれにも答えない結果は原稿に入れない（`IDEAS_BACKLOG.md` / `exploratory/`）
 **Phase**: 8 — Revision（査読応答）
 **Phase entered**: 2026-09-06
-**Updated**: 2026-10-14 01:40（D-20261014-1 **applied**: 本文 11,097 → **9,617 語**（1.6×、74 cuts + Louis review-fix の復元、拒否権項目 15）。Tables 3–5 → `tab:estimation`。build 0/0/**21 pp**、guards 59 0 FAIL、abstract 250/250、unsourced 0、verify ALL PASS。**Phase は変更していない**。未 commit — commit は Tak。次: 拒否権項目の確認（Tak）、bootstrap 端点の MC 誤差、L_UB の根拠、Álvarez-Esteban）
+**Updated**: 2026-10-14 01:40（D-20261014-1 **applied**: 本文 11,097 → **9,617 語**（1.6×、74 cuts + Louis review-fix の復元、拒否権項目 15）。Tables 3–5 → `tab:estimation`。build 0/0/**21 pp**、guards 59 0 FAIL、abstract 250/250、unsourced 0、verify ALL PASS。**Phase は変更していない**。commit 1f6fc6b（lab）/ d32af02（paper）、origin/main に push 済み（2026-10-14 07:52）。次: 拒否権項目の確認（Tak）、bootstrap 端点の MC 誤差、L_UB の根拠、Álvarez-Esteban）
 
 ## Lifecycle artifacts（2026-10-10、ディスクの実状態）
 
