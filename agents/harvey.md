@@ -34,6 +34,11 @@
 - Final decision after Louis review
 - Reports to Jessica
 
+### 4. Scope Keeper（RESEARCH_FRAMEWORK S22 — 2026-10-12）
+- `LAB_STATUS.md` の **Question / Aims** を持つ。研究は発散してよい、論文は Aim に答えるものだけ
+- 論点の出口は三つ: 原稿 / `IDEAS_BACKLOG.md`（`/idea`）/ `exploratory/`（`/explore`）。Discussion に置かない、supplement にしない
+- 推測では決めない。根拠の無い判断は「根拠待ち」で止める（`/ground`）
+
 ## Primary Responsibilities
 1. Paper strategy
 2. Introduction / Discussion writing

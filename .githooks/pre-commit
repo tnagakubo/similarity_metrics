@@ -1,0 +1,36 @@
+#!/bin/bash
+# pre-commit — the fast local gates (≈ 20 s). CI runs the full set; this stops the obvious red before it is committed.
+# Activate once:  bash scripts/install_git_hooks.sh      Bypass once:  git commit --no-verify
+cd "$(git rev-parse --show-toplevel)" || exit 0
+export PYTHONIOENCODING=utf-8
+FAIL=0
+say() { echo "pre-commit: $*"; }
+STAGED=$(git diff --cached --name-only)
+# 1. SUITS.md character lint (newest 5 scenes) — only when SUITS.md is staged
+if echo "$STAGED" | grep -qx 'SUITS.md'; then
+  python3 scripts/lint_suits.py SUITS.md --scenes 5 --strict >/dev/null 2>&1 || { say "SUITS.md lint failed → python3 scripts/lint_suits.py SUITS.md --scenes 5"; FAIL=1; }
+fi
+# 2. Claim guards (strict, no mutation — mutation runs in CI) — when a manuscript or a TOML is staged
+if echo "$STAGED" | grep -qE 'projects/.*/(paper/.*\.(tex|qmd)|CLAIM_GUARDS\.toml)$'; then
+  for t in projects/*/CLAIM_GUARDS.toml; do
+    [ -f "$t" ] || continue
+    python3 scripts/claim_guards.py "$t" --strict --quiet >/dev/null 2>&1 || { say "claim guard failed → python3 scripts/claim_guards.py $t"; FAIL=1; }
+  done
+fi
+# 3. Numbers: macros ↔ registry ↔ manuscript — when registry, macros or manuscript is staged
+if echo "$STAGED" | grep -qE 'projects/.*/paper/(numbers_registry\.csv|numbers_macros\.tex|.*\.tex)$'; then
+  for reg in projects/*/paper/numbers_registry.csv; do
+    [ -f "$reg" ] || continue
+    d=$(dirname "$reg"); tex=$(ls "$d"/*.tex 2>/dev/null | grep -vE 'supplement|template|numbers_macros' | head -1)
+    python3 scripts/numbers_registry.py check "$reg" --macros "$d/numbers_macros.tex" --tex "$tex" >/dev/null 2>&1 || { say "numbers registry check failed → python3 scripts/numbers_registry.py check $reg --macros $d/numbers_macros.tex --tex $tex"; FAIL=1; }
+  done
+fi
+# 4. Scripts or hooks staged → regression tests
+if echo "$STAGED" | grep -qE '^(scripts/|\.claude/hooks/)'; then
+  bash scripts/tests/run_tests.sh 2>/dev/null | grep -q 'failed 0$' || { say "regression tests failed → bash scripts/tests/run_tests.sh"; FAIL=1; }
+fi
+# 5. Ratchet (always; a few seconds)
+bash scripts/ci_ratchet.sh >/dev/null 2>&1 || { say "ratchet exceeded → bash scripts/ci_ratchet.sh"; FAIL=1; }
+[ $FAIL -eq 0 ] && exit 0
+say "blocked. Fix, or bypass once with: git commit --no-verify"
+exit 1

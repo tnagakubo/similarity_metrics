@@ -23,6 +23,7 @@ Output: `projects/{project}/review_response/INTERNAL_REVIEW_{YYYYMMDD}.md`
    - 文言: "significant"、"recommends"（E17）、"proves"、`\emph{}`
 2. **Louis**: Critical / Major / Minor に分類（Critical = 直さなければ reject、Major = major revision、Minor = 望ましい）
 3. **Harvey**: 各 Critical / Major に方針 — 直す / 反論を書く / 受け入れて narrow（`/claims` を更新）
+   - 「この論文の scope 外だが別論文になる」という指摘は `/idea` で `IDEAS_BACKLOG.md` へ（S23）。根拠を欠く反論は `[推測]` と書き、`/ground` が閉じるまで方針を確定しない（S21）
 4. **Mike / Katrina / Rachel**: 担当を受ける（数学 / 数値・図表 / 引用）
 5. **Donna**: 報告を保存（表: # | §/行 | severity | 指摘 | 何が defuse するか | 担当 | 状態）、SUITS.md に scene（TOP）
 6. **Louis**: 新しい型の穴は自分の memory に追記する（同じ穴を二度開けない）

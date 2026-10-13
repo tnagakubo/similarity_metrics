@@ -239,7 +239,7 @@ def cmd_build(a):
     rows = read_registry(reg); values, errors = compute_all(rows, root)
     for e in errors:
         print(f"  ❌ {e}")
-    Path(a.out).write_text(render_macros(values, os.path.relpath(reg, root), "scripts/numbers_registry.py build"), encoding="utf-8")
+    Path(a.out).write_text(render_macros(values, Path(os.path.relpath(reg, root)).as_posix(), "scripts/numbers_registry.py build"), encoding="utf-8")
     print(f"numbers_registry: wrote {a.out} ({len(values)} macros, {len(errors)} error(s))")
     return 1 if errors else 0
 

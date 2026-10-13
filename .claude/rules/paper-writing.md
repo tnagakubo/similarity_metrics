@@ -21,6 +21,8 @@ Source of truth: `templates/review_checklist.md`（Tak の 5 原則 + S 節）�
 - estimation-centered: "significant" / "non-significant" / binary な poolable 表現を避ける
 - simulation は "proves" と書かない → demonstrates / illustrates まで
 - 証拠を削ったら claim も narrow する（例: shape evidence なし → "scale and skewness"）
+- `projects/{project}/CLAIM_GUARDS.toml` の guard を落とさない（hook が原稿編集ごとに走る）。落とすなら `DECISIONS.md` に理由を書いて guard を外す。review の Major は guard として起票する（known_bad = 修正前の commit）
+- 修正を適用したら `/review-fix <修正前 rev>`（cascade・qualifier drop・quantifier の強化）。引用された一文だけ直すのは修正ではない
 
 ## 作業順序
 - 本体 §1–§4 → Discussion 整合 → 最後に Abstract / 略語 / Data availability（Terminal pass）
@@ -45,3 +47,9 @@ Source of truth: `templates/review_checklist.md`（Tak の 5 原則 + S 節）�
 - 適用 → 検証 grep（旧文言の残存 0）→ コンパイル error 0 をワンセットで行う
 - 数値を含む編集は `/verify-numbers`（`results/NUMBERS_LEDGER.csv` に行、verifier ≠ producer）
 - 引用を足したら `/cite-check`（原典の verbatim で支えられるか）
+
+## 目的と結果の対応・根拠（Tak の 3 原則、2026-10-12 — RESEARCH_FRAMEWORK §12）
+- 原稿に入るのは `LAB_STATUS.md` の **Question / Aims**（目的 — 何を提示するか。方法ではない）と **Results that answer A1**（R1, R2, …）に答えるものだけ。新しい段落・節を足す前に「どの Aim に答えるか」を 1 行で言う。言えなければ書かない — 置き場は `IDEAS_BACKLOG.md`（`/idea`）か `exploratory/`（`/explore`）
+- Results の小節と `CLAIMS.md` の行は R 番号を持つ。Aim に答えない Results、Results の無い Aim はどちらも `/necessity` の finding
+- 根拠を名指せない文（path / DOI + page / CSV 列）は書かない。会話では `[推測]` と言い、出典が要るなら `/ground`。`[推測]` `🔍要根拠` が `paper/*.tex` や `CLAIMS.md` に残れば `scripts/ground_audit.py` が止める
+- 議論の発散は会議でやる。Discussion に「将来の課題」として押し込まない。外した論点は捨てずに `/idea`

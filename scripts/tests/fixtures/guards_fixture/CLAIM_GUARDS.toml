@@ -1,0 +1,68 @@
+[meta]
+tex = "paper/good.tex"
+project = "guards_fixture"
+
+[[guard]]
+id = "abstract-length"
+type = "max_words"
+scope = "abstract"
+limit = 30
+known_bad = "file:paper/bad.tex"
+note = "abstract <= 30 words (fixture)"
+
+[[guard]]
+id = "M1-forbid"
+type = "forbid"
+pattern = "unique theoretical connection"
+literal = true
+known_bad = "file:paper/bad.tex"
+note = "exclusivity overclaim"
+
+[[guard]]
+id = "M1-proximity"
+type = "proximity"
+stem = "theoretical (link|connection)"
+qualifier = "constant|elicit"
+known_bad = "file:paper/bad.tex"
+note = "every theoretical-link sentence names its constant"
+
+[[guard]]
+id = "abstract-no-universal"
+type = "forbid"
+scope = "abstract"
+pattern = "\\bwherever\\b|\\bin every world\\b"
+known_bad = "file:paper/bad.tex"
+note = "no universal quantifier in the abstract"
+
+[[guard]]
+id = "abstract-keeps-qualifier"
+type = "require"
+scope = "abstract"
+pattern = "non-negligible"
+literal = true
+known_bad = "file:paper/bad.tex"
+note = "coverage qualifier survives compression"
+
+[[guard]]
+id = "vacuous-example"
+type = "forbid"
+pattern = "zzz-phrase-that-never-existed"
+literal = true
+known_bad = "file:paper/bad.tex"
+note = "a guard that cannot fail on its known-bad file is not a check"
+
+[[guard]]
+id = "no-known-bad"
+type = "forbid"
+scope = "section:results"
+pattern = "\\bprove[sd]?\\b"
+note = "untested guard (no known_bad)"
+
+[[guard]]
+id = "pending-example"
+type = "forbid"
+pattern = "unique theoretical connection"
+literal = true
+pending = true
+known_bad = "file:paper/bad.tex"
+note = "an open finding: reported as OPEN on the bad file, never as FAIL"

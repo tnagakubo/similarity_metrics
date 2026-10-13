@@ -1,6 +1,6 @@
 name: r-and-tex
 # R syntax of every script, R-vs-Python agreement of the numbers macros, and the LaTeX build.
-# First green run flips `continue-on-error` to false (DECISIONS.md entry).
+# The tex job became blocking on 2026-10-12 after three green runs (ce1cd18, 6895793, fad1010).
 on:
   push:
     branches: ["**"]
@@ -43,7 +43,6 @@ jobs:
           done
   tex:
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - name: Install TeX Live

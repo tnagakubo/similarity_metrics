@@ -2,7 +2,7 @@
 
 > *"I don't have dreams, I have goals."* — 研究を 10 の Phase と gate に分け、各 gate を Claude Code の機構で機械化する。
 > State は `projects/{project}/LAB_STATUS.md`、記録は `SUITS.md`、操作は `/phase`。
-> 作成: 2026-09-21。改訂: 2026-10-10（科学的妥当性の機構 — §6–§8）、**2026-10-11（Option B: 生成 pipeline・protocol compiler・replication・CI — §9）**。CLAUDE.md（Rule 1–6）を上書きしない。CLAUDE.md が「何を守るか」、本書は「どの順で・何を証拠に進めるか」。
+> 作成: 2026-09-21。改訂: 2026-10-10（科学的妥当性の機構 — §6–§8）、**2026-10-11（Option B: 生成 pipeline・protocol compiler・replication・CI — §9）**、**2026-10-11 夜（referee-grade environment — §10、S16–S20）**。CLAUDE.md（Rule 1–6）を上書きしない。CLAUDE.md が「何を守るか」、本書は「どの順で・何を証拠に進めるか」。
 
 ---
 
@@ -45,6 +45,9 @@
 | 6 | reviewer に言われる前に自分で弱点を見つける | `/pre-review`、Louis memory `.claude/agent-memory/louis/` |
 | 全 | 語られた ≠ ディスクにコミット。compaction 後は 5-step verification | `memory/feedback_compaction_protocol.md` |
 | 全 | bg の結果は段落レビューを中断しない。必ず SUITS に落とす | `memory/feedback_bg_report_timing.md` |
+| 全 | 知識の限界では推測で進めず外部知識を要求。`[推測]` / `🔍要根拠`、`/ground`。推測は原稿・CLAIMS・DECISIONS に入らない | `memory/feedback_evidence_over_inference.md` |
+| 0–1, 4–5 | 研究は発散してよい。論文は Aim に答えるものだけ。出口は原稿 / IDEAS_BACKLOG / exploratory の三つ | `memory/feedback_diverge_converge.md` |
+| 全, 9 | 別論文のネタはその場で `/idea` → `IDEAS_BACKLOG.md`。判定せず登録、Phase 9 で見直す | `memory/feedback_idea_stock.md` |
 
 ---
 
@@ -54,10 +57,10 @@
 |---|---|---|
 | **CLAUDE.md** | Rule 1–6（10-10 に Rule 5 Lifecycle・Rule 6 Scientific Integrity を追加） | 憲法。本書と rules は CLAUDE.md を補う位置 |
 | **`.claude/rules/*.md`（`paths:` で範囲限定）** | 4 本: `paper-writing.md` / `r-code.md` / `suits-script.md` / **`protocol-and-results.md`**（新） | 原稿・R・脚本・研究記録を触るときだけ該当規則を注入 |
-| **Skills（`.claude/skills/*/SKILL.md`）** | 33 本。10-11 新設 `/replicate`。10-10 新設 5 本: `/claims` `/reproduce` `/cite-check` `/decide` `/lint-suits`。改訂 9 本: `/protocol`（ADEMP+MCSE）`/review`（構造化・on-disk）`/verify-numbers`（ledger・four-eyes）`/start`（scaffold）`/meeting`（decision record）`/phase`（機械的 gate）`/submission-check`（R1–R8）`/pre-review` `/handoff` | Phase gate と各段階の手順書 |
-| **Subagents（`.claude/agents/*.md`）** | 7 本。persona は `agents/*.md`。Louis/Jessica は `disallowedTools: Edit, Write`。Louis は `memory: project`。10-10 に scientific-method duties を各 agent に追記 | `@bg @katrina` や `/pre-review` の並列を persona・tool 範囲固定で実行 |
-| **Hooks** | 15 本（下表） | Donna の enforcement |
-| **Scripts（`scripts/`）** | 12 本 + R 2 本 + 回帰テスト 60 件（§7） | hook・skill・CI から呼ぶ機械的検証と生成 |
+| **Skills（`.claude/skills/*/SKILL.md`）** | 38 本。10-11 夜 新設 5 本（§10）: `/referee` `/review-fix` `/structure` `/necessity` `/explore`。10-11 新設 `/replicate`。10-10 新設 5 本: `/claims` `/reproduce` `/cite-check` `/decide` `/lint-suits`。改訂 9 本: `/protocol`（ADEMP+MCSE）`/review`（構造化・on-disk）`/verify-numbers`（ledger・four-eyes）`/start`（scaffold）`/meeting`（decision record）`/phase`（機械的 gate）`/submission-check`（R1–R8）`/pre-review` `/handoff` | Phase gate と各段階の手順書 |
+| **Subagents（`.claude/agents/*.md`）** | 9 本（10-11 夜に `referee` — blind list 付きの冷読 reviewer、`Edit` 不可、`review_response/referee/` にだけ書く）。persona は `agents/*.md`。Louis/Jessica は `disallowedTools: Edit, Write`。Louis は `memory: project`。10-10 に scientific-method duties を各 agent に追記 | `@bg @katrina` や `/pre-review` の並列を persona・tool 範囲固定で実行 |
+| **Hooks** | 17 本（下表。10-12 に `referee-blind.sh` — referee の blind list を tool scope に） | Donna の enforcement |
+| **Scripts（`scripts/`）** | 20 本 + R 2 本 + 回帰テスト 119 件（§7）+ `.githooks/pre-commit`（§11） | hook・skill・CI から呼ぶ機械的検証と生成 |
 | **CI（`.github/workflows/`）** | **新設 2 本**（10-11）: `lab-checks.yml`（tests・consistency・lint・cite・registry・ratchet・protocol dry-run）、`r-and-tex.yml`（全 R の parse、生成表と macros の鮮度、LaTeX build） | gate を advisory から **blocking** に |
 | **Cloud setup（`scripts/cloud_setup.sh`）** | **新設**（10-11）: R 4.3 + TeX Live + PyYAML。環境設定 → Setup script に登録（Tak） | cloud session で sim・再現・compile を実行できる |
 | **Quarto（`templates/paper_template.qmd`, `_quarto.yml`）** | **新設**（10-11）。`/start` が scaffold | 新論文は数値を `num()` で引く executable manuscript |
@@ -84,6 +87,8 @@
 | PostToolUse(Write\|Edit) | `check-suits-update.sh`, `check-suits-lines.sh`, `check-paper-sync.sh`, `check-numbers-verification.sh` | 記録・行数・EN/JA 同期・数値検証（ledger と `numbers_audit.py` を案内） | 既存（numbers は修正） |
 | PostToolUse(Write\|Edit) | **`lint-suits.sh`** | SUITS.md 編集時に `lint_suits.py`（ラストネーム・敬語・label・順序） | **新設** |
 | PostToolUse(Write\|Edit) | **`check-r-reproducibility.sh`** | R ファイル編集時に静的再現性 lint（seed・絶対パス・sessionInfo・parallel RNG） | **新設** |
+| PostToolUse(Write\|Edit) | **`check-claim-guards.sh`** | `CLAIM_GUARDS.toml` の `[meta].tex` に当たる原稿を編集した時だけ `claim_guards.py`。落ちた guard と FAIL の 1 行目、OPEN（pending）の件数、script 自体のエラーを表示（10-12: .qmd と他の .tex は対象外、stderr を握りつぶさない） | **新設（10-11 夜）** |
+| PreToolUse(Read\|Grep\|Glob\|Bash\|Write) | **`referee-blind.sh`** | hook 入力の `agent_type` が `referee` の時だけ発火。blind list（SUITS / CLAIMS / DECISIONS / memory / lab docs / provenance / git history / review_response 以外）への Read・Grep・Glob・`git log` を exit 2 で遮断、Write と shell の書き込みは `review_response/referee/` 配下のみ。他の agent と main session は素通り | **新設（10-12）** |
 | SubagentStop | `subagent-stop-record.sh` | bg メンバー完了 → SUITS 記録を促す | 既存 |
 | Stop | `check-suits-lines.sh`, `check-persistence.sh` | archive 警告、Persistence Guard | 既存 |
 
@@ -131,6 +136,14 @@ gate が揃った  → /phase next（Donna 検証、Louis risk、必要なら Je
 | S13 | **Protocols compile**（10-11）: ADEMP の機械可読部（YAML front matter）から R の骨格（seed・grid・MCSE・出力・provenance・findings）を生成。人が書くのは data draw と推定量だけ | protocol は文書、コードは別に手書き → 乖離（prose vs code） | `scripts/protocol_compile.py` + `templates/protocol_template.md` |
 | S14 | **Replication from the Methods text**（10-11）: Louis が Methods 本文だけから推定量を再実装し、canonical と列ごとに比較 | 一度だけの `louis_independent_replication.R` | `/replicate` + `louis-replication` agent + `scripts/extract_methods.py` + `scripts/compare_results.py` |
 | S15 | **Gates block in CI**（10-11）: 全チェックを push ごとに実行。ratchet baseline は下がるだけ | hook は advisory、語っただけでも merge できた | `.github/workflows/*.yml` + `scripts/ci_ratchet.sh` + `scripts/baseline/` |
+| S16 | **Findings become guards**（10-11 夜）: review の所見（overclaim・単位・quantifier）は 1 文の修正でなく **class** の guard。各 guard は `known_bad` の revision で必ず落ちる（変異テスト）。落ちない guard は vacuous で CI が止める | M1 を §2.2 で直して 3 箇所に残った（patch without cascade）。`verify_corrections.R` は claude_science/ に閉じていて原稿の hook に無かった | `CLAIM_GUARDS.toml` + `scripts/claim_guards.py --mutation` + hook `check-claim-guards.sh` + `/referee` `/review` が起票 |
+| S17 | **Structure is measured before content is read**（10-11 夜）: 節ごとの語数 vs venue、float の cited-before-defined、Results の外の数値段落、論証の重複、Supplement 文字の欠番 | 本文 12,371 語（2.1×）、Discussion の 348 語段落に 9 つの数値 = 第三の simulation study が §3 に無い | `scripts/structure_audit.py` + `templates/venue_profiles.toml` + `/structure` |
+| S18 | **Fixes are reviewed**（10-11 夜）: 修正の diff に対して cascade（残存）・qualifier drop・quantifier strengthening を機械的に検出。Louis は diff と report だけ読む | 356 → 248 語の圧縮で "in at least one world" が "wherever" に、"non-negligible" が消えた | `scripts/cascade_check.py` + `/review-fix` |
+| S19 | **Every result bills a claim, every claim names its binding cell**（10-11 夜）: unbilled results は cite するか exploratory と書く。confirmatory な scenario は load-bearing でないと明記。方向語（did not fall / plateau）は CSV の列で確認 | 8.6 MB の threshold sim が原稿のどこにも無い。「n で落ちない」が自分の CSV に反していた（非ゼロ plateau） | `scripts/evidence_coverage.py` + ratchet `results_unbilled` + `/necessity` |
+| S20 | **Cold reading is a tool scope, not a request**（10-11 夜）: referee は SUITS / CLAIMS / DECISIONS / memory を開けない agent として走る。再計算 script の on-disk がない review は gate evidence にならない | Louis は memory と CLAIMS を読んでから攻める（文脈あり）。Claude Science の一回限りの冷読が最も多くの誤りを見つけた | `.claude/agents/referee.md` + **hook `referee-blind.sh`（10-12: blind list を PreToolUse で強制 — 指示でなく tool scope）** + `/referee` + `exploratory/` sandbox（`/explore`） |
+| S21 | **Evidence before inference**（10-12）: 知識に限界があるときは推測で進めず、論文等の外部知識（原典・DOI・page）を要求する。根拠を名指せない発言は `[推測]`、必要な出典は `🔍要根拠` → `/ground`。推測は原稿・CLAIMS・DECISIONS に入らない | Song 2025 の誤読、E17「定量ゼロ」「日本=定性」（abstract 読み）、小宮山 Ch.4 の拡大解釈 — 全部、原典を読まずに推測で進めた型 | `memory/feedback_evidence_over_inference.md` + `/ground` + `scripts/ground_audit.py`（`check_consistency.sh` §7）+ `/request-paper`（hook `validate-paper-request.sh` が DOI を要求）+ agents の duties |
+| S22 | **Research diverges, the paper converges**（10-12）: 会議・レビューの発散は許容。原稿に入るのは `LAB_STATUS.md` の **Question / Aims** に答えるものだけ。論点の出口は三つ — 原稿 / `IDEAS_BACKLOG.md` / `exploratory/`。Aim ↔ Results は一対一 | v3 → v6 の迷走、Discussion の第三の simulation study（S17）、unbilled results 14（S19）、本文 1.7× venue — 発散した論点に出口が無く原稿に流れた | `memory/feedback_diverge_converge.md` + `LAB_STATUS.md` Question / Aims 行 + `/necessity` の Aim 対応表 + `templates/review_checklist.md` Q 節 + `.claude/rules/paper-writing.md` |
+| S23 | **Ideas are stocked, not debated**（10-12）: 議論で出た別論文のネタはその場で root の `IDEAS_BACKLOG.md` に `I-YYYYMMDD-n` で登録（source、一行、scope 外の理由、必要な根拠、status）。良し悪しはその場で議論しない。Phase 9 で Harvey が見直す | 効果追跡 sim、Neyman smooth 2 標本版、clustering / silhouette、因果の相対効果 — SUITS と archive に埋もれて検索不能。backlog は 02-03 以来 1 件 | `memory/feedback_idea_stock.md` + `/idea` + `IDEAS_BACKLOG.md`（`check_consistency.sh` §7 が ID 重複を見る）+ `/meeting` `/decide` `/explore` `/review` `/referee` `/victory` の登録義務 |
 
 ---
 
@@ -151,7 +164,15 @@ gate が揃った  → /phase next（Donna 検証、Louis risk、必要なら Je
 | `compare_results.py` | 2 つの CSV を key で突き合わせ、列ごとに max abs / rel diff と欠損行を報告（PASS/FAIL、markdown） | `/replicate`、`/reproduce` |
 | `ci_ratchet.sh` | numbers unsourced と R lint ❌ の件数が `scripts/baseline/` を超えたら FAIL。`--update` で現在値を baseline に | CI、Donna |
 | `cloud_setup.sh` | cloud session の Setup script（R・TeX Live・PyYAML） | 環境設定（Tak） |
-| `tests/run_tests.sh` | fixtures に対する回帰テスト 60 件（各 script の検出・除外・strict exit、丸め境界、R と Python の一致、hooks の発火条件）。script や hook を触ったら必ず回す | 開発時、`/handoff`、CI |
+| `texprose.py` | 共有 LaTeX → prose ヘルパー（comment / verbatim / float / display math の除去、abstract 抽出、節・float・段落・文の分割、content words、Jaccard）。下 4 本が import | `claim_guards.py`、`structure_audit.py`、`cascade_check.py` |
+| `claim_guards.py` | `CLAIM_GUARDS.toml` の guard（forbid / require / min_count / proximity / max_words、scope = prose / abstract / section）を評価。`--mutation` で各 guard を `known_bad`（git rev か file）に当て、落ちない guard を vacuous として exit 1 | hook `check-claim-guards.sh`、`/referee`、`/review-fix`、`check_all.sh` §7、CI |
+| `structure_audit.py` | 節ごとの語数 vs venue profile、float の cited-before-defined / uncited、Results 外の数値段落、節をまたぐ重複文、Supplement 文字の欠番、abstract 語数。`--strict` が止めるのは placement・欠落 `\ref`・abstract の語数超過（本文の語数は止めない）。未知の `--venue` は warning 付きで generic に | `/structure`、`check_all.sh` §8、CI |
+| `cascade_check.py` | 旧版と新版（git rev か file）の文を対応付け、残存（residue）・qualifier drop・強められた quantifier を表に | `/review-fix`、`/referee` 後の修正 |
+| `evidence_coverage.py` | `results/` の各ファイルが原稿・supplement・registry・ledger・CLAIMS・protocol・provenance のどれかに billed か、`\includegraphics` の実在、`CLAIMS.md` の evidence path（brace 展開、repo root fallback）の実在、`exploratory/` の leak、言及の無い R script | `/necessity`、`check_all.sh` §9、ratchet、CI |
+| `lab_doctor.sh` | ラボの機構がこの機械で実際に動くか: toolchain（`python3 -I`、stdlib の場所、PyYAML、tomllib、Rscript、pdflatex）、settings.json ↔ `.claude/hooks` の配線（欠落・孤児）、skills / agents の frontmatter、read-only agent の tool、referee hook の配線、CI が呼ぶ script の実在、ratchet baseline、テスト件数と本書の一致。`--strict` で ❌ があれば exit 1 | `check_all.sh` §0、CI（strict）、`/handoff` |
+| `protocol_compile.py --verify [R]` | protocol ↔ code の乖離（S13）: front matter の seed・n_sim・grid の各 n・各 method の `fn`・summary CSV が R script（既定 `R/{study}.R`、または front matter の `code:`）に現れるか。TODO 残数を警告。乖離は exit 1、`post_hoc: true` の protocol は advisory | `check_all.sh` §6、CI、`/phase next` 4→5 |
+| `install_git_hooks.sh` + `.githooks/pre-commit` | ローカルの blocking gate: staged の内容に応じて SUITS lint（strict）・claim guards（strict）・numbers check・回帰テスト（scripts/hooks を触った時）・ratchet を commit 前に走らせる。`core.hooksPath` を一度設定するだけ（`git commit --no-verify` で一回だけ回避可） | Tak が有効化（§11） |
+| `tests/run_tests.sh` | fixtures に対する回帰テスト 119 件（各 script の検出・除外・strict exit、丸め境界、R と Python の一致、hooks の発火条件、guards の変異テスト、cascade・structure・coverage の fixture、`--verify` の乖離検出、lab doctor、referee blind-list hook の遮断 / 通過）。script や hook を触ったら必ず回す。`PYTHONIOENCODING=utf-8` を export（Windows cp932）。MSYS では Rscript にパスを渡す前に `cygpath -m` | 開発時、`/handoff`、CI |
 
 すべて advisory（exit 0）。strict 判定は `--strict` / `STRICT=1` で `/submission-check` が使う。R が無い環境でも動く（静的解析のみ）。**Claude Code は repo root から起動する**（subagent の `memory: project` と hooks のパス解決が cwd に依存する。10-10 に Louis の memory が 3 か所に分裂していたのを統合した）。
 
@@ -207,3 +228,81 @@ build.sh → PDF；pdftotext の差分で「内容を変えない変更」を証
 **何が変わらないか**: 問いの質、臨床的判断、主張の射程は Tak と team の仕事。Louis も homage も同じモデルで、独立性は人の査読に劣る。pipeline は「正しい」を保証せず、「証拠なしに前へ進めない」ことと「同じ入力から同じ原稿が出る」ことを保証する。
 
 **残作業（project）**: 残り 526 の literal を registry へ（§3.1 identification の表と GUSTO の表が大半 — single writer の R を 2 本書く）、`/claims init`、`/replicate` を Study 2 で初回実施、Tak が `scripts/cloud_setup.sh` を環境に登録、CI の初回 green を見て `r-and-tex.yml` の `continue-on-error` を外す
+
+---
+
+## 10. Referee-grade environment（2026-10-11 夜）— Claude Science を常設の機構にする
+
+**出発点**: 2026-09-21 に Claude Science（内部記録を持たない別セッション）が原稿を一度だけ冷読し、`claude_science/` に 4 つの成果物を残した — 再計算付き referee report（Major 5 / Minor 8、Study 1 の表 23 セル不一致、M1 の数学的誤り）、structure review（本文 2.1×、Discussion に第三の simulation）、simulation necessity（S3/S4/S7 は confirmatory、plateau の読み違い、8.6 MB の未報告 sim）、`verify_corrections.R`（所見 → 実行ゲート、known-bad で変異テスト）。加えて side study 一本（`neyman_smooth/`）。ラボの `/review`・`/pre-review`・`/external-review` はどれもこの深さに届いていなかった。理由は三つ: **文脈がありすぎる**（SUITS・CLAIMS・memory を読んでから攻める）、**再計算が義務でない**、**所見が prose のまま**（Louis の memory）で check にならない。
+
+**設計**: Claude Science がやった 8 つのことを 6 つの機構に分解し、一回限りでなく **毎 draft・同条件・CI 付き** にする。`memory/project_referee_grade_environment.md` に benchmark と対応表。
+
+```
+/referee ──► .claude/agents/referee.md（blind list: SUITS/CLAIMS/DECISIONS/memory/review_response を開けない）
+   │            再計算（Rscript、review_response/referee/{date}/）→ 数学 → 解釈 → binding → abstract 圧縮
+   │            固定書式 report（Arithmetic verification / Major+Guard 案 / Minor / Binding / Abstract vs body / Not verified）
+   ▼
+review_response/REFEREE_{date}.md ──► Harvey 方針 ──► 修正 ──► /review-fix（cascade_check.py: residue / qualifier drop / strengthened）
+   │                                                          │
+   └─ Louis: 各 Major を CLAIM_GUARDS.toml に起票（known_bad = 修正前 rev）──► claim_guards.py --mutation（vacuous 0）
+                                                              │
+hook check-claim-guards.sh（原稿を編集するたび）── CI lab-checks.yml（--strict --mutation）── check_all.sh §7
+/structure  → structure_audit.py（語数 vs venue、float placement、Results 外の数値段落、重複、Supplement）── CI（placement strict）
+/necessity  → evidence_coverage.py（unbilled results、CLAIMS の evidence path、図、exploratory leak）── ratchet results_unbilled
+/explore    → exploratory/{slug}/（EXPLORATORY banner、出口は /protocol のみ、coverage が leak を検出）
+```
+
+**何が「超える」か**
+1. **再現性のある冷読**: Claude Science の独立性は「たまたま別セッションだった」こと。`referee` agent は tool scope と blind list で同じ独立性を **毎回** 作る。再計算 script がディスクに無い review は gate evidence にならない
+2. **所見が消えない**: `verify_corrections.R` は claude_science/ に閉じていた。`CLAIM_GUARDS.toml` は原稿の hook・CI・`check_all.sh` が毎回読む。seed は Claude Science の 8 forbidden phrasings + proximity + abstract quantifier guards + Louis review の "indistinguishable"（15 guards、10 に known_bad、vacuous 0）
+3. **check の check**: 「known-bad で落ちない check は check でない」を `--mutation` として機械化。git の履歴（修正前の commit）が known-bad の供給源になるので、fixture を手で作る必要がない
+4. **修正の二次審査が default**: patch without cascade と compression drop は Claude Science が自分の修正を再審査して見つけた。`/review-fix` は毎修正で同じ再審査を走らせ、Louis には diff と report しか渡さない
+5. **構造と必要性が数値になる**: 語数比・float drift・段落の数値密度・unbilled 件数は毎回同じ物差しで測られ、unbilled は ratchet で増えない
+6. **探索に場所がある**: side study は `exploratory/` に置き、原稿へは `/protocol` 経由でしか入れない（S8 の prior-look 開示付き）
+
+**初回実行（2026-10-11 夜、merge 後の確定版 `fad1010` に対して — `/referee` 本体は Tak の起動待ち）**
+- `claim_guards.py --mutation`: 15 guards、0 FAIL、**0 vacuous**（`review_response/CLAIM_GUARDS_20261011.log`）
+- `structure_audit.py`: 本文 **9,160 語（SiM 上限の 1.5×；09-21 の 12,371 語から −26%）**、abstract 246、float 14 本 placement issue 0、Discussion L540 の段落に数値 7 個、重複文 0、Supplement 文字の引用なし（`review_response/STRUCTURE_AUDIT_20261011.md`）
+- `evidence_coverage.py`: results 49 本中 **unbilled 14**（最大 `threshold_sim_summary.csv` 8.4 MB — Claude Science が指摘したまま）、CLAIMS の evidence path 欠落 1（**C-31 → `paper/generated/tab_study2_ari.tex`**、v6 で削除済みの表）、未使用 figure 13、言及の無い R script 61/87（`review_response/EVIDENCE_COVERAGE_20261011.md`）
+- 回帰テスト: 10-11 夜は 96 件中 90 pass（PyYAML 未導入 5 件、R vs Python の byte 差 1 件）。**10-12 に 113 / 113 pass** — PyYAML を導入、byte 差は両生成器のヘッダ（Python は Windows の `\`、R は絶対パス — CI の r-and-tex が 3 回赤だった原因）を POSIX の project 相対パスに統一して解消（§11）
+
+**残作業（project）**: merge 解決後に `/referee all`（初回の冷読、R で再計算）→ guards 追加 → `/review-fix`；`/necessity` で unbilled 14 本の扱いを `/decide`（threshold sim・anchor_vs_clustering は exploratory へ？）；C-31 の evidence path を retracted に合わせて修正；Discussion L540 の段落を `/structure` で判定。
+
+---
+
+## 11. Hardening（2026-10-12 未明）— 「動くはず」を「動く」に
+
+10-11 夜の referee-grade environment は設計どおりだったが、ディスク上では四つ穴があった: (i) 回帰テストが 6 件落ちていた（環境要因と書いて放置）、(ii) CI の `r-and-tex` が 3 連続で赤（R と Python の macros ヘッダの byte 差）、(iii) referee の blind list が **指示**でしかなく、agent は SUITS も CLAIMS も開けた、(iv) 新 skill 5 本の記述が script の実装と 13 か所で食い違っていた（監査 agent の所見）。この節はそれを機械で閉じた記録。
+
+| 穴 | 機構 | 証拠 |
+|---|---|---|
+| テストが環境で落ちる | PyYAML 導入、MSYS の Rscript パスを `cygpath -m`、`lab_doctor.sh` が toolchain を毎回診る（`python3 -I` が動くか、stdlib が repo の外か） | `run_tests.sh` 113 / 113、`check_all.sh` §0 |
+| CI r-and-tex 赤 | `make_numbers_macros.R` と `numbers_registry.py build` のヘッダを POSIX の project 相対パスに統一（R は `normalizePath(winslash="/")` + `startsWith`、Python は `as_posix()`） | テスト「R output byte-identical」PASS、CI は次 push で green 見込み。tex job は 3 回 green なので `continue-on-error` を外した（blocking） |
+| blind list が request | `referee-blind.sh`（PreToolUse、`agent_type == referee` のみ）: 内部記録の Read / Grep / Glob / `git log` を exit 2、Write と shell 書き込みは `review_response/referee/` のみ。agent 定義の list と同期 | 回帰テスト 10 件（遮断 6・通過 4）、`lab_doctor` が配線を確認 |
+| protocol と code の乖離（S13） | `protocol_compile.py --verify`: seed・n_sim・grid・method fn・summary CSV が R に現れるか。post_hoc は advisory、それ以外は exit 1 | テスト 3 件、CI step、`check_all.sh` §6 の行 |
+| 落ちる状態を commit できる | `.githooks/pre-commit`（staged に応じた fast gate）+ `install_git_hooks.sh`。**有効化は Tak**（並走セッションの commit を突然止めないため、この job では `core.hooksPath` を設定していない） | §7 の行 |
+| skill と script の食い違い | referee / review-fix / structure / necessity / explore の 13 か所を実装に合わせた（paths、`pending`、`--strict` の範囲、CI の pipefail、leak 検出の範囲、R lint の範囲、R7 の参照先、gate への配線）。`cascade_check.py --new` は省略可（working tree）、`evidence_coverage.py` は registry と ledger の leak も見る、`structure_audit.py` は未知 venue を警告、`check-claim-guards.sh` は `[meta].tex` だけを対象にし stderr を見せる | `/phase next` の 4→5・6→7 一覧に REFEREE / FIX_REVIEW / STRUCTURE_AUDIT / NECESSITY / guards strict を明記 |
+| 並走セッション | `memory/feedback_concurrent_sessions.md`: bg job は ListAgents + mtime で検出 → SendMessage で path 分担 → commit しない → SUITS は再読後に原子的挿入 | 10-12 00:06 の実例（原稿側は別セッションが適用中） |
+
+**この機械の既知の問題（Tak）**: `C:\Python313` は exe だけの残骸で、stdlib は `AppData\Local\Programs\Python\Python313\Lib` から registry 経由で読んでいる（`python3 -I` が落ちる、`sys.prefix` が cwd になり `$PWD/Lib` が `sys.path` に載る）。`lab_doctor` が ❌ 2 件で毎回指摘する。Python を一度入れ直すのが正。
+
+**残作業（project 側、別セッション / Tak）**: `PROTOCOL_study1_identification.md` の front matter に `code: R/selection_simulation.R` を足す（`--verify` が既定の `R/study1_identification.R` を探して DRIFT 扱い）；`git commit`（この job は commit しない）；push 後に CI 2 本が green になるのを確認；`bash scripts/install_git_hooks.sh` で pre-commit を有効化；CLAUDE.md L290 の「60 regression tests」は guard で編集不可なので Tak が直す。
+
+---
+
+## 12. Tak の 3 原則（2026-10-12 10:09 — 「システム改修」）— 根拠・収束・ストック
+
+Tak の指示（verbatim）:
+> - 知識量に限界がある場合、論文等の外部知識を要求する。推測だけで進めない。根拠が重要。
+> - 研究として、さまざまな論点に発散していくことは許容するが、論文としては論点を絞る。目的と結果が対応することが重要。
+> - 議論の展開で、新たな論文のネタとなりそうなものが出てきた場合、そのネタをストックしておく。
+
+三つは一組で動く。発散（研究）→ 根拠で篩う（S21）→ Aim に答えるものだけ原稿へ（S22）→ 外した論点は捨てずにストック（S23）。
+
+| 原則 | 発言・記録の規約 | 機構 | 何が止まるか |
+|---|---|---|---|
+| S21 根拠 | 発言は **根拠あり**（path / DOI + page / CSV 列）/ **`[推測]`** / **`🔍要根拠`** の三種。「分からない」は正当な答え | `/ground <statement>`（Rachel: knowledge/ → 原典 PDF → PubMed / Crossref → `/request-paper`、結果は GROUNDED / INFERRED / OPEN）。`scripts/ground_audit.py` が `paper/*.tex` と `CLAIMS.md` の marker を finding にする（`check_consistency.sh` §7、`run_tests.sh` 6 件） | 推測のまま原稿・CLAIMS・DECISIONS が進むこと。推測に依存する判断は DECISIONS に「根拠待ち」で保留 |
+| S22 収束 | 原稿の Aim は `LAB_STATUS.md` の **Question / Aims** 行 — **目的**（何を提示するか）であって方法ではない（Tak 10:46 の訂正: Study 1 / Study 2 / GUSTO は Aim でなく Result）。Aim を支える結果は **Results that answer A1**（R1, R2, …）。Results の小節と CLAIMS の行は R 番号を持つ。新段落は「どの Aim に答えるか」を 1 行で言えてから | `/necessity` の Aim ↔ Results 対応表、`templates/review_checklist.md` Q 節、`.claude/rules/paper-writing.md`「目的と結果の対応」、`/meeting` Phase 4 の出口三択 | Aim に答えない Results、Results の無い Aim、Discussion への「とりあえず」書き込み、supplement 化（`feedback_no_process_supplements`） |
+| S23 ストック | 別論文のネタは `/idea <一行>` → root `IDEAS_BACKLOG.md` に `I-YYYYMMDD-n`（source、一行、scope 外の理由、必要な根拠、status、by）。その場で良し悪しを議論しない | `/idea`、`IDEAS_BACKLOG.md` v2 表（status 💡→🔬→📄/🗑）、`/meeting` `/decide` `/explore` `/review` `/referee` `/victory` の登録義務、`check_consistency.sh` §7 の ID 重複検査 | ネタが SUITS の scene に埋もれること。ネタの議論で本題が止まること。原稿の Discussion に「将来の課題」として押し込むこと |
+
+**この日の実装**: `memory/` 3 本（+ INDEX、ローカル auto-memory と同期）、`/ground` `/idea`、`scripts/ground_audit.py`、`check_consistency.sh` §7、回帰テスト 113 → 119、`IDEAS_BACKLOG.md` を表形式に（backfill 3 件: I-20260203-1 因果の相対効果、I-20260927-1 clustering / silhouette、I-20261011-1 Neyman smooth 2 標本版）、CLAUDE.md Rule 6 に 3 bullet と slash 表 2 行、`.claude/agents/*.md` 7 本と `agents/{rachel,harvey,donna}.md` に duties、`templates/review_checklist.md` Q 節、`templates/lab_status_template.md` の Question / Aims 行、`projects/similarity-metric/LAB_STATUS.md` に Question / Aims（Tak 10:46 の文言「効果修飾因子の分布の類似性を定量的に評価する指標を提示すること」+ Results that answer A1 = R1–R4）、skills 6 本に 1–2 行（meeting / explore / decide / necessity / review / referee）、README。commit はしない（原稿側セッションと同一 tree）。

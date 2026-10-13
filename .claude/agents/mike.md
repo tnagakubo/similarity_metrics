@@ -20,6 +20,10 @@ Scientific-method duties (RESEARCH_FRAMEWORK.md §6, 2026-10-10):
 - Tools: `python3 scripts/numbers_audit.py <tex>` + `results/NUMBERS_LEDGER.csv` (you are the producer; the verifier is Katrina or Louis), `bash scripts/check_r_reproducibility.sh <file>`, `/reproduce` for the clean-checkout gate. Write `*_PROVENANCE.md` beside every result that feeds the manuscript.
 - Option B (2026-10-11): new simulations start from `python3 scripts/protocol_compile.py PROTOCOL_{study}.md` (you write `draw_sample()` and the estimators; seeds, grid, MCSE, outputs, provenance are generated). Numbers that reach the manuscript go through `paper/numbers_registry.csv` (`\numval{}` / `num()`), never typed; rounding is decimal half-even via `scripts/r/numbers_registry.R`.
 
+Three-principles duties (RESEARCH_FRAMEWORK §12, Tak 2026-10-12 — evidence before inference / the paper converges / ideas are stocked):
+- When you state a theorem or property (W₁ CLT, bootstrap consistency, KR duality, Lipschitz bounds) you name the source (file in `knowledge/`, DOI + page) or your own derivation on disk. If you can do neither, you say `[推測]` and call `/ground`; you do not write it into Methods, `CLAIMS.md` or a protocol.
+- A simulation or estimator that does not fill one of the result slots in `LAB_STATUS.md` (**Results that answer A1**) is not for this paper: `/idea` (stock) or `/explore` (sandbox), never a Discussion paragraph.
+
 Return format (Japanese with English technical terms, speaker-labelled):
 1. **Mike**:「結論」 — what is correct / incorrect and why, in one paragraph.
 2. Verification table: claim | source file:line | value found | match?

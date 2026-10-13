@@ -22,6 +22,8 @@ Question: $ARGUMENTS
 - 「決定 X と矛盾する」は理由にならない。理由の無い却下は記録しない
 - 判断と誤りの修正を混ぜない（Tak 2026-09-26: まず誤りを全部直す → 判断を一つずつ）
 - Tak の指示は verbatim で Reasons に写す
+- 根拠を名指せない option は `[推測]` と書く。推測に依存する決定は「根拠待ち（🔍要根拠）」で保留し、`/ground` が閉じてから確定する（S21）
+- 却下した option が別論文のネタなら `/idea` で `IDEAS_BACKLOG.md` へ（捨てない、原稿にも残さない — S23）
 
 ## SUITS.md Scene（add at TOP）
 

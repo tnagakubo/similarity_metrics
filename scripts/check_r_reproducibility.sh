@@ -1,11 +1,11 @@
 #!/bin/bash
 # check_r_reproducibility.sh — static reproducibility lint for R scripts (Mike's gate, Phase 3).
 # Usage: bash scripts/check_r_reproducibility.sh [file.R ...] | [directory]
-#        (default: every projects/*/R/*.R)
+#        (default: every projects/*/R/*.R and projects/*/exploratory/*/R/*.R)
 # Advisory: prints one table row per file; exit 0 always unless STRICT=1 and findings exist.
 #
 # Checks (static, no R needed):
-#   seed      set.seed() present when the script draws random numbers (rnorm/runif/sample/rbinom/rexp/rgamma/rbeta/rt/rchisq/rlnorm/rpois/boot)
+#   seed      set.seed() present when the script draws random numbers (rnorm/runif/sample/sample.int/rbinom/rexp/rgamma/rbeta/rt/rchisq/rlnorm/rpois/boot)
 #   parRNG    parallel code (parLapply/mclapply/future/foreach) also sets a reproducible stream
 #             (clusterSetRNGStream / RNGkind("L'Ecuyer-CMRG") / future.seed / registerDoRNG), or seeds per task
 #             inside the worker (set.seed(base + task_index), as real_data_survey.R does) — known hole: w1_raw_simulation.R
@@ -18,7 +18,7 @@ cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)" || exit 0
 
 FILES=()
 if [ "$#" -eq 0 ]; then
-  while IFS= read -r f; do FILES+=("$f"); done < <(ls projects/*/R/*.R 2>/dev/null)
+  while IFS= read -r f; do FILES+=("$f"); done < <(ls projects/*/R/*.R projects/*/exploratory/*/R/*.R 2>/dev/null)   # exploratory sandboxes obey the same rules
 else
   for a in "$@"; do
     if [ -d "$a" ]; then
@@ -35,7 +35,7 @@ printf 'Mike: R reproducibility lint (%d file(s))\n' "${#FILES[@]}"
 printf '%-48s %-6s %-7s %-8s %-9s %-8s %s\n' "file" "seed" "parRNG" "abspath" "sessinfo" "install" "notes"
 for f in "${FILES[@]}"; do
   notes=""
-  draws=$(grep -cE '\b(rnorm|runif|sample|rbinom|rexp|rgamma|rbeta|rt|rchisq|rlnorm|rpois|rmultinom|boot)\s*\(' "$f" 2>/dev/null || true)
+  draws=$(grep -cE '\b(rnorm|runif|sample|sample\.int|rbinom|rexp|rgamma|rbeta|rt|rchisq|rlnorm|rpois|rmultinom|boot)\s*\(' "$f" 2>/dev/null || true)
   seed=$(grep -cE 'set\.seed\s*\(' "$f" 2>/dev/null || true)
   par=$(grep -cE '\b(parLapply|parLapplyLB|parSapply|mclapply|future_map|future_lapply|foreach|clusterApply)\b' "$f" 2>/dev/null || true)
   parrng=$(grep -cE "clusterSetRNGStream|L'Ecuyer|future\.seed|registerDoRNG|%dorng%|RNGkind" "$f" 2>/dev/null || true)

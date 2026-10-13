@@ -94,3 +94,14 @@ Tak への修正提案は **3 軸** で options を並べると判断が早い:
 - [ ] 引用は `CITATION_AUDIT` で "supports the claim? = yes" か?
 
 **判定**: 全 Yes → Tak に提示可 / No あり → 修正後に再チェック
+
+---
+
+## Q: 目的と結果の対応・根拠（team 追加 2026-10-12 — Tak の 3 原則、RESEARCH_FRAMEWORK §12）
+
+- [ ] この段落は `LAB_STATUS.md` の **Question / Aims**（目的）を支える **Results that answer A1** のどれ（R1, R2, …）に答えるか、1 行で言えるか?（言えなければ原稿に入れない → `/idea` か `exploratory/`）
+- [ ] Results の小節 / `CLAIMS.md` の行に R 番号が付いているか? Aim に答えない Results、Results の無い Aim は無いか? Aim の文に Study 名・推定量・データ名が混じっていないか（それは方法）?
+- [ ] 段落内の事実文は根拠（path / DOI + page / CSV 列）を名指せるか? 名指せない文は `[推測]` を付けて Tak に出さない（`/ground`）
+- [ ] 議論で出た別論文のネタは `IDEAS_BACKLOG.md` に落としたか?（Discussion の「将来の課題」に残っていないか）
+
+**判定**: 全 Yes → Tak に提示可 / No あり → 修正後に再チェック

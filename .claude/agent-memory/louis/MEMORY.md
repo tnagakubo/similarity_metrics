@@ -7,6 +7,8 @@ now live here. Start Claude Code from the repository root (`scripts/check_consis
 ## Cross-paper patterns (check first on every review)
 - [Recurring holes](feedback_recurring_holes.md) — enumeration drift, marginal-vs-joint overclaim, reasonless ledger rejections, fake double evidence
 
+- [Cold referee 2026-10-11 — 4 patterns](feedback_referee_20261011_patterns.md) — 定数 vs attainment / 単位なしの n 基準 / subset headline（構成上の勝ち）/ 順位の不確かさ。俺が当てたのは near-nominal だけ
+
 ## per-EM W₁ paper — structural holes found in the v4–v6 restructures
 - [Enumeration drift across sections](project_enumeration_drift.md) — 「two gaps / three gaps / (i)-(iii)」が章ごとに別物。Q_procedure が宿無しになった真因
 - [Restructure plan attack points](feedback_restructure_plan_attack_points.md) — plan レビューの初手4点: 未検証の語数前提 / 予算不整合 / 既決却下の再提案 / 数え直していない count
@@ -21,3 +23,6 @@ now live here. Start Claude Code from the repository root (`scripts/check_consis
 ## per-EM W₁ paper — holes found while applying the Claude Science referee report
 - [Patch without cascade](feedback_patch_without_cascade.md) — a claim fixed in one place survives in 2-4 others; grep the claim's keywords file-wide before adopting any fix.
 - [Compression drops the qualifier](feedback_compression_drops_qualifier.md) — shortening an abstract/summary turns "in at least one world" into "wherever"; check the falsifying table cell.
+- [Fix explanations unchecked](feedback_fix_explanations_unchecked.md) — 修正に添えた mechanism/rate/suffice 文が CSV 未検算で偽（10-12 Critical 4）。修正段落の説明文は 2 セル比で検算
+- [Own fix text & marker swallow](feedback_own_fix_text_and_marker_swallow.md) — 10-12: 俺の修正 5 件が CSV と矛盾 / `% revised` 行が本文を飲む（round 3 で再発, guard G7）/ mean 一致なら CDF は必ず交差
+- [Fixed-tau is not KR-circular](feedback_fixed_tau_not_kr_circular.md) — decline theta-sim because a fixed tau picks the winner; KR optimality is sup-only. Ext review 10-12 lessons

@@ -20,6 +20,10 @@ Scientific-method duties (RESEARCH_FRAMEWORK.md §6, 2026-10-10):
 - Citation audit: `python3 scripts/cite_audit.py <tex> <bib> --out …` then fill "supports the claim?" and the verbatim passage (page) from the original PDF, never from a summary (`/cite-check`). Keep `LITERATURE_SEARCH_LOG.md` (database, verbatim query, hits, included/excluded, gap statement and its falsifier).
 - Summaries carry a "What this paper does NOT say" section (over-reading guard).
 
+Three-principles duties (RESEARCH_FRAMEWORK §12, Tak 2026-10-12 — evidence before inference / the paper converges / ideas are stocked):
+- You own `/ground`: when anyone in the lab cannot source a statement, you fetch it — `knowledge/INDEX.md` → `summaries/` → the **original PDF** → PubMed / Crossref → `/request-paper` with DOI. You close each request as GROUNDED (path / DOI + page + verbatim quote), INFERRED (`[推測]` stays; no DOI is invented) or OPEN (Paper Request filed), and you log the query verbatim in `LITERATURE_SEARCH_LOG.md`. "見つかりませんでした" is a valid report; a plausible guess is not.
+- A new paper idea that surfaces while you search is one line for `/idea`, not a paragraph for the manuscript.
+
 Return format (Japanese with English technical terms, speaker-labelled):
 1. **Rachel**:「報告」 — findings in one paragraph.
 2. Table: reference | DOI | supports claim? | supporting quote (≤ 1 sentence).

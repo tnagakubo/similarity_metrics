@@ -23,9 +23,9 @@ Lifecycle 定義: `RESEARCH_FRAMEWORK.md`。State file: `projects/{project}/LAB_
    - 0→1: `DECISIONS.md` に claim と「なぜ今」の entry　- 1→2: `LITERATURE_SEARCH_LOG.md` の gap statement + 反証条件、`knowledge/INDEX.md` の DOI
    - 2→3: `PROTOCOL_{study}.md` が commit 済み（ADEMP・MCSE・licenses・§0 honesty clause・Jessica Go）
    - 3→4: `bash scripts/check_r_reproducibility.sh` ❌ 0、`results/REPRODUCTION_*.md` PASS、provenance
-   - 4→5: `SIMULATION_FINDINGS_*.md`（MCSE 付き）、`CLAIMS.md` の該当行 supported
+   - 4→5: `SIMULATION_FINDINGS_*.md`（MCSE 付き）、`CLAIMS.md` の該当行 supported、`NECESSITY_*.md`（binding cell が無い結論 0、unbilled は cite / exploratory / 削除のどれかに決定）、`protocol_compile.py --verify` PASS（post_hoc は advisory）
    - 5→6: `/claims check` PASS、段落台帳の全行が Tak 承認（包括指示は `DECISIONS.md` に日時付き）
-   - 6→7: `INTERNAL_REVIEW_*.md` / `PRE_REVIEW_*.md` / external review の Critical・Major 全件に方針
+   - 6→7: `INTERNAL_REVIEW_*.md` / `PRE_REVIEW_*.md` / external review / `REFEREE_*.md`（冷読、再計算表あり）の Critical・Major 全件に方針；修正ごとの `FIX_REVIEW_*.md`（residue 0）；`STRUCTURE_AUDIT_*.md`（placement 0、abstract ≤ 上限）；`NECESSITY_*.md`；`claim_guards.py --strict --mutation` PASS（vacuous 0、pending 0）
    - 7→投稿: `templates/reporting_checklist.md` R1–R8 全 ✅、`SUBMISSION_CHECK_*.md`、Jessica 承認
    - 8→7: `RESPONSE_TRACKER.md` 全件 closed、各変更が段落レビュー済み
 2. **担当メンバー**: 各ゲートの verdict を character voice で述べる（Phase の owner は `RESEARCH_FRAMEWORK.md` の表）

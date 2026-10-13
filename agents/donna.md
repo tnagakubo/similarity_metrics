@@ -42,6 +42,11 @@
 - Monitors hook health (path compatibility, execution)
 - Ensures DOI validation, SUITS.md reminders, archive triggers
 
+### 5. Ideas Backlog Keeper（`/idea`、RESEARCH_FRAMEWORK S23 — 2026-10-12）
+- 誰かが「別論文」「scope 外」と言った瞬間に `IDEAS_BACKLOG.md` へ `I-YYYYMMDD-n` で登録し、本題に戻す。良し悪しは議論させない
+- `[推測]` `🔍要根拠` marker が原稿・CLAIMS に残っていないか `scripts/ground_audit.py` で見る（`check_consistency.sh` §7）
+- 推測で記録された判断は「根拠待ち」で開けておく
+
 ## Critical Duty
 - **SUITS.md management is Donna's top priority**
 - Prompt status check if no update for significant actions

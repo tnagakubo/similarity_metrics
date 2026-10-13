@@ -10,6 +10,8 @@
 #  5. Memory files referenced by the system (CLAUDE.md, RESEARCH_FRAMEWORK.md, .claude/**, agents/, templates/)
 #     that are missing from the versioned memory/ directory → the principle lives only in a local auto-memory
 #  6. SUITS.md line count vs the 1000-line archive rule
+#  7. Inference markers ([推測] / 🔍要根拠) in manuscripts or CLAIMS.md (S21, scripts/ground_audit.py);
+#     IDEAS_BACKLOG.md present at the root with unique I-YYYYMMDD-n ids (S23)
 set -u
 cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)" || exit 0
 VERBOSE=1; [ "${1:-}" = "--quiet" ] && VERBOSE=0
@@ -82,6 +84,26 @@ for st in projects/*/LAB_STATUS.md; do
     [ "$tot" -gt 0 ] && [ "$pend" -eq "$tot" ] && say "$name: CLAIMS.md has $tot row(s), all pending (/claims init → check)"
   fi
 done
+
+# 7: evidence before inference (S21) and the ideas backlog (S23) — Tak 2026-10-12
+GFILES=""
+for proj in projects/*/; do
+  [ -d "$proj" ] || continue
+  for tex in "$proj"paper/*.tex; do [ -f "$tex" ] || continue; case "$(basename "$tex")" in *template*) continue;; esac; GFILES="$GFILES $tex"; done
+  [ -f "$proj/CLAIMS.md" ] && GFILES="$GFILES $proj/CLAIMS.md"
+done
+if [ -n "$GFILES" ]; then
+  GOUT=$(python3 scripts/ground_audit.py $GFILES 2>/dev/null | grep -vE '^ground_audit:' )
+  if [ -n "$GOUT" ]; then
+    say "inference markers in manuscript/claims (write nothing on inference — /ground first): $(echo "$GOUT" | wc -l | tr -dc '0-9') line(s), e.g. $(echo "$GOUT" | head -1)"
+  fi
+fi
+if [ ! -f IDEAS_BACKLOG.md ]; then
+  say "IDEAS_BACKLOG.md missing at the repo root — paper ideas that leave the current scope have nowhere to go (/idea)"
+else
+  DUPI=$(grep -oE '^\| I-[0-9]{8}-[0-9]+ ' IDEAS_BACKLOG.md | sort | uniq -d | tr -d '| ' | tr '\n' ' ')
+  [ -n "$DUPI" ] && say "IDEAS_BACKLOG.md: duplicate idea id(s): $DUPI"
+fi
 
 # 6: SUITS size
 L=$(wc -l < SUITS.md 2>/dev/null | tr -dc '0-9'); L=${L:-0}

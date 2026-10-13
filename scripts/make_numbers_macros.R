@@ -10,5 +10,9 @@ script_dir <- tryCatch(dirname(sub("--file=", "", grep("--file=", commandArgs(),
 source(file.path(script_dir, "r", "numbers_registry.R"))
 reg <- num_registry_load(registry)
 root <- .num_env$root
-vals <- num_write_macros(reg, out, registry_rel = sub(paste0("^", root, "/?"), "", normalizePath(registry)))
+# Project-relative, forward-slash path in the header so that R and Python emit byte-identical files on every OS
+reg_abs <- normalizePath(registry, winslash = "/")
+root_fs <- normalizePath(root, winslash = "/")
+registry_rel <- if (startsWith(reg_abs, root_fs)) sub("^/+", "", substring(reg_abs, nchar(root_fs) + 1)) else basename(registry)
+vals <- num_write_macros(reg, out, registry_rel = registry_rel)
 cat(sprintf("make_numbers_macros: %d macro(s) → %s\n", length(vals), out))

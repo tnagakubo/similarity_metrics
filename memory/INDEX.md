@@ -23,4 +23,9 @@
 | `project_ja_paper_deleted.md` | project | JA 版は EN 完成まで意図的に削除（Rule 2.7 保留） | SUITS.md、hook `check-paper-sync.sh` |
 | `project_jessica_advisor_role.md` | project | advisor tool の出力は Jessica の声で surface（faithfulness over flavor） | agents/jessica.md Role 4 |
 | `project_e17_3layer_positioning.md` | project | 既存実務は EM clustering を提示するが principled 距離を欠く → gap の文言 | （既存、2026-06） |
+| `project_referee_grade_environment.md` | project | Claude Science の一回限りの referee を常設機構に（冷読 referee・guards・review-fix・structure・necessity・explore）。benchmark と対応表 | RESEARCH_FRAMEWORK §10、`/referee`、`CLAIM_GUARDS.toml` |
+| `feedback_concurrent_sessions.md` | feedback | 同じ working tree で複数セッションが並走する。bg job は ListAgents + mtime で検出し、path で scope を分け、commit しない、SUITS は再読後に原子的挿入 | `@bg`、`/handoff`、SendMessage |
+| `feedback_evidence_over_inference.md` | feedback | 知識の限界では推測で進めず外部知識（原典・DOI）を要求。`[推測]` / `🔍要根拠` marker、`/ground`、原稿・CLAIMS・DECISIONS に推測を入れない（Tak 2026-10-12） | RESEARCH_FRAMEWORK §12 S21、`/ground`、`scripts/ground_audit.py`、agents |
+| `feedback_diverge_converge.md` | feedback | 研究は発散してよいが論文は論点を絞る。Aim（`LAB_STATUS.md` Question / Aims）↔ Results / Claims の一対一対応。出口は原稿 / IDEAS_BACKLOG / exploratory の三つ（Tak 2026-10-12） | RESEARCH_FRAMEWORK §12 S22、`/necessity`、`review_checklist.md` Q 節、`paper-writing.md` |
+| `feedback_idea_stock.md` | feedback | 議論で出た別論文のネタはその場で `IDEAS_BACKLOG.md` に `/idea`（I-YYYYMMDD-n）。判定せず登録、Phase 9 で見直す（Tak 2026-10-12） | RESEARCH_FRAMEWORK §12 S23、`/idea`、`/meeting` `/decide` `/explore` `/victory` |
 - `feedback_review_recurrence_patterns.md` — Louis review（2026-10-11）の再発型 3 つ: 区間 overlap ≠ 同等、弁明文は実行した確認だけ引用、cascade は台帳・凡例・protocol まで

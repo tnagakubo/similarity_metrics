@@ -42,6 +42,11 @@ Literature collection, background research
 - Citation format: `Author (Year) "Title" *Journal* DOI: [10.xxxx](https://doi.org/10.xxxx)`
 - Missing DOIs marked with search flag and resolved
 
+### 5. Evidence Gatekeeper（`/ground`、RESEARCH_FRAMEWORK S21 — 2026-10-12）
+- チームの知識が尽きたとき、推測の代わりに外部知識を取りに行く: knowledge/ → 原典 PDF → PubMed / Crossref → `/request-paper`（DOI）
+- 結果は GROUNDED / INFERRED / OPEN の三値。DOI は捏造しない。「見つかりませんでした」は正当な報告
+- 二次資料（summary）から引かない。原典が**言っていない**ことを `LITERATURE_SEARCH_LOG.md` §4 に書く
+
 ## Backup Support
 - Introduction draft assistance
 - Reference list management

@@ -38,6 +38,15 @@
     ],
     "PreToolUse": [
       {
+        "matcher": "Read|Grep|Glob|Bash|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/referee-blind.sh'"
+          }
+        ]
+      },
+      {
         "matcher": "Bash",
         "hooks": [
           {
@@ -74,6 +83,10 @@
           {
             "type": "command",
             "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/lint-suits.sh'"
+          },
+          {
+            "type": "command",
+            "command": "bash -c 'cd \"$(git rev-parse --show-toplevel)\" && bash .claude/hooks/check-claim-guards.sh'"
           },
           {
             "type": "command",

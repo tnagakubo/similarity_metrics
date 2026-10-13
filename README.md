@@ -102,6 +102,16 @@ Progress is recorded as a Japanese drama script in `SUITS.md`:
 - `/submission-check` - Reporting checklist R1–R8 + journal requirements (Phase 7)
 - `/respond-reviewers [init|status|close]` - Point-by-point reviewer response tracker (Phase 8)
 - `/handoff`, `/lint-suits` - Persistence guard / mechanical character lint (any phase)
+- `/ground {statement}` - Evidence before inference: Rachel fetches the source (knowledge/ → original PDF → PubMed → Paper Request); `[推測]` / `🔍要根拠` markers are findings in `paper/*.tex` and `CLAIMS.md` (`scripts/ground_audit.py`)
+- `/idea {one line}` - Stock a paper idea in the root `IDEAS_BACKLOG.md` (`I-YYYYMMDD-n`) without debating it; the paper keeps only what answers its Aims
+
+### Referee-grade review (RESEARCH_FRAMEWORK §10–§11)
+- `/referee [all | section]` - Cold-read referee: a subagent whose blind list (SUITS, CLAIMS, DECISIONS, memory, lab docs, git history) is enforced by a PreToolUse hook; recomputes the tables from raw files; every Major comes with a guard proposal → `review_response/REFEREE_*.md`
+- `/review-fix <old rev>` - Second-order review of a fix: residue, dropped qualifiers, strengthened quantifiers (`scripts/cascade_check.py`) → `FIX_REVIEW_*.md`
+- `/structure` - Word budget vs venue, float placement, evidence outside Results, duplicated arguments (`scripts/structure_audit.py`) → `STRUCTURE_AUDIT_*.md`
+- `/necessity` - Which conclusion fails if a cell is deleted; unbilled results; CLAIMS evidence paths (`scripts/evidence_coverage.py`) → `NECESSITY_*.md`
+- `/explore <slug> <question>` - Exploratory sandbox under `exploratory/`; the only exit to the manuscript is `/protocol`
+- `CLAIM_GUARDS.toml` + `scripts/claim_guards.py --strict --mutation` - Review findings as executable guards; each must fail on its `known_bad` revision (a guard that cannot fail is vacuous and stops CI)
 
 ### Mechanical checks (`scripts/`, no R required)
 ```bash
@@ -110,8 +120,15 @@ python3 scripts/numbers_audit.py projects/<p>/paper/<m>.tex   # numbers vs resul
 python3 scripts/cite_audit.py <m>.tex <m>.bib --out …    # \cite vs .bib, DOI, citation–claim table
 bash scripts/check_r_reproducibility.sh                  # seeds, parallel RNG, absolute paths, sessionInfo
 bash scripts/check_consistency.sh                        # phase sync, stale state, undefined \ref, artifacts
+bash scripts/lab_doctor.sh [--strict]                    # is the machinery wired and runnable here? (toolchain, hooks ↔ settings.json, skills/agents, CI scripts, baselines)
+python3 scripts/claim_guards.py projects/<p>/CLAIM_GUARDS.toml --strict --mutation   # review findings as guards; vacuous guards fail
+python3 scripts/structure_audit.py <m>.tex --venue sim --strict   # word budget, float placement, evidence outside Results
+python3 scripts/evidence_coverage.py projects/<p>          # unbilled results, CLAIMS evidence paths, exploratory leaks
+python3 scripts/cascade_check.py --old <rev> --tex <m>.tex       # did the fix cascade; did compression drop a qualifier
+python3 scripts/protocol_compile.py PROTOCOL_<s>.md --verify     # protocol front matter ↔ the R script it registered
 bash scripts/check_all.sh                                # all of the above → review_response/MECHANICAL_CHECKS_<date>.md
-bash scripts/tests/run_tests.sh                          # regression tests for the scripts and hooks
+bash scripts/tests/run_tests.sh                          # 119 regression tests for the scripts and hooks
+bash scripts/install_git_hooks.sh                        # once per clone: .githooks/pre-commit runs the fast gates before every commit
 ```
 
 Start Claude Code from the repository root: subagent memory (`memory: project`) and hook paths resolve
@@ -158,14 +175,17 @@ research-lab/
 ├── CLAUDE.md              # Project rules (Rule 1–6)
 ├── RESEARCH_FRAMEWORK.md  # 10-phase lifecycle + integrity principles S1–S11 + feature map
 ├── memory/                # Versioned principles (repo copy of the auto-memory)
-├── scripts/               # Mechanical checks (lint, numbers, citations, reproducibility, consistency)
+├── scripts/               # Mechanical checks and generators (lint, numbers, citations, reproducibility, consistency,
+│   │                      #   claim guards, structure, coverage, cascade, protocol compiler, lab doctor); tests/ (119 regression tests)
+├── .githooks/             # pre-commit = fast local gates (activate once: bash scripts/install_git_hooks.sh)
+├── .github/workflows/     # lab-checks.yml (gates, strict) and r-and-tex.yml (R parse, generated files, LaTeX build)
 ├── SUITS.md               # Live drama script
 ├── README.md              # This file
 ├── .claude/
-│   ├── agents/            # Member subagents (harvey, mike, donna, rachel, katrina, louis, jessica)
-│   ├── rules/             # Path-scoped rules (paper-writing, r-code, suits-script)
-│   ├── skills/            # Slash commands
-│   └── hooks/             # Enforcement hooks (Donna)
+│   ├── agents/            # Member subagents (harvey, mike, donna, rachel, katrina, louis, jessica, louis-replication, referee)
+│   ├── rules/             # Path-scoped rules (paper-writing, r-code, suits-script, protocol-and-results)
+│   ├── skills/            # Slash commands (38)
+│   └── hooks/             # Enforcement hooks (Donna); referee-blind.sh makes the referee's blind list a tool scope
 ├── archives/              # Archived SUITS.md files
 ├── agents/                # Persona definitions (source of truth for voice)
 ├── knowledge/             # Knowledge base

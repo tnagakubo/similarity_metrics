@@ -6,16 +6,24 @@ on:
     branches: ["**"]
   pull_request:
 
+defaults:
+  run:
+    shell: bash -eo pipefail {0}   # a strict check piped into sed must still fail the step
+
 jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # claim_guards --mutation reads known_bad revisions
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Install PyYAML (protocol compiler)
         run: python3 -m pip install --quiet pyyaml
+      - name: Lab doctor (toolchain, hook wiring, skills/agents, CI scripts, baselines; strict)
+        run: bash scripts/lab_doctor.sh --strict
       - name: Regression tests for scripts and hooks
         run: bash scripts/tests/run_tests.sh
       - name: Cross-file consistency (phase sync, undefined refs, lifecycle artifacts, memory references)
@@ -38,11 +46,30 @@ jobs:
             d=$(dirname "$reg"); tex=$(ls "$d"/*.tex | grep -vE 'supplement|template|numbers_macros' | head -1)
             python3 scripts/numbers_registry.py check "$reg" --macros "$d/numbers_macros.tex" --tex "$tex"
           done
-      - name: Ratchet (numbers unsourced, R lint errors may only decrease)
+      - name: Claim guards (review findings as executable checks; strict + mutation-tested against known-bad revisions)
+        run: |
+          set -e
+          for t in projects/*/CLAIM_GUARDS.toml; do
+            [ -f "$t" ] || continue
+            python3 scripts/claim_guards.py "$t" --strict --mutation
+          done
+      - name: Structure audit (float placement strict; word budget advisory)
+        run: |
+          set -e
+          for proj in projects/*/; do
+            tex=$(ls "$proj"paper/*.tex 2>/dev/null | grep -vE 'supplement|template|numbers_macros' | head -1) || true
+            [ -n "$tex" ] && python3 scripts/structure_audit.py "$tex" --venue sim --strict | sed -n '1,3p'
+          done
+      - name: Evidence coverage (advisory; the unbilled count is ratcheted below)
+        run: for proj in projects/*/; do python3 scripts/evidence_coverage.py "$proj" | sed -n '3p'; done
+      - name: Ratchet (numbers unsourced, results unbilled, R lint errors may only decrease)
         run: bash scripts/ci_ratchet.sh
-      - name: Protocol front matter compiles (dry run)
+      - name: Protocol front matter compiles (dry run) and agrees with the code it registered (--verify)
         run: |
           set -e
           for p in projects/*/PROTOCOL_*.md; do
-            head -1 "$p" | grep -q '^---$' && python3 scripts/protocol_compile.py "$p" --dry-run || echo "skip (no front matter): $p"
+            if head -1 "$p" | grep -q '^---$'; then
+              python3 scripts/protocol_compile.py "$p" --dry-run
+              python3 scripts/protocol_compile.py "$p" --verify | tail -1   # exit 1 on drift unless post_hoc
+            else echo "skip (no front matter): $p"; fi
           done

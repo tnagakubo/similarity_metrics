@@ -1,0 +1,62 @@
+# CLAIM_GUARDS.toml — review findings compiled into executable guards (RESEARCH_FRAMEWORK §10, S16)
+# Evaluate:   python3 scripts/claim_guards.py projects/{project}/CLAIM_GUARDS.toml [--strict] [--mutation]
+# Rule:       every guard names the finding it comes from and a known_bad revision on which it must FAIL.
+#             `--mutation` proves it: a guard that passes on its known_bad file is vacuous and the run fails.
+# Scopes:     prose (default, whole body) | abstract | section:<regex on title or label>
+# Types:      forbid (0 hits) | require (≥1 hit) | min_count (≥ limit hits) | proximity (every sentence
+#             matching `stem` must also match `qualifier`) | max_words (scope ≤ limit words)
+# Flags:      pending = true   → the finding is open, the fix is not applied yet: reported as OPEN, never FAIL
+#                                (drop the flag when the guard passes); ignore_case = false → case-sensitive match
+#             literal = true   → `pattern` is a plain string, not a regex
+# known_bad:  "<git rev>" (the commit before the fix — the usual case) or "file:<path>" (a saved bad version)
+
+[meta]
+tex = "paper/manuscript.tex"           # relative to this file's directory
+project = "{project}"
+
+# ---- one guard per finding ------------------------------------------------------------------
+
+[[guard]]
+id = "abstract-length"
+finding = "journal limit"
+type = "max_words"
+scope = "abstract"
+limit = 250
+note = "abstract ≤ 250 words (inline math counts as one word)"
+
+[[guard]]
+id = "M1-example-forbid"
+finding = "review_response/REFEREE_YYYYMMDD.md M1"
+type = "forbid"
+pattern = "unique theoretical connection"
+literal = true
+known_bad = "abcdef0"                   # git revision where this phrasing existed
+note = "exclusivity overclaim — the bound is not unique to the measure"
+
+[[guard]]
+id = "M1-example-proximity"
+finding = "review_response/REFEREE_YYYYMMDD.md M1"
+type = "proximity"
+stem = "theoretical (link|connection)"
+qualifier = "constant|specif|elicit|total variation"
+known_bad = "abcdef0"
+note = "class guard: every sentence asserting a theoretical link must name its constant"
+
+[[guard]]
+id = "abstract-no-universal-quantifier"
+finding = "compression inverted an existential claim"
+type = "forbid"
+scope = "abstract"
+pattern = "\\bwherever\\b|\\bin every world\\b|\\balways\\b"
+known_bad = "<rev-before-fix>"   # git rev of the manuscript before the fix, or file:review_response/known_bad/<saved>.tex
+note = "abstract: existential claims stay existential"
+
+[[guard]]
+id = "abstract-keeps-qualifier"
+finding = "compression deleted a restricting phrase"
+type = "require"
+scope = "abstract"
+pattern = "non-negligible"
+literal = true
+known_bad = "<rev-before-fix>"   # git rev of the manuscript before the fix, or file:review_response/known_bad/<saved>.tex
+note = "abstract: the qualifier that makes the coverage claim true survives compression"

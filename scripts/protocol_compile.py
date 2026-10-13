@@ -16,6 +16,10 @@ and validates the protocol before anything runs:
   - every method has an owner (ours | existing) — misattribution guard
 
 Usage: python3 scripts/protocol_compile.py projects/<p>/PROTOCOL_<study>.md [--force] [--dry-run]
+       python3 scripts/protocol_compile.py projects/<p>/PROTOCOL_<study>.md --verify [R/file.R] [--strict]
+  --verify: protocol ↔ code drift (S13). The seed, n_sim, every n of the grid, every method's fn and the summary CSV
+            named in the front matter must appear in the R script (default R/{study}.R, or the front matter's `code:`).
+            Exit 1 on drift unless the protocol is post_hoc (then advisory: the code predates the registration).
 The generated R contains `# TODO` markers where the protocol cannot know the code (the DGM draw, the estimator).
 Everything else — the ADEMP bookkeeping that is usually typed by hand and gets wrong — is generated.
 """
@@ -300,11 +304,43 @@ A: … / D: {len(p['dgm'])} scenarios ({', '.join(d['name'] for d in p['dgm'])})
 """
 
 
+def verify_code(p: dict, proj: Path, rfile: str | None):
+    """Protocol ↔ code drift. Returns (rows, n_fail); each row = (item, expected, found: bool, note)."""
+    code = rfile or p.get("code") or f"R/{p['study']}.R"
+    path = (proj / code) if not Path(code).is_absolute() else Path(code)
+    rows = []
+    if not path.exists():
+        return [("code file", code, False, "missing")], 1, code
+    src = path.read_text(encoding="utf-8", errors="replace")
+    src = "\n".join(l.split("#", 1)[0] for l in src.splitlines())   # comments do not count as code
+
+    def has_num(v) -> bool:
+        return re.search(rf"(?<![\w.]){re.escape(str(v))}(?![\w.])", src) is not None
+
+    rows.append(("seed", p["seed"], has_num(p["seed"]), "set.seed / SEED"))
+    rows.append(("n_sim", p["n_sim"], has_num(p["n_sim"]), "replications"))
+    for n in p["n_grid"]:
+        rows.append((f"n_grid", n, has_num(n), "sample size in the grid"))
+    for m in p["methods"]:
+        fn = m.get("fn")
+        if fn:
+            rows.append((f"method {m.get('name')}", fn, re.search(r"(?<![\w.])" + re.escape(str(fn)) + r"(?![\w.])", src) is not None, "estimator function"))
+    outs = p.get("outputs") or {}
+    sc = outs.get("summary_csv") if isinstance(outs, dict) else None
+    if sc:
+        rows.append(("summary_csv", sc, (sc in src) or (Path(sc).name in src), "output path in code"))
+    n_fail = sum(1 for r in rows if not r[2])
+    return rows, n_fail, code
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("protocol")
     ap.add_argument("--force", action="store_true", help="overwrite existing generated files")
     ap.add_argument("--dry-run", action="store_true", help="validate and print what would be written")
+    ap.add_argument("--verify", nargs="?", const="", default=None, metavar="R_FILE",
+                    help="check that the R script agrees with the front matter (seed, n_sim, grid, method fns, summary CSV)")
+    ap.add_argument("--strict", action="store_true", help="with --verify: exit 1 on drift even for post_hoc protocols")
     a = ap.parse_args()
     path = Path(a.protocol).resolve()
     proj = path.parent
@@ -316,6 +352,20 @@ def main():
         print(f"  ❌ {e}")
     if errors:
         print("protocol_compile: FAIL — fix the protocol before generating code"); return 1
+    if a.verify is not None:
+        rows, n_fail, code = verify_code(p, proj, a.verify or None)
+        for item, exp, found, note in rows:
+            print(f"  {'✅' if found else '❌'} {item:<14} {str(exp):<40} {note}")
+        post_hoc = bool(p.get("post_hoc"))
+        todo = 0
+        cp = proj / code
+        if cp.exists():
+            todo = len(re.findall(r"TODO\(", cp.read_text(encoding="utf-8", errors="replace")))
+        if todo:
+            print(f"  ⚠️ {todo} TODO( marker(s) remain in {code} — skeleton not fully implemented")
+        verdict = "PASS" if n_fail == 0 else ("DRIFT (advisory: post_hoc protocol)" if post_hoc and not a.strict else "DRIFT")
+        print(f"protocol_compile verify: {p['study']} ↔ {code}: {len(rows) - n_fail}/{len(rows)} agree — {verdict}")
+        return 0 if (n_fail == 0 or (post_hoc and not a.strict)) else 1
     try:
         import subprocess
         commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=proj).stdout.strip() or "uncommitted"

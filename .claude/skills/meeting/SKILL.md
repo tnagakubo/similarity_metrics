@@ -37,6 +37,7 @@ This is the core of the meeting. After collecting all individual analyses:
    - Rachel brings evidence to resolve disputes
    - Katrina focuses on practical implications
 4. Allow the debate to develop naturally - don't rush to consensus
+   - 発散は許容する（研究）。ただし根拠を名指せない主張は `[推測]` と言う。出典が要る主張は `/ground` に回し、推測のまま結論にしない（S21）
 5. **Harvey**: Synthesize the discussion and make a final decision
 6. **Donna**: Record the full discussion in SUITS.md
 
@@ -44,6 +45,7 @@ This is the core of the meeting. After collecting all individual analyses:
 - **Donna**: Add scene to SUITS.md (at TOP)
 - 方針が決まったら **`/decide` の形式で `projects/{project}/DECISIONS.md` に追記**（Question / Options / Decision / Reasons / Affected artifacts）。会議の結論を会話に流さない
 - 主張の文言や証拠に触れる結論は `CLAIMS.md` の該当行を更新
+- **発散した論点の出口は三つだけ**（S22）: 原稿（`LAB_STATUS.md` の Aim に答える）/ `IDEAS_BACKLOG.md`（別論文のネタ → `/idea`、Donna が会議中に登録）/ `exploratory/`（`/explore`）。「とりあえず Discussion に」は無い。出口の無い論点を会議で終わらせない
 
 ## SUITS.md Scene (add at TOP)
 

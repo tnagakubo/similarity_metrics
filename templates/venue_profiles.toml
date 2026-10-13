@@ -1,0 +1,43 @@
+# venue_profiles.toml — word budgets per section role for scripts/structure_audit.py
+# Ranges are typical prose word counts (floats, captions, listings and display math excluded;
+# inline math counts as one word). They are diagnostics, not rules: a methods paper runs long in
+# Methods; a Discussion that runs 2× is usually carrying evidence that belongs in Results.
+# Roles are assigned by regex on the section title (first match wins).
+
+[sim]
+name = "Statistics in Medicine (research article)"
+abstract_max = 250
+total = [4000, 6000]
+numbers_outside_results_per_paragraph = 6   # a Discussion/Introduction paragraph with more numeric tokens than this is flagged
+
+[sim.sections]
+introduction = [500, 800]
+methods      = [1000, 2000]
+results      = [1000, 1500]     # per results-type section (simulation study, application, case study)
+discussion   = [600, 1000]
+
+[sim.roles]
+introduction = "^(introduction|background)"
+methods      = "^(methods?|model|theory|framework|notation)"
+results      = "(simulation|results?|application|case study|example|illustration|data analysis|empirical)"
+discussion   = "^(discussion|conclusions?|summary)"
+backmatter   = "^(author contributions?|acknowledg|financial|conflict|data availability|supporting|funding|ethics)"
+
+[generic]
+name = "generic methodology journal"
+abstract_max = 300
+total = [4000, 8000]
+numbers_outside_results_per_paragraph = 6
+
+[generic.sections]
+introduction = [500, 1000]
+methods      = [1000, 2500]
+results      = [1000, 2000]
+discussion   = [600, 1200]
+
+[generic.roles]
+introduction = "^(introduction|background)"
+methods      = "^(methods?|model|theory|framework|notation)"
+results      = "(simulation|results?|application|case study|example|illustration|data analysis|empirical)"
+discussion   = "^(discussion|conclusions?|summary)"
+backmatter   = "^(author contributions?|acknowledg|financial|conflict|data availability|supporting|funding|ethics)"

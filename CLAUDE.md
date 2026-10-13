@@ -130,6 +130,9 @@ Mechanised in `RESEARCH_FRAMEWORK.md` §6 (S1–S11). The short form:
 - **Decisions have reasons**: every decision or reversal is an entry in `DECISIONS.md` (`/decide`); "conflicts with decision X" is not a reason
 - **Quantify, do not decide**: the paper quantifies differences; it does not prescribe pooling rules, thresholds or procedures (`memory/feedback_quantify_not_decide.md`)
 - Principles are versioned in `memory/` (see `memory/INDEX.md`), never only in a local auto-memory
+- **Evidence before inference** (S21, Tak 2026-10-12): when knowledge runs out, request the external source (paper, original PDF, DOI) instead of guessing. An unsourced statement is said with `[推測]`; a needed source is `🔍要根拠` → `/ground`. Nothing inferred enters the manuscript, `CLAIMS.md` or `DECISIONS.md` (`memory/feedback_evidence_over_inference.md`)
+- **Research diverges, the paper converges** (S22): discussion may widen; the manuscript contains only what answers the **Question / Aims** in `LAB_STATUS.md`, and every Result answers an Aim. The exits for a side topic are the manuscript, `IDEAS_BACKLOG.md` or `exploratory/` — never "put it in the Discussion" (`memory/feedback_diverge_converge.md`)
+- **Ideas are stocked** (S23): a paper idea that surfaces in discussion is registered on the spot with `/idea` in the root `IDEAS_BACKLOG.md` (`I-YYYYMMDD-n`), without debating its merit; Harvey reviews the backlog at Phase 9 (`memory/feedback_idea_stock.md`)
 
 ## Team Structure
 
@@ -212,6 +215,8 @@ These are **homage characters** dynamically generated based on famous statistici
 | `/respond-reviewers` | Point-by-point reviewer response tracker (Phase 8) |
 | `/handoff` | Donna reconciles claimed work with disk before stopping |
 | `/lint-suits` | Donna runs the mechanical character-consistency linter on SUITS.md |
+| `/ground {statement}` | Rachel fetches the external source for a statement nobody can back (knowledge/ → original PDF → PubMed → Paper Request); GROUNDED / INFERRED / OPEN |
+| `/idea {one line}` | Donna stocks a paper idea in the root `IDEAS_BACKLOG.md` (I-YYYYMMDD-n) — no debate, back to the main thread |
 
 ### Review & Practice
 | Command | Description |
@@ -287,7 +292,7 @@ research-lab/
 │   │                      #   numbers_registry.py, protocol_compile.py, extract_methods.py, compare_results.py,
 │   │                      #   make_numbers_macros.R, cloud_setup.sh
 │   ├── r/                 # numbers_registry.R (shared R formatter: num(), decimal half-even rounding)
-│   ├── tests/             # run_tests.sh + fixtures (60 regression tests)
+│   ├── tests/             # run_tests.sh + fixtures (119 regression tests)
 │   └── baseline/          # ratchet baselines (counts that may only go down)
 ├── .github/workflows/     # lab-checks.yml (gates on every push), r-and-tex.yml (R parse, generated files, LaTeX build)
 ├── .claude/
