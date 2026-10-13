@@ -1,0 +1,776 @@
+\documentclass[AMA,Times1COL]{WileyNJDv5}
+
+\articletype{Research Article}%
+
+\received{Date Month Year}
+\revised{Date Month Year}
+\accepted{Date Month Year}
+\journal{Statist.\ Med.}
+\volume{00}
+\copyyear{2026}
+\startpage{1}
+
+\raggedbottom
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\input{numbers_macros}  % GENERATED from numbers_registry.csv by scripts/make_numbers_macros.R — every \numval{} is a registry lookup
+
+\graphicspath{{../figures/}}
+
+\begin{document}
+
+\title{Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials}
+
+\author[1]{Author One}
+
+\author[2]{Author Two}
+
+\author[1]{Author Three}
+
+\authormark{AUTHOR ONE \textsc{et al.}}
+\titlemark{QUANTIFYING EFFECT MODIFIER SIMILARITY FOR REGIONAL POOLING}
+
+\address[1]{\orgdiv{Department Name}, \orgname{Institution Name}, \orgaddress{\state{State}, \country{Country}}}
+
+\address[2]{\orgdiv{Department Name}, \orgname{Institution Name}, \orgaddress{\state{State}, \country{Country}}}
+
+\corres{Corresponding Author, Department Name, Institution Name, Address. \email{corresponding@institution.edu}}
+
+% Abstract rewritten 2026-09-27 (Terminal pass, decision round under Tak's instruction "判断が要る点を議論して判断して"): <=250 words, no citations (Statistics in Medicine); every claim traced to results/verify_study2.log and results/verify_study1_app.log.
+% Abstract revised 2026-10-12 (D-20261012-2, Louis M1/M2/m2; individual veto open until submission): the MCSE count of D-20261011-11 judgement 1(a) carried into the abstract; "three by construction" attached to 11 of 13; "about 0.4 SD or more" (S5 is 0.399 SD); "equal regional sizes" restored.
+\abstract[Abstract]{%
+The ICH E17 guideline describes regional pooling in multi-regional clinical trials (MRCTs) in terms of the similarity of effect modifier distributions but names no measure, and to our knowledge no distance between regional effect modifier distributions has been evaluated for it. We quantify how two regions' distributions of each candidate effect modifier differ by the Wasserstein-1 ($W_1$) distance in original units. If the conditional average treatment effect is common to all regions, depends only on that modifier and is Lipschitz with clinical slope $L_{\text{clinical}}$, regional risk or mean differences differ by at most $\Delta_{\max} = L_{\text{clinical}} W_1$; when $L_{\text{clinical}}$ is unknown, the smallest slope $L^*$ at which the distance could produce a clinical margin is compared with a sponsor's bound. In a selection simulation (matches supplied), the standardized mean difference stayed at chance up to 2,000 patients per region in some configurations; $W_1$ and the Kolmogorov--Smirnov (KS) statistic reached the target (AUC 0.9) in every configuration, $W_1$ needing fewer patients in \numval{nCellsW1FewerKS} of \numval{nCellsSelection} cells (three by construction), overlapping in one, and more in the location-shift control on contaminated tails. For true distances of about \numval{minW1SdS3toS7} to \numval{maxW1SdS3toS7} SD (normal reference; equal $n$), bootstrap coverage from 100 patients per region was \numval{covRangeS3toS7N100up2dpAbs}, below 0.95 beyond Monte Carlo error in \numval{nCellsCovBelow2MCSE} of ten cells (\numval{covExtE6}--\numval{covExtE5} at the application's operating point). In a GUSTO-I-based example, partner rankings on age and systolic blood pressure differed; a null floor marked distances not distinguishable from no difference. The framework quantifies differences; the pooling judgment remains clinical.}
+
+\keywords{multi-regional clinical trial; ICH E17; effect modifier; Wasserstein distance; regional pooling; distributional similarity}
+
+\jnlcitation{\cname{%
+\author{Author One},
+\author{Author Two}, and
+\author{Author Three}}.
+\ctitle{Quantifying effect modifier similarity for regional pooling in multi-regional clinical trials.} \cjournal{Statist.\ Med.} \cvol{2026;00:1--23}.}
+
+\maketitle
+
+\renewcommand\thefootnote{}
+\footnotetext{\textbf{Abbreviations:} AMI, acute myocardial infarction; AUC, area under the receiver operating characteristic curve; CATE, conditional average treatment effect; CDF, cumulative distribution function; CI, confidence interval; CRP, C-reactive protein; CV, coefficient of variation; EDF, empirical distribution function; GUSTO, Global Utilization of Streptokinase and t-PA for Occluded coronary arteries; ICH, International Council for Harmonisation; IPD, individual patient data; KL, Kullback--Leibler; KS, Kolmogorov--Smirnov; MRCT, multi-regional clinical trial; MRI, magnetic resonance imaging; NMPA, National Medical Products Administration; RMSE, root mean squared error; RWE, real-world evidence; SBP, systolic blood pressure; SD, standard deviation; SMD, standardized mean difference.}
+
+\renewcommand\thefootnote{\fnsymbol{footnote}}
+\setcounter{footnote}{1}
+
+%==============================================================================
+\section{Introduction}\label{sec:intro}
+%==============================================================================
+
+Multi-regional clinical trials (MRCTs), conducted across multiple countries or regulatory regions under a single protocol, have become a common design in global pharmaceutical development, and methods for assessing the consistency of treatment effects across their regions have developed with them.\cite{chen2010,quan2010} The International Council for Harmonisation (ICH) E17 guideline, adopted in 2017, established principles for planning and designing MRCTs to evaluate whether treatment effects can be regarded as generalizable across the target population.\cite{iche17}
+
+Regulatory authorities in Japan and China examine the consistency of treatment effects in regional subpopulations,\cite{matsushima2024,song2025} yet individual regional sample sizes in global MRCTs are often insufficient for such demonstration. A key strategy for addressing this challenge is the regional pooling approach, wherein regions with similar patient characteristics are grouped for analysis to enhance the ability to assess regional consistency.\cite{iche17} The ICH E17 guideline describes pooling decisions in terms of the similarity of effect modifier distributions.\cite{iche17}
+
+An effect modifier is a baseline patient characteristic---such as age, disease severity, or genetic marker---for which the treatment benefit differs across subgroups. When such heterogeneity exists, even if the drug works identically at the individual level, regions with different patient compositions may observe different average treatment effects. A region with predominantly younger patients would show larger benefits than a region with predominantly older patients, not because the drug works differently, but because the patient mix differs. This fundamental relationship underscores why the similarity of the full effect modifier distribution, not only its average level, is critical to the validity of regional pooling. In this paper, we focus on continuous effect modifiers, such as age and disease severity scores; categorical effect modifiers raise distinct methodological considerations and are outside the present scope.
+
+The extent to which the relevant effect modifiers are known varies across development programmes, and this shapes what can be planned quantitatively.\cite{komiyama2024} For some treatments, mechanism or prior trials identify a specific effect modifier in advance---a genetic marker known to determine response, for instance---so the characteristic requiring cross-regional comparison is established before planning. More often at the planning stage, the effect modifiers are only partially understood, and the sponsor proceeds from candidate characteristics suggested by biological plausibility or earlier-phase data, or from broader regional and ethnic factors that stand in as surrogates for the underlying modifiers.\cite{komiyama2024} The framework developed here operates on whichever set of candidate effect modifiers the sponsor specifies: it quantifies the cross-regional distributional similarity of each candidate, orders regions by it, and calibrates it clinically, and is agnostic to how the candidates were identified.
+
+% Edited 2026-09-27 (decision round under Tak's instruction): Song sentence corrected to what Song et al. 2025 state (pooling strategy an area of remaining ambiguity; cluster analysis described, p.4); next paragraph's "This absence of quantitative tools" replaced, since this paragraph itself describes quantitative clustering proposals.
+Despite the regulatory importance of effect modifier distributional similarity, current practice lacks a standardized, clinically calibrated methodology. The ICH E17 guideline provides no specific metric, threshold, or statistical procedure for determining when distributions are ``similar enough.'' Song et al., writing on the NMPA's implementation of ICH E17, identify the pooling strategy as an area where ambiguity remains and describe, when more than one effect modifier is considered, clustering populations on distances defined from the correlation between effect modifiers and endpoints, citing the reference volume discussed next.\cite{song2025} The pooling-strategy chapter of a reference volume on multi-regional trials under ICH E17 introduces, as one of many possible approaches, cluster analysis of regions on region-level summaries of the candidate effect modifiers: each region is given a representative value for each candidate effect modifier, the values are typically standardized, and distances such as the Euclidean distance between regions are weighted for relevance, for instance through a Lasso regression on the outcome; the chapter notes that the selection of the distance measure is one of the key decisions, and does not evaluate the approach.\cite{komiyama2024} Two gaps remain. First, to our knowledge no distance between regional effect modifier distributions has been proposed and evaluated for this purpose: a single summary per modifier leaves two regions that agree on it but differ in spread, shape, or tail behaviour at distance zero---for a binary characteristic, as in the chapter's illustration, one proportion describes the distribution completely, so the limitation concerns continuous modifiers---and any finite set of summaries requires deciding in advance which distributional features are relevant, rather than comparing the full distributions directly. Second, the chapter calls for a judgment of whether differences in the impact of effect modifiers across pooled regions are ``clinically meaningful or not'' but supplies no metric to operationalize that judgment.
+
+% Paragraph added 2026-10-12 (D-20261012-3, EXT M1 / REF M1; individual veto open until submission): prior literature positioned (sources grounded in review_response/LIT_POSITIONING_20261012.md); novelty restated as formulation, reverse calibration and evaluation, not the inequality
+The ingredients are not new in themselves. The inequality on which the clinical calibration below rests is the Kantorovich--Rubinstein duality, and the same bound on a difference of expectations under a Lipschitz function is used in the optimal-transport analysis of domain adaptation,\cite{shen2018} and a Wasserstein-1 bound of the same family holds under a reproducing-kernel condition;\cite{redko2017} the similarity between a trial sample and a target population has been summarized by propensity-score-based metrics\cite{stuart2011} and by a generalizability index,\cite{tipton2014} within the wider literature on extending trial inferences to a target population;\cite{dahabreh2020} and the similarity of two distributions within a trimmed Mallows-distance neighbourhood has been framed as an equivalence-testing problem.\cite{munk1998} None of these converts the difference between two regions' distributions of an individual effect modifier into a bound on the regional effect difference whose constant is a clinical slope, or evaluates such a distance for regional pooling. The contribution of this paper is the formulation for regional pooling in MRCTs, the reverse calibration $L^*$ when the slope is unknown, and the evaluation of the estimator's identification and estimation properties.
+
+% Paragraph revised 2026-10-12 (D-20261012-2, Rachel cite-check: matsushima2024 NOT SUPPORTED at p.966; individual veto open until submission): the source attributes the Japanese inconsistency to imbalanced treatment assignment and a small sample, not to effect modifiers; the pooled regions were formed post hoc from effect modifier distributions, which is the step a distance would quantify.
+These gaps bear on the planning stage, when the pooling strategy for small-sample regions is specified. In the PREVENT trial of secukinumab in non-radiographic axial spondyloarthritis, a workshop report by Matsushima et al.\ describes a post hoc pooling in which countries with a similar distribution of effect modifiers were clustered into five pooled regions, with treatment differences that varied slightly with the distribution of CRP and MRI positivity and sex across them; the report attributes the inconsistent result in the Japanese subgroup to imbalanced treatment assignment and a small sample size rather than to effect modifiers.\cite{matsushima2024} Forming pooled regions from effect modifier distributions is the step that a distance between regional distributions would quantify. That case involved binary characteristics, where imbalance reduces to a difference in proportions; the continuous effect modifiers on which we focus can differ in shape and spread, not only average level, so assessing their similarity requires more than comparing means.
+
+% Paragraph reviewed and approved by Tak 2026-08-31 (Option B of the paragraph
+% review): intent argument replaced by the structural statement, "cannot detect"
+% aligned with "captures only" (Section 2.1 / Discussion), and the closing
+% clause cut as redundant with the end of the preceding paragraph.
+General-purpose comparison tools such as the standardized mean difference are routinely applied to baseline covariates,\cite{austin2011} but the standardized mean difference captures only differences in location: regions can match on means yet differ in variance or distributional shape. When effect modification is non-linear, these features directly influence regional average treatment effects.
+
+% Paragraph reviewed and approved by Tak 2026-09-01 (Option B of the paragraph
+% review): "simultaneously" replaced by the paragraph-7 wording (variance and
+% shape as well as location); the closing "theoretically grounded" sentence cut
+% -- the grounding (KR duality, heterogeneity bound) is Section 2's job.
+This paper addresses these gaps by proposing a quantitative framework for assessing effect modifier distributional similarity across regions, based on the Wasserstein-1 ($W_1$) distance between two cumulative distribution functions, retained in the original measurement units of the effect modifier. Geometrically, $W_1$ equals the area between the two cumulative distribution functions. Unlike the standardized mean difference, $W_1$ responds to differences in variance and shape as well as location. We estimate $W_1$ with bootstrap confidence intervals and link it to clinical interpretation through a calibration framework.
+
+% Paragraph reviewed and approved by Tak 2026-09-01 (Option C of the paragraph
+% review): "index definition" (the last nABCD-era ghost) replaced by the per-EM
+% W_1 distance wording, the operability check added to the Section 2 list, the
+% Section 3 clause updated to the two-study structure, and the Section 3 title
+% pluralized to match.
+% Paragraph reviewed 2026-09-27 (Option A, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #50): "demonstrates" -> illustrates; data source named. Structure already matches the v6 sections.
+The remainder of this paper is organized as follows. Section~\ref{sec:methods} presents the methodological framework: existing measures and their limitations, the definition of the per-effect-modifier $W_1$ distance, the estimation procedure, and its clinical calibration. Section~\ref{sec:simulation} presents two simulation studies, evaluating identification and estimation properties. Section~\ref{sec:application} illustrates the framework with publicly available individual patient data from the GUSTO-I trial. Section~\ref{sec:discussion} discusses implications, limitations, and future directions.
+
+%==============================================================================
+\section{Methods}\label{sec:methods}
+%==============================================================================
+
+An effect modifier is a factor for which the treatment effect varies across subgroups. Formally, let the conditional average treatment effect (CATE) be denoted $\tau(x) = E[Y(1) - Y(0) \mid X = x]$, where $X$ is the effect modifier. When this function is non-constant, the average treatment effect observed in region $r$ depends on the distribution $F_r$ of the effect modifier in that region:
+\begin{equation}
+\bar{\tau}_r = \int \tau(x) \, dF_r(x).
+\label{eq:regional_ate}
+\end{equation}
+Assessing pooling suitability therefore requires a measure of distributional difference between regions. Equation~(\ref{eq:regional_ate}), and everything built on it, presupposes an effect scale on which the regional effect is the average of the conditional effects, that is, a collapsible contrast such as a risk difference, a mean difference or a difference in restricted mean survival time; marginal odds and hazard ratios are not averages of their conditional counterparts and fall outside Proposition~\ref{prop:heterogeneity} unless the regional effect is first defined by standardization on a collapsible scale.
+% Sentence added 2026-10-12 (D-20261012-3, EXT M2 / REF Minor 8): collapsibility stated.
+
+% Cascade edit 2026-09-27 (Tak: "supplement はあまり付けたくない"): Supplements A and B dropped (A's cancellation is stated in Section 2.4; B was internal notes, main text cites the sources for the bounds); the real-data survey then also dropped as a supplement (Tak: a check made while writing the paper, not a supplement); the two Discussion statements it supported are now carried by the GUSTO-I application (Table 5; results/app_all_methods.log, results/gusto_r8_w1_per_pair.csv). 2026-10-11 (D-20261011-11 judgement 4): the survey is cited in one Discussion sentence with generated numbers, not as a supplement.
+% Rewritten 2026-09-27 (Tak): RV1-RV3 removed; Komiyama et al. introduce one example approach, not an evaluated method (chapter 4.6.1: "one of the approaches is introduced"), so it is not compared. Measures: W1, KS, SMD.
+\subsection{Existing Approaches and Their Limitations}\label{sec:existing}
+
+The most widely used measure for comparing covariate distributions across groups is the standardized mean difference (SMD), defined as
+\begin{equation}
+\text{SMD} = \frac{\bar{X}_1 - \bar{X}_2}{S_{\text{pooled}}},
+\label{eq:smd}
+\end{equation}
+where $\bar{X}_r$ denotes the sample mean in region $r$ and $S_{\text{pooled}}$ is the pooled standard deviation.\cite{austin2011} Because treatment effects in clinical trials are typically summarized as mean differences, SMD provides a scale-free comparison directly relevant to the quantities that drive clinical decision-making. However, by construction SMD captures only differences in location. Two distributions with identical means but markedly different variances---for example, $N(50, 5^2)$ and $N(50, 15^2)$---yield $\text{SMD} = 0$ despite a threefold difference in spread.
+
+Distributional distance measures address this limitation by comparing distributions beyond summary statistics. Empirical distribution function (EDF) tests such as the Kolmogorov--Smirnov (KS) statistic, $D_{\text{KS}} = \sup_x |F_1(x) - F_2(x)|$, and related measures (Cram\'{e}r--von Mises, Anderson--Darling) quantify differences in the full shape of distributions by comparing CDFs directly. Information-theoretic divergences such as Kullback--Leibler (KL) divergence,
+\begin{equation}
+D_{\text{KL}}(P \| Q) = \int p(x) \log \frac{p(x)}{q(x)} \, dx,
+\label{eq:kl}
+\end{equation}
+take a density-based approach, measuring how one probability distribution differs from another.
+
+% Paragraph reviewed and approved by Tak 2026-09-26 (Option C of the v6 paragraph review, queue #1): constant described as a per-unit clinical slope of the kind interaction analyses estimate (consistent with Section 2.4); (iii) aligned; "Crucially" removed.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M1; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): the KS bound's constant described, not dismissed
+However, each of these approaches has limitations when applied to comparing effect modifier distributions across regions. SMD captures only location differences and is blind to variance and shape. EDF-based statistics such as the KS statistic capture full distributional differences but lack a clinically interpretable scale, and the bound on treatment effect heterogeneity they admit is governed by the total variation of the CATE, a constant that is clinically stated only for a monotone CATE (Section~\ref{sec:nabcd_metric}). KL divergence is asymmetric---comparing region A to region B yields a different value than comparing B to A---can diverge to infinity when empirical distributions do not fully overlap, and requires density estimation that is impractical with small regional samples. None of these measures offers a bound on regional treatment effect differences whose constant is a per-unit clinical slope, the kind of quantity that treatment-by-covariate interaction analyses estimate. These gaps motivate a measure that (i) captures distributional features beyond location, (ii) provides a clinically interpretable scale, and (iii) offers such a bound. The Wasserstein-1 distance and its clinical calibration, developed in the following subsections, satisfy all three requirements.
+
+\subsection{Per-Effect-Modifier Wasserstein-1 Distance}\label{sec:nabcd_metric}
+
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M1; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): adoption justified by attainment, not by the constant alone
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis M3; individual veto open until submission): attainment scoped to the Lipschitz class (the KS bound is attained within its own class)
+% Paragraph revised 2026-10-12 (D-20261012-3, REF M1; individual veto open until submission): attainment no longer the reason for adoption (it is Kantorovich-Rubinstein duality restated); three reasons stated
+Among distributional distances that could capture the full distributional differences relevant to regional pooling, we adopt the Wasserstein-1 distance ($W_1$) for three reasons: it responds to differences beyond location; the heterogeneity bound it admits (Proposition~\ref{prop:heterogeneity} below) has a per-unit clinical slope $L_{\text{clinical}}$ as its constant; and that bound is valid for every CATE in the class, sharp when the slope is the only restriction placed on the CATE, and tighter, as a function of $W_1$ and the mean difference, when the CATE is also monotone; for any particular CATE it is therefore a conservative upper bound. The $W_1$ distance (sometimes called the Earth Mover's Distance) admits three equivalent representations on the real line, each highlighting a different facet of its interpretation.\cite{villani2009,vallender1974}
+
+Let $F_1$ and $F_2$ denote the cumulative distribution functions (CDFs) of an effect modifier in two regions. Then
+\begin{equation}
+W_1(F_1, F_2) = \int_{-\infty}^{\infty} |F_1(x) - F_2(x)| \, dx = \int_0^1 |F_1^{-1}(u) - F_2^{-1}(u)| \, du = \inf_{\pi \in \Pi(F_1, F_2)} \int |x - y| \, d\pi(x, y),
+\label{eq:wasserstein}
+\end{equation}
+where $F_r^{-1}$ is the quantile function and $\Pi(F_1, F_2)$ is the set of probability couplings with marginals $F_1$ and $F_2$. The CDF form expresses $W_1$ as the area between the two CDFs (Figure~\ref{fig:nabcd_definition}); the quantile form as the integrated absolute difference of quantile functions; and the Kantorovich form as the minimum expected absolute displacement to transport one distribution onto the other. The three forms are mathematically equivalent.\cite{vallender1974} Unlike the standardized mean difference, $W_1$ responds to differences in variance, skewness, and other distributional features.\cite{panaretos2019}
+
+\begin{figure}[t]
+\centerline{\includegraphics[width=0.8\textwidth]{fig1_w1_definition.pdf}}
+\caption{The Wasserstein-1 distance as the area between cumulative distribution functions, illustrated with a right-skewed Region~1 (gamma distribution) and a symmetric Region~2 (normal distribution). Panel~(A): probability densities. Panel~(B): cumulative distribution functions; the shaded area equals $W_1(F_1, F_2)$.\label{fig:nabcd_definition}}
+\end{figure}
+
+% Paragraph reviewed and approved by Tak 2026-09-26 (Option B of the v6 paragraph review, queue #2): units sentence corrected (the CDF-form integrand is dimensionless; W1 carries units in all three forms); transport-distance wording from the ERRFIX kept.
+A property of $W_1$ central to our framework is that it carries the units of the underlying effect modifier. In each of the three equivalent forms in equation~(\ref{eq:wasserstein}), $W_1$ carries the units of $X$: the CDF form integrates a dimensionless difference of probabilities over $x$, the quantile form integrates differences of quantiles, and the coupling form integrates distances $|x - y|$. Consequently, $W_1(F_1, F_2)$ is expressed on the original scale of the effect modifier. This dimensional alignment supports direct clinical interpretation: a regional $W_1 = 5$~mmHg in systolic blood pressure means that optimally transporting one distribution onto the other moves probability mass an average distance of 5~mmHg. The same logic precludes a meaningful direct comparison of $W_1$ values across effect modifiers measured on different scales, and we therefore restrict attention in this paper to per-effect-modifier assessment (Section~\ref{sec:discussion} elaborates on this scope choice).
+
+$W_1$ is a proper metric on the space of probability distributions with finite first moment, satisfying non-negativity, symmetry, identity of indiscernibles, and the triangle inequality.\cite{villani2009} It is also affine-equivariant in the variable units, satisfying $W_1(F_{aX+b}, F_{aY+b}) = |a| \cdot W_1(F_X, F_Y)$ for any $a \neq 0$. Beyond these basic properties, $W_1$ admits a Kantorovich--Rubinstein dual representation\cite{villani2009}
+\begin{equation}
+W_1(F_1, F_2) = \sup_{\|f\|_{\text{Lip}} \leq 1} \left|\int f \, dF_1 - \int f \, dF_2\right|,
+\label{eq:dual}
+\end{equation}
+which expresses $W_1$ as the largest possible difference in expected values of a 1-Lipschitz function $f$ between the two distributions (the notation $\|f\|_{\text{Lip}} \leq 1$ means $|f(x) - f(y)| \leq |x - y|$ for all $x, y$). If the conditional average treatment effect function $\tau(x)$ is Lipschitz continuous with constant $L_{\text{clinical}}$, so that $|\tau(x) - \tau(y)| \leq L_{\text{clinical}} |x - y|$ for all $x, y$, then $\tau / L_{\text{clinical}}$ is 1-Lipschitz and applying equation~(\ref{eq:dual}) yields the central result of this section:
+
+% Proposition reviewed and approved by Tak 2026-09-26 (Option B of the v6 paragraph review, queue #3): assumption that the CATE is the same in every region and depends on X alone.
+\begin{proposition}\label{prop:heterogeneity}
+\textup{(Connection to heterogeneity).} Suppose the CATE function $\tau$ is the same in every region and depends on the effect modifier $X$ alone. If $\tau$ is Lipschitz continuous with constant $L_{\text{clinical}}$, then for any two regions with effect modifier distributions $F_1$ and $F_2$,
+\begin{equation}
+|\bar{\tau}_1 - \bar{\tau}_2| \leq L_{\text{clinical}} \cdot W_1(F_1, F_2).
+\label{eq:heterogeneity_bound}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Apply equation~(\ref{eq:dual}) with $f = \tau / L_{\text{clinical}}$, which is 1-Lipschitz by assumption. This yields $\left|\int (\tau / L_{\text{clinical}}) \, d(F_1 - F_2)\right| \leq W_1(F_1, F_2)$. Combining with equation~(\ref{eq:regional_ate}) for $\bar{\tau}_r$ and rearranging yields equation~(\ref{eq:heterogeneity_bound}).
+\end{proof}
+
+% Paragraph reviewed and approved by Tak 2026-09-21 (Option B of the paragraph
+% review; Claude Science referee item M1): the claim that the bound is specific
+% to W_1 was false (integration by parts gives a KS bound with constant TV(tau);
+% W_1 <= W_2 gives a looser W_2 bound). Replaced by the constant / tightness
+% argument with the monotone-CATE case stated honestly.
+% Paragraphs reviewed and approved by Tak 2026-09-26 (Option C of the v6 paragraph review, queue #4): KS/W1 ordering (neither dominates), "tightness" removed, constant described as the kind of quantity interaction analyses estimate, normalization no longer attributed to prior literature; split into two paragraphs.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M1; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): attainment stated (tau* construction, |tau| <= 1 admissibility), constant second
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis M3/m3; individual veto open until submission): attainment scoped to the class; the KS bound's own attainment stated; x_0 fixed at the midpoint so that |tau*| <= 1 follows from L(b-a) <= 2
+\noindent Equation~(\ref{eq:heterogeneity_bound}) is not the only bound of its form. Integration by parts gives $\bar{\tau}_1 - \bar{\tau}_2 = -\int (F_1(x) - F_2(x)) \, d\tau(x)$, so for a CATE of bounded variation on a bounded support, $|\bar{\tau}_1 - \bar{\tau}_2| \leq \mathrm{TV}(\tau) \cdot D_{\text{KS}}$ as well, and $W_1 \leq W_2$ makes $L_{\text{clinical}} \cdot W_2$ a valid but looser bound.\cite{villani2009} Equation~(\ref{eq:heterogeneity_bound}) is sharp when the Lipschitz constant is the only restriction placed on the CATE: by the Kantorovich--Rubinstein duality of equation~(\ref{eq:dual}), $L_{\text{clinical}} W_1$ is the supremum of $|\bar{\tau}_1 - \bar{\tau}_2|$ over all common $L_{\text{clinical}}$-Lipschitz CATEs, attained by $\tau^*(x) = L_{\text{clinical}} \int_{x_0}^{x} \operatorname{sgn}(F_2(t) - F_1(t))\,dt$, whose slope changes sign at every crossing of the two CDFs; the Kolmogorov--Smirnov bound is likewise sharp within its own class, by a step CATE of height $\mathrm{TV}(\tau)$ at the point where $|F_1 - F_2|$ is largest. Sharpness over a class is a property of the class, and shape information available to the sponsor tightens the bound. If $\tau$ is also monotone, with $0 \leq \tau' \leq L_{\text{clinical}}$, then $\bar{\tau}_1 - \bar{\tau}_2 = \int (F_2 - F_1)\,\tau'\,dx$ lies between $-L_{\text{clinical}} A_-$ and $L_{\text{clinical}} A_+$, where $A_\pm = \int (F_2 - F_1)_\pm\,dx$ satisfy $A_+ + A_- = W_1$ and $A_+ - A_- = \mu_1 - \mu_2$, so that
+\begin{equation}
+\sup_{\tau\ \text{monotone},\ L_{\text{clinical}}\text{-Lipschitz}} |\bar{\tau}_1 - \bar{\tau}_2| = L_{\text{clinical}} \max(A_+, A_-) = \tfrac{1}{2} L_{\text{clinical}} \left( W_1 + |\mu_1 - \mu_2| \right),
+\label{eq:mono_bound}
+\end{equation}
+which equals $L_{\text{clinical}} W_1$ when the CDFs do not cross and $L_{\text{clinical}} W_1 / 2$ when the means coincide. A bound on the magnitude of $\tau$ itself tightens it further: on a support $[a, b]$ the attaining $\tau^*$ ranges over up to $L_{\text{clinical}} (b - a)$, which on the risk-difference scale is \numval{lipRangeAge} for age and \numval{lipRangeSbp} for systolic blood pressure over the recorded supports of Section~\ref{sec:application} (supports that include the records flagged there), exceeding the highest 30-day mortality Lee et al.\ report for any age group (20.5\% above 75 years; Section~\ref{sec:inference}), so that the attaining CATE would require effects far beyond the baseline risks; for distributions with unbounded support no CATE bounded on the outcome scale attains the bound at all. $\Delta_{\max} = L_{\text{clinical}} W_1$ is therefore a conservative upper bound by construction; Section~\ref{sec:app_clinical} reports the factor by which equation~(\ref{eq:mono_bound}) would shrink it in the application. The reason to prefer equation~(\ref{eq:heterogeneity_bound}) to the Kolmogorov--Smirnov bound is therefore not sharpness, which each has within its own class, but the constant: $L_{\text{clinical}}$ is a change in treatment effect per unit of the effect modifier, the kind of quantity that treatment-by-covariate interaction analyses estimate, whereas $\mathrm{TV}(\tau)$ is the total excursion of the CATE over the support, which reduces to a clinically stated quantity only for a monotone CATE; and among all bounds with the constant $L_{\text{clinical}}$, equation~(\ref{eq:heterogeneity_bound}) is the smallest valid one, because the bound is sharp for that class (Appendix~\ref{app:ks_bound}). Neither bound dominates the other in general; the comparison is given in Appendix~\ref{app:ks_bound}.
+% Paragraph revised 2026-10-12 (D-20261012-3, REF M1 / EXT Minor 2 / EXT Minor 5; individual veto open until submission): sharpness stated as a property of the class (KR duality), the monotone sharp bound L(W1+|dmu|)/2 derived, the bounded-effect and unbounded-support caveats added, the KS-bound comparison moved to Appendix A.3
+
+The right-hand side of equation~(\ref{eq:heterogeneity_bound}) involves $W_1$ in its original measurement units, multiplied by a clinical slope $L_{\text{clinical}}$; no further normalization of $W_1$ is required to obtain a clinically interpretable bound. We therefore adopt $W_1$ in its original units as the primary similarity metric throughout this paper. One could instead normalize $W_1$ by a within-effect-modifier scale measure such as the pooled interquartile range; we show in Section~\ref{sec:inference} that such normalization is mathematically redundant once equation~(\ref{eq:heterogeneity_bound}) is used for clinical calibration. The Lipschitz assumption underlying Proposition~\ref{prop:heterogeneity} is appropriate when the CATE function varies smoothly with the effect modifier; for threshold or step-function CATEs, $L_{\text{clinical}}$ can be arbitrarily large and the bound becomes conservative (Section~\ref{sec:discussion}).
+
+\subsection{Estimation}\label{sec:estimation}
+
+% Citation-only correction 2026-09-27 (Louis, v6 review of queue #48-49): the real-line bootstrap statements are sourced to Fang and Santos 2019 and Dumbgen 1993; Sommerfeld and Munk 2018 covers finite supports only and is kept for that case.
+% Paragraph reviewed and approved by Tak 2026-09-26 (Option C of the v6 paragraph review, queue #5): tie example corrected to SBP in whole mmHg (GUSTO age is recorded to three decimals); bootstrap-consistency condition split into two sentences.
+Given samples $\{X_{1,i}\}_{i=1}^{n_1}$ from region 1 and $\{X_{2,j}\}_{j=1}^{n_2}$ from region 2, the Wasserstein-1 distance is estimated using empirical distribution functions. Since $\hat{F}_1$ and $\hat{F}_2$ are piecewise constant (right-continuous step functions), the integral in equation~(\ref{eq:wasserstein}) reduces to a finite sum over the intervals between consecutive distinct values of the pooled sample:
+\begin{equation}
+\widehat{W}_1 = \sum_{k=1}^{m-1} |\hat{F}_1(x_{(k)}) - \hat{F}_2(x_{(k)})| \cdot (x_{(k+1)} - x_{(k)}),
+\label{eq:estimator}
+\end{equation}
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee Minor 2; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): why the bootstrap rather than the available Wald interval
+where $\hat{F}_r$ denotes the empirical CDF (right-continuous) of region $r$ and $x_{(1)} < \cdots < x_{(m)}$ are the $m$ distinct values of the pooled sample (ties are pervasive when an effect modifier is recorded on a coarse grid, as with systolic blood pressure recorded in whole mmHg in Section~\ref{sec:application}). The estimator $\widehat{W}_1$ inherits the original measurement units of the effect modifier. The asymptotic distribution of $W_1$ is non-standard: del Barrio et al.\cite{delbarrio1999} showed that, when $\int \sqrt{F(1-F)}\,dx < \infty$, $\sqrt{n}\,W_1(\hat{F}_n, F) \xrightarrow{d} \int |B(F(x))|\,dx$, where $B$ is a standard Brownian bridge. Because the quantiles of this limiting distribution depend on the unknown $F$, no universal critical values are available. In the two-sample case a Gaussian limit, and hence a Wald interval, exists under the measure-zero condition stated below; the same condition governs the consistency of the bootstrap, so the choice between them rests on finite-sample behaviour: the Wald interval requires an estimate of the limit's variance, which depends on $\operatorname{sgn}(F_1 - F_2)$ and hence on where the CDFs cross, whereas the percentile bootstrap requires no variance estimate. We therefore employ the nonparametric percentile bootstrap with $B = 2{,}000$ replicates.\cite{efron1993} Each bootstrap replicate draws $n_1$ observations with replacement from region 1 and, independently, $n_2$ from region 2, and recomputes $\widehat{W}_1$ by equation~(\ref{eq:estimator}); the 95\% interval is formed by the 2.5th and 97.5th sample percentiles of the $B$ replicates (R's default quantile definition, type 7). In the two-sample setting, when $\int \sqrt{F_r(1 - F_r)}\,dx < \infty$ for $r = 1, 2$, $n_1/(n_1 + n_2)$ stays away from 0 and 1, and the set $\{x : F_1(x) = F_2(x) \in (0,1)\}$ has Lebesgue measure zero---for example, when the two CDFs cross only at isolated points---the Hadamard derivative of the $L_1$ functional at $F_1 - F_2$ is linear (applying the results of Fang and Santos to this functional), and the ordinary nonparametric bootstrap is consistent by the functional delta method.\cite{fang2019} Where the CDFs coincide on an interval, including $F_1 = F_2$, the derivative is non-linear and the naive bootstrap is not consistent.\cite{dumbgen1993,fang2019,sommerfeld2018} Convergence occurs at rate $\sqrt{n_1 n_2/(n_1+n_2)}$ (see Appendix~\ref{app:asymptotic} for details). The estimator~(\ref{eq:estimator}) is computed in $O((n_1 + n_2) \log(n_1 + n_2))$ time, dominated by sorting the combined order statistics.
+
+% Paragraph reviewed and approved by Tak 2026-09-26 (Option B of the v6 paragraph review, queue #6): null floor as an estimator property; source distribution stated (anchor in Section 4.2, combined pair in Supplement C); 95th percentile as reading reference.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M4; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): the null floor named as a one-sided level-0.05 test that governs display
+Because $W_1$ is a distance, $\widehat{W}_1$ is non-negative by construction and is typically positive even when the two regions are draws from the same distribution. More precisely, it is biased upward at every sample size: since $E\,\hat{F}_r(x) = F_r(x)$, Jensen's inequality gives $E\,|\hat{F}_1(x) - \hat{F}_2(x)| \geq |F_1(x) - F_2(x)|$ at every $x$, and integrating (the integrand is non-negative, so no further condition is needed) $E\,\widehat{W}_1 \geq W_1$ for all $n_1, n_2$; the percentile interval does not correct this bias, so near the boundary the whole interval is displaced upward (Section~\ref{sec:sim_results}). For the patients actually enrolled, on the other hand, the bound holds exactly with the empirical distributions: the difference between the two enrolled samples' average treatment effects is at most $L_{\text{clinical}}\,W_1(\hat{F}_1, \hat{F}_2)$, whatever the sampling error of $\widehat{W}_1$ as an estimate of $W_1$. We refer to the sampling distribution of $\widehat{W}_1$ under $F_1 = F_2$ as the null floor. It is obtained by drawing two independent resamples, of the two regions' actual sizes, from one region's empirical distribution---the anchor's in Section~\ref{sec:app_operability}---and recomputing $\widehat{W}_1$; because it depends on both sample sizes and on the source distribution, it is computed per region pair. An observed $\widehat{W}_1$ at or below its 95th percentile, the reference point used in Section~\ref{sec:app_operability}, is one the estimator would produce with appreciable probability from identical distributions, so it is not evidence of a difference; how large the difference could be is read from the upper confidence limit of $\widehat{W}_1$, equivalently of $\Delta_{\max}$. Declaring a distance unresolved in this way is a one-sided test of $F_1 = F_2$ at level 0.05; it is used only to mark which estimates are read at their upper limit, and the comparisons of Section~\ref{sec:application} are not adjusted for multiplicity, since no inference about pooling is drawn from the number of unresolved distances.
+% Paragraph revised 2026-10-12 (D-20261012-3, EXT M4(a) / EXT Minor 1 / REF Minor 4): Jensen bias stated as a result; finite-sample bound for the enrolled samples; multiplicity stated.
+
+\subsection{Interpretation and Clinical Calibration}\label{sec:inference}
+
+A central feature of $W_1$ is its connection to treatment effect heterogeneity through Proposition~\ref{prop:heterogeneity}. This connection provides the basis for a clinically grounded interpretation framework rather than reliance on fixed numerical cutoffs.
+
+% Paragraph reviewed and approved by Tak 2026-09-06 (Option B of the paragraph
+% review; simulated-review point R2.1(b)): "provides a per-unit slope directly"
+% replaced -- an average interaction slope is a lower bound on the Lipschitz
+% constant, not the constant; safety-factor and premise sentences added;
+% "significance" removed (estimation-centered wording).
+% Paragraph reviewed and approved by Tak 2026-09-26 (Option B of the v6 paragraph review, queue #7): unverified VanderWeele clause removed; average slope is a lower bound in absolute value.
+We refer to the Lipschitz constant of the CATE function $\tau(x)$ as the clinical slope $L_{\text{clinical}}$. By definition, $L_{\text{clinical}}$ quantifies the maximum change in the treatment effect per unit change in the effect modifier, expressed on the outcome scale of the trial---for example, absolute 30-day mortality risk per year of age, or per mmHg of systolic blood pressure. Throughout this paper $L_{\text{clinical}}$ is quoted on the proportion scale of the outcome, so that $L_{\text{clinical}} = 1 \times 10^{-2}$ per year denotes one percentage point of absolute 30-day mortality per year of age; clinical margins $\Delta_{\text{clin}}$ stated in percentage points are divided by 100 before entering any calculation. When prior individual patient data (IPD) are available, meta-regression on treatment-by-covariate interaction estimates the average interaction slope.\cite{riley2010,fisher2017} An average slope is, in absolute value, a lower bound on the Lipschitz constant rather than the constant itself: for non-linear $\tau$, the local slope can exceed the fitted one. An $L_{\text{clinical}}$ specified from such an estimate should therefore carry a sponsor-specified multiplicative safety factor, in the spirit of margin discounting in non-inferiority design, so that the premise of Proposition~\ref{prop:heterogeneity} remains defensible. More commonly at the MRCT planning stage, published subgroup reports document the direction of interaction rather than a per-unit slope, and a precise numerical $L_{\text{clinical}}$ is unavailable. We address both situations below.
+
+From Proposition~\ref{prop:heterogeneity}, the maximum potential difference in regional average treatment effects attributable to effect modifier distributional differences is
+\begin{equation}
+\Delta_{\max} = L_{\text{clinical}} \cdot W_1(F_1, F_2),
+\label{eq:delta_max}
+\end{equation}
+expressed in the units of the trial outcome scale. The formula is invariant to within-effect-modifier scale normalization of $W_1$: any normalized form $W_1 / X$ multiplied by the same scale $X$ cancels in equation~(\ref{eq:delta_max}), so adopting $W_1$ in its original units yields the same clinical-scale calibration as any rescaled version. When $L_{\text{clinical}}$ is independently known, equation~(\ref{eq:delta_max}) provides a direct clinical-scale translation of the observed distributional difference. When $L_{\text{clinical}}$ is unknown, the relation can be inverted to ask which $L_{\text{clinical}}$ would be required for a given $W_1$ to produce a clinically meaningful $\Delta_{\max}$.
+
+% Paragraph reviewed 2026-09-27 (Option C, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #8): L* interval defined here once; "full range of evidence states" narrowed to the two evidence states.
+The estimator $\widehat{W}_1$ has a percentile bootstrap CI (Section~\ref{sec:estimation}), and inferential uncertainty propagates linearly to $\Delta_{\max}$ when $L_{\text{clinical}}$ is treated as fixed: $[\Delta_{\max,L}, \Delta_{\max,U}] = L_{\text{clinical}} \cdot [W_{1,L}, W_{1,U}]$. When $L_{\text{clinical}}$ itself is uncertain or unavailable, we solve equation~(\ref{eq:delta_max}) for $L_{\text{clinical}}$ at a pre-specified clinical margin $\Delta_{\text{clin}}$ (the minimal clinically important treatment effect difference, the non-inferiority margin, or the targeted overall effect), yielding the required clinical slope
+\begin{equation}
+L^* = \frac{\Delta_{\text{clin}}}{W_1(F_1, F_2)}.
+\label{eq:lstar}
+\end{equation}
+$L^*$ is the smallest clinical slope under which the observed distributional difference could produce a clinically meaningful regional treatment effect difference, within the class of CATEs restricted only by their slope. Because $L^*$ is a decreasing function of $W_1$, the bootstrap CI of $\widehat{W}_1$ gives the percentile interval $[\Delta_{\text{clin}}/W_{1,U},\, \Delta_{\text{clin}}/W_{1,L}]$ for $L^*$. If a plausible upper bound on $L_{\text{clinical}}$ from prior evidence (denoted $L_{\text{UB}}$) lies below $L^*$, the distributional difference cannot produce such a difference, provided $L_{\text{clinical}} \leq L_{\text{UB}}$; reading $L_{\text{UB}}$ against the lower limit $\Delta_{\text{clin}}/W_{1,U}$ rather than the point value carries the estimation uncertainty of $\widehat{W}_1$ into this comparison. The two pathways---forward calibration via equation~(\ref{eq:delta_max}) when $L_{\text{clinical}}$ is known and reverse comparison via equation~(\ref{eq:lstar}) against $L_{\text{UB}}$ when $L_{\text{clinical}}$ is unknown---cover the two evidence states encountered at the MRCT planning stage.
+
+% Paragraph reviewed and approved by Tak 2026-09-06 (Option C of the paragraph
+% review; simulated-review point R1.2(a)): the "so that any plausible CATE
+% sensitivity falls below them" deduction retracted; L_UB repositioned as a
+% sponsor-specified clinical judgment with the arm-decomposition information
+% relation, the Section 4.4 sensitivity analysis promoted to the primary
+% robustness statement, and the prognostic-vs-predictive taxonomy cited.
+% Paragraph reviewed 2026-09-27 (Option C, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #9): prognostic-gradient reference point kept but qualified against the arm-sum inequality; closing "accommodates the typical uncertainty" sentence removed (duplicated the preceding sentence).
+Specifying $L_{\text{clinical}}$ (or its upper bound $L_{\text{UB}}$) is a clinical judgment, informed but not determined by prior evidence, for which the sponsor carries responsibility---the same footing as a non-inferiority margin. Writing $R_a(x)$ for the risk under arm $a$, $\tau(x) = R_1(x) - R_0(x)$, so $|\tau'(x)| \leq |R_1'(x)| + |R_0'(x)|$: arm-level risk gradients constrain the modification slope only jointly, and a prognostic gradient alone guarantees no bound, prognostic and treatment-effect gradients being distinct quantities.\cite{ballman2015,kent2020} For the GUSTO-I case study presented in Section~\ref{sec:application}, the Fibrinolytic Therapy Trialists' meta-analysis\cite{ftt1994} and the GUSTO-I prognostic model\cite{lee1995} inform illustrative bounds of $L_{\text{UB,age}} \approx 1 \times 10^{-2}$ per year and $L_{\text{UB,SBP}} \approx 2 \times 10^{-3}$ per mmHg on the 30-day mortality scale; these exceed the prognostic age gradient implied by the 30-day mortality that Lee et al.\ report for GUSTO-I, 1.1\% below 45 years and 20.5\% above 75 years,\cite{lee1995} a rise of 19.4 percentage points over at least three decades and hence an average gradient of at most about $6.5 \times 10^{-3}$ per year, though not the sum of two arm-level gradients of that size that the inequality above permits---a reference point rather than a guarantee. The age bound is also large relative to the overall treatment effect in GUSTO-I, a 30-day mortality of 6.3\% under accelerated t-PA against 7.2\% and 7.4\% under the two streptokinase-only strategies,\cite{gusto1993} which is one reason the bounds are illustrative and $L^*$ is reported for every pair. Conclusions drawn from the bounds are conditional on them; because $L^*$ is reported for every region pair, any alternative bound can be compared against it directly. Alternative specification strategies include the deft estimator of Fisher et al.\cite{fisher2017}
+
+% Reopened 2026-09-27 (Tak: select pooling regions by ranking; simulation identifies the method, GUSTO-I applies it): ordering of candidates by W1 restored.
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #10): "ranking partners" replaced by reading each distance against its null floor and upper confidence limit; "appropriate threshold" (threshold residue) removed.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M4; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): estimation-centered statement reconciled with the null-floor test
+The pooling assessment proceeds by computing per-effect-modifier $W_1$ with bootstrap CIs across candidate partner regions, ordering the candidates by the point estimate $\widehat{W}_1$ within each effect modifier, reading each distance against its null floor and its upper confidence limit (Section~\ref{sec:estimation})---distances unresolved against the null floor are not ordered among themselves---and deriving $\Delta_{\max}$ when $L_{\text{clinical}}$ is known or $L^*$ at a pre-specified $\Delta_{\text{clin}}$ when $L_{\text{clinical}}$ is unknown. The framework is deliberately estimation-centered rather than testing-based: $W_1$ has no universal cutoff that separates ``similar'' from ``dissimilar,'' and what a given $W_1$ means clinically depends on the clinical slope $L_{\text{clinical}}$, which is external to the distributional comparison. By presenting per-pair $\Delta_{\max}$ (or $L^*$) with bootstrap CIs alongside the clinical context---the overall treatment effect size, the non-inferiority margin, the minimal clinically important difference---the framework provides quantitative inputs for sponsor and regulatory judgment. The judgment is not driven by a significance test.\cite{wasserstein2016} The one place a test enters is the null floor, a one-sided test of $F_1 = F_2$ at level 0.05 (Section~\ref{sec:estimation}); it governs how an estimate is displayed and read, not whether regions are pooled.
+
+%==============================================================================
+\section{Simulation Studies}\label{sec:simulation}
+% Labels follow the text (sec:study1 = identification, sec:study2 = estimation; fixed 2026-10-11). tab:study2_*, fig:study2_auc and R/verify_study2_figures.R keep the pre-D-20260927-3 numbering.
+%==============================================================================
+
+% Reopened 2026-09-27 (Tak: the simulation identifies which method correctly identifies pooling regions by ranking for an anchor, and GUSTO-I applies it; clustering removed the same day, PROTOCOL_silhouette_extension.md criterion not met).
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #11): identification stated without an anchor (the clustering task has none); required-n statements put on one measure-specific convention; decision wording removed.
+% Paragraph revised 2026-10-12 (D-20261012-3, REF M4 / EXT M3; individual veto open until submission): Study 1 is identification on a selection task with the number of matches supplied; it does not evaluate the ordering of partners that all differ, nor ranking by effect difference, which depends on the CATE (linear vs V-shaped example)
+We conducted two complementary simulation studies. Study 1 evaluates identification: whether each candidate distance measure can detect, at some sample size, that a candidate region's effect modifier distribution differs from the anchor's, scored on a selection task in which candidates built from the anchor's population are ranked against candidates built from a different population and the number of true matches is supplied. It does not evaluate the ordering of regions that all differ from the anchor, which is what the application reports, and it does not rank regions by their effect difference, which depends on the unknown CATE: under a linear CATE only the mean difference matters, so a region differing from the anchor in scale alone has an effect difference of zero although $W_1 > 0$, whereas under the V-shaped CATE $\tau(x) = L_{\text{clinical}} |x - 50|$ the same scale difference produces the full $L_{\text{clinical}} W_1$ (in scenario S5 of Study~2, $L_{\text{clinical}} \sqrt{2/\pi} \cdot 5$) while the SMD is zero. The Lipschitz class contains both CATEs, Proposition~\ref{prop:heterogeneity} covers both, and the SMD covers only the first; Study 1 asks which measures are blind to differences of the second kind. Study 2 evaluates estimation performance: bias, variability, and coverage probability of bootstrap confidence intervals for $\widehat{W}_1$. Study 1 carries the comparison between measures, because a distance that cannot distinguish differing distributions cannot usefully be calibrated; Study 2 underwrites the calibration pathway that converts an estimated distance into a $\Delta_{\max}$ statement via equation~(\ref{eq:delta_max}).
+
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M2; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): estimation criterion carries its scale
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis M9/m1/m2/C2; individual veto open until submission): "criterion" replaced by a description of what Study 2 found over n = 50-200; the standardized-distance sentence removed (contradicted by the CSV); range scoped to Sets 3 and 4
+% Cut 2026-10-12 (D-20261012-3 length plan S01): Study 2 half of the two-kinds-of-sample-size sentence (coverage range, 5 of 10 cells); Study 1 half and the not-interchangeable label kept
+% Cut 2026-10-12 (D-20261012-3 length plan S01): Study 2 half of the two-kinds-of-sample-size sentence (coverage range, 5 of 10 cells); Study 1 half and the not-interchangeable label kept
+Because the two studies answer different questions, they produce different sample-size statements. Study 1's required sample sizes are discrimination statements: the sample size at which a measure's discrimination reaches an area under the receiver operating characteristic curve (AUC) of at least 0.9, which for $\widehat{W}_1$ ranges from \numval{reqnW1minSets34} to \numval{reqnW1maxSets34} per region across the cells of Sets 3 and 4. Study 2's estimation statements (Section~\ref{sec:sim_results}) are not interchangeable with these.
+
+\subsection{Study 1: Identification}\label{sec:study1}
+
+% Figures: R/selection_simulation.R + R/clustering_simulation.R
+% (results/selection_sim_summary{,_ext}.csv, clustering_sim_summary{,_ext}.csv,
+% required_n_{selection,clustering}{,_floor}.csv, clustering_nok_silhouette.csv).
+% Every number quoted in this subsection is checked by R/verify_study2_figures.R
+% against those CSVs and the generators (results/verify_study2.log, ALL PASS
+% 2026-08-30; gate extended and re-run ALL PASS 2026-09-27 after the v6 paragraph review). Two recorded-note errors were corrected by that gate: the blind
+% plateau values are max_auc (0.50-0.51), n=2000 values are 0.49-0.50; and the
+% design constants are 10,000/3,000 reps (selection), 5,000/2,000 (clustering),
+% 9 candidates in every set (not "5,000-10,000" / "9-11").
+
+\subsubsection{Design}\label{sec:study1_design}
+
+% Paragraph reviewed 2026-09-27 (Option A, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #12): roster corrected to two bulk-shift control regions; "target of the decision" reworded.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M3; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): the KS-saturation mechanism of Set 4 stated
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis C4; individual veto open until submission): "deliberately favourable to CDF-supremum statistics" removed — Sets 1 and 2 show a uniform shift does not favour the KS statistic in general
+% Cut 2026-10-12 (D-20261012-3 length plan S02): gloss on the Set 4 geometry sentence (pattern of a small severe subpopulation; control wording shortened)
+Study 1 follows the ADEMP structure (aims, data-generating mechanisms, estimands, methods, performance measures) for simulation studies.\cite{morris2019} Four worlds are simulated, each built from a single distributional family and each containing regions constructed either from the anchor's own population (true matches) or from a discordant population. Set 1 (Gaussian) places discordance in location and scale. Set 2 (log-normal) places it in location and in dispersion combined with shape. Set 3 (mixture) is the adversarial world for summary-based measures: every region, matched or discordant, is constructed with mean 50 and SD 10, so all discordance lies in distributional shape. Set 4 (extremes) places a 5\% subgroup in each tail, 40 units from the centre in the anchor; discordant regions displace both subgroups (to 70 or 100 units), raise their prevalence to 12\% (mean fixed), or displace only the upper subgroup to 100 units; two control regions instead shift their whole population by 2 and 3 units. In the three Set 4 cells in which a subgroup is displaced (symmetric and asymmetric severity) or its prevalence raised, the two full-distribution measures respond differently by construction: a subgroup of prevalence $\varepsilon$ displaced by $d$ changes the KS statistic by at most about $\varepsilon$ whatever $d$ is, while it changes $W_1$ by $\varepsilon d$, and mass added 40 units from the centre moves $W_1$ by that distance per unit of added mass, so $W_1$'s sample-size advantage in those cells follows from the mechanism, and the bulk-shift control, a location shift of the same population, is the cell that removes it. Ground truth is the construction label---which regions were built from the anchor's population---so the target is defined without reference to any of the compared measures and the comparison is not circular.
+
+% Paragraph reviewed 2026-09-27 (Option C, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #13): RV1 described as our application of the cited distance to one continuous modifier (Lasso weight a common scale factor); RV1/SMD agreement scoped to equal regional SDs; the log-scale SMD result reported.
+% Rewritten 2026-09-27 (Tak): RV1-RV3 removed (Komiyama et al. introduce one example approach, not an evaluated method); three measures remain.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M5; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): methods and tasks run under the protocol but not reported are declared (ADEMP)
+Three measures enter the comparison: $W_1$; the KS statistic, the most common comparison of full distributions; and SMD, the standard comparison of location. On the log-normal world, SMD computed on the log scale is also run; the transformation recovers the shape contrast (AUC \numval{aucSMDlogShapeN2000} at $n = 2{,}000$) but leaves the combined cell at chance (\numval{aucSMDlogCombinedN2000}), so a transformation that suits one contrast does not repair another. Under the registered protocol the simulation also evaluated three representative-value distances built from one to three regional moments, a harm measure based on the largest $W_1$ among the retained regions, and a clustering task with the number of groups estimated by the silhouette; the repository also holds a threshold-rule study and a sensitivity analysis, to the bound $L_{\text{UB}}$, of an eligibility rule that an earlier draft defined and this paper does not. None of these is reported here, because the paper compares distribution-level measures with the single-summary SMD and prescribes no grouping, threshold or eligibility procedure; their full outputs are in the repository (Data availability statement).
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #14): false-pooling definition corrected to the quantity the code computes (probability that the retained set includes a discordant region); "admits" replaced; oracle k acknowledged.
+% Reopened 2026-09-27 (Tak): clustering task removed from the paper (PROTOCOL_silhouette_extension.md: the number of groups could not be estimated reliably); the selection task is what GUSTO-I applies.
+The measures are scored against the construction label on a selection task. An anchor and nine candidate regions are drawn; each measure ranks the candidates by their distance to the anchor and retains the $k$ closest, where $k$ is the number of true matches. Giving every measure the same $k$ removes threshold choice from the comparison entirely; supplying $k$ is itself an oracle, and the application chooses no $k$ but reads the ordering with the clinical calibration (Section~\ref{sec:application}). Performance is summarized by the AUC for discriminating true matches from discordant candidates (chance = 0.5) and by the probability that the $k$ retained regions include at least one discordant region. The task ran 10{,}000 replications per cell at the base grid ($n = 25$--100 per region) and 3{,}000 at the extended grid ($n = 150$--2{,}000). The extended grid, the accuracy target and the definitions of the two behaviours below were fixed after the base-grid results had been seen, and the Monte Carlo intervals of Table~\ref{tab:study2_required_n_mc} were added later; the reported target is the middle of the three examined.
+
+\subsubsection{Two Behaviours: Blind and Recovering}\label{sec:study1_classification}
+
+% Paragraph reviewed 2026-09-27 (Option C, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #15): KS evidence given as a selection AUC (was a clustering ARI); RV1's above-chance plateau in the symmetric-severity cell explained as sampling-variance noise rather than resolved structure; operational labels kept as computed by R/required_n.R.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M3/M5; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): blindness grounded in the population argument for all seven cells
+% Cut 2026-10-12 (D-20261012-3 length plan S03): 'Adding the SD as a further summary ...' sentence (no reported output behind it)
+Extending the sample-size grid to $n = 2{,}000$ separates the measures into two behaviours (Figure~\ref{fig:study2_auc}). A measure is blind in a cell when its AUC stays at chance through $n = 2{,}000$: the population value of its distance carries no information about the construction label, so the task is unsolvable for that measure at any sample size. This is an identification failure, not a power failure. It is exact by construction in every mean-matched cell: the population SMD is zero there, whatever the sample size. On the selection task, SMD is blind in \numval{nCellsSMDblind} of the \numval{nCellsSelection} cells, counting each world's combined cell: every cell of Set 3, the two mean-matched cells of Set 4, the scale cell of Set 1, and the shape cell of Set 2 (AUC \numval{aucBlindSMDmin}--\numval{aucBlindSMDmax} across the full grid in all of them). 
+
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee Minor 1; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): weakest Set 4 cell is asymmetric severity
+% Cut 2026-10-12 (D-20261012-3 length plan S21): 'Its failures in what follows are failures of efficiency' sentence
+A measure is recovering when its AUC reaches the target and stays above it at every larger sample size: identification succeeds, and what remains is a required-sample-size question. $W_1$ and the KS statistic are recovering in every cell. In particular, the KS statistic is blind nowhere: in the Set 4 cell where it is weakest, asymmetric severity, it still reaches selection AUC \numval{aucKSSet4asymsevN2000} at $n = 2{,}000$ (\numval{aucKSSet4symsevN2000} in the symmetric-severity cell).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{fig_required_n_auc.pdf}
+\caption{Selection AUC (true matches versus discordant candidates) as a function of per-region sample size ($n = 25$--2{,}000, log scale) for three distance measures in three cells of Study 1: the Set 3 combined cell (mean- and SD-matched mixtures), the Set 4 symmetric-severity cell (mean-matched displaced extremes), and the Set 4 bulk-shift control cell (uniform location shift of the whole population). The dashed horizontal line marks AUC = 0.9; chance corresponds to 0.5.}
+\label{fig:study2_auc}
+\end{figure}
+
+\subsubsection{Selection: Required Sample Sizes and Error Rates}\label{sec:study1_selection}
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #16): "decisive cells" replaced by all cells of Sets 3 and 4 (two omitted cells added to the table); the W1 column described as W1's requirement, not task difficulty.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M3; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): all 13 cells reported for W1 vs KS; headline 11 of 13 at AUC 0.9; target dependence disclosed
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis C4/M2/M10/m6/A9d; individual veto open until submission): Table 1 folded into Table 2 (13 cells x W1/KS/SMD); the "uniform shift suits the CDF supremum" mechanism removed (Sets 1-2 refute it) and replaced by the facts; "three by construction" attached to 11 of 13; the AUC 0.8 order stated with its overlapping intervals; SMD where not blind reported; 25-fold generated
+Table~\ref{tab:study2_required_n_mc} reports, for all \numval{nCellsSelection} cells, the per-region sample size at which each measure's selection AUC reaches 0.9, with 95\% Monte Carlo intervals. Two kinds of number appear in it, and they answer different questions. Reading down the $W_1$ column shows how $W_1$'s requirement varies with the task, from \numval{reqnW1Set4symsev} (symmetric severity) to \numval{reqnW1maxSets34b} (shape-symmetric mixtures) in Sets 3 and 4. Reading across a row gives the method difference within one task: in the symmetric-severity cell, $W_1$ reaches the target at $n = \numval{reqnW1Set4symsevB}$ and the KS statistic at $n = \numval{reqnKSSet4symsev}$, a \numval{reqnRatioKSoverW1Set4symsev}-fold difference on the same data-generating process. At the AUC 0.9 target the 95\% intervals place $W_1$ below the KS statistic in \numval{nCellsW1FewerKS} cells---three of them the Set 4 subgroup cells, where the advantage follows from the construction (Section~\ref{sec:study1_design}), and among the others all six cells of Sets 1 and 2, which contain no outlying subgroup and where neither measure is favoured by construction---place the KS statistic below $W_1$ in \numval{nCellsKSFewer}, the bulk-shift control, and overlap in \numval{nCellsOverlap}, the shape-symmetric mixture (\numval{reqnW1Set3shapesym} [\numval{reqnW1Set3shapesymLo}, \numval{reqnW1Set3shapesymHi}] against \numval{reqnKSSet3shapesym} [\numval{reqnKSSet3shapesymLo}, \numval{reqnKSSet3shapesymHi}]). In the bulk-shift control the KS statistic reaches the target first (\numval{reqnKSSet4bulk} versus \numval{reqnW1Set4bulk}), whereas in the location cells of Sets 1 and 2, which contain no outlying subgroup, $W_1$ does (\numval{reqnW1Set1loc} versus \numval{reqnKSSet1loc}; \numval{reqnW1Set2loc} versus \numval{reqnKSSet2loc}). A check registered after an exploratory look (protocol, with the prior look disclosed, and outputs in the repository) compares the sampling variability of $\widehat{W}_1$ under the two anchors: for the same two-unit shift at $n = 200$ per region, the Set 4 anchor population, whose two 5\% subgroups lie 40 units from the centre, multiplies the null sampling standard deviation of $\widehat{W}_1$ by \numval{set4NullSdRatioW1n200} (Monte Carlo SE \numval{set4NullSdRatioW1n200Mcse}) relative to $N(50, 10^2)$ while leaving that of the distribution-free KS statistic unchanged (\numval{set4NullSdRatioKSn200}, SE \numval{set4NullSdRatioKSn200Mcse}), and the paired AUC difference between $W_1$ and the KS statistic changes sign, from \numval{set4DeltaAucGaussN200d2} (SE \numval{set4DeltaAucGaussN200d2Mcse}) under the Gaussian anchor to \numval{set4DeltaAucMixN200d2} (SE \numval{set4DeltaAucMixN200d2Mcse}) under the Set 4 anchor; the control is reported as a loss for $W_1$.
+% Sentences revised 2026-10-12 (D-20261012-3, REF M2; Louis four-eyes round 3): the mechanism of the control reversal stated from the registered check (results/set4_control_mechanism.csv, results/set4_null_sd_ratios.csv) within what PROTOCOL_set4_control_mechanism.md licenses — no proportionality to the integral, no generalization beyond the tested populations; 'rather than reversing the order in general' removed.
+In the shape-symmetric mixture the two AUC curves cross near the target, the KS statistic discriminating better at the smallest sample sizes and $W_1$ at the largest, so the overlap marks the crossing rather than equal performance; the order in that cell depends on the target, $W_1$ reaching AUC 0.95 first with separated intervals, while at AUC 0.8 the point estimates favour the KS statistic and the intervals overlap. Where SMD is not blind, it reaches the target with sample sizes close to $W_1$'s in the Gaussian and log-normal location cells (Set 1: \numval{reqnSMDSet1loc} against \numval{reqnW1Set1loc}; Set 2: \numval{reqnSMDSet2loc} against \numval{reqnW1Set2loc}), and with more in the combined cells (\numval{reqnSMDSet1comb} against \numval{reqnW1Set1comb}; \numval{reqnSMDSet2comb} against \numval{reqnW1Set2comb}) and in the two Set 4 cells where it is not blind (Table~\ref{tab:study2_required_n_mc}).
+
+% Table 1 (tab:study2_required_n, Sets 3-4, W1/KS/SMD) folded into this table 2026-10-12 (D-20261012-2, Louis M10): same W1/KS values, SMD column added for all 13 cells; one float fewer.
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #17): caption states how plateau and required n are computed.
+\begin{table}[ht]
+\centering
+\caption{Per-region sample size at which selection AUC reaches 0.9, by cell and measure, interpolated on $\log n$ over the grid $n = 25$--2{,}000, with 95\% Monte Carlo intervals from the delta method applied to the log-$n$ interpolation, using the Monte Carlo standard errors of the two AUC estimates that bracket the crossing. Cells whose AUC stays at chance (\numval{aucBlindSMDmin}--\numval{aucBlindSMDmax}) across the full grid are marked ``blind''; $\leq 25$ marks a target reached at the smallest grid size, where no interval is available, and such a cell counts as separated when 25 lies below the other measure's lower limit.\label{tab:study2_required_n_mc}}
+\input{generated/tab_study2_required_n_mc}% GENERATED by R/make_paper_tables.R from results/required_n_selection.csv (complete tabular)
+\begin{tablenotes}
+% ERRFIX-2026-10-11 (Louis review B1): "combined" is a discordant role (C1/C2 in build_set3: asymmetric and bimodal at once), not a pool of the other cells
+\item Cells are contrast types within each world; the ``combined'' cell holds discordant regions that differ from the anchor in both of the world's contrast types at once (in Set 3, asymmetric and bimodal), not a pool of the other cells.
+\item Intervals reflect only the Monte Carlo error of the two AUC estimates that bracket the crossing, not the error of interpolating between grid points; limits are rounded outward to whole patients. ``Separate'' means the $W_1$ and KS intervals do not overlap. All measures are computed on the same replications, so non-overlap is a conservative indication of a difference and overlap does not show equal performance.
+\end{tablenotes}
+\end{table}
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #18): error rate redefined as computed by the code, with chance levels; per-slot proportion added.
+% Cut 2026-10-12 (D-20261012-3 length plan S07): per-slot share and MCSE clause of the fixed-n error-rate paragraph (measure still reported)
+The required-$n$ comparison is complemented by the error rate at a fixed sample size. At $n = 100$ in Set 4 (all contrast types pooled), the probability that the three retained regions include at least one discordant region is \numval{pAnyDiscW1Set4n100} for $W_1$ and \numval{pAnyDiscKSSet4n100} for the KS statistic (chance \numval{chanceAnyDiscSet4}); three of the four discordant types in this pool favour $W_1$ by construction (Section~\ref{sec:study1_design}).
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #19): all six discordant regions reported (was four); "clinically mildest/worst" replaced by position on the W1 scale; "admits" replaced.
+% Paragraph deleted 2026-10-12 (D-20261012-2, Louis length cut / m11, P3): the Set 4 population-ordering paragraph (true W1 and KS of the six discordant regions; "no KS threshold retains exactly the regions with true W1 <= c") said of itself that it was not independent evidence; no abstract or Discussion claim rested on it (CLAIMS C-30 withdrawn). The values remain in results/selection_sim_summary.csv.
+
+% Section 3.1.4 (clustering) removed 2026-09-27 (Tak): the number of groups could not be estimated reliably (PROTOCOL_silhouette_extension.md, criterion not met), so clustering is not a method that identifies pooling regions; not reported (process check, like the supplements).
+
+% DECIDED (Tak, 2026-09-05): the outline's remaining Study 2 material will NOT
+% be written -- (i) the rho = W1/(KS*sigma_EM) regime heuristic (per-cell
+% rho_trans never entered the verification gate) and (ii) the oracle-best-
+% threshold steelman with the Part 1B operating characteristics. The section
+% is complete as it stands.
+% DECIDED (Tak, 2026-08-30, option A): outline subsection 3.1.4 (procedure
+% justification, anchor-vs-clustering, 100k reps) will NOT be written here --
+% its content stays in the Discussion paragraph sourced from
+% results/anchor_vs_clustering_tau_100k.csv, which is its home.
+
+\subsection{Study 2: Estimation Properties}\label{sec:study2}
+
+% Sentence cut 2026-10-12 (D-20261012-2, Louis length cut, P3): the "underwrite the calibration framework" sentence repeated the opening of Section 3.
+% Cut 2026-10-12 (D-20261012-3 length plan S08): units/coverage-unitless sentence of the Study 2 opening (repeated in every caption)
+Study 1 compared the measures' ability to discriminate; Study 2 characterizes the estimator on which the calibration relies: bias, variability, and coverage probability of bootstrap confidence intervals for $\widehat{W}_1$. 
+
+\subsubsection{Design}\label{sec:sim_design}
+
+% Paragraph reviewed 2026-09-27 (Option A, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #22): S6 described as scale combined with skewness; unsupported "most realistic" and "typical of ALT" claims removed; caption describes the table.
+We designed seven systematic scenarios for methodological validation, examining controlled distributional differences in location, scale, scale combined with skewness (S6, a mean-matched log-normal), and a location--scale combination. Table~\ref{tab:scenarios} summarizes these scenarios with their true $W_1$ values, in the original units of the effect modifier.
+
+\begin{table}[ht]
+\centering
+\caption{Study 2 simulation scenarios with true $W_1$ values.\label{tab:scenarios}}
+\begin{tabular}{lllll}
+\toprule
+\textbf{ID} & \textbf{Description} & \textbf{Distribution 1} & \textbf{Distribution 2} & \textbf{True $W_1$} \\
+\midrule
+S1 & Null (identical) & $N(50, 10^2)$ & $N(50, 10^2)$ & \numval{trueW1S1} \\
+S2 & Location 0.2$\sigma$ & $N(50, 10^2)$ & $N(52, 10^2)$ & \numval{trueW1S2} \\
+S3 & Location 0.5$\sigma$ & $N(50, 10^2)$ & $N(55, 10^2)$ & \numval{trueW1S3} \\
+S4 & Location 1.0$\sigma$ & $N(50, 10^2)$ & $N(60, 10^2)$ & \numval{trueW1S4} \\
+S5 & Scale 1.5$\times$ & $N(50, 10^2)$ & $N(50, 15^2)$ & \numval{trueW1S5} \\
+S6 & Skew + scale (Log-normal) & $N(50, 10^2)$ & LogN$(\numval{muLogS6tab}, 0.5^2)$ & \numval{trueW1S6} \\
+S7 & Location + Scale & $N(50, 10^2)$ & $N(55, 15^2)$ & \numval{trueW1S7} \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\item The Log-normal in S6 has $\sigma_{\log} = 0.5$ and $\mu_{\log} = \log 50 - \sigma_{\log}^2/2 = \numval{muLogS6note}$, giving mean 50, SD $\numval{sdS6}$ (against 10 for Distribution 1, so the contrast is in scale as well as shape), CV $= \numval{cvS6pct}\%$ and skewness $\numval{skewS6}$. S7 combines location and scale differences. True $W_1$ values for S1--S4 are exact ($W_1 = |\mu_1 - \mu_2|$ for equal-variance normals); S5 uses the closed form $W_1 = \sqrt{2/\pi}\,|\sigma_1 - \sigma_2|$; S6 and S7 are obtained by numerical quadrature of $W_1 = \int |F_1(t) - F_2(t)|\,\mathrm{d}t$, with the S6 integral split at $t = 0$ to accommodate the log-normal support. The table shows true $W_1$ to two decimals; the performance measures use the exact values $\numval{trueW1S5exact}$ (S5), $\numval{trueW1S6exact}$ (S6) and $\numval{trueW1S7exact}$ (S7), and the share of intervals lying above the truth in Section~\ref{sec:sim_results} was computed with Monte Carlo truths for S6 and S7, which does not change it at the precision reported.
+\end{tablenotes}
+\end{table}
+
+% Cut 2026-10-12 (D-20261012-3 length plan S18): R-version parenthetical (recorded in sessionInfo)
+For each scenario, we generated samples of size $n = 50$, 100, and 200 per region, reflecting sample sizes typical in MRCT regional subgroups. We performed 10{,}000 replications per scenario--sample size combination; the Monte Carlo standard error is at most \numval{mcseBoundProp} for any reported proportion, and over the 21 cells it is at most \numval{mcseBiasMax} for bias, \numval{mcseRmseMax} for RMSE and \numval{mcseWidthMax} for mean CI width. Every replication produced a finite estimate and interval. Bootstrap confidence intervals were computed as in Section~\ref{sec:estimation} with $B = 2{,}000$ resamples. Study~2 was run in R with the bootstrap implemented in C++ via Rcpp; replications were distributed over a PSOCK cluster with L'Ecuyer--CMRG random-number streams seeded per cell (\texttt{clusterSetRNGStream}, seed $42 + 1{,}000k$ for cell $k = 1, \ldots, 21$, scenarios in order and $n$ within scenario). Because replicates are assigned to workers dynamically, individual replicates are not bit-reproducible; the reported summaries are reproducible to Monte Carlo error.
+
+Consistent with the estimation-centered framework, we evaluated the operating characteristics of the sample Wasserstein-1 estimator $\widehat{W}_1$ for the population value $W_1$, reported in the original units of the effect modifier:
+\begin{enumerate}[1.]
+\item Bias: $\text{Mean}(\widehat{W}_1) - W_1$
+\item Root mean squared error (RMSE): $\sqrt{\text{Mean}[(\widehat{W}_1 - W_1)^2]}$
+% Cut 2026-10-12 (D-20261012-3 length plan S09): explanation of S1 structural-zero coverage in the estimand list (kept in Results)
+\item Coverage probability: Proportion of 95\% bootstrap CIs $[L, U]$ with $L \le W_1 \le U$. Under S1 ($W_1 = 0$) coverage is structurally zero (Section~\ref{sec:sim_results})
+\item CI width: Mean width of bootstrap CIs, reflecting estimation precision
+\end{enumerate}
+
+\subsubsection{Results}\label{sec:sim_results}
+
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee Minor 3; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): bias decay described as observed (n^-1/2), not as slow
+Table~\ref{tab:bias} presents the bias of $\widehat{W}_1$ across scenarios and sample sizes, in the original units of the effect modifier (scenarios are specified with $\sigma = 10$). The estimator showed positive bias under the null hypothesis (S1), with bias decreasing from \numval{biasS1n50} at $n=50$ to \numval{biasS1n200} at $n=200$. This positive bias is the finite-sample bias of Section~\ref{sec:estimation} ($E\,\widehat{W}_1 \geq W_1$), at its largest when the true value equals zero ($F_1 = F_2$ almost everywhere). The estimator remains consistent ($\widehat{W}_1 \to 0$ as $n \to \infty$ under the null), and the bias fell at a rate consistent with $n^{-1/2}$: the bias at $n = 200$ is about half that at $n = 50$ (Table~\ref{tab:bias}).
+
+\begin{table}[ht]
+\centering
+\caption{Bias of $\widehat{W}_1$ by scenario and sample size, in the original units of the effect modifier.\label{tab:bias}}
+\input{generated/tab_bias}%  GENERATED by R/make_paper_tables.R from results/w1_raw_summary.csv (complete tabular)
+\begin{tablenotes}
+\item Bias is defined as $\text{Mean}(\widehat{W}_1) - W_1$, in the units of the effect modifier (scenarios specified with $\sigma = 10$). Results based on 10{,}000 replications with $B = 2{,}000$ bootstrap resamples.
+\end{tablenotes}
+\end{table}
+
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee Minor 3; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): relative, not slow
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis C3 / Mike A1, m7; individual veto open until submission): the n^{-1/2} rate holds only under the null (S1); off the boundary the bias falls faster (bias(50)/bias(200): S2 5.7, S5 4.4, S6 3.4, S7 3.3, against 2 for n^{-1/2}; results/derived/study2_bias_ratio.csv) and is within Monte Carlo error from n = 100 in S3 and S4; the S4 "confirming" sentence cut
+For the non-null scenarios away from the boundary (S3--S7), bias was small relative to each scenario's true $W_1$ and diminished with sample size; at $n = 200$ it was at most \numval{biasMaxS3toS7n200} (S7), a small fraction of the corresponding $W_1$ (Figure~\ref{fig:simulation}(A)), and in S4 it was within Monte Carlo error at every $n$. For scenarios near the boundary (S1, S2), positive bias was larger relative to the true value---the upward bias of Section~\ref{sec:estimation}, which is largest relative to the true value when that value is close to zero. The rate at which the bias fell differs between the null and the non-null scenarios: at the $n^{-1/2}$ rate under the null (S1), where the limit of $\widehat{W}_1$ is not centred, and faster in the other non-null scenarios (S2, S3, S5--S7; S4's bias is within Monte Carlo error), where the bias at $n = 200$ was at most one third of that at $n = 50$ (Table~\ref{tab:bias}), as expected away from the boundary, where the limit of $\widehat{W}_1 - W_1$ is centred.
+% Sentence corrected 2026-10-12 11:00 (Katrina four-eyes, results/VERIFY_FOUREYES_20261012.md): S3's bias at n = 100 is 3.7 MCSE, so "within Monte Carlo error" holds for S4 only; "close to n^{-1}" replaced by the observed range of ratios (3.3-5.7 against 4).
+
+\begin{figure*}[t]
+\centerline{\includegraphics[width=\textwidth]{fig2_simulation_results.pdf}}
+\caption{Estimation properties of the sample Wasserstein-1 estimator $\widehat{W}_1$, in the original units of the effect modifier, across scenarios (S1--S7) and sample sizes ($n = 50, 100, 200$). Panel~(A): bias, with dashed horizontal line at zero. Panel~(B): coverage probability of 95\% percentile bootstrap CIs, with dashed line at the nominal 0.95 level; S1 coverage is structurally zero because the true value lies at the parameter space boundary (see Section~\ref{sec:sim_results}). Panel~(C): mean CI width in units of $W_1$.\label{fig:simulation}}
+\end{figure*}
+
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M2; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): near-nominal replaced by the range and the MCSE count; coverage tied to the standardized distance
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis C2 / Mike A8; individual veto open until submission): the standardized-distance sentence was contradicted by results/w1_raw_summary.csv (n = 100: S3 3.66 SD -> 0.951, S5 3.84 -> 0.917, S7 4.15 -> 0.935); coverage follows bias relative to the sampling SD (results/derived/study2_bias_over_sd.csv); S5 range added
+Table~\ref{tab:coverage} presents coverage probabilities of the 95\% bootstrap confidence intervals. For the non-null scenarios S3--S7 at $n \geq 100$, coverage ranged over \numval{covRangeS3toS7N100up2dp}: S3 (\numval{covS3rangeN100up}), S4 (\numval{covS4rangeN100up}), S5 (\numval{covS5n100}--\numval{covS5n200}), S6 (\numval{covS6rangeN100up}), and S7 (\numval{covS7rangeN100up}); of these ten cells, \numval{nCellsCovBelow2MCSE} lie more than two Monte Carlo standard errors below 0.95, the lowest being S5 at $n = 100$ (\numval{covS5n100}). The shortfall is largest in S5 and S7, whose CDFs cross; there the intervals lie above the true value, in line with the upward bias of Section~\ref{sec:estimation}, which relative to the sampling standard deviation of $\widehat{W}_1$ is \numval{biasOverSdS5n100} and \numval{biasOverSdS7n100} at $n = 100$ against \numval{biasOverSdS3n100} for S3. In S6 (\numval{biasOverSdS6n100}), whose bias is smaller relative to its sampling standard deviation than in S5 and S7, and in S4 at $n = 100$, whose bias is within Monte Carlo error, the shortfall is small and the misses fall on both sides (Table~\ref{tab:study2_intervals}), so a given $n$ does not by itself fix the coverage.
+% Sentences revised 2026-10-12 (D-20261012-3, REF M3): S5/S7 (above the truth) separated from S6 and S4-100 (small, two-sided); results/study2_interval_variants.csv.
+S4 (1.0$\sigma$ location shift) showed coverage of \numval{covS4rangeAllN} across sample sizes, with no degradation at larger $n$, within two Monte Carlo standard errors of 0.95 only at $n = 200$. S5 (scale) showed undercoverage at $n=50$ (\numval{covS5n50}) that improved to \numval{covS5n200} at $n=200$. S2 (small location shift) showed undercoverage at $n=50$ (\numval{covS2n50}) due to its near-boundary true value, improving to \numval{covS2n200} at $n=200$.
+
+% Miss sides: R/study1_miss_side.R -> results/study1_miss_side.csv (2026-09-27).
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #23): bias sentence (inconsistent with consistency) removed; bootstrap inconsistency at F1 = F2 cited; miss side of the undercovering intervals reported; verdict wording removed.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee Minor 5; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): conservativeness scoped to small distances
+Coverage for S1 (null) is shown as zero in Figure~\ref{fig:simulation}(B) because its true $W_1$ lies at the parameter space boundary. This does not indicate estimator failure---the estimator is consistent---but a percentile interval cannot contain a true value of zero at any sample size, because with continuous data every bootstrap replicate of $\widehat{W}_1$ is positive, and at $F_1 = F_2$ the naive bootstrap is not consistent (Section~\ref{sec:estimation}); whether an observed distance is distinguishable from no difference is instead read against the null floor. Where coverage falls short in the non-null scenarios (S2, S5 and S7 at smaller $n$), the interval misses from below: the true value exceeded the upper limit in at most \numval{missAboveMaxS2S5S7pct}\% of replications in S2, S5 and S7 at any sample size (never in S2), against 2.5\% nominal, and the shortfall came from intervals lying above the true value. In S2, S5 and S7, where coverage falls short, the upper confidence limit is therefore a conservative reading of how large a difference could be; this is not a property of every scenario whose CDFs cross, since in S6 the true value exceeded the upper limit at about the nominal rate.
+% Sentence revised 2026-10-12 (D-20261012-2, Louis C2): "away from the boundary it is nominal rather than conservative" removed — S7 (0.58 SD) still misses from below (results/study1_miss_side.csv).
+
+Monte Carlo standard errors for the reported coverage probabilities are at most \numval{mcseBoundPropB} at 10{,}000 replications (largest observed \numval{mcseCovMax}). A difference between two cells is within simulation noise when it is smaller than about $\numval{zDiffFactor}$ times the standard error, and a single cell is consistent with nominal coverage when it lies within about twice its own standard error of 0.95. Because the application reads an unresolved distance at its upper limit, the one-sided coverage of the 97.5\% upper limit, $P(W_1 \leq U)$, is the operating characteristic that matters there: for S3--S7 at $n \geq 100$ it ranged over \numval{covUpperMinS3toS7N100up}--\numval{covUpperMaxS3toS7N100up} against a nominal 0.975: above nominal where the interval lies above the truth (S5, S7), near nominal in S3 and S6, and below it in S4 at $n = 100$ (Table~\ref{tab:study2_intervals}). The basic (reflected) interval $[\max(0, 2\widehat{W}_1 - U), \max(0, 2\widehat{W}_1 - L)]$, which shifts the percentile interval by the bootstrap estimate of the bias, covered less than the percentile interval in every non-null cell from $n = 100$ (\numval{covBasicRangeS3toS7N100up} in S3--S7) but more near the boundary (under S1 its coverage, \numval{covBasicS1n50} at $n = 50$, equals the share of replications whose lower limit is truncated at zero; in S2 at $n = 50$ it was \numval{covBasicS2n50} against \numval{covS2n50}), so this bias correction trades coverage away from the boundary for coverage at it (Table~\ref{tab:study2_intervals}); these comparisons were computed after the simulation from the stored replications and were not pre-specified.
+% Sentences added 2026-10-12 (D-20261012-3, EXT M4(c)(d)): one-sided upper-limit coverage and the basic interval from results/study2_interval_variants.csv (post hoc, labelled).
+
+\begin{table}[ht]
+\centering
+\caption{Coverage probability of 95\% percentile bootstrap confidence intervals.\label{tab:coverage}}
+\input{generated/tab_coverage}%  GENERATED by R/make_paper_tables.R from results/w1_raw_summary.csv (complete tabular)
+\begin{tablenotes}
+\item Coverage under S1 (Null) is shown as zero in Figure~\ref{fig:simulation}(B) but omitted from this table for brevity; the structural zero arises from the non-negativity constraint at the parameter space boundary.
+\item For S4, coverage was \numval{covS4rangeAllN} across all sample sizes, with no degradation at larger $n$. The undercoverage for S2 at small sample sizes (\numval{covS2n50note} at $n=50$) reflects its proximity to the boundary, and that for S5 (\numval{covS5n50note} at $n=50$) its large bias relative to the sampling standard deviation (Section~\ref{sec:sim_results}); both diminish with increasing $n$.
+\end{tablenotes}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Coverage of the 95\% percentile interval, of its one-sided 97.5\% upper limit, and of the basic (reflected) interval, with mean widths, by scenario and sample size, in the original units of the effect modifier.\label{tab:study2_intervals}}
+\input{generated/tab_study2_intervals}%  GENERATED by R/make_paper_tables.R from results/study2_interval_variants.csv (complete tabular)
+\begin{tablenotes}
+\item Upper-limit coverage is $P(W_1 \leq U)$; under S1 it is identically 1 because $U > 0 = W_1$. The basic interval is $[\max(0, 2\widehat{W}_1 - U), \max(0, 2\widehat{W}_1 - L)]$; under S1 its coverage equals the share of replications whose lower limit is truncated at zero. Computed from the same 10{,}000 replications as Table~\ref{tab:coverage}; not pre-specified.
+\end{tablenotes}
+\end{table}
+
+% Paragraph and table added 2026-10-13 (D-20261012-3, REF2 M5 / EXT M8): registered extension of Study 2 (PROTOCOL_study2_extension.md, designed after the external review and before any run; results/w1_raw_ext_summary.csv)
+A registered extension of Study 2 (protocol and outputs in the repository; its first eight cells were registered after the external review and before the run, and the three cells at the application's operating point as an amendment registered before those cells ran) added cells outside the original design: unequal regional sizes (100 against 300; 200 against 1{,}000), a heavy-tailed reference distribution ($t_3$ scaled to SD 10, under the null and under a 5-unit shift), integer-grid data (the S3 contrast rounded to integers at $n = 100$, 200 and 1{,}000), $n = 1{,}000$ per region for the S3 and S5 contrasts, and the application's operating point (the 0.2 SD contrast of S2 at $n = 1{,}000$ per region and at 2{,}900 against 1{,}200 with both samples rounded to multiples of 10, as systolic blood pressure is recorded). Across the ten non-null cells coverage ranged over \numval{covExtMin}--\numval{covExtMax} (Monte Carlo standard error at most \numval{mcseCovExtMax}; \numval{nRepsExtMin}--10{,}000 replications per cell), lowest for the shift on the $t_3$ reference (\numval{covExtE2b}, with a positive bias of \numval{biasExtE2b}); at the application's operating point it was \numval{covExtE5} with equal sizes and \numval{covExtE6} with unequal, rounded samples, with upper-limit coverage \numval{covUpperExtE5} and \numval{covUpperExtE6} (Table~\ref{tab:study2_ext}).
+
+\begin{table}[ht]
+\centering
+\caption{Registered extension of Study 2: unequal regional sizes, a $t_3$ reference distribution, integer-grid data, $n = 1{,}000$ per region and the application's operating point (0.2 SD). Bias, RMSE and mean width in the original units; coverage of the 95\% percentile interval and of its one-sided 97.5\% upper limit.\label{tab:study2_ext}}
+\input{generated/tab_study2_ext}%  GENERATED by R/make_paper_tables.R from results/w1_raw_ext_summary.csv (complete tabular)
+\begin{tablenotes}
+\item Under the $t_3$ null the true $W_1$ is zero, so percentile coverage is structurally zero and upper-limit coverage identically 1, as under S1. The rounded-data truth is the $W_1$ of the rounded population distributions. Replications per cell as shown; Monte Carlo standard error of coverage at most \numval{mcseCovExtMax}. Protocol \texttt{PROTOCOL\_study2\_extension.md}, registered after the external review; the operating-point cells were added as an amendment before they were run.
+\end{tablenotes}
+\end{table}
+
+% Paragraph reviewed 2026-09-27 (Option C, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #24): units corrected (S3 is read on the age scale only for the example); "proportionally" corrected; the single Delta_max example kept here (duplicate in the S3 paragraph deleted) and tied to what n >= 100 does not guarantee.
+% Cut 2026-10-12 (D-20261012-3 length plan S14): arithmetic of the Delta_max width example and the propagation sentence (ratio to the margin kept)
+% Cut 2026-10-12 (D-20261012-3 length plan S14): arithmetic of the Delta_max width example and the propagation sentence (ratio to the margin kept)
+The mean CI width pattern across scenarios and sample sizes is shown in Figure~\ref{fig:simulation}(C). Table~\ref{tab:precision} presents the RMSE and mean CI width across scenarios, in the original units of the effect modifier. RMSE decreased consistently with increasing $n$, at the $O(n^{-1/2})$ rate expected from Wasserstein plug-in theory; for S3, for example, it fell from \numval{rmseS3n50} at $n=50$ to \numval{rmseS3n200} at $n=200$. Mean CI width narrowed with $n$, with CIs at $n = 100$ for the non-null scenarios spanning roughly \numval{ciwRangeNonNullN100} in the units of the effect modifier. For S3 on the age scale with the illustrative bound $L_{\text{UB,age}} = 0.01$/yr of the GUSTO-I application, a $\widehat{W}_1$ CI width of \numval{ciwS3n100} years at $n = 100$ corresponds to a $\Delta_{\max}$ interval about \numval{dmaxWidthS3n100overMargin} times the 1\%pt margin used in Section~\ref{sec:app_clinical}, so $n = 100$ per region does not by itself make the $\Delta_{\max}$ interval narrow relative to a clinical margin.
+
+\begin{table}[ht]
+\centering
+\caption{RMSE and mean CI width of $\widehat{W}_1$ by scenario and sample size, in the original units of the effect modifier.\label{tab:precision}}
+\input{generated/tab_precision}%  GENERATED by R/make_paper_tables.R from results/w1_raw_summary.csv (complete tabular)
+\begin{tablenotes}
+\item CI width is defined as mean of (upper $-$ lower) across 10{,}000 replications, in the units of the effect modifier (scenarios specified with $\sigma = 10$).
+\end{tablenotes}
+\end{table}
+
+% S1 95th percentiles: results/study1_miss_side.csv (q95_est), from results/w1_raw_simulation.rds.
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #25): "null hypothesis" -> null scenario; repeated means removed; closing aligned with the approved Section 2.3 reading (at or below, not evidence of a difference) and scoped to sigma = 10, equal n.
+% Cut 2026-10-12 (D-20261012-3 length plan S15): S1 mean-CI-width sentences (in the precision table)
+Under the null scenario (S1), the informative summary is the upper tail rather than the mean: the 95th percentile of $\widehat{W}_1$ under S1 is \numval{q95S1n50}, \numval{q95S1n100} and \numval{q95S1n200} at $n = 50$, 100 and 200 for this scenario ($\sigma = 10$, equal $n$), and an observed distance at or below the corresponding value is not evidence of a difference.
+
+% NOTE (2026-08-30): the former SMD sensitivity table (tab:smd, S3/S5/S6
+% detection contrast) was deleted per the restructure outline -- Study 2's
+% six-method decision comparison supersedes it. Discussion paragraphs still
+% citing S5/S6 as SMD-blindness evidence carry queued review edits (decision 4).
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee Minor 4; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): relative bias scoped to S3--S7
+% Summary list deleted 2026-10-12 (D-20261012-2, Louis length cut, P3): the three-item "In summary" list repeated the bias, coverage and precision paragraphs number for number; the bridge to Delta_max below carries the summary. RMSE at n = 200 ranged from rmseMinN200 (S5) to rmseMaxN200 (S1); both keys remain in the registry.
+
+% Paragraph deleted 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #26): duplicated the Delta_max example of the CI-width paragraph (P3).
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #27): "reliable estimation and inference" narrowed to bias and coverage; fixed-L qualifier added; section pointer corrected.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M2; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): near-nominal replaced by the range with its scale
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis M1/M9/m2; individual veto open until submission): the MCSE count carried here; "estimation criterion" replaced by "estimation statement"; "about 0.4 SD or more"
+% Cut 2026-10-12 (D-20261012-3 length plan S16): 'In summary' paragraph (coverage range restated a fourth time)
+
+
+%==============================================================================
+\section{Application: Hypothetical Thrombolytic MRCT Using GUSTO-I Data}\label{sec:application}
+%==============================================================================
+
+% Paragraph reviewed 2026-09-27 (Option A, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #28): "per-EM" spelled out; stand-in assumption for the regional populations stated.
+We illustrate the per-effect-modifier Wasserstein-1 framework through a hypothetical scenario grounded in publicly available data from GUSTO-I, a large international trial in acute myocardial infarction (AMI). A sponsor is developing a novel thrombolytic agent (Drug~T) for AMI and is planning a Phase~3 MRCT across multiple regions. At the planning stage, the sponsor uses IPD from GUSTO-I ($N = \numval{gustoN}$; 16 regions)\cite{gusto1993} to quantify how the distributions of candidate effect modifiers in other regions differ from those in a designated anchor region, treating the GUSTO-I regions as stand-ins for the regional populations the new trial would enrol. GUSTO-I was not designed as an MRCT and its regions are anonymized.
+
+\subsection{Scenario Design and Effect Modifier Selection}\label{sec:app_scenario}
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #29): age and SBP given the same class-level evidence statement (FTT: benefit irrespective of age and blood pressure); repeated "Drug T is a novel agent" removed.
+For this illustrative exercise, the sponsor identifies two candidate effect modifiers for Drug~T's treatment effect in AMI: age and systolic blood pressure (SBP). Drug~T's Phase~2 programme has suggested age and SBP as candidate effect modifiers on the basis of exploratory analyses and biological plausibility, but the precision of these analyses is insufficient for numerical estimation of $L_{\text{clinical}}$. Class-level indirect evidence can at most inform a sponsor-specified upper bound (Section~\ref{sec:app_clinical}): the Fibrinolytic Therapy Trialists' (FTT) collaborative meta-analysis of existing fibrinolytic agents\cite{ftt1994} concluded that, among patients presenting with ST elevation or bundle-branch block, benefit is present irrespective of age and of blood pressure, and reports no per-unit CATE slope on the absolute mortality scale for either, so class transferability would not yield a defensible numerical prior for Drug~T.
+% Paragraph revised 2026-10-12 (D-20261012-2, Rachel cite-check ftt1994 partial; Louis length cut): the FTT condition (ST elevation or BBB) restored; the "no quantitative prior" sentence, repeated by the sentences around it, cut.
+We therefore treat $L_{\text{clinical}}$ as unknown a priori for both candidate effect modifiers, and apply the $L^*$ reverse-calculation pathway (equation~\ref{eq:lstar}) to both.
+
+% Paragraph reviewed 2026-09-27 (Option A, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #30): no change to the text; the pair-level IQR column removed from the Region 8 table (orphaned by the queue #34 deletion).
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee Minor 12; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): data screening stated
+The sponsor selects Region~8 as the anchor region---representing, for instance, a regulatory market where local efficacy evidence is required. Region~8 comprises $n = \numval{nR8}$ patients in GUSTO-I, with baseline characteristics summarized in Table~\ref{tab:gusto_r8}; the anchor role, not its size, is what the exercise illustrates. Quantifying how each region differs from Region~8 mirrors the input a sponsor would bring to a pooling judgment as described in ICH E17.\cite{iche17} The GUSTO-I records are used as recorded: \numval{nSbpZero} patients have a systolic blood pressure of 0~mmHg and \numval{nAgeOver100} are older than 100 years, and $W_1$ weights each observation by its displacement. Excluding these records changes $\widehat{W}_1$ by at most \numval{w1MaxChangeExclAge} years and \numval{w1MaxChangeExclSbp} mmHg (to two decimals), exchanges \numval{nRankChangesExcl} adjacent SBP ranks and changes no null-floor classification below; winsorizing both variables at the 1st and 99th percentiles moves $\widehat{W}_{1,\text{SBP}}$ by up to \numval{w1MaxChangeWinsorSbp} mmHg and changes \numval{nRankChangesWinsor} of the 30 ranks; these checks were made after the main analysis. Systolic blood pressure is also heaped: the share of readings on a multiple of 10~mmHg ranges from \numval{sbpDigit0Min}\% to \numval{sbpDigit0Max}\% across the 16 regions and is \numval{sbpDigit0R8}\% in Region~8, so differences in recording practice may contribute to the SBP distances (not quantified here) and the step CDFs of Appendix~\ref{app:asymptotic} apply.
+% Sentences added 2026-10-12 (D-20261012-3, EXT M7(c) / REF Minor 9): results/gusto_sensitivity_outliers_summary.csv, results/gusto_sbp_digit_preference.csv (post hoc sensitivity, labelled in the provenance).
+
+\begin{table}[ht]
+\centering
+\caption{Region~8 baseline characteristics (GUSTO-I).\label{tab:gusto_r8}}
+\input{generated/tab_gusto_r8}%  GENERATED by R/make_paper_tables.R from data/gusto.csv (Region 8) (complete tabular)
+\begin{tablenotes}
+\item $n = \numval{nR8note}$.
+\end{tablenotes}
+\end{table}
+
+\subsection{Null Floor: Which Distances Are Distinguishable from No Difference?}\label{sec:app_operability}
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #31): "unresolved" attached to a distance, not a partner; R8 introduced; forward pointer to the distances; unused null-mean column removed.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M4; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): null floor named as a test
+Before interpreting the distances reported in Section~\ref{sec:app_nabcd}, we computed the null floor of Section~\ref{sec:estimation} for each candidate partner. For each partner we drew two independent resamples, with replacement, from Region~8's (R8) empirical distribution at sizes $n_{\text{R8}} = \numval{nR8floor}$ and $n_{\text{partner}}$, recomputed $\widehat{W}_1$, and repeated this $2{,}000$ times, so that the null floor is obtained separately for each partner, as its dependence on both sample sizes requires. We call an observed distance unresolved when it lies at or below the 95th percentile of its null distribution---a one-sided test of $F_1 = F_2$ at level 0.05, applied separately to each pair---a reference point for reading the estimate: the observed distance is then one the estimator would produce with appreciable probability from two samples of identical distributions. A permutation test of $F_1 = F_2$ on the pooled sample (2{,}000 permutations), which is exact under exchangeability, classifies all 30 distances in the same way (\numval{nPermAgree} of 30 agree; \numval{nPermBonf} fall below a Bonferroni-adjusted 0.05/30), so the anchor-resampled floor is retained as the display reference. Table~\ref{tab:operability} summarises the result.
+% Sentence added 2026-10-12 (D-20261012-3, EXT M5 / REF Minor 4): results/gusto_null_floor_permutation_summary.csv.
+
+\begin{table}[ht]
+\centering
+\caption{Null floor of $\widehat{W}_1$ across the 15 candidate partners, by effect modifier. Ranges are across partners; the floor depends on each partner's sample size. Unresolved distances are those whose observed $\widehat{W}_1$ falls at or below the 95th percentile of the null distribution.\label{tab:operability}}
+\input{generated/tab_operability}%  GENERATED by R/make_paper_tables.R from results/gusto_operability.csv (complete tabular)
+\end{table}
+
+% Paragraph reviewed 2026-09-27 (Option A, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #32): "with appreciable probability" restored from Section 2.3; follow-on paragraph: "anchor-borrowing estimand" defined in words, "classification" replaced.
+The two candidate effect modifiers differ in how many distances clear the null floor, and the difference matters for how the subsequent distances should be read. On age, the distances of six of the fifteen partners---R1, R4, R5, R7, R9 and R15---are unresolved at level 0.05: they are ones the estimator would produce with appreciable probability from identical distributions. On systolic blood pressure, by contrast, fourteen of fifteen are resolved, the single exception being R2.
+
+Because the null is drawn from one region's distribution, the choice of which region is not neutral: drawing from the anchor asks what $\widehat{W}_1$ would look like if the partner were distributed as R8 is, which is the null appropriate when the partner's data are to inform the anchor. Repeating the computation with each partner's own distribution as the source leaves every distance on the same side of its 95th percentile, so the finding does not depend on which of the two sources is used.
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #33): defensive opening removed; "plug-in estimator" wording; the upper-limit reading tied to the Study 1 miss-side result.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M2; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): the n >= 100 transfer removed; null-floor resolution and coverage share the standardized distance
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis C2 inheritance / length cut; individual veto open until submission): "governed by the same quantity" removed (the standardized distance does not govern coverage); defensive opening sentence cut
+The practical consequence of the null floor here is that the small age distances of the six partners unresolved at level 0.05 are not evidence of a difference; how large their differences could be is read from the upper confidence limits in Table~\ref{tab:gusto_nabcd}, which for small distances near the boundary err above rather than below the true value in the Study~2 scenarios (Section~\ref{sec:sim_results}). Neither resolution against the null floor nor the coverage of the percentile interval is fixed by the sample size alone; both depend on the distance relative to the sampling variability of $\widehat{W}_1$ (Section~\ref{sec:sim_results}): the partner samples range from \numval{partnerNmin} to \numval{partnerNmax} observations, but for a distance at or below the null floor the interval is read at its upper limit whatever the sample size. The GUSTO-I distances are \numval{gustoDistSdMin}--\numval{gustoDistSdMax} SD of Region~8's distributions, below the smallest non-null distance of the original Study~2 design; the extension cells at this operating point (Table~\ref{tab:study2_ext}) gave percentile coverage \numval{covExtE5} and \numval{covExtE6} and upper-limit coverage \numval{covUpperExtE5} and \numval{covUpperExtE6}, so the intervals of Table~\ref{tab:gusto_nabcd} are read with that evidence rather than with the original cells.
+% Sentence added 2026-10-13 (D-20261012-3, REF2 M5 / Louis round 3 M12): results/derived/gusto_dist_sd.csv, results/w1_raw_ext_summary.csv.
+
+\subsection{Distributional Assessment: Per-Effect-Modifier $W_1$ Across 15 Partner Regions}\label{sec:app_nabcd}
+
+% Reopened 2026-09-27 (Tak): the simulation identifies the method, GUSTO-I applies it; partners ordered by W1 (ranks in the table).
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M1/M3; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): headline 11 of 13; attainment named
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis C1/M2/M3 / Mike A3; individual veto open until submission): "at the GUSTO-I region sizes both suffice" removed (KS asymmetric severity 1,252 [1,226, 1,278] vs R16 at 1,231; required n is specific to the simulated contrasts); "three by construction"; attainment within the class
+Study~1 showed that $W_1$ and the KS statistic both reach selection AUC 0.9 in every simulated world (Section~\ref{sec:study1_selection}). Study~1's required sample sizes refer to its simulated contrasts and do not transfer to the GUSTO-I distances, which are read against their null floors (Section~\ref{sec:app_operability}); $W_1$ is used because its heterogeneity bound has a per-unit clinical slope as its constant (Section~\ref{sec:nabcd_metric}). We therefore computed $\widehat{W}_1$ between Region~8 and each of the remaining 15 regions for both candidate effect modifiers and ordered the partners by it, expressed in the original measurement units (years for age, mmHg for SBP), with percentile bootstrap 95\% confidence intervals ($B = 2{,}000$). Table~\ref{tab:gusto_nabcd} presents the results. Figure~\ref{fig:gusto_forest} displays these results as a forest plot with bootstrap CIs, with partners ordered by ascending $\widehat{W}_1$ within each panel.
+
+\begin{table}[ht]
+\centering
+\caption{Per-effect-modifier Wasserstein-1 distance $\widehat{W}_1$ in original variable units (years for age, mmHg for SBP) with 95\% percentile bootstrap CIs for Region~8 versus each partner region (GUSTO-I), listed by region number, with each partner's rank by $\widehat{W}_1$ within each candidate effect modifier.\label{tab:gusto_nabcd}}
+\input{generated/tab_gusto_nabcd}%  GENERATED by R/make_paper_tables.R from results/gusto_r8_w1_per_pair.csv (complete tabular)
+\begin{tablenotes}
+\item Point estimates with 95\% percentile bootstrap CIs ($B = 2{,}000$, seed = 2026). Regions are listed by region number; Rank orders the partners by $\widehat{W}_1$ within each candidate effect modifier (1 = closest to Region~8); the bracketed rank interval is the 2.5th--97.5th percentile of the rank over 1{,}000 patient-level bootstrap replicates that resample within every region (Region~8 shared across partners; seed 20261011), and adjacent ranks whose intervals overlap are not resolved against each other. $^\dagger$Distances unresolved against their null floor (Table~\ref{tab:operability}) are not ordered among themselves and share the point-rank range shown; the bracketed interval that follows it is that partner's own bootstrap rank interval, which for these partners reaches the ninth or tenth position. R6 and R5, adjacent in the SBP ranking, differ in $\widehat{W}_{1,\text{SBP}}$ by \numval{w1SbpR6minusR5}~mmHg, so their ranks are effectively tied.
+% Note revised 2026-10-12 (D-20261012-2, Louis m12): the orphan R6/R5 sentence given its point; the two CI-overlap sentences, superseded by the rank intervals, cut.
+\end{tablenotes}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{fig3_gusto_r8_forest.pdf}
+\caption{Forest plots of $\widehat{W}_1$ point estimates in original units (years for age, panel A; mmHg for SBP, panel B) with 95\% percentile bootstrap CIs. Partners are ordered by ascending $\widehat{W}_1$ within each panel; ordering and horizontal scale differ between panels. $^\dagger$Distance unresolved against its null floor (Table~\ref{tab:operability}).}
+\label{fig:gusto_forest}
+\end{figure}
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #34): cross-modifier IQR comparison deleted (contradicts the approved Section 2.2 scope statement); "similarity" -> difference.
+The two candidate effect modifiers produce different patterns of distributional difference. For age, partner-region $\widehat{W}_{1,\text{age}}$ point estimates span from \numval{w1AgeR5} years (R5) at the low end to \numval{w1AgeR3} years (R3) at the high end, with most partners below 1.5 years. For SBP, point estimates span from \numval{w1SbpR2} mmHg (R2) to \numval{w1SbpR9} mmHg (R9). The rankings of partners by the two candidate effect modifiers differ.
+
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M4; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): R16 example replaced; ranks read with their resampling intervals
+Several partners fall in the middle of each ranking where uncertainty intervals overlap substantially, and the rank intervals of Table~\ref{tab:gusto_nabcd}, obtained by resampling patients within every region, show how far such a partner can move: a mid-table rank is not resolved against its neighbours, whereas the most distant partners stay among the most distant positions. R6 ranks ninth on age ($\widehat{W}_{1,\text{age}} = \numval{w1AgeR6}$ years) and fifth on SBP ($\numval{w1SbpR6}$ mmHg, 95\% CI $[\numval{ciLoSbpR6}, \numval{ciHiSbpR6}]$ mmHg), and both of its rank intervals span most of the middle of the table; R2's age rank and R9's SBP rank, the two large distances of the contrast below, have rank intervals confined to the most distant positions. The ranking is therefore reported with the interval that says how confidently one partner can be placed above or below another, and a bare rank is not read as a resolved order.
+
+% Paragraph reviewed 2026-09-27 (Option A, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #35): verdict and necessity wording replaced by what the reversal shows; forward pointer to the all-pairs correlation.
+A contrast emerges between R2 and R9. R2 has the second-largest $\widehat{W}_{1,\text{age}}$ (\numval{w1AgeR2} years) but the smallest $\widehat{W}_{1,\text{SBP}}$ (\numval{w1SbpR2b} mmHg), while R9 is among the six smallest $\widehat{W}_{1,\text{age}}$ (\numval{w1AgeR9} years) but the largest $\widehat{W}_{1,\text{SBP}}$ (\numval{w1SbpR9b} mmHg). Both small distances are unresolved against their null floors (Section~\ref{sec:app_operability}), so the reversal rests on the two large ones. A ranking based on either candidate effect modifier alone would order these two regions oppositely. The reversal illustrates that the distance on one candidate effect modifier need not carry information about the distance on another; Section~\ref{sec:discussion} reports the rank agreement across the 15 partners.
+
+\subsection{Clinical Interpretation}\label{sec:app_clinical}
+
+% Paragraph reviewed and approved by Tak 2026-09-06 (Option C of the paragraph
+% review; simulated-review point R1.2(a), application side): aligned with the
+% Section 2.4 judgment framing; the "supports a conservative upper bound ...
+% exceeding the empirical prognostic gradients" phrasing retired; notation
+% unified to L_{UB,em} across Section 4.4 in the same pass.
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #36): "We require" removed (the L* pathway does not require a bound); duplication of Section 2.4 cut; "approximately" removed (exactly 10%pt per decade).
+Following Section~\ref{sec:inference}, we read $L^*$ against illustrative bounds that are the sponsor's clinical inputs, informed by the class-level evidence cited there: $L_{\text{UB,age}} = 1\times10^{-2}$ per year (10\%pt per decade) and $L_{\text{UB,SBP}} = 2\times10^{-3}$ per mmHg (2\%pt per 10~mmHg) on the 30-day mortality scale.
+
+% Paragraph reviewed 2026-09-27 (Option C, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #37): interval definition moved to Section 2.4 (queue #8), reference kept; "plausible" -> illustrative; lower-interval reading made explicit; link to the null floor added.
+Table~\ref{tab:gusto_lstar_joint} reports, for each partner region, $L^*$ with its percentile interval (Section~\ref{sec:inference}). Each interval is read against the illustrative bound $L_{\text{UB}}$ for its candidate effect modifier. Where the whole interval lies above $L_{\text{UB}}$, even the upper confidence limit of the distributional difference would require a clinical slope above the bound to produce $\Delta_{\text{clin}} = 1$\%pt; where the interval contains $L_{\text{UB}}$, the data are compatible with a difference that could and one that could not produce it; where the interval lies below $L_{\text{UB}}$, a slope within the bound could produce it even at the lower confidence limit of the distance. For distances unresolved against the null floor (Section~\ref{sec:app_operability}), only the lower end of the interval, which comes from the upper confidence limit of $\widehat{W}_1$, carries the reading. If the CATE were additionally assumed monotone, equation~(\ref{eq:mono_bound}) would replace $\Delta_{\max}$ by the fraction $(W_1 + |\mu_1 - \mu_2|)/(2 W_1)$ of it, which ranges from \numval{monoRatioAgeMin} to \numval{monoRatioAgeMax} across the age distances and from \numval{monoRatioSbpMin} to \numval{monoRatioSbpMax} across the SBP distances (point estimates, including the unresolved R2 on SBP; the factor would equal 1 only if the partner's CDF never crossed the anchor's), and $L^*$ would be larger by the reciprocal.
+% Sentence added 2026-10-12 (D-20261012-3, REF M1): the monotone-bound factor in the application (results/derived/gusto_monotone_bound_ratio.csv).
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #38): caption describes the table (bounds moved to a note); unresolved distances flagged; R1 SBP lower limit disambiguated; brackets unified with Table 5.
+% Table rows: R/gusto_lstar_table.R -> results/gusto_lstar_intervals.csv (from results/gusto_r8_w1_per_pair.csv), 2026-09-26.
+\begin{table}[ht]
+\centering
+\caption{$L^*$ at $\Delta_{\text{clin}} = 1$\%pt with 95\% percentile interval for all 15 partner regions, listed by region number. $L^*$ is the minimum clinical slope (per year for age, per mmHg for SBP) required for the observed distributional difference to produce a treatment effect difference of $1$\%pt on the absolute 30-day mortality scale.\label{tab:gusto_lstar_joint}}
+\input{generated/tab_gusto_lstar_joint}%  GENERATED by R/make_paper_tables.R from results/gusto_lstar_intervals.csv + results/gusto_operability.csv (complete tabular)
+\begin{tablenotes}
+\item Regions are listed by region number; their ranks by $\widehat{W}_1$ are given in Table~\ref{tab:gusto_nabcd}. $^\dagger$Distance unresolved against its null floor (Table~\ref{tab:operability}). The illustrative bounds of Section~\ref{sec:app_clinical} are $L_{\text{UB,age}} = 1\times10^{-2}$ /yr and $L_{\text{UB,SBP}} = 2\times10^{-3}$ /mmHg; the lower limit of R1's SBP interval, \numval{lstarSbpLowerR1}, lies just above $L_{\text{UB,SBP}}$.
+\end{tablenotes}
+\end{table}
+
+%==============================================================================
+\section{Discussion}\label{sec:discussion}
+%==============================================================================
+
+% Paragraph reviewed and approved by Tak 2026-08-30 (Option B of the paragraph
+% review; resolves queued edit item 4 for this paragraph -- decision 4, 2026-08-15).
+% Paragraph reviewed 2026-09-27 (Option C, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #39): "adds an inferential result" -> characterizes its estimation; constant described as sponsor-specified; (iii) scoped to the Study 1 scenarios; Komiyama citation moved to the RV clause.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M1/M2/Minor 9; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): attainment in the summary; sample size attached to recovery; coverage range with its scale
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis M8/m17/M1/m2; individual veto open until submission): the enumeration aligned with the three requirements of Section 2.1 (coverage is the estimation characterization, not requirement (iii)); the 95-word sentence split; the MCSE count carried; "about 0.4 SD or more"
+% Cut 2026-10-12 (D-20261012-3 length plan D13): KS total-variation clause (Methods 2.1-2.2)
+This paper answers the requirements set out in Section~\ref{sec:existing} and characterizes the estimation of its answer. The $W_1$ distance meets requirement (i): it resolves distributional differences to which a location summary such as the SMD is structurally blind---in Study 1, SMD is at chance at every sample size examined in \numval{nCellsSMDblind} of the \numval{nCellsSelection} selection cells, an identification failure that no sample size repairs, whereas $W_1$ reaches the discrimination target in all four worlds, at $n = \numval{reqnW1minSets34}$--\numval{reqnW1maxSets34} per region in Sets 3 and 4 (Section~\ref{sec:study1_classification}). It meets requirements (ii) and (iii): the heterogeneity bound \(\Delta_{\max}\) (equation~\ref{eq:delta_max}) translates distributional distance into a clinically interpretable scale, is sharp when the slope is the only restriction on the CATE and tightens under monotonicity (equation~\ref{eq:mono_bound}), and its constant---a treatment effect change per unit of the effect modifier---is a clinical slope that the sponsor specifies, informed by clinical evidence. SMD supports no bound valid across the Lipschitz class, since regions with equal means can have $W_1 > 0$ and hence, by equation~(\ref{eq:dual}), regional treatment effects differing by up to $L_{\text{clinical}} W_1$. Its estimation is characterized by Study~2: percentile bootstrap intervals whose coverage was \numval{covRangeS3toS7N100up2dp} for true distances of about \numval{minW1SdS3toS7} to \numval{maxW1SdS3toS7} SD in the location, scale, and combined scale-and-skewness scenarios at \(n \geq 100\) per region, below 0.95 beyond Monte Carlo error in \numval{nCellsCovBelow2MCSE} of the ten cells, with a characterized boundary behavior near the null (Section~\ref{sec:estimation}).
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #40): procedural "must be evaluated" and "require" replaced by what the distances show; binary "similar" wording removed.
+% Cut 2026-10-12 (D-20261012-3 length plan D01): restatement of L* monotonicity/comparison (Methods 2.4) compressed
+% Cut 2026-10-12 (D-20261012-3 length plan D15): worked-example gloss (Sec. 4 opening)
+These methodological findings carry two interpretive implications for pooling assessments, illustrated by the GUSTO-I example (Section~\ref{sec:application}). First, when multiple candidate effect modifiers are under consideration, the per-modifier distances need not agree: a partner close to the anchor on one effect modifier can be distant on another, as exemplified by the contrast between R2 and R9, so the distance on a modifier left out of the assessment need not be inferable from those included. Second, $W_1$ ranking alone does not convey clinical weight: within one effect modifier $L^* = \Delta_{\text{clin}} / W_1$ is a strictly decreasing function of $W_1$, so calibration does not reorder partners; it compares each partner's $L^*$ with the bound $L_{\text{UB}}$ specified for that modifier, and both are reported.
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #41): partner-count recommendation ("no more than four") removed per the quantify-not-decide principle; duplicate "120 region pairs" removed; correlation stated as weak (r now reported in Supplement C).
+% Reopened 2026-09-27 (Tak): Komiyama et al. introduce one example approach; no "recipe", no comparison.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M4/M5; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): patient-level bootstrap interval for the rank agreement; clustering omission referenced
+% Cut 2026-10-12 (D-20261012-3 length plan D02): clustering pointer shortened (guard-pinned clause 'not reported' kept)
+% Cut 2026-10-12 (D-20261012-3 length plan D03): R2/R9 restatement (para 2 and Sec. 4.3)
+% Cut 2026-10-12 (D-20261012-3 length plan D04): 'interval reflects sampling uncertainty within this trial' clause
+These implications also bear on the cluster analysis of regions that Komiyama et al.\ introduce as one example of forming pooled regions, in which the candidate effect modifiers are combined into a single weighted distance;\cite{komiyama2024} the clustering task run under our protocol is not reported (Section~\ref{sec:study1_design}). Across the 15 partners of Table~\ref{tab:gusto_nabcd}, the orderings by age and by systolic blood pressure distance show no positive agreement (Spearman correlation $\numval{spearmanAgeVsSbpSigned}$; 95\% interval \numval{spearmanAgeVsSbpBootLo} to \numval{spearmanAgeVsSbpBootHi} from 1{,}000 patient-level bootstrap replicates that resample within each region and recompute both orderings; it is computed on the point ordering of all 15 partners, including the distances left unordered by the null floors);
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis m9/M5): binary "similar/dissimilar" replaced; the Spearman disclosed as computed on the full point ordering.
+the interval excludes the strong positive agreement under which one modifier's distances could stand in for the other's, so a single distance aggregated over the two modifiers could mask differences that a per-modifier assessment retains. How many pooled regions to form, and how orderings that differ across modifiers are reconciled, remain clinical judgments.
+
+% Paragraph reviewed and approved by Tak 2026-08-30 (Option B of the paragraph
+% review; resolves queued edit item 5 -- decision 4, 2026-08-15). This paragraph
+% is the Discussion's sole carrier of the GUSTO agreement finding, per that
+% decision (the abstract stays silent on it).
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #42): "three gaps" aligned with Section 2.1 (limitations of the existing measures); closing claim rested on the Study 2 efficiency evidence instead of the KR-duality tautology.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M1/M3/M5; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): constant described; survey cited; headline 11 of 13 with attainment and construction caveat
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis M5/M6/m10 / length cut; individual veto open until submission): the restatement of Section 2.1 compressed to one sentence; patient-level bootstrap intervals for the W1-vs-SMD Spearman (results/gusto_rank_spearman_boot.csv); IST-1 and IST-3 cited; survey correlations to three decimals; "like the KS statistic" attached to recovery
+Of the limitations set out in Section~\ref{sec:existing}, the location-only limitation of SMD is structural, and Study 1 exhibits its consequence: in the mean-matched cells, SMD is at chance at every sample size examined while $W_1$ recovers the partner structure (Section~\ref{sec:study1_classification}); the lack of a clinical scale is addressed by the heterogeneity bound (equation~\ref{eq:delta_max}); and the limitations of KL divergence are avoided by construction, $W_1$ being symmetric, finite for any pair of empirical distributions, and computable from CDFs without density estimation. Addressing these limitations does not, however, mean returning a different answer in every dataset. In GUSTO-I, whose regional differences are predominantly differences in location (partner standard deviations within a factor of \numval{sdRatioMax} of the anchor's), $W_1$ ordered the 15 partners much as the SMD did (Spearman correlation \numval{spearmanW1SMDage}, 95\% interval \numval{spearmanW1SMDageLo} to \numval{spearmanW1SMDageHi}, for age and \numval{spearmanW1SMDsbp}, \numval{spearmanW1SMDsbpLo} to \numval{spearmanW1SMDsbpHi}, for systolic blood pressure, from the patient-level bootstrap of Table~\ref{tab:gusto_nabcd}), and its contribution there was the clinical calibration rather than a different answer; a survey of \numval{surveyPairs} region pairs in GUSTO-I, IST-1 and IST-3 (the first and third International Stroke Trials),\cite{gusto1993,ist1_2000,ist3_2012} registered after an exploratory scan of the same data had shown the pattern (protocol and outputs in the repository), found agreement of the same order, with rank correlations between $W_1$ and $|\mathrm{SMD}|$ (pooled SD of the simple-average form) of \numval{surveySpearmanMin}--\numval{surveySpearmanMax} across \numval{surveyRows} trial-by-modifier combinations, five of them in GUSTO-I. The limitations bind where distributional differences go beyond location---mixtures and rare displaced subgroups, configurations that cannot be excluded in advance---and which kind of dataset one holds is not knowable before the distances are computed. The reason to use $W_1$ is therefore not efficiency against the KS statistic: in the simulated cells $W_1$ reached the selection target with fewer patients than the KS statistic in \numval{nCellsW1FewerKS} of \numval{nCellsSelection} cells at AUC 0.9, three of them by construction, and the KS statistic needed fewer in the location-shift control on the population with contaminated tails (Table~\ref{tab:study2_required_n_mc}, Section~\ref{sec:study1_selection}), while in the three real trials of the survey the two statistics ranked region pairs almost identically (Spearman \numval{surveySpearmanW1KSmin}--\numval{surveySpearmanW1KSmax}). It is that $W_1$, like the KS statistic, is not blind where the SMD is, and that it carries a translation to the clinical scale whose constant is a per-unit clinical slope, valid for every CATE in the class and conservative for any particular one.
+% Sentences revised 2026-10-12 (D-20261012-3, REF M2 / REF M1): efficiency tally no longer the reason; survey W1-KS agreement (results/real_data_survey_summary.csv, spearman_w1_ks) reported; attainment wording replaced.
+
+% Paragraph reviewed and approved by Tak 2026-08-31 (Option B of the paragraph
+% review; resolves queued edit item 6 -- found by Louis during the item-5 review).
+% The evidence for the identification advantage lives in the preceding
+% paragraph and Section 3; this paragraph deliberately names no moments.
+% Notation-only edit 2026-09-27 (decision round): bare L -> L_clinical; "CATE sensitivity evidence" -> evidence on the clinical slope.
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis length cut, P3): the restatement of the two calibration pathways of Section 2.4 cut; the separability statement kept.
+The distributional assessment and its calibration are separable: the identification and efficiency results of the preceding paragraph are properties of the distance itself and hold whether or not $L_{\text{clinical}}$ is available; clinical calibration adds an outcome-scale reading but does not change them.
+
+% Paragraph deleted 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #43): restated the procedure of Section 2.4 (P3) and carried "L is estimable" against the judgment framing.
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #44): "distinctive advantage" removed (SMD needs the same inputs); representativeness assumption for external sources added; regulatory and Matsushima sentences removed as repeats of the Introduction.
+Because $W_1$, like other covariate-distribution measures, requires only baseline effect modifier distributions, regional data can be assembled from prior trials, registries, electronic health records, or other real-world evidence (RWE) sources, provided the source population approximates the population each region is expected to enrol. The assessment can therefore be made at the planning stage, before any regional data from the new trial exist.
+
+% Paragraph reviewed 2026-09-27 (Option C, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #45): common-CATE assumption of Proposition 1 added as a limitation (extrinsic factors); estimator notation; S5 undercoverage and its miss side stated; n >= 100 given as the Study 1 estimation criterion.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M2; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): estimation criterion carries its scale
+The $W_1$ distance is one input within a holistic regulatory evaluation; biological plausibility, clinical relevance, and benefit--risk balance extend beyond what any single distributional measure can quantify.\cite{iche17,matsushima2024} The framework has further limitations. It treats continuous effect modifiers marginally, leaving categorical and multivariate extensions for future work, and it is stated for collapsible effect scales (Section~\ref{sec:methods}). Because $W_1$ is non-negative, $\widehat{W}_1$ exhibits positive bias near zero, zero percentile coverage when the true value is zero (S1), and undercoverage near the boundary (S2: \numval{covS2n50disc} at $n = 50$) and where the bias is large relative to the sampling standard deviation (S5: \numval{covS5n50disc} at $n = 50$), with the intervals erring above the true value (Section~\ref{sec:sim_results});\cite{andrews2000} estimates near the null are read against the null floor, and the coverage reported for Study~2 from $n = 100$ per region refers to true distances of about \numval{minW1SdS3toS7} to \numval{maxW1SdS3toS7} SD of the reference distribution, with equal regional sizes; the registered extension (Table~\ref{tab:study2_ext}) covers 0.2 SD at the application's sample sizes, unequal sizes, a heavy-tailed reference and grid-recorded data, but not every combination the application presents. Proposition~\ref{prop:heterogeneity} also assumes a CATE common to all regions; regional differences in extrinsic factors that alter $\tau$ itself, such as standard of care or concomitant therapy, lie outside what $W_1$ measures. Finally, as with any covariate-based approach, unmeasured effect modifiers may contribute to heterogeneity beyond what the distance captures.
+
+% Paragraph reviewed and approved by Tak 2026-09-22 (Option B of the paragraph
+% review; response-queue item (1) paragraph D, the Discussion receiver promised by
+% Section 2.2 for the threshold-CATE case and by the M1 rewrite for the KS
+% alternative): L_UB as judgment, average slope as lower bound, threshold CATE
+% as design (worst case over the class), KS bound as the alternative, locality
+% of the Lipschitz requirement. The former one-sentence L limitation in the
+% preceding paragraph was removed as duplicated here.
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #46): "declaring regions dissimilar" replaced (the paper declares nothing); locality statement made precise, including its limit under full support; additive per-modifier reading stated.
+The calibration rests on the Lipschitz premise of Proposition~\ref{prop:heterogeneity}, and its limitations are those of the premise. First, the constant is a clinical judgment: $L_{\text{UB}}$ is specified by the sponsor, informed but not determined by prior evidence (Section~\ref{sec:inference}), so conclusions drawn from $\Delta_{\max}$, or from the comparison of $L^*$ with $L_{\text{UB}}$, are conditional on it; reporting $L^*$ leaves the comparison open to any alternative bound. Second, an $L_{\text{clinical}}$ taken from an estimated average interaction slope is a lower bound on the Lipschitz constant rather than the constant itself; the safety factor of Section~\ref{sec:inference} is a judgment of the same kind as margin discounting, and the framework does not supply its value. Third, for a CATE that changes steeply over a narrow range of the effect modifier---a threshold or step function---the Lipschitz constant is large and equation~(\ref{eq:heterogeneity_bound}) is correspondingly loose. This is by design: the bound is a worst case over the CATEs compatible with the stated $L_{\text{clinical}}$, and a loose bound overstates rather than understates the potential difference; the Kolmogorov--Smirnov alternative for that case is stated in Section~\ref{sec:nabcd_metric}. The requirement is also local: since $\bar{\tau}_1 - \bar{\tau}_2 = -\int (F_1 - F_2)\,d\tau$, the bound holds with $L_{\text{clinical}}$ replaced by the Lipschitz constant of $\tau$ on $\{x : F_1(x) \neq F_2(x)\}$, so saturation of the CATE outside that range does not loosen it; for distributions with full support, such as normal distributions, that range is the whole line. Finally, the bound is per effect modifier: it assumes the CATE varies with that modifier alone. When the CATE is additive across modifiers, $\tau(x) = \sum_k \tau_k(x_k)$, the per-modifier bounds combine as $|\bar{\tau}_1 - \bar{\tau}_2| \leq \sum_k L_k W_1^{(k)}$, and each per-modifier $\Delta_{\max}$ is the contribution attributable to that modifier; under interaction between modifiers they do not, because marginal distances do not control the joint distance. The joint analogue is immediate: if the CATE is Lipschitz with respect to the weighted metric $d(x, y) = \sum_k L_k |x_k - y_k|$, then $|\bar{\tau}_1 - \bar{\tau}_2| \leq W_d(P_1, P_2)$, the Wasserstein distance between the joint distributions under cost $d$, with or without interaction, and since every coupling of the joint distributions couples each pair of marginals, $W_d \geq \sum_k L_k W_1^{(k)}$: the sum of the per-modifier bounds is a lower bound on the joint one, so that under interaction the per-modifier assessment can understate the heterogeneity. Estimating $W_d$ is a multivariate problem outside the scope of this paper.
+% Sentences added 2026-10-12 (D-20261012-3, EXT M6): the weighted-l1 joint bound and its relation to the marginal sum (both inequalities verified by Louis and Mike).
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #47): "where none was previously available" and "filling the gap left by ICH E17" narrowed (P5; Komiyama is an existing recipe; E17 is non-prescriptive by design); contribution statement split into a closing paragraph.
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis M7; individual veto open until submission): the outcome-Lasso "front-end" removed (it selects prognostic factors, which Section 2.4 distinguishes from effect modification; in Komiyama et al. the Lasso weights distances rather than selecting modifiers)
+Beyond the scope and methodological extensions noted above, two further directions warrant investigation. The upstream identification of which baseline characteristics constitute relevant effect modifiers---which requires evidence on treatment-by-covariate interaction rather than on prognosis alone (Section~\ref{sec:inference})---is itself a non-trivial problem deserving dedicated treatment; the present framework then quantifies distributional distance on the retained modifiers. Inference tailored to the boundary behavior of $\widehat{W}_1$---resampling fewer than $n$ observations\cite{bickel1997} or the numerical delta method for directionally differentiable functionals\cite{hong2018}---could extend the operational range of the intervals at small distances.
+
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M1; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): attainment in the closing sentence
+% Cut 2026-10-12 (D-20261012-3 length plan D07): duplicate 'operationalizing the similarity' clause in closing sentence
+The principal contribution of this paper is a distributional similarity measure for effect modifiers whose heterogeneity bound holds for every CATE with a given per-unit clinical slope, is sharp over that class and conservative for any particular CATE, and whose calibration constant is that slope. With bootstrap confidence intervals and clinical calibration via $\Delta_{\max}$ or $L^*$, $W_1$ supplies a reproducible quantitative basis for the judgment of ``similar enough'' that ICH E17 describes, informing, not prescribing, pooling decisions.
+
+%==============================================================================
+% Back matter
+%==============================================================================
+
+\bmsection*{Author contributions}
+
+[Author 1] conceived the research question and led the project. [Author 2] developed the mathematical framework and conducted the simulation study. [Author 3] contributed to the application example and manuscript preparation. All authors reviewed and approved the final manuscript.
+
+\bmsection*{Acknowledgments}
+
+The authors thank [colleagues] for helpful discussions on ICH E17 implementation.
+
+\bmsection*{Financial disclosure}
+
+None reported.
+
+\bmsection*{Conflict of interest}
+
+The authors declare no potential conflict of interests.
+
+\bmsection*{Data availability statement}
+
+R code for computing the Wasserstein-1 distance and reproducing the simulation studies and the application is available at [repository URL]. The GUSTO-I individual patient data analysed in Section~\ref{sec:application} are publicly available as the dataset \texttt{gusto} in the R package predtools (version 0.0.3; \url{https://github.com/resplab/predtools}); the trial is described in the original publication;\cite{gusto1993} the analysis scripts load the data frame with \texttt{data(gusto, package = "predtools")} or from the identical CSV copy distributed with the code ($N = \numval{gustoN}$ in both). The IST-1 and IST-3 trial databases used in the survey cited in Section~\ref{sec:discussion} are distributed by the University of Edinburgh DataShare (IST-1: \url{https://doi.org/10.7488/ds/104}; IST-3: \url{https://doi.org/10.7488/ds/1350}, under its data use agreement); the survey protocol, the registered protocols of the Study~2 extension and of the Set 4 control check, and their outputs are included with the R code.
+
+\bibliography{per_em_W1_wiley}
+
+\bmsection*{Supporting information}
+
+No supporting information accompanies this article; the R code, the registered protocols and all outputs are available as described in the Data availability statement.
+
+%==============================================================================
+\appendix
+%==============================================================================
+
+\bmsection{Proofs and Mathematical Details\label{app:proofs}}
+
+\bmsubsection{Non-negativity and Identity of Indiscernibles\label{app:proof1}}
+
+Non-negativity is immediate: $W_1(F_1, F_2) = \int |F_1(x) - F_2(x)| \, dx \geq 0$, since the integrand is non-negative.
+
+For the identity of indiscernibles, we show both directions. If $F_1 = F_2$, then $|F_1(x) - F_2(x)| = 0$ for all $x$, so $W_1(F_1, F_2) = 0$. Conversely, suppose $W_1(F_1, F_2) = \int |F_1(x) - F_2(x)| \, dx = 0$. Because the integrand is non-negative, it vanishes for Lebesgue-almost every $x$, so $F_1 = F_2$ almost everywhere. Right-continuity then upgrades this to equality everywhere: a null set contains no interval, so for any $x$ and every $\delta > 0$ the interval $(x, x + \delta)$ contains points at which $F_1 = F_2$; choosing such $x_j \downarrow x$ and letting $j \to \infty$ gives $F_1(x) = F_2(x)$. Hence $F_1 = F_2$.
+
+\bmsubsection{Asymptotic Properties\label{app:asymptotic}}
+
+Under standard regularity conditions, the empirical Wasserstein-1 distance $\widehat{W}_1 = W_1(\hat{F}_1, \hat{F}_2)$ is a consistent estimator of $W_1(F_1, F_2)$.\cite{delbarrio1999}
+
+% Paragraph reviewed 2026-09-27 (Option B, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #48): real-line derivative condition sourced to Fang and Santos 2019 (Sommerfeld and Munk 2018 is finite-space); sample-ratio condition added; boundary limit and degenerate coverage separated; grid-recorded effect modifiers addressed.
+% Paragraph revised 2026-10-11 (D-20261011-11, cold referee Minor 7; Tak's standing instruction of 2026-10-11 23:49, individual veto open until submission): uniqueness of the dual solution checked for the grid-recorded SBP
+In one dimension, the empirical $W_1$ distance converges at rate $O(n^{-1/2})$ if and only if $\int \sqrt{F(x)(1-F(x))}\,dx < \infty$.\cite{delbarrio1999} For two samples with $n_1/(n_1+n_2) \to \lambda \in (0,1)$, when $\int \sqrt{F_r(1-F_r)}\,dx < \infty$ ($r = 1, 2$) and $\{x : F_1(x) = F_2(x) \in (0,1)\}$ has Lebesgue measure zero, the directional derivative of $W_1$ at $(F_1, F_2)$ is linear, which is the condition under which the bootstrap statement below holds;\cite{fang2019} this condition excludes $F_1 = F_2$. At the boundary $F_1 = F_2$ the derivative is non-linear and the limit is not Gaussian; separately, a percentile interval cannot contain zero, which is the degenerate coverage observed under the null (S1; Section~\ref{sec:sim_results}). For an effect modifier recorded on a grid, the CDFs are step functions and the condition fails whenever they agree at any grid point inside the support; the finite-space results of Sommerfeld and Munk then apply.\cite{sommerfeld2018} Their limit, a maximum over the dual solutions, reduces to a Gaussian when the dual solution is unique, which fails if the two population CDFs coincide on some interval between consecutive grid values. Because the condition concerns the population CDFs, it cannot be checked from the samples; for a distance unresolved against its null floor, such as R2 on systolic blood pressure in Section~\ref{sec:application}, $F_1 = F_2$ is not excluded and the interval is read at its upper limit only (Section~\ref{sec:app_operability}).
+% Paragraph revised 2026-10-12 (D-20261012-2, Louis M4; reverses the Minor 7 count of D-20261011-11): the "0 of 15 sample pairs" count was a sample statistic offered for a population condition and could not detect a population coincidence; removed.
+
+% Paragraph reviewed 2026-09-27 (Option A, Harvey's recommendation under Tak's standing instruction; v6 paragraph review, queue #49): re-sourced to Fang and Santos 2019 and Dumbgen 1993.
+Under the same conditions the percentile bootstrap confidence interval achieves asymptotically correct coverage;\cite{fang2019} where the two CDFs coincide on an interval, including $F_1 = F_2$, the naive bootstrap is not consistent.\cite{dumbgen1993,fang2019}
+
+\bmsubsection{Comparison with the Kolmogorov--Smirnov Bound\label{app:ks_bound}}
+
+% Moved from Section 2.2 on 2026-10-12 (D-20261012-3, EXT Minor 5): the technical comparison of the two bounds.
+Where both constants are available, neither bound dominates in general. On a support $[a, b]$, $W_1 \leq (b - a)\,D_{\text{KS}}$ and $\mathrm{TV}(\tau) \leq L_{\text{clinical}}\,(b - a)$, and $L_{\text{clinical}} \cdot W_1 \leq \mathrm{TV}(\tau) \cdot D_{\text{KS}}$ holds exactly when $W_1 / D_{\text{KS}} \leq \mathrm{TV}(\tau) / L_{\text{clinical}}$. For a CATE whose slope has constant magnitude $L_{\text{clinical}}$, such as a linear CATE, $\mathrm{TV}(\tau) = L_{\text{clinical}}(b - a)$ and equation~(\ref{eq:heterogeneity_bound}) is never the looser of the two; the Kolmogorov--Smirnov bound gains as the CATE's slope falls below its maximum over much of the support, most sharply when the CATE changes steeply over a narrow range---the threshold case in which equation~(\ref{eq:heterogeneity_bound}) is itself conservative (Section~\ref{sec:discussion}). Every valid bound with the constant $L_{\text{clinical}}$, including $L_{\text{clinical}} \cdot W_2$ and, on $[a, b]$, $L_{\text{clinical}} (b - a) D_{\text{KS}}$, is at least $L_{\text{clinical}} W_1$, and the $L^*$ of Section~\ref{sec:inference} is the smallest slope at which a CATE restricted only by its slope produces the margin.
+
+\bmsection{R Code for $W_1$ Computation\label{app:rcode}}
+
+\begin{lstlisting}[caption={R function for computing the Wasserstein-1 distance with bootstrap confidence intervals.},label=lst:nabcd,basicstyle=\fontsize{8}{10}\selectfont\ttfamily]
+compute_W1 <- function(x1, x2) {
+  pooled <- c(x1, x2)
+  all_vals <- sort(unique(pooled))
+  left <- head(all_vals, -1)
+  F1 <- ecdf(x1); F2 <- ecdf(x2)
+  w1 <- sum(diff(all_vals) * abs(F1(left) - F2(left)))
+  w1
+}
+
+W1_bootstrap <- function(x1, x2,
+    B = 2000, conf = 0.95) {
+  obs <- compute_W1(x1, x2)
+  boot_vals <- replicate(B, {
+    b1 <- sample(x1, replace = TRUE)
+    b2 <- sample(x2, replace = TRUE)
+    compute_W1(b1, b2)
+  })
+  alpha <- 1 - conf
+  ci <- quantile(boot_vals,
+    c(alpha/2, 1 - alpha/2), na.rm = TRUE)
+  list(estimate = obs,
+       ci_lower = ci[1], ci_upper = ci[2])
+}
+\end{lstlisting}
+
+\end{document}

@@ -1,0 +1,15 @@
+% known-bad fixture for CLAIM_GUARDS.toml (abstract-no-universal-over-worlds, abstract-coverage-qualified).
+% Reconstructed 2026-10-11 from claude_science/README.md "Compression dropped the qualifiers": the first
+% 356 -> 248 word compression (2026-09-21) turned an existential claim into "wherever" and deleted the
+% "for non-negligible distributional differences" qualifier on the coverage claim. The full text of that
+% draft was not committed; only the two failing sentences are reproduced here, inside a minimal abstract.
+\documentclass{article}
+\begin{document}
+\abstract[Abstract]{%
+We quantify how two regions' distributions of each candidate effect modifier differ by the Wasserstein-1 distance.
+In simulations, SMD and representative-value distances stayed at chance wherever discordance lay in distributional shape or displaced rare subgroups.
+Percentile bootstrap coverage was near-nominal across seven scenarios.
+}
+\section{Introduction}
+Body text.
+\end{document}

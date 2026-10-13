@@ -1,7 +1,7 @@
 # Matsushima et al. (2024) - Workshop Report: MRCT Case Studies with ICH E17
 
 ## Citation
-Matsushima N, Otsuba Y, Aoi Y, Nakamura R, Kaneko S, Asakawa T, Matsusaka N, Watabe K, Komiyama O, Yamamoto H, Ando Y (2024) "Summary Report of a Public Workshop: Case Studies of Multi-Regional Clinical Trial Incorporating Concept of the ICH E17 Guideline" *Clinical Pharmacology & Therapeutics* 115(5):965-970
+Matsushima N, Otsubo Y, Aoi Y, Nakamura R, Kaneko S, Asakawa T, Matsuoka N, Watabe K, Komiyama O, Yamamoto H, Ando Y (2024) "Summary Report of a Public Workshop: Case Studies of Multi-Regional Clinical Trial Incorporating Concept of the ICH E17 Guideline" *Clinical Pharmacology & Therapeutics* 115(5):965-970
 DOI: [10.1002/cpt.3163](https://doi.org/10.1002/cpt.3163)
 
 ## Summary
@@ -33,13 +33,37 @@ closely with ICH E17 principles:
 
 ## Case Studies Summary
 
-### Case 1: Secukinumab (ASAS studies, axial spondyloarthritis)
-- Approved in Japan 2020; 2 large Phase 3 studies (n≈3,000+, ~13 Japanese patients)
-- Effect modifiers: CRP+/MRI- status, concomitant biologics use
-- Japan inconsistency driven partly by imbalance in CRP+/MRI- participants
-- After accounting for effect modifiers, ASAS40 response rates became consistent
-- **Key lesson**: Regional imbalance in biomarker subgroups can explain apparent
-  inconsistency; does NOT invalidate overall results
+### Case 1: Secukinumab (PREVENT study, non-radiographic axial spondyloarthritis)
+*(Corrected 2026-10-12 against the original PDF, p.965–966; the earlier version of this
+entry over-read the source — see "Correction note" below.)*
+- Confirmatory study: PREVENT (ref. 5, 6 in the paper). Effect modifiers identified from
+  subgroup analyses: CRP+ vs CRP−, MRI+ vs MRI− (largest differences in the double-positive
+  CRP+/MRI+ subgroup vs the single-positive CRP+/MRI− or CRP−/MRI+ groups), sex (males
+  responded better), HLA-B27, body weight, prior TNF-inhibitor experience, baseline BASDAI
+- Post hoc, exploratory pooling: "Due to the small number of patients in each participating
+  country, countries with a similar distribution of effect modifiers were clustered into five
+  pooled regions (Data S1, Table S1)." Region 1 (including Japan) had a lower proportion of
+  CRP+ and a higher proportion of MRI+ patients, and a smaller treatment difference than
+  overall; region 5 (highest CRP+/MRI+ proportion) had the largest; region 4 (France, Germany,
+  Italy, Netherlands) had a large difference despite the lowest CRP+/MRI+ and male
+  proportions, "suggesting the presence of factors specific to this region"
+- Verdict in the source: "The treatment differences were generally consistent among the
+  pooled regions for commonalities in the effect modifiers, but differed slightly depending
+  on the distribution of CRP+/MRI+ and sex (Figure S2)."
+- **Japanese subpopulation (verbatim, p.966)**: "The inconsistent results observed in the
+  Japanese subpopulation could be due to an imbalance in treatment assignment and a small
+  sample size (2 participants in the secukinumab arm and 7 in the placebo arm), but not due
+  to potential effect modifiers."
+- **Key lesson**: The source attributes the Japanese inconsistency to allocation imbalance
+  and small n, NOT to effect modifiers. What it does show is pooled regions being formed
+  from the distribution of effect modifiers (post hoc, method of "similar distribution" in
+  Data S1 — not in the knowledge base, Paper Request #2)
+- **Correction note (2026-10-12, Rachel / Donna)**: the previous entry said "ASAS studies",
+  "Japan inconsistency driven partly by imbalance in CRP+/MRI- participants" and "After
+  accounting for effect modifiers, ASAS40 response rates became consistent". None of these
+  is in the PDF. "CRP+/MRI−" appears only as a single-positive subgroup label; the regional
+  pattern was fewer CRP+ and more MRI+. The manuscript sentence that relied on this entry
+  (Intro ¶6) was rewritten under D-20261012-2
 
 ### Case 2: Pertuzumab (CLEOPATRA, HER2+ metastatic breast cancer)
 - Approved Japan 2013; Phase 3, ~808 total, ~53 Japanese patients
@@ -124,9 +148,11 @@ None (qualitative/regulatory workshop report)
 3. **Motivates pre-trial vs. post-hoc use**: The paper emphasizes predefined EM analysis;
    nABCD can be used pre-trial (design stage) to quantify expected EM distribution similarity.
 
-4. **Provides clinical context for calibration**: The 4 case studies (especially Case 1,
-   secukinumab) illustrate the clinical magnitudes of EM distribution differences that
-   matter. These can inform Delta_max calibration.
+4. **Provides a regulatory precedent for forming pooled regions from EM distributions**:
+   Case 1 (secukinumab, PREVENT) clustered countries "with a similar distribution of effect
+   modifiers" into pooled regions post hoc. The EMs there are binary (CRP, MRI, sex), so the
+   case gives no magnitude for a continuous-EM calibration and must not be cited as showing
+   that an EM imbalance *caused* the Japanese inconsistency (the source says the opposite).
 
 5. **Japan-specific perspective**: Confirms PMDA's requirement for Japan-specific
    consistency evaluation, supporting the need for a metric that quantifies EM similarity

@@ -2,6 +2,7 @@
 # Machine-readable half (protocol_compile.py). POST-HOC registration: the study was run in July 2026, before the lab's
 # protocol gate existed; this file fixes what was decided when, and what the results license. No new confirmatory run.
 study: study1_identification
+code: R/selection_simulation.R        # production script of the registered run (base_seed 20260711L; added 2026-10-12 so protocol_compile.py --verify checks seed and grid against the real file)
 claim_id: C-07                    # also C-08 (efficiency vs the KS statistic); CLAIMS.md
 post_hoc: true
 seed: 20260711                    # base seed of the production run (R/selection_simulation.R parse_args); per-cell seeds in results/selection_sim_config*.csv

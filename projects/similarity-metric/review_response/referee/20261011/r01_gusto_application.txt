@@ -1,0 +1,193 @@
+N = 40830 | regions = 16 | NA age/sysbp: 0 0 
+R8 n = 2916
+R8 age   mean 60.241 sd 12.076 skew(moment) -0.1731 skew(sd-std) -0.1730
+R8 sysbp mean 132.402 sd 22.875 skew(moment) 0.1981 skew(sd-std) 0.1980
+partner n range: 1231 - 4352
+
+== W1 and 95% percentile CI, recomputed vs results/gusto_r8_w1_per_pair.csv (d_ = mine - authors') ==
+ partner    n  W1age   d_W1age          CIage      d_lo      d_hi  W1sbp
+      R1 2188 0.6464  1.11e-16 [0.510, 1.035] -3.33e-16  4.44e-16 3.6108
+      R2 2952 2.1482  1.33e-15 [1.565, 2.758] -8.88e-16  4.44e-16 0.9525
+      R3 2030 2.6069 -8.88e-16 [1.963, 3.282]  8.88e-16 -1.78e-15 3.3528
+      R4 2876 0.5555  0.00e+00 [0.374, 1.159] -1.11e-16  3.55e-15 2.6005
+      R5 1909 0.3899 -1.67e-16 [0.355, 0.922] -5.55e-17  1.11e-16 3.3721
+      R6 1585 0.9121 -3.33e-16 [0.632, 1.392]  1.11e-16  3.33e-15 3.3695
+      R7 3150 0.4047  1.11e-16 [0.303, 0.945] -5.55e-17 -4.44e-16 5.0716
+      R9 3123 0.5860  1.11e-16 [0.404, 1.125]  3.89e-16 -4.00e-15 6.8038
+     R10 1717 1.3817  4.44e-15 [0.795, 2.133]  0.00e+00  4.88e-15 3.9984
+     R11 2491 1.2696 -3.33e-15 [0.759, 1.907] -1.11e-16 -2.00e-15 6.4443
+     R12 4352 0.8591  0.00e+00 [0.475, 1.426]  2.78e-16  4.22e-15 6.4037
+     R13 2297 1.1451 -2.66e-15 [0.760, 1.735]  0.00e+00  4.44e-16 2.3999
+     R14 3437 0.7023  4.44e-16 [0.420, 1.294]  3.89e-16  3.77e-15 4.3631
+     R15 2576 0.6103  1.11e-16 [0.401, 1.248] -4.44e-16  4.00e-15 4.7243
+     R16 1231 1.7428 -2.66e-15 [1.162, 2.470]  2.22e-16 -4.88e-15 4.2823
+   d_W1sbp          CIsbp    d_lo_s    d_hi_s
+ -2.22e-15 [2.681, 4.929]  8.88e-16 -3.55e-15
+  4.44e-16 [0.761, 1.822]  4.44e-16 -2.22e-15
+  4.00e-15 [2.321, 4.651] -4.00e-15 -2.66e-15
+ -2.66e-15 [1.817, 3.753]  8.88e-16  4.88e-15
+ -1.33e-15 [2.319, 4.588] -4.44e-16  2.66e-15
+  4.88e-15 [2.055, 4.774]  8.88e-16 -2.66e-15
+  2.66e-15 [4.031, 6.218]  3.55e-15  8.88e-16
+  1.78e-15 [5.712, 8.007]  8.88e-16 -1.78e-15
+  4.00e-15 [2.879, 5.389]  4.44e-15  4.44e-15
+  4.44e-15 [5.248, 7.708]  8.88e-16 -1.78e-15
+ -4.44e-15 [5.385, 7.461] -2.66e-15  4.44e-15
+ -1.78e-15 [1.417, 3.722]  2.66e-15 -4.44e-15
+  8.88e-16 [3.414, 5.442]  1.78e-15 -8.88e-16
+  8.88e-16 [3.601, 5.938] -4.88e-15  4.44e-15
+  4.44e-15 [3.061, 5.707]  1.78e-15  4.44e-15
+
+== ranks by point estimate ==
+ partner rank_age rank_sbp
+       1        6        7
+       2       14        1
+       3       15        4
+       4        3        3
+       5        1        6
+       6        9        5
+       7        2       12
+       9        4       15
+      10       12        8
+      11       11       14
+      12        8       13
+      13       10        2
+      14        7       10
+      15        5       11
+      16       13        9
+R6 - R5 SBP W1 difference: -0.00261 mmHg
+R3, R6, R5 SBP W1: 3.3528 3.3695 3.3721 (ranks 4-6 span 0.0192 mmHg)
+
+== L* for age (Delta_clin = 0.01, L_UB = 0.01) ==
+ partner   Lstar   lower   upper   vs_LUB W1_threshold_equiv
+      R1 0.01547 0.00967 0.01962 contains                  1
+      R2 0.00466 0.00363 0.00639    below                  1
+      R3 0.00384 0.00305 0.00509    below                  1
+      R4 0.01800 0.00863 0.02671 contains                  1
+      R5 0.02565 0.01084 0.02818    above                  1
+      R6 0.01096 0.00718 0.01582 contains                  1
+      R7 0.02471 0.01058 0.03302    above                  1
+      R9 0.01706 0.00889 0.02473 contains                  1
+     R10 0.00724 0.00469 0.01259 contains                  1
+     R11 0.00788 0.00524 0.01318 contains                  1
+     R12 0.01164 0.00701 0.02105 contains                  1
+     R13 0.00873 0.00576 0.01316 contains                  1
+     R14 0.01424 0.00773 0.02380 contains                  1
+     R15 0.01638 0.00802 0.02495 contains                  1
+     R16 0.00574 0.00405 0.00861    below                  1
+counts: above 2; below 3; contains 10 
+
+== L* for sysbp (Delta_clin = 0.01, L_UB = 0.002) ==
+ partner   Lstar   lower   upper   vs_LUB W1_threshold_equiv
+      R1 0.00277 0.00203 0.00373    above                  5
+      R2 0.01050 0.00549 0.01313    above                  5
+      R3 0.00298 0.00215 0.00431    above                  5
+      R4 0.00385 0.00266 0.00550    above                  5
+      R5 0.00297 0.00218 0.00431    above                  5
+      R6 0.00297 0.00209 0.00487    above                  5
+      R7 0.00197 0.00161 0.00248 contains                  5
+      R9 0.00147 0.00125 0.00175    below                  5
+     R10 0.00250 0.00186 0.00347 contains                  5
+     R11 0.00155 0.00130 0.00191    below                  5
+     R12 0.00156 0.00134 0.00186    below                  5
+     R13 0.00417 0.00269 0.00706    above                  5
+     R14 0.00229 0.00184 0.00293 contains                  5
+     R15 0.00212 0.00168 0.00278 contains                  5
+     R16 0.00234 0.00175 0.00327 contains                  5
+counts: above 7; below 3; contains 5 
+
+authors' R1 SBP L* lower limit: 0.002029 (L_UB 0.002); margin 2.89e-05
+R1 SBP: 20 independent B=2000 upper limits: mean 4.891 sd 0.0465; implied L* lower limit 0.00204 (sd 0.000019); share of runs with L*_lower <= 0.002: 0.00
+
+== null floor (anchor source and partner source) ==
+    em region     w1 q95_anchor q95_partner resolved_anchor resolved_partner
+   age     R1 0.6464     0.7236      0.7229           FALSE            FALSE
+   age     R2 2.1482     0.6710      0.6313            TRUE             TRUE
+   age     R3 2.6069     0.7496      0.7264            TRUE             TRUE
+   age     R4 0.5555     0.6915      0.6666           FALSE            FALSE
+   age     R5 0.3899     0.7487      0.7418           FALSE            FALSE
+   age     R6 0.9121     0.8156      0.7466            TRUE             TRUE
+   age     R7 0.4047     0.6409      0.6393           FALSE            FALSE
+   age     R9 0.5860     0.6629      0.6153           FALSE            FALSE
+   age    R10 1.3817     0.7796      0.7661            TRUE             TRUE
+   age    R11 1.2696     0.6969      0.7043            TRUE             TRUE
+   age    R12 0.8591     0.6182      0.6161            TRUE             TRUE
+   age    R13 1.1451     0.6991      0.6937            TRUE             TRUE
+   age    R14 0.7023     0.6525      0.6186            TRUE             TRUE
+   age    R15 0.6103     0.6834      0.6757           FALSE            FALSE
+   age    R16 1.7428     0.8998      0.7828            TRUE             TRUE
+ sysbp     R1 3.6108     1.4355      1.5412            TRUE             TRUE
+ sysbp     R2 0.9525     1.2907      1.3789           FALSE            FALSE
+ sysbp     R3 3.3528     1.3947      1.5540            TRUE             TRUE
+ sysbp     R4 2.6005     1.2625      1.3357            TRUE             TRUE
+ sysbp     R5 3.3721     1.4157      1.5797            TRUE             TRUE
+ sysbp     R6 3.3695     1.5618      1.6734            TRUE             TRUE
+ sysbp     R7 5.0716     1.2481      1.2989            TRUE             TRUE
+ sysbp     R9 6.8038     1.2777      1.2984            TRUE             TRUE
+ sysbp    R10 3.9984     1.5239      1.5929            TRUE             TRUE
+ sysbp    R11 6.4443     1.3080      1.4225            TRUE             TRUE
+ sysbp    R12 6.4037     1.1757      1.2342            TRUE             TRUE
+ sysbp    R13 2.3999     1.3711      1.4411            TRUE             TRUE
+ sysbp    R14 4.3631     1.2362      1.3595            TRUE             TRUE
+ sysbp    R15 4.7243     1.3374      1.3988            TRUE             TRUE
+ sysbp    R16 4.2823     1.6910      1.5170            TRUE             TRUE
+    d_q95a
+ -2.22e-16
+  1.11e-16
+ -4.44e-16
+ -3.33e-16
+ -1.11e-16
+  1.11e-16
+  2.22e-16
+ -4.44e-16
+ -3.33e-16
+  1.11e-16
+ -4.44e-16
+ -1.11e-16
+  4.44e-16
+ -2.22e-16
+ -1.11e-16
+ -2.22e-15
+  3.55e-15
+ -2.22e-15
+ -1.55e-15
+  8.88e-16
+  8.88e-16
+ -4.44e-15
+  2.22e-16
+ -1.11e-15
+  4.44e-15
+  1.11e-15
+ -6.66e-16
+ -6.66e-16
+ -3.33e-15
+ -4.66e-15
+age: q95 range 0.618-0.900 | unresolved 6/15: R1 R4 R5 R7 R9 R15 | anchor/partner verdicts agree: TRUE | min margin |w1 - q95a| = 0.050
+sysbp: q95 range 1.176-1.691 | unresolved 1/15: R2 | anchor/partner verdicts agree: TRUE | min margin |w1 - q95a| = 0.338
+
+Spearman(W1_age, W1_sbp) = -0.3000; Bonett-Wright 95% CI [-0.710, 0.263]; plain Fisher-z CI [-0.704, 0.251]
+permutation P(|rho| >= |obs|) = 0.271
+age: Spearman(W1, |SMD|) = 0.8964 ; Spearman(W1, KS) = 0.9643
+sysbp: Spearman(W1, |SMD|) = 0.9536 ; Spearman(W1, KS) = 0.9571
+authors' app_all_methods_ranks.csv:
+      em method  k overlap spearman_vs_W1 only_in_method only_in_W1
+1    age     KS  9       9      0.9642857                          
+2    age    SMD  9       9      0.8964286                          
+3    age    RV1  9       9      0.8964286                          
+4    age    RV2  9       8      0.9107143            R11         R6
+5    age    RV3  9       8      0.9035714            R10         R6
+6  sysbp     KS 11      11      0.9571429                          
+7  sysbp    SMD 11      11      0.9535714                          
+8  sysbp    RV1 11      11      0.9535714                          
+9  sysbp    RV2 11       9      0.6428571         R12|R7     R14|R3
+10 sysbp    RV3 11       8      0.5357143      R12|R7|R9  R14|R3|R5
+max SD ratio partner vs R8:
+      age                sysbp             
+max   "1.10785076794673" "1.09902795701542"
+which "16"               "14"              
+
+SBP: 209 distinct values; 43.1% multiples of 10; 52.5% multiples of 5
+SBP: sign changes of F_R8 - F_partner over the pooled grid, and grid intervals with F_R8 = F_partner exactly:
+                     R1 R2 R3 R4 R5 R6 R7 R9 R10 R11 R12 R13 R14 R15 R16
+sign_changes          5  9  1  2  2  1  8  2   5   8   3   4   7   3   7
+exact_zero_intervals  0  0  0  0  0  0  0  0   0   0   0   0   0   0   0

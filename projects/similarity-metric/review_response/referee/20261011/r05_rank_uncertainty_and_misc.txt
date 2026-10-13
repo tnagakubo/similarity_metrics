@@ -1,0 +1,96 @@
+
+== age: observed rank and 95% bootstrap rank interval (patients resampled within regions, B = 1000) ==
+ partner    W1 rank lo hi width
+      R5 0.390    1  1  8     7
+      R7 0.405    2  1  9     8
+      R4 0.556    3  1  8     7
+      R9 0.586    4  1  9     8
+     R15 0.610    5  1 10     9
+      R1 0.646    6  2 10     8
+     R14 0.702    7  1 10     9
+     R12 0.859    8  2 11     9
+      R6 0.912    9  4 11     7
+     R13 1.145   10  7 12     5
+     R11 1.270   11  7 13     6
+     R10 1.382   12  4 14    10
+     R16 1.743   13 11 14     3
+      R2 2.148   14 12 15     3
+      R3 2.607   15 14 15     1
+
+== SBP: observed rank and 95% bootstrap rank interval (patients resampled within regions, B = 1000) ==
+ partner    W1 rank lo hi width
+      R2 0.953    1  1  2     1
+     R13 2.400    2  1  5     4
+      R4 2.601    3  2  6     4
+      R3 3.353    4  3 10     7
+      R6 3.369    5  2 10     8
+      R5 3.372    6  2  9     7
+      R1 3.611    7  3 10     7
+     R10 3.998    8  4 11     7
+     R16 4.282    9  3 13    10
+     R14 4.363   10  7 12     5
+     R15 4.724   11  7 12     5
+      R7 5.072   12  9 12     3
+     R12 6.404   13 13 15     2
+     R11 6.444   14 13 15     2
+      R9 6.804   15 13 15     2
+
+P(R1 < R14 on age) = 0.531 ; P(R14 < R12 on age) = 0.696 ; P(R12 < R6 on age) = 0.632
+P(R3 < R6 on SBP) = 0.467 ; P(R6 < R5 on SBP) = 0.504 ; P(R5 < R1 on SBP) = 0.691
+
+Spearman(age, SBP) observed -0.300; patient-level bootstrap: mean -0.247, 95% percentile interval [-0.518, 0.039], P(rho_b > 0) = 0.045
+(the manuscript's interval [-0.71, 0.26] treats the 15 distances as known and the partners as a sample of regions;
+ the bootstrap above captures only the patient-level part, so the two answer different questions)
+
+== population SD of anchor vs discordant regions in the seven SMD-blind cells ==
+Set 1 scale: anchor 10 vs 16, 20
+Set 2 shape: anchor 20.0 vs 30.0, 42.5 (log-normal, mean 50, CV 0.40 vs 0.60, 0.85)
+Set 3 (all three cells): anchor 10 vs 10 (constructed)
+Set 4 sym severity: anchor 16.01 vs 24.22 (70), 33.11 (100)
+Set 4 sym prevalence: anchor 16.01 vs 21.80
+
+required n at AUC 0.9 for SMD and for the (mean, SD) summary distance RV2 (results/required_n_selection.csv; RV2 is not reported in the manuscript):
+                            set required_n.RV2 status.RV2 required_n.SMD
+       Set1_Gaussian / location             33    reached             30
+          Set1_Gaussian / scale             25    reached             NA
+       Set1_Gaussian / combined             34    reached             67
+      Set2_LogNormal / location            132    reached            134
+         Set2_LogNormal / shape             60    reached             NA
+      Set2_LogNormal / combined            106    reached            529
+       Set3_Mixture / shape_sym             NA      blind             NA
+      Set3_Mixture / shape_skew             NA      blind             NA
+        Set3_Mixture / combined             NA      blind             NA
+   Set4_Extremes / sym_severity             76    reached             NA
+ Set4_Extremes / sym_prevalence            412    reached             NA
+  Set4_Extremes / asym_severity            125    reached            530
+     Set4_Extremes / bulk_shift            490    reached            489
+ status.SMD
+    reached
+      blind
+    reached
+    reached
+      blind
+    reached
+      blind
+      blind
+      blind
+      blind
+      blind
+    reached
+    reached
+
+KS AUC, Set 4 asym_severity: n=25 0.4963(0.0035); n=50 0.5040(0.0035); n=75 0.4923(0.0036); n=100 0.5042(0.0036); n=150 0.5083(0.0065); n=200 0.5189(0.0065); n=300 0.5443(0.0064); n=400 0.5801(0.0062); n=600 0.6742(0.0058); n=1000 0.8469(0.0043); n=1500 0.9428(0.0028); n=2000 0.9818(0.0015)
+
+KS AUC, Set 4 sym_severity: n=25 0.4996(0.0027); n=50 0.5073(0.0028); n=75 0.5030(0.0028); n=100 0.5109(0.0028); n=150 0.5158(0.0052); n=200 0.5345(0.0051); n=300 0.5745(0.0050); n=400 0.6215(0.0049); n=600 0.7353(0.0045); n=1000 0.8925(0.0032); n=1500 0.9594(0.0021); n=2000 0.9878(0.0011)
+
+30-day mortality: linear slope on age = 0.00462 per year (SE 0.00010)
+       grp      day30      age
+1   [0,65) 0.03044202 53.16089
+2  [65,75) 0.09535759 69.63388
+3  [75,85) 0.19714348 78.71279
+4 [85,Inf) 0.30434783 87.39688
+gradient between the <65 and 75-84 groups: 0.00652 per year
+
+selection reps: base 10000 (n = 25,50,75,100); extended 3000 (n = 150,200,300,400,600,1000,1500,2000)
+
+abstract words (approx.): 244

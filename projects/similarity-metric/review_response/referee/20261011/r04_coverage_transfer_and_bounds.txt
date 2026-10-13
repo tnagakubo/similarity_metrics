@@ -1,0 +1,35 @@
+fast W1 check (R8 vs R5 age): 0.3898768085 vs eq.(8) 0.3898768085
+
+(A) n1 = 2916, n2 = 1909, n_eff = 1154, sigma = 12.1, reps = 600, B = 600
+location shift 0.20 yr             true W1 0.200  snr 0.56 | coverage 0.000 (MC SE 0.000) | interval above truth 1.000 | truth above interval 0.000 | mean est 0.489
+location shift 0.39 yr             true W1 0.390  snr 1.09 | coverage 0.647 (MC SE 0.020) | interval above truth 0.353 | truth above interval 0.000 | mean est 0.560
+location shift 0.60 yr             true W1 0.600  snr 1.68 | coverage 0.940 (MC SE 0.010) | interval above truth 0.060 | truth above interval 0.000 | mean est 0.701
+location shift 1.00 yr             true W1 1.000  snr 2.81 | coverage 0.940 (MC SE 0.010) | interval above truth 0.042 | truth above interval 0.018 | mean est 1.016
+scale ratio 1.03                   true W1 0.290  snr 0.81 | coverage 0.008 (MC SE 0.004) | interval above truth 0.992 | truth above interval 0.000 | mean est 0.530
+scale ratio 1.06                   true W1 0.579  snr 1.63 | coverage 0.808 (MC SE 0.016) | interval above truth 0.192 | truth above interval 0.000 | mean est 0.717
+
+GUSTO-I age: sqrt(n_eff) * W1_hat / sd(R8) per partner (Study 2's S2 has snr 1.00, 1.41, 2.00 at n = 50, 100, 200):
+ partner    n W1_age snr_age
+      R5 1909  0.390    1.10
+      R7 3150  0.405    1.30
+      R4 2876  0.556    1.75
+     R15 2576  0.610    1.87
+      R9 3123  0.586    1.88
+      R1 2188  0.646    1.89
+     R14 3437  0.702    2.31
+      R6 1585  0.912    2.42
+     R12 4352  0.859    2.97
+     R13 2297  1.145    3.40
+     R10 1717  1.382    3.76
+     R11 2491  1.270    3.85
+     R16 1231  1.743    4.25
+      R2 2952  2.148    6.81
+      R3 2030  2.607    7.47
+
+(B) R8 vs R2 age: W1 = 2.1482 yr; L * W1 = 0.021482; |mean tau*(R8) - mean tau*(R2)| for the extremal L-Lipschitz CATE = 0.021482
+    max |slope| of tau* = 0.0100 (= L): the bound is attained, i.e. L*W1 is the supremum over the Lipschitz-L class
+    D_KS = 0.0777, support width b - a = 90.97 yr, W2 ~ 2.2299, L2 CDF distance = 0.3394
+    valid bounds with constant L: L*W1 = 0.02148 <= L*W2 = 0.02230 <= ... ; L*(b-a)*D_KS = 0.07064 ; L*sqrt(b-a)*||F1-F2||_2 = 0.03237
+    'required slope' if computed from these: Delta/W1 = 0.00466, Delta/W2 = 0.00448, Delta/((b-a) D_KS) = 0.001416 (Delta = 0.01)
+    Only Delta/W1 is the smallest slope at which SOME L-Lipschitz CATE produces Delta (sharpness); the others are slopes
+    at which no L-Lipschitz CATE attains Delta.

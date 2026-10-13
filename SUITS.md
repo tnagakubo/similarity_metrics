@@ -2,531 +2,275 @@
 
 > *"I don't have dreams. I have goals."* - Harvey Specter
 
-**Previous Archive**: `archives/SUITS_20260927_130112.md`（1012 lines、〜 2026-09-27 14:05 の 40 scenes。今日の 4 scenes は下にも残した。直前は `archives/SUITS_20260921_162500.md`）
-**Archive trigger**: Rule 2.5 (>1000 lines)
+**Previous Archive**: `archives/SUITS_20261012_155236.md`（982 lines、2026-09-27 14:05 〜 2026-10-12 11:40 の scenes。10-11 の Option B・全件生成・referee 判断と適用、10-12 未明の hardening、10-12 午前の残差レビュー D-20261012-2 と並走 session の 3 原則・事例探索・Matsushima 訂正）。直前は `archives/SUITS_20260927_130112.md`
+**Archive trigger**: Rule 2.5 (>1000 lines) — 982 行 + 本日午後の scenes で超えるため先に実施
 
 ---
 
 ## Current Status
 
 **Active Project**: similarity-metric (per-EM W₁ paper, target *Statistics in Medicine*)
-**Phase**: 8 — Revision → `projects/similarity-metric/LAB_STATUS.md`（**2026-09-26 時点で未同期**。v6 構成変更を反映要）
-**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — **v6 + Terminal pass + Tak の 09-27 決定（RV1–RV3 を外す／clustering を外す／W₁ で順位付け）を origin/main の生成基盤（`\numval{}`・`\input{generated/}`）の上に載せ直してマージ（2026-10-11 22:00、D-20261011-8）**。20 ページ、error 0、undefined 0、abstract 247 語。registry 132 keys（全 key 使用）、生成表 9 本、unsourced 0、両ゲート ALL PASS。branch `wip/local-2026-10-11` で merge → `main` に fast-forward → **push 済み**（2026-10-11 22:05、`ce1cd18..6895793`、Tak「push して」）。CI の初回 run は要確認
-**原則（Tak 09-25）**: 論文は違いを定量化するだけ。併合の判定規則は規定しない（規定できない）→ [[feedback_quantify_not_decide]]
-**段落レビュー**: 台帳 `projects/similarity-metric/REVIEW_QUEUE_v6.md`（50 段落）。**50/50 完了（09-27）**。#1–#7 Tak 承認、#8–#50 は Tak の包括指示に基づき Harvey 推奨で適用（個別拒否可）。21 ページ、error 0
+**Phase**: 8 — Revision（査読応答）→ `projects/similarity-metric/LAB_STATUS.md`（2026-10-12 11:40 同期済み）
+**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — v6 + Terminal pass（09-27）+ Tak の 09-27 決定 + 生成基盤（D-20261011-8）+ 冷読 referee の判断 D-20261011-11（10-12 00:10）+ 残差レビューの判断 D-20261012-2（10-12 11:40）+ **外部レビュー（Major 8）と冷読 referee #2（Major 5）の判断 D-20261012-3 と Louis round 3（10-13 00:55）**。**21 pp、error 0、undefined 0、abstract 250/250、本文 9,617 語（1.6×；10-14 D-20261014-1 で 11,097 から −1,480、拒否権項目 15）、registry 235 keys、unsourced 0、guards 59 strict 0 FAIL、verify 134/0・63/0、表 11（Study 2 拡張 `tab_study2_ext`・区間比較 `tab_study2_intervals` 新設）、Appendix A.3 新設**。**ARS（Tak の `/ars-full`、mid-entry）: Stage 2.5 integrity PASS WITH NOTES（引用 35/35 VERIFIED）、Stage 3′ re-review Minor Revision**（`review_response/ARS_INTEGRITY_20261013.md`、`ARS_REREVIEW_20261013.md`、応答表 `RESPONSE_TRACKER_20261012.md`）。**未 commit**（原稿側の commit は Tak）。Tak の拒否権は `% Paragraph revised 2026-10-11 (D-20261011-11 …)` と `% Paragraph revised 2026-10-12 (D-20261012-2 …)` の段落に対して投稿前まで開いている
+**Question / Aim（Tak 10-12 10:46）**: A1 効果修飾因子の分布の類似性を定量的に評価する指標を提示すること（`LAB_STATUS.md`、R1–R4 が対応）
+**原則（Tak 09-25）**: 論文は違いを定量化するだけ。併合の判定規則は規定しない → [[feedback_quantify_not_decide]]。**Tak の 3 原則（10-12）**: 根拠なしで進めない（S21）／研究は発散・論文は収束（S22）／ネタはストック `/idea`（S23）
+**段落レビュー**: 台帳 `REVIEW_QUEUE_v6.md` 50/50（09-27）。#1–#7 Tak 承認、#8–#50 は包括指示で Harvey 推奨（D-20260927-1、Tak の一言で閉じる）
 **JA paper**: 意図的に削除済み（EN 完成まで Rule 2.7 保留）→ [[project_ja_paper_deleted]]
-**Supplement**: **なし**（09-27 Tak「論文の supplement としては不要。論文作成の過程で検討された事項でしかない」）。A・B・実データ調査のファイルはディスクに残してあるが、投稿物ではない。本文 20 ページ
-**PR**: [#17](https://github.com/tnagakubo/similarity_metrics/pull/17) **open**（2026-10-11 21:10、`ccr-a3128477-hklqei` → `main`、7 commits / 102 files: Option B・数値の全件生成・replication・claims・Tak の 3 判断・Louis review）；[#16](https://github.com/tnagakubo/similarity_metrics/pull/16) **merged**（2026-10-11 07:52 JST、merge commit `2d97230`、3 commits / 97 files）— システム改修 2 ラウンドは main に反映済み。branch `ccr-a3128477-hklqei` は main から再開
-**System（2026-10-10）**: 科学的妥当性の機構を追加 — CLAUDE.md Rule 5・6、`RESEARCH_FRAMEWORK.md` §6–§8（S1–S11）、`scripts/`（lint・numbers・cite・R 再現性・consistency）、`memory/` 12 本復元、templates 9 本、skills 新設 5・改訂 9、hooks 新設 3。**次セッション**: `/claims init` → `/verify-numbers`（ledger は空）→ `/cite-check` → `/reproduce` → `/phase`（LAB_STATUS は 09-21 で stale）。`DECISIONS.md` D-20260927-1（#8–#50 の一括適用）は Tak の一言で閉じる。**第 2 ラウンド**: Louis memory 統合（3 → 1 か所）、`scripts/check_all.sh` + 回帰テスト 35 件、`/process-paper` cleanup 修正、`LAB_STATUS.md` on-disk sync（artifacts 表）、STALE banner（PAPER_LOGIC / OUTLINE）、baseline `review_response/MECHANICAL_CHECKS_20261010.md`
-**System（2026-10-11, Option B）**: 論文を protocol と data の関数に — `paper/numbers_registry.csv`（34 keys）→ `numbers_macros.tex`、`R/make_paper_tables.R` → `paper/generated/`（3 表）、`scripts/protocol_compile.py`、`/replicate`（`louis-replication`）、CI 2 本、`scripts/cloud_setup.sh`、Quarto 雛形。原稿: compile 0/0/20pp、PDF 本文差分 0、audit 672 → 526。丸め規則 decimal half-even（D-20261011-2）。**Tak**: Setup script の登録、D-20260927-1 のクローズ
-**System（2026-10-11 夜, 数値の全件生成）**: 原稿の数値 672 → **2** unsourced — 表 9 本を `R/make_paper_tables.R` が生成、prose の結果数値 120 を registry（154 keys）、設計定数 27 を `NUMBERS_LEDGER.csv`（Katrina 検証）、導出量は `R/make_derived_numbers.R` → `results/derived/`。`/replicate` Study 2 **PASS**（`results/REPLICATION_20261011.md`、Methods の欠落 A1/A2）。`/claims init` 39 行 pending（弱い主張 3 本 → D-20261011-6）。Tak 判断待ち: 0.44--0.46 の注、Methods の bootstrap 記述、C-34/C-35/C-08
-**Paper（2026-10-11 夜, Tak の 3 判断を適用）**: Table 1 の注 0.43--0.46（生成）；Methods に bootstrap scheme・S1 coverage・正確な true W₁・seed/RNG・MCSE（at most、bias/RMSE/幅も）；BCa 段落削除（C-34 retracted）；C-35 動詞 + Spearman −0.30 の 95% 区間 [−0.71, 0.26]；C-08 required n に delta 法の MC 区間、新表 tab:study2_required_n_mc、abstract 249 語「five of seven cells」；`PROTOCOL_study1_identification.md`（事後登録）。unsourced **0**、ledger 30/30。Louis review（Major 8 / Minor 9、Critical 0）を反映: "indistinguishable" 除去、MCSE の noise 幅、S8 開示、ERRFIX（combined）、protocol の訂正；残り 6 件は Tak へ（D-20261011-7 addendum）
+**Supplement**: なし（09-27 Tak）。survey・探索は本文の一文か repository
+**PR**: [#17](https://github.com/tnagakubo/similarity_metrics/pull/17) open（2026-10-11、7 commits）；#16 merged。main は `fad1010` + 未 commit の 10-11 夜〜10-12 の作業（原稿・R・registry・guards・skills・memory）
+**Paper（2026-10-12 午前, 残差レビュー D-20261012-2）**: Louis C4/M10/m18 + Mike A1–A9 + Rachel 原典 11 本 + Katrina → Harvey 裁定 → 適用。Critical 4 件は全部「昨夜の修正に添えた説明文」で CSV と矛盾。Matsushima 2024 の引用が原典と逆向き → 書き直し。Table 1 を Table 2 に統合。Louis `/review-fix`: マーカーに飲まれた本文 2 箇所を復元、説明文 5 本を限定。要約図: `PAPER_LOGIC.md` + artifact https://claude.ai/artifact/1imDe3FMuEXKyW2CC7hehc。memory `feedback_fix_explanations_checked`
+**System**: Rule 5/6 の gate 状態は `LAB_STATUS.md` の artifacts 表（CLAIMS 43 行 / DECISIONS D-20261012-2 / ledger 35 / replication PASS / referee 10-11 / residual 10-12）。研究環境の機構（referee-grade env、hardening、3 原則、`/ground` `/idea`）は archive と `RESEARCH_FRAMEWORK.md` §10–§12
 
 ---
 
-## 🔄 直前のコンテキスト
+## 🔄 直前のコンテキスト (from archived scenes)
 
-### 直近の作業（2026-09-23 〜 09-26）
+### 直近の作業（2026-10-11 夜 〜 10-12 午前）
+1. **10-11 夜**: Option B（論文 = protocol と data の関数）、数値の全件生成（unsourced 672 → 0）、`/replicate` PASS、referee-grade environment（`/referee` `/review-fix` `/structure` `/necessity` `/explore`、`CLAIM_GUARDS.toml`）、冷読 referee 初回 Major 5 / Minor 14 → 判断 D-20261011-11 → **適用（10-12 00:10）**
+2. **10-12 未明（bg、環境側）**: 回帰テスト 113/113、`lab_doctor.sh`、`protocol_compile.py --verify`、hook `referee-blind.sh`、CI blocking（D-20261012-1）
+3. **10-12 午前（本 session）**: 残差レビュー → D-20261012-2 → 適用 → `/review-fix` → 全ゲート PASS（上記 Paper 行）
+4. **10-12 午前（並走 session）**: Tak の 3 原則をシステムに（S21–S23、`/ground` `/idea`、`IDEAS_BACKLOG.md`）；Aim を「目的」に書き直し（10:48）；Matsushima 2024 の summary・CLAIMS C-20・INDEX の訂正（11:00）；GUSTO-I より良い公開事例の探索（RCT Bench 125 試験、国変数は 1 本；「A+B+C+D を全部満たす公開データは無い」；BioLINCC / CTU 請求、11:35）
 
-1. **構成の迷走と収束**: v3 → v4（六段）→ 6 人審査 → v5（判定の仕組みを増やす方向）→ Tak「判定方法は規定できない」→ **v6 = 判定の仕組みを全削除**（τ_clin、§2.5 operability、適格判定・AND・6 地域、anchor vs clustering、L_UB 感度）。24 → 21 ページ。計画と全記録は `RESTRUCTURE_v6_no_decision.md`（§1–§10）
-2. **§4.5 と ρ の段落を削除**（Tak、09-05 の ρ 残置決定を Tak 自身が覆した）。GUSTO での既存指標との一致の根拠は Supplement C へ
-3. **実データ調査（Option C、事前登録）**: `PROTOCOL_real_data_survey.md` → `R/real_data_survey.R`。GUSTO-I・IST-3・IST-1 の 13 EM、1,503 ペア。W₁ と SMD の順位相関 0.839–0.996、SD 比 ≤ 1.65。CRASH-2 は rds が HTML で除外
-4. **誤り一括修正**（Mike/Louis/Rachel 監査）: 48 箇所。KS と W₁ の bound の順序、bootstrap 一致性条件（{F₁=F₂∈(0,1)} 測度 0）、Prop. 1 の仮定、L* 表を区間付きに、¶2 の L* の誤り、cell for cell、n 1,231–4,352、S1/S2 coverage ほか。bib: quan2010 DOI、song2025 著者、komiyama2024 → year 2021、austin2009 追加
-5. **判断確定 7 件**（全員議論）: harm 削除（KR 双対の循環）、α ラベル → 参照点、Supplement 番号、VanderWeele 節削除、ICH E6(R3) 句削除、Appendix の二標本正規極限の式削除、r = 0.13 と L* 表の出典 CSV 新設（`R/gusto_lstar_table.R`）
-6. **09-26 原稿一冊**: `paper/per_em_W1_draft_20260926_with_supplements.pdf`（本文 20p + A + C）
-
-### 進行中のアクション
-
-- **段落レビュー完了（09-27）**。Tak が個別に拒否した段落は backup（`projects/similarity-metric/paper/backup/per_em_W1_wiley_before_review0927.tex`）から戻す
-- 印の種類: `% V6-BRIDGE`（新規文）/ `% ERRFIX-2026-09-26`（誤り修正）/ `% DECISION-2026-09-26`（判断確定）。承認したら `% Paragraph reviewed and approved by Tak 2026-09-26 (Option X of the v6 paragraph review, queue #N)` に置換し、台帳を ✅ に
+### 進行中のアクション（15:50〜、Tak「原稿を改訂」= もう一周）
+- **Referee**（冷読、`review_response/referee/20261012/REFEREE_20261012.md`）: 改訂後の原稿を再計算付きで全文レビュー中
+- **Katrina**: 長さ削減計画（Simulation → 約 2,200 語、Discussion → 約 1,200 語、主張を落とさない）`LENGTH_PLAN_20261012.md`；`gusto_operability.csv` の旧列 `tau_clin`/`eligible` の整理
+- **Rachel**: `/ground` — Lee 1995 の age gradient 6e-3/yr、Matsushima Data S1（PREVENT の類似性の測り方 = novelty claim の最後の反証経路）、ist1_2000 の年
+- **Mike**: `/explore set4_control_mechanism` — Set 4 の control で KS が勝つ機構（裾が Var(Ŵ₁) を膨らませるか）を exploratory で検算（原稿には引用しない）
+- 四人が戻ったら **Harvey triage → 適用（referee + 長さ）→ gates → `/review-fix` → 記録 → 要約図更新**
 
 ### 次にやるべきこと
-
-- **Terminal pass 済み（09-27）**: abstract を 247 語で書き直し（主張はすべてゲートで照合済み）、略語、Data availability（predtools 0.0.3 と IST の DataShare DOI）、Supporting information
-- **次の仕事**: `gusto_operability.csv` の旧列の整理（コード公開の準備で対応）
-- **stale**: `PAPER_OUTLINE_BILINGUAL.md`（operability・jointly eligible・diameter が残る）、`review_response/` のメモ（削除した §2.5・L625 を参照）、LAB_STATUS
-- **commit**（Tak 指示待ち。拒否権の期間が開いているため）。09-27 以前の backup は session scratchpad、09-27 レビュー前の版は `paper/backup/`
-- 未確認 🔍: 二標本 W₁ の正規極限の一次文献（Appendix では式を削除済み）
+- Tak: 拒否する段落があれば番号を；なければ commit（原稿・R・registry・guards・skills・memory、未 commit 130 files）
+- `/claims check` の残り pending、`/cite-check` の PDF 不在 keys（Paper Requests）、`/reproduce`（絶対パス 20 本）
+- 長さ: 本文 1.7× — 今回の周で削る
 
 ### Takからの直近の指示
-
-- 「厳密な判定方法は記載する必要がない。というか規定できない」（09-25）→ v6
-- 「探すなら選り好みしない調査」→ Option C（09-26）
-- 「まず間違い・誤りをすべて修正」→ 「判断のいる項目を一つずつ全員で議論して確定」（09-26）
-- 「順に段落レビューに入ろう」（09-26）→ #1 C、#2 B、#3 B、#4 C、#5 C、#6 B、#7 B
-- 「Abstract は最終の原稿が完成してから」（08-31）→ 継続
+- 「統計科学最強研究室で: レビュー → 修正点を検討のうえで推奨される方法を決定 → 修正 → 修正後の論文の要約（構成・論理を図示）」（10-12 10:04）→ 完了（11:40）
+- 「目的は、効果修飾因子の分布の類似性を定量的に評価する指標を提示すること」（10:46、並走 session）→ LAB_STATUS A1
+- 「Matsushimaの件、修正しておいて」（11:00、並走 session）→ 完了
+- 「原稿を改訂」（15:48）→ もう一周（本 scene から）
 
 ### 既知の潜在バグ（現状は不発）
-
 - ⚠ `selection_simulation.R` の `w1_dist` — 不等 n で両標本を小さい方から n 個に黙って切り詰める。応用側に流用してはならない
-- ⚠ `w1_raw_simulation.R` — `clusterSetRNGStream` + `parLapplyLB` で同 seed でも bit-reproducible でない（新しい `real_data_survey.R` は pair ごとに seed 固定で回避済み）
+- ⚠ `w1_raw_simulation.R` — `clusterSetRNGStream` + `parLapplyLB` で同 seed でも bit-reproducible でない（`real_data_survey.R` は pair ごとに seed 固定で回避済み）
 
 ---
 
 ## 🎬 Live Script
 
-### [2026-10-11 22:05] Scene: push — main が remote に乗る
-
-**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
-
-**Donna**: 「Tak の一言『push して』。`ce1cd18..6895793 main -> main`、ローカルと remote は一致。退避 branch `wip/local-2026-10-11` は残してあるわ — 消すのはいつでもできる。」
-
-**Louis**: 「喜ぶな。push は CI の入口だ。`lab-checks` と `r-and-tex` の初回 run を見るまで『通った』とは言わない。ローカルで落ちた 6 本（PyYAML、CRLF）が Linux で消えるかどうか、それが答えだ。」
-
-**Harvey**: 「見てから言え、の順番は正しい。次のセッションで run を確認する。I don't have dreams, I have goals.」
-
----
-
-### [2026-10-11 22:00] Scene: `git pull` が衝突 — 09-27 の判断を、10-11 の機構の上に載せ直す
+### [2026-10-14 01:40] Scene: 切った後に戻す — Louis の Major 9 と、自分で見つけた飲み込み
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
 
-*Tak が貼ったのは `error: Your local changes … would be overwritten by merge` の 5 行。ローカルには 09-27 の未 commit 作業（RV 削除・clustering 削除・Table 5 の Rank 列）、remote には cloud の PR #16・#17（13 commits、数値の全件生成）。同じ原稿が別方向に変わっていた。*
+*Katrina の 74 cuts。Louis が diff を読み終える。*
 
-**Donna**: 「stash → pull → pop で片付く話じゃないわ。`git merge-tree` で先に試したら、tex が 12 箇所、SUITS が 1 箇所、Louis の MEMORY が modify/delete。ローカルの作業はまず `wip/local-2026-10-11` に commit して固定した。消える場所に置いたまま merge はしない。」
+**Katrina**: 「規則の中で 11,097 → 9,818、Menu の 7 件で 9,461。Application は目標達成、他は届かない。Tables 3–5 は 1 表に、Jensen の導出と Lee の算術は付録に、拡張表は設計順に。拒否権項目 15。ゲートは全部通した。」
 
-**Harvey**: 「選択肢は三つ。ローカルを採って生成基盤を捨てる、remote を採って Tak の 09-27 の判断を捨てる、remote を土台に 09-27 の判断を書き直す。三つ目だ。内容の判断は Tak のもので覆さない。数値を生成する機構は Rule 6 で覆さない。両立する。Tak、『その手順で進めて』。」
+**Louis**: 「唯一の担い手を失った CLAIMS 行は無い — そこは認める。だが規則 (2) を破った cut が 2 本。M12 — §2.2 の『sharpness では区別できない、定数が区別する』が消え、残った "Neither bound dominates" は単調 bound と Lipschitz bound の比較に読める。そう読むと偽だ。D01 — Discussion の MCSE count と SD scope が pointer に。どちらも 10-12 の訂正文だ。H1 と D08 の二重削除で『EM をどう選ぶかは範囲外』の文が本文から丸ごと消えた。S17 で log-scale SMD の AUC 1.00 — SMD に有利な結果 — が本文からも表からも消えた。cherry-picking の攻撃口。それと『per region, We performed』。Major 9、Minor 13。You just got Litt up — 削る方でも。」
 
-**Katrina**: （remote 版の tex を `checkout --theirs` して）
-「置換は 20 箇所、全部一意に 1 回ずつ当たった。abstract は RV の文を外して Louis の "five of seven cells / not separated in one / control" を残して 247 語。§3.1 は three measures、selection task だけ、two behaviours。Table 1 は 3 列。§3.1.4 と ARI の表は削除。§4.3 に Study 1 から応用への橋渡しと Table 5 の Rank 列。§5 の (i)(ii) は SMD に限定、Komiyama は『一例の紹介』、結語の "complementing summary-based clustering" を削除。残渣 grep は Song の記述・Komiyama の記述・PSOCK cluster だけ。」
+**Harvey**: 「全部戻した。約 150 語。M12 は一句（『sharpness は KS にもある、区別するのは定数』）、D01 は数値付きの一文、EM 選択の射程は §5 limitations に一文、log-scale SMD は省略宣言の括弧に数値ごと、amendment の cell は E3c を含めて正しく。そして俺の K4 の marker が段落の途中に入って本文を飲んだ — grep の自動検査が拾った。割って直した。」
 
-**Mike**: 「生成側も直した。`make_paper_tables.R` は required-n 表を W₁/KS/SMD に、ARI 表を消し、GUSTO 表の Rank は `gusto_operability.csv` の unresolved から dagger range を機械的に作る — 連続していなければ stop する。`make_derived_numbers.R` から clustering ブロックと RV1 vs SMD の Spearman を外し、Table 5 注の R6−R5 の差（0.003 mmHg、絶対値）を足した。registry は孤児 46 keys を落として 5 keys 足し、**132 keys、全 key 使用、check PASS**。『7 of 13 cells』『0.49--0.51』も `\numval{}` だ。I got it!」
+**Mike**: 「I got it! 最終: 本文 **9,617 語**（1.6×）、build 21 pp / error 0、guards 59 本 0 FAIL、unsourced 0（145 tokens）、registry check PASS、verify 2 本 ALL PASS、abstract 250/250 byte 一致、swallow scan 0。」
 
-**Louis**: 「応用側のゲートが落ちた。Table 5 の行を tex 本体から探していて、行はもう `generated/` にある。読み先を直して **ALL PASS 60**。識別側は **ALL PASS 134**。`numbers_audit` は 0 unsourced、ratchet 0 維持。build は error 0・undefined 0・20 ページ。ただし `build.sh` は Windows では `.cls` を見失う — TEXINPUTS の区切りが `:` だ。CI 用だから触っていないが、記録はしろ。テストの FAIL 6 本は PyYAML 無しと R の CRLF、俺たちの変更ではない。」
+**Jessica**: 「Let me be clear。削ったのは反復と説明、戻したのは主張と訂正。9,000 に届かないのは、残りが reviewer の求めた証拠と主張の担い手だからだ。それを削って 9,000 にする論文は、昨日より弱い。拒否権項目 15 は Tak が見る。Go。」
 
-**Rachel**: 「CLAIMS.md は C-27・C-29・C-31 を retracted、C-02・C-03・C-07 を narrowed にして log に旧文言を残しました。`PROTOCOL_study1_identification.md` §8 に『RV1–RV3 と clustering は本文で報告しない』を deviation として追記しております。Louis の memory 2 件は統合先の `.claude/agent-memory/louis/` に移しました。」
-
-**Donna**: 「`DECISIONS.md` は D-20261011-8。LAB_STATUS は registry 132・表 9 本・20 pp に揃えた。SUITS の衝突は両方のシーンを時刻順に残して解消。残っているのは commit と main への fast-forward、それから Tak の push 判断。I'm Donna. I know everything.」
-
-**Jessica**: 「Let me be clear。Tak の 09-27 の決定を一文字も後退させていないこと、Louis の 10-11 の修正を一つも落としていないこと。その二つが満たされているなら commit しろ。push は Tak が決める。」
+**Donna**: 「D-20261014-1 applied。memory に二つの型を足す — 移設で back-pointer が壊れる、二つの cut が互いに『向こうが担う』と仮定して唯一の担い手を両方消す。I'm Donna. I know everything — 今日の Harvey が、自分の飲み込みを自分の検査で見つけたことも。」
 
 ---
 
-### [2026-10-11 21:10] Scene: PR #17 — 7 commits を review の机に乗せる
-
-**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
-
-*Tak「すべて push されてるの？」「PR を作って」。Donna が remote を fetch し、HEAD の一致を確認してから PR を開く。*
-
-**Donna**: 「ローカルも remote も `96e3ec7`、未 commit 0。PR [#17](https://github.com/tnagakubo/similarity_metrics/pull/17) を `main` 向けに開いたわ。7 commits、102 files。本文には Option B、数値の全件生成、replication PASS、`/claims init`、Tak の 3 判断、Louis review、そして Tak に残る判断を書いた。」
-
-**Harvey**: 「review の対象は原稿の文言が変わった 6 箇所と、Louis の残り 6 件だ。それ以外は内容保存変換で、`pdftotext` 差分 0 が証拠になっている。PR の説明にそう書いてあることを確認した。I don't have dreams, I have goals.」
-
----
-
-### [2026-10-11 20:40] Scene: Louis の review — 数値は堅い、動詞が緩い
-
-**INT. PEARSON SPECTER LITT - LOUIS'S OFFICE - NIGHT**
-
-*机の上に 11 項目の判定表。Louis は赤ペンで "indistinguishable" を三か所丸で囲んでいる。*
-
-**Louis**: 「数値は全部 CSV と rds に当てた。合っている。S5–S7 の true W₁ も S6 の SD も俺が quadrature し直して一致した。MCSE の最大値も rds から再現した。だから数値の話はしない。動詞の話をする。"indistinguishable" が abstract と §3.1 と §5 に載っている。重なった marginal 区間から同等性は出ない。しかも W₁ と KS は同じ replicate の上の paired 推定で、相関は捨てた per-replicate に埋まっていて出せない。おまけに CSV が反証している — shape-symmetric では曲線が交差していて、n = 25 では KS が上、n = 2,000 では W₁ が上、閾値 0.8 なら KS の点推定が小さく、0.95 なら W₁ が分離して勝つ。区別できないのは AUC 0.9 の交点であって、測度じゃない。You just got Litt up!」
-
-**Mike**: 「……そのとおりだ。"was not separated from it in one" に変えて、§3.1 には曲線が目標付近で交差することを書く。§5 の列挙からも引き分けと負けを外して、別の文で『一様に効率が良いわけではない』と言う。」
-
-**Louis**: 「二つ目。Spearman の "not closely related" は自分の下限 −0.71 と矛盾する。masking の論証に要るのは『強い正の一致が無い』ことで、それを支えるのは上限 0.26 だ。三つ目。MCSE の『twice』— 二つの cell の差なら 1.96√2、約 2.8 倍だ。その物差しで見ると S5 と S7 の n = 100 は nominal を noise 以上に下回っている。それを本文は near-nominal と呼んでいる。内部の穴も二つ。事後に決めた grid と閾値を原稿が開示していない。事後 protocol の『閾値を変えても順序は不変』は shape-symmetric で偽だ — 走らせていない確認を根拠にしている。」
-
-**Harvey**: （判定表を取って）
-「Critical 0、Major 8、Minor 9。文言で直せるものは今夜直す。既存の段落に手が入るもの — near-nominal の定義、BCa を見た事実の一文、Sets 1–2 の一文、per-replicate の再 run、Spearman の joint bootstrap — は Tak に回す。それが順序だ。」
-
-**Mike**: 「直した。abstract は『stayed at or below chance … never did … was not separated from it in one』で 249 語。MCSE の文は 2 cell の差で $z_{0.975}\sqrt{2}$ 倍、1 cell なら 2 倍と分けた。S1 の coverage の文言は Table 6 の注と揃えた。S6 の cascade を summary と Discussion と C-09 に通した。Table 1 の注の『combined pools』は ERRFIX — combined は C1/C2 という discordant role で、pool じゃない。§3.1 Design に『grid 拡張・閾値・三行動の定義は base grid の結果を見た後に決めた、MC 区間はさらに後』と開示した。区間は下限を floor にして外側へ丸めた。protocol の偽の一文は CSV で確認した文に差し替え、§8 に deviation として残した。」
-
-**Katrina**: 「再 build: 0 errors、最終 pass の undefined 0、overfull は基準と同数。audit は unsourced 0。registry 173 keys。C-38 の cascade 漏れも直した。」
-
-**Donna**: （memory を開いて）
-「再発の型は三つ、`memory/feedback_review_recurrence_patterns.md` に入れた。区間の overlap を同等と言わない、弁明の文書は実行した確認だけ引用する、cascade は台帳と凡例と protocol まで。D-20261011-7 に Louis の判定と、Tak に回す 6 件を書いたわ。Tak の段落レビューの対象は、今日の 3 判断で変わった 6 箇所に Louis の修正が乗った状態。」
-
----
-
-### [2026-10-11 20:05] Scene: Tak の判断 3 件 — 「正しく修正、推奨通り、推奨通り」
+### [2026-10-14 00:30] Scene: 「本文を削減して」— 1.8× を 1.5× 以下に、主張を一つも落とさずに
 
 **INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - NIGHT**
 
-*Tak からの返事は三行。Harvey がそれを読み上げ、Mike と Katrina が同時に動き出す。*
+*Tak の一行。Harvey は昨日の最後に Jessica が言った「長さは明日の仕事」を覚えている。*
 
-**Harvey**: 「1 は『正しく修正』、2 と 3 は『推奨通り』。つまり Table 1 の注は 0.43--0.46 に、Methods は Louis の穴を全部埋める、BCa の段落は消す、§4.3 と Discussion の動詞を直して −0.30 に区間を付ける、required n に Monte Carlo の区間を付けて比較を区間が分かれる cell に限る。原稿に触る権限は今ある。やれ。」
+**Harvey**: 「11,097 語を 9,000 以下に。節ごとの上限を切った — Intro 950、Methods 2,500、Simulation 2,300、Application 1,300、Discussion 1,300。規則は三つ。CLAIMS の行の唯一の担い手は切らない。昨日の訂正文は切らない — 落とせば同じ指摘が戻る。Tak の承認段落は純削除だけ、新しいつなぎ文言が要るものは印を付けて拒否権に回す。Tables 3–5 は一つの表にする。」
 
-**Mike**: （`W1_raw_rcpp.cpp` を開いて）
-「bootstrap は code どおりに書く。各 region で独立に $n_r$ 個を復元抽出、percentile は 2.5 と 97.5、R の type 7。S1 の coverage は $[L, U]$ の定義と一緒に『構造的に 0』と measures の項目に入れた。true W₁ は 2 桁の表の下に正確値、seed は $42 + 1{,}000k$ と L'Ecuyer-CMRG、replicate 単位では bit 再現しないことも書いた。MCSE は『at most 0.005』にして、bias・RMSE・幅の MCSE 最大値 0.026 / 0.021 / 0.024 を新しい single writer `study2_mcse.R` から引いた。required n の区間は delta 法だ — 補間の両端の AUC の mc_se を log n 上で伝播させる。結果: 7 cell のうち 5 で W₁ と KS の区間が分かれ、shape-symmetric は 690 [662, 718] 対 716 [688, 747] で重なる。control は KS が少ない。abstract は『five of seven cells, indistinguishable in one, needed more in a uniform-shift control』、249 語。I got it!」
+**Katrina**: 「昨日の計画で測った数字がある。A 層だけで Simulation は 2,204 まで落ちた — 今日はその上に昨日の追加が乗っている。Tables 3–5 の統合は検証済み、21 行で全セル一致。コピーに当てて structure_audit で測り、guards と dangling ref を見てから本番に当てる。拡張表の行順と E5/E6 のラベルも直す。」
 
-**Katrina**: （build log と生成表を並べて）
-「表は 10 本目 `tab_study2_required_n_mc` を Table 1 の直後に置いた。7 cell × 6 measure に区間を入れると本文幅を超えるから、比較の対象である W₁ と KS の 2 列だけだ。build は 0 errors、最終 pass の undefined 0、21 ページ、overfull 9 は基準と同数。sentence 単位の `pdftotext` 差分は編集した文だけ。audit は 112 token 全部 sourced、unsourced 0。台帳は 97.5 / 1,000 / 42 を足して 30 行、全部 source で確認して署名した。Bonett–Wright の DOI は Crossref で確認済み。」
+**Louis**: 「切った後の diff は俺が読む。切り方で qualifier が落ちるのは、書き足しで落ちるのと同じ罪だ。」
 
-**Harvey**: 「C-34 は retracted、C-08・C-33・C-35 は narrowed、C-11 に区間。CLAIMS の log に旧文言を残した。Study 1 の事後 protocol も書いた — plan が 07-11、本番が 07-11 と 12、grid 拡張と閾値が 07-20、つまり結果を見てから決めた事項を §0 に全部並べてある。隠すより先に書く。」
-
-**Donna**: （DECISIONS に D-20261011-7 を書き終えて）
-「D-4 と D-6 は閉じた。LAB_STATUS は registry 172、生成表 10、台帳 30/30、protocol 2 本。Louis には編集した 11 箇所を攻撃させている — 彼の verdict が戻ったら次の scene に書くわ。それまでは Tak の判断で変わった段落が 6 箇所あることだけ覚えておいて。段落レビューの対象よ。」
+**Donna**: 「切る前の原稿は `known_bad/per_em_W1_wiley_20261014_before_cut.tex` に。D-20261014-1 を起票。I'm Donna. I know everything — Katrina が今日どの段落で一番悩むかも。」
 
 ---
 
-### [2026-10-11 19:35] Scene: 数値を全部「生成」にする — 残り 2、再現しない 1 行、clean room の判定
+### [2026-10-13 02:00] Scene: ARS の二つの門 — integrity は PASS、re-review は Minor Revision
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
 
-*ホワイトボードの「526」が消され、「2」と書き直されている。机には `pdftotext` の差分ゼロの出力と、Louis の replication CSV、Harvey の台帳 39 行が並ぶ。*
+*Tak の `/ars-full` を今日の round の終端に繋いだ。Stage 2.5 の integrity gate と Stage 3′ の verification review が、どちらも深夜に戻る。*
 
-**Katrina**: （生成した 6 表の tabular を旧原稿の tabular と並べて）
-「§3.1 の 2 表と GUSTO の 4 表、`make_paper_tables.R` の出力は旧 tabular と whitespace 正規化後に byte 一致。原稿は `\input{generated/…}` 9 本に置き換えた。build 0 errors、20 ページ、`pdftotext` 差分 0 行、PDF は 373,705 bytes で基準と同じ。最初の build で 2 表の桁位置が 16 行ずれたのは `\input{…}  %` の行末スペースが space token になって中央揃えが半スペース動いたからで、`}%` に詰めて消えた。Results speak for themselves.」
+**Donna**: 「ARS integrity: PASS WITH NOTES。引用 35 本すべて VERIFIED — DOI は全部解決、捏造・混成・誤誘導ゼロ。数値の chain（registry → macro → tex）21/21、生成表 11 本 275 セル不一致ゼロ、Table 8 は `gusto.csv` から直接再計算して一致、7 項目の failure-mode checklist は全 CLEAR。Minor 9 件は bib の細部（Komiyama の頁、IST の著者 brace、Morris の頭文字）と §1 の一文の弱い支持 — 直した。ARS re-review: **Minor Revision**。外部レビュー 19 項目は addressed 10 / partially 7 / declined 2、referee #2 の 17 項目は addressed 15 / partially 1 / not done 1（bootstrap の MC 誤差）。Major 5 件はディスクで全部検証済み。」
 
-**Mike**: （`results/derived/` の 5 本の CSV を指して）
-「prose の 182 値を見たら、CSV の 1 セルに無い数が三種類あった。grid 全体の AUC range、oracle と silhouette の差、Set 4 の母集団 W₁ と KS、GUSTO の Spearman と SD 比、S6 の閉形式定数。これを prose の中で計算させるのは "typed" と同じだ。だから single writer をもう一本書いた。`make_derived_numbers.R` は乱数を引かず、canonical CSV と `selection_simulation.R` の設計関数だけを読む。registry は 34 → 154 keys、`verify-draft` は 154/154 一致、R と Python の macros も一致。I got it! — ただし一つ、再現しないのがある。」
+**Harvey**: 「re-review が新しく拾った 13 件のうち、安い 7 件は閉じた — cvol の頁数、abstract の operating point の句を E6–E5 に、『we report the loss』、Supporting information の矛盾、Wald の "unstable" の根拠なし、拡張 protocol の時系列（最初の 8 cell は run 前、operating point の 3 cell は run 中の amendment）、L_UB の出典から GUSTO subgroup を外す。残る 3 件は次の周の仕事だ: bootstrap 端点の MC 誤差（single writer 一本）、M7(a) の L_UB の根拠、そして長さ — 11,097 語、1.8×。」
 
-**Louis**: （身を乗り出して）
-「言え。」
+**Katrina**: 「最終ゲート: build 23 pp / error 0 / undefined 0、guards 59 本 0 FAIL、abstract 250 / 250、unsourced 0（152 tokens）、verify 134/0・63/0、R = Python macro check PASS（235 keys）。拡張表の行順と E5/E6 ラベルは生成器の cosmetic、次の周で。」
 
-**Mike**: 「Table 1 の注だ。"RV2 and RV3 sit slightly below chance (0.44--0.46) through n = 2,000"。grid の値を全部見ると RV2 は 0.444–0.458 で合うが、RV3 は n = 50、75、100、150、400 で 0.43 台、最小 0.426 だ。正しくは 0.43--0.46。本文を直すのは Tak の判断だから、2 token を未ソースのまま残して ratchet を 2 にした。」
+**Louis**: 「今日の三周で俺が出した Critical は 3 + 3 + 3。全部『今日書いた説明文』だ。明日からの規則は一つ — 文を書いた者が CSV を割る前に、別の者が割る。You just got Litt up — 自分たちで。」
 
-**Louis**: 「それが 526 の中に埋まっていたわけだ。数を生成に切り替えなければ誰も気づかなかった。もう一つ言う。台帳の照合が壊れていた。0.5 という設計定数が 0.46 を『ソース済み』にしていた。丸めの向きが逆だ。」
+**Jessica**: 「Let me be clear. 10 月 12 日の原稿は、二つの外部の目と三周の内部の目を通って、12 日の朝の原稿とは別物になった。採用理由の循環、CSV と矛盾する説明文、原典と逆向きの引用、応用の operating point を外れた coverage 主張 — 全部閉じた。長さだけが開いている。Tak への報告を出せ。commit は Tak の判断だ。」
 
-**Mike**: 「直した。台帳の値を本文の桁に decimal half-even で丸めて一致した時だけ通す。逆向きは禁止。`apply` も同じ行の token を後ろから置換するようにした — 先に置換すると occ がずれて P2 の 3.0 が bulk shift の位置に入っていた。値は同じだから PDF は変わらなかったが、key の意味が違う。回帰テストを 6 本足して 66 本。」
-
-**Katrina**: 「clean room の比較は終わった。coverage の最大差 0.009、bias と width は 0.099 以下、許容 0.025 と 0.30 の内側。true_W1 だけ FAIL、最大差 0.003155、S7。」
-
-**Louis**: 「それは俺の失敗じゃない。本文が 5.83 と印字しているから 5.83 を使った。本文が 2 桁しか書かない限り、誰が再実装しても同じ FAIL が出る。Major は二つだ。two-sample bootstrap で何を resample するか一行も無い。S1 の coverage が構造的に 0 になることも書いていない。Mike、式は認める。bootstrap の段落は書き直せ。I'm the best at what I do because I'm thorough.」
-
-**Mike**: 「root cause は本文の丸め、推定量と区間は再現。REPLICATION_20261011.md にそう書いた。Methods の A1、A2、true W₁ の正確値、seed と RNG、`\label{sec:study1}` の付け間違い、"below 0.005" → "at most" — 本文に触る件は全部 Tak に回す。」
-
-**Harvey**: （台帳を机に置いて）
-「`/claims init`、39 行、全部 pending。弱いのは三本。BCa の段落は証拠がディスクに無い — 撤回する。§4.3 の "shows" と "across all region pairs" は証拠を超えている — 動詞を直して −0.30 に CI を付ける。abstract の "fewer patients than KS in all but a uniform-shift control" は required n の点推定だけで立っていて、shape-symmetric の 690 対 716 は MCSE と同じ大きさの差だ — 不確かさを計算してから文言を決める。原稿には触っていない。D-20261011-6 に起票した。決めるのは Tak だ。I don't have dreams, I have goals.」
-
-**Katrina**: （台帳の 27 行を source と並べて）
-「設計定数の台帳、27 行を全部 source に当てた。26 行は確認。1 行だけ落とした — 1.5 の行、Mike の note に『11 of 15 W1_age < 1.5』とあるが CSV は 12 of 15。原稿の "most partners below 1.5 years" 自体は 12/15 で成立しているから、間違いは台帳の note だけで原稿には波及していない。それと B = 2,000 の出所は `gusto_case_study.R` より、R8 の表を実際に書いている `fig3_w1_axis.R` を指すべきだ。」
-
-**Mike**: 「数え間違いは俺だ。12 に直した。B と conf の出所も `fig3_w1_axis.R` の L83 と L119 に差し替えて、grid の出所に `SAMPLE_SIZES` の L86 を足した。locator を触った 3 行は署名を外したから、もう一度見てくれ。」
-
-**Katrina**: 「見た。3 行とも source で成立、署名した。台帳は 27 行中 27 署名、未署名 0。再照合は 30 checks で fail 0。」
-
-**Donna**: （LAB_STATUS と DECISIONS を閉じながら）
-「記録は済んでいるわ。D-20261011-4 が生成の方針と finding、-5 が replication の判定、-6 が Harvey の三本。LAB_STATUS の artifacts は registry 154、生成表 9、台帳 27、derived 5、replication PASS、gate log 2 本は `.gitignore` の例外にして追跡に入れた。設計定数の台帳は Mike が書いたから、検証は Katrina — four eyes。Tak に出す判断は三件に絞ってある: Table 1 の注、Methods の bootstrap、C-34/C-35/C-08。Phase は 8 のまま。`/phase next` は gate を確認してから。I'm Donna. I know everything.」
+**Donna**: 「D-20261012-3 applied、応答表 `RESPONSE_TRACKER_20261012.md`、ARS の 2 報告、四つ目の目 4 本、protocol 2 本、single writer 5 本、guard 59 本。未 commit 184 files。I'm Donna. I know everything — 明日の最初の仕事が『切る』ことだということも。」
 
 ---
 
-### [2026-10-11 18:17] Scene: Option B — 論文を protocol と data の関数にする
+### [2026-10-13 00:55] Scene: 深夜の再開 — 落ちた四人、残っていた 11 cell、Louis の三つ目の Critical
+
+**INT. PEARSON SPECTER LITT - BULLPEN - NIGHT**
+
+*18:32、session limit。Mike C・Louis・Harvey・ARS integrity の四本が途中で落ちた。00:28、Tak の「続けて」。Donna が最初にしたのはディスクを見ること。*
+
+**Donna**: 「落ちた agent が走らせた R は止まっていなかった。`w1_raw_ext_summary.csv` に 11 cell 全部 — 不均衡 n、t₃、整数格子、n = 1,000、それに Harvey が足した応用の operating point。E5（0.2 SD、n = 1,000）の coverage は 0.951、E6（2,900 vs 1,200、10 mmHg 丸め）は 0.947、片側上限は 0.983 と 0.978。Louis の round 3 の報告もディスクにあった。無かったのは拡張表の生成器、応答表、ARS integrity。今度は二本ずつ。」
+
+**Louis**: 「俺の round 3。Critical 3 / Major 15 / Minor 9 — 全部今日 Harvey が書いた文だ。S6 を S4 と並べて『CDF が交差しない』— 平均一致なら必ず交差するし bias は 11 MCSE。『undercover する所では上限が保守的』— S4-100 の上限 coverage は 0.971 で名目を下回る。『basic 区間は全 non-null cell で劣る』— S2-50 では 0.809 対 0.703 で勝つ。境界では coverage を得て、離れると失う。それとマーカーの飲み込みがまた二箇所。『light-tailed』— Set 2 は対数正規で heavy-tailed だ。abstract の『normal, equal n』— 1.2 SD の上端 S6 の partner は対数正規。可縮性が abstract に無い。『sharp for the class』を見出しに置いたら、referee は attained を sharp に差し替えただけだと読む。You just got Litt up — 二回目の今日の分だ。」
+
+**Harvey**: （黙って全部直す）
+「直した。S6 は『bias が S5・S7 より小さい』、上限は『S5・S7 で名目超、S3・S6 で付近、S4-100 で未満』、basic は『境界の coverage と交換』。採用理由の三つ目は『class の全 CATE で valid、勾配だけが制約なら sharp、特定の CATE には保守的』— sharp を見出しから外した。abstract は『risk or mean differences』『normal reference』『in original units』を戻し、control は一つの cell として書き、operating point の 0.95 を一句。REF-M1 の guard 2 本は役目を終えた — 旧 stem が『定数を言う文は attain を言え』を強制して、今日の referee が退けた wording を生んでいた。D-20261012-3 に理由を書いて書き換えた。」
+
+**Katrina**: 「拡張表 `tab_study2_ext`（11 行）と key 16 本。GUSTO の距離は Region 8 の SD で 0.03–0.30、referee と一致。表は 10 本に。build 23 ページ、error 0。」
+
+**Mike**: 「I got it! 最終ゲート: unsourced 0（152 tokens）、guards 59 本 0 FAIL、verify 134/0・63/0、cascade residue は誤検知 2 件、マーカーに飲まれた本文ゼロ（grep で確認）。本文 11,064 語 — 1.8×。」
+
+**Jessica**: 「Let me be clear。今日の原稿は一日で三つの外部の目（外部レビュー、冷読 referee、Louis の三周）を通った。長い。だが昨日の原稿に戻したい箇所は一つも無い。長さは明日の仕事。ARS の integrity と re-review が通ったら Tak に出せ。」
+
+**Donna**: 「D-20261012-3 を applied に。CLAIMS は 49 行、guards 59 本、ledger 49 行。応答表は Harvey が作成中、ARS integrity は走行中。I'm Donna. I know everything — 今日の最後の Critical 3 件が、やはり『今日書いた説明文』だったことも。」
+
+---
+
+### [2026-10-12 17:40] Scene: 二つのレビューを一度に閉じる — batch 1・2a・2b と、生成器 2 本
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - EVENING**
+
+*17:05 から 17:35。原稿は三度動いた。Harvey の batch 1（位置づけ・可縮性・単調 bound・Jensen・Study 1 の射程・誤植・bib 8 本）、Katrina の A 層 cut 18 件、Harvey の batch 2a（Set 4 の機構・単調比・survey の W₁–KS・abstract）と 2b（coverage の説明の分離・片側上限と basic 区間・外れ値と heaping・permutation）。*
+
+**Harvey**: 「採用理由は三つに置き直した。位置以外に応答する、定数が per-unit の臨床勾配、勾配だけを制約にしたときの sharp bound で形の制約が入れば締まる。単調 CATE の sharp bound L(W₁+|Δμ|)/2 は式 (mono_bound) として本文に、GUSTO での縮み幅 0.66–1.00 と 0.72–1.00 は §4.4 に。Set 4 の反転は protocol の §2 が許す範囲だけ — null SD 1.62 倍（SE 0.04）、KS は 1.00、ΔAUC は +0.029 から −0.032 へ。『heavy-tailed』は使わない。Louis が言うとおり、この mixture の裾は Gaussian で、遠い subgroup が二つ付いているだけだ。『contaminated tails』。」
+
+**Mike**: 「I got it! 片側上限の coverage は S3–S7・n ≥ 100 で 0.9710–0.9999、名目 0.975 より保守的。basic 区間は 0.870–0.948 で percentile より悪く、S1 の 0.867 は 0 での切り捨て率そのもの。bias 補正はこの形では境界を直さない — それを表 `tab:study2_intervals` に。permutation は 30/30 一致。外れ値を除いても W₁ の変化は 0.02 年・0.07 mmHg、順位の入れ替わりは SBP の R3–R6 の 1 組、null floor の判定変化はゼロ。末尾 0 の割合は 19.9–79.5%、R8 が 79.5% — 事実だけ書いた。」
+
+**Rachel**: 「引用は原典どおりに。GUSTO の対照は 7.3% ではなく 7.2% と 7.4%（二つの SK 群）。Lee 1995 は abstract の 1.1% と 20.5% から上限 6.5 × 10⁻³/yr と導出し、ledger に 11 行。Shen は同じ不等式、Redko は同系統、Dahabreh は広い文脈、Munk & Czado は trimmed Mallows。Álvarez-Esteban は読めていないので引いていません。」
+
+**Katrina**: 「Table 8 の † 行には、共有する点順位の範囲の後ろにその partner 自身の rank interval を印字した — R1 は [2, 10]、R15 は [1, 10]。生成表は他が全部 byte 一致、verify ALL PASS。build は error 0 / undefined 0 / 22 ページ。guards 53 本 0 FAIL、abstract 248 / 250、unsourced 0、cascade residue は誤検知 2 件のみ。本文は 10,473 語 — 今日は切った分より足した分が多い。」
+
+**Louis**: 「四つ目の目で Mike A の 17 key は全部一致した。だが Harvey の文は protocol を二箇所で踏み越えていた — 積分比と SD 比を因果のように並べ、試していない母集団に一般化した。直させた。今度は今日の diff 全体を `/review-fix` で読む。」
+
+**Jessica**: 「Let me be clear. 今日の原稿は昨日より長い。だが昨日の原稿には、循環した採用理由と、CSV と矛盾する説明文と、原典と逆向きの引用があった。長さは次の周で切れ。間違いは次の周まで持ち越せない。Mike C の拡張 cell が入ったら、ARS の integrity と re-review を通して Tak に出せ。」
+
+**Donna**: 「D-20261012-3 を applying のまま更新、CLAIMS に C-44〜C-49 を起票、IDEAS に I-20261012-3〜5。残りは Mike C（Study 2 拡張、応用の operating point を含む）、Katrina の四つ目の目（Mike B の key）、Louis の review-fix。I'm Donna. I know everything — 今日の reviewer が二人とも『attainment』に反応した理由も。」
+
+---
+
+### [2026-10-12 17:10] Scene: 冷読 referee 第 2 回 — 「reject」の一語と、循環していた採用理由
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*16:46、referee の報告が届く。再計算 44 行は不一致ゼロ、数学も正しい。判定は「現状では reject」。理由は一つ、論文の中心にある。*
+
+**Donna**: 「Major 5、Minor 12。M1 — W₁ を選ぶ理由を『attained だから smallest valid』と書いたが、それは KR 双対の言い換えで、class を固定すれば sharp な IPM は決まる。循環。単調な L-Lipschitz CATE なら sharp bound は L(W₁+|Δμ|)/2 — 平均一致の対比では L·W₁ の半分。GUSTO では 0.66–1.00。M2 — 『11 of 13』は設計した grid の数え上げで、control の反転は裾の重さという一般的な機構。M3 — coverage の説明が自分の CSV と矛盾（S4-100 は交差なし、S6 は両側）。M4 — Study 1 は応用と別の task。M5 — GUSTO の距離 0.03–0.30 SD は Study 2 の coverage 範囲 0.4–1.2 SD に一つも入らない。」
+
+**Harvey**: （長い沈黙のあと）
+「昨夜の M1 の直し方が、一段深い穴を掘っていた。attainment は理由にならない — それは定義だ。採用理由は三つに置き直す: 位置以外に応答する、定数が per-unit の臨床勾配である、勾配だけを制約にしたときの sharp bound で形の制約が入れば締まる保守的上界である。単調 bound の式は本文に載せる。応用でどれだけ縮むかも。」
+
+**Louis**: 「外部レビューへの俺の攻撃と referee が噛み合った所がある。M3 の Study 3 を断る理由は『KR で W₁ が定義上最適だから循環』ではない — それが成り立つのは unrestricted class の sup だけで、referee はまさにそこを突いた。断る理由は『θ を固定すると勝者が θ の選択で決まる』だ。線形なら |Δμ|、step なら |F₁(c)−F₂(c)|、τ* なら W₁。それと線形 CATE の下で SMD が正しい挙動だという指摘には V 字で答える: τ = L|x−50| なら S5 で L·W₁ を attain し、SMD は 0。You just got Litt up — 両方向に。」
+
+**Mike**: 「I got it! M2 の機構は、俺の exploratory と referee の `ref_tailweight` が独立に同じ向きだった。Jessica の Go で protocol に昇格、本番 4,000 組。n = 200、shift 2 で、Set 4 の母集団は Ŵ₁ の null SD を 1.62 倍（MCSE 0.035）、KS は 1.00（0.019）、paired ΔAUC は +0.029 → −0.032。prior look は §0 に二度開示した — blind な予測としては書かない。∫√(F(1−F)) の比 1.68 は null 平均の scale としては書けるが、SD が比例するとは書けない。それも does not license に。」
+
+**Rachel**: 「M1 の先行研究 9 本は DOI と原文で確認しました。Shen 2018 の式 (13) は Prop. 1 と同一の不等式、Redko 2017 は同系統で経路が違う、Tipton・Stuart・Dahabreh は設定の近さだけで距離も bound も無い、Munk & Czado は同等性検定。Álvarez-Esteban は原文も abstract も取れなかったので引きません。」
+
+**Katrina**: 「長さ計画: Simulation は A 層の cut だけで 2,952 → 2,204 語。Discussion は重複削除で 1,461 止まり — 1,200 は承認段落の内容を落とさないと届かない。`gusto_operability.csv` の旧列 2 本は writer から落とし、生成表 8 本 byte 一致、verify ALL PASS。今は Harvey の指示で A 層 18 件を原稿に当てている。」
+
+**Jessica**: 「Let me be clear。昨日の referee は『定数が区別する』を潰し、今日の referee は『attainment が区別する』を潰した。三度目は無い — 採用理由は三つ並べて、どれも単独では主張しない。断る 3 件は『別の論文だから』と書け。Go。」
+
+**Donna**: 「D-20261012-3 に全部書いた。guard は 53 本、うち 4 本 OPEN — batch 2 で閉じる。原稿は Katrina が触っている間、Harvey は手を止めている。I'm Donna. I know everything — 今日の referee が昨夜の referee より一枚上手だったことも。」
+
+---
+
+### [2026-10-12 16:55] Scene: IST-1 の結果 — 現実味は勝ち、解像と較正は負け
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
 
-*Tak の返事は一文字、「B」。ホワイトボードに pipeline の矢印が描かれている。R と TeX がこの環境に初めて入った。*
+*Mike が `results/ist1_summary.md` とフォレスト図を映す。Harvey が `COMPARISON.md` を配る。Louis は既に赤ペンを持っている。*
 
-**Harvey**:
-「B だ。守りの上に、回る仕組みを載せる。四つ — 数値は書かずに生成する、protocol はコードに compile する、Methods だけから再実装させる、gate は CI で止める。新しい論文は Quarto。今の原稿は止めない — §3.2 で実証して終わりにする」
+**Mike**: 「"I got it!" anchor USA（n = 131）、partner 35 か国。null floor に対して解像したのは age 23 / 35、SBP 12 / 35、delay 25 / 35。三つ全部で解像したのが 10 か国、一つも解像しないのが 4 — Finland 85、Sri Lanka 20、Romania 18、Japan 9。解像は partner の n に従う（全部解像の中央値 n = 636、ゼロ解像は 19）。EM 間の順位の Spearman は age–SBP 0.04 [−0.09, 0.26]、age–delay 0.06、SBP–delay 0.15 — 三つとも区間がゼロを含む。W₁ と |SMD| は 0.81–0.98 で一致。rank interval の平均幅は 35 位置中 12.5 / 17.7 / 13.5 — GUSTO の 15 位置中 6.7 / 5.0 より粗い。感度: anchor Japan（n = 9）はほぼ何も解像しない（SBP 0 / 35）、anchor UK は age 29、SBP 15、delay 23。」
 
-**Mike**:（端末から目を上げて）
-「実証で一つ見つけました。生成した coverage 表と原稿が 1 セルだけ違う。S4、n=50 の coverage は 9,425/10,000 = 0.9425 — 3 桁目のちょうど境界です。原稿は 0.942、ここで同じ `formatC` を回すと 0.943。binary の double が 0.9425 のわずか上にあって、glibc は正確に丸め、Tak のマシンの runtime は別の答えを出した。**丸めが機械依存だった**んです。registry には decimal round-half-even を両実装に入れました。原稿の 0.942 と、S7 n=50 の 0.928 を再現する唯一の決定的な規則で、IEC 60559 の既定でもある。I got it! — 怖いのは、これまで誰も気づかなかったことです」
+**Louis**: 「referee が丸を付ける所を言う。France は患者 2 人で age の最遠 partner、しかも "resolved"。Singapore と Sri Lanka は percentile 区間が点推定を含まない — 論文が開示している境界バイアスが、今度は表に出る。SBP は CI 幅の中央値 7.2 mmHg に対して null floor 6.7 mmHg、Table 5 の大半が unresolved になる。そして L_UB が無い — §2.4 が較正と呼ぶのは L* と L_UB の比較で、L* だけでは A3 の半分だ。」
 
-**Katrina**:
-「検証は全部ディスクにある。生成した 3 表は旧手打ち行と byte 一致。§3.2 の 34 数値を `\numval{}` に置換、R が macros を生成、Python が照合して PASS。build は error 0、undefined 0、20 ページ。変換前後の PDF を `pdftotext` で比べて差分 **0 行** — 内容を一字も変えずに構造だけ変えた証拠。numbers audit は 672 → 526。回帰テスト 60/60。ついでに bibtex のバグも出た — `build.sh` が絶対パスで bibtex を呼んでいて、Linux では引用が全件 undefined。相対パスに直した」
+**Harvey**: 「比較は `exploratory/ist1_case_study/COMPARISON.md` に書いた。IST-1 が勝つのは現実味 — 実名の国、USA という名前のある規制市場、n = 131 の anchor、アジアの地域、三つの EM で順位が一致しないという Discussion の主張が GUSTO の −0.30 より鮮明。負けるのは §4 が A3 のために存在する二点 — 出典のある L_UB に対する較正の読みと、解像する順位表。どちらも anchor を変えて直る話じゃない、データセットの構造だ。era も 1991–96 で改善しない。差し替えコストは registry 35 鍵、R 8 本、表 4、図 1、Discussion 3 段落、referee pass の §4 分。
 
-**Louis**:
-「replication の部屋を作った。俺が入るとき持ち込めるのは Methods の抜き刷りだけだ。R も results も見ない。書けなければ Methods が足りないということで、それは Mike の責任だ。言っておくが、これで独立性が人の査読に並ぶとは思うな。同じモデルだ。でも『Methods だけで再現できるか』を毎回問う部屋があるのと無いのは別の話だ」
+**推奨は GUSTO-I 据え置き。** IST-1 は R1 の reserve として、匿名地域や大標本を突かれた時に一段落で返す材料にする。二本立てにはしない。Tak が IST-1 を選ぶなら、道筋は `/decide`（4 月 10 日の決定を supersede）→ Rachel が脳卒中の L_UB を ground するか「較正は L* で止まる」と明記 → n = 2 / n = 9 の地域の一文 → `/protocol ist1_application`（今日の run を prior look として開示）→ §4 再構築。"I don't have dreams, I have goals."」
 
-**Rachel**:
-「Quarto の雛形には `num("key")` と `kable` を入れておきました。同じ registry を LaTeX と Quarto が読みますので、新しい論文でも引用と数値の道筋は同じです。CI では `cite_audit` が strict で走ります」
-
-**Donna**:
-「道具は 7 本増えて、テストは 60 件、CI は 2 本。ratchet は 526 と 22 — 下がるだけよ、上げるなら理由を `DECISIONS.md` に。それから Tak、あなたの手が要るのは一つ。`scripts/cloud_setup.sh` を環境の Setup script に登録して。それで cloud の私たちも sim を回して compile できる。今日は手で入れたから動いたけれど、次のセッションでは消えているわ」
-
-**Jessica**:
-「Let me be clear。Phase は 8 のまま。原稿の本文は変わっていない。変わったのは、同じ入力から同じ原稿が出ること、そして証拠なしに前へ進めないこと。残り 526 の数値は次のセッションの仕事 — 表 2 本を single writer に書き直せば大半が消える。D-20260927-1 はまだ開いている。Tak の一言を待つ」
+**Jessica**: 「Let me be clear. この sandbox の数字は原稿に一つも入れない。判断は Tak。」
 
 ---
 
-### [2026-10-11 07:55] Scene: PR #16 merged — 改修が main に乗った
-
-**INT. PEARSON SPECTER LITT - DONNA'S DESK - DAY**
-
-**Donna**:（通知を見て、わずかに眉を上げる）
-「Tak が #16 を merge したわ。07:52、merge commit `2d97230`。私が description を書き直したのはその 1 分後 — 記録としては完全な形で残ったから結果オーライよ。Tak の『なおして』はそれのことだったのね。branch は規約どおり main から作り直した（merge commit だから fast-forward で済む）。PR の監視と自己確認は止めた。次に起きるのは Tak の言葉か、次の論文作業よ」
-
-**Harvey**:
-「システムは main に乗った。ここからは台帳を埋める仕事だ — `/claims init`、ledger、引用、再現。順番は Jessica が言ったとおり。D-20260927-1 を閉じる一言は Tak に預けたままだ」
-
-**Jessica**:
-「Let me be clear。merge は承認ではない。Phase 8 のままだ」
-
----
-
-### [2026-10-10 23:47] Scene: PR #16 — 改修 2 ラウンドが review の机に乗る
-
-**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
-
-**Donna**:（通知を一瞥して）
-「Tak が PR を開いたわ。#16、`ccr-a3128477-hklqei` → `main`、97 files、2 commits、conflict なし。CI はこの repo に無いから、check run はゼロ。レビューの場所はここよ — 以後この branch への push は全部 #16 に乗る。description は UI の自動生成で、hooks の節の途中で切れているのと、reporting checklist を R1–R5 と書いているのが気になるわね。本当は R1–R8。直すかどうかは Tak の判断」
-
-**Harvey**:
-「review で突かれる前に言っておく。この PR はシステムの改修で、論文の主張は一文字も触っていない。CLAUDE.md の Rule 5・6 だけが Tak の文書への変更だ。そこを見てくれ」
-
----
-
-### [2026-10-10 23:44] Scene: 改修第 2 ラウンド — 機構そのものを検証し、分裂した記憶を一つにする
-
-**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
-
-*Tak の二語の指示「システムを改修」。Donna が第 1 ラウンドの成果物に自分たちの道具を当てた結果を広げている。*
-
-**Donna**:（画面を指で叩いて）
-「言ったでしょう、全部見えるって。三つ見つけたわ。一つ、Louis の memory が 3 か所に分かれていた — root に 2 本、`projects/similarity-metric/` の下に 8 本、`claude_science/` の下に 3 本。Claude Code を起動したディレクトリが違っただけで、Louis は自分が見つけた穴の大半を次のセッションで読めなかったのよ。全部 root に `git mv` して索引を一つにした。再発したら `check_consistency.sh` が鳴る。二つ、`/process-paper` の cleanup。`/tmp` を再帰削除する手順だったから、私の安全フックが毎回止めていた。相対パスの `.claude/tmp/` に変えた。三つ、`LAB_STATUS.md`。09-21 で止まっていたのを、Phase は動かさずに artifacts 表と gate をディスクの事実で書き直したわ。Phase を進めるのは `/phase next` だけ。私でも例外じゃない」
-
-**Mike**:
-「道具の側は回帰テストを付けました。fixtures に既知の違反を仕込んで 35 件 — ラストネーム検出、Harvey の敬語、年号と version 番号の除外、ledger の照合、R の seed 欠落、hook の発火条件。全部通ります。それから `check_all.sh` で 5 本を一度に回して一つの報告にできるようにした。今の原稿に当てた baseline が `review_response/MECHANICAL_CHECKS_20261010.md` です。unsourced 672、CLAIMS は pending 3、ledger 0 行。数字は厳しいですが、これが出発点の事実です」
-
-**Louis**:
-「baseline の数字を見て安心するな。俺の memory が一つになったということは、v4 から v6 で開いた穴 — enumeration drift、点推定で L* 分類、patch without cascade — を次の `/review` で全部当てるということだ。それと `PAPER_LOGIC.md` と `PAPER_OUTLINE_BILINGUAL.md` には STALE の印を付けさせた。削除済みの §2.5 と §4.5 を根拠に誰かが主張を書き足すのを防ぐためだ。You just got Litt up」
-
-**Katrina**:
-「テスト 35/35。`check_all` 実行済み。LAB_STATUS の artifacts 表は 12 行、✅ 2、🟡 3、❌ 7。Results speak for themselves — 足りないものが一覧で見える状態になった」
-
-**Jessica**:
-「Let me be clear。Phase 8 のまま。次に Tak がやることは一つ、D-20260927-1 を閉じる言葉だ。チームがやることは順番どおり — `/claims init`、`/verify-numbers`、`/cite-check`、`/reproduce`、そして response letter の要否を `/decide`。commit して終わりなさい」
-
-**Harvey**:
-「Donna、commit。全員、次のセッションで台帳を埋めるぞ」
-
----
-
-### [2026-10-10 18:10] Scene: システム見直し — 原則を語るのをやめて、機構にする
+### [2026-10-12 16:15] Scene: 外部レビュー到着 — 8 件の Major、うち 3 件は線の向こう側
 
 **INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
 
-*Tak の指示が机の真ん中にある。「科学的に適切に研究を進められ、論文作成ができるようにシステムを改善して。キャラクターの個性は変えないで」。Donna が consistency check の出力を全員に配る。*
+*16:07、Tak から外部 reviewer の report が貼り付けられる。Major 8 / Minor 6 / 体裁 5。Donna が `review_response/EXTERNAL_REVIEW_20261012.md` に保存し、Harvey の前に置く。referee はまだ原稿を読んでいる。*
 
-**Harvey**:（立ったまま）
-「09-21 に framework を書いた。10 Phase、gate、原則。それで何が起きた？ v3 から v6 まで構成が迷走し、09-05 の決定を理由なしに覆し、LAB_STATUS は 09-21 で止まったままだ。原則はあった。守る機構が無かった。今日やるのはそこだ。"I don't have dreams, I have goals." — 目標は一つ、語っただけの原則をゼロにする」
+**Harvey**: 「読んだ。M3 の Study 3 — CATE を線形・二次・閾値で置いて真の効果差との順位一致を測れ — は、Tak が 07-12 に閉じた扉だ。θ を特定すれば Lipschitz class の bound の一般性を壊し、KR 双対で W₁ が定義上最適になる循環に入る。M5 の同等性検定は判定規則の規定で、09-25 の線の向こう。M7(a)(b) の GUSTO アウトカムで L を推定するのも、計画段階で τ が無いという論文の前提と scope の外だ。三つは理由を書いて断る — ただし M3 の線形 CATE の指摘自体は正しい。線形なら平均差だけが効く、スケール差は効果差ゼロなのに W₁ > 0。これは worst-case bound の性質で、原稿にその一文を足す。」
 
-**Donna**:（紙を指で叩いて）
-「先に言っておくわ。システムが参照していた memory ファイル、12 本が repo に無かったの。Tak のマシンの auto-memory にしか無い。この cloud session では『Tak の 5 原則を読め』と書いてある先が空だったのよ。今日 `memory/` に 12 本を復元して、`INDEX.md` と `check_consistency.sh` で参照先の有無を照合するようにした。あと — archive の脚本を lint に通したら、Donna が『全部記録したわ』で終わっている場面が 2 つ、scene の順序違反が 2 つ、場所見出しの無い scene が 1 つ。私の台詞よ。直すのも私」
+**Mike**: 「I got it! 残りは正しいか、安くできる。M4(a) の Jensen — E|F̂₁ − F̂₂| ≥ |F₁ − F₂| 各点で、Fubini で積分 — は命題として書ける。M4(d) の片側上限 coverage と basic interval の coverage は、rds に rep ごとの推定値と区間が入っていれば計算だけで出る。M7(c) の SBP = 0 と 100 歳超の感度、digit preference、M5 の permutation 版 null floor も同じ。M8 の Study 2 拡張 — 不均衡 n、t₃、整数格子、n = 1,000 — は元の 21 cell が 32 分だったから、protocol を切って 8 cell を今から回せる。」
 
-**Mike**:（ホワイトボードに書きながら）
-「科学の側は三つです。一つ目、protocol。`PROTOCOL_real_data_survey.md` は良い手本でしたが、1 本しか無い。template を ADEMP 構造にして、性能指標ごとに Monte Carlo SE の式を入れました。coverage なら $\sqrt{\hat p(1-\hat p)/n_{\mathrm{sim}}}$、bias なら $\sqrt{\sum_i(\hat\theta_i-\bar{\hat\theta})^2/\{n_{\mathrm{sim}}(n_{\mathrm{sim}}-1)\}}$ — $n_{\mathrm{sim}}$ は目標 MCSE から逆算する。二つ目、数値。`numbers_audit.py` を原稿に当てたら 672 トークン、355 の異なる値で、source に結ばれているものはゼロでした。ledger を作って、producer と verifier を分けます。三つ目、再現性。83 本の R のうち絶対パスが 20 本、結果を書くのに sessionInfo が無いのが 50 本以上。`check_r_reproducibility.sh` が編集ごとに見ます。I got it! — 結果を生成するスクリプトを protocol なしで `Rscript` したら hook が止めに入ります」
+**Rachel**: 「M1 の先行研究 9 本は、私が DOI と原文を取ってきます。Redko 2017、Shen 2018、Tipton 2014、Stuart 2011、Dahabreh 2020、Munk & Czado 1998、Álvarez-Esteban 2008、Bickel–Götze–van Zwet 1997、Hong & Li 2018。読めないものは [推測] と ABSTRACT-ONLY で分けます。」
 
-**Louis**:（腕を組んで）
-「ツールは免罪符にならないぞ。ledger が空のうちは submission-ready とは言わせない。それから、俺の memory にある穴 — enumeration drift、per-EM の bound を joint に売る、理由なしの却下、同じ CSV を二つの証拠に見せる — これを review_checklist の S 節と `/review` の手順に入れた。`CLAIMS.md` が無い原稿は、主張の正本が無い原稿だ。だから v6 で何を削ったか、どの文言を狭めるべきか、誰も一覧で言えなかった。台帳は雛形を置いた。次のセッションで `/claims init`。候補 3 行は全部 pending だ。pending のまま投稿？ 通らない。You just got Litt up」
+**Louis**: 「俺は reviewer を叩く。M4(a) の証明に穴はないか、M6 の二つの不等式は本当に成り立つか、M5 の permutation は anchor を基準にする今の null と同じ問いか、M7 の『L_UB が予後勾配より大きすぎる』は §2.4 が既に答えているか。reviewer が正しい所は正しいと書く。You just got Litt up — 今度は向こうが。」
 
-**Rachel**:
-「引用の方は `cite_audit.py` で確認しました。本文の 25 key はすべて .bib にあり、DOI が無いのは ICH E17 guideline の 1 件だけで、URL はございます。.bib の 19 entry は本文で引かれていません。それから、summary から引いて誤読した Song 2025 の件を二度と起こさないため、summary template に『原典の verbatim（page 付き）』と『この論文が言っていないこと』の節を足しました。`LITERATURE_SEARCH_LOG` には gap の反証条件を書く欄があります — 見つかれば gap が消える文献を、先に言葉にしておくためです」
+**Katrina**: 「体裁 5 件は全部ディスクで確認した。Fig 4 の caption は私の `\dagger` のバックスラッシュが落ちて `$^dagger$` になっている — 私のミス。IST-1 は `\cite` の番号が IST-1 に連結、bib の del Barrio / van Klaveren は braces で保護、How to cite の 1–18 と copyyear 2025、Appendix B の二重評価。referee が終わったら一括で直す。」
 
-**Katrina**:
-「verifier は私がやる。Mike が出した数値は私が CSV を開いて照合し、ledger に署名する。clean checkout の再実行（`/reproduce`）も列ごとに max abs diff を取る。Results speak for themselves — 語った再現性は再現性じゃない。SIMULATION_FINDINGS の template には MCSE の列と four-eyes の表を入れた。表は CSV から生成、手打ち禁止」
+**Jessica**: 「Let me be clear。外部の目が 8 件出し、そのうち 5 件は今日のうちに正しく閉じられる。3 件は断る — 断る理由は『決定 X と矛盾』ではなく、科学的な理由を書け。それが D-20261012-3 だ。Go。」
 
-**Jessica**:（短く）
-「Let me be clear。三つ。一つ、CLAUDE.md に Rule 5（Lifecycle）と Rule 6（Scientific Integrity）を足した。CLAUDE.md は Tak の文書だ — Tak、不要なら消しなさい。二つ、Phase は 8 のままだ。gate は語っただけでは進まない。次のセッションの順序は `/claims init` → `/verify-numbers` → `/cite-check` → `/reproduce` → `/phase`。三つ、`DECISIONS.md` に 09-25 からの判断を理由付きで復元した。D-20260927-1 — 43 段落を Harvey 推奨で一括適用した件 — は Tak の拒否権が開いたままだ。閉じるのは Tak の一言。それまで投稿の承認は出さない」
-
-**Harvey**:
-「以上だ。キャラクターは一文字も変えていない。`agents/*.md` はそのまま、変えたのは守らせ方だけだ。Donna、記録して commit。全員、仕事に戻れ」
+**Donna**: 「並列 4 本（Rachel・Mike × 2・Louis）を出した。referee・Katrina の長さ計画・Mike の `/explore` はまだ走っている。原稿は referee が終わるまで誰も触らない。I'm Donna. I know everything — 今日の夕方が長くなることも。」
 
 ---
 
-### [2026-09-27 19:55] Scene: Tak「クラスタリングの話は不要になったのでは？」— 外す。Discussion にも残さない
-
-**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - NIGHT**
-
-**Harvey**:
-「クラスタリングを残したのは『正しく併合地域を特定できるなら事例に使う』という理由だった。群の数を与えれば特定できるが、sponsor は群の数を知らない。推定させると Set 3 で崩れる。切らない樹形図は Table 5 の順位以上のことを何も言わない。外す。Tak の判断で、Discussion にも一文も残さない」
-
-**Katrina**:
-「外したのは次のとおり。§3.1.4 と表 3、§4 の樹形図の小節と図、§2.4 の一句、§3 冒頭とタスク説明のクラスタリング、abstract の一文、Discussion の Komiyama 段落のクラスタリングの文、略語の ARI。シミュレーションは選択課題だけになり、事例の Table 5 の順位付けと 1 対 1 で対応する。compile error 0、19 ページ、ゲートは 2 本とも ALL PASS」
-
-**Donna**:
-「protocol には結果と、報告しないという判断を追記したわ。記録はディスクに残る」
-
----
-
-### [2026-09-27 17:10] Scene: RV を外し、Komiyama は「一例の紹介」として扱う
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
-
-**Rachel**:
-「原典を確かめました。Komiyama et al. の §4.6.1 は "In this section, one of the approaches is introduced." と書いております。距離は "A simple way"、重みは "The simple idea" として紹介されているだけで、評価はございません。手法の提案ではなく、一例の紹介です」
-
-**Harvey**:
-「なら比べる相手ではない。RV1 は平均の差にすぎない。(mean, SD) のユークリッド距離は、重み付けが候補地域の顔ぶれで決まってしまい、根拠がない。RV1–RV3 は全部外す。比べるのは W₁・KS・SMD の 3 つだ。Introduction と Discussion の Komiyama は『一例の紹介で、距離の選び方が鍵だと述べている』までに下げる」
-
-**Louis**:
-「RV を消したあとに残骸があった。一つ目、『歪度を足しても Set 3 では役に立たない』。だが消した RV3 は 0.78–0.79 まで上がっていた。正しくは『歪度が揃った shape-symmetric セルでは役に立たない』だ。二つ目、Introduction が Komiyama の例（2 値の割合）を連続変数の話で攻撃していた。2 値なら割合で分布は決まる、と断りを入れさせた」
-
-**Katrina**:
-「図 2 は 3 本の線で作り直した。表 2 と表 3 は 3 列にした。ゲートに『K. three measures』を足して ALL PASS。compile error 0、21 ページ、abstract は 230 語」
-
----
-
-### [2026-09-27 16:20] Scene: シミュレーション → 事例の流れで §3・§4 を書き直す — Louis の 19 項目
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
-
-**Louis**:
-「樹形図の小節で一番の穴を見つけた。『切らない』と書きながら、文章で切っていた。年齢は『11 地域のまとまり』、SBP は『3 地域だけが最上段で合流』。これは k = 3 と k = 2 の分割を言葉で書いているのと同じだ。しかも SBP の k = 2 は、昔のスクリプトで先に見てしまった結果だ。それに、R8 が最初に合流する R5 と R2 は null floor 内の距離だ。Table 5 では順位を付けないと決めた相手を、名指しで『最も近い』と書いていた」
-
-**Harvey**:
-「全部採る。樹形図の記述は合流の高さだけにした。年齢は 15 回の合流のうち 12 回が 0.92 年以下で、最後の 3 回が 1.19・1.67・2.17 年。SBP は 0.53 から 5.86 mmHg。§4.3 の橋渡しも正直に書き直した。W₁ も KS も全世界で目標に届き、GUSTO-I の規模ならどちらでも足りる。W₁ を使うのは、上界の定数が単位あたりの臨床傾きだからだ」
-
-**Mike**:
-「n の限定句も戻しました。『数を与えれば回復』は n が十分なときだけです。Set 3 で『ARI がほぼゼロの指標も正しい数を当てる』のは n = 100 のときだけで、n = 2,000 では W₁ の優位が +0.119 に戻ります。新しい数値はすべてゲートに入れて ALL PASS です。どのチェックもわざと誤らせれば FAIL します」
-
-**Katrina**:
-「compile error 0、22 ページ。abstract は 240 語」
-
----
-
-### [2026-09-27 15:50] Scene: 延長シミュレーションの結果 — 基準に届かず、樹形図のみの分岐へ
+### [2026-10-12 15:55] Scene: Explore — ist1_case_study（IST-1 で §4 を再演する）
 
 **INT. PEARSON SPECTER LITT - BULLPEN - DAY**
 
-**Mike**:（出力を読み上げて）
-「n = 2,000 での W₁ の結果です。Set 1・2・4 は ARI が 0.998–1.000、正しい群の数を選ぶ確率が 0.986–1.000 で、基準を満たしました。Set 3 は ARI 0.646、確率 0.26 で届きません。silhouette はどの n でも群を 2 つと答えています。事前登録した基準は『4 つの世界すべてで満たすこと』なので、不成立です」
+*Tak の指示:「IST-1での事例検討を試してみる。論文で掲げている状況と同じように考えられる仮想的シナリオを作る。仮想的シナリオに沿って併合地域を選択する。完了したら GUSTO との事例検討としての質を比較・検討する。」Mike のモニタに `exploratory/ist1_case_study/`、README の先頭に赤い一行。*
 
-**Louis**:
-「予告どおりだ。事前に決めたとおり、樹形図だけの分岐にする。世界を選び直しはしない」
+**Harvey**: 「問いは一つ — §4 の手順を一切変えずに IST-1 に流したとき、GUSTO-I より事例として質が高いか。高ければ `/decide` で §4 を差し替え、`/protocol` を書いてから原稿に入れる。低ければ GUSTO のまま、IST-1 は R1 の reserve。シナリオは論文と同じ構図: 急性虚血性脳卒中の新規抗血栓薬 Drug S、Phase 3 MRCT の計画段階、IST-1（1991–96、19,435 例、36 か国）を各国集団の stand-in に。候補 EM は age・SBP・発症からの遅延。anchor は「現地のエビデンスを求める規制市場」。」
 
-**Katrina**:
-「GUSTO-I は `--branch=nocut` で実行した。年齢と SBP の樹形図は `figures/fig_gusto_dendrogram.pdf` に出した。切っていない」
+**Mike**: 「"I got it!" anchor の主解析は **USA（n = 131）** — MRCT の一国コホートとして現実的な小標本。感度は Japan（n = 9、小 anchor の極限）と UK（n = 6,257）。partner は 35 か国全部、n の下限なし（Tak 11:09）。手順は `R/gusto_*.R` の関数を verbatim で — W₁、percentile CI（B = 2,000）、anchor-drawn null floor（B = 2,000、片側 5%）、rank interval（患者 bootstrap B = 1,000）、L* = 1%pt / W₁、|SMD| との Spearman、EM 間順位の Spearman。要約表は script が書く — 数字は一つも手で打たない。GUSTO の同じ記述子を canonical CSV から読み取り専用で並べる。走らせた。」
 
-**Harvey**:
-「W₁ の距離で並べることは、シミュレーションで裏付けられた。群の数を推定する段は、形の違いしかない Set 3 で裏付けられなかった。論文にはその二つを、そのとおりに書く」
+**Louis**: 「攻撃を三つ置いておく。(1) anchor を USA にしたのは Mike の選択だ — 結果を見てから anchor を選び直したら事後選択になる。README に書いた通り、選び直すなら理由を先に書け。(2) 「併合地域を選択する」は論文が規定しない判定だ。この sandbox で何を「選択」と呼ぶかは、§4 と同じ読み方 — null floor に対する解像、上限の読み、L* と L_UB の比較 — に限る。閾値を作るな。(3) IST-1 は 1991–96 で aspirin / heparin。age・SBP・遅延に抗血栓薬の臨床スロープの出典は無い。L_UB を置かずに L* だけ出すのは正しいが、GUSTO にあった FTT / Lee 1995 相当が無い点は質の比較で不利に数える。」
+
+**Jessica**: 「Let me be clear. Go — sandbox に限る。原稿・registry・ledger に一つでも数字が漏れたら Donna が差し戻す。」
 
 ---
 
-### [2026-09-27 15:30] Scene: Tak「シミュレーションで正しく併合地域を選べる手法を特定し、GUSTO-I に適用する。それが正しい流れだ」
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
-
-*Tak の一言で、論文の背骨が見えた。今日の段落レビューは v6 の枠組みで流れを逆に削っていた。*
-
-**Harvey**:（台帳を置いて）
-「俺の失態だ。シミュレーションは『どの距離が正しいパートナーを上位に並べるか』を評価している。なのに俺は §2.4 から『並べる』を消し、表には『順位は意味しない』と書かせていた。Tak の決定は 3 つだ。①選択は順位付けまで。クラスタリングも正しく特定できるなら事例に使う。EM は別々に扱う」
-
-**Mike**:
-「事実を並べます。群の数を与えれば、W₁ のクラスタリングは 4 つの世界すべてで群を回復します。群の数を silhouette で推定すると、Set 3 では n = 400 でも正しい数を選ぶ割合が 0.9% です。GUSTO-I の規模は未検証なので、n = 600–2,000 の延長を `PROTOCOL_silhouette_extension.md` に登録してから走らせました。成功基準は、n = 2,000 で 4 つの世界すべてで ARI 0.80 以上、かつ正しい群の数を選ぶ確率 0.80 以上です」
-
-**Louis**:
-「GUSTO-I の分岐は結果を見る前に固定した。基準を満たせば分割を示す。満たさなければ樹形図だけだ。昔のスクリプトの GUSTO-I の結果（SBP で群が 2 つ）はもう見てしまっている。それも protocol に開示した。もう一つ、silhouette は『群がない』と言えない。これは限界として必ず書け」
-
-**Katrina**:
-「①の順位付けは適用した。Table 5 に順位列を足した。年齢の null floor 内の 6 つは、ちょうど小さい方から 6 つだから『1–6†』の同順位にした。ゲートに順位のチェックを足して、わざと誤らせた原稿で FAIL することも確かめた。compile error 0、20 ページ」
-
-**Jessica**:
-「Let me be clear。延長の結果が出るまで、§3 と §4 のクラスタリング部分には触るな」
-
----
-
-### [2026-09-27 14:40] Scene: Tak「Section 3 で Study 2 が先に出てくるのは気持ち悪い」— 番号を入れ替え
-
-**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
-
-**Katrina**:
-「入れ替えた。identification が Study 1、estimation が Study 2 だ。本文の 13 行、19 か所。"presented first" の説明は不要になったから消した。compile error 0、20 ページ、ゲートは 2 本とも ALL PASS」
-
-**Mike**:
-「注意点が一つあります。\label（sec:study1 = estimation、sec:study2 = identification）とスクリプト名（verify_study2_figures.R = identification のゲート）は旧番号のままです。§3 の冒頭にコメントで書いておきました」
-
-**Donna**:
-「今日より前の記録にある『Study 2』は identification のことよ。読み替えて」
-
----
-
-### [2026-09-27 14:30] Scene: Tak「supplement は不要。作成過程の検討事項でしかない」— Supplement ゼロへ
+### [2026-10-12 15:55] Scene: もう一周 — 「原稿を改訂」の読み方と四つの並列
 
 **INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
 
-**Harvey**:
-「Tak の言うとおりだ。実データ調査は、俺たちが自分の主張を確かめるためにやった検討であって、読者に渡す証拠じゃない。外す。ただ、Discussion の 2 文はあの調査の数値に頼っていた。どちらも本文の GUSTO-I の 15 パートナーで支え直す」
+*15:48、Tak の三文字。「原稿を改訂」。午前の判断は 11:40 に適用済み。Donna が時計とディスクを見る — 原稿は 11:23 から動いていない。*
 
-**Mike**:
-「確かめました。年齢と SBP の距離の順位相関は、15 パートナーで −0.30 です。Table 5 から読者が自分で確かめられます。W₁ と SMD の順位の一致は年齢 0.90、SBP 0.95。アンカーとの SD 比は最大 1.11 です。どれもゲートで照合して ALL PASS でした。I got it!」
+**Donna**: 「読み方は一つしかないわ。午前の周は終わっている。だからこれは**もう一周** — 改訂後の原稿に新しい目を入れて、残った弱点を直す。残っているのは、本文 1.7×（Simulation 1.9×、Discussion 1.7×）、`/ground` 待ちの引用 2 件、C4 の機構、`gusto_operability.csv` の旧列。」
 
-**Katrina**:
-「本文に残る Supplement の参照は 0 件。Data availability から IST の文を、Supporting information から Supplement の記載を外した。compile error 0、20 ページ」
+**Harvey**: 「新しい目は Louis じゃない。Louis は今朝の原稿を知っている。冷読 referee をもう一度出す — 昨夜と同じ条件、同じ深さ、再計算付き。改訂で 110 行動かした原稿に、内部記録を知らない reviewer が何を言うかが、今日いちばん価値のある情報だ。referee が読んでいる間、原稿には誰も触るな。」
 
-**Donna**:
-「記憶に残しておくわ。『論文作成の過程で検討したことは Supplement にしない』。二度と増やす提案はさせない」
+**Katrina**: 「私は長さの計画。Simulation を約 2,200 語、Discussion を約 1,200 語に。CLAIMS の行が落ちない cut だけを行番号と語数で。Tables 3–5 の統合案も。それと `gusto_operability.csv` の `tau_clin` / `eligible` — 読み手が無ければ writer から落として、生成表が byte 一致することを確かめる。」
 
----
+**Rachel**: 「`/ground` を二つ。Lee 1995 の age gradient 6 × 10⁻³/yr は、誰も導出を持っていません。原典の年齢層別死亡率を取りに行きます。Matsushima の Data S1 — PREVENT で『EM 分布が似ている』をどう測ったかは、novelty claim が崩れ得る最後の経路です。取れなければ Paper Request として記録します。」
 
-### [2026-09-27 14:05] Scene: Tak「supplement はあまり付けたくない」— A・B を外し、実データ調査だけ残す
+**Mike**: 「I got it! C4 の機構は `/explore` で。Set 4 の裾が Ŵ₁ の分散を膨らませるか — 2 つの base 分布、shift 2 と 3、n = 100–400、2,000 組、Ŵ₁ と D_KS の SD・分離・AUC と ∫√(F(1−F))。exploratory のまま、原稿には書かない。」
 
-**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+**Louis**: 「referee が戻ってきたら、俺は referee の文も自分の文も CSV で割る。今朝の教訓は『修正に添えた説明文』だった。今度は referee の説明文も同じ目で見る。」
 
-**Harvey**:
-「A は約分の一行だ。§2.4 に同じことが書いてあるから、本文に吸収する。B は社内メモで、本文の出典リストがその役を果たしている。deft estimator の一句だけ本文に残して外す。実データ調査は残す。Tak が 09-26 に、既存指標との一致の証拠をあそこへ移すと決めたからだ。これで Supplement は 3 本から 1 本になる」
+**Jessica**: 「Let me be clear. 一周目で学んだことを二周目で使え。説明は証拠の後、マーカーは独立行、適用後は PDF を grep。Go。」
 
-**Louis**:
-「0 本にしないのか。……いや、それでいい。0 本にしたら、Discussion の 0.84–0.996 と r = 0.13 が検証できなくなる。事前登録の記述も、探索的スキャンの開示も一緒に消える」
-
-**Katrina**:
-「本文の Supplement の参照は 0 件、呼び方は Supporting Information に統一した。compile error 0、ゲートは 2 本とも ALL PASS。一冊綴じは 23 ページで作り直した」
-
-**Jessica**:
-「Let me be clear。0 本にする選択肢は Tak に残しておく。その場合は 09-26 の決定を覆すことになる、と明記してだ」
+**Donna**: 「SUITS.md は 982 行だったから、この scene の前にアーカイブした（`archives/SUITS_20261012_155236.md`）。I'm Donna. I know everything — 午後の四人が何時に戻るかも、だいたい。」
 
 ---
 
-### [2026-09-27 13:50] Scene: 判断ラウンド — Tak「判断が要る点を議論して判断して」
+### [2026-10-12 15:52] Scene: Archive
 
-**INT. PEARSON SPECTER LITT - JESSICA'S OFFICE - DAY**
+**INT. PEARSON SPECTER LITT - FILE ROOM - DAY**
 
-*残っていた 6 件の判断事項。Rachel が Song 2025 の PDF を開き、Louis が新しい abstract を攻撃する。*
+*Donna が厚いフォルダをアーカイブ棚へ移す。*
 
-**Rachel**:
-「Song et al. 2025 の原典を確かめました。pooling strategy を『曖昧さが残る』課題として挙げ、p.4 で EM と endpoint の相関から距離を定める clustering を提示しています。本文にあった "without quantitative tools" は原典にございません。著者も NMPA ではなく、北京大学と企業の方々です。それから、`Song_2025.md` の『定量的な指標なし』も誤りでしたので訂正いたしました」
+**Donna**: 「SUITS.md が 982 行、午後の scenes で 1000 を超えるから先にアーカイブしたわ。`archives/SUITS_20261012_155236.md` に保存済み。直前のコンテキストは上に引き継いだ。新しいスクリプト開始よ。」
 
-**Louis**:
-「新しい abstract の数値は全部通る。問題は抜けたものだ。一つ目、Prop. 1 の『その EM だけに依存する』という仮定が落ちていた。二つ目、L* を『needed to produce』と書いていた。これだと十分条件に読める。三つ目、KS との比較に基準がなかった。四つ目、RV2・RV3 は俺たちの拡張なのに、Komiyama の手法の話に混ぜていた。それから Data availability に IST-1 と IST-3 が載っていない。You just got Litt up!」
-
-**Harvey**:
-「全部採る。判断は次のとおりだ。
-1. Introduction：Song の文を原典どおりに直す。『absence of quantitative tools』も消す。
-2. L：全文を L_clinical に統一する。
-3. Supplement C：一度通読してから DRAFT 印を外す。
-4. Terminal pass：今やる。abstract は 247 語で、限定句はゲートを通った数値にだけ載せた。
-5. operability CSV の旧列：コード公開のときまで保留。
-6. commit：保留だ」
-
-**Jessica**:
-「Let me be clear。commit は Tak の拒否権の期間が閉じてから、Tak の一言でやる。Supplement B はまだ社内メモのままで、投稿物になっていない。§2.4 は B で bound を導くと約束しているが、B はそれを果たしていない。書き起こすのは次の仕事だ。Supplement A の nABCD 表記と、B を名乗る normalizer ファイルの扱いも同じく次だ」
-
-**Katrina**:
-「Results speak for themselves. compile error 0、undefined 0、21 ページ。ゲートは 2 本とも ALL PASS。abstract は 247 語で上限は 250。引用なし、keywords は 6 つ」
+**Harvey**: （通りがかりに）「過去は過去だ。前を見ろ。」
 
 ---
-
-### [2026-09-27 13:10] Scene: Numbers Verification — Mike traces every digit
-
-**INT. PEARSON SPECTER LITT - BULLPEN - DAY**
-
-*Mike spreads the R output beside the manuscript, cross-checking line by line.*
-
-**Mike**:（電卓を置いて）
-「二つのゲートを回しました。Study 2 は `verify_study2_figures.R` を六地域と新しい表の行まで拡張して ALL PASS。Study 1・Application・Discussion の分は `verify_study1_app_numbers.R` を新しく書いて、56 項目が ALL PASS です。L* 表は 15 行 × 8 値を CSV と突き合わせて、† 印も null floor の判定と一致しました。途中で要修正が 1 件ありました。KS の対称重症度セルの AUC を 0.98 と書いていましたが、正しくは 0.99 です。直しました。S4（n = 50）の被覆率 0.9425 は四捨五入の境目で、表の 0.942 はそのままで問題ありません。I got it!」
-
-**Donna**:（頷いて）
-「要修正は 0 件になったわね。ここから先は Tak の判断。個別の拒否と commit を待つわ」
-
----
-
-### [2026-09-27 12:30] Scene: 段落レビュー #8–#50 完了 — Tak「Harvey の推奨で直して全部終わらせろ」
-
-**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
-
-*台帳の残り 43 段落。Louis が 3 人分の攻撃を節ごとに並行して提出し、Mike がそのすべてを CSV・rds・R コードと突き合わせる。Harvey が一段落ずつ選び、Katrina がコンパイルする。*
-
-**Louis**:（三束の報告を叩きつけて）
-「最悪の穴は三つだ。一つ目、Study 2 の "false-pooling rate among the k admitted"。コードの `f = ncm < k_true` は『k 個の中に不一致地域が一つでも入る確率』だ。二つ目、Set 4 の不一致地域は四つじゃない、六つある。bulk shift が二つだ。三つ目、Appendix の bootstrap の条件を Sommerfeld & Munk に帰している。あれは有限空間の論文だぞ。You just got Litt up!」
-
-**Mike**:（R ファイルを開いたまま）
-「全部確かめました。Louis が正しいです。`selection_simulation.R` L295 は at-least-one の確率で、W₁ 0.718・KS 0.971、偶然水準は 1 − 1/84 = 0.988。一枠あたりの不一致割合は 0.30 と 0.58（偶然 0.67）です。Set 4 の真値表も六地域で、KS 0.107 の S2 を入れても『KS の閾値では W₁ ≤ c の集合を切り出せない』は成り立ちます。それからもう一つ。#33 の『境界近くでは CI 上限で読め』は rds から裏付けが取れました。S2 では真値が上限を超えたことは一度もなく、S2・S5・S7 のどの n でも最大 1.1%。被覆の不足はすべて下側です。`R/study1_miss_side.R` として残しました。I got it!」
-
-**Rachel**:
-「実数直線上の bootstrap の一致性は Fang & Santos (2019) *Rev Econ Stud* DOI: [10.1093/restud/rdy049](https://doi.org/10.1093/restud/rdy049) に、非一致性は Dümbgen (1993) *PTRF* DOI: [10.1007/BF01197342](https://doi.org/10.1007/BF01197342) に差し替えました。Sommerfeld は、整数 mmHg の SBP のような格子上の場合に限って残しております。r = 0.13 はペア単位のデータから 0.133 と再計算し、Supplement C に明記いたしました」
-
-**Harvey**:（台帳を見下ろして）
-「選択は決めた。原則は一つだ、判定を書くな。#41 の『no more than four』は消す。#43 の『For practice, we recommend』は Methods の繰り返しだから段落ごと消す。#26 も重複だから消す。#40 の『must be evaluated』は、距離が一致しないという事実に書き換える。#47 の『where none was previously available』と『gap left by ICH E17』は Komiyama が存在する以上言い過ぎだ、"operationalizing ... that ICH E17 describes" まで下げる。#42 の最後は KR 双対の同語反復をやめて、Study 2 の効率の証拠に載せ替える。Set 3・4 の七セルのうち、KS に負けるのは bulk-shift の対照だけだ」
-
-**Katrina**:
-「Results speak for themselves. 印の残りは 0、compile error 0、undefined 0、21 ページ。Overfull の 3 件はレビュー前からあったもの。表は二つ直した。Set 3・4 の必要 n の表から漏れていた二セルを足して、L* 表では null floor 内の距離に † を付けた」
-
-**Donna**:
-「一つ念を押しておくわ。承認コメントは 'Harvey's recommendation under Tak's standing instruction' と書いた。Tak が一段落ずつ選んだわけじゃないから、'approved by Tak' とは書いていない。一覧は Tak に渡すから、気に入らない段落は個別に拒否できる」
-
-**Jessica**:
-「Let me be clear。数字はすべて出典に戻して確かめた。判定の文言も消した。残りは Terminal pass と commit、どちらも Tak の指示を待つ」
-
----
-

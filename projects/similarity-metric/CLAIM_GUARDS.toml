@@ -1,0 +1,600 @@
+# CLAIM_GUARDS.toml — similarity-metric（review findings → executable, mutation-tested guards）
+# Evaluate:  python3 scripts/claim_guards.py projects/similarity-metric/CLAIM_GUARDS.toml --mutation
+# Seeded 2026-10-11 from the Claude Science referee report (claude_science/referee_report.md,
+# claude_science/verify_corrections.R §2b) and the 2026-10-11 Louis review. known_bad = 115b00a is the
+# last revision before the M1–M5 corrections (8adf0e6); abstract guards use the 356-word abstract of
+# the same revision (claude_science/README.md records its quantifier inversions).
+# Owner: Louis（起票）/ Katrina（known_bad の検証）/ Donna（hook）。
+
+[meta]
+tex = "paper/per_em_W1_wiley.tex"
+project = "similarity-metric"
+
+# ---- journal ----------------------------------------------------------------------------------
+
+[[guard]]
+id = "abstract-length"
+finding = "Statistics in Medicine: abstract ≤ 250 words"
+type = "max_words"
+scope = "abstract"
+limit = 250
+known_bad = "115b00a"
+note = "abstract ≤ 250 words（inline math = 1 word）"
+
+[[guard]]
+id = "abstract-no-citation"
+finding = "Statistics in Medicine: no citations in the abstract"
+type = "forbid"
+scope = "abstract"
+pattern = "\\\\cite"
+note = "abstract carries no \\cite"
+
+# ---- M1: exclusivity of the heterogeneity bound (false as stated) -------------------------------
+
+[[guard]]
+id = "M1-exclusivity-unique"
+finding = "claude_science/referee_report.md M1"
+type = "forbid"
+pattern = "unique theoretical connection"
+literal = true
+known_bad = "115b00a"
+note = "W₁ の bound は unique ではない（KS にも TV(τ)·D_KS、W₂ にも L·W₂ がある）"
+
+[[guard]]
+id = "M1-exclusivity-none"
+finding = "claude_science/referee_report.md M1"
+type = "forbid"
+pattern = "no theoretical connection"
+literal = true
+known_bad = "115b00a"
+note = "EDF 統計に『理論的関連がない』と書かない"
+
+[[guard]]
+id = "M1-exclusivity-analogous"
+finding = "claude_science/referee_report.md M1"
+type = "forbid"
+pattern = "cannot provide an analogous bound|lack any analogous property"
+known_bad = "115b00a"
+note = "『類似の bound を与えられない』は誤り"
+
+[[guard]]
+id = "M1-link-names-constant"
+finding = "claude_science/referee_report.md M1（class guard）"
+type = "proximity"
+stem = "theoretical (link|connection)"
+qualifier = "constant|specif|elicit|total variation|per-unit"
+known_bad = "115b00a"
+note = "理論的関連を主張する文は必ずその定数（elicitable constant）を名指す — 言い換えに耐える guard"
+
+# ---- M2: L_clinical units ----------------------------------------------------------------------
+
+[[guard]]
+id = "M2-L-units"
+finding = "claude_science/referee_report.md M2"
+type = "forbid"
+pattern = "percentage points of 30-day mortality per year"
+literal = true
+known_bad = "115b00a"
+note = "L_clinical は proportion scale。『percentage points … per year』で定義しない"
+
+# ---- M4: R4 'balanced across both modifiers' (age-unresolved) ----------------------------------
+
+[[guard]]
+id = "M4-R4-balanced"
+finding = "claude_science/referee_report.md M4"
+type = "forbid"
+pattern = "balanced across both modifiers|balanced ranking on both modifiers"
+known_bad = "115b00a"
+note = "age が unresolved の partner を『両 modifier で balanced』と書かない"
+
+# ---- abstract compression（quantifier inversion / qualifier drop） ----------------------------
+
+[[guard]]
+id = "abstract-no-universal-over-worlds"
+finding = "claude_science/README.md『Compression dropped the qualifiers』"
+type = "forbid"
+scope = "abstract"
+pattern = "\\bwherever\\b|\\bin every world\\b|\\balways\\b"
+known_bad = "file:review_response/known_bad/abstract_compressed_20260921.tex"
+note = "abstract の existential claim を universal に圧縮しない"
+
+[[guard]]
+id = "abstract-coverage-qualified"
+finding = "claude_science/README.md『Compression dropped the qualifiers』; C-09"
+type = "proximity"
+scope = "abstract"
+stem = "coverage"
+qualifier = "all but|non-negligible|for .*differences|from 100|at n"
+known_bad = "file:review_response/known_bad/abstract_compressed_20260921.tex"
+note = "coverage の文は必ず限定句を伴う（S1 は構造的に 0、S2 は n=50 で 0.703）"
+
+# ---- Louis review 2026-10-11（feedback_review_recurrence_patterns） ---------------------------
+
+[[guard]]
+id = "no-indistinguishable"
+finding = "Louis review 2026-10-11（区間 overlap ≠ 同等）"
+type = "forbid"
+pattern = "\\bindistinguishable\\b"
+known_bad = "f8c01f7"
+note = "Monte Carlo 区間が重なる = 『区別できなかった』であって『同等』ではない"
+
+[[guard]]
+id = "no-significant"
+finding = ".claude/rules/paper-writing.md（estimation-centered）"
+type = "forbid"
+pattern = "\\b(non-?)?significant(ly)?\\b"
+note = "estimation-centered: significance 語を使わない"
+
+[[guard]]
+id = "E17-not-recommends"
+finding = "memory/feedback_tak_feedback_patterns.md（E17 は describes / notes / permits）"
+type = "forbid"
+pattern = "E17[^.]{0,80}\\brecommends?\\b|\\brecommends?\\b[^.]{0,80}E17"
+note = "ICH E17 に recommends を使わない"
+
+[[guard]]
+id = "simulation-not-proves"
+finding = ".claude/rules/paper-writing.md"
+type = "forbid"
+scope = "section:simulation|study|results"
+pattern = "\\bprove[sd]?\\b|\\bguarantee[sd]?\\b"
+note = "simulation の節で proves / guarantees を使わない"
+
+[[guard]]
+id = "no-emph"
+finding = "memory/feedback_paper_no_emph（本文で \\emph を使わない）"
+type = "forbid"
+pattern = "\\\\emph\\{"
+note = "本文で \\emph{} を使わない"
+
+# ================================================================================================
+# Cold referee 2026-10-11（review_response/REFEREE_20261011.md）— Louis が起票。known_bad = fad1010 =
+# referee が読んだ原稿（修正前）。pending = true: 修正が入るまで OPEN として報告（strict は止めない）。
+# 2026-10-12: 修正適用後、15 本すべて PASS → pending を外して strict に昇格（Katrina）。
+# ================================================================================================
+
+[[guard]]
+id = "REF-M1-constant-needs-attainment"
+finding = "review_response/REFEREE_20261011.md M1"
+type = "proximity"
+stem = "smallest valid|smallest bound with|the smallest with"
+qualifier = "sharp|class|Kantorovich|Appendix"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "定数 L は L·W₂、L·(b−a)·D_KS にも共通。W₁ を区別するのは attainment（KR）— 定数を言う文は attainment も言う"
+# Rewritten 2026-10-13 (D-20261012-3, Louis round 3 M15): the old stem forced "attain/sharp" into every sentence naming the constant, which produced the attainment-as-reason wording that referee #2 rejected. Now: any "smallest valid" claim must name sharpness over the class.
+
+[[guard]]
+id = "REF-M1-forbid-constant-distinguishes"
+finding = "review_response/REFEREE_20261011.md M1"
+type = "forbid"
+pattern = "What distinguishes equation|clinical sources do not report"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "『定数が区別する』は false as stated（同じ文で名指す W₂ の bound が同じ定数を持つ）"
+
+[[guard]]
+id = "REF-M1-require-attainment"
+finding = "review_response/REFEREE_20261011.md M1"
+type = "require"
+scope = "section:sec:nabcd_metric"
+pattern = "sharp when the slope is the only restriction|attained by"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "L* = Δ_clin/W₁ が『最小の slope』であるのは bound が attained だから — §2.2 に明記"
+# Rewritten 2026-10-13 (D-20261012-3, Louis round 3 M15): section 2.2 must state the KR sharpness (or its attainment by tau*); it is no longer the reason for adoption.
+
+[[guard]]
+id = "REF-M2-n100-needs-scale"
+finding = "review_response/REFEREE_20261011.md M2"
+type = "proximity"
+stem = "100 patients per region|from 100 per region|from 100 patients"
+qualifier = "sigma|standard deviation|\\bSD\\b|noncentrality|0\\.4|sampling standard deviation"
+# 2026-10-12 Louis: stem narrowed — the grid "25--100 per region" matched the old stem; qualifier admits "SD" as a word
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "coverage は √n·W₁/σ で決まる。n ≥ 100 を単位なしの基準として書かない（GUSTO 規模でも 0.39 年の shift は coverage 0.647）"
+
+[[guard]]
+id = "REF-M2-forbid-separate-question"
+finding = "review_response/REFEREE_20261011.md M2(c)"
+type = "forbid"
+scope = "section:sec:app_operability"
+pattern = "separate question from the estimation criterion"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "null floor の解像と percentile coverage は同じ noncentrality が決める — 『別の問題』ではない"
+
+[[guard]]
+id = "REF-M2-near-nominal-needs-mcse"
+finding = "review_response/REFEREE_20261011.md M2(a); Louis review C-09"
+type = "proximity"
+stem = "near-nominal"
+qualifier = "Monte Carlo|MCSE|standard error|0\\.917|S5"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "S3–S7 n≥100 の 10 cell のうち 5 cell が自分の MCSE の 2 倍以上 0.95 を下回る（l.391 の規則）"
+
+[[guard]]
+id = "REF-M3-five-of-seven-needs-target"
+finding = "review_response/REFEREE_20261011.md M3(c)"
+type = "proximity"
+stem = "five of (the )?seven"
+qualifier = "AUC 0\\.9|0\\.9 target|discrimination target"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "shape-symmetric cell の順序は AUC 0.8 と 0.95 で逆転する — 比較は目標値を伴う"
+
+[[guard]]
+id = "REF-M3-forbid-summary-label-for-set4"
+finding = "review_response/REFEREE_20261011.md M3(a)"
+type = "forbid"
+pattern = "configurations built to challenge summary measures|worlds built to challenge summary-based measures"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "Set 4 の subgroup cell は KS を prevalence で頭打ちにする構成。KS は summary measure ではない"
+
+[[guard]]
+id = "REF-M3-require-all-cells"
+finding = "review_response/REFEREE_20261011.md M3(b)"
+type = "require"
+scope = "section:sec:study1_selection"
+pattern = "Sets? 1|Gaussian"
+# 2026-10-12 Louis: "all six cells of Sets 1 and 2" satisfies the intent
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "W₁ vs KS の required n を 13 cell すべてで報告（11 W₁ fewer / 1 overlap / 1 KS fewer）"
+
+[[guard]]
+id = "REF-M4-rank-needs-uncertainty"
+finding = "review_response/REFEREE_20261011.md M4"
+type = "proximity"
+scope = "section:sec:app_nabcd"
+stem = "middle of each ranking|smallest value|rank(ed|s|ing)? (by|on|within)"
+qualifier = "rank interval|resampl|bootstrap|not resolved"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "中位の rank は 10 位分ぶれる（P(R6<R5, SBP) = 0.50）。順位を書く文は不確かさも書く"
+
+[[guard]]
+id = "REF-M4-null-floor-is-a-test"
+finding = "review_response/REFEREE_20261011.md M4"
+type = "proximity"
+scope = "section:sec:app_operability"
+stem = "unresolved"
+qualifier = "test|level|0\\.05|5 ?%|one-sided"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "null floor は F₁ = F₂ の片側 5% 検定を 30 回適用したもの — そう名指す"
+
+[[guard]]
+id = "REF-M5-declare-omitted-methods"
+finding = "review_response/REFEREE_20261011.md M5(a)"
+type = "require"
+scope = "section:sec:study1_design"
+pattern = "representative-value|RV1|also (ran|evaluated|examined)|not reported|omit"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "protocol と results にある RV1–RV3・harm・clustering task を、報告しないなら省略を一文で宣言する（ADEMP）"
+
+[[guard]]
+id = "REF-M5-cluster-discussion-needs-registered-result"
+finding = "review_response/REFEREE_20261011.md M5(c)"
+type = "proximity"
+scope = "section:sec:discussion"
+stem = "cluster analysis"
+qualifier = "silhouette|number of groups|estimated k|ARI|not report"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "登録済みの estimated-k W₁ clustering は Set 3 n=2,000 で基準不成立（ARI 0.646）— 触れるか、触れないと書く"
+
+[[guard]]
+id = "REF-Minor3-bias-decay"
+finding = "review_response/REFEREE_20261011.md Minor 3"
+type = "forbid"
+pattern = "diminished slowly|Convergence is slow near the boundary"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "S1 の bias は n 倍化ごとに 1.40 倍で落ちる = n^{-1/2} そのもの。『遅い』ではない"
+
+[[guard]]
+id = "REF-Minor5-conservative-scope"
+finding = "review_response/REFEREE_20261011.md Minor 5"
+type = "proximity"
+stem = "conservative reading"
+qualifier = "small distances|near the boundary|S2|null|smallest"
+known_bad = "fad1010"
+# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+note = "upper limit が保守的なのは boundary 近傍だけ。S4 n=100 では truth が上限を 2.90% 超える（nominal）"
+
+# ================================================================================================
+# Louis residual review 2026-10-12（review_response/INTERNAL_REVIEW_20261012.md）— Donna が起票（Louis は
+# Write を持たない）。known_bad = file:review_response/known_bad/per_em_W1_wiley_20261012.tex = 修正前の
+# working tree（fad1010 + D-20261011-11 適用後）。pending = true: 修正が入るまで OPEN。D-20261012-2。
+# ================================================================================================
+
+[[guard]]
+id = "LR2-C3-bias-rate-as-elsewhere"
+finding = "review_response/INTERNAL_REVIEW_20261012.md C3"
+type = "forbid"
+pattern = "rate as elsewhere"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
+# pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
+note = "bias が n^{-1/2} で落ちるのは S1 だけ（比 1.96）。S2 5.7、S5 4.4、S6 3.4、S7 3.3 は 1/n に近い"
+
+[[guard]]
+id = "LR2-C2-coverage-governed-standardized"
+finding = "review_response/INTERNAL_REVIEW_20261012.md C2"
+type = "forbid"
+pattern = "Coverage is governed by the true distance"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
+# pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
+note = "n=100: S3 3.66 SD→0.951、S5 3.84→0.917、S7 4.15→0.935。coverage を揃えるのは bias/SD（CDF の交差）"
+
+[[guard]]
+id = "LR2-C1-gusto-sizes-suffice"
+finding = "review_response/INTERNAL_REVIEW_20261012.md C1"
+type = "forbid"
+pattern = "region sizes both suffice"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
+# pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
+note = "KS asym severity 1,252 [1,226, 1,278] > R16 1,231。required n は simulated contrast 固有で GUSTO に移せない"
+
+[[guard]]
+id = "LR2-C4-uniform-shift-best-suited"
+finding = "review_response/INTERNAL_REVIEW_20261012.md C4"
+type = "forbid"
+pattern = "the configuration the CDF supremum is best suited to"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
+# pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
+note = "Set 1/2 の location cell は W1 が KS より少ない n（33 vs 39、129 vs 157）。uniform shift 一般が KS 向きではない"
+
+[[guard]]
+id = "LR2-M1-coverage-range-needs-count"
+finding = "review_response/INTERNAL_REVIEW_20261012.md M1（D-20261011-11 判断1(a) の適用漏れ）"
+type = "proximity"
+stem = "covRangeS3toS7N100up2dp"
+qualifier = "nCellsCovBelow2MCSE|half of the cells|more than two Monte Carlo"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
+# pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
+note = "0.92–0.95 の範囲は必ず『10 cell 中 5 が 2 MCSE 超で 0.95 未満』を伴う（abstract、§3.2 末、§5 ¶1）"
+
+[[guard]]
+id = "LR2-M2-w1-fewer-needs-construction"
+finding = "review_response/INTERNAL_REVIEW_20261012.md M2"
+type = "proximity"
+stem = "nCellsW1FewerKS"
+qualifier = "construction"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
+# pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
+note = "11 of 13 のうち 3 cell（Set 4 の displaced subgroup）は構成上の勝ち — 同じ段落に明記"
+
+[[guard]]
+id = "LR2-M3-attainment-alone"
+finding = "review_response/INTERNAL_REVIEW_20261012.md M3"
+type = "forbid"
+pattern = "The first is attainment."
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
+# pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
+note = "KS の bound も自分の class 内（step CATE）で達成される。区別するのは attainment 単独でなく class（per-unit slope）"
+
+[[guard]]
+id = "LR2-M4-sample-cdf-count"
+finding = "review_response/INTERNAL_REVIEW_20261012.md M4"
+type = "forbid"
+pattern = "coincide on such an interval in"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
+# pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
+note = "母集団 CDF の条件を標本 CDF の件数（0/15）で言わない — 検出力ゼロの検査"
+
+[[guard]]
+id = "LR2-M7-lasso-front-end"
+finding = "review_response/INTERNAL_REVIEW_20261012.md M7"
+type = "forbid"
+pattern = "Lasso offers one front-end"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
+# pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
+note = "outcome Lasso は prognostic 因子を選ぶ（l.231 と矛盾）。Komiyama の Lasso は距離の重み付けで EM 選択ではない"
+
+[[guard]]
+id = "LR2-M9-estimation-criterion"
+finding = "review_response/INTERNAL_REVIEW_20261012.md M9（quantify-not-decide）"
+type = "forbid"
+pattern = "estimation criterion"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
+# pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
+note = "定義の無い『基準』は推奨標本サイズに読まれる。n=50–200 の記述に置き換える"
+
+[[guard]]
+id = "LR2-Rachel-matsushima-contributed"
+finding = "review_response/CITATION_AUDIT_20261012.md §1.6（matsushima2024 NOT SUPPORTED）"
+type = "forbid"
+pattern = "contributed to apparent inconsistency"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
+# pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
+note = "原典 p.966: 日本の不整合は割付不均衡と小標本（2 vs 7）、『not due to potential effect modifiers』"
+
+# ================================================================================================
+# Cold referee #2 (review_response/referee/20261012/REFEREE_20261012.md) and the external review
+# (review_response/EXTERNAL_REVIEW_20261012.md), 2026-10-12 — Donna が起票（D-20261012-3）。
+# known_bad = file:review_response/known_bad/residual_20261012_1645.tex（16:45 の原稿の該当文を verbatim に集めた fixture）。
+# pending = true: 修正が入るまで OPEN。
+# ================================================================================================
+
+[[guard]]
+id = "REF2-M1-attainment-needs-class"
+finding = "review_response/referee/20261012/REFEREE_20261012.md M1"
+type = "proximity"
+stem = "attained|smallest valid (one|bound)"
+qualifier = "monoton|unrestricted|only restriction|Kantorovich|sharp within its own class|duality"
+known_bad = "file:review_response/known_bad/residual_20261012_1645.tex"
+# pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
+note = "attainment / smallest valid は unrestricted Lipschitz class（KR 双対）の性質。単調 class では L(W1+|dmu|)/2。採用理由にしない"
+
+[[guard]]
+id = "REF2-M2-efficiency-needs-tails"
+finding = "review_response/referee/20261012/REFEREE_20261012.md M2"
+type = "proximity"
+stem = "fewer patients than (the )?(KS|Kolmogorov)"
+qualifier = "tail|heavy|contaminat"
+known_bad = "file:review_response/known_bad/residual_20261012_1645.tex"
+# pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
+note = "W1 vs KS の効率の文は裾の機構（heavy-tailed population で反転）を伴う。'three by construction' だけでは不足"
+
+[[guard]]
+id = "REF2-M2-no-general-reversal"
+finding = "review_response/referee/20261012/REFEREE_20261012.md M2"
+type = "forbid"
+pattern = "rather than reversing the order in general"
+literal = true
+known_bad = "file:review_response/known_bad/residual_20261012_1645.tex"
+# pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
+note = "裾の重い母集団上の location shift では反転は一般的（ref_tailweight.log、exploratory/set4_control_mechanism）"
+
+[[guard]]
+id = "REF2-M3-S5-not-boundary"
+finding = "review_response/referee/20261012/REFEREE_20261012.md M3"
+type = "forbid"
+pattern = "reflects boundary proximity effects"
+literal = true
+known_bad = "file:review_response/known_bad/residual_20261012_1645.tex"
+# pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
+note = "S5（0.40 SD）の undercoverage は boundary でなく CDF の交差。S3（0.50 SD）は nominal"
+
+[[guard]]
+id = "REF2-m1-fig3-caption"
+finding = "review_response/referee/20261012/REFEREE_20261012.md Minor 1"
+type = "forbid"
+pattern = "$^dagger$"
+literal = true
+known_bad = "file:review_response/known_bad/residual_20261012_1645.tex"
+# pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
+note = "Fig 3 caption の \\dagger のバックスラッシュ欠落"
+
+[[guard]]
+id = "REF2-m2-monotone-auc"
+finding = "review_response/referee/20261012/REFEREE_20261012.md Minor 2"
+type = "forbid"
+pattern = "rises monotonically"
+literal = true
+known_bad = "file:review_response/known_bad/residual_20261012_1645.tex"
+# pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
+note = "KS asym-severity の AUC は n=75 で 2 MCSE 超の低下。'reaches the target and stays above it' に"
+
+[[guard]]
+id = "REF2-m3-wald-vs-bootstrap"
+finding = "review_response/referee/20261012/REFEREE_20261012.md Minor 3"
+type = "proximity"
+stem = "cannot be verified from data"
+qualifier = "bootstrap|same condition|either"
+known_bad = "file:review_response/known_bad/residual_20261012_1645.tex"
+# pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
+note = "検証できない条件は Wald にも bootstrap にも効く。違いは分散推定の要否"
+
+[[guard]]
+id = "REF2-m6-set4-error-rate"
+finding = "review_response/referee/20261012/REFEREE_20261012.md Minor 6"
+type = "proximity"
+scope = "section:sec:study1_selection"
+stem = "include at least one discordant region"
+qualifier = "construction"
+# pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
+note = "Set 4 pooled error rate は構成上有利な cell が支配する"
+
+[[guard]]
+id = "REF2-m8-collapsibility"
+finding = "review_response/referee/20261012/REFEREE_20261012.md Minor 8 / EXTERNAL_REVIEW_20261012.md M2"
+type = "require"
+pattern = "collapsib"
+note = "式 (1) と Prop. 1 は可縮な効果尺度に限る、と本文に書く"
+
+[[guard]]
+id = "EXT-M4a-jensen"
+finding = "review_response/EXTERNAL_REVIEW_20261012.md M4(a)"
+type = "require"
+pattern = "Jensen"
+note = "E W1hat >= W1 for all n（Jensen + Tonelli）を本文に"
+
+[[guard]]
+id = "EXT-M6-joint-bound"
+finding = "review_response/EXTERNAL_REVIEW_20261012.md M6"
+type = "require"
+pattern = "joint distributions under cost"
+note = "重み付き l1 cost の同時分布 W_d と周辺和の不等式を限界に"
+
+[[guard]]
+id = "EXT-Minor6-no-disagree"
+finding = "review_response/EXTERNAL_REVIEW_20261012.md Minor 6"
+type = "forbid"
+pattern = "do not agree (Spearman"
+literal = true
+known_bad = "file:review_response/known_bad/residual_20261012_1645.tex"
+# pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
+note = "-0.30 [-0.51, 0.02] は 0 を含む。'show no positive agreement'"
+
+# ================================================================================================
+# Louis /review-fix round 3（review_response/FIX_REVIEW_LOUIS_20261012_round3.md）— 2026-10-13 00:50、Donna 起票。
+# known_bad = file:review_response/known_bad/residual_20261012_1735.tex（17:35 の原稿の該当文、verbatim）。
+# ================================================================================================
+
+[[guard]]
+id = "LR3-G1-no-light-tailed"
+finding = "FIX_REVIEW_LOUIS_20261012_round3.md M3"
+type = "forbid"
+pattern = "light-tailed"
+literal = true
+known_bad = "file:review_response/known_bad/residual_20261012_1735.tex"
+note = "Set 2 は対数正規（CV 0.40）で heavy-tailed。'light-tailed' で Sets 1–2 を括らない"
+
+[[guard]]
+id = "LR3-G2-S6-crosses"
+finding = "FIX_REVIEW_LOUIS_20261012_round3.md C1"
+type = "forbid"
+pattern = "S6 \\(\\\\numval\\{biasOverSdS6n100\\}\\) and in S4 at \\$n = 100\\$, whose CDFs do not cross"
+known_bad = "file:review_response/known_bad/residual_20261012_1735.tex"
+note = "平均一致の S6 の CDF は必ず交差し、bias は 11 MCSE。S4 と一括りにしない"
+
+[[guard]]
+id = "LR3-G3-no-universal-interval-claims"
+finding = "FIX_REVIEW_LOUIS_20261012_round3.md C2/C3"
+type = "forbid"
+pattern = "wherever the interval undercovers|in every non-null cell \\("
+known_bad = "file:review_response/known_bad/residual_20261012_1735.tex"
+note = "S4-100 の上限 coverage は 0.971 < 0.975；basic 区間は S2-50 で percentile に勝つ"
+
+[[guard]]
+id = "LR3-G4-no-causal-mechanism-claim"
+finding = "FIX_REVIEW_LOUIS_20261012_round3.md M2"
+type = "forbid"
+pattern = "locates the cause|has a general cause|a location difference favours the KS statistic"
+known_bad = "file:review_response/known_bad/residual_20261012_1735.tex"
+note = "PROTOCOL_set4_control_mechanism §2 が許すのは null SD 比と paired ΔAUC の符号反転だけ。因果動詞と class への一般化は書かない"
+
+[[guard]]
+id = "LR3-G5-abstract-normal-reference"
+finding = "FIX_REVIEW_LOUIS_20261012_round3.md M5"
+type = "proximity"
+scope = "abstract"
+stem = "SD \\(normal"
+qualifier = "reference"
+known_bad = "file:review_response/known_bad/residual_20261012_1735.tex"
+note = "1.2 SD の上端 S6 の partner は対数正規。'normal' は reference 分布の形容"
+
+[[guard]]
+id = "LR3-G6-abstract-collapsible"
+finding = "FIX_REVIEW_LOUIS_20261012_round3.md M6"
+type = "proximity"
+scope = "abstract"
+stem = "differ by at most"
+qualifier = "collapsib|risk|mean difference"
+known_bad = "file:review_response/known_bad/residual_20261012_1735.tex"
+note = "周辺 OR/HR では成り立たない — abstract の bound 文は可縮な尺度を名指す"

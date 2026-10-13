@@ -1,0 +1,3 @@
+"case","partners","n_partner_min","n_partner_max","resolved_age","resolved_sbp","resolved_delay","rank_width_age","rank_width_sbp","rho_age_sbp","rho_lo","rho_hi"
+"GUSTO-I (anchor R8)",15,1231,4352,9,14,NA,6.73333333333333,5,-0.3,-0.514285714285714,0.0214285714285714
+"IST-1 (anchor USA)",35,2,6257,23,12,25,12.4571428571429,17.6857142857143,0.0389355742296919,-0.0918767507002801,0.263865546218487

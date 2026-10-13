@@ -123,7 +123,7 @@
 
 | 例 | 薬剤 / 試験 | 論点 | 教訓 |
 |----|-----------|------|------|
-| 1 | Secukinumab（ASAS, 軸性脊椎関節炎） | CRP+/MRI− 比率・併用 biologics の地域不均衡 | EM 調整後に ASAS40 が consistent に。subgroup 不均衡が見かけの inconsistency を説明 |
+| 1 | Secukinumab（PREVENT, 非X線軸性脊椎関節炎） | CRP / MRI 陽性・性別が EM。EM 分布が似た国を post hoc に 5 pooled regions に clustering | pooled region 間の治療差は概ね consistent、CRP+/MRI+ と性別の分布で "slightly" 異なる。日本の不一致は treatment assignment の不均衡と小標本（2 vs 7）によるもので **EM によるものではない**（原典 p.966、2026-10-12 訂正） |
 | 2 | Pertuzumab（CLEOPATRA, HER2+ 乳癌） | 疾患特性・前治療・腫瘍生物学 | 疾患生物学が well-characterized なら EM が biologically plausible で consistency 支持 |
 | 3 | Palbociclib（PALOMA-3） | 日本人 n≈35、層別化因子の不均衡 | 小標本→高い統計的不確実性。holistic 評価（生物学的妥当性・外部整合性）が必須 |
 | 4 | Blonanserin 経皮パッチ（統合失調症） | 日本の効果が小さいが EM で説明不能 | EM で説明できない地域差も存在。生物学的説明が無い場合は慎重な臨床判断 |

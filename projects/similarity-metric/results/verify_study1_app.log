@@ -52,6 +52,9 @@
 [verify] Table 5 (generated) has 15 partner rows with 6 columns         PASS
 [verify] Table 5 age ranks match W1 order (unresolved share 1--6)       PASS
 [verify] Table 5 SBP ranks match W1 order (unresolved R2 = 1)           PASS
+[verify] Table 5 age rank intervals match results/gusto_rank_intervals.csv PASS
+[verify] Table 5 SBP rank intervals match results/gusto_rank_intervals.csv PASS
+[verify] rank intervals contain the observed rank                       PASS
 [verify] unresolved age distances are exactly the six smallest          PASS
 [verify] L* = 0.01 / W1 (age) and 0.01 / W1 (SBP)                       PASS
 [verify] L* interval = 0.01 / CI of W1 (reversed)                       PASS

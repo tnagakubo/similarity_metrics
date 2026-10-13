@@ -1,0 +1,44 @@
+Estimated-k (silhouette) average-linkage clustering, W1, n = 2000:
+            set    n method       ari        mc_se k_hat_mean k_hat_mode
+  Set1_Gaussian 2000     W1 1.0000000 0.0000000000      3.000          3
+ Set2_LogNormal 2000     W1 1.0000000 0.0000000000      3.000          3
+   Set3_Mixture 2000     W1 0.6460870 0.0046908591      2.260          2
+  Set4_Extremes 2000     W1 0.9977448 0.0004242275      3.014          3
+ p_k_correct
+       1.000
+       1.000
+       0.260
+       0.986
+
+Registered real-data survey (all region pairs):
+    data         em regions pairs spearman_w1_smd spearman_w1_ks
+ GUSTO-I        age      16   120           0.906          0.953
+ GUSTO-I     height      16   120           0.960          0.967
+ GUSTO-I      pulse      16   120           0.965          0.959
+ GUSTO-I      sysbp      16   120           0.958          0.935
+ GUSTO-I     weight      16   120           0.985          0.989
+   IST-3        age       6    15           0.961          0.900
+   IST-3      nihss       6    15           0.996          0.971
+   IST-3        sbp       6    15           0.961          0.882
+   IST-3 treatdelay       6    15           0.886          0.964
+   IST-3     weight       6    15           0.839          0.879
+   IST-1        AGE      24   276           0.976          0.965
+   IST-1     RDELAY      24   276           0.992          0.965
+   IST-1       RSBP      24   276           0.940          0.934
+ smd_negl_w1_resolved smd_negl_w1_unresolved max_sd_ratio
+                   42                     33         1.12
+                   20                     19         1.29
+                   49                     28         1.12
+                   35                     18         1.16
+                   21                     16         1.47
+                    0                      3         1.27
+                    0                      1         1.18
+                    0                      4         1.16
+                    0                      2         1.65
+                    0                      6         1.27
+                    7                     38         1.56
+                    4                     40         1.31
+                    6                     78         1.41
+Spearman(W1, |SMD|) range over the 13 dataset x EM rows: 0.839 - 0.996
+
+required_n_selection.csv methods: KS,RV1,RV2,RV3,SMD,W1,SMD_log ; thresholds: 0.8,0.9,0.95

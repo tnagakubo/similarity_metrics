@@ -162,8 +162,13 @@ cat(sprintf("SBP   Ŵ₁ range: [%.3f, %.3f] mmHg\n",
 # Figure 3 — W₁ raw axis, two panels with per-panel ordering
 # =============================================================================
 
+# Referee Minor 13 (2026-10-12): partners whose W1 is unresolved against the anchor null floor
+# carry a dagger, read with the same rule as Tables 5 and 7 (make_paper_tables.R: !resolved_anchor).
+op <- read.csv(file.path(results_dir, "gusto_operability.csv"), stringsAsFactors = FALSE)
+unres_key <- paste(op$em, op$region)[!op$resolved_anchor]
 forest_data <- results %>%
-  mutate(partner_label = paste0("R", partner))
+  mutate(partner_label = paste0("R", partner,
+                                ifelse(paste(variable, paste0("R", partner)) %in% unres_key, "\u2020", "")))
 
 .build_forest_panel <- function(data, var_name, var_title, panel_letter,
                                 x_unit, palette) {

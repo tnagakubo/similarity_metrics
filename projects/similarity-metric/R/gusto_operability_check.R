@@ -97,11 +97,10 @@ main <- function() {
           if (res_p) "resolved" else "NOT resolved")
       rows[[length(rows) + 1L]] <- data.frame(
         em = em, region = p, n_anchor = n_a, n_partner = n_p,
-        w1_obs = w1, tau_clin = tau,
+        w1_obs = w1,
         null_mean_anchor = fa[["mean"]], null_q95_anchor = fa[["q"]],
         null_mean_partner = fp[["mean"]], null_q95_partner = fp[["q"]],
         resolved_anchor = res_a, resolved_partner = res_p,
-        eligible = w1 <= tau,
         stringsAsFactors = FALSE)
     }
   }
@@ -115,11 +114,11 @@ main <- function() {
     nr <- s$region[!s$resolved_anchor]
     say("%-6s null mean range %.3f-%.3f | null q95 range %.3f-%.3f | tau %.1f",
         em, min(s$null_mean_anchor), max(s$null_mean_anchor),
-        min(s$null_q95_anchor), max(s$null_q95_anchor), s$tau_clin[1])
+        min(s$null_q95_anchor), max(s$null_q95_anchor), TAU[[em]])
     say("       NOT resolved: %d / %d  -> %s", length(nr), nrow(s),
         if (length(nr)) paste(sort(nr), collapse = " ") else "(none)")
     say("       of those, how many are on the ELIGIBLE side (W1 <= tau): %d / %d",
-        sum(!s$resolved_anchor & s$eligible), length(nr))
+        sum(!s$resolved_anchor & s$w1_obs <= TAU[[em]]), length(nr))
   }
 
   say("\n[sensitivity] verdicts that FLIP when the null is drawn from the partner")

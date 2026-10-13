@@ -129,10 +129,14 @@ in the Matsushima 2024 Case 1 (secukinumab) story.**
    difference (~52% vs ~22% in MRI+) illustrate the clinical magnitude of effect that
    CRP/MRI EM differences can produce
 
-5. **Connection to Matsushima (2024) Case 1**: Japan had more CRP+/MRI− patients in the
-   MEASURE/PREVENT submission package → Japan ASAS40 was lower → after controlling
-   for CRP/MRI distribution, consistency restored. This paper provides the quantitative
-   rates by subgroup that support that mechanism.
+5. **Connection to Matsushima (2024) Case 1** (corrected 2026-10-12 against the Matsushima
+   PDF, p.966): the workshop report pooled countries with similar EM distributions into five
+   regions post hoc; region 1 (incl. Japan) had *fewer* CRP+ and *more* MRI+ patients and a
+   smaller treatment difference. The Japanese-subpopulation inconsistency is attributed to
+   imbalanced treatment assignment and small n (2 vs 7), "but not due to potential effect
+   modifiers". The earlier wording here ("Japan had more CRP+/MRI− patients … after
+   controlling for CRP/MRI distribution, consistency restored") was not in the source.
+   This paper still provides the subgroup response rates by CRP/MRI status.
 
 ## Cross-References
 

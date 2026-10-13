@@ -1,0 +1,14 @@
+"set","w1_n","w1_lo","w1_hi","ks_n","ks_lo","ks_hi","verdict","one"
+"Set1_Gaussian / location",33,31,33,39,37,40,"W1_fewer",1
+"Set1_Gaussian / scale",25,NA,25,76,73,78,"W1_fewer",1
+"Set1_Gaussian / combined",35,33,36,62,60,63,"W1_fewer",1
+"Set2_LogNormal / location",129,123,135,157,149,165,"W1_fewer",1
+"Set2_LogNormal / shape",32,30,33,77,75,79,"W1_fewer",1
+"Set2_LogNormal / combined",60,58,62,188,182,193,"W1_fewer",1
+"Set3_Mixture / shape_sym",690,661,718,716,687,747,"overlap",1
+"Set3_Mixture / shape_skew",537,520,554,905,865,945,"W1_fewer",1
+"Set3_Mixture / combined",368,354,381,550,528,572,"W1_fewer",1
+"Set4_Extremes / sym_severity",42,41,43,1047,1011,1083,"W1_fewer",1
+"Set4_Extremes / sym_prevalence",98,94,101,367,356,378,"W1_fewer",1
+"Set4_Extremes / asym_severity",67,64,69,1252,1226,1278,"W1_fewer",1
+"Set4_Extremes / bulk_shift",377,362,392,333,318,348,"KS_fewer",1

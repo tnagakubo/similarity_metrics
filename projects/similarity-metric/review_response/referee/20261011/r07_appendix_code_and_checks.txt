@@ -1,0 +1,6 @@
+Appendix code, R8 vs R1 age: 0.6463562285 [0.5096199578, 1.0346342961]
+results CSV:                 0.6463562285 [0.5096199578, 1.0346342961]
+age: pooled GUSTO-I range 91.0 (min 19.0, max 110.0); L_UB x range = 0.910 (<= 2 needed for a risk-difference CATE)
+sysbp: pooled GUSTO-I range 280.0 (min 0.0, max 280.0); L_UB x range = 0.560 (<= 2 needed for a risk-difference CATE)
+partners with W1_age < 1.5 years: 12 of 15
+SBP == 0: 6 (regions 11,10,1,12,6,12); SBP < 60: 57; age > 100: 3 (regions 3,12,8); R8: SBP < 60 2, age > 100 1

@@ -116,10 +116,26 @@ exp_rank <- function(w, un) { r <- rank(w); ifelse(un, NA, r) }
 ua_set <- p$R %in% ua; us_set <- p$R %in% us
 ea <- exp_rank(p$W1_age, ua_set)[match(rid, p$R)]; es <- exp_rank(p$W1_sysbp, us_set)[match(rid, p$R)]
 ga <- cells[, 4]; gs <- cells[, 6]
-okA <- all(ifelse(is.na(ea), ga == "1--6$^\\dagger$", ga == as.character(ea)))
-okS <- all(ifelse(is.na(es), gs == "1$^\\dagger$", gs == as.character(es)))
+# 2026-10-12 (D-20261011-11, referee M4): resolved rank cells read "rank [lo, hi]" with the 95% patient-level bootstrap
+# rank interval from results/gusto_rank_intervals.csv (R/gusto_rank_intervals.R). Compare the rank, then the interval.
+rank_part <- function(x) trimws(sub("\\[.*$", "", x))
+# 2026-10-12 (referee Minor 5): unresolved cells read "1--6$^\dagger$ [lo, hi]" (shared point-rank range + own rank interval).
+okA <- all(ifelse(is.na(ea), rank_part(ga) == "1--6$^\\dagger$", rank_part(ga) == as.character(ea)))
+okS <- all(ifelse(is.na(es), rank_part(gs) == "1$^\\dagger$", rank_part(gs) == as.character(es)))
 check("Table 5 age ranks match W1 order (unresolved share 1--6)", okA, TRUE)
 check("Table 5 SBP ranks match W1 order (unresolved R2 = 1)", okS, TRUE)
+ri <- read.csv("results/gusto_rank_intervals.csv", stringsAsFactors = FALSE)
+iv_cell <- function(x) sub("^[0-9]+ ", "", x)
+exp_iv <- function(em, ids) {
+  r <- ri[ri$em == em, ]
+  k <- match(as.integer(sub("^R", "", ids)), r$partner)
+  sprintf("[%d, %d]", r$rank_lo[k], r$rank_hi[k])
+}
+okIA <- all(ifelse(is.na(ea), TRUE, iv_cell(ga) == exp_iv("age", rid)))
+okIS <- all(ifelse(is.na(es), TRUE, iv_cell(gs) == exp_iv("sysbp", rid)))
+check("Table 5 age rank intervals match results/gusto_rank_intervals.csv", okIA, TRUE)
+check("Table 5 SBP rank intervals match results/gusto_rank_intervals.csv", okIS, TRUE)
+check("rank intervals contain the observed rank", all(ri$rank_lo <= ri$rank_obs & ri$rank_obs <= ri$rank_hi), TRUE)
 check("unresolved age distances are exactly the six smallest", all(rank(p$W1_age)[ua_set] <= 6), TRUE)
 
 # ---- L* table ----------------------------------------------------------------

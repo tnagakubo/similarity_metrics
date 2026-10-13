@@ -6,9 +6,11 @@
 **Project**: per-EM W₁ paper — "Quantifying Effect Modifier Similarity for Regional Pooling in MRCTs"
 **Target**: *Statistics in Medicine*
 **Manuscript**: `paper/per_em_W1_wiley.tex`（20 pp、v6 + Terminal pass 09-27 + Tak の 09-27 決定（RV1–RV3・clustering を外す、W₁ で順位付け）を Option B の生成基盤の上に載せ直してマージ（2026-10-11、D-20261011-8）。compile error 0・undefined 0、Tak の機械で latexmk 再 build）
+**Question / Aims**（Tak 2026-10-12 10:46 — RESEARCH_FRAMEWORK S22。Aim は**目的**であって方法ではない）: **A1** 効果修飾因子の分布の類似性を定量的に評価する指標を提示すること。判定規則・partner 数・結合規則は Aim に含まない（`memory/feedback_quantify_not_decide.md`）
+**Results that answer A1**（目的と結果の対応 — Results の小節と CLAIMS の行はこの番号を持つ）: R1 指標の定義と性質（per-EM W₁、Prop. 1 Δ_max = L·W₁、既存指標 KS / SMD との関係）; R2 指標が EM 分布の違いに盲目でないこと（Study 1）; R3 指標の推定量と bootstrap 区間の性能（Study 2、MCSE 付き）; R4 指標の読み方の例示（GUSTO-I）。この四つのどれにも答えない結果は原稿に入れない（`IDEAS_BACKLOG.md` / `exploratory/`）
 **Phase**: 8 — Revision（査読応答）
 **Phase entered**: 2026-09-06
-**Updated**: 2026-10-11 22:00（ローカルの 09-27 作業と origin/main（PR #16/#17）のマージ後の on-disk sync、D-20261011-8。**Phase は変更していない** — gate の検証は `/phase next`）
+**Updated**: 2026-10-14 01:40（D-20261014-1 **applied**: 本文 11,097 → **9,617 語**（1.6×、74 cuts + Louis review-fix の復元、拒否権項目 15）。Tables 3–5 → `tab:estimation`。build 0/0/**21 pp**、guards 59 0 FAIL、abstract 250/250、unsourced 0、verify ALL PASS。**Phase は変更していない**。未 commit — commit は Tak。次: 拒否権項目の確認（Tak）、bootstrap 端点の MC 誤差、L_UB の根拠、Álvarez-Esteban）
 
 ## Lifecycle artifacts（2026-10-10、ディスクの実状態）
 
@@ -26,6 +28,9 @@
 | Numbers ledger（設計定数） | `results/NUMBERS_LEDGER.csv` | ✅ 31 行、**Katrina 署名 31/31**（Methods 補強で加えた 97.5 / 1,000 / 42 と Louis review で加えた $z_{0.975}$ も source で確認、2026-10-11） |
 | Derived numbers（single writer） | `R/make_derived_numbers.R` → `results/derived/*.csv`（AUC range、error rate と chance、Set 4 母集団 W₁/KS、oracle−silhouette、GUSTO Spearman/SD 比、S6 閉形式、N/n_R8） | ✅ 乱数なし、`sessionInfo` 併置。CI が鮮度を検査 |
 | Replication report | `results/REPLICATION_20261011.md`（+ `results/replication/`） | ✅ **PASS**（coverage 0.009、moments ≤ 0.099 vs 許容 0.025/0.30）。true_W1 FAIL は本文の 2 桁丸めが原因 → Methods を補強（A1 resampling scheme、A2 S1 coverage、正確な true W₁、seed/RNG、type-7 quantile；D-20261011-7） |
+| Referee report（cold read, 2026-10-11） | `review_response/REFEREE_20261011.md` + `review_response/referee/20261011/`（R 8 本） | ✅ Major 5 / Minor 14、再計算 44 行不一致 0。**判断 D-20261011-11、適用済み（2026-10-12）**: M1–M5・Minor 1–7, 9, 10, 12 ✅、Minor 8 却下、Minor 11/13/14 ⏳。guard 30 本 strict（referee の 15 本は pending → 昇格）。`FIX_REVIEW_20261011.md` residue 0 |
+| Residual review（2026-10-12） | `review_response/INTERNAL_REVIEW_20261012.md`（Louis）、`VERIFY_RESIDUAL_20261012.md`（Mike A1–A9）、`CITATION_AUDIT_20261012.md`（Rachel）、`KATRINA_FIG3_TABLES_20261012.md` + `KATRINA_TABLE_FOLD_20261012.md`、`results/VERIFY_FOUREYES_20261012.md`、`FIX_REVIEW_20261012.md`（cascade）、`FIX_DIFF_20261012.diff`、known_bad `review_response/known_bad/per_em_W1_wiley_20261012.tex` | ✅ 判断 D-20261012-2、**適用済み 11:00**: Critical 4（C1 both suffice / C2 standardized distance / C3 n^{-1/2} / C4 uniform shift）、Major 10（M1–M10、Table 1→2 統合）、Minor 採用 14、Matsushima・FTT・Song の引用訂正、Louis `/review-fix`（`FIX_REVIEW_LOUIS_20261012.md`、K1–K3 適用）。本文 9,923 語（実質不変）。guard `LR2-*` 11 本 strict。Tak の拒否権は `% Paragraph revised 2026-10-12 (D-20261012-2 …)` の段落に対して投稿前まで開いている |
+| Round 3（2026-10-12 午後） | `review_response/EXTERNAL_REVIEW_20261012.md`（外部、Tak 経由）、`review_response/referee/20261012/REFEREE_20261012.md`（冷読 #2、再計算 44 行不一致 0）、`EXTERNAL_REVIEW_ATTACK_20261012.md`（Louis）、`LIT_POSITIONING_20261012.md`（Rachel、9 本）、`LENGTH_PLAN_20261012.md`（Katrina）、`PROTOCOL_set4_control_mechanism.md`（新、本番 run 済み）、`PROTOCOL_study2_extension.md`（新、実行中）、`results/VERIFY_FOUREYES_20261012_round3.md`、`exploratory/set4_control_mechanism/` | ✅ D-20261012-3 **applied（10-13 00:55）**: 断る 3 件（EXT M3 Study 3 / M5 決定規則 / M7(b)）は科学的理由を記録；採用: attainment → class 内 sharp + 単調 bound、可縮性、Jensen、Study 1 の射程、位置づけ段落（bib +8）、Set 4 機構（登録済み）、片側上限・basic 区間、permutation、外れ値・heaping、Table 8 の † 区間、誤植。Study 2 拡張 11 cell は `tab_study2_ext` と §3.2・§4.2 の一文で本文に；Louis round 3（C3/M15/m9）も反映。ARS integrity PASS WITH NOTES、re-review Minor Revision、応答表あり。残: 長さ、Minor 10、M7(a) |
 | Numbers gates | `results/verify_study2.log`, `results/verify_study1_app.log` | ✅ ALL PASS（2026-10-11 22:00 再実行、134 + 60 checks；`verify_study1_app_numbers.R` は Table 5 の Rank 列も `generated/tab_gusto_nabcd.tex` から読む） |
 | CI | `.github/workflows/lab-checks.yml`, `r-and-tex.yml` | 🟡 追加済み（generated tables・derived CSV・macros の鮮度検査を含む）、初回 run は push 後。TeX job は初回 green まで `continue-on-error` |
 | Cloud setup | `scripts/cloud_setup.sh` | 🟡 **Tak**: 環境設定 → Setup script に登録 |
@@ -56,9 +61,11 @@
 - [ ] Response letter / tracker — ディスクに無い。simulated review への応答文書を作るか、不要と判断するかを `/decide`
 - [x] `/verify-numbers` — registry 132 keys（全 key 使用）、表 9 本生成、ledger 31 行、unsourced **0**（ratchet baseline 0）。ledger 30/30 署名。`/claims check` と合わせて Mike が最終 PASS を宣言
 - [x] `/replicate` PASS（2026-10-11、`results/REPLICATION_20261011.md`）— Methods の欠落 A1/A2 は D-20261011-7 で本文に反映済み
-- [ ] `/cite-check` 全行 yes — 未実施
+- [x] `/referee` Major 5 件 — 方針 D-20261011-10、判断 D-20261011-11、**適用 2026-10-12**（R 3 本・registry +20・原稿 46 置換・`/review-fix fad1010` residue 0・guards 30 strict PASS・build 0/0/21 pp）。Tak の拒否権は `% Paragraph revised 2026-10-11 (D-20261011-11 …)` 29 段落に対して投稿前まで開いている。残: Minor 11（Rachel）、Minor 13（Katrina）、`/claims check`（C-43 pending、C-08/09 の verify）
+- [x] 残差レビュー（2026-10-12、D-20261012-2）— Louis C4/M10 全件適用、Louis `/review-fix`（`FIX_REVIEW_LOUIS_20261012.md`）、四つ目の目（Katrina、23 keys 一致、Harvey の説明文 1 件を訂正）。残: `gusto_operability.csv` の旧列 `tau_clin`/`eligible` の整理（code 公開準備、Louis m16）、C4 の機構は `/explore` 候補
+- [ ] `/cite-check` 全行 yes — **部分実施 2026-10-12**（`CITATION_AUDIT_20261012.md`: 原典で読んだ 11 keys のうち Matsushima NOT SUPPORTED → 訂正済み、partial 5 → 訂正済み（FTT 条件、Song 限定）/ 記録済み；PDF 不在 lee1995・andrews2000・austin2011 ほかは Paper Request）
 - [ ] `/reproduce` PASS — 未実施（絶対パス 20 本を先に直す）
-- [ ] `/claims check` PASS — 39 行起票、全行 pending（Mike が evidence を verify して supported に）
+- [ ] `/claims check` PASS — 43 行。**2026-10-12**: supported 7（C-05/06/08/10/11/23/37）、narrowed 6（C-08/09/16/17/32/35）、withdrawn 1（C-30）、retracted 1（C-34）、残り pending（Mike が verify 中、C-43 は Katrina の verify 待ち）
 - [x] コンパイル error 0・undefined 0（2026-10-11 22:00、マージ後に latexmk で再 build、20 pp；overfull 4）。注: `paper/build.sh` の `TEXINPUTS` は `:` 区切りで Windows では `.cls` を見失う（CI/Linux 用；ローカルは latexmk）
 - [ ] `scripts/check_consistency.sh` clean — 2 findings（RESPONSE_TRACKER なし、CLAIMS 全行 pending）
 

@@ -169,7 +169,7 @@
 - **SI joint edema (MRI+)**: LD −3.45 vs placebo −1.64 at Week 16 (P=0.0008)
 - **Implication**: CRP+/MRI− patients respond less well → CRP/MRI is a confirmed EM
 - **nABCD calibration**: Effect size difference between MRI+ and overall (~40.8%) informs Δ_max
-- **Matsushima Case 1 linkage**: Japan had more CRP+/MRI− patients → lower observed ASAS40 → after EM distribution adjustment, consistency restored
+- **Matsushima Case 1 linkage** (corrected 2026-10-12 against the PDF, p.966): region 1 (incl. Japan) had *fewer* CRP+ and *more* MRI+ patients and a smaller treatment difference; the Japanese inconsistency is attributed to imbalanced treatment assignment and small n (2 vs 7), "but not due to potential effect modifiers". Countries with similar EM distributions were pooled post hoc into five regions
 - **Gap identified**: Quantitative metric for "similar enough" - nABCD fills this!
 - **East Asia context**: Japan-China-Korea pooling considerations
 
