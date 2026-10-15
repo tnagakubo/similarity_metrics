@@ -598,3 +598,66 @@ stem = "differ by at most"
 qualifier = "collapsib|risk|mean difference"
 known_bad = "file:review_response/known_bad/residual_20261012_1735.tex"
 note = "周辺 OR/HR では成り立たない — abstract の bound 文は可縮な尺度を名指す"
+
+# ================================================================================================
+# Louis /review-fix of the essence cut D-20261015-2（review_response/FIX_REVIEW_LOUIS_20261015_essence.md）
+# — 2026-10-15 08:06、Louis 起票、Harvey 採用。known_bad = file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex
+# （07:50 の cut 直後の原稿、verbatim — 6 本すべてがそこで FAIL する）。
+# ================================================================================================
+
+[[guard]]
+id = "LF2-M1-coverage-axis-not-crossing"
+finding = "FIX_REVIEW_LOUIS_20261015_essence.md M1"
+type = "proximity"
+scope = "section:sec:sim_results"
+stem = "misses fall on both sides"
+qualifier = "relative to the sampling standard deviation"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex"
+note = "coverage の軸は bias / sampling SD。CDF の交差だけでは S6（交差して 0.942）と S2（交差せず 0.703）を説明しない（10-12 C2 の再発防止）"
+
+[[guard]]
+id = "LF2-M2-extension-at-0.2SD"
+finding = "FIX_REVIEW_LOUIS_20261015_essence.md M2"
+type = "proximity"
+scope = "section:sec:app_operability"
+stem = "extension cells"
+qualifier = "0[.]2 ?~?SD"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex"
+note = "GUSTO の距離は 0.03–0.30 SD、30 組中 6 組が 0.2 SD 超。E5/E6 は 0.2 SD の cell であって『this operating point』全体ではない"
+
+[[guard]]
+id = "LF2-M3-set4-with-mcse"
+finding = "FIX_REVIEW_LOUIS_20261015_essence.md M3"
+type = "proximity"
+scope = "section:sec:study1_selection"
+stem = "reversed the sign|changed sign"
+qualifier = "set4DeltaAucGaussN200d2Mcse|set4DeltaAucMixN200d2Mcse"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex"
+note = "符号反転を言う文は ΔAUC の推定値と MCSE を伴う（2 MCSE 超の判定が読者に見える）"
+
+[[guard]]
+id = "LF2-M7-no-unresolved-crossing"
+finding = "FIX_REVIEW_LOUIS_20261015_essence.md M7"
+type = "forbid"
+scope = "section:sec:study1_selection"
+pattern = "where the two AUC curves cross near the target"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex"
+note = "AUC 0.8 では区間が重なる（W₁ 204 [188, 220] vs KS 184 [164, 206]）。交差を言い切らない"
+
+[[guard]]
+id = "LF2-m2-S5-not-boundary"
+finding = "FIX_REVIEW_LOUIS_20261015_essence.md m2"
+type = "forbid"
+pattern = "Near the boundary, S2 and S5"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex"
+note = "S5 は 0.4 SD で論文自身の分類では非境界側"
+
+[[guard]]
+id = "LF2-M6-line-not-threshold"
+finding = "FIX_REVIEW_LOUIS_20261015_essence.md M6"
+type = "require"
+pattern = "not a threshold for pooling"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex"
+note = "森林図の Δ_clin / L_UB 参照線は sponsor の illustrative bound に依存し、pooling の閾値ではない（quantify, not decide）"

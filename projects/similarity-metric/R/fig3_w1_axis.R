@@ -27,6 +27,12 @@ suppressPackageStartupMessages({
 
 set.seed(2026)
 
+# Reference lines (D-20261015-2): W1 at which L* = DELTA_CLIN / W1 equals the
+# illustrative sponsor bound L_UB (manuscript Sec. 2.4). x_ref = DELTA_CLIN / L_UB.
+DELTA_CLIN <- 0.01; L_UB_AGE <- 1e-2; L_UB_SBP <- 2e-3
+X_REF_AGE <- DELTA_CLIN / L_UB_AGE   # years
+X_REF_SBP <- DELTA_CLIN / L_UB_SBP   # mmHg
+
 # --- Paths -------------------------------------------------------------------
 # 2026-09-22 (Mike): the absolute base_dir hard-code was replaced by the
 # script-relative resolver used elsewhere in R/ (study1_summary_exact.R,
@@ -171,7 +177,7 @@ forest_data <- results %>%
                                 ifelse(paste(variable, paste0("R", partner)) %in% unres_key, "\u2020", "")))
 
 .build_forest_panel <- function(data, var_name, var_title, panel_letter,
-                                x_unit, palette) {
+                                x_unit, palette, x_ref) {
   d <- data %>% filter(variable == var_name)
   ord <- d %>% arrange(W1) %>% pull(partner_label)
   d$partner_label <- factor(d$partner_label, levels = rev(ord))
@@ -186,6 +192,11 @@ forest_data <- results %>%
     geom_errorbarh(aes(xmin = ci_lower, xmax = ci_upper),
                    height = 0.3, linewidth = 0.4, color = col_ci) +
     geom_point(size = 2, color = col_pt) +
+    geom_vline(xintercept = x_ref, linetype = "dotted", linewidth = 0.5,
+               color = "#1A1A1A") +
+    annotate("text", x = x_ref, y = Inf, label = "Delta[clin]/L[UB]",
+             parse = TRUE, size = 2.8, hjust = -0.1, vjust = 1.5,
+             color = "#555555") +
     scale_x_continuous(limits = c(0, NA),
                        labels = function(x) sprintf("%.2f", x)) +
     labs(
@@ -210,9 +221,9 @@ forest_data <- results %>%
 build_forest <- function(palette = c("greyscale", "color")) {
   palette <- match.arg(palette)
   pA <- .build_forest_panel(forest_data, "age",   "Age",
-                            "A", "years",  palette)
+                            "A", "years",  palette, X_REF_AGE)
   pB <- .build_forest_panel(forest_data, "sysbp", "Systolic blood pressure",
-                            "B", "mmHg",   palette)
+                            "B", "mmHg",   palette, X_REF_SBP)
   pA + pB
 }
 
