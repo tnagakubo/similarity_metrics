@@ -26,3 +26,4 @@ now live here. Start Claude Code from the repository root (`scripts/check_consis
 - [Fix explanations unchecked](feedback_fix_explanations_unchecked.md) — 修正に添えた mechanism/rate/suffice 文が CSV 未検算で偽（10-12 Critical 4）。修正段落の説明文は 2 セル比で検算
 - [Own fix text & marker swallow](feedback_own_fix_text_and_marker_swallow.md) — 10-12: 俺の修正 5 件が CSV と矛盾 / `% revised` 行が本文を飲む（round 3 で再発, guard G7）/ mean 一致なら CDF は必ず交差
 - [Fixed-tau is not KR-circular](feedback_fixed_tau_not_kr_circular.md) — decline theta-sim because a fixed tau picks the winner; KR optimality is sup-only. Ext review 10-12 lessons
+- [Cut reopens guarded holes](feedback_cut_reopens_guarded_holes.md) — 10-15 x2: paraphrase passes regex guards; "figure replaces text" drops number+SE carriers; DECISIONS "insurance kept" and CLAIMS "narrowed" only in log

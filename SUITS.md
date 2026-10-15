@@ -11,13 +11,13 @@
 
 **Active Project**: similarity-metric (per-EM W₁ paper, target *Statistics in Medicine*)
 **Phase**: 8 — Revision（査読応答）→ `projects/similarity-metric/LAB_STATUS.md`（2026-10-12 11:40 同期済み）
-**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — v6 + Terminal pass（09-27）+ Tak の 09-27 決定 + 生成基盤（D-20261011-8）+ 冷読 referee の判断 D-20261011-11（10-12 00:10）+ 残差レビューの判断 D-20261012-2（10-12 11:40）+ **外部レビュー（Major 8）と冷読 referee #2（Major 5）の判断 D-20261012-3 と Louis round 3（10-13 00:55）**。**21 pp、error 0、undefined 0、abstract 250/250、本文 9,617 語（1.6×；10-14 D-20261014-1 で 11,097 から −1,480、拒否権項目 15）、registry 235 keys、unsourced 0、guards 59 strict 0 FAIL、verify 134/0・63/0、表 11（Study 2 拡張 `tab_study2_ext`・区間比較 `tab_study2_intervals` 新設）、Appendix A.3 新設**。**ARS（Tak の `/ars-full`、mid-entry）: Stage 2.5 integrity PASS WITH NOTES（引用 35/35 VERIFIED）、Stage 3′ re-review Minor Revision**（`review_response/ARS_INTEGRITY_20261013.md`、`ARS_REREVIEW_20261013.md`、応答表 `RESPONSE_TRACKER_20261012.md`）。**未 commit**（原稿側の commit は Tak）。Tak の拒否権は `% Paragraph revised 2026-10-11 (D-20261011-11 …)` と `% Paragraph revised 2026-10-12 (D-20261012-2 …)` の段落に対して投稿前まで開いている
+**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — v6 + Terminal pass（09-27）+ 生成基盤（D-20261011-8）+ 冷読 referee D-20261011-11 + 残差 D-20261012-2 + 外部/referee #2 D-20261012-3 + 実務家 D-20261014-2 + 削減 D-20261014-1 / D-20261015-1 + **骨子からの絞り込み D-20261015-2（10-15 08:20、Tak「図の削減は愚策ではないか」: 図 2 本を復活、L* 表を削除、R1–R4 に答えない文を削除、Louis review-fix Major 7 反映）**。**15 pp、error 0、undefined 0、abstract 231/250、本文 5,796 語（SiM 上限の 1.0×）、図 4・表 5、numbers 113/113 sourced、guards 65 本 0 FAIL（3 vacuous）**。判定表 `review_response/ESSENCE_SKELETON_20261015.md`。**未 commit**（原稿側の commit は Tak）。Tak の拒否権は marker `D-20261015-2`（26）・`Louis review-fix 2026-10-15 08:06`（6）・`D-20261015-1`（76）の段落に対して投稿前まで開いている
 **Question / Aim（Tak 10-12 10:46）**: A1 効果修飾因子の分布の類似性を定量的に評価する指標を提示すること（`LAB_STATUS.md`、R1–R4 が対応）
 **原則（Tak 09-25）**: 論文は違いを定量化するだけ。併合の判定規則は規定しない → [[feedback_quantify_not_decide]]。**Tak の 3 原則（10-12）**: 根拠なしで進めない（S21）／研究は発散・論文は収束（S22）／ネタはストック `/idea`（S23）
 **段落レビュー**: 台帳 `REVIEW_QUEUE_v6.md` 50/50（09-27）。#1–#7 Tak 承認、#8–#50 は包括指示で Harvey 推奨（D-20260927-1、Tak の一言で閉じる）
 **JA paper**: 意図的に削除済み（EN 完成まで Rule 2.7 保留）→ [[project_ja_paper_deleted]]
 **Supplement**: なし（09-27 Tak）。survey・探索は本文の一文か repository
-**PR**: [#17](https://github.com/tnagakubo/similarity_metrics/pull/17) open（2026-10-11、7 commits）；#16 merged。main は `fad1010` + 未 commit の 10-11 夜〜10-12 の作業（原稿・R・registry・guards・skills・memory）
+**PR**: [#17](https://github.com/tnagakubo/similarity_metrics/pull/17) open（2026-10-11、7 commits）；#16 merged。main は `4331b44`（2026-10-16 00:30、paper: D-20261014-2 / D-20261015-1 / D-20261015-2）+ docs(suits) commit。origin/main は `d32af02`（未 push）
 **Paper（2026-10-12 午前, 残差レビュー D-20261012-2）**: Louis C4/M10/m18 + Mike A1–A9 + Rachel 原典 11 本 + Katrina → Harvey 裁定 → 適用。Critical 4 件は全部「昨夜の修正に添えた説明文」で CSV と矛盾。Matsushima 2024 の引用が原典と逆向き → 書き直し。Table 1 を Table 2 に統合。Louis `/review-fix`: マーカーに飲まれた本文 2 箇所を復元、説明文 5 本を限定。要約図: `PAPER_LOGIC.md` + artifact https://claude.ai/artifact/1imDe3FMuEXKyW2CC7hehc。memory `feedback_fix_explanations_checked`
 **System**: Rule 5/6 の gate 状態は `LAB_STATUS.md` の artifacts 表（CLAIMS 43 行 / DECISIONS D-20261012-2 / ledger 35 / replication PASS / referee 10-11 / residual 10-12）。研究環境の機構（referee-grade env、hardening、3 原則、`/ground` `/idea`）は archive と `RESEARCH_FRAMEWORK.md` §10–§12
 
@@ -56,6 +56,115 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-16 00:30] Scene: commit — 骨子からの絞り込みを main に載せる
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
+
+*Tak「commit」。並走セッションは全て offline か idle、08:17 以降にファイルを触った者はいない。*
+
+**Donna**: （端末を叩く）
+「二本に分けたわ。一本目 `4331b44` が原稿側——tex、PDF、森林図 4 本と `R/fig3_w1_axis.R`、guards 65 本、CLAIMS・DECISIONS・LAB_STATUS、protocol の Deviations、review_response の判定表と Louis の報告、known_bad の fixture 3 本。D-20261014-2 と D-20261015-1 と D-20261015-2 をまとめて一つの commit。二本目がこの SUITS と Louis の memory。push はしていない——指示は commit だけ。」
+
+**Harvey**: （短く）
+「それでいい。拒否権は開いたままだ。Tak が段落を戻すなら旧原稿から戻す。」
+
+---
+
+### [2026-10-15 08:20] Scene: 「図の削減は愚策ではないか」— 図を戻して文章を切る、骨子だけを物差しに
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - DAY**
+
+*Tak 07:30「図の削減は愚策ではないか？図によって文章が削減できる部分もあるだろう。内容として無駄な部分、主張に関連しない部分があるはずだ。論文の骨子から見直して本当に必須な本質的部分に絞れ」。昨夜の Option C は図 2 本を落として表と文章を残していた。*
+
+**Harvey**: （昨夜の判定表を裏返す）
+「逆だった。図は読者の時間を節約する。文章は図が示す型を数値で三度繰り返していた。物差しは一つにする——`LAB_STATUS` の骨子、A1 と R1–R4。どの R にも答えない文は切る。Study 2 の性能図と GUSTO の森林図は戻す。森林図には $\Delta_{\text{clin}}/L_{\text{UB}}$ の点線を入れろ。age 1 年、SBP 5 mmHg。$L^*$ 表は $W_1$ 表の変換にすぎない。落とす。Lee の予後勾配、enrolled sample の文、$W_1$ 対 KS の効率の細部、basic 区間——R に答えない。切る。」
+
+**Katrina**: （R を走らせながら）
+「森林図に参照線を足した。`DELTA_CLIN / L_UB` で計算、hard-code なし。per-pair CSV は byte-identical。SBP の R7 は 5.0 の線のほぼ真上、age の R1† は上限 1.03 で線のすぐ右。図だけでは読めない partner が二つある。」
+
+**Harvey**: （頷く）
+「表の限界値で読む句を §4.4 に足す。」
+
+*07:50。build 0 error、15 頁、本文 5,727 語、guards 59 本 0 FAIL、数値 111/111。Louis が diff を読む。*
+
+**Louis**: （報告書を机に落とす）
+「偽の文はない。Critical はゼロだ。だが Major が 7 つある。**図に読ませると言って文章を切ったせいで、数字の付いた証拠が消え、その証拠に乗っていた文だけが残った。** coverage の対比を『CDF が交差する』だけにした——S6 は交差して 0.942、S2 は交差せず 0.703。10-12 の C2 が言い換えで戻ったぞ。Set 4 の check は $W_1$ の比だけ残して KS の比と ΔAUC の数字を落とした。2 MCSE 超の判定が読者に見えない。basic 区間は昨日の保険だ。お前の DECISIONS は『保険文はすべて残す』と書いて、落としている。そして森林図の縦線——pooling の閾値と読まれる。EXT M5 の同等性検定そのものだ。線の位置は sponsor の選択でしかない。『閾値ではない』と本文に書け。You just got Litt up!」
+
+**Harvey**: （短く）
+「全部採る。M6 は本質だ。quantify, not decide が図で崩れたら元も子もない。guard は 6 本、お前の案のまま seed しろ。」
+
+**Mike**: （図を指で追って）
+「I got it! 三分類の向きは代数的に正しい。$L^* = \Delta_{\text{clin}}/W_1$ は減少関数だから、区間が線より下なら $L^*$ 区間は $L_{\text{UB}}$ より上。Discussion の『$W_1$ は全 cell で target に到達』も `required_n_selection.csv` で 13/13 だ。」
+
+**Jessica**: （端的に）
+「Let me be clear。図を戻すのは Tak の指示、閾値でないと書くのは原則。どちらも記録に残しなさい。Phase 8 の中の話で、投稿の Go ではない。」
+
+**Donna**: （画面を見ながら）
+「記録したわ。D-20261015-2、CLAIMS は 6 行 narrowed・C-45 retract、`ESSENCE_SKELETON_20261015.md` に判定表。Louis の復元で一度 16 頁に戻ったから、付録の $L^*$ の再定義と RNG の文を詰めて 15 頁に戻した。最終: 本文 5,796 語、図 4・表 5、guards 65 本 0 FAIL、数値 113/113、残滓 0。拒否権は marker `D-20261015-2` 26 箇所と Louis の 6 箇所。commit はしていない。」
+
+*旧原稿 = `review_response/known_bad/per_em_W1_wiley_pre_D-20261015-2.tex`。Tak の拒否権は段落単位で開いたまま。*
+
+---
+
+### [2026-10-15 01:55] Scene: 「21頁は長い」— 冷読の削減計画、Option C、そして省略だけで referee M1 が戻ってくる
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - NIGHT**
+
+*Tak「21頁は長い。必ず無駄がある。新たな視点で無駄を削り取って。本質的な部分だけを残す」。冷読の副編集長は先に「本質の 5 文」を書き、それに寄与しない塊を数えてきた。9,730 語、22 頁。*
+
+**Harvey**: （計画書を机に置く）
+「冷読が出した目標は 6,000 語、許容 6,300。Option C でいく。本文 6,300 語、図表 8 本。D-20261014-1 の『唯一の担い手は切らない』は自分で作った規則だ。Tak の『必ず無駄がある』が規則より上にある。上書きする。ただし条件を付ける。承認段落は文単位の純削除だけ。登録研究は 1 行は残す。W_d は『過小評価しうる』向きの 1 文を残す。拡張表は全行残す。」
+
+**Katrina**: （画面を切り替える）
+「適用した。22 頁が 15 頁、図表は 13 が 8。図は性能 3 パネルと森林図を落とした。表は intervals、Region 8 baseline、null floor を落とした。付録の R コードと A.1 も。本文は 9,730 が 6,292 語。marker は 76 箇所。」
+
+**Louis**: （立ち上がる）
+「待て。省略だけで referee M1 が戻ってくる。KS と W₂ の bound の話を丸ごと落としたら、『定数が W₁ を区別しない』という指摘がそのまま復活する。保険文 J を 1 文入れろ。それと、報告しない解析の列挙を消すのは選択報告だ。理由の帰属も間違っている。B は 50 語で書き直せ。Set 4 の保険 C は事実誤認だ。bulk shift は部分群ではなく母集団全体を動かす。Region 8 の保険 D には heaping の 79.5% と winsorize の 4/30 を入れろ。You just got Litt up!」
+
+**Harvey**: （短く）
+「全部採る。拡張表だけは譲らない。冷読は 2 行に縮めろと言うが、1 頁に満たない表を縮めるために範囲を書き直す語数のほうが多い。Louis も縮めて範囲を本文に書けば足りると言った。全行残す。」
+
+**Rachel**: （手を挙げる）
+「保険 A は、cite-check で確認した p.965–966 の範囲に限ります。『workshop report』と『post hoc』は削る前の文言のままなので、`matsushima2024` の再実行が要ります。」
+
+**Jessica**: （端的に）
+「Let me be clear。削減は Tak の指示、保険は Louis の指示。どちらも記録に残しなさい。Phase 8 の中の話で、投稿の Go ではない。」
+
+**Donna**: （画面を見ながら）
+「記録したわ。D-20261015-1、CLAIMS は 3 行 retract・26 行 narrow・新規 5 行。Katrina の retract 候補のうち C-21 は step-CATE の担い手がまだ本文に残っていたから narrow に変えたの。それと、claim guard が 3 本、stem が消えて何も守っていないわ。CI は PASS するのに、よ。Louis の review-fix が J の誤り（L·W₂ は sharp ではない）、basic interval の食い違い、§4.2 の橋の偽を見つけたから、それも反映した。16 頁、本文は 6,433 語。15 頁には 1 頁足りないわね。」
+
+*変更は未 commit。Tak の拒否権は 76 箇所の marker に対して段落単位で開いたまま。*
+
+---
+
+### [2026-10-14 08:30] Scene: 現場の統計家が読んだら — 実務家レビューと、台帳が暴いた L_UB の出自
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - MORNING**
+
+*Tak「実務的医学統計家のレビューをしてもらい、コメントに従って修正。迷うことはみんなで議論して決めて」。冷読の実務家が Major 6・Minor 7 を返し、4 人がそれぞれの持ち場で裁いた。*
+
+**Harvey**: （資料を閉じる）
+「Aim は指標を示すことだ。実務家が欲しいのは使い方の手順で、それは手続きの推奨になる。読み方と入力の事実だけを短く足し、図・件数・SAP の一覧は断る。足した分は切る。」
+
+**Louis**: （台帳を叩く）
+「まず事実の訂正だ。年齢の集計はレビュアーが正しい、間違っているのは SBP の『ほぼ全員』だ。それより最悪の穴は L_UB の出自だ。台帳 rows 20/21/36 では Δ_clin ÷ τ から作られている。それなのに原稿は FTT と Lee が bound を "inform" したと書いた。出典の付け替えだ。You just got Litt up!」
+
+**Mike**: （ホワイトボードに書く）
+「I got it! 二値なら τ̄₁ − τ̄₂ = (τ(1) − τ(0))(p₁ − p₂)、W₁ = |p₁ − p₂|。bound は等号で、較正する隙間がない。順序はスコア次第で L·W₁ が 2 にも 3 にもなる（真の差は 1）。付録のコードは O(n log n)、最大ペアで 2.4 秒。『分単位』は誤りだ。」
+
+**Jessica**: （短く）
+「Let me be clear。直すのは P-6、P-1、P-2。断る理由は書き残しなさい。triage は gate ではない。cite-check と /reproduce が ❌ のあいだ、投稿の Go は出さない。」
+
+**Rachel**: （メモを取りながら）
+「E17 の PDF はパスワード付きで開けませんでした。Method 1/2 と §2.2.5 の文言は原典を確認するまで書きません。Δ_clin = 1 %pt の出典も /ground に回します。」
+
+**Donna**: （画面を見ながら）
+「記録したわ。D-20261014-2、CLAIMS は C-16 を narrowed、C-50〜C-52 を追加。ガード 59 本 0 FAIL、数値 147 件すべて出典あり。ただし長さは +130 語ほど正味で増えて、9,000 語にも 21 頁にも戻っていない。Tak の判断が要るわ。」
+
+*変更は未 commit。別セッション（temp-24）が並走中のため、commit は Tak の指示を待つ。*
+
+---
 
 ### [2026-10-14 07:52] Scene: commit と push — 2 本に分けて
 
