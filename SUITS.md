@@ -57,6 +57,20 @@
 
 ## 🎬 Live Script
 
+### [2026-10-16 23:50] Scene: commit と push — 複雑さの削減を main に載せる
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
+
+*Tak「commitして」「push」。Donna が 22 ファイルを確認する — 原稿・PDF・生成表 2 本・R 2 本・CLAIMS・CLAIM_GUARDS・DECISIONS・LAB_STATUS・PAPER_LOGIC・protocol 2 本・review_response 3 本・known_bad 2 本・verify log・Louis の agent memory・SUITS。*
+
+**Donna**: （先例どおり二つに分けて）
+「一つ目 `d10c757` — paper: D-20261016-1 の Step 1–5 と Louis の review-fix、ゲートの数値、superseded にした旧判断、記録ファイル。二つ目はこの scene を載せた docs(suits)。そのまま origin/main へ push。10-14 の `d32af02` から ahead だった 2 commit（`4331b44`、`2ed2bc2`）も一緒に上がる。」
+
+**Harvey**: （短く）
+「拒否権は閉じていない。marker 21 箇所、特に参照距離が τ_clin の形であること — commit は判断ではなく記録だ。Tak が戻すなら `known_bad/per_em_W1_wiley_pre_D-20261016-1.tex` から戻す。」
+
+---
+
 ### [2026-10-16 10:20] Scene: Louis の `/review-fix` — Critical 2 を飲み、τ_clin の反論を書き、Rank 列を落とす
 
 **INT. PEARSON SPECTER LITT - LOUIS'S OFFICE - MORNING**
