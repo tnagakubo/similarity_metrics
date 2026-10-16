@@ -130,18 +130,8 @@ check("L* interval = 0.01 / CI of W1 (reversed)",
       isTRUE(all.equal(l$lstar_age_lower, 0.01 / p$ci_upper_age[match(l$partner, p$R)])) &&
       isTRUE(all.equal(l$lstar_sbp_upper, 0.01 / p$ci_lower_sysbp[match(l$partner, p$R)])), TRUE)
 check("R1 SBP lower L* = 0.00203 (> L_UB,SBP 0.002)", c(round(l$lstar_sbp_lower[l$partner=="R1"], 5), l$lstar_sbp_lower[l$partner=="R1"] > 0.002), c(0.00203, 1))
-# Since 2026-10-11 the table body is generated (R/make_paper_tables.R) and pulled in by \input{generated/tab_gusto_lstar_joint}.
-tab <- readLines("paper/generated/tab_gusto_lstar_joint.tex", encoding = "UTF-8")
-rows <- grep("^R[0-9]+ &", tab, value = TRUE)
-num <- function(x) as.numeric(regmatches(x, gregexpr("[0-9]+\\.[0-9]+", x))[[1]])
-got <- t(sapply(rows, function(r) { cs <- strsplit(r, "&")[[1]]; c(num(cs[2])[1], num(cs[3])[1], num(cs[4]), num(cs[5])) }))
-want <- cbind(round(l$w1_age,2), round(l$w1_sbp,2), round(l$lstar_age,4), round(l$lstar_age_lower,4), round(l$lstar_age_upper,4),
-              round(l$lstar_sbp,4), round(l$lstar_sbp_lower,4), round(l$lstar_sbp_upper,4))
-check("L* table: all 15 rows x 8 numbers match the CSV", all(abs(unname(got) - want) < 1e-9), TRUE)
-dag_age <- sub(" .*", "", rows[grepl("^R[0-9]+ & [0-9.]+\\$\\^\\\\dagger", rows)])
-dag_sbp <- sub(" .*", "", rows[grepl("^R[0-9]+ & [0-9.]+(\\$\\^\\\\dagger\\$)? & [0-9.]+\\$\\^\\\\dagger", rows)])
-check("daggers (age) = unresolved age distances", sort(dag_age), sort(ua))
-check("daggers (SBP) = unresolved SBP distances", dag_sbp, us)
+# (the generated L* table and its dagger checks retired 2026-10-17: tab_gusto_lstar_joint is no longer generated — L* left the
+#  manuscript with D-20261015-2 / D-20261016-1. The CSV identities above stay as the record of Delta_clin / W1.)
 
 # (W1 dendrogram checks removed 2026-09-27: clustering is no longer reported in the paper.)
 

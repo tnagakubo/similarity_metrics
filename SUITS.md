@@ -57,6 +57,35 @@
 
 ## 🎬 Live Script
 
+### [2026-10-17 08:45] Scene: 大掃除・二日目 — 「別件」にした分を全部片付ける
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*08:45、Tak「続けてすべて整理して」。昨夜「温存判断」「Tak 判断」「`/necessity` の案件」と書いて残した項目が、テーブルの上に並んでいる。*
+
+**Harvey**:
+「昨夜の『別件』は今日の本件だ。生成表、L* の gate、poster、build.sh、baseline。順番にやれ。依存を切るのが先、動かすのは後。」
+
+**Mike**:（`make_derived_numbers.R` を指して）
+「一つ罠がありました。`R/gusto_lstar_table.R` は L* 引退で死んでるように見えるけど、`make_derived_numbers.R` がそこから `DELTA_CLIN` を parse していて、`NUMBERS_LEDGER.csv` も Δ_clin の source locator として指してる。あれを archive すると registry の Δ_clin が根拠を失う。だから script と CSV は残して、原稿が `\input` しない生成表 4 本（`tab_gusto_r8`・`tab_operability`・`tab_gusto_lstar_joint`・`tab_study2_intervals`）の生成コードだけ `make_paper_tables.R` から外した。8 → 4 tabulars。`verify_study1_app_numbers.R` の L* 表照合 12 行も撤去、CSV の恒等式（L* = 0.01 / W₁）は残す。再生成して残り 4 表は byte 一致、gate は ALL PASS。I got it!」
+
+**Katrina**:
+「registry の未使用 key `lstarSbpLowerR1`（原稿出現 0）を落として `numbers_macros.tex` を再生成、234 macros。`numbers_audit` 105/105。`build.sh` は MSYS で `TEXINPUTS` の `:` 区切りが効かず `.cls` を見失い、しかも失敗後に tracked PDF を `output/` に `mv` してた。区切りを OS で切り替え、PDF が出たときだけ `cp` するようにした。MSYS で 15 ページ、エラー 0。」
+
+**Donna**:
+「poster は live 文書からの参照ゼロ、発表は 5 月。archive。`paper/.remember/` は plugin の迷い込み、消した。baseline は unbilled 5・R lint 1 に下げた — 昨夜 CI 扱いで止められた分、今朝は Write で通った。`scripts/` は 23 本全部が skills / hooks / CI から呼ばれてる。整理対象なし。`check_consistency` の『LAB_STATUS が stale』も Updated を直して消えたわ。」
+
+**Louis**:（腕を組んだまま）
+「言っておく。`run_tests.sh` は 118 pass / 1 fail だ。落ちてるのは `claim_guards --mutation` — vacuous 4 本（REF-M1、REF2-m1、LR3-G2、LF3-M8）と known_bad 無し 8 本。原稿も guards も known_bad も `4e61ccb` から一文字も変わってない。つまり整理のせいじゃなく、昨日から落ちてた。だが『前から落ちてた』は免罪符じゃない。俺の `/review-fix` 案件として MANIFEST に書かせた。」
+
+**Jessica**:
+「Let me be clear. 整理は二日で終わり。残りは Louis の guard 4 本と `/claims check`。それは整理ではなく原稿の仕事だ。commit して push。」
+
+**Donna**:
+「ratchet PASS、guards 67/0 FAIL、consistency の新規指摘ゼロ、build 15pp。commit するわ。」
+
+---
+
 ### [2026-10-17 00:40] Scene: 大掃除 — 参照ゼロのファイルを archive に集約する
 
 **INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**

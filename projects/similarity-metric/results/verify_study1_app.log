@@ -56,9 +56,6 @@
 [verify] L* = 0.01 / W1 (age) and 0.01 / W1 (SBP)                       PASS
 [verify] L* interval = 0.01 / CI of W1 (reversed)                       PASS
 [verify] R1 SBP lower L* = 0.00203 (> L_UB,SBP 0.002)                   PASS
-[verify] L* table: all 15 rows x 8 numbers match the CSV                PASS
-[verify] daggers (age) = unresolved age distances                       PASS
-[verify] daggers (SBP) = unresolved SBP distances                       PASS
 
 -- Discussion --
 [verify] age vs SBP distance ordering across the 15 partners: Spearman -0.30 PASS

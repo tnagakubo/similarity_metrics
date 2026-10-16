@@ -41,7 +41,7 @@ The nABCD-era engine (`simulation_manuscript_v2.R`, `nABCD_rcpp.cpp`, `run_*.R`,
 | `gusto_null_floor_permutation.R` | `results/gusto_null_floor_permutation{,_summary}.csv` |
 | `gusto_rank_intervals.R` | `results/gusto_rank_intervals.csv`, `gusto_rank_spearman_boot.csv` |
 | `gusto_sensitivity_outliers.R` | `results/gusto_sensitivity_outliers{,_summary}.csv`, `gusto_sbp_digit_preference.csv` |
-| `gusto_lstar_table.R` | `results/gusto_lstar_intervals.csv` (L* retired in D-20261016-1; still read by `make_paper_tables.R`) |
+| `gusto_lstar_table.R` | `results/gusto_lstar_intervals.csv` (L* retired in D-20261016-1 and its table is no longer generated; the script stays because `make_derived_numbers.R` parses `DELTA_CLIN` from it and `results/NUMBERS_LEDGER.csv` cites it as the source of Δ_clin; `verify_study1_app_numbers.R` keeps the CSV identities) |
 | `gusto_w1_clustering.R` | `results/gusto_w1_clustering.csv`, `figures/fig_gusto_dendrogram.pdf` (silhouette extension) |
 | `application_all_methods.R` | `results/app_all_methods_{distances,ranks,procedures}.csv` |
 | `gusto_case_study.R` | 2026-05 nABCD-era case study; kept because `results/NUMBERS_LEDGER.csv` cites it as a source locator |

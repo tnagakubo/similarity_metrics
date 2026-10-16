@@ -102,7 +102,6 @@ w1AgeR2,results/gusto_r8_w1_per_pair.csv,partner=2,W1_age,value,.2f,1,§4.3: R2 
 w1SbpR2b,results/gusto_r8_w1_per_pair.csv,partner=2,W1_sysbp,value,.2f,1,§4.3: R2 W1 on SBP (smallest),508,0.95,1
 w1AgeR9,results/gusto_r8_w1_per_pair.csv,partner=9,W1_age,value,.2f,1,§4.3: R9 W1 on age (4th smallest),508,0.59,1
 w1SbpR9b,results/gusto_r8_w1_per_pair.csv,partner=9,W1_sysbp,value,.2f,1,§4.3: R9 W1 on SBP (largest),508,6.80,1
-lstarSbpLowerR1,results/gusto_lstar_intervals.csv,partner=R1,lstar_sbp_lower,value,.5f,1,tab:gusto_lstar_joint note: lower limit of R1's SBP L* interval,530,0.00203,1
 sdRatioMax,results/derived/derived_scalars.csv,quantity=gusto_max_sd_ratio_partner_vs_anchor,value,value,.2f,1,§5: partner SDs within this factor of the anchor's,554,1.11,1
 spearmanW1SMDage,results/app_all_methods_ranks.csv,em=age;method=SMD,spearman_vs_W1,value,.2f,1,"§5: Spearman correlation of the W1 and SMD orderings of the 15 partners, age",554,0.90,1
 spearmanW1SMDsbp,results/app_all_methods_ranks.csv,em=sysbp;method=SMD,spearman_vs_W1,value,.2f,1,§5: the same for systolic blood pressure,554,0.95,1

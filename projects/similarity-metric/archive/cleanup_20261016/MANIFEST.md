@@ -31,6 +31,21 @@
 | `claude_science/neyman_smooth/` | `claude_science/neyman_smooth/` | 18 | 09-22 の Neyman smooth test 側線研究（参照ゼロ、`IDEAS_BACKLOG.md` にも無し）。`claude_science/` 本体（README・referee_report・verify_corrections.R）は `CLAIM_GUARDS.toml` が参照するため残置 |
 | `review_response/lit_prognostic_predictive_L.md`, `memo_technical_L_and_scope.md`, `presentation_proposals.md`, `tmp_floor_sensitivity.R` | `review_response/` | 4 | 09-06 の L（Lipschitz 定数）メモ群。L* は D-20261016-1 で引退。日付付きの review 記録（`*_2026MMDD.md`、`known_bad/`、`referee/`）はすべて残置 |
 
+## 2 回目（2026-10-17 朝、Tak「続けてすべて整理して」）
+
+1 回目で「温存判断」「Tak 判断」「別件」にした項目を片付けた。
+
+| このフォルダ内 | 元パス | 件数 | 理由 |
+|---|---|---:|---|
+| `paper/generated/tab_gusto_r8.tex`, `tab_operability.tex`, `tab_gusto_lstar_joint.tex`, `tab_study2_intervals.tex` | `paper/generated/` | 4 | 原稿が 2026-10-15（D-20261015-1/-2）以降 `\input` しない生成表。`R/make_paper_tables.R` から生成コードを外し（8 → 4 tabulars）、stale copy を `unlink` するようにした。`R/verify_study1_app_numbers.R` の L* 表照合（12 行）も撤去（CSV の恒等式チェックは残置）。`CLAIMS.md` C-12（履歴注）・C-36（取消済み行）のパスを本フォルダに更新。再生成して残り 4 表は byte 一致、gate ALL PASS |
+| `poster/` | `projects/similarity-metric/poster/` | 3 | 2026-05 GSC ポスター（pptx・marp・07-03 セミナー台本）。live 文書からの参照ゼロ、発表済み |
+
+同時に: `paper/numbers_registry.csv` から原稿で未使用の key `lstarSbpLowerR1`（出現 0）を削除し `numbers_macros.tex` を再生成（234 macros）；`paper/.remember/`（plugin の迷い込み状態、untracked）を削除；`paper/build.sh` を MSYS 対応（`TEXINPUTS` の区切りを OS で切替、PDF 未生成時は tracked PDF を動かさない）；`scripts/baseline/` の unbilled 14 → 5、R lint 22 → 1 に引き下げ；`LAB_STATUS.md` の Updated を更新。
+
+**残置（理由つき）**: `R/gusto_lstar_table.R` と `results/gusto_lstar_intervals.csv` — `make_derived_numbers.R` が `DELTA_CLIN` を parse し、`NUMBERS_LEDGER.csv` が Δ_clin の source locator として指す。`R/data/simulation_results_v2.csv`・`data/simulation_results_v2.csv` — CLAIMS の取消済み行 C-34 が指す（内容は異なる 2 本）。`scripts/` は全 23 本が skills / hooks / CI / 他 script から参照されており整理対象なし。
+
+**既知で未対応**: `claim_guards.py --mutation` の vacuous 4 本（REF-M1, REF2-m1, LR3-G2, LF3-M8）と known_bad 無し 8 本は整理前から（原稿・guards・known_bad は 4e61ccb から無変更）。`scripts/tests/run_tests.sh` の 1 件 FAIL はこれ。Louis の `/review-fix` 案件。
+
 ## 削除（アーカイブせず）
 
 | パス | 理由 |

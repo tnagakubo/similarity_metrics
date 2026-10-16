@@ -89,23 +89,13 @@ writeLines(c(hdr("tab:study2_required_n_mc (required n with 95% Monte Carlo inte
 # (tab:study2_ari removed 2026-09-27 with Section 3.1.4: clustering is not reported — PROTOCOL_silhouette_extension.md criterion not met.)
 
 # ============================================================================================================
-# Application (GUSTO-I) tables — data/gusto.csv, results/gusto_operability.csv, gusto_r8_w1_per_pair.csv, gusto_lstar_intervals.csv
+# Application (GUSTO-I) table — results/gusto_r8_w1_per_pair.csv + results/gusto_operability.csv (dagger)
 # ============================================================================================================
-g <- read.csv(file.path(proj, "data", "gusto.csv"), stringsAsFactors = FALSE)
-r8 <- g[g$regl == 8, ]
-skew <- function(x) { m <- mean(x); mean((x - m)^3) / mean((x - m)^2)^1.5 }   # moment skewness (population form)
-r8row <- function(label, v) sprintf("%s & %s & %s & %s \\\\", label, f(mean(r8[[v]]), 1), f(sd(r8[[v]]), 1), fs(skew(r8[[v]]), 2))
-writeLines(c(hdr("tab:gusto_r8 (Region 8: mean, SD 1 dp; moment skewness 2 dp; regl == 8)", "data/gusto.csv"), H("lccc"),
-             "\\textbf{Candidate effect modifier} & \\textbf{Mean} & \\textbf{SD} & \\textbf{Skewness} \\\\",
-             "\\midrule", r8row("Age (years)", "age"), r8row("SBP (mmHg)", "sysbp"), F), file.path(OUT, "tab_gusto_r8.tex"))
+# 2026-10-17 (cleanup, D-20261016-1 cascade): tab_gusto_r8, tab_operability, tab_gusto_lstar_joint and tab_study2_intervals are no
+# longer generated — the manuscript stopped input-ing them on 2026-10-15 (D-20261015-1/-2; the L* table retired with L*). Stale copies are removed.
+unlink(file.path(OUT, c("tab_gusto_r8.tex", "tab_operability.tex", "tab_gusto_lstar_joint.tex", "tab_study2_intervals.tex")))
 
 op <- read.csv(file.path(proj, "results", "gusto_operability.csv"), stringsAsFactors = FALSE)
-oprow <- function(label, em) { r <- op[op$em == em, ]
-  sprintf("%s & %s--%s & %d / %d \\\\", label, f(min(r$null_q95_anchor), 3), f(max(r$null_q95_anchor), 3), sum(!r$resolved_anchor), nrow(r)) }
-writeLines(c(hdr("tab:operability (null 95th percentile range across partners, anchor floor; unresolved = not resolved against the anchor floor)", "results/gusto_operability.csv"), H("lcc"),
-             "\\textbf{Candidate effect modifier} & \\textbf{Null 95th pct.} & \\textbf{Unresolved} \\\\",
-             "\\midrule", oprow("Age (years)", "age"), oprow("Systolic blood pressure (mmHg)", "sysbp"), F), file.path(OUT, "tab_operability.tex"))
-
 unres <- function(em) op$region[op$em == em & !op$resolved_anchor]
 
 pp <- read.csv(file.path(proj, "results", "gusto_r8_w1_per_pair.csv"), stringsAsFactors = FALSE)
@@ -124,27 +114,6 @@ nabcd <- sprintf("R%d & %d & %s & %s \\\\", pp$partner, pp$n,
 writeLines(c(hdr("tab:gusto_nabcd (W1 and 95% percentile bootstrap CI, 2 dp, by region number; dagger = unresolved against the anchor null floor)", "results/gusto_r8_w1_per_pair.csv + results/gusto_operability.csv"), H("lrll"),
              "\\textbf{Partner} & $n$ & $\\boldsymbol{\\widehat{W}_{1,\\text{age}}}$ \\textbf{(yr) [95\\% CI]} & $\\boldsymbol{\\widehat{W}_{1,\\text{SBP}}}$ \\textbf{(mmHg) [95\\% CI]} \\\\",
              "\\midrule", nabcd, F), file.path(OUT, "tab_gusto_nabcd.tex"))
-
-ls <- read.csv(file.path(proj, "results", "gusto_lstar_intervals.csv"), stringsAsFactors = FALSE)
-ls <- ls[order(as.integer(sub("^R", "", ls$partner))), ]
-dag <- function(x, partner, em) paste0(f(x, 2), ifelse(partner %in% unres(em), "$^\\dagger$", ""))
-lstar <- sprintf("%s & %s & %s & %s & %s \\\\", ls$partner, dag(ls$w1_age, ls$partner, "age"), dag(ls$w1_sbp, ls$partner, "sysbp"),
-                 ci(ls$lstar_age, ls$lstar_age_lower, ls$lstar_age_upper, 4), ci(ls$lstar_sbp, ls$lstar_sbp_lower, ls$lstar_sbp_upper, 4))
-writeLines(c(hdr("tab:gusto_lstar_joint (W1 2 dp with dagger when unresolved against the anchor floor; L* 4 dp with 95% percentile interval)", "results/gusto_lstar_intervals.csv + results/gusto_operability.csv"), H("lrrrr"),
-             "\\textbf{Partner} & $\\boldsymbol{\\widehat{W}_{1,\\text{age}}}$ \\textbf{(yr)} & $\\boldsymbol{\\widehat{W}_{1,\\text{SBP}}}$ \\textbf{(mmHg)} & \\textbf{$L^*$ age (/yr)} & \\textbf{$L^*$ SBP (/mmHg)} \\\\",
-             "\\midrule", lstar, F), file.path(OUT, "tab_gusto_lstar_joint.tex"))
-
-# Study 2 interval variants — results/study2_interval_variants.csv (Mike B, 2026-10-12): percentile coverage, upper-limit coverage
-# P(W1 <= U) (4 dp: several cells are 0.9999 and must not print as 1.000), basic coverage, mean widths. Rows in CSV order (scenario, n).
-iv <- read.csv(file.path(proj, "results", "study2_interval_variants.csv"), stringsAsFactors = FALSE)
-stopifnot(nrow(iv) == 21, all(iv$scenario %in% names(labels)))
-ivrows <- vapply(seq_len(nrow(iv)), function(i) { r <- iv[i, ]; first <- i == 1 || iv$scenario[i - 1] != r$scenario
-  sprintf("%s%s & %d & %s & %s & %s & %s & %s \\\\", if (first && i > 1) "\\addlinespace\n" else "", if (first) labels[[r$scenario]] else "", as.integer(r$n),
-          f(r$cov_pct, 3), f(r$cov_upper, 4), f(r$cov_basic, 3), f(r$width_pct, 2), f(r$width_basic, 2)) }, "")
-writeLines(c(hdr("tab:study2_intervals (percentile coverage 3 dp, upper-limit coverage P(W1 <= U) 4 dp, basic coverage 3 dp, mean widths 2 dp; 21 rows)", "results/study2_interval_variants.csv"),
-             "{\\footnotesize", H("lrrrrrr"),
-             "\\textbf{Scenario} & $\\boldsymbol{n}$ & \\textbf{Percentile coverage} & \\textbf{Upper-limit coverage} & \\textbf{Basic coverage} & \\textbf{Mean width (percentile)} & \\textbf{Mean width (basic)} \\\\",
-             "\\midrule", ivrows, F, "}"), file.path(OUT, "tab_study2_intervals.tex"))
 
 # Study 2 extension — results/w1_raw_ext_summary.csv (PROTOCOL_study2_extension.md; cells E1a--E6, E3c). Rows in design order (cell id: E1, E2, E3 at n = 100/200/1000, E4, E5, E6),
 # labels from the cell id (the CSV group column holds "E5/E6 small distance" for both of the last cells), n1, n2 and Reps in their own columns.
@@ -166,4 +135,4 @@ writeLines(c(hdr("tab:study2_ext (true W1 2 dp; bias 3 dp; RMSE 2 dp; coverage 3
              "\\midrule", exrows, F, "}"), file.path(OUT, "tab_study2_ext.tex"))
 
 writeLines(capture.output(sessionInfo()), file.path(OUT, "make_paper_tables_sessionInfo.txt"))
-cat("make_paper_tables: wrote 8 complete tabulars to", OUT, "\n")
+cat("make_paper_tables: wrote 4 complete tabulars to", OUT, "\n")
