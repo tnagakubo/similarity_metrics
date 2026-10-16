@@ -22,7 +22,7 @@
 | Literature search log | `LITERATURE_SEARCH_LOG.md` | ❌ なし（Phase 1 は framework 以前に通過。gap の反証条件は未記載） |
 | Protocols | `PROTOCOL_real_data_survey.md`, `PROTOCOL_study1_identification.md`（**事後登録**、prior-look 開示付き、2026-10-11） | 🟡 Study 2（estimation）は protocol 以前に実施 — `results/STUDY1_PROVENANCE.md` と `R/study2_mcse.R`（MCSE）で代替。Study 1 は事後 protocol に plan（07-11）・production（07-11/12）・extension（07-20）・閾値（07-20）の時系列を開示 |
 | Findings | `SIMULATION_FINDINGS*.md` | ✅ archive/SIMULATION_FINDINGS.md |
-| Paragraph ledger | `REVIEW_QUEUE_v6.md` | ✅ 50/50（#1–#7 Tak 個別承認、#8–#50 包括指示 → D-20260927-1） |
+| Paragraph ledger | `archive/cleanup_20261016/docs/REVIEW_QUEUE_v6.md` | ✅ 50/50（#1–#7 Tak 個別承認、#8–#50 包括指示 → D-20260927-1） |
 | Numbers registry（生成） | `paper/numbers_registry.csv` → `paper/numbers_macros.tex` | ✅ **132 keys、全 key 使用**（RV・clustering の孤児 46 keys を削除、5 keys 追加 — D-20261011-8）。`numbers_audit.py`: 672 → 526 → 2 → **0** unsourced（維持）。`check` PASS（R = Python） |
 | Generated tables | `paper/generated/tab_*.tex`（**9 本**、`R/make_paper_tables.R`） | ✅ tab:study2_required_n は W₁/KS/SMD の 3 列、tab:study2_ari は削除、tab:gusto_nabcd に Rank 列（null floor 内は dagger range を `gusto_operability.csv` から生成）— D-20261011-8；tab:study2_required_n_mc（W₁ vs KS、`R/required_n.R` の delta 法）は維持 |
 | Numbers ledger（設計定数） | `results/NUMBERS_LEDGER.csv` | ✅ 31 行、**Katrina 署名 31/31**（Methods 補強で加えた 97.5 / 1,000 / 42 と Louis review で加えた $z_{0.975}$ も source で確認、2026-10-11） |

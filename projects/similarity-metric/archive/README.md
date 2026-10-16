@@ -20,3 +20,10 @@ The live sources of truth are: `paper/per_em_W1_wiley.tex` (manuscript),
 | `w1_raw_simulation_results.md` | 2026-05-16 | Raw Study-1 results doc; §3.2 + `results/*.csv` are authoritative |
 | `pooling_strategy_em_process.md` | 2026-03-05 | Idea-stage process note; scope since fixed (outline §0, memory) |
 | `nABCD_slide_20260703.pdf` | 2026-07-03 | nABCD-era slide deck; the nABCD terminology was retired 2026-06-22 |
+
+## Sub-archives
+
+| Folder | Date | Contents |
+|---|---|---|
+| `R_nABCD_20260922/`, `R_superseded_20260922/` | 2026-09-22 | Figure writers that would overwrite the canonical fig2 / fig3 (see their README.md) |
+| `cleanup_20261016/` | 2026-10-16 | 218 files unreferenced by the per-EM W₁ pipeline at D-20261016-1: RESTRUCTURE plans + REVIEW_QUEUE_v6, the retired supplements, `paper/backup/`, 65 nABCD-era / pre-v6 R scripts, threshold / anchor-vs-clustering / L_UB results, 46 figures the manuscript does not include, `GUSTO/`, exploratory scripts under `data/`, `claude_science/neyman_smooth/`, the 09-06 L memos. **`MANIFEST.md` inside lists every file with its original path and the reason**; restore with `git mv` |

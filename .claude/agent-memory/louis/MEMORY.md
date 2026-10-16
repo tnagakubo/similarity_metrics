@@ -27,3 +27,4 @@ now live here. Start Claude Code from the repository root (`scripts/check_consis
 - [Own fix text & marker swallow](feedback_own_fix_text_and_marker_swallow.md) — 10-12: 俺の修正 5 件が CSV と矛盾 / `% revised` 行が本文を飲む（round 3 で再発, guard G7）/ mean 一致なら CDF は必ず交差
 - [Fixed-tau is not KR-circular](feedback_fixed_tau_not_kr_circular.md) — decline theta-sim because a fixed tau picks the winner; KR optimality is sup-only. Ext review 10-12 lessons
 - [Cut reopens guarded holes](feedback_cut_reopens_guarded_holes.md) — 10-15 x2: paraphrase passes regex guards; "figure replaces text" drops number+SE carriers; DECISIONS "insurance kept" and CLAIMS "narrowed" only in log
+- [Recount CSV claims](feedback_recount_csv_claims.md) — recount CSVs; deleted constructs resurface (tau_clin x3); "moved to appendix" carriers false; vacuous guards; dangling pointers

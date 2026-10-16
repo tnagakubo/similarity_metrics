@@ -14,7 +14,7 @@
 **EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — v6 + Terminal pass（09-27）+ 生成基盤（D-20261011-8）+ 冷読 referee D-20261011-11 + 残差 D-20261012-2 + 外部/referee #2 D-20261012-3 + 実務家 D-20261014-2 + 削減 D-20261014-1 / D-20261015-1 + **骨子からの絞り込み D-20261015-2（10-15 08:20、Tak「図の削減は愚策ではないか」: 図 2 本を復活、L* 表を削除、R1–R4 に答えない文を削除、Louis review-fix Major 7 反映）**。**15 pp、error 0、undefined 0、abstract 231/250、本文 5,796 語（SiM 上限の 1.0×）、図 4・表 5、numbers 113/113 sourced、guards 65 本 0 FAIL（3 vacuous）**。判定表 `review_response/ESSENCE_SKELETON_20261015.md`。**未 commit**（原稿側の commit は Tak）。Tak の拒否権は marker `D-20261015-2`（26）・`Louis review-fix 2026-10-15 08:06`（6）・`D-20261015-1`（76）の段落に対して投稿前まで開いている
 **Question / Aim（Tak 10-12 10:46）**: A1 効果修飾因子の分布の類似性を定量的に評価する指標を提示すること（`LAB_STATUS.md`、R1–R4 が対応）
 **原則（Tak 09-25）**: 論文は違いを定量化するだけ。併合の判定規則は規定しない → [[feedback_quantify_not_decide]]。**Tak の 3 原則（10-12）**: 根拠なしで進めない（S21）／研究は発散・論文は収束（S22）／ネタはストック `/idea`（S23）
-**段落レビュー**: 台帳 `REVIEW_QUEUE_v6.md` 50/50（09-27）。#1–#7 Tak 承認、#8–#50 は包括指示で Harvey 推奨（D-20260927-1、Tak の一言で閉じる）
+**段落レビュー**: 台帳 `archive/cleanup_20261016/docs/REVIEW_QUEUE_v6.md` 50/50（09-27）。#1–#7 Tak 承認、#8–#50 は包括指示で Harvey 推奨（D-20260927-1、Tak の一言で閉じる）
 **JA paper**: 意図的に削除済み（EN 完成まで Rule 2.7 保留）→ [[project_ja_paper_deleted]]
 **Supplement**: なし（09-27 Tak）。survey・探索は本文の一文か repository
 **PR**: [#17](https://github.com/tnagakubo/similarity_metrics/pull/17) open（2026-10-11、7 commits）；#16 merged。main = origin/main = `8762815`（2026-10-16 23:50、push 済み: `4331b44` paper 10-15 / `2ed2bc2` suits / `d10c757` paper D-20261016-1 + Louis review-fix / `8762815` suits）
@@ -56,6 +56,41 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-17 00:40] Scene: 大掃除 — 参照ゼロのファイルを archive に集約する
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
+
+*Tak の一言「ファイルの整理。不要なものは archive」。Donna は動かす前に、全 651 ファイルの basename を live 文書（原稿・CLAIMS・guards・PROTOCOL・PROVENANCE・ledger・registry・生成 script・CI・skills・memory）で grep させ、「どこからも呼ばれない」一覧を作らせていた。*
+
+**Donna**:（一覧を Harvey に差し出して）
+「感覚で片付けたら、どこかの guard が泣くわ。だから全部 grep した。結論、live から参照ゼロが 218 本。nABCD 期の simulation engine と regen_* が 65 本、v6 で削った閾値・anchor-vs-clustering・L_UB の結果が 12 本、原稿が `\includegraphics` しない figure が 46 本、supplement 6 本、`GUSTO/` 丸ごと、`data/` の下の探索 script、`claude_science/neyman_smooth/`、9 月の L メモ 4 本。全部 `archive/cleanup_20261016/` に `git mv`。履歴は切れてない。」
+
+**Harvey**:（一覧の一行を指で止めて）
+「`paper/` 直下の `.cls` と `.sty` は？ `wiley-template/` と二重だ。消せ。」
+
+**Donna**:
+「消さない。最終 build の log は `./WileyNJDv5.cls` と `./NJDnatbib.sty` を読んでる。しかも `NJDnatbib.sty` は template 版と中身が違う。あれを動かしたら次の build で死ぬわ。MANIFEST の『温存判断』に理由を書いた。」
+
+**Mike**:（結果を見ながら）
+「移動後のゲート、確認しました。`ci_ratchet.sh` PASS、unsourced 0、unbilled results 13 → 5、R lint errors 22 → 1。`evidence_coverage.py` の CLAIMS evidence path 欠落は一瞬 3 になったけど、C-25 が `supplement_L_clinical_lit.md` を履歴パスで指してただけなので archive 側のパスに直して元の 2（C-08・C-49、整理と無関係）。`numbers_audit.py` は 105/105 sourced。I got it! 残った unbilled 5 本は全部 live な protocol script の出力セット。」
+
+**Katrina**:
+「`figures/` は fig1・fig2・fig3・`fig_required_n_auc` と protocol が指す dendrogram の 17 ファイルだけになった。選択・クラスタリング図の writer は残してあるから、必要なら再実行で戻る。`R/` は 100 → 35。`R/README.md` は nABCD 時代の説明のままだったから、現行の生成・simulation・application・figure の表に書き直した。」
+
+**Louis**:（腕を組んで）
+「俺が見るのは『消したせいで証拠が消えた』やつだ。言っておく。`PROTOCOL_real_data_survey.md` の出力欄は `paper/supplement_real_data_survey.tex` を今も指してる。事前登録文を書き換えないのは正しい。だが referee が『出力が無い』と言ったら、答えは MANIFEST だ。そこに『所在』が書いてあるのは確認した。それと `paper/generated/` の `tab_gusto_lstar_joint.tex` と `tab_operability.tex` — 原稿が `\input` してないのに writer が吐いてる。それは整理じゃなく `/necessity` の仕事だ。今日は触るな。」
+
+**Donna**:
+「触ってない。それと入れ子の agent memory、`projects/…/.claude/agent-memory/louis` と `paper/.claude/` — あんたの 10-16 のメモ 1 本を root に `git mv` して index に足した。`check_consistency.sh` の指摘が一つ消えたわ。baseline を下げるのは CI 扱いで止められたから、`echo 5 > scripts/baseline/similarity-metric_results_unbilled.txt` と `echo 1 > …_r_lint_errors.txt` は Tak の手で。」
+
+**Jessica**:（戸口で）
+「Let me be clear. 整理は commit されて初めて整理だ。stage したまま置くな。Tak が一覧を見て、戻すものがなければ commit。」
+
+**Donna**:
+「MANIFEST と `archive/README.md` に全件と戻し方を書いた。commit は Tak の一言で。」
+
+---
 
 ### [2026-10-16 23:50] Scene: commit と push — 複雑さの削減を main に載せる
 

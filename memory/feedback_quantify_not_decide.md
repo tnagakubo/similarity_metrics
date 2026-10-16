@@ -4,7 +4,7 @@ description: 論文は EM 分布の違いを定量化するだけで、併合の
 metadata:
   type: feedback
 ---
-**Source**: `SUITS.md` Current Status「原則（Tak 09-25）」、`projects/similarity-metric/RESTRUCTURE_v6_no_decision.md` §0–§1、archives/SUITS_20260927_130112.md。
+**Source**: `SUITS.md` Current Status「原則（Tak 09-25）」、`projects/similarity-metric/archive/cleanup_20261016/docs/RESTRUCTURE_v6_no_decision.md` §0–§1、archives/SUITS_20260927_130112.md。
 
 **Tak の言葉**（2026-09-25）: 「厳密な判定方法は記載する必要がない。というか規定できない。違いを定量化して判定は臨床的な意味を考慮して行う」→（09-26）「判定の仕組みを抜いて」
 

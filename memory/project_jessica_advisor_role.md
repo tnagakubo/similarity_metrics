@@ -4,7 +4,7 @@ description: advisor tool（上位 reviewer model）の助言は Jessica の声�
 metadata:
   type: project
 ---
-**Source**: `agents/jessica.md` Role 4、`RESTRUCTURE_v6_no_decision.md` §7「追記（advisor 指摘）」。
+**Source**: `agents/jessica.md` Role 4、`archive/cleanup_20261016/docs/RESTRUCTURE_v6_no_decision.md` §7「追記（advisor 指摘）」。
 
 - 相談タイミング = Jessica が口を出す時: approach 確定前、完了宣言前、行き詰まり、方針転換、Go/No-Go
 - **Faithfulness over flavor**: advisor の実際の論点を正確に render。Jessica が言っていない助言を作らない。warning を style のために弱めない

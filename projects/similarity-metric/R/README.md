@@ -1,113 +1,77 @@
 # R Code Directory
 
-R scripts and C++ source for the nABCD simulation study and manuscript figures.
+R scripts and C++ source for the per-EM W₁ manuscript (`paper/per_em_W1_wiley.tex`).
+Every script runs from the project root (`projects/similarity-metric/`) and writes to `results/`, `figures/` or `paper/generated/`.
+One writer per output file; each production script saves a `*_sessionInfo.txt` beside its result and is listed in the matching `results/*_PROVENANCE.md`.
 
-## Entry Points
+The nABCD-era engine (`simulation_manuscript_v2.R`, `nABCD_rcpp.cpp`, `run_*.R`, `regen_*.R`, …) and the pre-v6 decision-rule simulations (`threshold_*`, `anchor_vs_clustering_*`, `validate_*`) were archived on 2026-10-16 → `archive/cleanup_20261016/R/` (see its `MANIFEST.md`). Earlier figure writers that would overwrite fig2 / fig3 are in `archive/R_nABCD_20260922/` and `archive/R_superseded_20260922/`.
 
-| Script | Purpose |
-|--------|---------|
-| `run_all.R` | One-command pipeline: runs simulation then generates figures. Set `MODE` to `"quick"` or `"full"`. |
-| `run_full_sim.R` | Full simulation (10,000 reps, B=2000). Sources `simulation_manuscript_v2.R`. Writes `data/simulation_results_v2.csv`. |
-| `run_sim_500.R` | Quick validation run (500 reps, B=2000). Writes `data/simulation_results_v2_500reps.csv`. |
+## Manuscript generators (run by CI — `.github/workflows/r-and-tex.yml`)
 
-Usage (from `projects/similarity-metric/`):
+| Script | Writes | Notes |
+|---|---|---|
+| `make_paper_tables.R` | `paper/generated/tab_*.tex` | Single writer of every data table (Study 2 estimation, Study 1 identification, GUSTO-I application) |
+| `make_derived_numbers.R` | `results/derived/*.csv` | Quantities the prose cites that no result CSV holds as one cell (ranges, ratios, bounds); feeds `paper/numbers_registry.csv` |
+| `verify_study1_app_numbers.R` | `results/verify_study1_app.log` | Numbers gate for the identification study and the GUSTO-I application |
+| `verify_study2_figures.R` | `results/verify_study2.log` | Numbers gate for the simulation section (Study 2) |
 
-```sh
-Rscript R/run_all.R          # full pipeline
-Rscript R/run_full_sim.R     # simulation only (overnight)
-Rscript R/run_sim_500.R      # quick check (~2.5 h with Rcpp)
-```
+## Simulations (pre-registered; `PROTOCOL_*.md`)
 
-## Core Scripts
+| Script | Protocol | Writes |
+|---|---|---|
+| `w1_raw_simulation.R` + `W1_raw_rcpp.cpp` | — (2026-05-16 base run, S1–S7; provenance in `results/STUDY1_PROVENANCE.md`) | `results/w1_raw_simulation.rds`, `w1_raw_truth.rds` |
+| `study1_summary_exact.R` | — (re-summarises the canonical run with exact truths) | `results/w1_raw_summary.csv` (canonical), `study1_latex_rows.tex` |
+| `study1_miss_side.R` | — | `results/study1_miss_side.csv` (side of CI misses) |
+| `w1_raw_simulation_ext.R` | `PROTOCOL_study2_extension.md` | `results/w1_raw_ext_simulation.rds`, `w1_raw_ext_summary.csv` |
+| `study2_mcse.R` | `PROTOCOL_study2_extension.md` | `results/study2_mcse.csv` (Monte Carlo SE of every performance measure) |
+| `study2_interval_variants.R` | — | `results/study2_interval_variants.csv` |
+| `selection_simulation.R` | `PROTOCOL_study1_identification.md` | `results/selection_sim_summary{,_ext}.csv`, `selection_sim_config{,_ext}.csv` |
+| `clustering_simulation.R`, `clustering_nok_simulation.R` | `PROTOCOL_study1_identification.md`, `PROTOCOL_silhouette_extension.md` | `results/clustering_sim_summary{,_ext}.csv`, `clustering_nok_*` |
+| `required_n.R` | `PROTOCOL_study1_identification.md` | `results/required_n_{selection,clustering}.csv` |
+| `set4_control_mechanism.R` | `PROTOCOL_set4_control_mechanism.md` | `results/set4_control_mechanism.csv`, `set4_integrals.csv`, `set4_null_sd_ratios.csv` |
+| `validate_plan.R` | — | Checks the selection / clustering configuration against the registered plan |
+| `real_data_survey.R` | `PROTOCOL_real_data_survey.md` | `results/real_data_survey_{pairs,summary}.csv` |
 
-| Script | Author | Description |
-|--------|--------|-------------|
-| `simulation_manuscript_v2.R` | Mike Ross | Main simulation engine. Scenarios S1--S7, percentile bootstrap CI, estimation metrics (Bias, RMSE, Coverage, CI Width). Supports Rcpp/Rfast acceleration. |
-| `nABCD_rcpp.cpp` | Mike Ross | C++ bootstrap implementation via Rcpp. ~50--100x faster than pure R. Includes sort-based W1 for equal-n samples and optional BCa. |
-| `figures_paper.R` | Katrina Bennett | Generates all manuscript figures. Reads `data/simulation_results_v2.csv`, writes to `figures/`. Colorblind-friendly palette, SiM style. |
+## GUSTO-I application
 
-## Triangle Inequality Investigation
+| Script | Writes |
+|---|---|
+| `fig3_w1_axis.R` | `results/gusto_r8_w1_per_pair.csv` (Region 8 pairwise Ŵ₁ + percentile bootstrap CI) and Figure 3 |
+| `gusto_operability_check.R` | `results/gusto_operability.csv` (null floor of Ŵ₁ per partner) |
+| `gusto_null_floor_permutation.R` | `results/gusto_null_floor_permutation{,_summary}.csv` |
+| `gusto_rank_intervals.R` | `results/gusto_rank_intervals.csv`, `gusto_rank_spearman_boot.csv` |
+| `gusto_sensitivity_outliers.R` | `results/gusto_sensitivity_outliers{,_summary}.csv`, `gusto_sbp_digit_preference.csv` |
+| `gusto_lstar_table.R` | `results/gusto_lstar_intervals.csv` (L* retired in D-20261016-1; still read by `make_paper_tables.R`) |
+| `gusto_w1_clustering.R` | `results/gusto_w1_clustering.csv`, `figures/fig_gusto_dendrogram.pdf` (silhouette extension) |
+| `application_all_methods.R` | `results/app_all_methods_{distances,ranks,procedures}.csv` |
+| `gusto_case_study.R` | 2026-05 nABCD-era case study; kept because `results/NUMBERS_LEDGER.csv` cites it as a source locator |
 
-Series of scripts investigating whether nABCD satisfies the triangle inequality (prompted by Reviewer R2). Result: nABCD does **not** satisfy it; counterexample uses scale-only normals N(0,1), N(0,5), N(0,20).
+## Figures (`figures/`, paper standard: width 7", base_size 11, greyscale; `_color` for slides)
 
-| Script | Description |
-|--------|-------------|
-| `triangle_inequality_check.R` | Definitive five-part analysis: targeted counterexamples, systematic random search, dense grid, asymptotic argument, formal proof. |
-| `triangle_verify.R` | Clean, minimal counterexample script confirming the definitive result. |
+| Script | Figure |
+|---|---|
+| `figures_paper_W1.R` | Figure 1 (`fig1_w1_definition`) and the shared theme |
+| `fig2_bar_chart.R` | Figure 2 (`fig2_simulation_results`), reads `results/w1_raw_summary.csv` |
+| `fig3_w1_axis.R` | Figure 3 (`fig3_gusto_r8_forest`) |
+| `figures_required_n.R` (shares the theme of `figures_selection.R`) | `fig_required_n_auc` (in the manuscript) and `fig_required_n_ari` (output archived 2026-10-16) |
+| `figures_selection.R` | Selection / clustering figures; the manuscript no longer includes them (outputs archived 2026-10-16) |
 
-Earlier exploratory scripts (`triangle_inequality_analysis.R`, `triangle_inequality_diagnose.R`) were archived to `archive/20260426/triangle_exploratory/` after being superseded by `triangle_inequality_check.R`.
+## Replication
 
-## Verification and Replication
+| Script | Notes |
+|---|---|
+| `replication/study2_estimation_louis.R` | Clean-room re-implementation from the Methods text (`/replicate`, `results/REPLICATION_20261011.md`) |
+| `louis_independent_replication.R` | 2026-05 nABCD-era clean-room replication; cited by `RESEARCH_FRAMEWORK.md` as the pattern |
 
-| Script | Author | Description |
-|--------|--------|-------------|
-| `verify_all.R` | Rachel + Louis + Mike | Comprehensive verification: independent nABCD implementation (no sourcing), true value checks for S1--S7. |
-| `verify_true_values.R` | Mike Ross | Monte Carlo true nABCD values (n=10^6) compared to old hard-coded values. Confirms S4 coverage fix. |
-| `louis_independent_replication.R` | Louis Litt | Clean-room independent replication. All functions from scratch, no project code sourced. |
-| `w1_verify_louis.R` | Louis Litt | Verifies W1 implementations: midpoint method (simulation) vs left-endpoint method (paper appendix) produce identical results. |
-
-## Output Data
+## Data
 
 | File | Description |
-|------|-------------|
-| `data/simulation_results_v2.csv` | Main simulation output (24 rows: 8 scenarios x 3 sample sizes). Primary results for manuscript tables. |
-| `data/application_params.csv` | Hypothetical application parameters (3 regions x 3 EMs) used for illustrative examples. |
-
----
-
-## Application Analysis Scripts
-
-R scripts that apply nABCD to real clinical trial datasets. Located in `data/` subdirectories alongside their source data.
-
-### IST-3 (Third International Stroke Trial)
-
-Directory: `data/IST3/`
-
-| Script | Description |
-|--------|-------------|
-| `ist3_nABCD_age.R` | Age (confirmed EM for alteplase) analysis across countries. Computes pairwise W1 and nABCD for age distributions. Based on Emberson et al. *Lancet* 2014. |
-| `ist3_nABCD_case_study.R` | Clinical calibration case study covering three confirmed effect modifiers: age, treatment delay, and NIHSS (baseline stroke severity). |
-| `ist3_nabcd_vs_smd.R` | Head-to-head comparison of nABCD vs SMD (Cohen's d) for all 28 country pairs across 3 EMs. Demonstrates cases where SMD approx 0 but nABCD is non-trivial. |
-| `ist3_skewed_em_search.R` | Searches for skewed EM candidates where nABCD diverges most from SMD. Filters countries with n >= 50. |
-| `ist3_clinical_calibration.R` | Clinical calibration via Delta_max = 2 * L * IQR_pooled * nABCD, where L is the CATE sensitivity (Lipschitz constant) estimated from treatment-by-EM interaction in logistic regression. Binary outcome: OHS 0--2 at 6 months. |
-
-Data files: `ist3.dat` (raw), `ist3_key_vars.csv`, `ist3_full_vars.csv`, `ist3.sas` (format definitions).
-
-### GUSTO-I (Global Utilization of Streptokinase and TPA for Occluded Arteries)
-
-Canonical script: `R/gusto_case_study.R` (outputs to `GUSTO/`)
-
-| Script | Location | Description |
-|--------|----------|-------------|
-| `gusto_case_study.R` | `R/` | **Paper Case C**: Full case study with anchor Region 13, three EMs (sysbp, age, pulse), bootstrap CIs, clinical calibration, pooling decisions. Outputs CSV + PDF/PNG to `GUSTO/`. |
-| `gusto_nABCD.R` | `data/GUSTO/` | Exploratory pairwise nABCD and SMD across 16 regions for 5 continuous variables. |
-| `gusto_distribution_profile.R` | `data/GUSTO/` | Distribution profiling: overall and regional summaries, normality tests, density/boxplot PDFs. |
-| `gusto_pooling_analysis.R` | `data/GUSTO/` | Pooling partner selection analysis with multivariate scoring and bootstrap CIs. |
-
-Output directory: `GUSTO/` (CSV results + figures)
-
-Also: `data/gusto.csv` is a local CSV export of the GUSTO-I data. The dataset is also available via `predtools::gusto`.
-
-### IST-1 (International Stroke Trial)
-
-Directory: `data/IST/`
-
-| Script | Description |
-|--------|-------------|
-| `ist1_global_nABCD.R` | Country-level pairwise nABCD vs SMD comparisons for age, resting SBP, and treatment delay. Includes correlation analysis, divergence detection, and Asia-focused subset. Countries filtered to n >= 50. |
-
-Data files: `IST_corrected.csv`, `IST_variables.csv`.
-
-### CRASH-2 (Clinical Randomisation of an Antifibrinolytic in Significant Haemorrhage)
-
-Directory: `data/CRASH2/`
-
-No analysis script yet. Contains `crash2.rds` (R data file) and data dictionary (`CRASH2_DataDictionary.html`, `CRASH2_DataDictionary.pdf`).
-
----
+|---|---|
+| `data/gusto.csv` | GUSTO-I IPD (also `predtools::gusto`); `data/GUSTO/gusto_r8_results.csv` is the Region 8 result table |
+| `data/IST/`, `data/IST3/`, `data/CRASH2/` | IST-1, IST-3, CRASH-2 raw data + dictionaries (case-study candidates; `exploratory/ist1_case_study/`) |
+| `data/simulation_results_v2.csv`, `R/data/simulation_results_v2.csv` | nABCD-era simulation output, cited by `CLAIMS.md` history rows |
 
 ## Dependencies
 
-- **R packages**: stats, future.apply, ggplot2, dplyr, tidyr, readr, patchwork, predtools (GUSTO data)
-- **Optional acceleration**: Rcpp (C++ bootstrap), Rfast (faster column sort)
-- **Parallelization**: `future.apply` with `plan(multisession)`. Full simulation uses all available cores minus one.
+- **R packages**: stats, parallel, future.apply, ggplot2, dplyr, tidyr, readr, patchwork, Rcpp
+- **Lint**: `bash scripts/check_r_reproducibility.sh projects/similarity-metric/R` (declared seed, project-relative paths, sessionInfo)
