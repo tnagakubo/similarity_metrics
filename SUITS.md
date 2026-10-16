@@ -17,7 +17,7 @@
 **段落レビュー**: 台帳 `archive/cleanup_20261016/docs/REVIEW_QUEUE_v6.md` 50/50（09-27）。#1–#7 Tak 承認、#8–#50 は包括指示で Harvey 推奨（D-20260927-1、Tak の一言で閉じる）
 **JA paper**: 意図的に削除済み（EN 完成まで Rule 2.7 保留）→ [[project_ja_paper_deleted]]
 **Supplement**: なし（09-27 Tak）。survey・探索は本文の一文か repository
-**PR**: [#17](https://github.com/tnagakubo/similarity_metrics/pull/17) open（2026-10-11、7 commits）；#16 merged。main = origin/main = `8762815`（2026-10-16 23:50、push 済み: `4331b44` paper 10-15 / `2ed2bc2` suits / `d10c757` paper D-20261016-1 + Louis review-fix / `8762815` suits）
+**PR**: [#17](https://github.com/tnagakubo/similarity_metrics/pull/17) open（2026-10-11、7 commits）；#16 merged。main = origin/main = `cb292a6`（2026-10-17 00:25、push 済み: `cb292a6` 整理 archive/cleanup_20261016 / `4331b44` paper 10-15 / `2ed2bc2` suits / `d10c757` paper D-20261016-1 + Louis review-fix / `8762815` suits）
 **Paper（2026-10-12 午前, 残差レビュー D-20261012-2）**: Louis C4/M10/m18 + Mike A1–A9 + Rachel 原典 11 本 + Katrina → Harvey 裁定 → 適用。Critical 4 件は全部「昨夜の修正に添えた説明文」で CSV と矛盾。Matsushima 2024 の引用が原典と逆向き → 書き直し。Table 1 を Table 2 に統合。Louis `/review-fix`: マーカーに飲まれた本文 2 箇所を復元、説明文 5 本を限定。要約図: `PAPER_LOGIC.md` + artifact https://claude.ai/artifact/1imDe3FMuEXKyW2CC7hehc。memory `feedback_fix_explanations_checked`
 **System**: Rule 5/6 の gate 状態は `LAB_STATUS.md` の artifacts 表（CLAIMS 43 行 / DECISIONS D-20261012-2 / ledger 35 / replication PASS / referee 10-11 / residual 10-12）。研究環境の機構（referee-grade env、hardening、3 原則、`/ground` `/idea`）は archive と `RESEARCH_FRAMEWORK.md` §10–§12
 
@@ -89,6 +89,14 @@
 
 **Donna**:
 「MANIFEST と `archive/README.md` に全件と戻し方を書いた。commit は Tak の一言で。」
+
+*00:22、Tak「push」。*
+
+**Donna**:（端末に向かい）
+「来たわ。`cb292a6` — rename 216・修正 8・新規 1・削除 1、226 files。`4e61ccb..cb292a6 main -> main`、origin/main と一致。Jessica、stage したまま置かなかったわよ。」
+
+**Harvey**:
+「整理は終わりだ。次は `/necessity` で generated の未使用表と `gusto_lstar` を片付ける。今日はここまで。」
 
 ---
 
