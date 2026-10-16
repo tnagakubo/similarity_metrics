@@ -57,6 +57,226 @@
 
 ## 🎬 Live Script
 
+### [2026-10-16 10:20] Scene: Louis の `/review-fix` — Critical 2 を飲み、τ_clin の反論を書き、Rank 列を落とす
+
+**INT. PEARSON SPECTER LITT - LOUIS'S OFFICE - MORNING**
+
+*Louis の報告が届く。Fail、Critical 2・Major 8・Minor 8。Harvey が最初の二つを読んで黙る。*
+
+**Louis**: （腕を組んだまま）
+「C1。§2.2 の "neither of the two bounds with a clinical constant dominates" — W₁ ≤ W₂ なんだから L·W₁ は常に L·W₂ を支配する。10-15 に俺が sentence J で塞いだ穴を Step 5 がもう一度開けた。しかも『A.2 へ移設』と書いて、部分積分の導出は付録に無い。C2。『R2 と R9 は離れている』— age の最大は R3 で R2 は 14 位、R9 の CI は R11 とも R12 とも重なる。自分で持ち込んだ基準を CSV に当てなかった。You just got Litt up!」
+
+**Harvey**: （短く）
+「両方俺のミスだ。全件採用する。C1 はお前の文をそのまま入れる — BV と有界台の前提つき、どちらも支配しないのは KS bound と式 (6) の間、W₂ は never tighter。C2 は句を削る。」
+
+**Louis**: 
+「一番重いのは M1 だ。Δ_clin/L_UB は τ_clin そのもので、判断 5 が名指しで却下した『1 年 / 5 mmHg との等価』を、反論も superseded 指定もなしに本文の主役に据えた。Tak の拒否権の箱に黙って入れるな。」
+
+**Jessica**: （入ってきて）
+「Let me be clear。反論は書ける。距離と区間を報告する以上、任意の L_UB′ に対する比較は Δ_clin/L_UB′ で読者に開いている — L* が守っていた構造は W₁ の尺度でそのまま残る。参照距離は sponsor の例示入力で閾値ではない、と定義文に書け。判断 5 と D-20260925-1 は superseded in part、Tak の O-2(a) に明記。それで通す。」
+
+**Mike**: （M2 を検算して）
+「限定句の方向が逆、は正しい。"only if W₁ ≥ Δ_clin/L_UB" は任意の L_UB-Lipschitz CATE で成立する。attainment が要るのは "could produce" の側。§2.4 を『only if … and within the class restricted only by their slope some such CATE produces it whenever …』に、§4.4 と abstract の "could produce" に限定句。I got it.」
+
+**Katrina**: （M6 と M8）
+「Rank 列は落とす — 不確かさの無い点順位は S4 違反で、論文が届けるのは距離だ。Table 5 は 4 列、† は W₁ セルに。verify gate は † の照合に書き換え、ALL PASS。M8 の CR は 10-15 からの既存バグで、PDF に "Section efsec:discussion" と出ていた — 修復、pdftotext で 0。LF3 の guard 9 本を seed、tool が math を detex するので stem は語で書き直した。67 本 0 FAIL。」
+
+**Rachel**: （M4）
+「§3.1.1 に構成の事実を一文で戻しました — 優位の主張なしで、『ε の部分集団を d 動かすと W₁ は εd、KS は高々 ε；control は母集団全体を動かす』。§3.1.2 の不報告の開示には『KS が小さい n で target に達する cell』と方向を付けました。C-53 は retract でなく narrowed に戻します。」
+
+**Donna**: （最終ゲート）
+「build 0 error・**15 pp**、guards **67 本 0 FAIL**（vacuous 4）、numbers 105/105、本文 **5,517 語**（Louis の復元で +133、10-15 の 5,796 から −279）、abstract 234、cascade 残滓 0、verify ALL PASS。marker は 21 箇所。DECISIONS D-20261016-1 に追記、D-20261011-11 と D-20260925-1 に superseded in part を記入、`FIX_REVIEW_LOUIS_20261016_simplify.md` 保存。未 commit。」
+
+---
+
+### [2026-10-16 09:20] Scene: Step 6 — 構成図を二層に、記録を揃え、Louis を待つ
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - MORNING**
+
+**Donna**: （artifact を再公開して）
+「構成図は二層にした。第一層は骨格 — Gap → 物差し → 読み方 → 盲目でない → 推定できる → 読む例 → 結論の 7 箱、各一行、R1–R4 を付す。第二層は節ごとのカードで、数値はそこにだけ。読者が同時に持つ概念は五つ（W₁、L / L_UB + Δ_clin → 参照距離、Δ_max、percentile 区間、null floor）。取り消し線で今日外した七つ（L*、片側上限の独立装置、basic 区間、rank interval、W₁ vs KS の必要 n、Set 4 の check、本文の単調 bound）を並べた。`PAPER_LOGIC.md` も同じ二層構成に書き直し、artifact は同じ URL（Version 9）。」
+
+**Donna**: （台帳）
+「`DECISIONS.md` D-20261016-1（Step 1–5 の何を・なぜ・ゲート・Open）、`CLAIMS.md` 末尾ログ（retract 4・narrow 4・担い手更新 5・guard 7 本退役）、`LAB_STATUS.md` の Manuscript 行と Updated 行を更新。known_bad は `per_em_W1_wiley_pre_D-20261016-1.tex`（= commit 4331b44）、diff は `FIX_DIFF_20261016_simplify.diff`、cascade は `CASCADE_20261016_simplify.md`。未 commit。」
+
+**Harvey**: （腕時計を見て）
+「Louis の `/review-fix` が戻ったら採否を決めて反映、guard を seed、最終ゲート、それで今日の周は閉じる。拒否権は Tak に — marker は 16 箇所だ。」
+
+---
+
+### [2026-10-16 08:55] Scene: Step 5 — §2.2 の bound を一つに、導出は付録へ
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - MORNING**
+
+**Rachel**: （§2.2 の段落を声に出して）
+「本文に残したのは三文です。『bound は W₁ 固有ではない — KS bound と W₂ bound もあり、臨床定数を持つ二つはどちらも支配しない（A.2）』『勾配だけが制約なら sharp — KR 双対、CDF の交差ごとに傾きが符号を変える CATE で到達（A.2）』『単調 CATE なら ½L(W₁+|Δμ|) まで締まる（A.2）、だから Δ_max は構成上保守的』。τ* の式、A± の導出、式 (mono_bound)、GUSTO の倍率 0.66–1.00 / 0.72–1.00 は A.2 の新段落 "Sharpness and the monotone case" に verbatim で移しました。§5 ¶1 の pointer は式番号から付録へ。」
+
+**Louis**: （guard の FAIL を一本見つけて）
+「REF2-M1-attainment-needs-class が落ちた。A.2 の新文 "The supremum … is attained by τ*" に class の限定が無い。attainment は unrestricted Lipschitz class の性質だ — "Over the unrestricted Lipschitz class" を頭に付けろ。それ以外は 57 本 PASS。」
+
+**Harvey**: （即座に）
+「付けた。再 build。」
+
+**Katrina**: （ゲート）
+「verify gate `verify_study1_app_numbers.R`: ALL PASS（61 checks、rank interval の check は退役、"括弧なし" の check を追加）。build 0 error・**15 pp**、numbers 103/103、本文 **5,384 語**（Intro 614 / Methods 1,673 / Simulation 1,296 / Application 836 / Discussion 965）、cascade 残滓 0。registry の未使用 key は 153（うち今日の 5 ステップで 30 本ほど増加）— 警告のみ、終了時に DECISIONS の Open に。」
+
+**Donna**: （影響精査）
+「Step 5 は §2.2・§4.4・§5 ¶1・A.2。他ステップは全部完了済み。Step 6 へ — Louis の `/review-fix`（known_bad `pre_D-20261016-1` → 作業ツリー）、構成図の二層化、DECISIONS・LAB_STATUS。」
+
+---
+
+### [2026-10-16 08:40] Scene: Step 4 — Study 2 の装置を四つから二つに
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - MORNING**
+
+**Mike**: （§3.2.2 の三つの文を並べて）
+「応用が使う装置は percentile 区間と null floor。片側上限の被覆は §4.2 の『上限で読む』が使うから残す — ただし別段落でなく、下側ミスの文の続きに置く。『真値が上限を超えたのは最大 1.1%、S6 は名目程度』→『だから上限は保守的な読み』→『その片側被覆は 0.9710–0.9999』— 一本の論理になった。basic 区間（post hoc、どの主張も使わない）と、§3.2 末の『幅 4.96 年は Δ_max で余裕の 5 倍』（§4 の L_UB を §3 に持ち込んだ読み）は削除。I got it.」
+
+**Louis**: （guard）
+「REF-Minor5-conservative-scope は "conservative reading" に限定句を要求する — 新文は "for distances unresolved against the null floor" を同じ文に持つ。LR3-G3 の禁止句は無い。C-56 は basic 区間の節を narrow、C-32 は 5 倍の節を narrow。C-17 は不変（下側ミス ≤ 1.1%、S6 は名目）。」
+
+**Katrina**: （ゲート）
+「build 0 error・**15 pp**、guards 58 本 0 FAIL、numbers 103/103、本文 **5,467 語**、cascade 残滓 0（qualifier の脱落は文の統合で位置が動いただけ — "could be" は二文目に残る）。verify gate `verify_study1_app_numbers.R` は Step 3 の rank interval 削除に合わせて書き換え中 — 旧 `ri` 参照が後段に残って halt、続きを直す。」
+
+**Donna**: （影響精査）
+「Step 5（§2.2・A.2・§4.4 の単調 bound 文）に影響なし。Step 5 へ。」
+
+---
+
+### [2026-10-16 08:25] Scene: Step 3 — rank interval を落とし、順位の不確かさは森林図の CI に任せる
+
+**INT. PEARSON SPECTER LITT - BULLPEN - MORNING**
+
+**Katrina**: （Table 5 の生成コードを開いて）
+「Rank 列の括弧 "[lo, hi]" は referee M4（10-11）への回答で足した患者 bootstrap の rank interval。論文が届けるのは距離で、順位ではない。中位の順位が解像しないことは Fig 4 で隣の CI が重なっていれば見える。`rank_col` から区間を外し、`gusto_rank_intervals.csv` の読み込みも外した。表は 6 列のまま、Rank は点順位と † の範囲だけ。」
+
+**Harvey**: （§4.3 を一文に）
+「"Several partners fall in the middle of each ranking, where the confidence intervals of neighbouring partners overlap (Figure 4), so a rank there is not resolved against its neighbours and a bare rank is not read as a resolved order; the most distant partners, R2 on age and R9 on SBP, stand apart from the rest." R6 の例は落とす。R2/R9 の逆転の文は不変 — resolved な 2 距離に立つ。」
+
+**Louis**: （guard を確認して）
+「REF-M4-rank-needs-uncertainty は "middle of each ranking" を stem に "not resolved" を要求する — 新文は通る。§5 の Spearman 区間は『Table 5 の患者 bootstrap から』と指していたから、出所を『within every region を再抽出する患者 bootstrap』と文中に戻した。EXT-Minor6 も通る。C-43 は retract、C-11（CI の重なり）が担う。」
+
+**Donna**: （ゲート）
+「build 0 error・**15 pp**、guards 58 本 0 FAIL、numbers 108/108、本文 **5,582 語**、cascade 残滓 0。残件: `verify_study1_app_numbers.R` が Table 5 の旧書式 "rank [lo, hi]" を parse する — Step 4 の前に直す。他ステップへの影響なし。」
+
+---
+
+### [2026-10-16 08:10] Scene: Step 2 — Study 1 を問い一つに戻す
+
+**INT. PEARSON SPECTER LITT - BULLPEN - MORNING**
+
+*Harvey が §3.1 を開く。小節は三つ — Design、Blind and Recovering、Required Sample Sizes。三つ目は W₁ と KS の必要 n の比較と Set 4 の登録 check だけでできている。*
+
+**Harvey**: （赤線を引いて）
+「R2 は『盲目でない』だ。必要 n の分離 11/1/1、Set 4 の check の 4 値と SE、§3.1.1 の ε 対 ε·d の構成の文 — 全部、§5 が『効率は採用理由でない』と書いた主張の保険だ。外す。§3.1.3 は二文になるから §3.1.2 に併合、Table 1 の "W₁ vs KS" 列は generator から落とす。check は『登録したが本文で報告しない、protocol と出力は repository』の一句で開示する。」
+
+**Katrina**: （R を直して回す）
+「`make_paper_tables.R` の `sepmc` を削除、表は 4 列。`Rscript` で 8 本再生成、変わったのは `tab_study2_required_n_mc.tex` だけ。caption の "counts as separated" 句と notes の "Separate means" 文を落とした。build 0 error・**15 pp**、numbers 112/112、本文 **5,607 語**（−173）。」
+
+**Louis**: （guard の一覧を指で辿って）
+「退役 7 本: REF-M3-five-of-seven、REF-M3-require-all-cells、LR2-M2、REF2-M2-efficiency、REF2-m6、LF2-M3、LF2-M7。全部、消えた主張の担い手を守る guard だ。TOML ではコメントアウトして記録に残した。58 本 0 FAIL、vacuous は従来の 3 本のまま。CLAIMS は C-08・C-49・C-53 を retract。Protocol 2 本の §8 に逸脱を追記 — 『報告しない』は逸脱として書く。cascade 残滓 0。」
+
+**Mike**: （一つ確認）
+「§5 ¶1 の『W₁, like the KS statistic, reaches the discrimination target in every cell』と ¶4 の『not blind where the SMD is』は Table 1 と §3.1.2 がそのまま担う。KS は比較対象から降りたのではなく、同じ側に並んだだけだ。I got it.」
+
+**Donna**: （影響精査）
+「`sec:study1_selection` への \ref は無し（undefined 0）。Step 3（§4.3）・4（§3.2.2）・5（§2.2）に影響なし。registry の未使用 key が 8 本増えた（nCells* 3、set4* 8 のうち本文で消えた分）— 警告のみ、終了時にまとめて整理。Step 3 へ。」
+
+---
+
+### [2026-10-16 07:55] Scene: Step 1 — L* を引退させ、較正を W₁ の尺度一本にする
+
+**INT. PEARSON SPECTER LITT - HARVEY'S OFFICE - MORNING**
+
+*Tak「1から順番に実行。その都度、影響を精査して、他のものに影響なければ次に進んで。影響があるなら再度構成図を作成し、複雑すぎるか評価、改善、実行ですすめて」。Harvey が原稿を開く。*
+
+**Harvey**: （9 箇所を書き換えながら）
+「L* の site は本文に 9 箇所。abstract・§1 の貢献文・§2.4（式 lstar を削除、"reference distance" Δ_clin/L_UB を定義）・§2.4 末・§4.1・§4.4・§5 の含意 2・§5 の限界・§5 の結語。読みは一つ — 区間が参照距離の下にあるか、含むか、上にあるか。marker は `Step 1 2026-10-16 (D-20261016-1, needs Tak's veto)`。」
+
+**Mike**: （検算）
+「W₁ ≥ Δ_clin/L_UB ⇔ L* ≤ L_UB。§2.4 の新文は "a slope within the bound can produce a regional difference of Δ_clin only if W₁ ≥ Δ_clin/L_UB" — Prop. 1 から直接出る。式は一本減って情報は減らない。I got it.」
+
+**Katrina**: （ゲートを回して）
+「`build.sh` は Windows で `.cls` を見失う（LAB_STATUS 既知）。latexmk + `TEXINPUTS=./wiley-template//;` で build 0 error・undefined 0・**15 pp**。guards 65 本 0 FAIL、vacuous 3 は従来の O-5 と同じ（REF-M1-constant、REF2-m1、LR3-G2）。numbers 113/113。structure_audit: 本文 **5,780 語**、abstract 232。cascade（`known_bad/per_em_W1_wiley_pre_D-20261016-1.tex` → 作業ツリー）: 残滓 0、qualifier 脱落 2（contribution の "when" は文ごと削除、abstract の "could" は復元した）、量化子 "every" 1（"multiplies every distance by the same slope" — Δ_max = L·W₁ は全 pair に成立する数学的事実）。」
+
+**Louis**: （短く）
+「C-06 と C-36 は narrowed、L* の旧文言は取り消し線で台帳に残した。貢献文は『定式化』と『評価』の二つ — Jessica の条件 (1)。abstract は 232/250 — 条件 (2)。guard の退役は無し（L* に依存する guard は無かった）— 条件 (3) は Step 2 で効く。」
+
+**Donna**: （影響精査）
+「Step 1 が触ったのは §2.4・§4.1・§4.4・§5。Step 2（§3.1.3）、Step 3（§4.3・Table 5）、Step 4（§3.2.2）、Step 5（§2.2・§4.4 の単調 bound 文 — 残っている）に影響なし。構成図の B4・D4 の中身が変わるので、図は Step 6 で作り直す。Step 2 へ。」
+
+---
+
+### [2026-10-16 07:30] Scene: 「複雑すぎると思わないか」— 構成図が映した論文の複雑さを六つに分解する
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - MORNING**
+
+*Tak「構成図を見ると一目瞭然だが、複雑すぎると思わないか？改善できるところはないか」。Donna が artifact を壁に映す。箱が 17、各箱に 4〜6 行。Harvey は図でなく原稿の方を見ている。*
+
+**Harvey**: （図を一瞥して）
+「図が複雑なのは、図が数値を抱えているからだ。それは直せる。だが Tak が言っているのはそこじゃない。図が映しているのは、三回の referee 対応で原稿に積もった**保険の層**だ。一つ一つは正しい。全部足すと読者が同時に持たされる概念が十二を超える。Donna、原稿で数えろ。」
+
+**Donna**: （grep の結果を読み上げて）
+「L* が 16 回、Lipschitz が 14 回、KS statistic が 11 回、null floor が 10 回、Set 4 が 9 回、operating point が 6 回、rank interval が 4 回、mono_bound が 3 回、basic interval が 1 回。較正の名前つき対象は W₁・L_clinical・Δ_max・Δ_clin・L*・L_UB の六つ。不確実性の装置は Study 2 で四つ（percentile 区間・片側上限・basic 区間・null floor）、応用で三つ（CI・null floor・rank interval）。」
+
+**Mike**: （ホワイトボードに式を一本）
+「一番大きいのは L* だ。L* = Δ_clin/W₁ で、L* ≤ L_UB ⇔ W₁ ≥ Δ_clin/L_UB。昨日 Harvey が L* 表を消して森林図の参照線 Δ_clin/L_UB に置き換えたとき、L* は数学的にもう要らなくなっていた。名前だけが 16 回残っている。I got it — L* を引退させて "sponsor が L_UB と Δ_clin を置けば、比べる距離は Δ_clin/L_UB" と W₁ の尺度だけで書けば、§2.4 の式 (lstar)・L* 区間・§4.4 の三通りの読み・§5 の含意 2・abstract の一文が消える。情報は一つも減らない。」
+
+**Louis**: （即座に）
+「減らないのは数学だけだ。§1 の貢献文は "the reverse calibration L*" を三つの貢献の一つに数えている。引退させるなら貢献は『定式化』と『評価』の二つに減る。それを飲むかは Harvey の判断だ。
+二つ目。Study 1 は問いが一つのはずだ — 盲目でない（R2）。なのに §3.1.3 は W₁ と KS の必要 n の分離 11/1/1 を言い、Set 4 の登録 check を 4 つの数値と SE で載せている。§5 は "W₁ を使う理由は効率ではない" と自分で書いている。**主張が無くなった所に保険だけが残っている**。これが俺が昨日 memory に書いた『切ると guard の穴が開く』の逆 — 主張を切ったのに guard の担い手だけ残した型だ。切るなら REF-M2 と C′ の guard を同時に退役させろ。昨日 Tak の拒否権 (c) が指していたのはここだ。」
+
+**Katrina**: （表と図を指で押さえて）
+「応用は 30 個の数値に装置が三つ。CI、null floor、rank interval。R2/R9 の逆転は resolved な 2 本の CI だけで立っている（§4.3 自身がそう書いた）。rank interval は『中位の順位は解像しない』を言うためだけにあるが、それは Fig 4 で CI が重なっていれば見える。rank interval を落とせば Table 5 の括弧列と §4.3 の一段落、1,000 反復の患者 bootstrap の記述が消える。生成コードは repository に残す。
+Study 2 は装置四つのうち、応用が使うのは percentile 区間と null floor。片側上限の被覆は §4.2 の "上限で読む" が使うから一文は残す。basic 区間（post hoc、一文）と、§3.2 末の『幅 4.96 年は Δ_max 区間で余裕の 5 倍』の文 — 後者は §4 の L_UB を §3 に持ち込んだ読みで、どの R にも答えない。」
+
+**Rachel**: （原典のメモを見ながら）
+「§2.2 は bound が四つ並びます。Prop. 1、TV(τ)·D_KS、L·W₂、単調 bound。referee #2 M1 が攻めたのは "attainment だけでは smallest valid と言えない" で、答えに要るのは『class 内で sharp、特定の CATE には保守的』の一文です。単調 bound の導出と KS/W₂ の比較は A.2 に既に半分あるので、本文は一文で指して付録に寄せられます。§4.4 の 0.66–1.00 倍の文も一緒に動きます。」
+
+**Jessica**: （短く）
+「Let me be clear. この論文の message は『差を定量化する、判定は臨床』だ。その message は尺度が一つ（W₁）のとき一番よく通る。L* は尺度を二つにしている。Harvey、貢献が二つに減るのは損失ではない — 読者が覚えるのは一つだ。私は L* 引退に賛成する。ただし三つ条件だ。(1) 貢献文を書き直す、(2) abstract を 250 語で再構成する、(3) 切ったものに対応する CLAIMS・guard を同じ session で退役させる。」
+
+**Harvey**: （六つを番号で）
+「整理する。改善候補は六つ、順位つきだ。
+1. 較正の対象を六つから三つへ — L* を引退、W₁ の尺度だけで Δ_clin/L_UB と比べる。16 箇所。
+2. Study 1 を問い一つに — 必要 n の分離と Set 4 の登録 check を本文から外す（Table 1 は残す、referee の再計算用）。guard REF-M2・C′ を退役。
+3. 応用の装置を三つから二つへ — rank interval を落とす。Table 5 の括弧列と §4.3 の一段落。
+4. Study 2 の装置を四つから二つへ — basic 区間の一文と §3.2 末の『5 倍』の文を落とす、下側ミスの文は上限の文に統合。
+5. §2.2 の bound を一つに — 単調 bound と KS/W₂ 比較を A.2 へ、本文は『class 内で sharp、特定の CATE には保守的』の一文。
+6. 図そのもの — 骨格 6 箱（各一行）の上段と、数値を抱える下段の二層にする。数値は箱から出す。
+1 と 2 が本体で、Tak の拒否権 (b)(c) が昨日指していた場所でもある。見積もりは本文で 600〜800 語、落ちる図表は Table 5 の rank interval 列だけ。読者が持つ概念は十二から七に減る。I don't have dreams, I have goals — 目標は『W₁ 一本で読める論文』だ。」
+
+**Donna**: （記録して）
+「判断は Tak に戻す。原稿は触っていない。実行するなら順に `/decide` → 適用 → cascade（CLAIMS・guard の退役）→ `/review-fix` → 構成図の二層化。」
+
+---
+
+### [2026-10-16 00:45] Scene: 論文構成図の更新 — 15 頁の原稿に合わせて PAPER_LOGIC と要約図を書き直す
+
+**INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**
+
+*Tak の一言「改訂した論文に基づいて論文構成図を更新して」。Donna が `PAPER_LOGIC.md` の日付を見る — 2026-10-14 01:10、21 pp / 9,617 語 / 表 9 の構成のまま。昨日の二つの削減（D-20261015-1 / D-20261015-2）と Louis の review-fix が反映されていない。*
+
+**Donna**: （画面を二つ並べて）
+「構成図は二つあるわ。正本の `PAPER_LOGIC.md` と、artifact の要約図（https://claude.ai/artifact/1imDe3FMuEXKyW2CC7hehc）。どちらも 10-14 版。原稿は commit `4331b44` で 15 pp・5,796 語・図 4・表 5 になっている。"I'm Donna. I know everything" — だから古い図を放置はしない。」
+
+**Katrina**: （原稿の節構成を grep で抜きながら）
+「現状の正。§1 / §2 冒頭 + §2.1–2.4 / §3 冒頭 + §3.1（3 小節）+ §3.2（2 小節）/ §4.1–4.4 / §5 / A.1 upward bias + asymptotics / A.2 KS bound。Tables 5: required n、scenarios、estimation、extension、GUSTO W₁ + rank。Figures 4: W₁ 定義、AUC vs n、Study 2 性能（復活）、GUSTO 森林図（復活、参照線 Δ_clin/L_UB）。L* 表と R code 付録は無い。数値は `numbers_macros.tex` の 113 key から取った。Results speak for themselves.」
+
+**Harvey**: （図の物差しを指で叩いて）
+「構成図の骨格は変えない。変えるのは物差しだ。昨日 Tak が言った通り、A1 → R1–R4 だけが残す基準になった。だから各箱に R1–R4 を付けろ。§2 は R1、§3.1 は R2、§3.2 は R3、§4 は R4。矢印は一本足す — Study 2 の operating point（E5/E6）が §4.2 の橋になった。それと `C2 --> E3`、限界の coverage 範囲は Study 2 から来る。」
+
+**Mike**: （値を一つずつ照合して）
+「箱の数値は全部 registry と一致させた。SMD blind 7/13、W₁ が少ない 11 / KS 1 / 重なる 1、Set 4 の null SD 比 1.62（SE 0.04）、coverage 0.92–0.95 で 5/10 が 2 MCSE 下、上限の片側被覆 0.9710–0.9999、拡張 0.921–0.952、E5/E6 0.951 / 0.947、null floor age 6/15・SBP 1/15、R2 2.15 yr / 0.95 mmHg、R9 0.59 / 6.80、Spearman −0.30 [−0.51, 0.02]、SMD との一致 0.90 [0.70, 0.99] / 0.95 [0.90, 0.99]、survey 0.839–0.996、単調 bound の倍率 0.66–1.00 / 0.72–1.00。I got it — 旧図にあって原稿から消えた数値（bulk-shift の必要 n、AUC 0.95/0.8、Lee の 6.5e-3、basic 区間の範囲）は図からも落とした。」
+
+**Louis**: （腕を組んで）
+「落とした主張を図に残すのが一番たちが悪い。C-28・C-50・C-51 は retract、C-45 の enrolled-sample 文は消えた。旧図の『enrolled sample では bound が厳密』は削除されているな？ それと基本区間 — 昨日 Harvey が落としかけて俺が戻した一文だ。図では "S1 と S2-50 でのみ優位（post hoc）" と限定して書いてある。それでいい。」
+
+**Donna**: （書き終えて）
+「`PAPER_LOGIC.md` を全面刷新（節番号の正、消えたもの一覧、mermaid、CLAIMS 対応表、10-15 の二つの削減表、履歴、開いている点）。artifact は同じ URL に再公開。履歴の詳細表（10-12 の C1–C4 ほか）は `DECISIONS.md` に移譲して図からは圧縮した — git 履歴（`4331b44` 以前）にも残る。commit は Tak の判断。origin/main に対して ahead 2 のまま。」
+
+---
+
 ### [2026-10-16 00:30] Scene: commit — 骨子からの絞り込みを main に載せる
 
 **INT. PEARSON SPECTER LITT - DONNA'S DESK - NIGHT**

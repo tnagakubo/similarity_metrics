@@ -18,6 +18,7 @@
 - **Reversibility**: 規制側から「判定規則を示せ」と求められても、量の報告（L*）で読者が任意の L_UB と比較できる構造を崩さない。覆すなら Tak
 - **Affected artifacts**: §2.4、§2.5（削除）、§3 冒頭、§4.2、§4.4、§4.5、Discussion ¶1/¶4/¶5；`CLAIMS.md` narrowed log
 - **Status**: active
+- **Superseded in part（2026-10-16, D-20261016-1 + Louis review-fix M1）**: Reversibility の「L* で読者が任意の L_UB と比較できる構造を崩さない」は、L* の引退（Step 1）で形を変えた — 同じ構造は W₁ の尺度で保たれる（距離と区間を報告し、任意の L_UB′ は Δ_clin/L_UB′ で読める、と §2.4 に明記）。判定規則を規定しない原則そのものは不変（参照距離は閾値ではない、guard LF3-M1）。Tak の拒否権 O-2(a) の対象
 
 ### D-20260926-1: §4.5 と ρ の段落を削除（09-05 の ρ 残置決定を覆す）
 
@@ -278,6 +279,7 @@
 - **順序**: Mike（R 3 本・registry）→ Harvey（M1・M2・M3 の文）→ Katrina（表・図・compile・abstract ≤ 250）→ `/review-fix fad1010` → guards strict → `/claims check`
 - **Applied（2026-10-12 00:10）**: 原稿 45 + 1 置換、段落マーカー 29 本（`% Paragraph revised 2026-10-11 (D-20261011-11, cold referee M?)`）；R: `R/gusto_rank_intervals.R`（新、B = 1,000、seed 20261011、再実行 byte 一致）、`make_derived_numbers.R` §7–9、`make_paper_tables.R`（MC 表 13 行、Table 5 Rank セル `rank [lo, hi]`）；registry +20 keys（152、R = Python check PASS、未使用 7 は旧 R16 例と旧 Bonett–Wright 区間）；ledger +4（Katrina 検証）；`verify_study1_app_numbers.R` に rank interval の照合 3 件を追加 → ALL PASS、`verify_study2_figures.R` ALL PASS；build 0 errors / 0 undefined / 21 pp / overfull 4（基準 9 から減）；`numbers_audit` 0 unsourced；`claim_guards --strict --mutation`: 30 guards 0 FAIL 0 vacuous（referee の 15 本は pending → strict に昇格）；`cascade_check fad1010 → working`: residue 0、qualifier drop 6・strengthened 3 は全件 Louis が意図的と判定（`review_response/FIX_REVIEW_20261011.md`）；`structure_audit`: 本文 9,937 語（+777、1.7×）、Discussion の数値段落 3（summary 段落 2 本 + survey 一文 — 結果の再掲と登録済み survey の 1 文、Harvey 判断で許容）；回帰テスト 97/97。CLAIMS: C-08 widened、C-09 narrowed、C-05/06 strengthened、C-35 evidence replaced、新 C-40〜C-43、C-31 の stale path を注記。
 - **Status**: applied（2026-10-12）。Tak の拒否権は個別段落に対して投稿前まで開いている。Minor 11（Song 2025 原典確認）と Minor 13（Fig. 3 の †）は未適用 — Rachel / Katrina の次の仕事
+- **Superseded in part（2026-10-16, D-20261016-1 + Louis review-fix M1/M6）**: 判断 5（「W₁ CI を 1 年 / 5 mmHg と比べるのと等価」= τ_clin の再導入として却下）は、L* の引退に伴い Δ_clin/L_UB を「参照距離」として §2.4 に定義する形で覆した — 反論は D-20261016-1 の追記（距離と区間を報告する以上、任意の L_UB′ に対する比較は Δ_clin/L_UB′ で読者に開いており、参照距離は sponsor の例示入力で閾値ではないと定義文に明記、guard LF3-M1）。判断 3（Table 5 の rank interval、S4）は rank 列ごと削除する形で覆した — 順位は届ける量ではなく、不確かさは Fig 4 の CI が担う。判断 3(a) の Spearman の患者 bootstrap 区間は §5 で維持（手続きを文中に明記）。本 entry の Decision・Reasons は履歴として変更しない
 
 ### D-20261012-1: CI `r-and-tex.yml` の tex job から `continue-on-error` を外して blocking にする
 
@@ -498,3 +500,47 @@
   - **Minor 見送り**: m4（lee1995 は「reference point, not source」の文で残す — L_UB の出自の記述、D-20261014-2）／m6（MCSE の key 2 本は設計段落と結果段落で役割が違う）／m8（AUC 0.8 / 0.95 の tally は効率の話で Aim 外）／m9（数の食い違いは本項の最終値で解消）
   - **選択報告（Louis 問 2）**: Set 4 check・extension・survey・Study 1 不報告解析の 1 文開示は維持、basic 区間は M4 で復元。O-7（protocol 2 本の Deviations）と O-10 は持ち越し
 - **Status**: applied（2026-10-15 08:20、**未 commit**、Louis の review-fix 反映済み）。Phase は変更なし（Phase 8）。Tak の拒否権: marker `D-20261015-2` 26 箇所 + `Louis review-fix 2026-10-15 08:06` 6 箇所
+
+### D-20261016-1: 複雑さの削減 — 六つの改善候補を順に適用（5,796 → 5,384 語、15 頁のまま、図 4・表 5 のまま、guard 65 → 58、CLAIMS retract 5・narrow 4）
+
+- **Date**: 2026-10-16 07:25–09:10  **Raised by**: Tak  **Decided by**: Harvey（Step 1–5 の編集と判定）、Mike（数学の同値性・verify gate）、Katrina（表の generator・build・ゲート）、Louis（guard の退役と `/review-fix`）、Rachel（A.2 の移設文言）、Jessica（L* 引退の条件三つ）、Donna（CLAIMS・protocol・SUITS・本 entry）
+- **Tak の指示（verbatim）**: 07:25「構成図を見ると一目瞭然だが、複雑すぎると思わないか？改善できるところはないか」→ ラボが六つの候補を順位つきで提示（SUITS 07:30 scene）→ 07:49「1から順番に実行。その都度、影響を精査して、他のものに影響なければ次に進んで。影響があるなら再度構成図を作成し、複雑すぎるか評価、改善、実行ですすめて」
+- **Question**: 構成図（PAPER_LOGIC 10-16 00:45 版）が映した原稿の複雑さ — 三回の referee 対応で積もった保険の層（較正の名前つき対象 6、Study 2 の区間装置 4、応用の不確実性装置 3、§2.2 の bound 4、Study 1 の問い 3）— をどこまで減らすか
+- **Decision**: 候補 1–5 を順に適用し、各 step で build・claim_guards・numbers_audit・structure_audit・cascade_check を回して他 step への影響を精査した（影響は無く、構成図の作り直しは Step 6 で一括）。候補 6（構成図の二層化）は Step 6
+  - **Step 1 — L* 引退（較正の対象 6 → 3: W₁・L_clinical / L_UB・Δ_clin）**: L* ≤ L_UB ⇔ W₁ ≥ Δ_clin/L_UB。§2.4 は式 (lstar) と L* 区間を捨て「参照距離 Δ_clin/L_UB」を定義、§4.1 は参照距離（age 1 年・SBP 5 mmHg）、§4.4 は区間と参照線の三通りの読みだけ、§5 の含意 2・限界・結語、abstract、§1 の貢献文（『定式化』と『評価』の二つに）を書き換え。marker `Step 1 2026-10-16 (D-20261016-1, needs Tak's veto)`。CLAIMS C-06・C-36 narrowed。本文 5,796 → 5,780
+  - **Step 2 — Study 1 を問い一つに（R2 = 盲目でない）**: §3.1.3（必要 n の分離 11/1/1、Set 4 の登録 check の 4 値と SE）を削除し、残る二文（表への pointer、check は不報告の開示）を §3.1.2 末尾に併合；§3.1.1 の ε 対 ε·d の構成文を削除；Table 1 の "W₁ vs KS" 列を `R/make_paper_tables.R` から外す（4 列）、caption・notes の分離の記述を削除。guard 7 本退役（REF-M3-five-of-seven、REF-M3-require-all-cells、LR2-M2、REF2-M2-efficiency、REF2-m6、LF2-M3、LF2-M7 — TOML にコメントアウトで記録）。CLAIMS C-08・C-49・C-53 retracted。`PROTOCOL_study1_identification.md` §8・`PROTOCOL_set4_control_mechanism.md` §8 に逸脱を追記。本文 5,607
+  - **Step 3 — 応用の rank interval を落とす（装置 3 → 2: CI・null floor）**: Table 5 の括弧列を generator から外す（`gusto_rank_intervals.csv` は repository）、§4.3 は「隣の CI が重なる所では順位は解像しない；最遠の R2 (age)・R9 (SBP) は離れている」の一文に、§5 の Spearman 区間の出所を『within every region を再抽出する患者 bootstrap』と文中に。`R/verify_study1_app_numbers.R` の rank interval check を退役し「括弧なし」の check を追加（ALL PASS、61 checks）。CLAIMS C-43 retracted。本文 5,582
+  - **Step 4 — Study 2 の装置 4 → 2（percentile 区間・null floor；片側上限は §4.2 が使う一文として残す）**: basic 区間の文（post hoc）削除、§3.2 末の『幅 4.96 年は Δ_max で余裕の 5 倍』削除、下側ミスの文と片側上限の段落を一本に統合（"conservative reading" は限定句付きで維持、guard REF-Minor5）。CLAIMS C-32・C-56 narrowed。本文 5,467
+  - **Step 5 — §2.2 の bound を一つに**: 本文は三文（他の bound も valid でどちらも支配しない／KR で sharp・CDF の交差ごとに傾きが符号を変える CATE で到達／単調なら ½L(W₁+|Δμ|)、ゆえに保守的）。τ* の式・A± の導出・式 (mono_bound)・GUSTO の倍率 0.66–1.00 / 0.72–1.00（§4.4 から）を A.2 の新段落 "Sharpness and the monotone case" に verbatim 移設（"Over the unrestricted Lipschitz class" を付して guard REF2-M1 を満たす）。§5 ¶1 の pointer を付録へ。CLAIMS C-15・C-46 の担い手更新。本文 5,384
+- **Reasons**:
+  1. 物差しは A1 → R1–R4（D-20261015-2 と同じ）。L*、効率比較、rank interval、basic 区間、幅→Δ_max の読み、単調 bound の導出は、どれも R1–R4 の答えではなく、referee への保険か数学的に同値な言い換えだった
+  2. L* は 10-15 に L* 表を森林図の参照線に置き換えた時点で数学的に不要になっていた（Mike: 同値）。尺度が W₁ 一本のとき message『定量化のみ、判定は臨床』が最もよく通る（Jessica）。貢献が二つに減るのは損失ではない（Jessica、条件三つ: 貢献文の書き直し・abstract 250 語・切った分の CLAIMS/guard の退役 — すべて満たした）
+  3. 効率比較は §5 自身が「採用理由でない」と書く主張の保険 — 主張が消えた所に保険だけ残す型（Louis、`feedback_cut_reopens_guarded_holes` の逆）。退役した guard はすべて消えた主張の担い手を守っていたもの
+  4. rank interval は referee M4 への回答だったが、論文が届けるのは距離であり、中位が解像しないことは Fig 4 の CI の重なりで読める。R2/R9 の逆転は resolved な 2 距離に立つ（§4.3 自身の文）
+  5. 情報は捨てていない — CSV（`required_n_selection.csv` の全列、`set4_*.csv`、`gusto_rank_intervals.csv`、`study2_interval_variants.csv`、`gusto_lstar_intervals.csv`）はすべて repository に残り、Data availability が protocol と出力の同梱を述べる
+- **Disagreements and resolution**: Louis — L* 引退で §1 の貢献が三つから二つに減る → Jessica が条件付きで承認、Harvey が貢献文を書き直し。Louis — Step 5 の A.2 新文に class の限定が無い（guard FAIL 1 本）→ "Over the unrestricted Lipschitz class" を付して解消
+- **Reversibility**: 旧原稿 = `review_response/known_bad/per_em_W1_wiley_pre_D-20261016-1.tex`（commit `4331b44` の状態、5,796 語）。marker `Step k 2026-10-16 (D-20261016-1, needs Tak's veto)`（k = 1–5、16 箇所）を grep。Tak が拒否した step は旧原稿から戻し、対応する guard のコメントアウトを外し、`make_paper_tables.R` の列を戻す。diff = `review_response/FIX_DIFF_20261016_simplify.diff`、cascade = `review_response/CASCADE_20261016_simplify.md`
+- **ゲート（09:05 実測、Step 5 後）**: latexmk build 0 error / 0 undefined / **15 pp**／`claim_guards --mutation --strict` **58 本 0 FAIL**（vacuous 3 は O-5 の従来の 3 本）／`numbers_audit` **103/103** sourced／`structure_audit` 本文 **5,384 語**（Intro 614 / Methods 1,673 / Simulation 1,296 / Application 836 / Discussion 965；SiM 上限の 0.9×）、abstract 232、floats 9、placement 0、duplicate 0／`cascade_check`（旧 → 新）残滓 0、qualifier 脱落 4（契約文の "when" は文ごと削除、"could" と "where" は統合で位置が動いた、"within"/"can" は R6 の例の削除）、量化子の強化 2（"multiplies every distance by the same slope" = Δ_max = L·W₁ の数学的事実；"resamples within every region" = bootstrap の記述）／`verify_study1_app_numbers.R` ALL PASS／`numbers_registry.py check` PASS（未使用 key 153 — 警告のみ）
+- **Open**:
+  - **O-1（Louis）**: `/review-fix`（`review_response/FIX_REVIEW_LOUIS_20261016_simplify.md`）— 結果は下に追記
+  - **O-2（Tak）**: marker `D-20261016-1` の拒否権（段落単位、投稿前まで）。特に (a) L* 引退と貢献文、(b) Table 1 の列と §3.1.3 の削除、(c) rank interval、(d) 単調 bound の付録送り
+  - **O-3（Katrina）**: registry の未使用 key 153 本の整理（`numbers_registry.csv` から削除するか、残す方針を決める）
+  - **O-4（Donna）**: 構成図の二層化（PAPER_LOGIC.md + artifact）— Step 6
+  - D-20261015-1 の O-5（vacuous 3 本）/ O-7 / O-8 / O-10 / O-11 は未了のまま
+- **Status**: applied（Step 1–5、2026-10-16 09:05、**未 commit**）。Phase は変更なし（Phase 8）
+
+- **Louis `/review-fix`（2026-10-16 09:40、`review_response/FIX_REVIEW_LOUIS_20261016_simplify.md`）— Critical 2、Major 8、Minor 8。Harvey は**全件採用**、原稿 20 箇所を修正（marker `Louis review-fix 2026-10-16`）。上の Decision・Reasons・ゲートはその前の状態。最終: 本文 **5,517 語**（Louis の復元で +133）、**15 pp**、`claim_guards` **67 本 0 FAIL**（LF3-* 9 本を seed、known_bad = `known_bad/per_em_W1_wiley_20261016_simplify.tex` = 修正前の原稿；vacuous 4 = 従来の 3 + LF3-M8）、`numbers_audit` 105/105、`cascade_check` 残滓 0、`verify_study1_app_numbers.R` ALL PASS**
+  - **C1** §2.2 の W₂ 文「neither of the two bounds with a clinical constant dominates」は偽（W₁ ≤ W₂ なので L·W₁ は常に L·W₂ を支配）、KS bound の BV・有界台の前提が脱落、「A.2 へ移設」は部分積分の導出については事実でなかった → Louis の paste-ready 文に置換（KS bound は BV + 有界台の前提つき、どちらも支配しないのは KS bound と式 (6) の間、W₂ bound は「never tighter」）。C-15 の carrier note を事実に合わせた（導出は原稿に無い）
+  - **C2** §4.3「R2 on age and R9 on SBP stand apart from the rest」は CSV と矛盾（age の最大は R3、R2 [1.57, 2.76] は R3・R16 と重なる；SBP の R9 [5.71, 8.01] は R11・R12 と重なる）→ 句を削除、「their order is not resolved by the figure」に
+  - **M1** Δ_clin/L_UB = 旧 τ_clin。D-20261011-11 判断 5 と D-20260925-1 Reversibility を **superseded in part** にし（各 entry に追記）、反論を記す: 距離と区間を報告する以上、任意の L_UB′ に対する比較は Δ_clin/L_UB′ で読者に開いている（L* の「任意の L_UB と比較できる構造」は W₁ の尺度でそのまま保たれる）；参照距離は sponsor の例示入力で併合の閾値ではない、と §2.4 の定義文に明記（guard LF3-M1）；§4.1 の「set so that」を復元（L_UB が丸い距離から逆算された事実）。**Tak の拒否権 O-2(a) の対象**
+  - **M2** class の限定句の方向を逆に: 「only if W₁ ≥ Δ_clin/L_UB」は任意の L_UB-Lipschitz CATE で成立、attainment（KR）が要るのは「could produce」の側 → §2.4 を「… only if …, and within the class of CATEs restricted only by their slope some such CATE produces it whenever …」に、§4.4 の「wholly above」と abstract（"could, at worst, produce"）に限定句
+  - **M3** §3.1.2 の pointer が §5 に無い文を指していた → 「the reason to use W₁ (Section 5) is that it is not blind where the SMD is and carries a clinical-scale translation」に。Reason 3 の訂正: KS との関係は R1 の一部で、§2.2 と A.2 の bound 比較が担う；本文から外したのは required n の効率比較だけ
+  - **M4** 選択的報告に見える → §3.1.1 に構成の事実を一文で戻す（「subgroup cells では ε の部分集団を d 動かすと W₁ は εd、KS は高々 ε；control は母集団全体を動かし部分集団を含まない」— 優位の主張なし、C-53 は retract でなく narrowed）；§3.1.2 の不報告の開示に方向を付す（「the cell in which the KS statistic reaches the target at the smaller n」）
+  - **M5** 「in these scenarios」の範囲 → 「in S2, S5 and S7」；括弧を「S2, S5 and S7, the cells whose intervals miss from below (S4 and S6 at n = 100 fall short with misses on both sides)」に；guard REF-Minor5 の qualifier から裸の `null`・`S2` を外す
+  - **M6** (i) C2 の文で解決。(ii) Table 5 の Rank 列（不確かさの無い点順位、D-20261011-11 判断 3 の S4）→ **Rank 列ごと削除**（4 列: Partner・n・W₁ age [CI]・W₁ SBP [CI]、† は W₁ セルに）。`make_paper_tables.R`・`verify_study1_app_numbers.R`（† の照合）更新。判断 3 は superseded in part
+  - **M7** §5 の Spearman 区間の手続き（1,000 反復、within every region、R8 共有）を文中に；CLAIMS C-11 の evidence を `gusto_rank_spearman_boot.csv` に訂正
+  - **M8** Data availability の `\ref` が literal CR で壊れ PDF に「Section efsec:discussion」と印字（10-15 からの既存バグ、0-undefined gate は捕まえない）→ 修復；guard LF3-M8 は症状（'ef{sec:' / 'efsec:'）を禁止（byte class は tool が newline を正規化するため使えない — vacuous）
+  - **Minor 採用**: m1（単調 bound の「equality when the CDFs do not cross」復元）／m2（含意 2 を「Δ_max multiplies every distance by the same L_clinical … what the unknown-slope reading adds is the reference distance」に）／m3（M7 と同じ）／m4（qualifier drop 4 件は benign と判定）／m5（貢献文「the measure's identification and of its estimator's properties」）／m6（Table 1 注の「same replications」削除）／m7（abstract「could, at worst, produce」）／m8（Data availability に rank bootstrap と basic interval の出力を名指し）
+  - **見送り**: 退役 guard 7 本の tripwire 復帰（scope `sec:study1`）— stem が無ければコストゼロだが、効率比較の再流入は structure_audit と Louis の目で足りる。必要なら次の周で
+  - **ゲート（10:20 実測）**: build 0 error / 0 undefined / **15 pp**、pdftotext に「efsec」0／`claim_guards --mutation --strict` **67 本 0 FAIL**（vacuous 4）／`numbers_audit` 105/105／`structure_audit` 本文 5,517 語、abstract 234／`cascade_check`（`pre_D-20261016-1` → 作業ツリー）残滓 0／`verify_study1_app_numbers.R` ALL PASS。marker `D-20261016-1` + `Louis review-fix 2026-10-16` 計 21 箇所
+- **Status**: applied（Step 1–5 + Louis review-fix、2026-10-16 10:20、**未 commit**）。Phase は変更なし（Phase 8）。Tak の拒否権: marker 21 箇所、特に O-2(a) τ_clin の形の参照距離

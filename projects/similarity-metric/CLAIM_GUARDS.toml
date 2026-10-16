@@ -215,15 +215,16 @@ known_bad = "fad1010"
 # pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
 note = "S3–S7 n≥100 の 10 cell のうち 5 cell が自分の MCSE の 2 倍以上 0.95 を下回る（l.391 の規則）"
 
-[[guard]]
-id = "REF-M3-five-of-seven-needs-target"
-finding = "review_response/REFEREE_20261011.md M3(c)"
-type = "proximity"
-stem = "five of (the )?seven"
-qualifier = "AUC 0\\.9|0\\.9 target|discrimination target"
-known_bad = "fad1010"
-# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
-note = "shape-symmetric cell の順序は AUC 0.8 と 0.95 で逆転する — 比較は目標値を伴う"
+# RETIRED 2026-10-16 (D-20261016-1 Step 2): the W1-versus-KS efficiency comparison and the Set 4 control check are no longer in the text (Section 3.1.3 removed); the guarded claim is gone, so the guard has nothing to guard. Kept for the record, commented out.
+# [[guard]]
+# id = "REF-M3-five-of-seven-needs-target"
+# finding = "review_response/REFEREE_20261011.md M3(c)"
+# type = "proximity"
+# stem = "five of (the )?seven"
+# qualifier = "AUC 0\\.9|0\\.9 target|discrimination target"
+# known_bad = "fad1010"
+# # pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+# note = "shape-symmetric cell の順序は AUC 0.8 と 0.95 で逆転する — 比較は目標値を伴う"
 
 [[guard]]
 id = "REF-M3-forbid-summary-label-for-set4"
@@ -234,16 +235,17 @@ known_bad = "fad1010"
 # pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
 note = "Set 4 の subgroup cell は KS を prevalence で頭打ちにする構成。KS は summary measure ではない"
 
-[[guard]]
-id = "REF-M3-require-all-cells"
-finding = "review_response/REFEREE_20261011.md M3(b)"
-type = "require"
-scope = "section:sec:study1_selection"
-pattern = "Sets? 1|Gaussian"
-# 2026-10-12 Louis: "all six cells of Sets 1 and 2" satisfies the intent
-known_bad = "fad1010"
-# pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
-note = "W₁ vs KS の required n を 13 cell すべてで報告（11 W₁ fewer / 1 overlap / 1 KS fewer）"
+# RETIRED 2026-10-16 (D-20261016-1 Step 2): the W1-versus-KS efficiency comparison and the Set 4 control check are no longer in the text (Section 3.1.3 removed); the guarded claim is gone, so the guard has nothing to guard. Kept for the record, commented out.
+# [[guard]]
+# id = "REF-M3-require-all-cells"
+# finding = "review_response/REFEREE_20261011.md M3(b)"
+# type = "require"
+# scope = "section:sec:study1_selection"
+# pattern = "Sets? 1|Gaussian"
+# # 2026-10-12 Louis: "all six cells of Sets 1 and 2" satisfies the intent
+# known_bad = "fad1010"
+# # pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
+# note = "W₁ vs KS の required n を 13 cell すべてで報告（11 W₁ fewer / 1 overlap / 1 KS fewer）"
 
 [[guard]]
 id = "REF-M4-rank-needs-uncertainty"
@@ -302,7 +304,8 @@ id = "REF-Minor5-conservative-scope"
 finding = "review_response/REFEREE_20261011.md Minor 5"
 type = "proximity"
 stem = "conservative reading"
-qualifier = "small distances|near the boundary|S2|null|smallest"
+qualifier = "S2, S5 and S7|small distances|near the boundary|smallest"
+# 2026-10-16 (Louis review-fix M5): bare 'null' and 'S2' dropped from the qualifier — 'null floor' in the same sentence made the guard vacuous
 known_bad = "fad1010"
 # pending removed 2026-10-12 (Katrina): fix applied, guard passes on the working tree
 note = "upper limit が保守的なのは boundary 近傍だけ。S4 n=100 では truth が上限を 2.90% 超える（nominal）"
@@ -363,15 +366,16 @@ known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
 # pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
 note = "0.92–0.95 の範囲は必ず『10 cell 中 5 が 2 MCSE 超で 0.95 未満』を伴う（abstract、§3.2 末、§5 ¶1）"
 
-[[guard]]
-id = "LR2-M2-w1-fewer-needs-construction"
-finding = "review_response/INTERNAL_REVIEW_20261012.md M2"
-type = "proximity"
-stem = "nCellsW1FewerKS"
-qualifier = "construction"
-known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
-# pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
-note = "11 of 13 のうち 3 cell（Set 4 の displaced subgroup）は構成上の勝ち — 同じ段落に明記"
+# RETIRED 2026-10-16 (D-20261016-1 Step 2): the W1-versus-KS efficiency comparison and the Set 4 control check are no longer in the text (Section 3.1.3 removed); the guarded claim is gone, so the guard has nothing to guard. Kept for the record, commented out.
+# [[guard]]
+# id = "LR2-M2-w1-fewer-needs-construction"
+# finding = "review_response/INTERNAL_REVIEW_20261012.md M2"
+# type = "proximity"
+# stem = "nCellsW1FewerKS"
+# qualifier = "construction"
+# known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261012.tex"
+# # pending removed 2026-10-12 11:00 (Harvey): D-20261012-2 applied, guard passes on the working tree
+# note = "11 of 13 のうち 3 cell（Set 4 の displaced subgroup）は構成上の勝ち — 同じ段落に明記"
 
 [[guard]]
 id = "LR2-M3-attainment-alone"
@@ -440,15 +444,16 @@ known_bad = "file:review_response/known_bad/residual_20261012_1645.tex"
 # pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
 note = "attainment / smallest valid は unrestricted Lipschitz class（KR 双対）の性質。単調 class では L(W1+|dmu|)/2。採用理由にしない"
 
-[[guard]]
-id = "REF2-M2-efficiency-needs-tails"
-finding = "review_response/referee/20261012/REFEREE_20261012.md M2"
-type = "proximity"
-stem = "fewer patients than (the )?(KS|Kolmogorov)"
-qualifier = "tail|heavy|contaminat"
-known_bad = "file:review_response/known_bad/residual_20261012_1645.tex"
-# pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
-note = "W1 vs KS の効率の文は裾の機構（heavy-tailed population で反転）を伴う。'three by construction' だけでは不足"
+# RETIRED 2026-10-16 (D-20261016-1 Step 2): the W1-versus-KS efficiency comparison and the Set 4 control check are no longer in the text (Section 3.1.3 removed); the guarded claim is gone, so the guard has nothing to guard. Kept for the record, commented out.
+# [[guard]]
+# id = "REF2-M2-efficiency-needs-tails"
+# finding = "review_response/referee/20261012/REFEREE_20261012.md M2"
+# type = "proximity"
+# stem = "fewer patients than (the )?(KS|Kolmogorov)"
+# qualifier = "tail|heavy|contaminat"
+# known_bad = "file:review_response/known_bad/residual_20261012_1645.tex"
+# # pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
+# note = "W1 vs KS の効率の文は裾の機構（heavy-tailed population で反転）を伴う。'three by construction' だけでは不足"
 
 [[guard]]
 id = "REF2-M2-no-general-reversal"
@@ -500,15 +505,16 @@ known_bad = "file:review_response/known_bad/residual_20261012_1645.tex"
 # pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
 note = "検証できない条件は Wald にも bootstrap にも効く。違いは分散推定の要否"
 
-[[guard]]
-id = "REF2-m6-set4-error-rate"
-finding = "review_response/referee/20261012/REFEREE_20261012.md Minor 6"
-type = "proximity"
-scope = "section:sec:study1_selection"
-stem = "include at least one discordant region"
-qualifier = "construction"
-# pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
-note = "Set 4 pooled error rate は構成上有利な cell が支配する"
+# RETIRED 2026-10-16 (D-20261016-1 Step 2): the W1-versus-KS efficiency comparison and the Set 4 control check are no longer in the text (Section 3.1.3 removed); the guarded claim is gone, so the guard has nothing to guard. Kept for the record, commented out.
+# [[guard]]
+# id = "REF2-m6-set4-error-rate"
+# finding = "review_response/referee/20261012/REFEREE_20261012.md Minor 6"
+# type = "proximity"
+# scope = "section:sec:study1_selection"
+# stem = "include at least one discordant region"
+# qualifier = "construction"
+# # pending removed 2026-10-13 00:50 (Harvey): D-20261012-3 applied
+# note = "Set 4 pooled error rate は構成上有利な cell が支配する"
 
 [[guard]]
 id = "REF2-m8-collapsibility"
@@ -625,25 +631,27 @@ qualifier = "0[.]2 ?~?SD"
 known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex"
 note = "GUSTO の距離は 0.03–0.30 SD、30 組中 6 組が 0.2 SD 超。E5/E6 は 0.2 SD の cell であって『this operating point』全体ではない"
 
-[[guard]]
-id = "LF2-M3-set4-with-mcse"
-finding = "FIX_REVIEW_LOUIS_20261015_essence.md M3"
-type = "proximity"
-scope = "section:sec:study1_selection"
-stem = "reversed the sign|changed sign"
-qualifier = "set4DeltaAucGaussN200d2Mcse|set4DeltaAucMixN200d2Mcse"
-known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex"
-note = "符号反転を言う文は ΔAUC の推定値と MCSE を伴う（2 MCSE 超の判定が読者に見える）"
+# RETIRED 2026-10-16 (D-20261016-1 Step 2): the W1-versus-KS efficiency comparison and the Set 4 control check are no longer in the text (Section 3.1.3 removed); the guarded claim is gone, so the guard has nothing to guard. Kept for the record, commented out.
+# [[guard]]
+# id = "LF2-M3-set4-with-mcse"
+# finding = "FIX_REVIEW_LOUIS_20261015_essence.md M3"
+# type = "proximity"
+# scope = "section:sec:study1_selection"
+# stem = "reversed the sign|changed sign"
+# qualifier = "set4DeltaAucGaussN200d2Mcse|set4DeltaAucMixN200d2Mcse"
+# known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex"
+# note = "符号反転を言う文は ΔAUC の推定値と MCSE を伴う（2 MCSE 超の判定が読者に見える）"
 
-[[guard]]
-id = "LF2-M7-no-unresolved-crossing"
-finding = "FIX_REVIEW_LOUIS_20261015_essence.md M7"
-type = "forbid"
-scope = "section:sec:study1_selection"
-pattern = "where the two AUC curves cross near the target"
-literal = true
-known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex"
-note = "AUC 0.8 では区間が重なる（W₁ 204 [188, 220] vs KS 184 [164, 206]）。交差を言い切らない"
+# RETIRED 2026-10-16 (D-20261016-1 Step 2): the W1-versus-KS efficiency comparison and the Set 4 control check are no longer in the text (Section 3.1.3 removed); the guarded claim is gone, so the guard has nothing to guard. Kept for the record, commented out.
+# [[guard]]
+# id = "LF2-M7-no-unresolved-crossing"
+# finding = "FIX_REVIEW_LOUIS_20261015_essence.md M7"
+# type = "forbid"
+# scope = "section:sec:study1_selection"
+# pattern = "where the two AUC curves cross near the target"
+# literal = true
+# known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex"
+# note = "AUC 0.8 では区間が重なる（W₁ 204 [188, 220] vs KS 184 [164, 206]）。交差を言い切らない"
 
 [[guard]]
 id = "LF2-m2-S5-not-boundary"
@@ -661,3 +669,98 @@ type = "require"
 pattern = "not a threshold for pooling"
 known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261015_0750_essence.tex"
 note = "森林図の Δ_clin / L_UB 参照線は sponsor の illustrative bound に依存し、pooling の閾値ではない（quantify, not decide）"
+
+# ================================================================================================
+# Louis /review-fix of the simplification D-20261016-1 (review_response/FIX_REVIEW_LOUIS_20261016_simplify.md)
+# — 2026-10-16 09:50, Louis 起票、Harvey 全件採用。known_bad = file:review_response/known_bad/per_em_W1_wiley_20261016_simplify.tex
+# （Step 1–5 適用直後・修正前の原稿、verbatim）。
+# ================================================================================================
+
+[[guard]]
+id = "LF3-C1-no-two-clinical-constant-bounds"
+finding = "FIX_REVIEW_LOUIS_20261016_simplify.md C1"
+type = "forbid"
+scope = "section:sec:nabcd_metric"
+pattern = "neither of the two bounds with a clinical constant"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261016_simplify.tex"
+note = "W1 <= W2 なので L·W1 は常に L·W2 を支配する。'neither dominates' は KS bound と式 (6) の間だけ"
+
+[[guard]]
+id = "LF3-C1-w2-never-tighter"
+finding = "FIX_REVIEW_LOUIS_20261016_simplify.md C1"
+type = "proximity"
+scope = "section:sec:nabcd_metric"
+stem = "bound with the same constant"
+qualifier = "looser|never tighter"
+# 2026-10-16 (Katrina): the tool detexes inline math to a placeholder, so the stem names the words around the W2 bound, not the math
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261016_simplify.tex"
+note = "W2 bound を名指す文は、それが W1 bound より緩いことを同じ文で言う（10-15 sentence J の再発防止）"
+
+[[guard]]
+id = "LF3-C1-ks-bound-needs-bv"
+finding = "FIX_REVIEW_LOUIS_20261016_simplify.md C1"
+type = "proximity"
+scope = "section:sec:nabcd_metric"
+stem = "Kolmogorov.{1,3}Smirnov bound"
+qualifier = "bounded variation|bounded support"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261016_simplify.tex"
+note = "KS bound TV·D_KS は BV かつ有界台が前提。付録 A.2 には部分積分の導出がないので、本文が前提を持つ"
+
+[[guard]]
+id = "LF3-C2-no-stand-apart"
+finding = "FIX_REVIEW_LOUIS_20261016_simplify.md C2"
+type = "forbid"
+scope = "section:sec:app_nabcd"
+pattern = "stand apart"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261016_simplify.tex"
+note = "age: R2 [1.57,2.76] は R3 [1.96,3.28]・R16 と重なり、最大は R3。SBP: R9 [5.71,8.01] は R11・R12 と重なる"
+
+[[guard]]
+id = "LF3-M2-could-produce-needs-class"
+finding = "FIX_REVIEW_LOUIS_20261016_simplify.md M2"
+type = "proximity"
+scope = "section:sec:inference|sec:app_clinical"
+stem = "could produce|produces it whenever"
+qualifier = "restricted only by their slope|unrestricted|only restriction|at worst"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261016_simplify.tex"
+note = "'could produce' は attainment（KR、unrestricted class）の主張。'only if' の方向には class は要らない"
+
+[[guard]]
+id = "LF3-M1-reference-distance-not-threshold"
+finding = "FIX_REVIEW_LOUIS_20261016_simplify.md M1"
+type = "proximity"
+scope = "section:sec:inference"
+stem = "the reference distance"
+qualifier = "not a threshold|sponsor's (illustrative )?(bound|input)"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261016_simplify.tex"
+note = "Δ_clin/L_UB = 旧 τ_clin。定義文の場で閾値でないと言う（D-20261011-11 判断 5 を superseded in part にした条件）"
+
+[[guard]]
+id = "LF3-M3-not-compared-pointer-live"
+finding = "FIX_REVIEW_LOUIS_20261016_simplify.md M3"
+type = "forbid"
+scope = "section:sec:study1_classification"
+pattern = "is not the reason to use"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261016_simplify.tex"
+note = "§5 に無い文（'not efficiency'）を指す pointer。§5 の採用理由文（not blind + clinical-scale translation）を指す形にする"
+
+[[guard]]
+id = "LF3-M8-no-control-chars"
+finding = "FIX_REVIEW_LOUIS_20261016_simplify.md M8"
+type = "forbid"
+pattern = "\\bef\\{?sec:|Section ef\\b"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261016_simplify.tex"
+note = "literal CR が '\\ref' を食い、'Section efsec:discussion' と印字された。0-undefined gate では捕まらない。tool は newline を正規化するので byte class でなく症状（'ef{sec:' / 'efsec:'）を禁止する（Katrina 2026-10-16）"
+
+[[guard]]
+id = "LF3-M7-rank-bootstrap-described"
+finding = "FIX_REVIEW_LOUIS_20261016_simplify.md M7"
+type = "proximity"
+scope = "section:sec:discussion"
+stem = "patient-level bootstrap"
+qualifier = "1\\{,\\}000|Region~8 shared|shared across partners"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261016_simplify.tex"
+note = "Spearman 区間の手続き（B、共有 anchor）は Methods 文だけで再現できるように書く（/replicate Option B）"

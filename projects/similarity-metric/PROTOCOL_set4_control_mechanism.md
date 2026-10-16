@@ -111,3 +111,4 @@ Go given 2026-10-12 (relayed by Harvey). Let me be clear: one sentence in R2 if 
 
 ## 8. Deviations
 (none yet)
+- 2026-10-16（D-20261016-1 Step 2、Tak「複雑すぎる…1から順番に実行」）: 本 check の結果（null SD 比 1.62 / 1.00 と MCSE、paired ΔAUC の符号反転）は**本文で報告しない**。§3.1.2 末尾の一文で「登録した check は不報告、protocol と出力は repository」と開示し、Data availability statement でも protocol と出力の同梱を述べる。理由: W₁ と KS の効率比較は論文の Aim（LAB_STATUS R2 = 盲目でない）に答えず、§5 自身が「効率は採用理由でない」と書く。CSV（`results/set4_*.csv`）は canonical のまま。outcome・§2 の licenses の変更なし。

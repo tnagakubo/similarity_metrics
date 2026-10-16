@@ -1,1 +1,1 @@
-- [Recount CSV claims](feedback_recount_csv_claims.md) — recount CSVs; deleted constructs resurface; L_UB provenance; vacuous guards; cut-plan insurance unchecked
+- [Recount CSV claims](feedback_recount_csv_claims.md) — recount CSVs; deleted constructs resurface (tau_clin x3); "moved to appendix" carriers false; vacuous guards; dangling pointers

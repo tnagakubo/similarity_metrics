@@ -57,7 +57,9 @@ cells <- c("Set4_Extremes / sym_severity"   = "Set 4, symmetric severity",
 
 # Required n with its 95% Monte Carlo interval (W1, KS, SMD): interval columns written by R/required_n.R (delta method on log n).
 # All 13 selection cells since 2026-10-11 (D-20261011-11 judgement 2, referee M3): Sets 1-2 first, then the Set 4 / Set 3 cells.
-# SMD is blind (status "blind": AUC plateau at chance) or reached in every cell; the W1 vs KS separation column is unchanged.
+# SMD is blind (status "blind": AUC plateau at chance) or reached in every cell.
+# 2026-10-16 (D-20261016-1 Step 2): the "W1 vs KS" separation column dropped — the text no longer compares the two measures'
+# required n (efficiency against KS is not an Aim); the counts in results/derived/required_n_separation.csv stay for the repository.
 cells_all <- c("Set1_Gaussian / location"  = "Set 1, location",
                "Set1_Gaussian / scale"     = "Set 1, scale",
                "Set1_Gaussian / combined"  = "Set 1, combined",
@@ -75,19 +77,13 @@ cellmc <- function(set, m) { r <- mc[mc$set == set & mc$method == m, ]; stopifno
   if (at_floor(r)) return(sprintf("$\\leq$ %s", fmtn(r$required_n)))
   if (r$status != "reached" || is.na(r$required_n_lower)) return(if (r$status == "reached") fmtn(r$required_n) else r$status)
   sprintf("%s [%s, %s]", fmtn(r$required_n), fmtn(r$required_n_lower), fmtn(r$required_n_upper)) }
-# Separation of the two 95% MC intervals. A cell reached at the grid minimum has no interval but its required n is <= GRID_MIN,
-# so it is separated (fewer) when GRID_MIN < the other measure's lower limit; any other missing interval stays "---".
-# The same rule is counted in R/make_derived_numbers.R (results/derived/required_n_separation.csv).
-sepmc <- function(set) { a <- mc[mc$set == set & mc$method == "W1", ]; b <- mc[mc$set == set & mc$method == "KS", ]
-  if (at_floor(a) && !is.na(b$required_n_lower)) return(if (GRID_MIN < b$required_n_lower) "separate ($W_1$ fewer)" else "overlap")
-  if (at_floor(b) && !is.na(a$required_n_lower)) return(if (GRID_MIN < a$required_n_lower) "separate (KS fewer)" else "overlap")
-  if (any(is.na(c(a$required_n_lower, b$required_n_lower)))) return("---")
-  if (a$required_n_upper < b$required_n_lower) "separate ($W_1$ fewer)" else if (b$required_n_upper < a$required_n_lower) "separate (KS fewer)" else "overlap" }
-mcrows <- vapply(names(cells_all), function(set) sprintf("%s & %s & %s & %s & %s \\\\", cells_all[[set]], cellmc(set, "W1"), cellmc(set, "KS"), cellmc(set, "SMD"), sepmc(set)), "")
+# (The separation rule of the two 95% MC intervals, formerly the fifth column, is still counted in R/make_derived_numbers.R ->
+#  results/derived/required_n_separation.csv for the repository; it is no longer printed.)
+mcrows <- vapply(names(cells_all), function(set) sprintf("%s & %s & %s & %s \\\\", cells_all[[set]], cellmc(set, "W1"), cellmc(set, "KS"), cellmc(set, "SMD")), "")
 # The whole tabular is set in \footnotesize (Wiley one-column width): the file opens with "{\footnotesize" and closes with "}".
-writeLines(c(hdr("tab:study2_required_n_mc (required n with 95% Monte Carlo interval, W1, KS and SMD, threshold 0.9, all 13 cells; $\\leq$ 25 = reached at the grid minimum; blind = AUC never reaches the target; separate / overlap compares the W1 and KS intervals)", "results/required_n_selection.csv"),
-             "{\\footnotesize", H("lllll"),
-             "\\textbf{Cell} & $\\boldsymbol{W_1}$ \\textbf{[95\\% MC interval]} & \\textbf{KS [95\\% MC interval]} & \\textbf{SMD [95\\% MC interval]} & $\\boldsymbol{W_1}$ \\textbf{vs KS} \\\\",
+writeLines(c(hdr("tab:study2_required_n_mc (required n with 95% Monte Carlo interval, W1, KS and SMD, threshold 0.9, all 13 cells; $\\leq$ 25 = reached at the grid minimum; blind = AUC never reaches the target)", "results/required_n_selection.csv"),
+             "{\\footnotesize", H("llll"),
+             "\\textbf{Cell} & $\\boldsymbol{W_1}$ \\textbf{[95\\% MC interval]} & \\textbf{KS [95\\% MC interval]} & \\textbf{SMD [95\\% MC interval]} \\\\",
              "\\midrule", mcrows, F, "}"), file.path(OUT, "tab_study2_required_n_mc.tex"))
 
 # (tab:study2_ari removed 2026-09-27 with Section 3.1.4: clustering is not reported — PROTOCOL_silhouette_extension.md criterion not met.)
@@ -117,22 +113,16 @@ pp <- pp[order(pp$partner), ]
 ci <- function(est, lo, hi, dp) sprintf("%s [%s, %s]", f(est, dp), f(lo, dp), f(hi, dp))
 # Rank by W1 within each modifier (2026-09-27, Tak: partners are ordered by W1). Distances unresolved against the anchor null
 # floor are not ordered among themselves: they share one rank range with a dagger, which must be contiguous (1--6 for age, 1 for SBP).
-# Resolved cells print "rank [lo, hi]": 95% patient-level bootstrap rank interval from results/gusto_rank_intervals.csv
-# (R/gusto_rank_intervals.R, added 2026-10-11 for referee M4, D-20261011-11 judgement 3).
-ri <- read.csv(file.path(proj, "results", "gusto_rank_intervals.csv"), stringsAsFactors = FALSE)
-rank_col <- function(w, em) {
-  r <- rank(w); un <- paste0("R", pp$partner) %in% unres(em)
-  k <- ri[ri$em == em, ][match(pp$partner, ri$partner[ri$em == em]), ]
-  stopifnot(nrow(k) == nrow(pp), !anyNA(k$rank_obs), all(k$rank_obs == r))   # same ordering as the point estimates
-  out <- sprintf("%d [%d, %d]", as.integer(r), k$rank_lo, k$rank_hi)
-  if (any(un)) { ru <- sort(r[un]); stopifnot(all(ru == seq_along(ru) + min(ru) - 1))
-    lab <- if (length(ru) == 1) as.character(ru) else sprintf("%d--%d", min(ru), max(ru)); out[un] <- sprintf("%s$^\\dagger$ [%d, %d]", lab, k$rank_lo[un], k$rank_hi[un]) }   # shared point-rank range + the partner's own bootstrap rank interval (referee Minor 5, 2026-10-12)
-  out }
-nabcd <- sprintf("R%d & %d & %s & %s & %s & %s \\\\", pp$partner, pp$n,
-                 ci(pp$W1_age, pp$ci_lower_age, pp$ci_upper_age, 2), rank_col(pp$W1_age, "age"),
-                 ci(pp$W1_sysbp, pp$ci_lower_sysbp, pp$ci_upper_sysbp, 2), rank_col(pp$W1_sysbp, "sysbp"))
-writeLines(c(hdr("tab:gusto_nabcd (W1 and 95% percentile bootstrap CI, 2 dp, by region number; rank by W1 within each modifier with 95% patient-level bootstrap rank interval, unresolved share a dagger range)", "results/gusto_r8_w1_per_pair.csv + results/gusto_operability.csv + results/gusto_rank_intervals.csv"), H("lrlrlr"),
-             "\\textbf{Partner} & $n$ & $\\boldsymbol{\\widehat{W}_{1,\\text{age}}}$ \\textbf{(yr) [95\\% CI]} & \\textbf{Rank} & $\\boldsymbol{\\widehat{W}_{1,\\text{SBP}}}$ \\textbf{(mmHg) [95\\% CI]} & \\textbf{Rank} \\\\",
+# 2026-10-16 (D-20261016-1 Step 3): the bracketed 95% patient-level bootstrap rank interval (results/gusto_rank_intervals.csv,
+# R/gusto_rank_intervals.R, added 2026-10-11 for referee M4) is no longer printed — the paper delivers distances, not ranks.
+# 2026-10-16 (Louis review-fix M6): the Rank columns themselves dropped (a point rank without uncertainty, D-20261011-11 judgement 3);
+# the forest plot carries the order with its intervals. Unresolved distances carry the dagger on the W1 cell. The CSV stays in the repository.
+dagci <- function(est, lo, hi, em) paste0(ci(est, lo, hi, 2), ifelse(paste0("R", pp$partner) %in% unres(em), "$^\\dagger$", ""))
+nabcd <- sprintf("R%d & %d & %s & %s \\\\", pp$partner, pp$n,
+                 dagci(pp$W1_age, pp$ci_lower_age, pp$ci_upper_age, "age"),
+                 dagci(pp$W1_sysbp, pp$ci_lower_sysbp, pp$ci_upper_sysbp, "sysbp"))
+writeLines(c(hdr("tab:gusto_nabcd (W1 and 95% percentile bootstrap CI, 2 dp, by region number; dagger = unresolved against the anchor null floor)", "results/gusto_r8_w1_per_pair.csv + results/gusto_operability.csv"), H("lrll"),
+             "\\textbf{Partner} & $n$ & $\\boldsymbol{\\widehat{W}_{1,\\text{age}}}$ \\textbf{(yr) [95\\% CI]} & $\\boldsymbol{\\widehat{W}_{1,\\text{SBP}}}$ \\textbf{(mmHg) [95\\% CI]} \\\\",
              "\\midrule", nabcd, F), file.path(OUT, "tab_gusto_nabcd.tex"))
 
 ls <- read.csv(file.path(proj, "results", "gusto_lstar_intervals.csv"), stringsAsFactors = FALSE)

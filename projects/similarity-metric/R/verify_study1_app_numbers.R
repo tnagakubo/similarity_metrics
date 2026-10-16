@@ -109,33 +109,17 @@ check("R9 among six smallest age (unresolved), largest SBP", c(ra[["R9"]] <= 6, 
 # Since 2026-10-11 the table body is generated (R/make_paper_tables.R) and pulled in by \input{generated/tab_gusto_nabcd}.
 tex5 <- readLines("paper/generated/tab_gusto_nabcd.tex", encoding = "UTF-8")
 r5 <- grep("^R[0-9]+ +&", tex5, value = TRUE)
-check("Table 5 (generated) has 15 partner rows with 6 columns", c(length(r5), unique(lengths(strsplit(r5, "&")))), c(15, 6))
+# 2026-10-16 (D-20261016-1 Step 3 + Louis review-fix M6): the Rank columns (point rank, formerly with the 95% patient-level bootstrap
+# rank interval of 2026-10-12) are no longer printed — the paper delivers distances; the table has 4 columns and the unresolved
+# distances carry a dagger on the W1 cell. The rank and interval checks are retired with the columns.
+check("Table 5 (generated) has 15 partner rows with 4 columns", c(length(r5), unique(lengths(strsplit(r5, "&")))), c(15, 4))
 cells <- t(sapply(strsplit(sub("\\\\\\\\\\s*$", "", r5), "&"), trimws))
 rid <- cells[, 1]
-exp_rank <- function(w, un) { r <- rank(w); ifelse(un, NA, r) }
 ua_set <- p$R %in% ua; us_set <- p$R %in% us
-ea <- exp_rank(p$W1_age, ua_set)[match(rid, p$R)]; es <- exp_rank(p$W1_sysbp, us_set)[match(rid, p$R)]
-ga <- cells[, 4]; gs <- cells[, 6]
-# 2026-10-12 (D-20261011-11, referee M4): resolved rank cells read "rank [lo, hi]" with the 95% patient-level bootstrap
-# rank interval from results/gusto_rank_intervals.csv (R/gusto_rank_intervals.R). Compare the rank, then the interval.
-rank_part <- function(x) trimws(sub("\\[.*$", "", x))
-# 2026-10-12 (referee Minor 5): unresolved cells read "1--6$^\dagger$ [lo, hi]" (shared point-rank range + own rank interval).
-okA <- all(ifelse(is.na(ea), rank_part(ga) == "1--6$^\\dagger$", rank_part(ga) == as.character(ea)))
-okS <- all(ifelse(is.na(es), rank_part(gs) == "1$^\\dagger$", rank_part(gs) == as.character(es)))
-check("Table 5 age ranks match W1 order (unresolved share 1--6)", okA, TRUE)
-check("Table 5 SBP ranks match W1 order (unresolved R2 = 1)", okS, TRUE)
-ri <- read.csv("results/gusto_rank_intervals.csv", stringsAsFactors = FALSE)
-iv_cell <- function(x) sub("^[0-9]+ ", "", x)
-exp_iv <- function(em, ids) {
-  r <- ri[ri$em == em, ]
-  k <- match(as.integer(sub("^R", "", ids)), r$partner)
-  sprintf("[%d, %d]", r$rank_lo[k], r$rank_hi[k])
-}
-okIA <- all(ifelse(is.na(ea), TRUE, iv_cell(ga) == exp_iv("age", rid)))
-okIS <- all(ifelse(is.na(es), TRUE, iv_cell(gs) == exp_iv("sysbp", rid)))
-check("Table 5 age rank intervals match results/gusto_rank_intervals.csv", okIA, TRUE)
-check("Table 5 SBP rank intervals match results/gusto_rank_intervals.csv", okIS, TRUE)
-check("rank intervals contain the observed rank", all(ri$rank_lo <= ri$rank_obs & ri$rank_obs <= ri$rank_hi), TRUE)
+dagA <- grepl("dagger", cells[, 3], fixed = TRUE); dagS <- grepl("dagger", cells[, 4], fixed = TRUE)
+check("Table 5 age daggers = distances unresolved against the anchor floor", all(dagA == ua_set[match(rid, p$R)]), TRUE)
+check("Table 5 SBP daggers = distances unresolved against the anchor floor", all(dagS == us_set[match(rid, p$R)]), TRUE)
+# (the self-consistency check of results/gusto_rank_intervals.csv retired 2026-10-16 with the rank-interval column, Step 3)
 check("unresolved age distances are exactly the six smallest", all(rank(p$W1_age)[ua_set] <= 6), TRUE)
 
 # ---- L* table ----------------------------------------------------------------
