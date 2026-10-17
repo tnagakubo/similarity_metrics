@@ -556,4 +556,4 @@
 - **Reversibility**: 本文の順と節名だけ。戻すなら `git revert`。label（`sec:study1` = identification、`sec:study2` = estimation）と guard scope は不変
 - **Affected artifacts**: 原稿；`CLAIMS.md`（凡例に新旧番号の対応表、C-07 / C-26 / C-40 / C-48 / C-55 の文言同期）；`PAPER_LOGIC.md`（骨格 S2 → S1、節表の番号）；要約図 artifact；`LAB_STATUS.md`；`R/README.md`（番号の二時代の注）
 - **Risk（Louis）**: 識別を後ろに回すと、読者は「なぜ SMD でなく W₁ か」を §2.1 の要請 (i) だけを頼りに推定の節を読む — §3 冒頭の一文が両研究を先に名指しすることで受ける。CLAIMS の 10-16 以前の行の Table / Fig 番号は旧配置のまま — 凡例の対応表で読む
-- **Status**: applied（2026-10-17 14:40、**未 commit**）。Tak の拒否権: 段落単位（marker `D-20261017-1`）
+- **Status**: applied（2026-10-17 14:40）、commit `a2d55c7`・push 済み（16:05、Tak「push」）。Tak の拒否権: 段落単位（marker `D-20261017-1`）
