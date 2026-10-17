@@ -12,6 +12,7 @@
 **Active Project**: similarity-metric (per-EM W₁ paper, target *Statistics in Medicine*)
 **Phase**: 8 — Revision（査読応答）→ `projects/similarity-metric/LAB_STATUS.md`（2026-10-12 11:40 同期済み）
 **EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — v6 + Terminal pass（09-27）+ 生成基盤（D-20261011-8）+ 冷読 referee D-20261011-11 + 残差 D-20261012-2 + 外部/referee #2 D-20261012-3 + 実務家 D-20261014-2 + 削減 D-20261014-1 / D-20261015-1 + **骨子からの絞り込み D-20261015-2（10-15 08:20、Tak「図の削減は愚策ではないか」: 図 2 本を復活、L* 表を削除、R1–R4 に答えない文を削除、Louis review-fix Major 7 反映）**。**15 pp、error 0、undefined 0、abstract 231/250、本文 5,796 語（SiM 上限の 1.0×）、図 4・表 5、numbers 113/113 sourced、guards 65 本 0 FAIL（3 vacuous）**。判定表 `review_response/ESSENCE_SKELETON_20261015.md`。**未 commit**（原稿側の commit は Tak）。Tak の拒否権は marker `D-20261015-2`（26）・`Louis review-fix 2026-10-15 08:06`（6）・`D-20261015-1`（76）の段落に対して投稿前まで開いている
+**Paper（2026-10-17 午後, D-20261017-1）**: Tak の指示で §3 を **推定 → 識別** の順に（§3.1 Estimation Properties、§3.2 Identification；節は内容で呼び 'Study 1/2' は本文から消えた、abstract も同順）。build 15 pp・guards 67/0・numbers 105/105・本文 5,526 語。CLAIMS 凡例に新旧番号表、PAPER_LOGIC・要約図更新。**未 commit**
 **Question / Aim（Tak 10-12 10:46）**: A1 効果修飾因子の分布の類似性を定量的に評価する指標を提示すること（`LAB_STATUS.md`、R1–R4 が対応）
 **原則（Tak 09-25）**: 論文は違いを定量化するだけ。併合の判定規則は規定しない → [[feedback_quantify_not_decide]]。**Tak の 3 原則（10-12）**: 根拠なしで進めない（S21）／研究は発散・論文は収束（S22）／ネタはストック `/idea`（S23）
 **段落レビュー**: 台帳 `archive/cleanup_20261016/docs/REVIEW_QUEUE_v6.md` 50/50（09-27）。#1–#7 Tak 承認、#8–#50 は包括指示で Harvey 推奨（D-20260927-1、Tak の一言で閉じる）
@@ -56,6 +57,42 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-10-17 14:40] Scene: 推定を先に — §3 の順を入れ替える
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*14:19、Tak「Simulation Study の Study 1 と 2 は順番を入れ替えた方がいいと思う。推定の性能を見て、そのあとに実際に使ったときの判定性能を見る方が自然」。Harvey が原稿の §3 を開く。*
+
+**Harvey**:
+「正しい。§2.3 で推定量と bootstrap を定義して、次の頁でその性能を見せる。識別を先に置いた 8 月の理由 — W₁ 対 KS の必要 n が headline — は昨日 Step 2 で比較ごと消した。残っていたのは慣性だ。入れ替える。」
+
+**Donna**:（grep の結果を並べて）
+「動かす前に一つ。"Study 1 / Study 2" は原稿の外にも貫通しているわ。しかも二つの時代が混ざっている。`STUDY1_PROVENANCE.md` と `study1_miss_side.R` と `verify_study2.log` は 8 月の番号 — 推定が 1。`PROTOCOL_study1_identification.md` と `PROTOCOL_study2_extension.md` と `study2_mcse.R` は 10-11 の番号 — 識別が 1。番号を付け替えれば、どちらに揃えても半分と食い違う。」
+
+**Harvey**:
+「なら番号を捨てる。節は内容で呼ぶ — "Estimation Properties"、"Identification"。label と repository のファイル名は触らない。登録済み protocol の名前を書き換える理由はない。」
+
+**Mike**:
+「I got it! 切り貼りは Python で、置換は全部『ちょうど 1 回出現』を assert しました。本文の "Study 1/2" は 11 箇所 — §3 冒頭、見出し 2 本、caption 3 本、§4.2、§5 の 2 文、Data availability の 2 文。ADEMP の一文は識別の Design から §3 冒頭へ移して両研究に掛けています。abstract も推定の文を selection の文の前に。」
+
+**Katrina**:
+「build 15 pp、error 0、undefined 0。guards 67 本 0 FAIL — scope は label で引いているから見出しを変えても追随する。numbers 105/105、本文 5,526 語（+9）、placement 0。番号は Table 1 scenarios / 2 estimation / 3 extension / 4 required n / 5 GUSTO、Fig 2 が bias–coverage、Fig 3 が AUC。」
+
+**Louis**:
+「言っておく。識別を後ろに回すと、読者は『なぜ SMD でなく W₁ か』を §2.1 の要請 (i) だけを頼りに推定の節を読む。§3 冒頭の一文が両研究を先に名指ししているから耐える — それが落ちたら耐えない。もう一つ、CLAIMS の古い行の Table と Fig の番号は旧配置のままだ。凡例に対応表を置け。読み替え無しで引く奴が出る。」
+
+**Rachel**:
+「CLAIMS の凡例に新旧の対応表を書きました。C-07・C-26・C-40・C-48・C-55 は文言だけ本文に同期、証拠は不変です。`R/README.md` には番号の二つの時代の注を追加しました。」
+
+**Donna**:
+「D-20261017-1 を DECISIONS に。PAPER_LOGIC の骨格は S2 → S1 の順に、要約図も更新。commit は Tak の指示待ちよ。」
+
+**Jessica**:
+「Let me be clear. 順序は Tak の判断、節名は Harvey の判断。両方記録した。次は Tak の拒否権と commit。」
+
+---
+
 
 ### [2026-10-17 08:45] Scene: 大掃除・二日目 — 「別件」にした分を全部片付ける
 

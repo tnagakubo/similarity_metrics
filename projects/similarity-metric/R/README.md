@@ -75,3 +75,12 @@ The nABCD-era engine (`simulation_manuscript_v2.R`, `nABCD_rcpp.cpp`, `run_*.R`,
 
 - **R packages**: stats, parallel, future.apply, ggplot2, dplyr, tidyr, readr, patchwork, Rcpp
 - **Lint**: `bash scripts/check_r_reproducibility.sh projects/similarity-metric/R` (declared seed, project-relative paths, sessionInfo)
+
+## Study numbering (two eras — do not rename)
+
+The manuscript names the two simulation studies by content (since 2026-10-17, `DECISIONS.md` D-20261017-1): §3.1 **Estimation Properties** (`w1_raw_simulation.R`, `w1_raw_simulation_ext.R`) and §3.2 **Identification** (`selection_simulation.R`). File names keep the numbering of the era in which they were written and are not renamed:
+
+| Era | Numbering | Files |
+|---|---|---|
+| 2026-08 | Study 1 = estimation, Study 2 = selection | `study1_summary_exact.R`, `study1_miss_side.R`, `verify_study1_app_numbers.R`, `verify_study2_figures.R`, `results/STUDY1_PROVENANCE.md`, `results/verify_study2.log`, `tab_study2_required_n_mc`, `fig:study2_auc` |
+| 2026-10-11 | Study 1 = identification, Study 2 = estimation | `PROTOCOL_study1_identification.md`, `PROTOCOL_study2_extension.md`, `study2_mcse.R`, `study2_interval_variants.R`, `replication/study2_estimation_louis.R`, `results/STUDY2_EXT_PROVENANCE.md`, `tab_study2_ext` |

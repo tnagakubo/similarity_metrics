@@ -544,3 +544,16 @@
   - **見送り**: 退役 guard 7 本の tripwire 復帰（scope `sec:study1`）— stem が無ければコストゼロだが、効率比較の再流入は structure_audit と Louis の目で足りる。必要なら次の周で
   - **ゲート（10:20 実測）**: build 0 error / 0 undefined / **15 pp**、pdftotext に「efsec」0／`claim_guards --mutation --strict` **67 本 0 FAIL**（vacuous 4）／`numbers_audit` 105/105／`structure_audit` 本文 5,517 語、abstract 234／`cascade_check`（`pre_D-20261016-1` → 作業ツリー）残滓 0／`verify_study1_app_numbers.R` ALL PASS。marker `D-20261016-1` + `Louis review-fix 2026-10-16` 計 21 箇所
 - **Status**: applied（Step 1–5 + Louis review-fix、2026-10-16 10:20、**未 commit**）。Phase は変更なし（Phase 8）。Tak の拒否権: marker 21 箇所、特に O-2(a) τ_clin の形の参照距離
+
+### D-20261017-1: §3 の順を推定 → 識別に入れ替え、節は内容で呼ぶ
+
+- **Date**: 2026-10-17 14:20 → 適用 14:40  **Raised by**: Tak  **Decided by**: Tak（順序）／Harvey（節名の付け方）
+- **Question**: Simulation Studies の Study 1（識別、selection task）と Study 2（推定、bias / coverage）の順を入れ替えるか。入れ替えるなら番号をどう扱うか
+- **Options**: (a) 現状維持（識別 → 推定。2026-08-30 の outline 判断「principal simulation = 識別」の配置、`PAPER_OUTLINE_BILINGUAL.md`）／(b) 入れ替えて番号も付け替える（Study 1 = 推定、Study 2 = 識別）／(c) 入れ替えて節は内容で呼ぶ（§3.1 Estimation Properties、§3.2 Identification）。label と repository のファイル名は不変
+- **Decision**: (c)
+- **Reasons**: Tak「推定の性能を見て、そのあとに実際に使ったときの判定性能を見る方が自然」。§2.3 で推定量と bootstrap を定義した直後にその性能、次に他の指標との識別比較、そして応用、という流れ。識別を先に置いた 08-30 の理由（W₁ 対 KS の必要 n が headline）は D-20261016-1 Step 2 で比較を外した時点で消えている。番号を付け替えない理由: repository の `study1` / `study2` は二つの時代の番号が混在する — `results/STUDY1_PROVENANCE.md`・`R/study1_miss_side.R`・`R/study1_summary_exact.R`・`results/verify_study2.log` は 2026-08 の番号（推定 = 1、selection = 2）、`PROTOCOL_study1_identification.md`・`PROTOCOL_study2_extension.md`・`R/study2_mcse.R`・`R/replication/study2_estimation_louis.R` は 2026-10-11 の番号（識別 = 1、推定 = 2）。どちらに揃えても半分と食い違い、登録済み protocol の名前を書き換えることになる。内容で呼べば順序に依存しない。ADEMP の一文は識別の Design から §3 冒頭へ移し両研究に掛けた；abstract も推定の文 → selection の文の順にした
+- **Evidence / references**: `paper/per_em_W1_wiley.tex` §3 冒頭・§3.1・§3.2・abstract・§4.2・§5 ¶1 と限界段落・Data availability（本文の "Study 1/2" 残存 0、comment 行は履歴として残す）；build 15 pp、error 0、undefined 0；`claim_guards --strict` 67 本 0 FAIL（scope は label で引くため見出し変更に追随）；`numbers_audit` 105/105；`structure_audit` 本文 5,526 語（+9）・placement 0・duplicate 0；compiled 番号 Table 1 scenarios / 2 estimation / 3 extension / 4 required n / 5 GUSTO-I、Fig 2 bias–coverage / Fig 3 AUC
+- **Reversibility**: 本文の順と節名だけ。戻すなら `git revert`。label（`sec:study1` = identification、`sec:study2` = estimation）と guard scope は不変
+- **Affected artifacts**: 原稿；`CLAIMS.md`（凡例に新旧番号の対応表、C-07 / C-26 / C-40 / C-48 / C-55 の文言同期）；`PAPER_LOGIC.md`（骨格 S2 → S1、節表の番号）；要約図 artifact；`LAB_STATUS.md`；`R/README.md`（番号の二時代の注）
+- **Risk（Louis）**: 識別を後ろに回すと、読者は「なぜ SMD でなく W₁ か」を §2.1 の要請 (i) だけを頼りに推定の節を読む — §3 冒頭の一文が両研究を先に名指しすることで受ける。CLAIMS の 10-16 以前の行の Table / Fig 番号は旧配置のまま — 凡例の対応表で読む
+- **Status**: applied（2026-10-17 14:40、**未 commit**）。Tak の拒否権: 段落単位（marker `D-20261017-1`）
