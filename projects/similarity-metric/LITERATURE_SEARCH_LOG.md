@@ -53,3 +53,17 @@ To our knowledge no distance between regional effect modifier distributions has 
 
 **Gap statement (positioning, as of 2026-10-12)**: the bound itself is not novel; Shen et al. 2018 eq. (13) is the same Kantorovich-Rubinstein step. The remaining claim, that W1 on effect-modifier distributions combined with a clinical slope L and its inversion L* has not been proposed for regional pooling in MRCTs, was not contradicted by the nine sources, but the generalizability / transportability literature was searched only through the reviewer's named works, not systematically. **Falsifier**: a paper that bounds a difference of population-average effects by L times a Wasserstein distance between covariate distributions of trial populations.
 | PubMed (get_article_metadata) | PMID 8204123 (GUSTO 1993) and PMID 7882472 (Lee 1995), 2026-10-12 evening | abstracts: arms 7.2 / 7.4 / 6.3 / 7.0%; age bands 1.1% (<45) and 20.5% (>75) | Lee GROUNDED; GUSTO 7.3% INFERRED (not in abstract); see CITATION_AUDIT_20261012 sect. 6 |
+
+## 7. Pre-submission citation audit (2026-11-14, Rachel; output `review_response/CITATION_AUDIT_20261114.md`)
+
+| database | query (verbatim) | result | verdict |
+|---|---|---|---|
+| KB | `ls knowledge/pdfs` (24 entries) | on disk: Barrio, Dumbgen, ICH E17, Matsushima, Panaretos, Song, Sommerfeld, FTT, IST-1, Komiyama Ch.4 (.md) | no PDF for 14 other cited keys |
+| Crossref | `works/<DOI>` for 23 DOIs (quan2010, shen2018, redko2017, komiyama2024, vallender1974, villani2009, efron1993, hong2018, andrews2000, fang2019, delbarrio1999, dumbgen1993, sommerfeld2018, panaretos2019, stuart2011, tipton2014, munk1998, wasserstein2016, ftt1994, ist1_2000, bickel1997 reprint, matsushima2024, song2025) | metadata match the .bib (print-year differences for stuart/sommerfeld/fang only) | OK |
+| PubMed | lookup_article_by_citation x14 (Austin 2011, Riley 2010, Fisher 2017, Ballman 2015, Kent 2020, Morris 2019, GUSTO 1993, Lee 1995, Chen 2010, Quan 2010, IST-1, IST-3, FTT, Matsushima) | PMIDs for 13; Quan 2010 NOT_FOUND | abstracts read; Riley abstract unavailable |
+| Web | PMC3144483 (Austin 2011), PMC5421441 (Fisher 2017) fetch | SMD definition, no "most widely used"; deft/daft | PARTIAL rows 16, 26 |
+| Web | arxiv.org/pdf/1707.01217, 1610.04420, 1404.3763; amstat.org p-valuestatement.pdf | pdftotext of saved PDFs: Shen Lemma 1 eq.(10),(13); Redko Lemma 1 (RKHS); Fang Ex. 2.5, Thm 3.1; ASA principle 3 | rows 11, 12, 19, 28 |
+| Web | ideas.repec.org Andrews 2000, Hong-Li 2018; stat.sinica.edu.tw J7N1 | Andrews: no abstract; Hong-Li, Bickel abstracts | Andrews NV |
+| Web | `Quan Li Chen 2010 "Assessment of consistency of treatment effects in multiregional clinical trials" Drug Information Journal abstract` | no abstract found | quan2010 NV |
+
+**Gap statement unchanged** (no distance on full regional EM distributions proposed and evaluated); falsifier unchanged, Matsushima Data S1 / Table S1 still unread.

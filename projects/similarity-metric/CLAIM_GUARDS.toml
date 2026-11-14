@@ -764,3 +764,130 @@ stem = "patient-level bootstrap"
 qualifier = "1\\{,\\}000|Region~8 shared|shared across partners"
 known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261016_simplify.tex"
 note = "Spearman 区間の手続き（B、共有 anchor）は Methods 文だけで再現できるように書く（/replicate Option B）"
+
+# ---- Cold referee 2026-11-14 (review_response/referee/20261114/REFEREE_20261114.md), D-20261114-1 -----------------------
+# known_bad = the manuscript before the revision (commit 8308f84). Seeded by Louis's rule: every Major becomes a guard.
+
+[[guard]]
+id = "REF3-M1-every-valid-bound-live"
+finding = "review_response/referee/20261114/REFEREE_20261114.md M1"
+type = "require"
+pattern = "Every valid bound with the constant"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_pre_D-20261114-1.tex"
+note = "A.2 の一文が行途中の % コメントに飲まれ、10-15 から PDF に無かった。prose として生きていること"
+
+[[guard]]
+id = "REF3-M2-calibration-reported"
+finding = "review_response/referee/20261114/REFEREE_20261114.md M2"
+type = "require"
+scope = "section:sec:app_clinical"
+pattern = "lies wholly above the line, that of"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_pre_D-20261114-1.tex"
+note = "§4.4 は読み方の規則だけでなく、読んだ結果（どの区間が参照線の上・下・跨ぐか）を書く。判定ではなく記述"
+
+[[guard]]
+id = "REF3-M4-per-modifier-premise"
+finding = "review_response/referee/20261114/REFEREE_20261114.md M4"
+type = "proximity"
+stem = "wholly below"
+qualifier = "alone|additive|contribution|sum of the (two )?margins|not by|wholly above the line means|lies wholly above the line"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_pre_D-20261114-1.tex"
+note = "'wholly below' の読みは一つの EM の寄与についての言明。Prop. 1 の『その EM だけに依存』の前提を付ける（R5: 両 EM で線の下でも和は余裕を超え得る）"
+
+[[guard]]
+id = "REF3-M5-operating-point"
+finding = "review_response/referee/20261114/REFEREE_20261114.md M5"
+type = "forbid"
+pattern = "operating point"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_pre_D-20261114-1.tex"
+note = "E5/E6 は 0.2 SD の一点。GUSTO の距離は 0.03–0.30 SD に広がるので『応用の operating point』と呼ばない"
+
+[[guard]]
+id = "REF3-M6-smd-blind-scale"
+finding = "review_response/referee/20261114/REFEREE_20261114.md M6"
+type = "require"
+scope = "abstract"
+pattern = "standardized mean difference on the original scale"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_pre_D-20261114-1.tex"
+note = "SMD の blind は尺度に付く性質（log 尺度の SMD は Set 2 shape で回復、combined で blind）。abstract で尺度を名指す"
+
+[[guard]]
+id = "REF3-M7-abstract-rankings"
+finding = "review_response/referee/20261114/REFEREE_20261114.md M7"
+type = "forbid"
+scope = "abstract"
+pattern = "rankings?[^.]{0,60}differed"
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_pre_D-20261114-1.tex"
+note = "本文 §4.3 は順序を resolved ranking として読まない。abstract は『順位が違った』と言わず Spearman と区間を出す"
+
+# ---- Louis /review-fix of D-20261114-1 (review_response/FIX_REVIEW_LOUIS_20261114.md) ---------------------------------
+
+[[guard]]
+id = "L4-C1-risk-reducing-range"
+finding = "review_response/FIX_REVIEW_LOUIS_20261114.md C1"
+type = "forbid"
+pattern = "no CATE that only reduces risk can"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261114_before_louis.tex"
+note = "年齢群平均 20.5% は sup baseline risk ではない（SBP = 0 は 6/6 死亡）。全称で言わず、必要な baseline risk を述べる"
+
+[[guard]]
+id = "L4-M3-sum-not-bounded"
+finding = "review_response/FIX_REVIEW_LOUIS_20261114.md M3"
+type = "forbid"
+pattern = "not bound the sum"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261114_before_louis.tex"
+note = "加法 CATE なら per-modifier の和は bound（§5）。言えるのは『Δ_clin では bound されない』まで"
+
+[[guard]]
+id = "L4-M4-no-partner-nomination"
+finding = "review_response/FIX_REVIEW_LOUIS_20261114.md M4"
+type = "forbid"
+scope = "section:sec:app_clinical"
+pattern = "R5, for example"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261114_before_louis.tex"
+note = "両 EM で線の下にいる唯一の partner を名指すと併合候補の指名に読まれる（quantify, not decide）"
+
+[[guard]]
+id = "L4-M5-no-simulated-cell"
+finding = "review_response/FIX_REVIEW_LOUIS_20261114.md M5"
+type = "forbid"
+pattern = "No simulated cell"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261114_before_louis.tex"
+note = "Set 4 の identification cell は 0.125–0.19 SD にある。無いのは estimation study とその拡張の cell"
+
+[[guard]]
+id = "L4-M9-negligible"
+finding = "review_response/FIX_REVIEW_LOUIS_20261114.md M9"
+type = "forbid"
+pattern = "negligible"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261114_before_louis.tex"
+note = "未定義の程度語。区間が排除する値を書く"
+
+[[guard]]
+id = "L4-M2-logsmd-omission"
+finding = "review_response/FIX_REVIEW_LOUIS_20261114.md M2"
+type = "forbid"
+scope = "section:sec:study1"
+pattern = "a log-scale SMD, a harm"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261114_before_louis.tex"
+note = "同じ小節で結果を報告している log-scale SMD を『not reported』の一覧に入れない"
+
+[[guard]]
+id = "TAK-C-no-full-enumeration"
+finding = "DECISIONS.md D-20261114-2 (Tak: Section 4.4 is Option C)"
+type = "forbid"
+scope = "section:sec:app_clinical"
+pattern = "wholly above the line and those of"
+literal = true
+known_bad = "file:review_response/known_bad/per_em_W1_wiley_20261114_before_cite_fix.tex"
+note = "§4.4 は三つの読みに例を一つずつ。全 partner を上・下・跨ぐに仕分けない（quantify, not decide）"

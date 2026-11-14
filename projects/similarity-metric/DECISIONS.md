@@ -557,3 +557,75 @@
 - **Affected artifacts**: 原稿；`CLAIMS.md`（凡例に新旧番号の対応表、C-07 / C-26 / C-40 / C-48 / C-55 の文言同期）；`PAPER_LOGIC.md`（骨格 S2 → S1、節表の番号）；要約図 artifact；`LAB_STATUS.md`；`R/README.md`（番号の二時代の注）
 - **Risk（Louis）**: 識別を後ろに回すと、読者は「なぜ SMD でなく W₁ か」を §2.1 の要請 (i) だけを頼りに推定の節を読む — §3 冒頭の一文が両研究を先に名指しすることで受ける。CLAIMS の 10-16 以前の行の Table / Fig 番号は旧配置のまま — 凡例の対応表で読む
 - **Status**: applied（2026-10-17 14:40）、commit `a2d55c7`・push 済み（16:05、Tak「push」）。Tak の拒否権: 段落単位（marker `D-20261017-1`）
+
+### D-20261114-1: 投稿前の網羅レビュー（冷読 referee #3・数値 / CLAIMS 検証・引用監査）と原稿改訂 — Aim は不変
+
+- **Date**: 2026-11-14 11:05 → 適用 12:20  **Raised by**: Tak  **Decided by**: Harvey（Major の方針と文言）、Mike（数値・数学の検算）、Rachel（引用の文言）、Katrina（registry・derived writer・図・build）、Louis（`/review-fix`、guard）、Donna（記録）。Jessica の投稿承認は未取得（Phase 7→投稿の gate）
+- **Tak の指示（verbatim）**: 「Fable 5.2になったので、ここでの研究活動について、網羅的にレビューし、… per_em_W1_wiley.tex … per_em_W1_wiley.pdf を修正し、論文投稿に耐えうる作品を作って。修正前のファイルは残しておいて。論文の目的は勝手に変えないで。」
+- **Question**: 10-17 の原稿（15 pp、commit `8308f84`）は投稿に耐えるか。耐えない所をどこまで直すか
+- **Options**: (a) 機械 gate が全部 PASS なので体裁だけ直す／(b) 独立した三本のレビュー（冷読 referee、数値・CLAIMS の四つ目の目、引用の原典照合）を回し、Major は全件に方針、新しい simulation は走らせない／(c) referee M5 に応えて 0.2 SD 未満の coverage cell を追加で走らせる
+- **Decision**: (b)。(c) は見送り（下の Open O-1）
+- **レビューの結果**（原稿は編集せず報告のみ、三本並行）:
+  - 冷読 referee `review_response/referee/20261114/REFEREE_20261114.md`: Major 7 / Minor 17。再計算（GUSTO-I の W₁ 30 本・CI 60 本・null floor・Spearman、表の全 cell）は不一致 0。数学は正しい（二点に条件）
+  - Mike `review_response/VERIFY_20261114.md`: gate 5/5 PASS、`\numval{}` 81 key 全件一致。ただし丸めた表示が文の量化子を偽にする箇所（E1–E3）、真値の出所の食い違い（E4）、"weakest" の曖昧さ（E5）、Fig 3 の strip label（E8）。CLAIMS 7 行が stale、orphan 5 件
+  - Rachel `review_response/CITATION_AUDIT_20261114.md`: cited 34 key 中 NOT SUPPORTED 1（gusto1993 の N・16 regions）、PARTIAL 18、NOT VERIFIED 6（原典なし）
+- **適用した修正と理由**:
+  1. **本文から消えていた文の復元**（referee M1）: A.2 の "Every valid bound with the constant …" は行途中の `%` コメントの後ろにあり 10-15 から PDF に無かった。§4.3 は "ranking.R2 has" と空白なしで連結していた。機械 gate（undefined 0、guards）はどちらも捕まえない
+  2. **§4.4 に読んだ結果を書く**（referee M2）: R4 は「読み方の例示」。規則だけで結果が無いのは例示になっていない。区間が参照線の上・下・跨ぐ partner を列挙（`results/derived/gusto_reference_reading.csv`、`R/make_derived_numbers.R` §14）。**判定ではない**: 参照線は sponsor の例示入力で閾値ではないと同じ段落で言い、併合の可否は書かない。Louis M4 により、両 EM で線の下にいる唯一の partner の名指し（"R5, for example"）は外した
+  3. **"sharp" / "could produce" に有界 outcome 尺度の限定**（referee M3）: 到達する CATE は台の上で L(b−a) の幅を持ち、risk difference の尺度では許されない場合がある。A.2 にだけあった限定を §2.2・§2.4・§4.4・§5 に。referee が提案した Δ_clin/D_KS の数値は新しい解析なので入れない
+  4. **参照線の読みは EM ごと**（referee M4、Louis M3）: Prop. 1 は CATE が一つの EM だけに依存することを前提。加法 CATE なら寄与は加算され、各 EM で線の下でも和は「余裕の和」でしか bound されない（Δ_clin ではない）
+  5. **"the application's operating point" をやめる**（referee M5、Louis M5、M8）: E5/E6 は 0.2 SD の一点。GUSTO-I の距離は 0.03–0.30 SD で、resolved 23 本中 17 本が 0.2 SD 未満。「estimation study とその拡張に 0–0.2 SD の cell は無い」と §4.2・§5 に書き、abstract は 0.2 SD の n = 100（0.904）も出す
+  6. **SMD の blind は尺度に付く**（referee M6、Louis M2）: abstract・§3.2・§5 で "on the original scale" と名指し、log-scale SMD の結果を一文で再報告（Set 2 shape で回復、combined で chance）。protocol §8 に再開を追記
+  7. **abstract の "partner rankings … differed"**（referee M7）: 本文 §4.3 は順序を resolved ranking として読まない。Spearman −0.30 と区間に置換
+  8. **丸めと量化子**（Mike E1–E6）: coverage の範囲を 3 桁（0.917–0.951 — 旧 0.92–0.95 は同じ文の最低値 0.917 を含まなかった）、blind AUC の範囲と単調倍率も 3 桁、"at most" は厳密な上界（0.005）だけに残し他は「最大の観測値」、miss 側は exact 真値の CSV（`study2_interval_variants.csv`）から 1.12%、片側被覆の列挙に S4・n = 200 を追加、KS の "weakest cell" → "the cell where it needs the largest sample"
+  9. **引用を原典が言う範囲に**（Rachel）: chen2010（consistency は key issue）、E17（原則 3 の文言）、Song（local requirements；複数 EM の条件を復元）、Matsushima（"binary characteristics" の出典は手元に無い supplement → p.966 の記述に）、Shen / Redko（"same form" は Shen だけ）、Munk–Czado、Austin（"most widely used" 削除）、Panaretos–Zemel、Fang–Santos（我々の適用であると明記）、Sommerfeld–Munk（解集合上の最大）、Fisher（within-trial の交互作用）、Ballman / Kent、Wasserstein–Lazar、Lee、IST。`gusto1993`: N と 16 regions は predtools の dataset の事実と明記。`quan2010` は原典が無く引用から外した。.bib: shen2018 → @article、redko2017 に editor、komiyama2024 に address、iche17 の URL を note に
+  10. **A.2 の全称の撤回**（Louis C1）: "a range that no CATE that only reduces risk can have" は年齢群平均 20.5% からは言えない（SBP = 0 の 6 例は全例死亡）。「到達する CATE が要する baseline risk」を述べる形に
+  11. **定義**: anchor / partner / cell / set（旧 "world"）を初出で定義、略語に ADEMP・FTT・IST・t-PA、null floor は「nominal level 0.05 の resampling test」
+  12. **Figure 3**: strip label "extremes further out" / "control: KS's home turf" → "symmetric severity" / "bulk shift (control)"（10-12 に本文から外した解釈が図に残っていた）
+  13. **投稿物**: `paper/submission/cover_letter.md`・`title_page.md` を現行原稿に（nABCD 時代の草稿で "ICH E17 recommends" があった）；`paper/submission/make_submission_source.py` → コメントを除いた `per_em_W1_wiley_submission.tex`（組版 text は作業原稿と token 単位で一致、11,086 tokens）
+- **変えなかったもの**: Aim A1 と R1–R4、節構成、図表の数（図 4・表 5）、simulation の結果（新しい run なし）、判定規則を置かない原則。registry の key 名（`…2dp` は 3 桁になったが guard と記録が引くので rename しない）
+- **Reasons（なぜ (a) でも (c) でもないか）**: (a) gate は「表示値が registry どおりか」「禁止文言が無いか」しか見ない — 今回の Critical / Major は全部 gate の外にあった（コメントに飲まれた文、丸め後に偽になる量化子、原典と合わない引用、図の中の文言）。(c) 新しい cell は protocol の登録が先で、Tak の指示は原稿の修正。範囲外であることを正直に書く方が、投稿直前に走らせた cell を足すより defensible
+- **Evidence / gates（12:20 実測）**: build 16 pp・error 0・undefined 0（15 → 16 pp；付録の末尾 5 行が 16 頁目）／`claim_guards --strict --mutation` **79 本 0 FAIL**（REF3-* 6、L4-* 6 を seed）／`numbers_registry check` PASS・`numbers_audit` 115/115／`verify_study1_app_numbers.R`・`verify_study2_figures.R` ALL PASS／abstract **250/250**／本文 **6,116 語**（Intro・Methods・Simulation・Application・Discussion；SiM 上限の 1.0×）／Louis `/review-fix` Critical 1・Major 9・Minor 8 → `review_response/FIX_REVIEW_LOUIS_20261114.md`、全 Critical / Major 適用
+- **Reversibility**: 修正前 = `review_response/known_bad/per_em_W1_wiley_pre_D-20261114-1.tex` と同名 `.pdf`（= commit `8308f84`）。Louis 前 = `known_bad/per_em_W1_wiley_20261114_before_louis.tex`。diff = `review_response/FIX_DIFF_20261114.diff`（Louis 前まで）。marker `Revised 2026-11-14 (D-20261114-1, needs Tak's veto)` と `Louis review-fix 2026-11-14` を grep。**未 commit**
+- **Affected artifacts**: 原稿・PDF・`.bib`；`numbers_registry.csv`（fmt 6 行、source 1 行、新 key 5）・`numbers_macros.tex`；`R/make_derived_numbers.R` §14–15 → `results/derived/gusto_reference_reading.csv`・`gusto_resolved_below_02.csv`；`R/figures_required_n.R` → `figures/fig_required_n_auc*.{pdf,png}`；`CLAIM_GUARDS.toml`；`PROTOCOL_study1_identification.md` §8；`CLAIMS.md`；`paper/submission/*`
+- **Risk（Louis）**: §4.4 の partner の列挙は、参照線が sponsor の例示入力である限り記述だが、読者が「線の下 = 併合可」と読む危険は残る — 同じ段落の "not a threshold for pooling" と per-modifier の但し書きを落とさないこと（guards `LF3-M1`、`REF3-M4`、`L4-M4`）。0.2 SD 未満に coverage の cell が無いことは、referee が次も聞く
+- **Open**:
+  - **O-1（Tak）**: 0–0.2 SD の coverage cell を登録して走らせるか（referee M5 の (c)）。走らせるなら `PROTOCOL_study2_extension.md` の amendment が先
+  - **O-2（Tak）**: 著者名・所属・ORCID・謝辞・funding・repository URL・AI 利用の開示（原稿と `paper/submission/` の placeholder）
+  - **O-3（Rachel → Tak）**: 原典を読めていない引用 6 本（`riley2010`、`villani2009`、`vallender1974`、`efron1993`、`andrews2000`；`quan2010` は引用を外した）と Matsushima の Data S1 / Table S1 — Paper Request
+  - **O-4**: `/reproduce`（clean checkout）と `/submission-check`、Jessica の投稿承認は未実施。`ground_audit` は CLAIMS C-25 付近の `🔍要根拠`（Δ_clin = 1 percentage point の臨床的出典）1 件を引き続き報告
+  - **O-5（Tak）**: marker の拒否権（段落単位、投稿前まで）。特に §4.4 の列挙と abstract
+- **Status**: applied（2026-11-14 12:20）、**未 commit**。Phase は変更なし（Phase 8）
+- **Tak の判断（2026-11-14 12:51、verbatim）**: 「1. placeholderのまま。これらはClaudeでは記載しない 2. 追加しない。あれもこれもとしていたら範囲だけ広がって何が言いたいのかわからなくなる 3. 詳細を示して。判断できない 4. 原典のリンクを示して。どのように引用されているのかも知りたい。 5. これらのgateは後で実施」
+  - **O-2 closed**: 著者名・所属・ORCID・謝辞・contributions・funding・repository URL・AI 利用の開示は placeholder のまま残す。ラボは記入しない
+  - **O-1 closed — 追加しない**: 0–0.2 SD の coverage cell は走らせない。理由（Tak）: 範囲だけ広がって何が言いたいのかわからなくなる（S22 研究は発散・論文は収束）。原稿は「estimation study とその拡張に 0–0.2 SD の cell は無い」と書いたままにする。再提案しない
+  - **O-5（§4.4 の列挙と abstract）**: 詳細を提示して Tak の判断待ち
+  - **O-3**: 原典の DOI と引用文を提示（Tak が入手するかを判断）
+  - **O-4**: `/reproduce`・`/submission-check`・Jessica 承認は後で実施（Tak）
+
+### D-20261114-2: §4.4 は Option C（各読みに例を一つ）；引用の位置と数を規則に合わせる
+
+- **Date**: 2026-11-14 14:34（Tak、verbatim）: 「ss4.4はCでいく。引用位置は学術論文として適切な位置に決めろ。ほかの引用も不適切なものがあるんじゃないのか？過剰な引用もよくないはずだ。引用のルールを再確認しておけ。」
+- **Question**: (1) §4.4 の区間の読みをどこまで書くか（D-20261114-1 O-5）。(2) 引用はどこに、いくつ置くか
+- **Options（§4.4）**: A 全 partner を上・下・跨ぐに列挙（現状）／B 列挙を外し規則だけ／C 三つの読みに例を一つずつ
+- **Decision（Tak）**: **C**。age で R3（1.96–3.28 年、線の上）、R7（0.30–0.95、下）、R6（0.63–1.39、含む）。件数 key `nRefAgeContains`・`nRefSbpContains` は registry から削除、区間の端 6 個を `refAgeR{3,7,6}{Lo,Hi}`（`results/derived/gusto_reference_reading.csv`、Table 5 と同じ 2 桁）で登録
+  - **提示時の例 R5 を R7 に替えた理由**: R5 は両 EM で線の下にいる唯一の partner で、名指すと併合候補の指名に読める（Louis M4、guard `L4-M4`）。R7 は age で下、SBP では線を含む。R5・R7 とも age の距離は null floor に対して unresolved で、読みは上限だけが担う（同じ段落の文のとおり）
+- **Reasons**: A は 30 本の区間を全部三つの箱に入れ、線が sponsor の例示でも仕分けに見える（09-25 に外した適格判定と同じ形）。B は R4（読み方の例示）が読みを一つも持たない。C は例示で止まる
+- **引用の規則（再確認、以後これで書く）**:
+  1. 引用は**その出典が支える節の直後**に置く。自前の結果・導出を含む文の文末に置かない
+  2. **自前の結果・導出・simulation には引用を付けない**（節番号・図表で指す）
+  3. **一つの事実に一つの出典**（読んだ原典）。同じ事実への重ね引用、同じ文・隣接文での同一出典の繰り返しをしない
+  4. **直接引用（引用符つきの語句）には必ずその場で出典**
+  5. **原典を読んで verbatim で照合できたものだけを引く**（CLAUDE.md Rule 6）。読めていない key は、読んだ出典に替えるか外す
+  6. 試験・データ・手法の出典は**初出に一度**
+  7. 初等的な事実（Jensen による W₁ ≤ W₂ など）には引用を付けない
+- **適用（引用 34 → 28 key、16 箇所）**:
+  - **外した**: `andrews2000`（§5 の文は自前の simulation 結果；境界での bootstrap の不一致は §2.3 で `dumbgen1993`・`fang2019` が担う；原典未読）／`riley2010`（`fisher2017` と重複；原典未読）／`villani2009`・`vallender1974`（原典未読 → 読了済みの `panaretos2019` に: 定義 p.406、metric p.407、quantile 形と CDF 形 p.410、KR 表現と W_p ≤ W_q p.414）／`redko2017`（本筋でない付け足しの節ごと削除；print 版未読）／`iche17`（§5 の "holistic" は Matsushima p.965 の語）／`gusto1993`（§5 の再引用；初出 §4.1 と Data availability に残す）
+  - **移した**: `efron1993` を "B = 2,000 replicates" の後から "percentile bootstrap" の直後へ（B は出典の主張ではない）
+  - **足した（規則 4）**: "similar enough" に `iche17`（Glossary）、"clinically meaningful or not" に `komiyama2024`（§4.6.1.4）
+  - **まとめた**: §2.2 の Villani 4 箇所・Vallender 2 箇所 → `panaretos2019` 2 箇所（三表現、metric + KR 双対）；W₁ ≤ W₂ は引用なし；§2.3 と Appendix A.1 の同一文内 `fang2019` 二重 → 不一致の節は `dumbgen1993` のみ
+- **残る未読**: `efron1993`（手法名の出典として 1 箇所に残す — Paper Request 継続）、Kent 2020 本文、Matsushima Data S1 / Table S1
+- **Evidence / gates（14:50 実測）**: build **15 pp**・error 0・undefined 0（`\cvol` 1–15）／`claim_guards --strict --mutation` 80 本 0 FAIL（`REF3-M2` を新文言に、`TAK-C-no-full-enumeration` を追加）／`numbers_registry check` PASS／`numbers_audit` 115/115／`verify_study1_app_numbers.R` ALL PASS／`cite_audit` cited 28・missing 0／本文 6,079 語・abstract 250
+- **Reversibility**: 適用前 = `review_response/known_bad/per_em_W1_wiley_20261114_before_cite_fix.tex`
+- **Risk（Louis）**: Villani を外すと「標準の monograph を引いていない」と言われ得る。原典 PDF が入れば KR 双対の一箇所に戻せる。`efron1993` は未読のまま残っている
+- **Status**: applied、**未 commit**。D-20261114-1 O-5 は closed（abstract は Tak から変更指示なし — 現行のまま）、O-3 は `efron1993`・Kent 本文・Matsushima S1 に縮小
