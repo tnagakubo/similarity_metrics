@@ -1,0 +1,6062 @@
+The Annals of Probability
+1999, Vol. 27, No. 2, 1009–1071
+
+CENTRAL LIMIT THEOREMS FOR THE WASSERSTEIN
+DISTANCE BETWEEN THE EMPIRICAL AND
+THE TRUE DISTRIBUTIONS
+By Eustasio del Barrio,1 Evarist Giné2 and Carlos Matrán1
+Universidad de Valladolid, University of Connecticut and
+Universidad de Valladolid
+If X is integrable, F is its cdf and Fn is the empirical cdf based on
+an i.i.d. sample from F, then the Wasserstein
+distance between Fn and
+∞
+F, which coincides with the L1 norm −∞ Fn t − Ft dt of the centered
+empirical process, tends to zero a.s. The object of this article is to obtain
+rates of convergence and distributional limit theorems for this law of large
+numbers or, equivalently, stochastic boundedness and distributional limit
+theorems for the L1 norm of the empirical process. Some limit theorems
+for the Ornstein–Uhlenbeck process are also derived as a by-product.
+
+1. Introduction. The Kantorovich or L1 -Wasserstein distance between
+two probability measures P1 and P2 on R with finite mean, defined as
+
+d1 P1 P2  = inf
+x − y dµx y
+11
+
+µ ∈  R2  with marginals P1 P2
+
+is an interesting distance in probabilistic limit theory because it metrizes
+weak convergence plus convergence of first absolute moments. It is well known
+[Shorack and Wellner (1986), page 64] that, letting F1 , F2 , respectively, be the
+cumulative distribution functions (cdf ’s) of P1 and P2 and Q1 , Q2 their left
+continuous inverses or quantile functions, Qi t = inf x Fi x ≥ t , this
+distance can be alternatively written as
+1
+∞
+12
+d1 P1 P2  =
+Q2 t − Q1 t dt =
+F2 t − F1 t dt
+0
+
+−∞
+
+We will refer to any of these three expressions as the Wasserstein distance
+between F1 and F2 .
+Let now X Xi , i ∈ N, be i.i.d. integrable random variables with common
+cdf F and quantile function Q, and let
+Fn t =
+
+n
+1
+I
+n i=1 Xi ≤t
+
+t∈R n∈N
+
+Received May 1998; revised November 1998.
+
+1 Supported in part by DGICYT Grant PB95-0715-02 and PAPIJCL Grant VA08/97.
+2 Supported in part by NSF Grant DMS-95-04758.
+
+AMS 1991 subject classifications. Primary 60F17, 62E20; secondary 60B12, 60J65
+Key words and phrases. Empirical processes, Wasserstein distance, distributional limit theorems, convergence of moments, Ornstein–Uhlenbeck process.
+
+1009
+
+1010
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+be their empirical measures. By Glivenko–Cantelli and the law of large numbers for X,
+
+
+Fn t ω → Ft for all t ∈ R and
+t dFn t ω → t dFt a.s.
+Therefore, by dominated convergence,
+13
+
+d1 Fn F → 0
+
+a.s.
+
+[If X is not integrable, then d1 Fn F = ∞ for all n.] The object of this
+article is to obtain the distributional limit theorems associated to the “law of
+large numbers” (1.3) and, more generally, to obtain rates of convergence in
+probability for this law of large numbers. The relationship between d1 Fn F
+and the weighted uniform empirical process adds interest to this problem.
+Since Qθ, θ uniform on 0 1, has the law of X, taking Xi = Qθi  in (1.2),
+with θi i.i.d. uniform, gives, by a change of variables that, as is well known,
+1
+14
+d1 Fn F =d
+Hn t − t dQt
+n∈N
+0
+
+where Hn is the nth empirical cdf corresponding to the sequence θi . If Q
+is differentiable, then the right side of (1.4) is the L1 norm of the uniform
+empirical process weighted by Q t. So, the results to be obtained in this
+article can be viewed in different lights, as limit theorems for a particularly
+important functional of the general empirical process Fn on R, namely the L1
+norm, or as the asymptotic behavior of the Wasserstein distance between the
+empirical and the true distributions or as limit theorems for the L1 norm of
+the weighted uniform empirical process.
+In fact, the Lp norm for p ≥ 1 of the weighted empirical process,
+15
+
+1
+0
+
+Hn t − t/qtp dt
+
+has been studied by several authors. Csörgő, Csörgő, Horváth and Mason
+(1986a) (Hereafter CCHM) adapt the Kómlos–Major–Tusnády approximation
+of partial sums by Wiener processes to a weighted approximation of the uniform quantile process by Brownian bridges, and obtain from this a weighted
+approximation of the uniform empirical process by Brownian bridges [for a
+history and a simpler proof of the latter, see Mason (1991)], which has become
+an invaluable tool for the study of the empirical cdf. This approximation is
+then shown in CCHM (1986b) to provide an approximation in probability of
+integral functionals of Hn by the same functionals for Brownian bridges. M.
+Csörgő and Horváth (1988a, 1993) [see also M. Csörgő, Horváth and Shao
+(1993)] also use these approximations to obtain limit theorems for the integrals in (1.5) over different domains of integration contained in 0 1. The
+results of these authors on (1.5) constitute a nice complement to the celebrated Chibisov–O’Reilly theorem. For p = 2 and weights qt = fQt, f
+the density of F, these integrals are related to tests of goodness-of-fit. In the
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1011
+
+present work, the Wasserstein distance gives precise additional meaning to
+very general weights.
+It turns out that the natural settings for distributional limit theorems for
+the Wasserstein distance between Fn and F are the domains of attraction of
+α-stable laws with 1 ≤ α ≤ 2 (assuming EX < ∞ in the α = 1 case). The
+technically most interesting cases are α = 1 and α = 2, for which there are few
+results in the literature. The following theorem describes the results about
+our problem that are contained in, or can be obtained without effort from,
+previous work [see Theorems 5.3.1, 5.3.2 and 5.3.3 in the Csörgő–Horváth
+(1993) book]. Here and elsewhere, the notation X ∈ DAα an  will indicate that
+the distribution of X is in the domain of attraction of an α-stable law with
+normalizing constants an . Convergence in distribution is denoted by →d for
+random variables and by →w for probability measures. Then Bt, 0 ≤ t ≤ 1,
+will denote a Brownian bridge process, that is, a centered Gaussian process
+with continuous sample paths and covariance EBsBt = s ∧ t − st.
+Theorem 1.1. Let X Xi , i ∈ N, be a sequence of independent random variables with a differentiable distribution function F and let Q be the associated
+quantile function. Assumethat X ∈ DAα an  for some 1 < α ≤ 2 and let γ be
+n
+∞
+the α-stable limit law of
+i=1 Xi − EX/an n=1  Then:
+(a) In the case α = 2;
+
+∞ 
+(a1) If, in addition, −∞ Ft1 − Ft dt < ∞, then
+1
+√ ∞
+n
+Fn t − Ft dt →d
+Bt dQt
+16
+−∞
+
+0
+
+and
+
+(a2) If X is symmetric, has a positive density and satisfies Pr X >
+t ≃ 1/t2 , then there exists a constant D such that
+ ∞
+ ∞
+n
+Fn t − Ft dt − E
+Fn t − Ft dt
+→d g
+17
+√
+−∞
+Dan −∞
+where g is standard normal.
+(b) If 1 < α < 2 and γ = cPois µc1 c2 α, then
+
+1 c1 1/α  ∞
+n ∞
+F t − Ft dt →d
+N1 s − ss−1−1/α ds
+an −∞ n
+α α
+0
+18
+
+1 c2 1/α  ∞
++
+N2 s − ss−1−1/α ds
+α α
+0
+where Ni t 0 < t < ∞ , i = 1 2, are independent Poisson processes with
+intensity 1.
+We should recall that the centered compound Poisson measure with
+∞
+Lévy
+(or driving) measure µ satisfying −∞ 1 ∧ x2 dµx < ∞, µ 0 = 0 and
+
+−1 1c x dµx < ∞, is defined as the probability measure with characteristic
+
+1012
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+function
+19
+
+cPois µˆt = exp
+
+ ∞
+−∞
+
+expitx − 1 − itx dµx 
+
+we will also use below the partially centered Poisson measure
+ ∞
+110
+cδ Pois µˆt = exp
+expitx − 1 − itxIx≤δ  dµx
+−∞
+
+needed when µ does not integrate x at infinity or is not symmetric. The Lévy
+measure µc1 c2 α, whose corresponding compound Poisson is α-stable, is
+defined as
+
+if x > 0
+c1 x−1−α dx
+111
+dµc1 c2 α =
+c2 x−1−α
+if x < 0
+[cf. AraujoandGiné (1980), Chapter 2]. It is also convenient to note that the
+∞
+condition −∞ Ft1 − Ft dt < ∞ implies finite second moment for X
+but not conversely [this condition defines the Banach space L2 1 % & Pr [cf.
+Ledoux and Talagrand (1991), page 10]. In particular, the previous theorem
+is far from covering the basic case EX2 < ∞ [or, more generally, the case
+X ∈ DA2 bn  for general bn ].
+Here is a brief description of the contents of this article.
+1. Parts (a1) and (b) of Theorem 1.1 are proved without assuming F differentiable and, moreover, the type of convergence is improved in the sense
+that it is a consequence of convergence in law of certain processes in L1 R;
+stochastic boundedness for larger classes of distributions is also considered
+(Section 2).
+2. Two converses of (a1) are obtained [Theorem 2.1(b) and Corollary 4.5].
+3. A limit theorem is proved for the partially centered Wasserstein distance
+when X is in the domain of attraction of a 1-stable law, with EX < ∞;
+this generalizes Theorem 1.1(b) to this case (Section 3).
+4. We show that the centered and normalized Wassertein distances,
+∞
+nb−1
+n d1 Fn F − Ed1 Fn F n=1 , are stochastically bounded for all
+X ∈ DA2 bn  (Section 4) and prove that they actually converge
+in law
+√
+α+1/2
+for EX2 < ∞ and also for
+X
+∈
+DA
+b
+
+with
+b
+≃
+nlog
+n
+,
+2 n
+n
+
+−1 < α < ∞, and bn ≃ n log log n, significantly expanding the scope
+of (a2), which corresponds to α = 0 (Sections 5 and 6). Other norming
+sequences bn are possible, but we restrict to these for simplicity.
+5. All the above theorems are shown to hold with convergence of moments as
+well.
+These results constitute an essentially complete description of the firstorder asymptotics for the Wasserstein distance d1 Fn F or, what is the same,
+for the L1 norm of the empirical process, at least for X ∈ DAα , α ∈ 1 2.
+The results for the uncentered Wasserstein distance [corresponding to (a1)
+and (b)] are all obtained from the central limit theorem in the Banach space
+L1 R for adequate processes. This CLT, obtained in the seventies, is relatively
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1013
+
+elementary (as L1 is a well-behaved Banach space in this regard) and the
+proofs straightforward. We believe this method is more elementary than the
+one based on approximation of the weighted empirical process by the Brownian
+bridge, particularly if based on KMT. It has the added advantage of providing
+convergence of moments as well.
+We devote Sections 4 to 6 to the more delicate case of the domain of attraction of the normal law, with X not in L2 1 . In Section 4 we obtain stochastic boundedness plus uniform integrability of up to the second moments by
+means of a new, very powerful, exponential inequality of Talagrand (1996) for
+empirical processes (Section 4). We should remark that this inequality, whose
+original proof is quite difficult, has now a simple proof based on log Sobolev
+inequalities (Ledoux, personal communication). Section 5 contains the convergence result for the finite variance case. The tools used are the aforementioned
+Talagrand’s inequality and the Borell–Sudakov–Tsirel’son concentration inequality for Gaussian processes (in the simpler version of Maurey and Pisier).
+Section 6 is devoted to the central limit theorem in the infinite variance case.
+Because the norming constants are not determined by integrals over bounded
+intervals, but by the integrals at infinity, it does not seem that this result can
+be obtained using the previous inequalities in combination with approximation by integrals over bounded intervals. Here, not only strong approximation
+seems unavoidable, but it is perfectly suited to reduce the limit theorem for
+the empirical process to one for Gaussian processes. For this, we use a result
+of CCHM (1986a) on weighted approximation of the uniform empirical process
+by Brownian bridges; this result has a relatively elementary proof based on
+Skorohod embedding [Mason (1991), Csörgő and Horváth (1986)]. Talagrand’s
+inequality is still helpful to obtain convergence of moments (which play an important part in the proofs). After this article had been written, Mason (1998)
+improved the weighted approximation from a probability statement to one on
+exponential moments; if we used his result in the present analysis we could
+avoid Talagrand’s inequality. However, since Mason’s result is based on KMT
+and there exists a simple proof of Talagrand’s inequality, it is unclear whether
+this would amount to any real simplifications.
+The derivation of (1.7) in, for example, Csörgő and Horváth (1993) uses
+a central limit theorem for integrals of centered functionals of stationary
+Markov processes with respect to Lebesgue measure [Mandl (1968)], applied
+to the Ornstein–Uhlenbeck process. In order to extend it, a limit theorem for
+integrals with respect to measures other than Lebesgue (thus, not tied to stationarity) has had to be derived, which may have some independent interest.
+[See Csörgő and Horváth (1988b) for limits of integral functionals of other
+Gaussian processes.] Our approach is quite indirect and takes most of Section 6. We view this proof and the extensive use of Banach space methods in
+the problem at hand as the main technical innovations in this article.
+The results for the L1 norm of the empirical process presented here have
+natural analogues for the Lp norm; since the changes in the proofs would
+only be formal, we refrain from pursuing this subject [see, e.g., Csörgő and
+Horváth (1993), Theorem 3.1, pages 316 and 317, for statements on the Lp
+norm, p ≥ 1, corresponding to Theorem 1.1(a) above].
+
+1014
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+CCHM (1986b) obtained two very useful explicit formulas for the norming
+constants bn in DA2 bn , which we use in Sections 4 and 5. Because of their
+interest, we rederive them, directly from first principles of classical central
+limit theory, in an Appendix.
+2. The uncentered Wasserstein distance. In this section we study convergence in distribution of the normalized but uncentered Wasserstein distance between the empirical and the true probabability measures. We derive
+results related to (a1) and (b) in Theorem 1.1, in fact stronger, by means of simple proofs based on techniques from probability in Banach spaces. These techniques are definitely more elementary than those used in Csörgő and Horváth
+(1993). Since part of the statements that follow are in terms of weak convergence of probability measures in L1 = L1 R, we should recall that (1) if Y is
+a jointly mesurable process with almost all its trajectories in L1 R then Y can
+be identified to a Borel random variable in L1 R and conversely [Byczkowski
+(1977)], and (2) if Yn , Y are processes with almost all their sample paths in
+L1 R, then the processes Yn converge in law to Y in L1 R,  Yn  →w  Y
+in L1 , if limn→∞ EfYn  = EfY for all functions f L1 → R which are
+bounded and continuous; in particular then, Yn L1 →d YL1 . We also denote this convergence by Yn → Y in L1 .
+We also observe that, if X has distribution F, then the condition
+∞
+21
+Ft1 − Ft dt < ∞
+−∞
+
+is equivalent to the condition
+21 
+
+)2 1 X =
+
+∞
+0
+
+Pr X > t dt < ∞
+
+The functional )2 1 is equivalent to a norm defining the Banach space
+L2 1 % & Pr, dual of the weak-L2 space L2 ∞ , and we have L2+δ ⊂ L2 1 ⊂ L2
+for all δ > 0, as is easy to check [e.g., Ledoux and Talagrand (1991), page 10].
+We mention this because this quantity appears in several other instances in
+probability.
+Theorem 2.1. Let X Xi , i ∈ N, be i.i.d. random variables with common
+distribution F. Let
+22
+
+Yt = IX>t − Pr X > t
+
+−∞ < t < ∞
+
+and let Yi , i ∈ N, denote the processes obtained by replacing X by Xi in (2.2).
+Then:
+√
+√
+
+(a) The processes ∞
+nFn − F converge in law in L1 R to
+i=1 Yi / n =
+the process BFt, t ∈ R, where B is a Brownian bridge, if and only if
+)2 1 X < ∞.
+(b) The sequence
+∞
+
+√ ∞
+Y
+= n
+Fn t − Ft dt
+n∈N
+√i
+n L1
+−∞
+i=1
+is stochastically bounded if and only if )2 1 X < ∞.
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1015
+
+Proof. It is known
+that a mean zero process Y with sample paths in
+√
+L1 R satisfies the n central limit theorem if and only if
+∞
+23
+EYt2 dt < ∞
+−∞
+
+[Jain (1977), Theorem 11; see also, e.g., Araujo and Giné (1980), Exercise 14,
+page 205; this is a direct consequence of the central limit theorem in cotype
+2 spaces and can also be directly obtained from probability inequalities as,
+e.g., in Giné (1983) where the case of Lp with p < 1 is considered.] For the
+process Yt defined by (2.2),
+(2.3) is nothing but condition (2.1) and
+√
+n condition
+therefore the sequence
+i=1 Yi / n converges in law in L1 R if and only
+if )2 1 X < ∞, and the limit is Gaussian. The limiting Gaussian process
+is BFt because this Gaussian process has the same covariance as Yt,
+hence Yt1     Ytk  →d BFt1     BFtk  for all t1    tk in R
+and all k ∈ N by the central limit theorem in Rk , and it is known that, if there
+is weak convergence in L1 , then the limit in law of the finite-dimensional
+distributions corresponding to any t1    tk outside a set of measure zero,
+and all k ∈ N, is the law of the corresponding finite dimensional distributions
+of the limit [Lawniczak (1983)]. Part (a) is proved and so is the sufficiency
+part of (b).
+The proof of the necessity part of (b), which ultimately is an exercise on
+Hoffmann–Jørgensen’s inequality, requires some work, as follows. By considering X+ and X− , we can assume X ≥ 0. It is now convenient to write
+Zt = IX>t
+
+Zi t = IXi >t i ∈ N t ∈ R
+
+so that Yt = Zt − EZt and likewise for Yi . The stochastic boundedness
+hypothesis simply asserts
+
+
+n
+1 
+24
+lim sup Pr √
+Zi − EZi 
+> M = 0
+M→∞ n
+n i=1
+L1
+Montgomery-Smith’s (1994) Lévy type inequality for i.i.d. random vectors then
+implies, from (2.4), that
+
+
+1
+25
+lim sup Pr √ max Zi − EZi L1 > M = 0
+M→∞ n
+n 1≤i≤n
+The classical inequality for independent random variables, say ξi ,
+ 
+
+Pr max ξi  > t ≥ 1 − exp − Pr ξi  > t
+i
+
+then gives that there is a constant M < ∞ such that
+
+
+1
+sup n Pr √ Z − EZL1 > M < ∞
+n
+n
+or, equivalently,
+26
+
+)2 ∞ Z − EZ = sup t2 Pr Z − EZL1 > t < ∞
+t>0
+
+1016
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+As a consequence of (2.6) we have
+Zi − EZi L1
+1 ∞
+Pr max Zi − EZi L1 > t dt
+= √
+√
+1≤i≤n
+1≤i≤n
+n
+n 0
+√ ∞
+≤ 1 + n √ Pr Zi − EZi L1 > t dt
+
+E max
+27
+
+n
+
+≤ 1+
+
+∞
+√
+n)2 ∞ Z − EZ √ t−2 dt
+n
+
+= 1 + )2 ∞ Z − EZ < ∞
+Now, Hoffmann–Jørgensen’s inequality for general independent vectors [e.g.,
+Ledoux and Talagrand (1991), equation (6.8), page 156] in combination with
+Montgomery-Smith’s (1994) Lévy inequality for i.i.d. vectors gives that for
+every r > 0 there exist finite positive constants ci , i = 1 2, depending only on
+r, such that
+
+
+n
+r
+Zi − EZi rL1
+i=1 Zi − EZi 
+r
+≤ c1 E max
++
+t
+28
+E
+√
+0 n
+1≤i≤n
+nr/2
+n
+L1
+where
+29
+
+
+
+ n
+
+ i=1 Zi − EZi L1
+t0 n = inf t Pr
+> t ≤ c2 
+√
+n
+
+On one hand, the stochastic boundedness hypothesis (2.4) implies supn t0 n <
+∞, and on the other, inequality (2.7) asserts the finiteness of the sup over n
+of the first summand at the right-hand side of inequality (2.8) for r = 1. We
+thus conclude from inequality (2.9) for r = 1 that
+n
+i=1 Zi − EZi 
+< ∞
+210
+sup E
+√
+n
+n
+L1
+Let now ξ be a binomial n p random variable such that 4c1 /n ≤ p ≤ 1/2,
+c1 as in (2.8). Then, inequality (2.8) (Hoffmann–Jørgensen’s combined with
+Montgomery-Smith’s) gives
+np
+np c1
+≤ Eξ − Eξ2 ≤ c1 1 + c2−1 Eξ − Eξ2  ≤
++ 2 Eξ − Eξ2 
+2
+4
+c2
+In other words, there exist positive finite constants C1 and C2 such that
+1
+C1
+√
+≤ p ≤ implies Eξ − Eξ ≥ C2 np
+n
+2
+[This also follows from symmetrization and Corollary 3.4 in Giné and Zinn
+(1983).] Inequality (2.11), applied to the empirical process, yields
+ n
+
+1  i=1 IXi >t − Pr Xi > t  
+Pr X > t ≤
+E
+√
+
+C2 
+n
+212
+for medX < t < Q1 − C1 /n
+211
+
+ ξ = Binn p with
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1017
+
+Then, if we integrate in inequality (2.12) and apply inequality (2.10), we obtain
+ Q1−C1 /n
+Pr X > t dt
+sup
+n
+
+medX
+
+
+ Q1−C1 /n  n I
+1
+i=1 Xi >t − Pr Xi > t  
+
+≤
+sup
+E
+√
+ dt < ∞
+C2 n medX
+n
+
+Since Q1 − C1 /n → ess sup X as n → ∞, this last inequality gives
+∞
+Pr X > t dt < ∞
+0
+
+that is, )2 1 X < ∞, proving the theorem. ✷
+Remark 2.1. Note, from
+√ Theorem 2.1, that condition (2.1) not only implies
+nFn − FL1 , but convergence in law, in the space
+convergence in law of
+L1 , of processes that have these random variables as their L1 norms, which
+is a stronger form of
+√ convergence; also, stochastic boundedness of the set of
+random variables
+nFn − FL1 implies condition (2.1), without assuming
+any a priori conditions on X. Thus, Theorem 2.1 considerably strengthens
+statement (a1) in Theorem 1.1.
+If in Theorem 2.1(b) we consider variables not necessarily in DAα an , then
+we also obtain necessary and sufficient conditions for tightness of the normalized, uncentered Wasserstein distance. To keep things simple, we only deal
+with power type normalizations.
+Theorem 2.2. Let X Xi , i ∈ N, be i.i.d. with common cdf F and let α ∈
+1 2. Then, the sequence
+∞
+
+n ∞
+F
+t
+−
+Ft
+dt
+213
+n1/α −∞ n
+n=1
+is stochastically bounded if and only if
+214
+
+)α ∞ X = sup tα Pr X > t < ∞
+t>0
+
+Proof. Necessity.
+Let ξi be Bernoulli p independent random variables,
+
+and let ξ = ni=1 ξi . Using the classical Marcinkiewicz inequality we obtain
+that, if p ∈ 1/n 1/2 and n ≥ 2, then
+1/2
+n
+
+1
+1
+ξi − p2
+≥ √ E max ξi − p
+Eξ − Eξ ≥ √ E
+2 2 i=1
+2 2 1≤i≤n
+
+
+
+3
+1
+1
+1 n
+≥
+≥ √ 1 − p Pr ξ ≥ 1 ≥ √ 1 − p 1 − 1 −
+√ 
+n
+2 2
+2 2
+16 2
+That is, there exists C > 0 such that
+215
+
+ ξ = Binn p with
+
+1
+1
+≤ p ≤ implies Eξ − Eξ ≥ C
+n
+2
+
+1018
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+[This also follows from Corollary 3.4 in Giné and Zinn (1983).] Consequently,
+since tightness of the sequence (2.13) implies boundedness of its first moments
+by a proof entirely analogous to the proof of (2.10), we have
+sup
+n
+
+Q1 − 1/n − medX
+n1/α
+
+ Q1−1/n  n I
+1
+i=1 Xi >t − Pr Xi > t  
+
+≤ sup
+E
+ dt < ∞
+C n medX
+n1/α
+
+So, there exists K < ∞ such that Q1 − 1/n ≤ Kn1/α for all n ≥ 2, and
+therefore, Pr X > Kn1/α ≤ 1/n for all n, a condition equivalent to (2.14).
+Sufficiency. Now we assume that condition (2.14) holds and that, without
+loss of generality, X ≥ 0. Setting
+Zn i t = I0 Xi /n1/α  t
+
+216
+
+t≥0
+
+a simple change of variables shows that
+
+ ∞  
+n 
+
+
+n ∞
+1/α 
+
+IXi >tn1/α − Pr X > tn
+Fn t − Ft dt =
+ dt
+
+n1/α 0
+0 i=1
+217
+n 
+
+
+=
+Zn i − EZn i
+
+L1
+
+i=1
+
+The following computations are classical. We will use repeatedly that
+∞
+Zn 1 L1 = 0 I0 X1 /n1/α  t dt = X1 /n1/α and similar computations. In
+particular, for any M > 0,
+∞
+Pr X > n1/α t ∨ M dt
+n EZn 1 IZn 1 L >M L = n
+1
+
+1
+
+0
+
+∞
+= nM Pr X > Mn1/α + n
+Pr X > tn1/α dt
+M
+
+
+∞
+α )α ∞ X
+≤ )α ∞ X M1−α +
+t−α dt =
+
+α − 1 Mα−1
+M
+
+Since this last quantity is smaller than M/2 for all M larger than some M0 <
+∞, we have, for such M’s,
+
+ n
+
+Zn i − EZn i 
+>M
+Pr
+i=1
+
+
+
+≤ Pr
+218
+
+
+≤ Pr
+
+L1
+
+n
+
+
+Zn i − EZn i IZn i L ≤M 
+
+i=1
+n
+
+
+1
+
+>
+L1
+
+M
+2
+
+
+
+M
+Zn i IZn i L ≤M − EZn i IZn i L ≤M 
+>
+1
+1
+4
+L1
+i=1
+
++ n Pr X > Mn1/α
+= In  + IIn 
+
+
+
+1019
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+Now,
+219
+
+supIIn  = sup n Pr X > Mn1/α ≤
+n
+
+n
+
+)α ∞ X
+→0
+Mα
+
+as M → ∞
+
+As for In , we have
+In  ≤
+
+n
+
+
+4  ∞  
+E Zn i IZn i L ≤M − EZn i IZn i L ≤M  dt
+1
+1
+M 0
+i=1
+
+  n
+2 1/2
+
+4 ∞
+E
+Zn i IZn i L ≤M − EZn i IZn i L ≤M 
+dt
+≤
+1
+1
+M 0
+i=1
+1/2
+4n1/2  ∞ 
+EZn 1 IZn 1 L ≤M 2
+dt
+1
+M 0
+4n1/2  M
+≤
+Pr X > tn1/α 1/2 dt
+M 0
+4)α ∞ X 1
+4)α ∞ X  M −α/2
+t
+dt =
+
+≤
+M
+1 − α/2 Mα/2
+0
+≤
+
+Hence, it follows that
+220
+
+lim supIn  = 0
+
+M→∞
+
+n
+
+Combining the estimates (2.19) and (2.20) with inequality (2.18) and the identity (2.17) gives stochastic boundedness of the sequence in (2.13). ✷
+This theorem, together with Theorem 2.1, gives us estimates of the rate of
+convergence to zero of d1 Fn F for relatively large classes of random variables. It also tells us that, if we exclude the L2 1 case, domains of attraction of
+α-stable laws, 1 < α < 2, are, in a sense, the natural classes of random variables for which to look for more precise results about the convergence rate to
+zero of d1 Fn F. The cases α = 1 with X integrable and, particularly, the
+large class of random variables in the domain of attraction of the normal law
+but not in L2 1 are extreme. In both cases the behavior of d1 Fn F is radically different from the other cases, and will be treated in subsequent sections.
+Next we look at the cases in between these two extremes.
+Concretely, we prove a stronger form of Theorem 1.1(b) for X in the domain
+of attraction of an α-stable law with 1 < α < 2. The limit will be given in terms
+of generalized Poisson measures, thus obtaining another (arguably not as nice)
+representation of the limit in Theorem 1.1(b). We begin with a simple argument showing that the limit law in Theorem 1.1(b), if it exists, corresponds
+to the sum of the integrals of two-scaled independent Poisson processes. Let
+X Xi and an be as in Theorem 1.1(b). By the change of variables already
+
+1020
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+encountered in the previous proof,
+
+221
+
+
+ 0  
+n
+
+
+n  ∞ 
+
+
+IXi ≤tan − Pr Xi ≤ tan  dt
+Fn t − Ft dt =
+
+an −∞
+−∞ i=1
+
+ ∞  
+n
+
+ IX >ta − Pr Xi > tan  dt
++
+i
+n
+
+
+0
+
+i=1
+
+Since the integrands are (absolute values of) centered binomial random variables whose probabilities of success, respectively, Pr X ≤ −tan and Pr X >
+tan , satisfy
+222
+
+lim n Pr X > tan =
+
+n→∞
+
+c1
+αtα
+
+lim n Pr X ≤ − tan =
+
+n→∞
+
+c2
+αtα
+
+t>0
+
+by the stable convergence criterion in R [cf. Feller (1971) or Araujo and Giné
+(1980)], and since the indicators in each integrand are disjoint, it follows from
+elementary probability (the law of rare events, multivariate version) that the
+finite-dimensional distributions of the processes
+
+223
+
+ n
+
+
+ I
+
+Xi ≤tan − Pr Xi ≤ tan 
+
+
+ i=1
+
+
+Kn t = 0
+
+
+
+n
+
+
+
+
+ IXi >tan − Pr Xi > tan 
+
+for t < 0
+for t = 0
+for t > 0
+
+i=1
+
+converge to the corresponding finite-dimensional distributions of the process
+
+
+c
+c1
+
+
+− 1α
+N
+for t > 0
+
+1
+
+α
+
+αt
+αt
+
+
+for t = 0
+224
+Kt − EKt = 0
+
+
+
+
+
+c2
+c
+
+
+− 2α
+for t < 0
+ N2
+αtα
+αt
+where N1 and N2 are two independent standard (intensity 1) Poisson processes on 0 ∞. Hence, the above-mentioned result of Lawniczak (1983)
+shows that, if there is convergence in law in L1 of the processes Kn , then
+their limit must be the process defined by (2.24), whose L1 norm is precisely
+the limit process specified in Theorem 1.1(b), so that, if this is the case,
+Theorem 1.1(b) follows by continuous mapping. The next theorem proves
+that the processes Kn do indeed converge in law in L1 to N (tightness of
+Kn would suffice, but proving convergence is equally easy). [See CCHM
+(1986b), for a representation of all α-stable laws, 0 < α < 2, as integrals of
+the processes (2.24) or modifications thereof.]
+
+1021
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+Theorem 2.3. Let X Xi , i ∈ N, be i.i.d. and such that
+
+n
+1 
+X − EXi  →w cPois µc1 c2 α
+225
+
+an i=1 i
+for constants 0 ≤ c1 , c2 < ∞, but not both equal to zero, and 1 < α < 2,
+where the α-stable law cPois µc1 c2 α is given by (1.9) and (1.11). Let Kn t,
+−∞ < t < ∞, be the processes defined by (2.23) from these variables Xi . Let
+µi , i = 1 2, be measures on L1 R, respectively, concentrated on the sets of
+functions I0 x  x > 0 and I−x 0  x > 0 , such that
+226
+
+c1
+αuα
+
+µ1 I0 x  x > u =
+
+µ2 Ix 0  x < −u =
+
+c2
+αuα
+
+u > 0
+
+Then the measures µi , i = 1 2, are Lévy measures on the Banach space L1 R
+and
+227
+
+ Kn  →w cPois µ1  ∗ cPois µ2 
+
+in L1 R
+
+Conversely, if the limit (2.27) holds with µi , i = 1 2, as in (2.26) and with
+constants an regularly varying at infinity with exponent 1/α, then X ∈ DAα an 
+and the limit (2.25) holds.
+The proof of this theorem is based on the following Poisson convergence
+criterion in Banach spaces [a consequence of the general CLT of de Acosta,
+Araujo and Giné (1978), made explicit by Mandrekar and Zinn (1980); see
+Araujo and Giné (1980), Theorem 3.5.9 on page 129 and Exercise 5 on page
+134. In the second part of this exercise the conclusion should be tightness of
+the laws of Sn − ESn δ for all δ > 0 instead of tightness of the laws of Sn ].
+Generalized Poisson convergence criterion in Banach spaces. Let
+Zn i  i = 1    n n ∈ N be an infinitesimal array of row-wise independent integrable B-valued random variables, where B is a Banach space (a
+triangular array is infinitesimal if maxi Pr Zn i  > ε → 0 for all ε > 0).
+Then, in order that there exist a Lévy measure µ such that
+ n
+
+Zn i − EZn i  →w cPois µ
+
+i=1
+
+it is necessary and sufficient that the following three conditions be met:
+(i) For all δ = 0 in a dense set D of R+ ,
+n
+
+i=1
+
+
+
+ Zn i x>δ →w µx>δ
+
+for some measure µ on B.
+(ii) limδ→0 lim supn E ni=1 Zn i IZn i ≤δ − EZn i IZn i ≤δ  = 0.
+n
+(iii) For some δ ∈ D (or for all δ ∈ D), the sequence
+i=1 EZn i IZn i >δ
+converges in B.
+
+1022
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+Moreover, conditions (i) and (ii) together are equivalent to
+ n
+
+Zn i − EZn i IZn i ≤δ  →w cδ Pois µ
+
+i=1
+
+for all δ such that µ x = δ = 0.
+Let Zn i be an infinitesimal array of row-wise independent vectors, as
+above. Since, if µi , i = 1 2, are Lévy measures then so is µ1 +µ2 and cPoisµ1 +
+µ2  = cPois µ1 ∗ cPois µ2 , it follows trivially from this criterion that if for
+disjoint measurable sets Ck ⊂ B, i = 1 2, we have
+
+
+228
+
+Zn i IZn i ∈Ck − EZn i IZn i ∈Ck  →w cPois µk
+k=1 2
+i
+
+then
+229
+
+
+
+
+
+Zn i IZn i ∈C1 ∪C2 − EZn i IZn i ∈C1 ∪C2  →w cPois µ1  ∗ cPois µ2 
+i
+
+a fact to be used below. The same comment applies to the second part of the
+theorem.
+To prove Theorem 2.3 we will freely use the properties of random variables
+in domains of attraction (DA) of stable laws in R, as described, for example,
+in Feller (1971) [or in Araujo and Giné (1980)].
+Proof of Theorem 2.3. We begin with the direct part. By [(2.28) ⇒ (2.29)]
+we may assume Xi ≥ 0 and
+225 
+
+n
+1 
+X − EXi  → cPois µc 0 α
+an i=1 i
+
+Then,
+Kn t =
+
+n
+
+
+Zn i t − EZn i t
+
+t>0
+
+i=1
+
+and Kn 0 = 0, with
+Zn i = I0 Xi /an 
+
+i = 1  n n ∈ N
+
+which are L1 0 ∞-valued random variables. Since Zn i L1 = Xi /an , we
+have maxi≤n Pr Zn i L1 > ε = Pr X > εan → 0 for all ε > 0, showing
+that the array Zn i is infinitesimal. So, we can apply the above generalized
+Poisson convergence criterion for B = L1 . Let µ be the measure obtained from
+µ1 in (2.26) replacing c1 by c. We must prove
+ n
+
+
+
+Zn i − EZn i  →w cPois µ in L1 0 ∞
+227 
+i=1
+
+which we do by checking (i)–(iii) above.
+
+1023
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+Proof of (i). Since the map T R ∪ 0 → L1 0 ∞ given by Tx = I0 x
+is an isometry and the image of T is closed in L1 , proving (i) is equivalent, by
+the continuous mapping theorem, to showing
+n Zn 1 xL >δ  ◦ T →w µxL >δ  ◦ T
+1
+
+that is, to showing
+
+1
+
+
+n X/an x>δ → µδ
+
+δ>0
+
+δ>0
+
+where µδ x > u = c/αu ∨ δα . This is equivalent to proving
+n Pr X > uan →
+
+c
+αuα
+
+for all u > 0, which holds because of (2.25 ) and the stable DA criterion in R.
+Proof of (ii). First we observe that, by stable convergence in R and the
+asymptotic properties of regularly varying functions [Feller (1971), Theorem 1b, page 281],
+uPr X > u 1/2
+α
+u
+→1−
+1/2
+2
+du
+0 Pr X > s 
+
+230
+
+as u → ∞
+
+Then, this gives
+E
+
+n
+
+
+Zn i IZn i L ≤δ − EZn i IZn i L ≤δ 
+1
+
+i=1
+
+1
+
+L1
+
+
+ δ  
+n
+
+
+=
+E Itan <Xi ≤δan − Pr tan < Xi ≤ δan  dt
+0
+
+i=1
+
+ δ  
+n
+E
+≤
+Itan <Xi ≤δan − Pr tan < Xi ≤ δan
+0
+
+≤
+
+δ
+0
+
+2 1/2
+
+dt
+
+i=1
+
+n1/2 Pr X > tan 1/2 dt
+
+=
+
+n1/2  δan
+Pr X > u 1/2 du
+an 0
+
+
+
+δ
+n Pr X > δan 1/2
+1 − α/2
+
+where An  Bn indicates that An /Bn → 1 as n → ∞. Now, by the stable DA
+criterion in R, the limit of the last sequence as n → ∞ is c1/2 δ1−α/2 /α1/2 1 −
+α/2, which in turn tends to zero as δ → 0, proving (ii).
+Proof of (iii). We obviously can assume X is nondegenerate. Then, if X ∈
+DAα , the tail probability function Pr X > u is regularly varying at infinity
+with exponent −α and the representation of slowly varying functions in, for
+
+1024
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+example, Feller (1971), page 282, gives the existence of two functions cy →
+c ∈ 0 ∞ and εy → 0 as y → ∞ such that
+ u
+εy
+−α
+Pr X > u = u cu exp
+dy 
+y
+1
+As a consequence, given ε > 0 that we take to satisfy ε < α − 1, there exist
+u0 < ∞ such that
+
+u −α+ε
+231
+Pr X > u ≤ 2
+Pr X > v
+v
+for all u ≥ v ≥ u0 . If, more concretely, X satisfies (2.25 ) then, as mentioned
+above,
+232
+
+E
+
+n
+
+i=1
+
+Zn i IZn i L >δ = n Pr X > t ∨ δan →
+1
+
+c
+αt ∨ δα
+
+as n → ∞. In order to prove (iii), we must show this limit holds in L1 for some
+δ > 0. We show it does for δ = 1: by (2.31), for n large enough independently
+of t ≥ 1, we have
+n Pr X > tan ≤
+
+2n Pr X > an
+K
+≤ α−ε
+tα−ε
+t
+
+for some K < ∞, also independent of t, because an → ∞ and the sequence
+n Pr X > an converges. Since K/tα−ε is integrable on 1 ∞, the dominated convergence theorem and (2.32) show that
+
+ ∞  
+n
+
+c
+E
+→0
+Z
+I
+−
+n i Zn i L1 >1
+
+αt ∨ 1α 
+0
+i=1
+as n → ∞, proving (iii) and hence the direct part of the theorem, by the
+generalized Poisson convergence criterion in L1 .
+For the converse, we still can asume X ≥ 0, and we just note, from the
+proof of (i) and the convergence criterion in L1 , that, if the limit (2.27) holds,
+then
+c
+n Pr X > uan →
+αuα
+for all u > 0, which ensures that X satisfies (2.25 ) [by Lemma 3 in Feller
+(1971), page 277, and the stable DA criterion in R]. ✷
+Theorem 2.3 thus improves on the type of convergence in Theorem 1.1(b).
+Note that the proof we just gave consists of a relatively simple exercise on the
+stable convergence criterion in Banach spaces, a result known since 1978. In
+view of the comment that follows, it is the change of variables in (2.21), which
+yields the definition of the processes Kn , that makes this reduction possible.
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1025
+
+Remark 2.2. Next we comment on a curiosity, but skip details. The processes Kn defined by (2.20) are not the most natural ones satisfying
+n
+Fn − FL1
+Kn L1 =
+an
+the first choice for such processes being, for example, for X ≥ 0,
+K̃n =
+
+∞
+n 
+I
+− Pr X > t 
+an i=1 Xi >t
+
+It is easy to see that, under the conditions of Theorem 2.3, the sequence of processes K̃n is not uniformly tight in L1 0 ∞. Hence, these processes provide
+an example of a sequence of B-valued random variables K̃n which is not
+uniformly tight while the sequence of their norms, K̃n L1 , does converge
+in law. They also provide an example of two sequences of random vectors
+K̃n and Kn which have the same norms, but one of then converges in law
+whereas the other is not even tight.
+Theorems 1.1(a1) and (b) can be improved in another direction, namely,
+convergence of moments.
+Theorem 2.4. Let X Xi be i.i.d., with common distribution F, and let Fn
+denote the empirical distribution based on X1    Xn , n ∈ N, as usual. Then
+the following holds:
+(a) If X ∈ L2 1 and EXp < ∞ for some p ≥ 2, then
+
+r
+ ∞
+r
+√ ∞
+Fn t − Ft dt = E
+BFt dt
+233
+lim E n
+n→∞
+
+−∞
+
+−∞
+
+for all 0 < r ≤ p.
+(b) If X ∈ DAα an  for some α ∈ 1 2 and K is the Poisson process defined
+by (2.4), then
+
+β
+ ∞
+β
+n ∞
+Fn t − Ft dt = E
+Kt − EKt dt
+234
+lim E
+n→∞
+an −∞
+−∞
+for all 0 < β < α.
+Proof. Part (a) follows from general principles. Theorem 5.1 in de Acosta
+and Giné (1979) [cf. Araujo and Giné (1980), page 136], applied to the processes
+p
+Yi in the proof of Theorem 2.1 above, asserts that, if EY1 L1 < ∞ for some
+n
+p ≥ 2, then the pth moment of  i=1 Yi L1 converges to the pth moment of
+the limit since Y1 satisfies the central limit theorem in L1 by Theorem 2.1;
+this result applies to give part (a) because, as a simple computation shows,
+Y1 L1 ≤ X + EX.
+In order to prove part (b), by Theorem 2.3 and uniform integrability, it
+suffices to show that
+n
+
+
+β
+
+1  ∞  
+ dt < ∞
+I
+−
+Pr
+X
+>
+t
+
+235
+sup E
+X
+>t
+i
+
+a 0 
+n
+n
+
+i=1
+
+1026
+
+and
+235 
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+n
+
+
+β
+
+1  ∞  
+ dt < ∞
+sup E
+I
+−
+Pr
+X
+≤
+−t
+
+Xi ≤−t
+
+
+an 0 i=1
+n
+
+for all 1 ≤ β < α. Both bounds having similar proofs, we will only consider the
+first. We can assume without loss of generality that X ≥ 0 and that c = 0 in
+(2.25 ). By the generalized Minkowski inequality,
+n
+
+ 
+β 1/β
+
+1  ∞  
+
+E
+I
+−
+Pr
+X
+>
+t
+
+dt
+
+an 0 i=1 Xi >t
+β 1/β
+ n
+
+1  ∞  
+E IXi >t − Pr X > t 
+≤
+dt
+an 0
+i=1
+2 1/2
+ n
+
+236
+1  Q1−1/n  
+≤
+E IXi >t − Pr X > t 
+dt
+an 0
+i=1
+β 1/β
+ n
+
+
+1 ∞
+
+E IXi >t − Pr X > t 
+dt
++
+an Q1−1/n
+i=1
+= An + Bn 
+Boundedness of An is a trivial consequence of regular variation of the tail
+probabilities Pr X > t ; by (2.30),
+1  Q1−1/n
+An ≤
+n Pr X > t 1/2 dt
+an 0
+
+
+1
+1
+Q1 − 1/nn Pr X > Q1 − 1/n 1/2
+1 − α/2 an
+
+which is uniformly bounded. By definition of Q, n Pr X > Q1 − 1/n ≤ 1,
+and moreover, since n Pr X ≥ uan → c/uα α, we have that Q1 − 1/n is
+bounded by 2an α/c1/α from some n on.
+To prove boundedness of Bn , 
+we first note that if Ei are independent events
+with Pr Ei = p, that is, if Z = ni=1 IEi is a binomial n p random variable,
+and if np ≤ λ < ∞, then there are constants Cλ r such that
+237
+
+EZ − EZr ≤ Cλ rnp
+
+for all r ≥ 1. To see this, we apply Hoffmann–Jørgensen’s inequality in combination with Montgomery-Smith’s inequality, precisely, inequality (2.8) with
+L1 norms replaced by absolute values, and bound t0 n in (2.9) using Markov’s
+inequality, to obtain
+EZ − EZr ≤ c1 nEIE1 − Pr E1 r + EZ − EZr /c2r 
+≤ c1 2r−1 np + pr  + c2−r 2npr 
+≤ Cλ rnp
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1027
+
+where the last inequality follows because pr ≤ p and npr ≤ λr−1 np.
+Since n Pr X > t ≤ 1 if t ≥ Q1 − 1/n, inequality (2.37) then gives
+1 ∞
+Bn ≤
+C1 βn Pr X > t 1/β dt
+an Q1−1/n
+The properties of regular variation [Feller (1971), page 281], then imply that
+the integral at the right-hand side of this inequality is asymptotically of the
+order of
+α/β − 1−1 Q1 − 1/nn Pr X > Q1 − 1/n 1/β /an 
+Here Q1 − 1/n cancels with 1/an (as shown above, when bounding An )
+and n Pr X > Q1 − 1/n ≤ 1, proving that sup Bn < ∞, and concluding the
+proof of (2.35). ✷
+Theorem 2.4 cannot be improved since, for X ∈ )2 1 or X ∈ DAα n1/α , it
+gives convergence for the moment of order r if and only if EF1 −FL1 r < ∞.
+3. Integrable random variables in domains of atraction of 1-stable
+laws. The Wasserstein distance d1 Fn F is defined if and only if EX <
+∞, hence, in particular, it is defined for integrable variables in domains of
+attaction of 1-stable laws. However, the limit law in Theorem 1.1(b) does not
+exist if X ∈ DA1 since Nt − t/t2 is just 1/t for the a.s. positive amount of
+time that Nt is zero. It turns out that we still have convergence, with the
+same normalizers, provided we choose the right centerings. We begin with an
+analogue of Theorem 2.3.
+Theorem 3.1. Let X, Xi , i ∈ N, be i.i.d. integrable random variables such
+that
+
+n
+1 
+31
+
+X − EXi IXi ≤δ  →w cδ Pois µc1 c2 1
+an i=1 i
+for constants 0 ≤ c1 , c2 < ∞, but not both equal to zero, and δ > 0, where the
+1-stable law cδ Pois µc1 c2 α is given by (1.10). Let
+
+
+for t > 0
+ IXi >tan
+for t = 0
+32
+Zn i t = 0
+
+I
+for
+t<0
+Xi ≤tan
+as above. Let µi , i = 1 2, be measures on L1 R, respectively, concentrated on
+the sets of functions I−x 0  x > 0 and I0 x  x > 0 , such that
+c1
+c
+µ2 Ix 0  x < −u = 2 u > 0
+u
+u
+Then the measures µi , i = 1 2, are Lévy measures on the Banach space L1 R
+and, for all δ > 0,
+ n
+
+34 
+Zn i − EZn i IZn i L ≤δ  →w cδ Pois µ1  ∗ cδ Pois µ2  in L1 R
+33
+
+µ1 I0 x  x > u =
+
+i=1
+
+1
+
+1028
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+Conversely, if X is integrable and the limit (3.4) holds with µi , i = 1 2, as in
+(3.3) and with constants an regularly varying with exponent 1 at infinity, then
+X ∈ DA1 an  and the limit (3.1) holds.
+Proof. As in the previous section, there is no loss of generality in assuming X ≥ 0 and nondegenerate. In this case, the processes Zn i are as in the
+proof of Theorem 2.3. Proceeding as in the proof of that theorem, we see that
+the triangular array Zn i satisfies conditions (i) and (ii) of the Poisson convergence criterion in L
+1 . [However, it does not satisfy (iii); while there is pointwise convergence of E ni=1 Zn i IZn i L >δ , convergence in L1 fails because it
+1
+involves the nonintegrable functions c/t.] Moreover, the measure µ = µ1 gives
+mass zero to all the sets f fL1 = δ . Hence, by the Poisson convergence
+criterion, second part, the limit (3.4) is satisfied. The converse is also as in
+Theorem 2.3. ✷
+Theorem 3.2. Let X Xi be be i.i.d. integrable random variables in the
+domain of attraction of a 1-stable law, with normalizing constants an and
+parameters c1 c2 for the limit law, as in (3.1). Set
+∞
+Pr X > t dt
+35
+βn =
+an
+
+Then,
+(a)
+36
+
+lim βn = 0
+
+n→∞
+
+(b) The sequence
+37
+
+
+
+lim
+
+n
+
+n→∞ an
+
+=∞
+
+and
+
+lim
+
+n→∞
+
+nβn
+= ∞
+an
+
+
+∞
+
+n  ∞ 
+
+F t − Ft dt − βn
+an −∞ n
+n=1
+
+converges in distribution to the law of the random variable
+ ∞
+
+2
+
+dt  ci
+dt
+ci
+Ni t − t 2 +
+Ni t − t − t 2
+38
+t
+t
+0
+ci
+i=1
+where Ni are two independent standard Poisson processes.
+Proof. Without loss of generality, we restrict the proof to the case X ≥ 0,
+which means in particular that c1 = 0 and c2 = 0, and take c = c1 . Then
+βn → 0 because an → ∞ and X is integrable. Also, since n Pr X > an → c,
+if lim inf n n/an < ∞, then t Pr X > t → 0, hence EX = ∞. So, n/an → ∞.
+Finally, since the function Pr X > t is regularly varying at infinity with
+exponent −1, we can apply Theorem 1(a) in Feller [(1971), page 281] with
+γ = −1 and p = 0 to obtain
+lim
+
+n→∞
+
+an Pr X > an
+=0
+βn
+
+1029
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+or, since n Pr X > an
+
+converges to a positive number,
+an
+=0
+n→∞ nβn
+lim
+
+which completes the proof of (a).
+To prove (b) we
+ first observe that, in Theorem 3.1, we can replace the truncated moments ni=1 EZn i IZn i L ≤1 at the left of (3.4) by the set of centerings
+1
+Cn defined as
+Cn t = n Pr X > tan I0 1 t
+
+t∈R
+
+and still have weak convergence [to a shift of the limit in (3.4)], that is,
+∞
+n
+
+Zn i − C n
+converges in law in L1 0 ∞
+34 
+n=1
+
+i=1
+
+This is so because the difference between these centerings and the original
+ones, n Pr X ≥ an I0 1 t, converges in L1 [to the function cI0 1 t]. We
+can write
+
+
+
+n  ∞ 
+Fn t − Ft dt − βn
+an 0
+
+ 1  
+n
+
+=  IXi >tan − Pr X > tan  dt
+0 i=1
+
+
+ ∞  
+n
+
+
+ − n Pr X > tan
++
+I
+−
+Pr
+X
+>
+ta
+
+X
+>ta
+n
+i
+n
+
+
+1
+i=1
+
+
+ ∞  
+n
+
+ Zn i t − Cn tI0 1 t
+=
+
+
+0
+
+=
+
+∞
+0
+
+i=1
+
+
+ n
+
+
++  Zn i t − Pr X > tan  − n Pr X > tan
+i=1
+
+1
+
+dt
+
+
+I1 ∞ t dt
+
+2
+
+Yn t + Yn t dt
+
+By the multidimensional version of the law of rare events, the finite1
+2
+dimensional distributions of the processes Yn t + Yn t converge in law to
+the corresponding ones of the process
+
+
+ 
+ 
+
+
+c
+c
+c c
+c
+t
+t≥0
+− I0 1 t + N
+−  −
+I
+Yt = N
+t
+t
+t
+t
+t 1 ∞
+where N is the standard Poisson process on 0 ∞. Hence, by Lawniczak’s
+(1983) proposition, already mentioned above, in order to prove that the variables in (3.7) converge in law to the variable in (3.8), it suffices to show that
+1
+2
+the processes Yn + Yn , n ∈ N, are uniformly tight in L1 0 ∞. [As, if this is
+
+1030
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+1
+
+2
+
+the case, we have convergence in law in L1 of Yn + Yn to Y and the continuous mapping theorem yields the result.] The proof thus reduces to showing
+i
+that each of the two sequences Yn , i = 1 2, is uniformly tight.
+Since the map πA f = fIA of L1 into L1 0 ∞ is continuous for any
+1
+measurable
+set A ⊂ 0 ∞, it follows from (3.4 ) that the sequence Yn =
+n
+ i=1 Zn i − Cn I0 1 , n ∈ N, converges in law in L1 , hence is uniformly tight
+in L1 .
+The fact that c/t is not integrable complicates the issue of tightness for
+the second sequence, but it can be dealt with by approximation due to the
+cancellation occurring in the limit; Nu − u − u/u2 is integrable at zero
+because Nu = 0 for an a.s. positive amount of time immediately following
+zero. So, we set
+2
+
+39
+
+YM n = Yn I1 M
+
+M > 1
+
+Continuity of the map π1 M plus the fact that
+n Pr X > tan I1 M t → cI1 M t/t
+
+in L1 0 ∞
+
+as n → ∞ imply, by Theorem 3.1 and the continuous mapping theorem, that
+310
+
+YM n → YM
+
+as n → ∞, where
+
+ 
+
+c
+YM t = N
+t
+
+in L1 0 ∞
+
+
+c  c
+t
+− −
+I
+t
+t 1 M
+
+[The limit YM is determined by the law of rare events via Lawniczak’s proposition, whereas the convergence in law of YM n follows from convergence in
+law in L1 × L1 of the random vectors
+ n
+
+Zn i − Cn I1 M n Pr X > tan I1 M
+i=1
+
+together with the continuous mapping theorem.] Setting
+
+ 
+
+c
+c  c
+2
+
+Y t = N
+t
+t>0
+− −
+I
+t
+t
+t 1 ∞
+we have
+
+ ∞
+ ∞   c
+
+Y2 t − YM t dt =
+N
+
+t
+0
+M
+=c
+
+
+
+c  c 
+−  −  dt
+t
+t
+
+ c/M 
+
+Nt − t − t dt → 0
+t2
+0
+
+a.s.
+
+as M → ∞ because max0≤t≤c Nt = Nc < ∞ a.s. and Nt = 0 on 0 t1 
+with t1 > 0 a.s. That is, Y2 − YM L1 → 0 a.s. In particular,
+311
+
+YM → Y2
+
+in L1 0 ∞
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1031
+
+Because of (3.10) and (3.11), a typical 3ε approximation argument, concretely
+Theorem 4.2 in Billingsley [(1968), page 25] gives
+2
+
+Yn → Y2
+
+312
+
+in L1 0 ∞
+
+provided we show that
+
+
+2
+lim lim sup Pr YM n − Yn L1 ≥ ε = 0
+
+313
+
+M→∞
+
+n→∞
+
+for all ε > 0.
+Now, for M > 1, and letting Ỹ be a process whose law is the
+limit law of ni=1 Zn i − EZn i IZn i L ≤1  (Theorem 3.1), we have
+1
+
+ ∞
+
+YM n − Yn2  dt
+0
+
+=
+
+
+
+ ∞  
+n
+
+
+ Zn i t − Pr X > tan  − n Pr X > tan  dt
+
+
+
+
+M
+i=1
+
+≤
+
+∞
+n
+
+M i=1
+
+Zn i t dt
+
+
+ ∞  
+n
+
+ Zn i − EZn i IZ  ≤1 IM ∞ t dt
+=
+n i L1
+
+
+0
+i=1
+
+→
+
+∞
+M
+
+Ỹt dt
+
+where in the first inequality we use that a − b − b ≤ a for a b ≥ 0, and the
+limit follows from Theorem 3.1 and continuous mapping. Hence,
+ ∞
+
+
+
+2
+lim sup Pr YM n − Yn L1 ≥ ε ≤ Pr
+Ỹt dt ≥ ε 
+M
+
+n→∞
+
+∞
+
+By dominated convergence, M Ỹt dt → 0 a.s. as M → ∞, and this proves
+(3.13), hence the theorem. ✷
+For example, if Pr X > t  1/tlog t1+δ , then n/an  log n1+δ and
+βn  1/δlog nδ .
+Weak convergence of (normalized, centered versions of) Fn − FL1 in the
+case of variables in domains of attraction of 1-stable laws does not seem to
+have been treated before in the literature. Theorem 3.2 completes the picture
+on the asymptotic behavior of the Wasserstein distance between the empirical
+and the true distributions from the side of weakest integrability.
+As in the case of domains of attraction of stable laws with index α ∈ 1 2,
+we also have convergence of moments in Theorem 3.2.
+Theorem 3.3. Let X Xi , i ∈ N, be i.i.d. integrable random variables in
+DA1 an , that is, satisfying the limit (3.1) for some c1 c2 ≥ 0. Let βn be as in
+
+1032
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+Theorem 3.2. Then,
+
+314
+
+β
+  ∞
+
+
+n
+Fn t − Ft dt − βn
+lim E
+n→∞
+an −∞
+
+ 2  ∞
+
+dt  ci
+dt β
+=E
+ci
+Ni t − t 2 +
+Ni t − t − t 2
+t
+t
+0
+ci
+i=1
+
+for all 0 < β < 1.
+Proof. Proceeding as in the proof of Theorem 2.4 and assuming (w.l.o.g.)
+that X ≥ 0, it suffices to show that
+n
+ β
+
+
+1  an  
+315
+sup E
+IXi >t − Pr X > t  dt < ∞
+
+an 0 i=1
+n
+and
+316
+
+
+
+ n
+ 1  ∞ 
+
+
+
+ − n Pr X > t
+I
+−
+Pr
+X
+>
+t
+
+sup E
+X
+>t
+i
+
+an an i=1
+n
+
+β
+
+dt < ∞
+
+It is easy to check that (3.15) holds, exactly the way boundedness of An is
+established in Theorem 2.4:
+n
+
+
+√
+1  an  
+1  an
+E IXi >t − Pr X > t  dt ≤
+n Pr X > t 1/2 dt → 2 c
+an 0
+a
+n 0
+i=1
+
+ β
+To prove (3.16) we just note that, using that  ai β ≤ ai for ai ≥ 0 and
+0 < β < 1, regular variation and that n Pr X > an → c,
+
+
+ n
+
+ 1  ∞ 
+ IX >t − Pr X > t  − n Pr X > t
+E
+i
+
+
+a a
+n
+
+n
+
+i=1
+
+β
+
+dt
+
+
+
+ β
+
+n
+
+ 
+ 1  ∞ 
+
+n Pr X > t −
+
+ dt
+−
+n
+Pr
+X
+>
+t
+≤ E
+I
+Xi >t 
+
+
+ 
+an a n
+i=1
+
+β
+
+β
+n
+n
+ 1 ∞
+
+1 
+
+≤ E
+IXi >t dt = E
+Xi − an +
+an an i=1
+an i=1
+
+β
+n
+1 
+n
+≤E
+Xi IXi >an
+≤ β EXβ IX>an
+an i=1
+an
+
+∞
+βn
+= βn Pr X > an + β
+tβ−1 Pr X > t dt
+an a n
+
+
+1
+1
+ 1+
+βn Pr X > an  1 +
+βc
+1−β
+1−β
+
+✷
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1033
+
+4. The domain of attraction of the normal law I: rates. It will be
+shown that, for X in the domain of attraction of the normal law, with normalizing constants bn , the Wasserstein distances between the empirical and
+the true distributions, centered at expected values and normalized by bn /n
+are indeed stochastically bounded; actually, that their pth moments are uniformly bounded for 0 < p < 2. Stochastic boundedness is proved by applying
+a recent exponential inequality of Talagrand (1996). The sizes of the centering and norming are then compared and this gives, as corollaries, both, a law
+of large numbers for the uncentered Wasserstein distance and a variation on
+Theorem 2.1(b).
+Let X Xi , i ∈ N, be i.i.d., with X ∈ DA2 bn . We recall from the theory of
+domains of attraction [Feller (1971) or Araujo and Giné (1980)] that, setting
+Ut = EX2 IX≤t , the function Ut is slowly varying, that, equivalently,
+t2 Pr X ≥ t
+=0
+t→∞
+Ut
+
+41
+
+lim
+
+and that, if
+42
+
+lim
+
+n
+
+n→∞ b2
+n
+
+Ubn  = 1
+
+
+and EX2 = ∞, then ni=1 Xi − EXi /bn is asymptotically standard normal; in
+fact we can take the sequence in (4.2) to be constantly
+1. In what follows we
+√
+will take bn satisfying (4.2) if EX2 = ∞ and bn = n if EX2 < ∞. We also set
+43
+
+Qy = inf t Pr X ≤ t ≥ y
+
+y ∈ 0 1
+
+to be the quantile function of X, as in the introduction, and recall that, if F
+is the distribution function of X,
+44
+
+FQy− ≤ y ≤ FQy
+
+y ∈ 0 1
+
+and
+45
+
+Qy ≤ x if and only if y ≤ Fx
+
+y ∈ 0 1 x ∈ R
+
+The following lemma allows for truncation of the domain of integration in
+nd1 Fn F/bn . Equation (4.6) was obtained by CCHM (1986b), (A.5), (A.20),
+using a particular form of bn .
+Lemma 4.1.
+
+If X ∈ DA2 bn , then
+
+46
+
+lim
+
+n→∞
+
+Q1 − 1/n ∨ Q1/n
+=0
+bn
+
+[CCHM (1986b)] and
+ 
+r
+n
+47
+lim E
+F t − Ft dt = 0
+n→∞
+bn Q1/n Q1−1/nc n
+for all 0 < r < 2.
+
+1034
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+Proof. Since n Pr X ≥ bn → 0 [by (4.1) and (4.2)] whereas n Pr X ≥
+Q1 − 1/n ∨ Q1/n ≥ 1 [by (4.4)], it follows that eventually bn > Q1 −
+1/n ∨ Q1/n. The limit (4.6) is obvious if EX2√< ∞: if X is bounded then
+the numerator is bounded and the denominator is n, whereas if, for example,
+X+ is unbounded then yn = Q1 − 1/n → ∞ and
+y2n
+≤ y2n Pr X ≥ yn → 0
+n
+and likewise for Q1/n if X− is unbounded. If EX2 = ∞, also, for example,
+assuming yn = Q1 − 1/n → ∞, the limits (4.1) and (4.2) together with the
+previous observation give
+b2n
+Uyn 
+nUbn 
+Ubn 
+≥ 2
+→∞
+
+≥ 2
+2
+2
+yn
+yn
+yn Pr X ≥ yn
+yn Pr X ≥ yn
+proving (4.6).
+The limit (4.7) is equivalent to
+n
+ r
+ ∞
+
+
+1
+ IX >t − Pr X > t  dt
+lim E
+i
+
+
+n→∞
+bn Q1−1/n i=1
+
+47 
+ r
+  Q1/n  n
+
+
+1
+
+= lim E
+I
+− Pr X ≤ t  dt = 0
+n→∞
+bn −∞ i=1 Xi ≤t
+Since both limits in (4.7 ) have similar proofs, we only prove one of them and
+assume 1 ≤ r < 2. By (4.5), if t ≥Q1 − 1/n then n Pr X > t ≤ 1 so that
+we can apply inequality (2.37) to ni=1 IXi >t − Pr X > t  for t in this range.
+This and the generalized Minkowswki inequality give
+n
+ r 1/r
+  ∞
+
+
+1
+
+E
+IXi >t − Pr X > t  dt
+
+bn Q1−1/n i=1
+r 1/r
+ n
+
+
+1 ∞
+48
+E IXi >t − Pr X > t 
+≤
+dt
+bn Q1−1/n
+i=1
+≤
+
+C1 r1/r  ∞
+n Pr X > t 1/r dt
+bn
+Q1−1/n
+
+Now we decompose these last integrals into two parts, from Q1 − 1/n to
+bn and from bn to ∞. For the first, since n Pr X > Q1 − 1/n ≤ 1 and
+n Pr X > bn t → 0 as n → ∞ by (4.1), (4.2) and regular variation of Ut, it
+follows by bounded convergence that
+1
+1  bn
+49
+n Pr X > t 1/r dt =
+n Pr X > bn t 1/r dt → 0
+bn Q1−1/n
+Q1−1/n/bn
+as n → ∞. For the second integral, setting δn = supt≥bn t2 Pr X ≥ t /Ut,
+which tends to zero as n → ∞ by (4.1), and using regular variation [Feller
+
+1035
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+(1971), Theorem 1(a) applied to Ut] and the limit (4.2), we obtain
+2/r−1  ∞
+bn Pr X > t
+b2n /n1/r
+
+bn
+1 ∞
+n Pr X > t 1/r dt =
+bn b n
+
+1/r dt
+
+bn
+
+X > t 1/r dt
+
+2/r−1  ∞
+bn Pr
+
+
+
+(4.10)
+
+Ubn 1/r
+1/r 2/r−1  ∞ 
+Ut
+δ b
+n
+
+≤
+
+n
+
+Ubn 1/r
+
+1/r
+
+t2
+
+bn
+
+dt
+
+1
+δ1/r → 0
+2/r − 1 n
+
+
+
+Now, combining (4.8)–(4.10), we obtain that the first limit in (4.7 ) is zero. ✷
+As indicated above, the main result of this section will be proved by application of an inequality of Talagrand (1996). For ease of reference we state it.
+Talagrand’s exponential inequality. Let Xi be independent random
+variables with values in a measurable space S  , let  be a countable
+class of measurable functions on S and let
+411
+
+Z = sup
+
+f∈ i=1
+
+Let
+412
+
+n
+
+
+U = sup f∞
+f∈
+
+and
+
+fXi 
+
+
+
+n
+
+2
+V = E sup
+f Xi  
+f∈ i=1
+
+Then there exists a universal constant (independent of Xi , n and S) such that
+
+
+1 t
+tU
+413
+Pr Z − EZ ≥ t ≤ K exp −
+log 1 +
+
+KU
+V
+Theorem 4.2.
+414
+Then,
+415
+
+Let X ∈ DA2 bn  and set
+∞ 
+
+Fn t − Ft dt
+Zn = n
+−∞
+
+n ∈ N
+
+
+
+ Zn − EZn r
+ <∞
+
+sup E
+
+bn
+n
+
+for all 0 < r < 2. (In particular, the sequence Zn − EZn /bn ∞
+n=1 is stochastically bounded.)
+
+1036
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+Proof. We can decompose each variable Zn into the sum of two, one for
+which the integral runs from 0 to ∞ and the other with limits −∞ and 0. Each
+of the two resulting sequences can be treated in the same way, hence we will
+only consider the first. We may as well assume Q1 − 1/n > 0. Lemma 4.1
+allows reduction of the domain of integration of theses variables to 0 Q1 −
+1/n [resp. Q1/n 0]. Hence, defining
+
+ Q1−1/n  
+n
+
+ IX >t − Pr X > t  dt
+Z̃n =
+i
+
+
+0
+
+
+
+414 
+
+i=1
+
+where Xi is as usual an i.i.d. sequence with  Xi  =  X, we must show
+that the rth moments of the variables in the sequence
+
+
+
+415 
+
+Z̃n − EZ̃n
+bn
+
+∞
+n=1
+
+are uniformly bounded. For ease of notation we set Qn = Q1 − 1/n. To apply
+Talagrand’s inequality, we define
+
+
+S = Sn = hx ∈ L1 R x > 0 hx t = Ix>t − Pr X > t I0<t<Qn
+ as the restriction of the Borel sigma algebra of L1 R to S, and
+Xi t = hXi t = IXi >t − Pr X > t I0<t<Qn 
+Since L1 R is separable, there is a countable family  of elements of the unit
+ball of L∞ R such that
+
+
+
+
+
+hL1 = sup"f h# = sup "f h# = sup ftht dt
+f∈
+
+f∈
+
+f∈
+
+for all h ∈ L1 . We take  in Talagrand’s theorem to be this class, more exactly,
+the functions that act on h ∈ L1 as h → "f h#, where f ∈  (since these maps
+are continuous in L1 , they are Borel measurable). Note that ess sup f ≤ 1 for
+all f ∈  . Next we estimate U and V from (4.12) in our case,
+U = sup f∞ = sup sup "f hx #
+f∈
+
+416
+
+f∈ hx ∈Sn
+
+
+
+ Qn
+ Qn ∧x
+
+ft dt −
+ft Pr X > t dt
+= sup sup
+0
+f∈ x>0 0
+
+
+ Qn
+ Qn ∧x
+
+ft1 − Pr X > t  dt −
+ft Pr X > t dt
+= sup sup
+f∈ x>0
+
+≤ Qn
+
+0
+
+Qn ∧x
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+and
+
+1037
+
+
+
+n
+
+2
+V = E sup "f Xi #
+f∈ i=1
+
+
+2
+ Qn
+n  Xi ∨0∧Qn
+
+ft dt −
+ft Pr X > t dt
+= E sup
+0
+
+f∈ i=1
+
+417
+
+0
+
+
+2
+n  Xi ∨0∧Qn
+
+≤ 2E sup
+ft dt
+f∈ i=1
+
++ 2 sup
+
+0
+
+n   Qn
+
+
+f∈ i=1
+
+0
+
+ft Pr X > t dt
+
+2
+
+≤ 2nEX ∨ 0 ∧ Qn 2 + 2nEX ∨ 0 ∧ Qn 2
+≤ 4nEX ∧ bn 2 ≤ 5b2n
+for all n large enough [recall (4.1), (4.2) and (4.6)]. Taking into account that the
+function −u−1 log1 + u/c2  is nondecreasing for u > 0, plugging the estimates
+(4.16) and (4.17) into Talagrand’s inequality (4.13) gives
+
+
+
+
+
+1 t
+tU
+
+
+log 1 + 2
+Pr Z̃n − EZ̃n > t ≤ K exp −
+KU
+5bn
+
+
+1 t
+tQn
+≤ K exp −
+log 1 +
+K Qn
+5b2n
+for all n satisfying (4.17). Then, if n0 is such that (4.17) and 0 < Qn ≤ bn both
+hold for all n ≥ n0 [recall (4.6)], we have
+
+
+
+
+
+1
+t
+
+sup Pr Z̃n − EZ̃n  > tbn ≤ K exp − t log 1 +
+K
+5
+n≥n0
+This implies that supn≥n0 EZ̃n − EZ̃n /bn r < ∞ for all r > 0. Since the
+essential supremum of the variable maxn≤n0 Z̃n − EZ̃n  is finite, this proves
+the theorem. ✷
+Remark 4.1 (The order of magnitude of EZ̃n ). If Z is a binomial n p
+variable, then Hölder’s inequality gives
+EZ − EZ ≤
+
+np1 − p
+
+which is of the right order for np1 − p large. Therefore, assuming, as in the
+previous proof, that X ≥ 0, we have
+√  Q1−1/n
+Pr X > t dt
+418
+0 ≤ EZ̃n ≤ n
+0
+
+In particular, if X ∈ L2 1 , the centering in (4.15 ) satisfies
+√
+0 ≤ EZ̃n ≤ )2 1 X n
+
+1038
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+Hence, the centering in (4.15) is not needed in the L2 1 case, and the above
+theorem recovers the sufficiency part of Theorem 2.1(b). Next we bound EZ̃n
+from below. The case X ∈ L2 1 has already been considered in Section 2. By
+Theorem 2.4 and Lemma 4.1, if X ∈ L2 1 then
+ 
+∞
+EZ̃n
+EZn
+2 ∞
+EBFt dt =
+Ft1 − Ft dt
+lim √ = lim √ =
+n→∞
+n→∞
+π −∞
+n
+n
+−∞
+So, we can assume )2 1 X = ∞, and, without loss of generality, X ≥ 0. The
+binomial estimates (2.11) and (2.15) give
+
+ Q1−1/n  
+n
+
+
+EZ̃n ≥
+E IXi >t − Pr X > t  dt
+medX
+
+i=1
+
+√  Q1−C1 /n
+≥ C2 n
+medX
+
+Pr X > t dt +
+
+
+√  Q1−1/n
+≥ C2 + C/ C1  n
+medX
+
+ Q1−1/n
+Q1−C1 /n
+
+C dt
+
+Pr X > t dt
+
+ Q1−1/n 
+ medX 
+Pr X > t dt/ 0
+Pr X > t dt → ∞ and
+If )2 1 X = ∞, medX
+therefore, for all n large enough,
+
+√  Q1−1/n
+Pr X > t dt
+EZ̃n ≥ 12 C2 + C/ C1  n
+medX
+
+This and (4.18) give
+419
+
+EZ̃n ≃
+
+√  Q1−1/n
+n
+0
+
+Pr X > t dt
+
+Here the exact meaning of ≃ is that the quotient of the two quantities becomes
+bounded and bounded away from 0 as n → ∞, with bounds independent
+from X. In connection with (4.19), we should mention that this estimate is
+improved to the limit (5.18) in Corollary 5.4 below, in particular showing that
+the centering EZn in (4.15), Theorem 4.2, can be replaced by the easier to
+compute
+
+2n  Q1−1/n
+420
+γn =
+Ft1 − Ft dt
+π Q1/n
+Theorem 4.2 determines the size in probability of the centered Wasserstein
+distance for X ∈ DA2 \ L2 1 (L2 1 is considered in Theorem 2.1); in order to
+retrieve information from Theorem 4.2 about the size of the uncentered Zn
+as well, we must compare the sizes of the centerings EZn and the normings
+bn occurring in (4.15) for all X ∈ DA2 \ L2 1 , and this is done in the next
+proposition. The norming constants bn admit several forms besides the implicit
+one in (4.2), as shown in CCHM (1986b); in particular, bn can be taken to be
+
+1/2
+√  1−1/n 2
+421
+bn = n
+Q t dt
+1/n
+
+1039
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+if EX2 = ∞. [See
+√ the Appendix for an alternative proof of (4.21)]. Recall that
+we take bn = n if EX2 < ∞.
+Proposition 4.3.
+
+Let X ∈ DA2 bn  \ L2 1 and let
+∞
+Zn = n
+Fn t − Ft dt
+n∈N
+−∞
+
+as in (4.14). Then,
+422
+
+lim
+
+n→∞
+
+Proof.
+
+EZn
+= ∞
+bn
+
+Almost as in (4.14), we set
+ Q1−1/n
+Z̃n = n
+Fn t − Ft dt
+Q1/n
+
+A slight modification of the arguments in Remark 4.1 shows that
+√  Q1−1/n
+√  1−1/n
+419  EZ̃n ≃ n
+Ft1 − Ft dt = n
+t1 − t dQt
+Q1/n
+
+1/n
+
+√
+In particular, if EX < ∞ and )2 1 X = ∞, then EZn / n → ∞. So, we can
+assume from now on that EX2 = ∞. Then, by (4.21) and (4.19 ), (4.22) reduces
+to showing
+ 1−1/n 
+t1 − t dQt
+1/n
+423
+lim
+= ∞
+
+1−1/n
+n→∞ 
+2 t dt1/2
+Q
+1/n
+2
+
+Integration by parts yields
+ 1−1/n
+1/n
+
+ 
+ 
+1
+1
+1
+t1 − t dQt =
+1−
+Q 1−
+n
+n
+n
+−
+
+
+−Q
+
+1
+n
+
+ 1−1/n  1 − tQt
+2
+dt
+
+1/n
+t1 − t
+
+By (4.6) in Lemma 4.1, the first summand at the right of this identity is of a
+smaller order than bn and, therefore, it suffices to prove
+ 1−1/n
+t1 − t−1/2 Qt dt
+1/n
+424
+lim
+= ∞
+ 1−1/n
+n→∞
+ 1/n Q2 t dt1/2
+Set
+fx =
+and
+gx =
+
+ 1−x
+x
+
+Qtt1 − t−1/2 dt
+
+ 1−x
+x
+
+Q2 t dt
+
+1/2
+
+0 < x < 1/2
+
+1040
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+and note that limx→0 gx = ∞ (as EX2 = ∞). Both f and g are absolutely
+continuous and their a.s. derivatives are, respectively,
+f x = −
+
+Q1 − x + Qx
+
+x1 − x
+
+and
+
+g x = −
+
+Q2 1 − x + Q2 x
+
+ 1−x
+2 x Q2 s ds
+
+We claim that
+f x
+= ∞
+x→0 g x
+
+425
+
+lim
+
+To see this we write
+ 1−x
+√
+Q2 s ds
+1 − x f x
+x
+=
+√
+2
+g x
+xQ1 − x + Q2 x/Q1 − x
+ 1−x
+Q2 s ds
+x
++√
+xQ2 1 − x/Qx + Qx
+= b1 x + b2 x
+Let xk be a sequence of positive numbers converging to zero such that Q1−
+xk /Qxk  → c ∈ 0 ∞ as k → ∞. If c < ∞ then, for k large enough,
+ 1−xk
+Q2 s ds
+1
+xk
+→∞
+b2 xk  ≥
+√
+c + 1 xk Q1 − xk  + Qxk 
+as k → ∞ because of (4.1) and (4.4) [see also (4.6)]. Likewise, if c = ∞ then
+b1 xk  → ∞, which proves (4.25).
+If Q were continuous, f and g would be everywhere differentiable and the
+result would follow from (4.25) by l’Hôpital’s rule. The general case requires
+a simple extra argument. By absolute continuity of f and g we have
+ x0 
+f s ds
+fx − fx0 
+426
+
+= xx0 
+gx − gx0 
+x g s ds
+For M > 0 fixed, we can choose x0 satisfying f x/g x > M for all 0 < x <
+x0 . Now we fix ε > 0 and choose x1 < x0 such that
+fx0 
+<ε
+fx
+
+and
+
+gx0 
+<ε
+gx
+
+for all 0 < x < x1 . Then, if x < x1 ,
+fx 1 − fx0 /fx
+fx
+fx − fx0 
+=
+=
+θ
+gx − gx0 
+gx 1 − gx0 /gx
+gx x
+for some θx ∈ 1 − ε/1 + ε 1 + ε/1 − ε. Therefore, by (4.26),
+fx/gx > M1 − ε/1 + ε
+proving (4.24). ✷
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1041
+
+Combining Theorem 4.2 and Proposition 4.3 yields some interesting consequences. First we will focus on a law of large numbers for Zn .
+Corollary 4.4. Let X Xi , i ∈ N, be i.i.d. random variables in DA2 bn  \
+L2 1 and let Zn , n ∈ N, be as defined in (4.14). Then
+Zn
+→1
+EZn
+in probability.
+Proof.
+
+By Theorem 4.2 and Proposition 4.3,
+bn Zn − EZn
+→0
+EZn
+bn
+
+in probability. ✷
+Note that, by Lemma 4.1, the size of EZn is determined up to constants
+by equation (4.19 ), assuming X ∈ L2 1 . Actually, the approximation (4.19 ) is
+asymptotically correct (Corollary 5.4 below).
+Theorem 4.2 also implies the following version of Theorem 2.1(b) (here X
+is restricted to be in DA2 but we consider more general normings).
+Corollary 4.5. Let X Xi , i ∈ N, be i.i.d. random variables in DA2 bn 
+and let Zn , n ∈ N, be as defined in (4.14). Then the sequence Zn /bn ∞
+n=1 is
+stochastically bounded if and only if )2 1 X < ∞.
+Proof. Sufficiency is already contained in Theorem 2.1 and necessity is
+an immediate consequence of Theorem 4.2 and Proposition 4.3. ✷
+5. The domain of attraction of the normal law II: limit theorems,
+finite variance case. Theorem 4.2 suggests that if X ∈ DA2 bn  then the
+centered and normalized Wasserstein distances, Zn −EZn /bn ∞
+n=1 , converge
+in law. Such a result would constitute the central limit theorem associated to
+the law of large numbers in Corollary 4.4 and would basically complete the
+weak limit theory for the Wasserstein distance between the empirical and the
+true distributions. Here we prove this CLT in the finite variance case.
+An important tool we will use here and in the next section is the Borell–
+Sudakov–Tsirel’son concentration inequality for Gaussian processes [Sudakov
+and Tsirel’son (1974), Borell (1975)]. Since we do not need its full power,
+we state and use the Maurey–Pisier version, which has an elementary proof
+[Pisier (1986); see also Ledoux and Talagrand (1991), page 57].
+Gaussian concentration inequality. Let Z be a centered Gaussian Evalued random vector, E a separable Banach space, and let
+51
+
+σ 2 = sup E"f Z#2
+f∈D
+
+1042
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+where D is a countable subset of the unit ball of E such that x =
+supf∈D "f x# for all x ∈ E. Then, EZ < ∞ and
+52
+
+
+
+
+
+2 t2
+
+
+Pr Z − EZ ≥ t ≤ 2 exp − 2 2 
+π σ
+
+Given a random variable X we let, as usual, F and Q be respectively its
+cumulative distribution and quantile functions, and we also set, as in (4.14),
+Zn = nFn − FL1
+where Fn , n ∈ N, are the empirical cumulative distribution functions associated to a sequence of i.i.d. random variables Xi with the same law as X.
+As usual, Bt will denote the Brownian bridge process. Theorem 2.1(a) shows
+that
+∞
+1
+Z
+BFt dt =
+Bt dQt
+√ n →d
+n
+−∞
+0
+whenever X ∈ L2 1 . Moreover, by moment convergence [Theorem 2.4(a)],
+
+1
+1
+√
+EZn / n → 0 EBt dQt = 2/π 0 t1 − t dQt. The following theorem generalizes this√to X ∈ L2 , although
+in this case we do not have separate
+√
+convergence of Zn / n and EZn / n [see, e.g., Proposition 4.3].
+Theorem 5.1. If EX2 < ∞ then, for any sequences cn % 0 and dn & 1,
+cn = 0, dn = 1, the sequence
+53
+
+ dn
+cn
+
+Bt − EBt dQt
+
+n∈N
+
+is Cauchy in Lp for every p and, moreover, if we denote its limit by
+54
+
+1
+0
+
+Bt − EBt dQt
+
+then
+55
+
+1
+Zn − EZn
+Bt − EBt dQt
+→d
+√
+n
+0
+
+as n → ∞, with convergence of moments of order p < 2.
+Proof. We can and do assume X is nondegenerate [otherwise, both sides
+of (5.5) are zero]. First we show that the sequence (5.3) is Cauchy in Lp . To
+prove this we use Gaussian concentration. Let n < m, and let D denote an L1
+norm determining countable subset of the unit ball of L∞ dn dm  dQ. Then,
+the Gaussian concentration inequality applies with E = L1 dn dm  dQ and
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1043
+
+Z = Bt dn ≤ t ≤ dm . The parameter specified by (5.1) in this case is
+ d
+2
+m
+σn2 m = sup E
+ftBt dQt
+dn
+
+f∈D
+
+= sup
+
+ dm  dm
+
+f∈D dn
+
+=
+
+dn
+
+ dm  dm
+dn
+
+dn
+
+fsftEBsBt dQs dQt
+
+s ∧ t − st dQs dQt
+
+It is well known that if K is a function of finite total variation on 0 1 and
+if U is uniform on 0 1, then
+ 1 1
+VarKU =
+s ∧ t − st dKs dKt
+0
+
+0
+
+[e.g., Shorack and Wellner (1986), page 43]. Applying this to
+Ku = QuIdn dm  u + Qdn Iu<dn + Qdm Iu>dm
+we obtain from the above that
+σn2 m = VarQdn  ∨ X ∧ Qdm 
+= Var0 ∨ X − Qdn  ∧ Qdm  − Qdn 
+≤ 2 VarXIX>Qdn  
+where we use that  X =  QU in the first identity and that φx −
+φy ≤ x − y for all x y implies Var φZ ≤ 2 Var Z in the inequality.
+Therefore, the concentration inequality (5.2) gives that, for all ε > 0,
+
+ d
+
+
+ m
+
+2ε2
+
+
+Pr 
+→0
+B − EB dQ > ε ≤ 2 exp − 2 2
+π σn m
+dn
+c
+as n ∧ m → ∞. A similar inequality holds for  c n B − EB dQ. Hence,
+m
+the sequence (5.3) is Cauchy in Lp for all p. Actually, it is Cauchy in some
+exponential Orlicz norms as well.
+Without loss of generality, we will assume X ≥ 0 for the rest of the proof.
+Also, by Lemma 4.1, we can replace Zn − EZn by Z̃n − EZ̃n at the left side of
+the limit (5.5), with Z̃n as defined in (4.14 ). Next we prove the limit (5.5) with
+r
+this replacement. We consider the truncated variables Xr Xi defined by
+truncation of the X’s as follows:
+Xr = X ∧ Q1 − 1/r
+r
+
+r
+
+and likewise for Xi , and denote Fr , Qr and Fn , respectively, their common cdf, quantile function and empirical cdf. We also set
+r
+
+r
+
+Zn = nFn − Fr L1 
+
+1044
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+As indicated above, by Theorem 2.1(a) and moment convergence [Theorem 2.4(a)], since Xr ∈ L2 1 ,
+1
+Zn − EZn
+Bt − EBt dQr t
+→d
+√
+n
+0
+ 1−1/r
+Also, since this last integral is just 0
+Bt−EBt dQt the first part
+of the proof shows that
+1
+1
+57 Zr = Bt − EBt dQr t →d Z = Bt − EBt dQt
+r
+
+r
+
+56
+
+0
+
+0
+
+Hence, by the usual 3ε argument [e.g., Billingsley (1968), page 25], it suffices
+to prove that
+
+r
+r 
+ Z̃n − EZ̃n
+Zn − EZn 
+
+lim lim sup
+−
+√
+√
+
+r→∞ n→∞ 
+n
+n
+n
+
+
+
+
+1  Q1−1/n  
+IXi >t − Pr X > t 
+= lim lim sup √ 
+58
+
+r→∞ n→∞
+n Q1−1/r i=1
+n
+
+
+
+
+
+− E IXi >t − Pr X > t  dt = 0 in Lp
+i=1
+
+for all p. This is achieved by means of Talagrand’s exponential inequality, as
+in the proof of Theorem 4.2. Just as in that proof, (4.16) and (4.17) in the
+present case become
+U ≤ Q1 − 1/n − Q1 − 1/r
+
+and
+
+V ≤ 2nEX2 IX>Q1−1/r 
+
+Using this and that, by Chebyshev’s inequality,
+Q2 1 − 1/n ≤ nEX2 IX≥Q1−1/n
+Talagrand’s inequality gives
+
+
+
+
+r
+r 
+2
+
+Pr Z̃n − Zn  − EZ̃n − Zn  > u nEX IX≥Q1−1/r
+
+
+
+1
+u
+≤ K exp − u log 1 +
+K
+2
+
+for all u > 0. Now (5.8) follows since EX2 IX≥Q1−1/r → 0 as r → ∞. ✷
+We should mention that EZn , which may be difficult to compute, satisfies
+EZn
+=1
+lim √ 
+ 1−1/n 
+n 2/π 1/n
+t1 − t dQt
+
+n→∞
+
+an estimate more precise than (4.19), (4.19 ). This is proved in Corollary 6.3.
+
+1045
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+6. The domain of attraction of the normal law III: limit theorems,
+infinite variance case. In this section we prove a central limit theorem for
+Fn − FL1 − EFn − FL1 under the assumption that the tail probabilities
+of X are smooth and of the order log tα /t2 , −1 ≤ α < ∞ [the case α =
+0 is Theorem 1.1(a2)]. By weighted approximation of empirical processes by
+Brownian bridges, this will reduce to proving a central limit theorem for
+s
+Vt − EVttα/2 dt
+−s
+
+where V is the Ornstein–Uhlenbeck process and s → ∞. [The case α = 0
+is known: Mandl (1968), page 95.] Whereas we conjecture that the central
+limit theorem to be proved in this section holds for any X in the domain
+of attraction of the normal law and with infinite second moment, our method
+would only give the CLT for a subset of these (smooth, regularly varying tails);
+for this reason and for convenience, we restrict ourselves to the simpler tail
+probabilities Pr X > t  log tα /t2 , −1 ≤ α < ∞, which, at any rate,
+basically cover all the tail sizes for DA2 with infinite variance.
+Whereas the proofs of the results in Sections 2 to 5 do not use approximation of the empirical process by Brownian bridges, the results in this section
+are based on such representations. The value of the normalizing constants is
+determined by the integrals at the tails and therefore we cannot approximate
+the L1 norm of the empirical process by integrals with bounded range, as done
+in Theorem 5.1. We use Mason’s (1991) and Csörgő and Horváth (1986) version of the weighted strong approximations, which has an elementary proof
+based on Skorokhod embedding [as opposed to the deeper and more difficult
+Komlós–Major–Tusnády (KMT) strong approximation]. This approximation is
+as follows, and was originally stated [with a proof based on KMT] in CCHM
+(1986a).
+Weighted approximation of the empirical process by Brownian
+bridges. There exists a sequence of independent uniform (0,1) random
+variables Ui , i ∈ N, and a sequence of Brownian bridges Bn , n ∈ N, sitting on
+the same probability space, such that, for all 0 ≤ ν < 1/4,
+61
+
+sup
+
+1/n≤s≤1−1/n
+
+nν αn s − Bn ss1 − sν−1/2 = OP 1
+
+where
+62
+
+Hn s =
+
+n
+1
+I
+n i=1 Ui ≤s
+
+and
+
+αn s =
+
+√
+nHn s − s
+
+n∈N
+
+are respectively the uniform empirical distribution functions and processes.
+We are interested in the following corollary of the weighted approximation.
+CCHM (1986b) state a formally weaker result [their Theorem 2.1; see also
+CCHM (1986a), Theorems 3.1 and 3.2], but their methods also give it. We
+present it with a short proof for the reader’s convenience.
+Corollary 6.1 [Essentially contained in CCHM (1986a, b)]. With αn and
+Bn as in the weighted approximation theorem, if Q is the quantile function of
+
+1046
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+a random variable X in DA2 bn , then
+√  1−1/n
+n
+lim
+αn t − Bn t dQt = 0
+n→∞ bn 1/n
+
+63
+in probability.
+
+Proof. The approximation of αn by Brownian bridges (6.1) gives that, for
+any ε ∈ 0 1/4,
+√  1−1/n
+
+
+n
+αn t − Bn t dQt
+bn 1/n
+≤
+
+n1/2−ε  1−1/n
+t1 − t1/2−ε dQt
+bn
+1/n
+
+
+×
+sup
+nε αn s − Bn ss1 − sε−1/2
+1/n≤s≤1−1/n
+
+=
+
+n1/2−ε  Q1−1/n
+Ft1 − Ft1/2−ε dt × OP 1
+bn
+Q1/n
+
+We can decompose the integral in the last term into two parts, from Q1/n
+to the median of X, and from there to Q1 − 1/n. Since both integrals can
+be treated in the same way, we only consider one. By the properties of regular
+variation [Feller (1971)] applied to U and by (4.1), (4.2) and (4.6), setting
+M = supt>0 t2 Pr X > t /Ut, which is finite, we have
+n1/2−ε  Q1−1/n
+Ft1 − Ft1/2−ε dt
+bn
+medX
+n1/2−ε  Q1−1/n
+Pr X > t 1/2−ε dt
+bn
+medX
+
+M1/2−ε n1/2−ε  Q1−1/n Ut 1/2−ε
+≤
+dt
+bn
+t2
+medX
+
+≤
+
+M1/2−ε n1/2−ε 1
+UQ1 − 1/n1/2−ε Q1 − 1/n2ε
+bn
+2ε
+
+1/2−ε 
+nUbn  1/2−ε Q1 − 1/n 2ε
+< M
+→0
+∼ 2ε
+b2n
+bn
+
+
+
+as n → ∞. ✷
+Let X be a random variable in DA2 bn  for some admissible sequence bn
+of normalizing constants. We keep the notation of previous sections, and also
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+set
+
+1047
+
+
+
+2  Q1−1/n
+Ft1 − Ft dt
+π Q1/n
+ 
+√
+√  1−1/n
+2 1−1/n
+= n
+t1 − t1/2 dQt = n
+EBt dQt
+π 1/n
+1/n
+
+√
+γn = n
+64
+
+Then, Lemma 4.1 and Corollary 6.1 show that the sequences
+
+
+ √  1−1/n
+
+Zn − γn
+n
+65
+and
+Bt − EBt dQt
+bn
+bn 1/n
+are weak convergence equivalent. If X is symmetric and has tails of the order
+t−2 , concretely, if
+dQt =
+
+cdt
+t1 − t3/2
+
+then, transforming B into the stationary Ornstein–Uhlenbeck process Vt,
+−∞ < t < ∞, by the equation
+
+1
+t
+66
+Bt = t1/2 1 − t1/2 V
+log
+2
+1−t
+yields
+
+67
+
+√  1−1/n
+n
+Bt − EBt dQt
+bn 1/n
+ logn−1/2
+c
+≃
+Vt − EVt dt
+logn − 1 − logn−1/2
+
+for a specific constant c, and convergence in distribution follows by a central
+limit theorem for stationary Markov processes [Mandl (1968), page 95], as observed by Csörgő and Horváth (1993). However, we have been unable to find in
+the literature any central limit theorems for integrals of centered functionals
+of stationary processes with respect to measures other than Lebesgue. On the
+other hand, by the tightness result of Section 4, the Csörgő–Horváth result
+[Theorem 1.1(a2) above], and the CLT in Section 5, it is natural to conjecture
+that the sequences in (6.5) converge in distribution for general X ∈ DA2 bn .
+As mentioned above, we will prove convergence in law of the sequences in
+(6.5), but only for random variables X with smooth tail probabilities of the
+order of log tα /t2 , −1 ≤ α < ∞. This shows, in particular, that Lebesgue
+measure dt can be replaced in the second sequence in (6.7) by other measures
+and still have a central limit theorem. However, our method of proof does not
+seem to extend to all of DA2 bn .
+Here is how we attack the problem. Application of the Borell–Sudakov–
+Tsirel’son inequality, as in the proof of Theorem 5.1, yields that the second
+sequence in (6.5) is tight with subsequential convergence of moments as well
+and that all its subsequential limits have tails of the order of c1 exp−c2 t2 ;
+
+1048
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+hence, if these limits are infinitely divisible, they are normal [Horn (1972)].
+Then, convergence follows by showing that the limits are indeed infinitely divisible and that the second moments do converge. We prove that the second
+moments converge by direct computation and prove that the limits are infinitely divisible by showing that the sequences in (6.5) are equivalent to the
+sequence of row sums of an infinitesimal triangular array.
+To carry out this program, we need some lemmas and propositions. We begin
+by applying the Gaussian concentration inequality to the second sequence in
+(6.5).
+Proposition 6.2. Let Q be the quantile function of X ∈ DA2 bn  and let B
+be a Brownian bridge. Then, there is c ∈ 0 ∞ such that
+
+
+ √  1−1/n
+
+n 
+
+Bt − EBt dQt > u ≤ 2 exp−cu2 
+68
+Pr
+bn  1/n
+for all u > 0 and n ∈ N. In particular, the sequence
+√  1−1/n
+n
+69
+Gn =
+Bt − EBt dQt
+bn 1/n
+
+n∈N
+
+is stochastically bounded; all its subsequential limits in law G satisfy
+E expλG2  < ∞
+
+610
+
+for all λ < c, and if Gnk →d G, then also EGnk r → EGr for all r > 0 and
+E expλG2nk  → E expλG2 .
+Proof. As is well known [CCHM (1986b)], the norming sequence bn can
+be taken to be
+
+1/2
+√  1−1/n  1−1/n
+611
+bn = n
+u ∧ v − uv dQu dQv
+1/n
+
+1/n
+
+(see also the Appendix for another proof). Now, we apply the Gaussian concentration inequality as in the proof of Theorem 5.1. Taking dn = 1/n and
+dm = 1 − 1/n in the computation of σn m in that proof, we get σn2 m = b2n /n,
+which gives (6.8) with c = 2/π 2 and, in particular, stochastic boundedness
+of Gn . The rest of the statements of this proposition follow from (6.8) by
+uniform integrability. ✷
+At this point we should slightly depart from our program and compare
+Theorem 4.2 and Proposition 6.2. To begin, note that, because of the weak
+convergence equivalence between Gn and Zn − γn /bn , Proposition 6.2
+provides an alternative to Theorem 4.2 for proving stochastic boundedness of
+a suitably centered and normalized version of Zn . Although the normings
+are the same (bn ), the centerings are not; they are EZn in Theorem 4.2 and
+γn here. While EZn is quite difficult to compute, γn is a simple function of
+the distribution of X; hence, it may be of practical interest to compare these
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1049
+
+centerings. The comparison done in Remark 4.1 gave EZn ≃ γn only in the
+sense that the lim sup and lim inf of their quotients are finite, but not necessarily equal, constants. In order for us to be able to interchange EZn by γn in
+Theorem 4.2, in Corollary 4.3, in Theorem 5.1 and in the limit theorem to be
+proved in this section, it is necessary that
+612
+
+EZn − γn
+=0
+n→∞
+bn
+lim
+
+which, at this point, we only know for X ∈ L2 1 (in this case the numerators
+are bounded). This is what we observe now as a consequence of both Theorem 4.1 and Proposition 6.2. Note that, since EZn /bn → ∞ and γn /bn → ∞ if
+X ∈ DA2 bn  \ L2 1 by Proposition 4.3 [see also (4.23)], the limit (6.12) implies
+in particular
+613
+
+lim
+
+n→∞
+
+EZn
+=1
+γn
+
+a substantial improvement on Remark 4.1 [which is, however, used in the
+proof of (6.12) and (6.13)].
+Corollary 6.3. Let X ∈ DA2 bn \L2 1 and let Zn and γn , n ∈ N, be respectively defined by equations (4.14) and (6.4). Then, the limit (6.12) is satisfied
+[and therefore so is (6.13)].
+Proof. Proposition 6.2 implies that any subsequential limit in law G of
+the sequence Gn satisfies EG = 0, by convergence of moments; together
+with the weak convergence equivalence of the two sequences in (6.5) (which
+follows by weighted approximation), it also implies that the sequence Zn −
+γn /bn is stochastically bounded and has the same subsequential limits G
+as the sequence Gn , hence, also centered. By Theorem 4.2, the sequence
+Zn −EZn /bn is also stochastically bounded. Tightness of the two sequences
+implies supn EZn − γn /bn < ∞. This and Theorem 4.2 once more then imply
+that
+
+
+ Zn − γn r
+
+ <∞
+sup E
+bn 
+n
+for 0 < r < 2. Hence, by uniform integrability, if Znk − γnk /bnk converges
+in law to G then
+
+Znk − γnk
+= EG = 0
+lim E
+k→∞
+bn k
+Now the corollary follows because this happens for a subsequence of every
+subsequence. ✷
+Back to the central limit theorem in the infinite variance case, we show
+next that the second moment of Gn converges, but only in the particular case
+when the tail probabilities of X are regularly varying.
+
+1050
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+Proposition 6.4. Let Q be the quantile function of a random variable X in
+DA2 bn . Assume X has regularly varying tails with exponent −2 and EX2 =
+∞. Let B be a Brownian bridge and let Gn be as defined by (6.9). Then
+lim EG2n = 1 +
+
+614
+
+n→∞
+
+13
+2 log 2
+−
+
+π
+3π
+
+Proof. We will assume for simplicity that X has a symmetric distribution [equivalently, that Q1 − x = −Qx, x ∈ 0 1] and that Q has a
+continuous derivative q. Integration by parts and the type of reasoning in
+the proof of Proposition 4.3 extend this proof to general Q. Let Z1 Z2 
+be a centered random vector with bivariate normal distribution such that
+VarZ1  = VarZ2  = 1 and CovZ1 Z2  = ρ. Set Kρ = CovZ1  Z2 .
+Then, an elementary but cumbersome computation that we omit yields
+
+1
+2
+2
+ρ arc sin ρ − ρ2 1 − ρ2 +
+1 − ρ2 − 1 
+π
+π
+π
+
+Kρ =
+
+Therefore, if we take bn as in (5.17), we have
+ 1−1/n  1−1/n
+2
+u1 − uv1 − v
+EGn =
+1/n
+
+×
+
+1/n
+
+
+×K 
+
+ 1−1/n  1−1/n
+1/n
+
+1/n
+
+u ∧ v − uv
+u1 − uv1 − v
+
+
+dQu dQv
+
+u ∧ v − uv dQu dQv
+
+Set
+2
+ρ arc sin ρ
+π
+1
+K2 ρ = − ρ2 1 − ρ2
+π
+K1 ρ =
+
+and
+K3 ρ =
+Then,
+(6.15)
+(6.16)
+(6.17)
+
+
+2
+1 − ρ2 − 1 
+π
+
+∞ 
+−1/2 −1n 2n+2
+2 
+ρ
+n
+π n=0
+2n + 1
+∞ 
+1/2
+1 
+K2 ρ = −
+−1n ρ2n+2
+π n=0 n
+∞ 
+1/2
+2 
+K3 ρ =
+−1n ρ2n
+π n=1 n
+
+K1 ρ =
+
+−1
+
+
+
+1051
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+for all ρ ≤ 1. We further define
+
+ 1−x  1−x
+fk x =
+u ∧ v − uv 
+x
+
+x
+
+and
+gx =
+
+u1 − uv1 − v
+
+ 1−x  1−x
+x
+
+x
+
+k
+
+u ∧ v − uv
+
+dQu dQv
+
+k≥1
+
+u ∧ v − uv dQu dQv
+
+and set
+αk = lim
+
+n→∞
+
+Then, using (6.15), we obtain
+ 1−1/n  1−1/n
+lim
+n→∞
+
+618
+×
+
+1/n
+
+u1 − uv1 − v
+
+1/n
+
+
+× K1 
+
+ 1−1/n  1−1/n
+1/n
+
+=
+
+1/n
+
+fk 1/n
+
+g1/n
+
+
+
+u ∧ v − uv
+u1 − uv1 − v
+
+dQu dQv
+
+u ∧ v − uv dQu dQv
+
+−1
+
+∞ 
+−1/2 −1n
+2 
+
+α
+n
+π n=0
+2n + 1 2n+1
+
+[It is straightforward to see that the left term is bounded from below by the
+right term, since all the terms in the series expansion are positive. The fact
+that (6.15) is valid for ρ = 1 suffices to conclude (6.18).] In order to compute
+αk , recall that symmetry of X implies Q1 − x = −Qx and q1 − x = qx.
+Thus,
+ 1−x uk/2+1
+xk/2+1
+fk x = −4
+qx
+dQu
+k/2
+1 − x
+1 − uk/2
+x
+g x = −4xqxQ1 − x
+and, consequently,
+x
+f x
+lim k
+= lim
+x→0 g x
+x→0
+Integration by parts yields
+ 1−x
+xk/2 1/2 1 − u−k/2 dQu
+Q1 − x
+
+k/2
+
+ 1−x
+
+1/2 1 − u
+
+−k/2
+
+Q1 − x
+
+kx
+=1−
+2
+
+k/2
+
+ 1−x
+1/2
+
+dQu
+
+
+
+Qu1 − u−k/2−1 du
+Q1 − x
+
+
+
+Since X has regularly varying tails with exponent −2, Q1 − u is regularly
+varying at 0 with exponent −1/2 [see, e.g., Resnick (1987)]. Now, since, if
+a function Lx is regularly varying at 0 with exponent σ then L1/y is
+
+1052
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+regularly varying at ∞ with exponent −σ, the usual properties of regular
+variation [Feller (1971)] give
+ 1−x
+xk/2 1/2 Qu1 − u−k/2−1 du
+
+lim
+
+Q1 − x
+
+x→0
+
+=
+
+2
+
+k+1
+
+Therefore, limx→0 fk x/g x = 1/k + 1 and, by l’Hôpital’s rule,
+αk = lim
+
+619
+
+x→0
+
+1
+fk x
+=
+
+gx
+k+1
+
+Plugging (6.19) into (6.18), we obtain
+lim
+
+ 1−1/n  1−1/n
+
+n→∞
+
+620
+×
+
+1/n
+
+u1 − uv1 − v
+
+1/n
+
+
+× K1 
+
+ 1−1/n  1−1/n
+1/n
+
+=
+
+1/n
+
+u ∧ v − uv
+u1 − uv1 − v
+
+
+dQu dQv
+
+u ∧ v − uv dQu dQv
+
+−1
+
+∞ 
+2 
+−1/2 −1n
+2
+1
+=1− 
+π n=0
+n
+2n + 1 2n + 2
+π
+
+The last identity follows upon noticing that
+x sin−1 x +
+
+
+
+1 − x2 − 1 =
+
+∞ 
+
+−1/2 −1n
+1
+x2n+2
+n
+2n
++
+1
+2n
++
+2
+n=0
+
+x ≤ 1
+
+We can apply the same reasoning to K2 and K3 to obtain
+lim
+
+ 1−1/n  1−1/n
+
+n→∞
+
+1/n
+
+1/n
+
+u1 − uv1 − v
+
+
+× K2 
+621
+×
+
+ 1−1/n  1−1/n
+1/n
+
+1/n
+
+u ∧ v − uv
+u1 − uv1 − v
+
+
+dQu dQv
+
+u ∧ v − uv dQu dQv
+
+∞ 
+1 
+1
+1
+1/2
+=−
+=−
+−1n
+π n=0 n
+2n + 2
+3π
+
+−1
+
+1053
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+and
+lim
+
+ 1−1/n  1−1/n
+
+n→∞
+
+1/n
+
+1/n
+
+u1 − uv1 − v
+
+
+× K3 
+622
+×
+
+ 1−1/n  1−1/n
+1/n
+
+=
+
+1/n
+
+u ∧ v − uv
+u1 − uv1 − v
+
+
+dQu dQv
+
+u ∧ v − uv dQu dQv
+
+−1
+
+∞ 
+1/2
+2 
+1
+2
+−1n
+= log 2 − 1
+π n=1 n
+2n
+π
+
+Now, (6.20), (6.21) and (6.22) complete the proof. ✷
+By Propositions 6.2 and 6.4, all the subsequential limits in distribution G of
+the sequence Gn , which are centered, have the same second moment. Hence,
+if they are Gaussian, they coincide and convergence follows.
+The next proposition shows that if an infinitely divisible distribution has tail
+probabilities of smaller order than those of a Poisson random variable, then
+it must be normal, a result due to Horn (1972), who gave an analytic proof
+and placed unnecessary restrictions on the function H in (6.23). The proof we
+give here, entirely probabilistic except for use of unicity in the Lévy–Khinchin
+formula, seems to be the simplest for the particular statement that interests
+us. Csörgő and Mason (1991) obtain general and quite precise integrability
+results, with yet different proofs, and give many references to the extensive
+literature on integrability of infinitely divisible distributions.
+Proposition 6.5 [Horn (1972)]. If X is infinitely divisible, c ∈ 0 ∞ and
+Ht, t > 0, is a positive function such that, both
+623
+
+lim sup
+t→∞
+
+Ht
+= ∞ and
+t log t
+
+Pr X ≥ t ≤ c exp−Ht for all t > 0
+
+then X is normal (or degenerate).
+Proof. We first prove the proposition assuming X is symmetric. Then, by
+Lévy–Khinchin for symmetric variables,
+ X = N0 σ 2  ∗ Pois µ
+where σ 2 is a nonnegative number and µ is a symmetric Lévy measure [see,
+e.g., Araujo and Giné (1980), Chapter 2, for this and for several properties
+of general Poisson measures to be used below. In the proof of unicity of the
+Lévy–Khinchin formula, page 56, Exercise 4, the order of the integral and the
+exponential in the hint’s second line should be reversed]. If µ = αδ0 , then
+Pois µ = δ0 and  X = N0 σ 2 . If µ = αδ0 there is an interval a b,
+0 < a < b < ∞, such that µa b = λ ∈ 0 ∞. Let
+µ1 = µa b
+
+µ2 = µ−b −a
+
+µ3 = µ − µ1 − µ2
+
+1054
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+and let Xi , i = 1 2 3, be independent random variables such that
+ Xi  = Pois µi i = 1 2
+
+ X3  = N0 σ 2  ∗ Pois µ3 
+
+and
+
+Then X3 is symmetric, X1 ≥ 0, X2 ≤ 0 and  X2  =  −X1 ; in fact, we
+can take
+X1 =
+
+N1
+
+i=0
+
+ξi
+
+and
+
+X2 = −
+
+N2
+
+i=0
+
+ηi
+
+with Ni , i = 1 2, independent Poisson random variables with parameter λ,
+ξi ηi i.i.d. with law λ−1 µa b for i ≥ 1, independent of N1 and N2 , and
+ξ0 = η0 = 0. Therefore,
+Pr X ≥ t = Pr X1 + X2 + X3  ≥ t ≥ Pr X1 + X2 ≥ t X3 ≥ 0
+1
+1
+Pr X1 + X2 ≥ t ≥ Pr X1 ≥ t X2 = 0
+2
+2
+1
+= Pr X1 ≥ t Pr N2 = 0
+2
+ N1
+
+
+e−λ
+e−λ
+=
+Pr
+ξi ≥ t ≥
+Pr aN1 ≥ t 
+2
+2
+i=0
+≥
+
+Now, assuming t/a ∈ N, we have that for all c > 1/a there is t0 < ∞ such that
+Pr aN1 ≥ t ≥ Pr N1 = t/a = e−λ
+
+λt/a >
+exp−ct log t
+t/a! ∼
+
+t ≥ t0
+
+by Stirling’s formula. Therefore, there exists a constant c1 such that
+Pr X ≥ t ≥ exp−c1 t log t
+for all t large enough, contradicting (6.23).
+If X is infinitely divisible but not necessarily symmetric, the Lévy–Khinchin
+formula for its distribution is
+ X = δa ∗ N0 σ 2  ∗ cδ Pois µ
+for some a σ ∈ R and Lévy measure µ, and if X is an independent copy of
+X, then
+ X − X  = N0 2σ 2  ∗ Poisµ + µ̄
+where µ̄A = µ−A for all Borel sets A. In particular, the exponent of the
+∞
+characteristic function of X − X is −σ 2 t2 + −∞ cos tx − 1dµ + µ̄x. If X
+satisfies (6.23), so does X − X because Pr X − X  ≥ 2t ≤ 2 Pr X ≥ t .
+Then, X − X being symmetric and infinitely divisible, the first part of the
+proof shows that X − X is in fact normal, say with variance τ2 . Therefore,
+the exponent of its characteristic function satifies
+∞
+τ 2 t2
+−σ 2 t2 +
+t ∈ R
+cos tx − 1dµ + µ̄x = −
+2
+−∞
+
+1055
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+Since the integral is not positive for any t, it follows that η2 = τ2 − 2σ 2 is
+nonnegative. Hence,
+Poisµ + µ̄ = N0 η2 
+which contradicts the unicity of the Lévy–Khinchin formula unless µ + µ̄ =
+2cδ0 for some c ≥ 0; that is, unless µ = cδ0 , implying that X is normal and
+proving the proposition. ✷
+We will apply this proposition with Ht = Kt2 .
+For our final step, we consider symmetric random variables X such that
+Pr X > t ≃
+
+log tα
+t2
+
+for large t, and with α ≥ −1. Such variables are in the domain of attraction of
+the normal law, have infinite variance and their corresponding norming constants are, up to a multiplicative constant that we can ignore for the moment,
+
+√
+bn = nlog nα+1/2 if α > −1 and bn = n log log n if α = −1
+as is easily checked. Actually, we modify the law of X a little bit in order to
+produce a less cumbersome proof (although these modifications will not alter
+the essence of the proof). To wit, we take a differentiable quantile function Q
+with Q1/2 = 0 and derivative
+624
+
+Q t =
+
+ 12 logt/1 − tα/2
+t3/2 1 − t3/2
+
+0<t<1
+
+for α ≥ −1. It is not difficult to see that such Q is the quantile function of
+a symmetric distribution as specified above, with
+ normalizing constants bn
+√
+α+1/2
+proportional to nlog n
+if α > −1 and to n log log n if α = −1.
+Lemma 6.6. Let Gn , n ∈ N, be the random variables defined by (6.9)
+with quantile function Q as given
+ by (6.24) for some α ≥ −1, and bn =
+√
+nlog nα+1/2 for α > −1, bn = n log log n for α = −1, n ∈ N. Then, all the
+subsequential limits in law of the sequence Gn are infinitely divisible.
+Proof. The proof of this lemma will take a few sublemmas. We begin
+by setting up the appropriate stage. Using the equivalence (6.6) between the
+Brownian bridge and the Ornstein–Uhlenbeck process and with the change of
+variables u = 12 logt/1 − t, we have
+√  logn−1/2
+ 2u
+n
+eu
+e
+du
+Vu − EVu
+dQ
+625
+Gn =
+bn − logn−1/2
+1 + e2u
+1 + e2u
+With a further change of variables
+
+ 2s
+es
+1
+e
+dQ
+626
+dQ̃n s + logn + 1 =
+2
+1 + e2s
+1 + e2s
+
+= 2sα/2 ds
+
+1056
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+and, using the stationarity of V, (6.25) becomes
+√  logn−1
+n
+
+Gn =
+Vs − EVs dQ̃n s
+625 
+bn 0
+In a way similar to Mandl [(1968), page 95], we fix δ > 0 and define stopping
+times
+τ0 = inf u ≥ 0 Vu = 0
+τ1 = inf u ≥ τ0  Vu = δ
+
+627
+
+
+
+τ2n = inf u ≥ τ2n−1  Vu = 0
+τ2n+1 = inf u ≥ τ2n  Vu = δ
+
+n = 1 2  
+
+Since the Ornstein–Uhlenbeck process V can also be represented as Vt =
+We2t /et , −∞ < t < ∞, with W a Brownian motion, these are actually stopping times for Brownian motion. In particular, by the strong Markov property,
+τ0 , τk − τk−1 , k ∈ N, are independent, and so are the integrals
+ τ0
+ τ2
+fVt dQ̃n t
+fVt dQ̃n t
+0
+
+τ0
+
+ τ2  Wexp2t − Wexp2τ 
+0
+=
+f
+dQ̃n t
+exp2t
+τ0
+ τ2k+1
+τ2k
+
+fVt dQ̃n t
+
+k∈N
+
+since Wexp2τ2k  = expτ2k Vτ2k  = 0. Moreover, Vt being stationary,
+τ2k+1 − τ2k , k ∈ N, are i.i.d. We will show below that
+628
+
+m1 = Eτ0 < ∞
+
+and
+
+m2 = Eτ2 − τ0  = Eτ2k − τ2k−1  < ∞
+
+Then, defining
+629
+
+kn = max k ∈ N m1 + km2 ≤ logn − 1
+
+we have
+630
+
+Gn =
+
+√  τ kn −1  τ
+ logn−1
+
+2
+2k+1
+n
+Vt − EVt dQ̃n t
++
++
+bn
+0
+τ2kn
+k=1 τ2k
+
+= In + IIn + IIIn
+where IIn is a sum of independent not necessarily identically distributed
+random variables. Hence, by the converse part of the general central limit
+theorem in R [e.g., Araujo and Giné (1980), page 61], in order to prove that
+the subsequential limit laws of Gn are infinitely divisible it is sufficient to
+show that
+631
+
+In  → 0 in pr.
+
+IIIn  → 0 in pr.
+
+1057
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+and that the triangular array of row-wise independent random variables
+√ τ
+n 2k+1
+Vt − EVt dQ̃n t
+0 < k < kn n ∈ N
+bn τ2k
+is infinitesimal; that is,
+
+ √  τ
+
+
+n  2k+1
+
+632
+max Pr
+Vt
+−
+EVt
+d
+Q̃
+t
+>
+ε
+→0
+n
+
+1≤k<kn
+bn  τ2k
+as n → ∞ for all ε > 0.
+Claim 6.6.1. The stopping times τk , k = 0 1    have finite moments of
+all orders.
+Proof. The distributions of τ0 and τ2k − τ2k−1√are easy to obtain, using
+that the distribution of sup0≤s≤u Ws is that of ug, g standard normal
+[e.g., Billingsley (1968), page 72]. Here is how to obtain the latter: we recall
+√
+also that Wu0 v − Wu0  has the same law as u0 Wv − 1, and get
+Pr τ2k − τ2k−1 > t
+= Pr τ2 − τ1 > t
+= E Pr
+
+inf Wexp2s + τ1  > 0Wexp2τ1  = δ expτ1 
+
+0<s≤t
+
+inf Wexp2s + τ − Wexp2τ > −δ expτ
+
+= Pr
+
+0<s≤t
+
+inf Wexp2s − 1 > −δ
+
+= Pr
+
+0<s≤t
+
+= Pr sup −Wexp2s − 1 < δ
+0<s≤t
+
+
+= Pr g < δ/ exp2t − 1 
+
+
+Similarly,
+Pr τ0 > t = 2 Pr
+
+sup Ws < 0 W1 < 0
+
+1<s≤e2t
+
+= 2 Pr W1 + sup Ws − W1 < 0 W1 < 0
+1<s≤e2t
+
+=
+
+1
+2
+
+tan−1 
+π
+exp2t − 1
+
+Therefore,
+Pr τ0 > t 
+
+2
+πet
+
+Pr τ2k − τ2k−1 > t 
+
+2δ
+et
+
+1058
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+as t → ∞. On the other hand, τ2k−1 − τ2k−2 , which is equal in distribution to
+τ1 − τ0 , has
+√ to do with the exit time of Brownian motion from the one-sided
+barrier δ t. Concretely,
+Pr τ1 − τ0 > t = E Pr sup Vs + τ0  < δVτ0  = 0
+0<s≤t
+
+and for τ0 fixed, this equals
+
+
+
+ We2τ 
+We2s e2τ 
+s
+
+<
+δe
+for
+all
+s
+≤
+t
+=
+0
+Pr
+ eτ
+eτ
+= Pr We2s  < δes for all s ≤ tW1 = 0 
+This probability is shown in Uchiyama [(1980), Theorem 1.1] to be of the order
+of c/eλt for some c < ∞ and 0 < λ < 1 as t → ∞, thus concluding the proof of
+Claim 6.6.1. ✷
+Claim 6.6.2. We have that limn→∞ In = 0 in probability.
+Proof. First we show that the centering is not relevant for the evaluation
+of In . For a > 0 and n large enough so that logn − 1  log n is much larger
+than 2a, in the case α > −1 we have
+
+√ a
+ logn−1/2
+2 2/π
+n
+EVt dQ̃n t =
+tα/2 dt
+bn 0
+log nα+1/2 logn−1/2−a
+
+2 2/π
+1
+=
+1 + α/2 log nα+1/2
+
+
+1+α/2
+1+α/2 
+1
+1
+×
+−
+logn − 1
+logn − 1 − a
+2
+2
+
+
+α/2
+3a 2/π
+1
+≤
+logn
+−
+1
+log nα+1/2 2
+≤
+
+K
+→0
+log n1/2
+
+where K is a constant that depends on a and α but not on n. The same
+computation for α = −1 gives
+√ a
+n
+K
+EVt dQ̃n t ≤
+
+bn 0
+log nlog log n1/2
+Now, given ε > 0 and M > 0, then, for all n large enough,
+Pr In > ε
+
+√ 
+
+
+ n x
+
+sup 
+Vt − EVt dQ̃n t > ε
+0<x≤M bn 0
+
+√  M
+n
+ε
+≤ Pr τ2 > M + Pr
+
+Vt + EVt dQ̃n t >
+bn 0
+2
+
+≤ Pr τ2 > M + Pr
+
+
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1059
+
+Since the first summand at the right tends to zero as M → ∞, it suffices to
+prove that the second tends to 0 as n → ∞ for all M < ∞ and all ε > 0, and
+this follows from the previous computation and Markov’s inequality. ✷
+Claim 6.6.3. We have that limn→∞ IIIn = 0 in probability.
+Proof. By Claim 6.6.1 and the definition of kn (6.29),
+ the central limit
+theorem in R implies that the sequence τ2kn −logn−1/ kn ∞
+n=2 is stochastically bounded. Therefore, it follows from
+
+
+
+ τ2kn − logn − 1 
+
+
+Pr IIIn  > ε ≤ Pr 
+
+>M
+kn
+
+√  x√k +logn−1
+
+
+
+n
+n 
+
++ Pr
+sup
+V − EV dQ̃n  > ε
+ logn−1
+−M≤x≤M bn
+that it suffices only to prove that the second summand at the right tends to
+0 as n → ∞ for all ε > 0 and M < ∞. The
+ previous proof still works here for
+α = −1, but it doesn’t for α > −1 because kn is of the order of log n1/2 ; thus,
+we resort to the theory of Gaussian processes and metric entropy bounds. We
+set, for n ≥ 2 and −M ≤ x ≤ M,
+√  x√k +logn−1
+n
+n
+V − EV dQ̃n
+Ln x =
+bn logn−1
+√  x√k +logn−1/2
+n
+n
+=
+Vt − EVttα/2 dt
+bn logn−1/2
+So, if for −M ≤ x < y ≤M we denote by  · 
+ the L1 norm for the measure
+tα/2 dt on the interval x kn + 21 logn − 1 y kn + 12 logn − 1, we have
+Ln y − Ln x =
+
+1
+V − EV
+log nα+1/2
+
+[we are only considering α > −1, hence bn = n1/2 log nα+1/2 ]. We apply the
+Gaussian concentration inequality to estimate the size of Ln y − Ln x. To
+this effect we must compute σ 2 "f V# for f∞ ≤ 1. For such f, 0 < a < b
+and α ≥ 0 we have
+ b
+2
+ b b
+Vtfttα/2 dt =
+exp−s − ufsfusα/2 uα/2 ds du
+E
+a
+
+633
+
+a
+
+≤2
+
+a
+
+ b s
+a
+
+≤ 2bα
+
+a
+
+b
+a
+
+exp−ssα/2 expuuα/2 du ds
+
+exp−sexps − expa ds
+
+< 2bα b − a
+
+1060
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+and, likewise, if −1 ≤ α < 0,
+ b
+2
+b
+E
+Vtfttα/2 dt ≤ 2aα
+e−s es − ea  ds < 2aα b − a
+633 
+a
+
+a
+
+Taking into account that kn ≃ logn − 1 − m1 /m2 , these two estimates give,
+for n large enough,
+ y√k +logn−1/2
+2
+n
+2
+Vtfttα/2 dt
+σ "f V# ≤ E
+√
+x
+
+kn +logn−1/2
+
+≤ Cy − xlog nα+1/2
+for some C < ∞ independent of n, x and y. Then, the Gaussian concentration
+inequality gives
+
+t2 log nα+1
+Pr Ln y − Ln x > t ≤ 2 exp −
+clog nα+1/2 x − y
+634
+ 2
+t log n1/2
+= 2 exp −
+cy − x
+for some c ∈ 0 ∞ independent of n and t > 0. This implies, by a simple
+computation that we omit, that there exists D > 0 such that
+
+DLn y − Ln x2 log n1/2
+E exp
+≤3
+x − y
+with D independent of n. Then, if ψ is the Young modulus ψx = expx2  −
+1/2 and  · ψ is the Orlicz seminorm ξψ = inf c > 0 Eψξ/c ≤ 1 , the
+increments of the processes Ln satisfy
+Ln y − Ln xψ ≤
+
+x − y1/2
+= dn x y
+D1/2 log n1/4
+
+for all x y ∈ −M M and n ≥ 2. This inequality allows us to apply Pisier’s
+modification and extension of Dudley’s entropy theorem [Pisier (1983), Theorem 1.1] to get
+
+log2N−M M dn ε + 1 dε
+E sup Ln x ≤ K
+−M<x≤M
+
+0
+
+where Nt d ε is the ε-covering number of the pseudometric space T d
+and  is the dn -diameter of −M M. In our case,
+N−M M dn ε <
+∼
+
+2M
+∨1
+Dlog n1/2 ε2
+
+and
+
+=
+
+2M1/2
+D1/2 log n1/4
+
+which, plugged into the previous inequality gives that there exists K < ∞
+such that
+K
+→ 0
+E sup Ln x ≤
+log
+n1/4
+−M≤x≤M
+This shows IIIn  → 0 in probability. ✷
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1061
+
+Claim 6.6.4. The limit (6.32) holds.
+Proof.
+
+Since the variables τ2k − τ2k−2 are i.i.d. and, setting
+√
+
+mk = m1 + km2
+
+the sequence τ2k − mk / k ∞
+k=1 is stochastically bounded by Claim 6.6.1 and
+the central limit theorem, it follows that for all η > 0 there is M < ∞ such
+that, both
+
+
+
+τ − m 
+635 max Pr τ2k − τ2k−2 > M < η and max Pr  2k√ k  > M < η
+k≤kn
+k≤kn
+k
+As a consequence, the proof of (6.32), reduces to showing that
+
+√   m +x√k+y
+
+k
+n 
+
+V
+−
+EV
+d
+Q̃
+636
+max E sup
+√
+n → 0
+
+1≤k<kn −M≤x≤M bn
+mk +x k
+0≤y≤M
+
+as n → ∞. In analogy with the previous case, we can define
+√  m +x√k+y
+n k
+n
+Vt − EVttα/2 dt
+637
+Ln k x y =
+√
+bn mn k +x k
+where mn k = mk − 12 logn − 1 [hence, mn k  ≤ 12 logn − 1].
+We assume first that α ≥ 0. In this case, in analogy with the proof of the
+previous claim, we first apply the Gaussian concentration inequality to the
+increments of this process, Ln k x − Ln k x , with x = x y, x = x y ,
+and then the entropy bound. Just as in the proof of inequality (6.34), it is easy
+to see that, for all k ≤ kn and n ≥ n0 independent of k, Ln k x−Ln k x  has
+tail probabilities dominated by 2 expt2 log n1/2 /cx − x , for some c > 0
+independent of k, n, x and x , where x − x  = x − x  ∨ y − y . Hence, there
+exists D ∈ 0 ∞, independent of n and k, such that
+
+DLn k x − Ln k x 2 log n1/2
+≤3
+E exp
+x − x 
+for all k ≤ kn and n ≥ n0 . If we then set
+d2n x x  =
+
+x − x 
+Dlog n1/2
+
+since a rectangle of sides parallel to the axes, repectively of sizes M and 2M,
+contains about 2M2 /δ2 squares of side δ, the ε-covering number of −M M ×
+0 M for dn is
+Nε ≃
+
+2M2
+
+D2 ε4 log n
+
+Then, the entropy bound used in the proof of the previous claim now gives
+that the expected values in (6.36) are all bounded by a fixed constant times
+
+1062
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+log n−1/4 , and therefore their maximum tends to zero, proving the claim for
+α ≥ 0.
+We now consider the case −1 < α < 0. Let δ > 0 be such that
+α+1
+γ1 =
+− δ > 0
+α+2
+√
+Then, we observe that if mn k + x k ≤ log nγ1 , 0 ≤ y ≤ M, and n is large
+enough so that M ≤ log nγ1 , we have
+
+√  m +x√k+y
+ log nγ1 +M
+n k
+n
+2
+1
+α/2
+EVtt
+dt
+≤
+tα/2 dt
+√
+bn mn k +x k
+π log nα+1/2 −log nγ1 −M
+
+8
+2
+α+1
+≤
+log nα+2/2γ1 − 2
+α+2 π
+
+2
+8
+=
+log n−δα+2/2 → 0
+α+2 π
+as n → ∞ uniformly in x and y. Hence,
+
+√   m +x√k+y
+
+n k
+n 
+α/2
+E
+sup
+Vt − EVtt dt
+√
+
+√
+mn k +x k
+m +x k≤log nγ1 bn
+n k
+
+0≤y≤M
+
+8
+≤
+α+2
+
+
+
++E
+
+2
+log n−δα+2/2
+π
+
+√   m +x√k+y
+
+n k
+n 
+α/2
+Vtt dt
+sup
+√
+
+√
+mn k +x k
++x k≤log nγ1 bn
+
+mn k
+
+≤
+
+16
+α+2
+
+
+
+0≤y≤M
+
+2
+log n−δα+2/2 → 0
+π
+
+Then, in order to conclude the proof of this Claim for −1 < α < 0, it suffices
+to show
+
+√   u+y
+
+n 
+α/2
+ = 0
+638
+lim 2E
+sup
+Vt
+−
+EVtt
+dt
+
+
+n→∞
+b
+1
+γ
+u
+2 log n
+
+1 ≤u≤2 log n
+0≤y≤M
+
+n
+
+Since
+
+
+√  u+M
+ M/2
+2/π
+n
+α/2
+lim sup
+EVtt dt ≤ lim
+tα/2 dt = 0
+n→∞ u∈R bn u
+n→∞ log nα+1/2 −M/2
+
+we may add the centering to the integral in (6.38), use positivity of V to
+replace the variable y by M in the upper limit of integration and then subtract
+the centering, to conclude that the limit (6.38) is equivalent to
+
+√   u+M
+
+n 
+α/2
+ = 0
+639
+lim 2E
+sup
+Vt
+−
+EVtt
+dt
+
+
+n→∞
+1
+u
+log nγ1 ≤u≤2 log n bn
+2
+
+1063
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+Redefining
+√  u+M
+n
+Ln u =
+Vt − EVttα/2 dt
+bn u
+and bounding Ln v − Ln u ≤ Ln u + Ln v from above by v − u > M,
+v
+ v+M
+√
+and by  n/bn  u Vt−EVttα/2 dt+ u+M Vt−EVttα/2 dt
+for v − u ≤ M, the Gaussian concentration inequality, together with the
+estimate in (6.33 ), gives
+
+ε2 log nα+1
+Pr Ln v − Ln u > ε ≤ 4 exp −
+cv − u ∧ Mlog nαγ1
+
+ε2 log nγ2
+= 4 exp −
+cv − u ∧ M
+where c is a finite positive constant independent of n, u and v, and γ2 =
+α + 1 − αγ1 = 2α + 1/α + 2 + αδ > 0. As an immediate consequence, there
+exists D > 0 independent of n, u and v, such that
+
+Dlog nγ2
+E exp
+≤6
+v − u ∧ M
+which, by Pisier’s entropy bound [Pisier (1983)], gives
+E
+
+sup
+
+1
+γ1
+2 log n ≤u≤2 log n
+
+Ln u ≤ K
+
+
+
+log5Nε + 1 dε
+
+0
+
+for some universal constant K < ∞, where Nε is the ε-covering number of the interval 2−1 log nγ1 2 log n for the distance dn u v = v −
+u ∧ M1/2 /Dlog nγ2 1/2 , and  is the dn -diameter of this interval. Since
+ = M1/2 /D1/2 log nγ2 /2  and Nε is dominated by a constant times
+log n/ε2 log nγ2  for ε <  , we obtain
+
+E
+
+sup
+
+1
+γ1
+2 log n ≤u≤2 log n
+
+Ln u ≤ C
+
+log log n
+log nγ2
+
+1/2
+
+for some constant C independent of n. This proves the limit (6.39), and therefore the claim for −1 < α < 0.
+The case α = 1 canbe treated in complete analogy with the case −1 <
+α < 2. Now, since bn = n log log n, the threshold log nγ1 can be replaced by
+log log nγ for some (any) γ ∈ 0 1, as for such γ,
+√  m +x√k+y
+n k
+n
+EVtt−1/2 dt
+√
+bn mn k +x k
+
+ log log nγ +M
+2
+1
+≤
+t−1/2 dt → 0
+π log log n1/2 −log log nγ −M
+
+1064
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+Then, Gaussian concentration followed by Pisier’s entropy bound now give
+E
+
+sup
+
+1
+γ
+2 log log n ≤u≤2 log n
+
+Ln u ≤
+
+C
+→0
+log log nγ/2
+
+for a constant C independent of n. We skip the details as they are similar to
+those for −1 < α < 0.
+This completes the proof of Lemma 6.6. ✷
+Remark 6.1. We should mention that symmetry is not essential at all in
+the previous proof. We only had it there in order to produce a nice change
+to the Ornstein–Uhlenbeck process; also, the values of Q in (6.24) are only
+relevant for t close to 0 or to 1 but its values on the midrange t ∈ a 1 − a for
+any fixed 0 < a < 1 are not important. Verification of these facts is elementary
+and is omitted.
+Summarizing, we give the following theorem.
+Theorem 6.7. Let Q be a differentiable quantile function whose derivative
+Q is bounded on any interval a 1 − a, 0 < a < 1, and such that
+640
+
+t3/2 Q t
+t3/2 Q 1 − t
+= lim 1
+=1
+lim 1
+t→0  log tα/2
+t→0  log tα/2
+2
+2
+
+for some α ∈ −1 ∞. Let F be the corresponding cumulative distribution
+function, let
+
+2n  Q1−1/n
+Ft1 − Ft dt
+59
+γn =
+π Q1/n
+and let
+
+
+bn =
+
+641
+
+
+bn =
+
+8 · 2−α √
+nlog nα+1/2
+α+1
+8 · 2−α 
+n log log n
+α+1
+
+for α > −1
+
+for α = −1
+
+Let Xi , i ∈ N, be i.i.d. with commmon c.d.f. F, let Fn be the corresponding
+empirical c.d.f. and let
+∞
+Fn t − Ft dt
+n ∈ N
+414
+Zn = n
+−∞
+
+Then,
+642
+
+Zn − γn
+→d
+bn
+
+
+1+
+
+2 log 2
+13
+−
+g
+π
+3π
+
+where g is a standard normal random variable, with convergence of the absolute moments of any order 0 < p < 2. Moreover γn can be replaced by EZn
+in (6.42).
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1065
+
+Proof. By Remark 6.1, we may as well assume that Q has the form
+(6.24). A simple computation using the form cn of the normalizing constants
+bn in
+ Proposition A.1 shows that Xi ∈ DA2 bn  with standard normal limit
+for ni=1 Xi − EXi /bn , bn as in (6.41). Now, as mentioned above, Lemma 4.1
+and the weighted approximation of the uniform empirical process by Brownian
+bridges (Corollary 6.1) imply that the sequences in (6.5) are weak convergence
+equivalent; that is, the sequence at the left side of (6.42) is weak convergence
+equivalent to the sequence Gn in (6.9). The sequence Gn is stochastically
+bounded and the pth absolute powers of its terms are uniformly integrable
+for any p > 0 by Proposition 6.2. All of its subsequential limits in law have
+Gaussian-like tail probabilities by Proposition 6.2 and are infinitely divisible
+by Lemma 6.6; therefore, by Proposition 6.5, they are normal. But then, by
+Proposition 6.4, they all coincide with the variable at the right of (6.42). Convergence of moments in (6.42) follows from the uniform integrability result in
+Theorem 4.2 and the limit (6.12) (Corollary 6.3). It also follows from Corollary
+6.3 that γn can be replaced by EZn in (6.42). ✷
+∞
+Obviously, the integral −∞ Vttα/2 ∧ 1 dt exists for α < −2. The Gaussian part of Theorems 5.1 and 6.7 give central limit theorems for the Brownian
+bridge, or, what is the same, for the Ornstein–Uhlenbeck process. The statements for this last process have a particularly nice form and are somewhat
+surprising. Thus, we single them out in the following theorem.
+Theorem 6.8. Let Vt, t ∈ R, be a stationary Ornstein–Uhlenbeck process
+and let α ∈ −2 ∞. Then:
+(a) If α > −1,
+
+ s/2
+
+1
+8·2−α α+1/2
+s
+α+1
+
+643
+
+
+
+→d
+
+1+
+
+(b) For α = 1,
+
+Vt − EVttα/2 dt
+
+13
+2 log 2
+−
+g
+π
+3π
+
+ s/2
+
+1
+644
+
+−s/2
+
+8·2−α
+log s1/2
+α+1
+
+
+
+→d
+
+1+
+
+−s/2
+
+Vt − EVtt−1/2 dt
+
+2 log 2
+13
+−
+g
+π
+3π
+
+(c) The integrals
+∞
+Vt − EVttα/2 dt
+−∞
+
+as well as
+
+∞
+−∞
+
+for − 2 < α < −1
+
+Vt − EVtt−1 ∧ 1 dt
+
+1066
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+exist in the sense of convergence of all moments as the limits of integration
+expand to +∞ and to −∞.
+For α = 0 this result follows from Theorem 9, page 94, in Mandl (1968).
+APPENDIX
+We have used several times in this article two explicit formulas for the
+norming constants in the domain of attraction of the normal law, based on
+quantiles, and due to CCHM (1986b). Their proof of the equivalence of these
+two formulas is analytic (Propositions A.1 and A.2), but then, consistent with
+their approach to the central limit theorem, they show that these formulas
+work by means of the weighted approximation of the uniform empirical process
+by Brownian bridges. Because these formulas are so useful, we believe it is
+worthwhile that they be incorporated into the classical approach to the central
+limit theorem and, for this reason, here we give a direct proof of the fact that
+these expressions do satisfy the classical defining relation for the norming
+−2
+2
+constants, namely, nb−2
+n VarXIX≤bn  → 1 (or nbn Ubn  → 1 if EX = ∞).
+Proposition A.1 [CCHM (1986b)]. Let X Xi , i ∈ N, be i.i.d. random variables in DA2 bn  and let Q be their quantile function. Set
+
+ 1−1/n
+2 1/2
+√  1−1/n 2
+cn = n
+Q t dt −
+Qt dt
+1/n
+
+and
+dn =
+
+1/n
+
+ 1−1/n  1−1/n
+1/n
+
+1/n
+
+s ∧ t − st dQs dQt
+
+1/2
+
+
+
+Then
+A1
+
+lim
+
+cn
+
+n→∞ bn
+
+= lim
+
+dn
+
+n→∞ bn
+
+=1
+
+or, equivalently,
+A1 
+
+n
+1 
+X − EX →d g
+cn i=1 i
+
+and
+
+n
+1 
+X − EX →d g
+dn i=1 i
+
+where g is a standard normal random variable.
+Note that, since X =d Qθ, θ uniform on 0 1, we have
+ 1−1/n
+EX and 1/n Q2 t dt → EX2 . Hence, if EX2 = ∞ then
+cn 
+
+
+1/2
+√  1−1/n 2
+n
+Q t dt
+
+which is the expression in (4.21).
+
+1/n
+
+ 1−1/n
+1/n
+
+Qt dt →
+
+1067
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+Proof.
+
+A2
+
+It can be easily seen that
+
+ 
+ 
+
+1
+1
+1
+1
+2
+2 1
+2
+2
+dn = cn + Q
++Q 1−
+−
+Q
++Q 1−
+n
+n
+n
+n
+n
+
+ 
+
+1−1/n
+1
+1
++Q 1−
++2 Q
+Qt dt
+n
+n
+1/n
+
+2
+
+[see, e.g., Shorack and Wellner (1986), page 43]. Now, (A.2) and (4.6) imply
+that
+d2n − cn2
+=0
+n→∞
+b2n
+lim
+
+and, therefore, it suffices to prove the first limit in (A.1). The result is trivial
+if EX2 < ∞, since then limn→∞ n−1/2 cn = VarX. Hence, we can assume
+√  1−1/n
+EX2 = ∞ and then replace cn by n 1/n Q2 t dt1/2 , which we will also
+denote by cn for ease of notation. Set yn = Q1/n ∨ Q1 − 1/n and zn =
+Q1/n∧Q1−1/n. Since EX2 = ∞, we have yn → ∞. We will also assume
+zn → ∞. Otherwise, Q1/n or Q1−1/n is bounded and a slight modification
+of the reasoning below provides the same result. Set Ut = EX2 I−t<X≤t , t > 0
+(note that this definition of U differs slightly from that in Section 4, but, by
+slow variation, both share the same asymptotic properties). We recall from the
+theory of domains of attraction [Feller (1971) or Araujo and Giné (1980)] that
+U is slowly varying,
+A3
+
+x2 Pr X ≥ x
+=0
+x→∞
+Ux
+lim
+
+and (A.1 ) [or (A.1)] holds if and only if
+n
+Ucn  = 1
+lim
+n→∞ cn 2
+Observe that (4.5) and the facts that X =d Qθ, θ uniform on 0 1, imply
+ Ft
+Ut = F−t Q2 ydy. Now
+ Fcn  2
+n
+F−cn  Q y dy
+Ucn  =  1−1/n
+2
+cn
+Q2 y dy
+1/n
+
+A4
+
+ 1/n
+
+ Fcn  2
+2
+F−cn  Q y dy
+1−1/n Q y dy
++  1−1/n
+= 1 +  1−1/n
+Q2 y dy
+Q2 y dy
+1/n
+1/n
+= 1 + ε1 n + ε2 n 
+
+Therefore, it suffices to prove that limn→∞ εi n = 0, i = 1 2. We prove first
+that
+A5
+
+EX2 IQ1/n<X<Q1−1/n
+Uyn 
+
+→1
+
+1068
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+as n → ∞. To see this, suppose Q1/n ≥ Q1 − 1/n. Then using (4.4), (4.5)
+and the fact that X =d Q, we obtain
+  2
+
+
+ EX2 IQ1/n<X<Q1−1/n
+Q yIQ1−1/n≤Qy≤−Q1/n dy
+
+− 1 =
+
+Uyn 
+Uyn 
+ 2
+Q yIQ1−1/n<Qy≤−Q1/n dy
+=
+Uyn 
+A6
+
++
+
+Q2 1 − 1/n Pr X = Q1 − 1/n
+Uyn 
+
+≤
+
+y2n
+z2 Pr X ≥ zn
++ n
+nUyn 
+Uyn 
+
+≤
+
+y2n Pr X ≥ yn
+z2 Pr X ≥ zn
++ n
+Uyn 
+Uyn 
+
+and the same inequality holds if Q1/n < Q1 − 1/n. Now (A.3) and (A.6)
+prove (A.5). As a consequence,
+
+ 1−1/n
+n Q1/n<Q<Q1−1/n Q2 y dy
+n 1/n Q2 y dy
+cn2
+=
+≥
+y2n
+y2n
+y2n
+A7
+
+2
+EX2 IQ1/n<X<Q1−1/n
+Q1/n<Q<Q1−1/n Q y dy
+≥
+=
+→∞
+y2n Pr X ≥ yn
+y2n Pr X ≥ yn
+by (A.3) and (A.5). Therefore, Fcn  ≥ 1−1/n for n large enough, which implies
+ε2 n ≥ 0. Then
+n  Fcn 
+Qy dy
+cn2
+cn 1−1/n
+n 1
+n 
+QyIQ1−1/n<Q≤cn dy +
+QyIQy=Q1−1/n dy
+≤
+cn
+cn 1/n
+n 
+Q1 − 1/n
+=
+QyIQ1−1/n<Q≤cn dy +
+
+cn
+cn
+
+0 ≤ ε2 n =
+A8
+
+ Fcn  2
+n 1−1/n
+Q y dy
+
+≤
+
+Note that the last inequality in the first line already shows that ε2 n ≤ 1 and,
+likewise ε1 n ≤ 1. This proves
+n
+Ucn  ≤ 3
+cn2
+
+A9
+
+for n large enough, a fact that will be used later. In order to estimate the
+bound given by (A.8) observe that
+
+a
+Pr X > t dt =
+y dFy + a Pr X > a
+0
+
+0 a
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1069
+
+and therefore
+
+A10
+
+n 
+QyIQ1−1/n<Q≤cn dy
+cn
+n  cn
+=
+Pr X > t dt − n Pr X > cn
+cn Q1−1/n
+n
++ Q1 − 1/n Pr X > Q1 − 1/n 
+cn
+
+Then, (A.3), (A.9) and slow variation of U show that for all x > 0,
+nx2 Pr X > cn x
+1
+≥ lim sup nx2 Pr X > cn x 
+n→∞
+n/cn2 Ucn x
+3 n→∞
+
+0 = lim
+that is,
+A11
+
+n Pr X > cn x → 0
+
+for all x > 0. Moreover, since n Pr X > Q1 − 1/n ≤ 1, dominated convergence gives
+A12
+
+1
+n  cn
+Pr X > t dt =
+n Pr X > xcn dx → 0
+cn Q1−1/n
+Q1−1/n/cn
+
+as n → ∞. Now (A.7), (A.10), (A.11) and (A.12) prove that the upper bound in
+(A.8) tends to 0; that is, ε2 n → 0. Similarly, ε1 n → 0, which completes the
+proof. ✷
+Acknowledgments. Part of E. Giné’s research was carried out while visiting the Statistics Department at the University of Washington and he wishes
+to acknowledge Jon Wellner’s generous hospitality. We also thank Jon Wellner
+for several stimulating and illuminating conversations on the subject of this
+paper; in particular, at a moment when we were content with the law of large
+numbers in Corollary 4.4, he suggested looking at the distributional limit of
+the centered Wasserstein distance, and this led to the present Section 5. We
+are also indebted to R. Bass, R. Pyke and J. Wellner for help in a search for
+references on the CLT for Markov processes; R. Bass pointed out Uchiyama’s
+(1980) article to us. We thank David Mason for looking at the manuscript and
+discussing some of it with us, as well as for several references (in particular
+for Proposition 5.6, which we had obtained independently).
+REFERENCES
+Araujo, A. and Giné, E. (1980). The Central Limit Theorem for Real and Banach Valued Random
+Variables. Wiley, New York.
+Billingsley, P. (1968). Convergence of Probability Measures. Wiley, New York.
+
+1070
+
+E. DEL BARRIO, E. GINÉ AND C. MATRÁN
+
+Borell, C. (1975). The Brünn–Minkowski inequality in Gauss space. Invent. Math. 30 207–216.
+Byczkowski, T. (1977). Gaussian measures on Lp spaces 0 ≤ p < ∞. Studia Math. 59 249–261.
+Csörgő, M. and Horváth, L. (1986). Approximations of weighted empirical and quantile processes. Statist. Probab. Lett. 4 275–280.
+Csörgő, M. and Horváth, L. (1988a). On the distributions of Lp norms of weighted uniform
+empirical and quantile processes. Ann. Probab. 16 142–161.
+Csörgő, M. and Horváth, L. (1988b). Central limit theorems for Lp -norms of density estimators.
+Probab. Theory Related Fields 80 269–291.
+Csörgő, M. and Horváth, L. (1993). Weighted Approximations in Probability and Statistics.
+Wiley, New York.
+Csörgő, M., Csörgő, S., Horváth, L. and Mason, D. M. (1986a). Weighted empirical and quantile
+processes. Ann. Probab. 14 31–85.
+Csörgő, M., Csörgő, S., Horváth, L. and Mason, D. M. (1986b). Normal and stable convergence
+of integral functions of the empirical distribution function. Ann. Probab. 14 86–118.
+Csörgő, M., Horváth, L. and Shao, Q. M. (1993). Convergence of integrals of uniform empirical
+and quantile processes. Stochastic Process. Appl. 45 283–294.
+Csörgő, S. and Mason, D. (1991). A probabilistic approach to the tails of infinitely divisible laws.
+In Sums, Trimmed Sums and Extremes 317–336. Birkhäuser, Boston.
+de Acosta, A., Araujo, A. and Giné, E. (1978). Poisson measures, Gaussian measures and the
+central limit theorem in Banach spaces. In Advances in Probability (J. Kuelbs, ed.) 4
+1–68. Dekker, New York.
+de Acosta, A. and Giné, E. (1979). Convergence of moments and related functionals in the central
+limit theorem in Banach spaces. Z. Wahrsch. Verw. Gebiete 48 213–231.
+Feller, W. (1971). An Introduction to Probability Theory and Its Applications 2. Wiley, New York.
+Giné, E. (1983). The Lévy-Lindeberg central limit theorem in Lp , 0 < p < 1. Proc. Amer. Math.
+Soc. 88 147–153.
+Giné, E. and Zinn, J. (1983). Central limit theorems and weak laws of large numbers in certain
+Banach spaces. Z. Wahrsch. Verw. Gebiete 62 323–354.
+Horn, R. A. (1972). On necessary and sufficient conditions for an infinitely divisible distribution
+to be normal or degenerate. Z. Wahrsch. Verw. Gebiete 21 179–187.
+Jain, N. C. (1977). Central limit theorems and related questions in Banach space. In Proceedings
+of Symposium in Pure and Applied Mathematics 31 55–65. Amer. Math. Soc. Providence, RI.
+Lawniczak, A. (1983). The Lévy–Lindeberg central limit theorem in Orlicz spaces. Proc. Amer.
+Math. Soc. 89 673–679.
+Ledoux, M. and Talagrand, M. (1991). Probability in Banach Spaces. Springer, Berlin.
+Mandl, P. (1968). Analytical Treatment of One-Dimensional Markov Processes. Springer, New
+York.
+Mandrekar, V. and Zinn, J. (1980). Central limit problem for symmetric case: convergence to
+non-Gaussian laws. Studia Math. 67 279–296.
+Mason, D. M. (1991). A note on weighted approximations to the uniform empirical and quantile
+processes. In Sums, Trimmed Sums and Extremes 269–283. Birkhäuser, Boston.
+Mason, D. M. (1998). An exponential inequality for a weighted approximation to the uniform
+empirical process with applications. Preprint.
+Montgomery-Smith, S. J. (1994). Comparison of sums of independent identically distributed
+random variables. Probab. Math. Statist. 14 281–285.
+Pisier, G. (1983). Some applications of the metric entropy condition to harmonic analysis. Banach Spaces, Harmonic Analysis and Probability. Lecture Notes in Math. 995 123–154.
+Springer, Berlin.
+Pisier, G. (1986). Probabilistic methods in the geometry of Banach spaces. Probability and Analysis. Lecture Notes in Math. 1026 167–241. Springer, Berlin.
+Resnick, S. I. (1987). Extreme Values, Regular Variation and Point Processes. Springer, New York.
+Shorack, G. R. and Wellner, J. A. (1986). Empirical Processes with Applications to Statistics.
+Wiley, New York.
+
+THE L1 NORM OF THE EMPIRICAL PROCESS
+
+1071
+
+Sudakov, V. N. and Tsirel’son, B. S. (1974). Extremal properties of half-spaces for spherically
+invariant measures. Zap. Naučn. Sem. Leningrad. Otdel. Mat. Inst. Steklov. (LOMI)
+41 14–24.
+Talagrand, M. (1996). New concentration inequalities on product spaces. Invent. Math. 126 505–
+563.
+Uchiyama, K. (1980). Brownian first exit from and sojourn over one-sided moving boundary and
+application. Z. Wahrsch. Verw. Gebiete 54 75–116.
+E. del Barrio
+C. Matrán
+Departamento de Estadı́stica e I. O.
+Facultad de Ciencias
+Universidad de Valladolid
+E-47002, Valladolid
+Spain
+E-mail: tasio@westad.eis.uva.es
+matran@mac.cie.uva.es
+
+E. Giné
+Department of Mathematics
+Department of Statistics
+University of Connecticut
+Storrs, Connecticut 06269
+E-mail: gine@uconnvm.uconn.edu
+
+

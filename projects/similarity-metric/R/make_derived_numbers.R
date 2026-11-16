@@ -246,6 +246,33 @@ wr(dsd, "gusto_dist_sd.csv")
 sc("gusto_dist_sd_min", min(dsd$ratio), "min over the 30 (EM, partner) pairs of W1 / SD of Region 8's distribution of that modifier")
 sc("gusto_dist_sd_max", max(dsd$ratio), "max over the 30 (EM, partner) pairs of W1 / SD of Region 8's distribution of that modifier")
 
+# ---- 14. GUSTO-I: position of each 95% interval relative to the reference distance Delta_clin / L_UB (referee 2026-11-14 M2) ----
+# reference distance = TAU of R/gusto_operability_check.R (section 8: 1 year for age, 5 mmHg for SBP at Delta_clin = 1 percentage
+# point). reading = "above" if the lower limit exceeds it, "below" if the upper limit lies under it, "contains" otherwise.
+# A description of where the intervals of results/gusto_r8_w1_per_pair.csv lie; it is not a pooling rule.
+rr <- do.call(rbind, lapply(c("age", "sysbp"), function(v) {
+  lo <- pp[[paste0("ci_lower_", v)]]; hi <- pp[[paste0("ci_upper_", v)]]; ref <- tau_clin[[v]]
+  data.frame(em = if (v == "age") "age" else "sbp", partner = pp$partner, ci_lower = lo, ci_upper = hi, reference = ref,
+             reading = ifelse(lo > ref, "above", ifelse(hi < ref, "below", "contains")), stringsAsFactors = FALSE) }))
+rr <- rr[order(rr$em, rr$partner), ]; rownames(rr) <- NULL
+stopifnot(nrow(rr) == 30, all(rr$ci_lower != rr$reference), all(rr$ci_upper != rr$reference))
+wr(rr, "gusto_reference_reading.csv")
+
+# The partner lists of Section 4.4 are typed in the manuscript; this writer stops if the data no longer give them (Louis 2026-11-14 m1).
+.rd <- function(e, r) sort(rr$partner[rr$em == e & rr$reading == r])
+stopifnot(identical(.rd("age", "above"), c(2L, 3L, 16L)), identical(.rd("age", "below"), c(5L, 7L)),
+          identical(.rd("sbp", "above"), c(9L, 11L, 12L)), identical(.rd("sbp", "below"), c(1L, 2L, 3L, 4L, 5L, 6L, 13L)))
+
+# ---- 15. GUSTO-I: resolved distances below 0.2 SD of Region 8's distribution (Louis 2026-11-14 M5) -------------------------
+# resolved = results/gusto_operability.csv resolved_anchor (the null floor of Section 4.2); ratio = section 13 (gusto_dist_sd.csv).
+op <- rd("results", "gusto_operability.csv")
+op$em2 <- ifelse(op$em == "age", "age", "sbp"); op$partner <- as.integer(sub("^R", "", op$region))
+rb <- merge(dsd[, c("em", "partner", "ratio")], op[, c("em2", "partner", "resolved_anchor")], by.x = c("em", "partner"), by.y = c("em2", "partner"))
+stopifnot(nrow(rb) == 30)
+rb$resolved <- as.integer(as.logical(rb$resolved_anchor)); rb$below02 <- as.integer(rb$ratio < 0.2); rb$resolved_anchor <- NULL
+rb <- rb[order(rb$em, rb$partner), ]; rownames(rb) <- NULL
+wr(rb, "gusto_resolved_below_02.csv")
+
 wr(do.call(rbind, scalars), "derived_scalars.csv")
 writeLines(capture.output(sessionInfo()), file.path(OUT, "make_derived_numbers_sessionInfo.txt"))
 cat("make_derived_numbers: done\n")

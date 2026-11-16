@@ -156,4 +156,3 @@
 [verify] 9 candidates in every set                                  PASS
 
 [verify] overall: ALL PASS (0 failures)
-[save] results/verify_study2.log

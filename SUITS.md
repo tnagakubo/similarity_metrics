@@ -10,8 +10,8 @@
 ## Current Status
 
 **Active Project**: similarity-metric (per-EM W₁ paper, target *Statistics in Medicine*)
-**Phase**: 8 — Revision（査読応答）→ `projects/similarity-metric/LAB_STATUS.md`（2026-10-12 11:40 同期済み）
-**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — v6 + Terminal pass（09-27）+ 生成基盤（D-20261011-8）+ 冷読 referee D-20261011-11 + 残差 D-20261012-2 + 外部/referee #2 D-20261012-3 + 実務家 D-20261014-2 + 削減 D-20261014-1 / D-20261015-1 + **骨子からの絞り込み D-20261015-2（10-15 08:20、Tak「図の削減は愚策ではないか」: 図 2 本を復活、L* 表を削除、R1–R4 に答えない文を削除、Louis review-fix Major 7 反映）**。**15 pp、error 0、undefined 0、abstract 231/250、本文 5,796 語（SiM 上限の 1.0×）、図 4・表 5、numbers 113/113 sourced、guards 65 本 0 FAIL（3 vacuous）**。判定表 `review_response/ESSENCE_SKELETON_20261015.md`。**未 commit**（原稿側の commit は Tak）。Tak の拒否権は marker `D-20261015-2`（26）・`Louis review-fix 2026-10-15 08:06`（6）・`D-20261015-1`（76）の段落に対して投稿前まで開いている
+**Phase**: 8 — Revision（査読応答）→ `projects/similarity-metric/LAB_STATUS.md`（2026-11-14 12:30 同期済み。Phase は 8 のまま）
+**EN paper**: `projects/similarity-metric/paper/per_em_W1_wiley.tex` — **2026-11-14 12:30 現在（D-20261114-1 適用済み・未 commit、HEAD = `8308f84`）: 16 pp・本文 6,116 語・abstract 250・図 4・表 5、build error 0・undefined 0、guards 79/0 FAIL、numbers 115/115、verify 2 本 ALL PASS。投稿前の網羅レビュー 3 本 + Louis review-fix を適用。修正前 = `review_response/known_bad/per_em_W1_wiley_pre_D-20261114-1.{tex,pdf}`、投稿用 source = `paper/submission/per_em_W1_wiley_submission.tex`。Open O-1〜O-5（DECISIONS D-20261114-1）。**前回までの経過: v6 + Terminal pass（09-27）+ 生成基盤（D-20261011-8）+ 冷読 referee D-20261011-11 + 残差 D-20261012-2 + 外部/referee #2 D-20261012-3 + 実務家 D-20261014-2 + 削減 D-20261014-1 / D-20261015-1 + **骨子からの絞り込み D-20261015-2（10-15 08:20、Tak「図の削減は愚策ではないか」: 図 2 本を復活、L* 表を削除、R1–R4 に答えない文を削除、Louis review-fix Major 7 反映）**。**15 pp、error 0、undefined 0、abstract 231/250、本文 5,796 語（SiM 上限の 1.0×）、図 4・表 5、numbers 113/113 sourced、guards 65 本 0 FAIL（3 vacuous）**。判定表 `review_response/ESSENCE_SKELETON_20261015.md`。**未 commit**（原稿側の commit は Tak）。Tak の拒否権は marker `D-20261015-2`（26）・`Louis review-fix 2026-10-15 08:06`（6）・`D-20261015-1`（76）の段落に対して投稿前まで開いている
 **Paper（2026-10-17 午後, D-20261017-1）**: Tak の指示で §3 を **推定 → 識別** の順に（§3.1 Estimation Properties、§3.2 Identification；節は内容で呼び 'Study 1/2' は本文から消えた、abstract も同順）。build 15 pp・guards 67/0・numbers 105/105・本文 5,526 語。CLAIMS 凡例に新旧番号表、PAPER_LOGIC・要約図更新。commit `a2d55c7`・push 済み（16:05、Tak「push」; main = origin/main）
 **Question / Aim（Tak 10-12 10:46）**: A1 効果修飾因子の分布の類似性を定量的に評価する指標を提示すること（`LAB_STATUS.md`、R1–R4 が対応）
 **原則（Tak 09-25）**: 論文は違いを定量化するだけ。併合の判定規則は規定しない → [[feedback_quantify_not_decide]]。**Tak の 3 原則（10-12）**: 根拠なしで進めない（S21）／研究は発散・論文は収束（S22）／ネタはストック `/idea`（S23）
@@ -57,6 +57,99 @@
 ---
 
 ## 🎬 Live Script
+
+### [2026-11-14 14:50] Scene: §4.4 は C、引用は 34 から 28 へ
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak の返事は三行。§4.4 は C。引用の位置は自分たちで決めろ。過剰な引用もよくない、規則を再確認しろ。*
+
+**Harvey**: （ホワイトボードに七行書く）
+「規則だ。支える節の直後に置く。自前の結果には付けない。一つの事実に一つの出典。引用符には必ず出典。読んだ原典だけ。初出に一度。初等的な事実には付けない。"That's the whole game."」
+
+**Rachel**: （Panaretos & Zemel の PDF を開いて）
+「Villani と Vallender は原典が手元にございません。同じ内容は読了済みの Panaretos & Zemel 2019 にすべてあります。定義が p.406、metric が p.407、quantile 形と CDF 形が p.410、KR 表現と W_p ≤ W_q が p.414 です。§2.2 の 6 箇所を 2 箇所にまとめました。」
+
+**Louis**: （赤ペン）
+「`andrews2000` は自前の simulation の文に付いていた。原典も読んでいない。外せ。`riley2010` は Fisher と重複。`redko2017` は本筋に要らない節だ。それと R5 を例に使うな。両方の EM で線の下にいるのはあれだけだ。R7 にしろ。」
+
+**Mike**: （registry を回して）
+「I got it! 例は age の R3（1.96–3.28）、R7（0.30–0.95）、R6（0.63–1.39）。Table 5 と同じ 2 桁で、6 個とも `gusto_reference_reading.csv` から生成しています。件数の key 2 本は削除しました。」
+
+**Katrina**: （build log を読み上げる）
+「15 頁、error 0、undefined 0。guards 80 本 0 FAIL。registry PASS。引用 28 key、missing 0。本文 6,079 語。」
+
+**Donna**: （DECISIONS を閉じて）
+「D-20261114-2 に記録したわ。規則は memory にも入れた。未読で残るのは `efron1993` だけ。commit はしていない。」
+
+**Jessica**: （入口から）
+「"Let me be clear." 引用は飾りではない。読んだものだけを引け。」
+
+---
+
+### [2026-11-14 12:55] Scene: Tak の判断 — placeholder は残す、cell は足さない、gate は後で
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak の返事は五行。Donna が DECISIONS D-20261114-1 に verbatim で写す。*
+
+**Donna**: （記録しながら）
+「O-1 と O-2 は閉じたわ。placeholder は私たちは書かない。0–0.2 SD の cell は走らせない — Tak の言葉は『あれもこれもとしていたら範囲だけ広がって何が言いたいのかわからなくなる』。"I'm Donna. I know everything."」
+
+**Harvey**: （頷く）
+「正しい。範囲外だと一文で言ってある。それで足りる。§4.4 の列挙は詳細を出す — 修正前、修正後、戻す案を並べろ。"I don't have dreams, I have goals."」
+
+**Louis**: （腕を組む）
+「§4.4 は記述と判定の境目だ。名指しの R5 は消したが、列挙そのものを Tak が嫌うなら例示三本に絞る案もある。"You just got Litt up!"」
+
+**Mike**: 
+「どの案でも数値は生成のままです。列挙を外すなら key が二つ未使用になるだけで、gate には影響しません。"I got it!"」
+
+**Rachel**: 
+「未確認の原典五本は DOI と、原稿でどの文に付いているかを一覧にしてお渡しします。"Hard work beats talent when talent doesn't work hard."」
+
+**Katrina**: 
+「`/reproduce` と `/submission-check` は後回しと記録。原稿は 16 pp のまま、未 commit。"Results speak for themselves."」
+
+**Jessica**: 
+「"Let me be clear." 承認は gate が済んでからだ。急がない。」
+
+---
+
+### [2026-11-14 12:30] Scene: 投稿前の網羅レビュー — referee #3・検証・引用監査 → 改訂 D-20261114-1
+
+**INT. PEARSON SPECTER LITT - CONFERENCE ROOM - DAY**
+
+*Tak の指示は「網羅的にレビューし、論文投稿に耐えうる作品を作って。修正前のファイルは残して。論文の目的は勝手に変えないで」。三本のレビューが机に並び、改訂が 12:20 に適用された。原稿の隣には修正前の `.tex` と `.pdf`。*
+
+**Donna**:（三つの報告書を順に叩いて）
+「数えるわよ。冷読 referee は Major 7・Minor 17、再計算は不一致 0。Mike の検証は gate 5/5 PASS、`\numval{}` 81 key 全部一致、それでも丸めと量化子の指摘が E1 から E8、CLAIMS の stale が 7 行に orphan が 5 件。Rachel の引用監査は 34 key で NOT SUPPORTED 1・PARTIAL 18・NOT VERIFIED 6。機械の gate が全部緑のまま、これだけ出たのよ。"I'm Donna. I know everything." — 緑のランプが何を見ていないかも含めてね。」
+
+**Harvey**:（腕を組んで）
+「一番ひどいのは A.2 の一文だ。"Every valid bound with the constant …" は行の途中の `%` の後ろに入っていて、10-15 から PDF に無かった。§4.3 は "ranking.R2 has" と空白なしで繋がっていた。undefined は 0、guard も通る。書いたつもりの文が組版されていないことは、どの gate も言わない。復元した。」
+
+**Mike**:（表を指して）
+「それと、丸めた表示が文の量化子を偽にしていた。coverage は 0.92–0.95 と書きながら、同じ文の最低値が 0.917。"at most" は厳密な上界の 0.005 だけに残して、あとは観測最大と書き直した。miss 側の 1.12% は exact 真値の `study2_interval_variants.csv` に付け替え。I got it! — 数字は合っていても、文が嘘になることがある。」
+
+**Katrina**:
+「§4.4 に結果を書いた。R4 は読み方の例示なのに、規則だけで読んだ結果が無かった。age は R2・R3・R16 が参照線の上、R5・R7 が下、10 が跨ぐ。SBP は R9・R11・R12 が上、R1–R6 と R13 が下、5 が跨ぐ。表は `gusto_reference_reading.csv` が single writer。Results speak for themselves.」
+
+**Louis**:（赤を入れた紙を投げて）
+「Critical は A.2 だ。"no CATE that only reduces risk can have" という全称の支えは Lee の年齢群平均 20.5% だけ。`data/gusto.csv` の SBP = 0 の 6 例は 6/6 が死亡している。SBP 1–79 は 35.9%（n = 493）。0.56 の幅を自前のデータが否定していない。全称は外させた。Major 9 も全部当たった。"do not bound the sum" は偽 — 加法 CATE なら余裕の和で bound される。R5 を名指しした文は併合候補の指名に読める。abstract は 0.2 SD の良い cell だけを出していた。n = 100 は 0.904 だ。You just got Litt up!」
+
+**Rachel**:（ファイルを開いたまま）
+「引用は、原典を読んだ範囲に文言を合わせました。gusto1993 の N = 40,830 と 16 regions は論文の記述ではなく predtools のデータの事実なので、そう書いています。`quan2010` は原典が無く、引用から外しました。原典を読めていない `riley2010`、`villani2009`、`vallender1974`、`efron1993`、`andrews2000`、それと Matsushima の Data S1 は Paper Request のままです。Tak にお願いしなくてはなりません。Hard work beats talent when talent doesn't work hard.」
+
+**Donna**:（CLAIMS を閉じて）
+「台帳は 66 行。Mike が stale とした行は現行の文に揃えたわ。C-28 は narrowed で再登録 — "SMD の blind は尺度に付く" の一文だけ。昇格は、現行の文と evidence を私が確認できた 14 行だけよ。C-12・C-54 は Mike が CSV を作った本人で、Louis の検算済み一覧に無いから pending のまま。numbers は 115/115、guards は 79 本 0 FAIL、build は 16 pp・error 0・undefined 0、abstract 250、本文 6,116 語、verify 2 本 ALL PASS。そして **未 commit**。HEAD は `8308f84` のまま。」
+
+**Jessica**:（全員を見渡して）
+「Let me be clear. 投稿の承認はまだ出していない。著者・所属・謝辞・funding・repository URL・AI 利用の開示、この placeholder が埋まるまで投稿物ではない。`/reproduce` が先。gate が緑なのは、準備ができた証拠ではなく、見ている範囲が狭いというだけの話だ。」
+
+**Harvey**:
+「Tak に残る判断は五つだ。O-1: 0–0.2 SD の coverage cell を走らせるか。応用の resolved 23 本のうち 17 本がそこにある。O-2: 著者と placeholder。O-3: Paper Request の 6 本。O-4: `/reproduce` と `/submission-check`。O-5: marker の拒否権、特に §4.4 の列挙と abstract。I don't have dreams, I have goals. 次の goal は投稿だが、順番は Jessica の言ったとおりだ。」
+
+---
 
 ### [2026-10-17 14:40] Scene: 推定を先に — §3 の順を入れ替える
 

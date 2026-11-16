@@ -112,7 +112,7 @@ fig_ari <- function(palette = "greyscale") {
     scale_color_manual(values = pal$color[lv], breaks = lv, labels = parse(text = METHOD_LABELS[lv])) +
     scale_linetype_manual(values = pal$linetype[lv], breaks = lv, labels = parse(text = METHOD_LABELS[lv])) +
     scale_shape_manual(values = pal$shape[lv], breaks = lv, labels = parse(text = METHOD_LABELS[lv])) +
-    labs(x = "sample size per region, n  (log scale)",
+    labs(x = "Sample size per region, n (log scale)",
          y = "adjusted Rand index") +
     .theme + guides(color = guide_legend(nrow = 1))
 }
@@ -126,8 +126,8 @@ fig_auc <- function(palette = "greyscale") {
            panel = factor(paste0(sub("_.*", "", set), ": ", type),
                           levels = c("Set3: combined", "Set4: sym_severity", "Set4: bulk_shift"),
                           labels = c("Set 3, combined\n(mean and SD matched)",
-                                     "Set 4, extremes further out\n(mean matched)",
-                                     "Set 4, location shift of everyone\n(control: KS's home turf)")))
+                                     "Set 4, symmetric severity\n(mean matched)",
+                                     "Set 4, bulk shift\n(control)")))
   pal <- .pal(palette); lv <- METHOD_LEVELS
   ggplot(d, aes(n, value, color = method, linetype = method, shape = method)) +
     geom_hline(yintercept = 0.9, color = "grey55", linewidth = 0.35, linetype = "longdash") +
@@ -139,7 +139,7 @@ fig_auc <- function(palette = "greyscale") {
     scale_color_manual(values = pal$color[lv], breaks = lv, labels = parse(text = METHOD_LABELS[lv])) +
     scale_linetype_manual(values = pal$linetype[lv], breaks = lv, labels = parse(text = METHOD_LABELS[lv])) +
     scale_shape_manual(values = pal$shape[lv], breaks = lv, labels = parse(text = METHOD_LABELS[lv])) +
-    labs(x = "sample size per region, n  (log scale)",
+    labs(x = "Sample size per region, n (log scale)",
          y = "AUC (match versus discordant)") +
     .theme + guides(color = guide_legend(nrow = 1))
 }

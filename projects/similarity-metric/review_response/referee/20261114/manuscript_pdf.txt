@@ -1,0 +1,914 @@
+Received: Added at production         Revised: Added at production     Accepted: Added at production
+
+DOI: xxx/xxxx
+
+
+
+RESEARCH ARTICLE
+
+
+
+Quantifying Effect Modifier Similarity for Regional Pooling in
+Multi-Regional Clinical Trials
+
+Author One1                      Author Two2                   Author Three1
+
+1
+    Department Name, Institution Name, State,          Abstract
+    Country
+2                                                      The ICH E17 guideline describes regional pooling in multi-regional clinical trials (MRCTs) in terms of the
+    Department Name, Institution Name, State,
+    Country                                            similarity of effect modifier distributions but names no measure, and to our knowledge no distance between
+                                                       regional effect modifier distributions has been evaluated for it. We quantify how two regions’ distributions of
+Correspondence                                         each candidate effect modifier differ by the Wasserstein-1 (W1 ) distance in original units. If the conditional
+Corresponding Author, Department Name,                 average treatment effect is common to all regions, depends only on that modifier and is Lipschitz with
+Institution Name, Address.
+                                                       clinical slope Lclinical , regional average treatment effects differ by at most ∆max = Lclinical W1 on a risk-
+Email: corresponding@institution.edu
+                                                       or mean-difference scale; when Lclinical is unknown, each distance is read against the distance at which a
+                                                       sponsor’s bound on the slope could, at worst, produce a clinical margin. For true distances of about 0.4 to 1.2
+                                                       SD (normal reference; equal n), bootstrap coverage from 100 patients per region was 0.92–0.95, below 0.95
+                                                       beyond Monte Carlo error in 5 of ten cells (0.947–0.951 at the application’s operating point). In a selection
+                                                       simulation (matches supplied), the standardized mean difference stayed at chance up to 2,000 patients per
+                                                       region in some configurations; W1 and the Kolmogorov–Smirnov (KS) statistic reached the target (AUC 0.9)
+                                                       in every configuration. In a GUSTO-I-based example, partner rankings on age and systolic blood pressure
+                                                       differed; a null floor marked distances not distinguishable from no difference. The framework quantifies
+                                                       differences; the pooling judgment remains clinical.
+
+                                                       KEYWORDS
+                                                       multi-regional clinical trial; ICH E17; effect modifier; Wasserstein distance; regional pooling; distributional
+                                                       similarity
+
+
+
+
+1               INTRODUCTION
+
+Multi-regional clinical trials (MRCTs), conducted across multiple countries or regulatory regions under a single protocol, have
+become a common design in global pharmaceutical development. 1,2 The International Council for Harmonisation (ICH) E17
+guideline, adopted in 2017, established principles for planning and designing MRCTs to evaluate whether treatment effects can
+be regarded as generalizable across the target population. 3
+   Regulatory authorities in Japan and China examine the consistency of treatment effects in regional subpopulations, 4,5 yet
+individual regional sample sizes in global MRCTs are often insufficient for that purpose. Regional pooling, in which regions with
+similar patient characteristics are grouped for analysis, is a key strategy for enhancing the assessment of regional consistency, and
+the ICH E17 guideline describes pooling decisions in terms of the similarity of effect modifier distributions. 3 In the PREVENT
+trial of secukinumab, a workshop report describes countries with a similar distribution of effect modifiers being clustered post
+hoc into five pooled regions on binary characteristics (CRP and MRI positivity, sex). 4
+
+
+
+ Abbreviations: AMI, acute myocardial infarction; AUC, area under the receiver operating characteristic curve; CATE, conditional average treatment effect; CDF, cumulative
+distribution function; CI, confidence interval; CRP, C-reactive protein; EDF, empirical distribution function; GUSTO, Global Utilization of Streptokinase and t-PA for Occluded
+coronary arteries; ICH, International Council for Harmonisation; IPD, individual patient data; KL, Kullback–Leibler; KS, Kolmogorov–Smirnov; MRCT, multi-regional clinical trial;
+MRI, magnetic resonance imaging; NMPA, National Medical Products Administration; RMSE, root mean squared error; RWE, real-world evidence; SBP, systolic blood pressure; SD,
+standard deviation; SMD, standardized mean difference.
+
+
+
+
+Statist. Med. 2026;00:1–15                                      wileyonlinelibrary.com/journal/                                      © 2026 Copyright Holder Name              1
+2                                                                                                                     AUTHOR ONE ET AL .
+
+   An effect modifier is a baseline patient characteristic, such as age, disease severity or a genetic marker, for which the treatment
+benefit differs across subgroups. Regions with different patient compositions may therefore observe different average treatment
+effects even if the drug works identically at the individual level, so the similarity of the full effect modifier distribution, not only
+its average level, matters for regional pooling. We focus on continuous effect modifiers; categorical effect modifiers raise distinct
+considerations and are outside the present scope.
+   Despite the regulatory importance of effect modifier distributional similarity, current practice lacks a standardized, clinically
+calibrated methodology. The ICH E17 guideline provides no specific metric, threshold, or statistical procedure for determining
+when distributions are “similar enough.” Song et al., on the NMPA’s implementation of ICH E17, identify the pooling strategy
+as an area where ambiguity remains and describe clustering populations on distances defined from the correlation between
+effect modifiers and endpoints. 5 The pooling-strategy chapter of a reference volume on multi-regional trials under ICH E17
+introduces, as one of many possible approaches, cluster analysis of regions on region-level summaries of the candidate effect
+modifiers, and does not evaluate it. 6 Two gaps remain. First, to our knowledge no distance between regional effect modifier
+distributions has been proposed and evaluated for this purpose: a single summary per modifier leaves two regions that agree on
+it but differ in spread, shape, or tail behaviour at distance zero, and any finite set of summaries requires deciding in advance
+which distributional features are relevant. Second, the chapter calls for a judgment of whether differences in the impact of effect
+modifiers across pooled regions are “clinically meaningful or not” but supplies no metric to operationalize that judgment.
+   The ingredients are not new in themselves. The inequality on which the clinical calibration rests is the Kantorovich–Rubinstein
+duality, used in the same form in the optimal-transport analysis of domain adaptation; 7,8 the similarity between a trial sample
+and a target population has been summarized by propensity-score metrics, 9 a generalizability index 10 and an equivalence test
+on a trimmed Mallows distance. 11 None of these converts the difference between two regions’ distributions of an individual
+effect modifier into a bound on the regional effect difference whose constant is a clinical slope, or evaluates such a distance for
+regional pooling. The contribution of this paper is that formulation and the evaluation of the measure’s identification and of its
+estimator’s properties.
+   This paper addresses these gaps by proposing a quantitative framework for assessing effect modifier distributional similarity
+across regions, based on the Wasserstein-1 (W1 ) distance between two cumulative distribution functions, retained in the original
+measurement units of the effect modifier. We estimate W1 with bootstrap confidence intervals and link it to clinical interpretation
+through a calibration framework.
+
+
+
+2         METHODS
+
+Let the conditional average treatment effect (CATE) be denoted τ (x) = E[Y(1) − Y(0) | X = x], where X is the effect modifier.
+When this function is non-constant, the average treatment effect observed in region r depends on the distribution Fr of the effect
+modifier in that region:                                   Z
+                                                         τ̄r =   τ (x) dFr (x).                                                      (1)
+
+Assessing pooling suitability therefore requires a measure of distributional difference between regions. Equation (1) presupposes
+an effect scale on which the regional effect is the average of the conditional effects, that is, a collapsible contrast such as a
+risk difference, a mean difference or a difference in restricted mean survival time; marginal odds and hazard ratios fall outside
+Proposition 1 unless the regional effect is first defined by standardization on a collapsible scale.
+
+
+2.1          Existing Approaches and Their Limitations
+
+The most widely used measure for comparing covariate distributions across groups is the standardized mean difference (SMD), 12
+which by construction captures only differences in location: N(50, 52 ) and N(50, 152 ) yield SMD = 0 despite a threefold
+difference in spread. Distributional distance measures compare distributions beyond summary statistics: empirical distribution
+function (EDF) statistics such as the Kolmogorov–Smirnov (KS) statistic, DKS = supx |F1 (x) − F2 (x)|, compare CDFs directly,
+and information-theoretic divergences such as Kullback–Leibler (KL) divergence take a density-based approach.
+   Each of these approaches has limitations for comparing effect modifier distributions across regions. EDF-based statistics such
+as the KS statistic capture full distributional differences but lack a clinically interpretable scale, and the bound on treatment
+effect heterogeneity they admit is governed by the total variation of the CATE, a constant that is clinically stated only for a
+QUANTIFYING EFFECT MODIFIER SIMILARITY FOR REGIONAL POOLING                                                                                                                 3
+
+
+                            (A)                                                     (B)
+                                       0.04                                                                   1.00
+
+
+
+
+                                                                                     Cumulative Probability
+                                       0.03                                                                   0.75
+
+                                                                                                                                                          Region
+
+
+
+
+                             Density
+                                       0.02                                                                   0.50                                              Region 1
+                                                                                                                                                                Region 2
+                                                                                                                                 W1
+                                       0.01                                                                   0.25
+
+
+
+                                       0.00                                                                   0.00
+                                              0    25      50      75     100                                        0      25      50      75      100
+                                                  Effect Modifier Value                                                    Effect Modifier Value
+
+
+F I G U R E 1 The Wasserstein-1 distance as the area between cumulative distribution functions, illustrated with a right-skewed
+Region 1 (gamma distribution) and a symmetric Region 2 (normal distribution). Panel (A): probability densities. Panel (B):
+cumulative distribution functions; the shaded area equals W1 (F1 , F2 ).
+
+
+monotone CATE, for which TV(τ ) = |τ (b) − τ (a)| on a support [a, b]. KL divergence is asymmetric, infinite for non-overlapping
+empirical distributions, and requires density estimation that is impractical with small regional samples. These gaps motivate a
+measure that (i) captures distributional features beyond location, (ii) provides a clinically interpretable scale, and (iii) offers a
+bound on regional treatment effect differences whose constant is a per-unit clinical slope; the Wasserstein-1 distance and its
+clinical calibration, developed next, satisfy all three.
+
+
+2.2         Per-Effect-Modifier Wasserstein-1 Distance
+
+Among distributional distances that could capture the full distributional differences relevant to regional pooling, we adopt the
+Wasserstein-1 distance (W1 ) for three reasons: it responds to differences beyond location; the heterogeneity bound it admits
+(Proposition 1 below) has a per-unit clinical slope Lclinical as its constant; and that bound is valid for every CATE in the class,
+sharp when the slope is the only restriction placed on the CATE, and tighter, as a function of W1 and the mean difference, when
+the CATE is also monotone; for any particular CATE it is therefore a conservative upper bound. The W1 distance admits three
+equivalent representations on the real line. 13,14
+  Let F1 and F2 denote the cumulative distribution functions (CDFs) of an effect modifier in two regions. Then
+                                Z ∞                        Z 1                                   Z
+                                                                 −1        −1
+                W1 (F1 , F2 ) =     |F1 (x) − F2 (x)| dx =     |F1 (u) − F2 (u)| du =      inf      |x − y| dπ(x, y),           (2)
+                                        −∞                                      0                                                                π∈Π(F1 ,F2 )
+
+
+where Fr−1 is the quantile function and Π(F1 , F2 ) is the set of probability couplings with marginals F1 and F2 . The CDF form
+expresses W1 as the area between the two CDFs (Figure 1); the quantile form as the integrated absolute difference of quantile
+functions; and the Kantorovich form as the minimum expected absolute displacement to transport one distribution onto the
+other. 14 Unlike the standardized mean difference, W1 responds to differences in variance, skewness, and other distributional
+features. 15
+   W1 carries the units of the underlying effect modifier in each of the three equivalent forms of equation (2), so it is expressed
+on the original scale and supports direct clinical interpretation: a regional W1 = 5 mmHg in systolic blood pressure means that
+optimally transporting one distribution onto the other moves probability mass an average distance of 5 mmHg. Values of W1
+for effect modifiers measured on different scales are not directly comparable, so we restrict attention to per-effect-modifier
+assessment.
+   W1 is a proper metric on the space of probability distributions with finite first moment. 13 It also admits a Kantorovich–
+Rubinstein dual representation 13                                  Z           Z
+                                                        W1 (F1 , F2 ) =         sup                                      f dF1 −         f dF2 ,                           (3)
+                                                                           ∥f ∥Lip ≤1
+
+which expresses W1 as the largest possible difference in expected values of a 1-Lipschitz function f between the two distributions
+(∥f ∥Lip ≤ 1 means |f (x) − f (y)| ≤ |x − y| for all x, y). If the conditional average treatment effect function τ (x) is Lipschitz
+4                                                                                                                        AUTHOR ONE ET AL .
+
+continuous with constant Lclinical , so that |τ (x) − τ (y)| ≤ Lclinical |x − y|, then τ /Lclinical is 1-Lipschitz and applying equation (3)
+yields the central result of this section:
+Proposition 1. (Connection to heterogeneity). Suppose the CATE function τ is the same in every region and depends on the effect
+modifier X alone. If τ is Lipschitz continuous with constant Lclinical , then for any two regions with effect modifier distributions F1
+and F2 ,
+                                                  |τ̄1 − τ̄2 | ≤ Lclinical · W1 (F1 , F2 ).                                         (4)
+                                                                                                          R
+Proof. Apply equation (3) with f = τ /Lclinical , which is 1-Lipschitz by assumption. This yields (τ /Lclinical ) d(F1 − F2 ) ≤
+W1 (F1 , F2 ). Combining with equation (1) for τ̄r and rearranging yields equation (4).
+The bound is not specific to W1 : for a CATE of bounded variation on a bounded support, a Kolmogorov–Smirnov bound
+TV(τ ) · DKS also holds, and neither it nor equation (4) dominates the other in general (Appendix A.2); W1 ≤ W2 gives a valid
+Lclinical · W2 bound with the same constant that is never tighter. 13 Equation (4) is sharp when the Lipschitz constant is the only
+restriction placed on the CATE: by the Kantorovich–Rubinstein duality of equation (3), Lclinical W1 is the supremum of |τ̄1 − τ̄2 |
+over all common Lclinical -Lipschitz CATEs, attained by a CATE whose slope changes sign at every crossing of the two CDFs
+(Appendix A.2). A monotone CATE gives the supremum 12 Lclinical (W1 + |µ1 − µ2 |) ≤ Lclinical W1 , with equality when the CDFs
+do not cross (Appendix A.2), so ∆max = Lclinical W1 is a conservative upper bound by construction.
+   Because the bound involves W1 in its original measurement units multiplied by a clinical slope, no further normalization is
+required and we adopt W1 in its original units throughout.
+
+
+2.3          Estimation
+
+Given samples {X1,i }ni=1
+                       1
+                          from region 1 and {X2,j }nj=1
+                                                     2
+                                                        from region 2, the Wasserstein-1 distance is estimated using empirical
+distribution functions. Since F̂1 and F̂2 are piecewise constant (right-continuous step functions), the integral in equation (2)
+reduces to a finite sum over the intervals between consecutive distinct values of the pooled sample:
+                                                    m−1
+                                                    X
+                                             b1 =
+                                             W            |F̂1 (x(k) ) − F̂2 (x(k) )| · (x(k+1) − x(k) ),                               (5)
+                                                    k=1
+
+where F̂r denotes the empirical CDF of region r and x(1) < · · · < x(m) are the m distinct values of the pooled sample. When
+{x : F1 (x) = F2 (x) ∈ (0, 1)} has Lebesgue measure zero, as when the two CDFs cross only at isolated points (Appendix A.1, with
+its moment and sample-ratio conditions), the limit is Gaussian and the ordinary nonparametric bootstrap is consistent; 16 where
+the CDFs coincide on an interval, including F1 = F2 , the naive bootstrap is not consistent. 17,16,18 A Wald interval is governed by
+the same condition and requires an estimate of the limit’s variance, which depends on sgn(F1 − F2 ) and hence on where the
+CDFs cross, whereas the percentile bootstrap requires none; we therefore employ the nonparametric percentile bootstrap with
+B = 2,000 replicates. 19 Each replicate resamples each region independently, with replacement and at its own size, and the 95%
+interval is formed by the 2.5th and 97.5th sample percentiles of the B replicates (R’s default quantile definition, type 7).
+   Because W1 is a distance, W   b 1 is non-negative by construction and typically positive when the two regions are draws from the
+same distribution: it is biased upward at every sample size, E W       b 1 ≥ W1 (Appendix A.1), and the percentile interval does not
+correct this bias. We refer to the sampling distribution of W1 under F1 = F2 as the null floor; it is obtained, per region pair, by
+                                                                  b
+drawing two independent resamples, of the two regions’ actual sizes, from one region’s empirical distribution—the anchor’s in
+Section 4.2—and recomputing W        b 1 . An observed W b 1 at or below its 95th percentile is one the estimator would produce with
+appreciable probability from identical distributions, so it is not evidence of a difference; how large the difference could be is
+read from the upper confidence limit of W     b 1 . Declaring a distance unresolved in this way is a one-sided test of F1 = F2 at level
+0.05; the comparisons of Section 4 are not adjusted for multiplicity, since no inference about pooling is drawn from the number
+of unresolved distances.
+
+
+2.4          Interpretation and Clinical Calibration
+
+We refer to the Lipschitz constant of the CATE function τ (x) as the clinical slope Lclinical : the maximum change in the treatment
+effect per unit change in the effect modifier, on the outcome scale of the trial—for example, absolute 30-day mortality per year of
+QUANTIFYING EFFECT MODIFIER SIMILARITY FOR REGIONAL POOLING                                                                                 5
+
+
+age or per mmHg of systolic blood pressure, quoted as a proportion, so that Lclinical = 1 × 10−2 per year is one percentage point
+per year and a margin ∆clin stated in percentage points is divided by 100. Meta-regression on treatment-by-covariate interaction
+in prior individual patient data (IPD) estimates the average interaction slope, 20,21 which is, in absolute value, a lower bound on
+the Lipschitz constant, so an Lclinical specified from it should carry a sponsor-specified safety factor.
+   From Proposition 1, the maximum potential difference in regional average treatment effects attributable to effect modifier
+distributional differences is
+                                                     ∆max = Lclinical · W1 (F1 , F2 ),                                           (6)
+expressed in the units of the trial outcome scale; when Lclinical is independently known, equation (6) provides a direct clinical-scale
+translation of the observed distributional difference.
+   The estimator W   b 1 has a percentile bootstrap CI (Section 2.3), and inferential uncertainty propagates linearly to ∆max when
+Lclinical is treated as fixed: [∆max,L , ∆max,U ] = Lclinical · [W1,L , W1,U ]. When Lclinical itself is uncertain or unavailable, the sponsor
+states instead a plausible upper bound LUB on it from prior evidence and a pre-specified clinical margin ∆clin (the minimal
+clinically important treatment effect difference, the non-inferiority margin, or the targeted overall effect). By equation (6), a
+common CATE whose slope does not exceed LUB can produce a regional difference of at least ∆clin only if W1 ≥ ∆clin /LUB , and
+within the class of CATEs restricted only by their slope some such CATE produces it whenever W1 ≥ ∆clin /LUB (Appendix A.2);
+we call ∆clin /LUB the reference distance, the sponsor’s illustrative input rather than a threshold for pooling, and read each W           b1
+                                                                ′                                     ′
+with its confidence interval against it; any other bound LUB       is read in the same way at ∆clin /LUB , since the distance and its
+interval are reported. An interval wholly below this distance means that, provided Lclinical ≤ LUB , the distributional difference
+cannot produce such a regional difference even at the upper confidence limit of the distance.
+   Specifying Lclinical (or its upper bound LUB ) is a clinical judgment, informed but not determined by prior evidence, for which
+the sponsor carries responsibility—the same footing as a non-inferiority margin. A prognostic gradient alone guarantees no
+bound on the modification slope, prognostic and treatment-effect gradients being distinct quantities. 22,23
+   The framework is deliberately estimation-centered rather than testing-based: W1 has no universal cutoff that separates
+“similar” from “dissimilar,” and what a given W1 means clinically depends on the clinical slope Lclinical , which is external to the
+distributional comparison. Per-pair W1 and ∆max with bootstrap CIs are inputs for sponsor and regulatory judgment, which is not
+driven by a significance test; 24 the one test, the null floor of Section 2.3, governs how an estimate is displayed and read, not
+whether regions are pooled.
+
+
+3          SIMULATION STUDIES
+
+Two simulation studies follow, both reported in the ADEMP structure for simulation studies. 25 The estimation study (Section 3.1)
+evaluates bias, variability and bootstrap coverage of W b 1 . The identification study (Section 3.2) evaluates whether each distance
+measure can detect, at some sample size, that a candidate region’s effect modifier distribution differs from the anchor’s, on
+a selection task in which candidates built from the anchor’s population are ranked against candidates built from a different
+population, with the number of true matches supplied. It does not order regions that all differ from the anchor, nor rank them by
+effect difference, which depends on the unknown CATE: under a linear CATE only the mean difference matters, whereas under
+the V-shaped CATE τ (x) = Lclinical |x − 50| a scale difference about the centre 50 produces the full Lclinical W1 while the SMD is
+zero.
+
+
+3.1          Estimation Properties
+
+3.1.1           Design
+
+We designed seven systematic scenarios for methodological validation, examining controlled distributional differences in
+location, scale, scale combined with skewness (S6, a mean-matched log-normal), and a location–scale combination. Table 1
+summarizes these scenarios with their true W1 values, in the original units of the effect modifier.
+   For each scenario, we generated samples of size n = 50, 100, and 200 per region. We performed 10,000 replications per
+scenario–sample size combination; the Monte Carlo standard error is at most 0.005 for any reported proportion, and over the 21
+cells it is at most 0.026 for bias, 0.021 for RMSE and 0.024 for mean CI width. Bootstrap confidence intervals were computed as
+in Section 2.3 with B = 2,000 resamples; the performance measures are defined in the note to Table 2.
+6                                                                                                                                                                                                                                             AUTHOR ONE ET AL .
+
+
+T A B L E 1 Estimation study scenarios with true W1 values.
+
+                                                             ID       Description                                                      Distribution 1         Distribution 2                                       True W1
+                                                             S1       Null (identical)                                                 N(50, 102 )            N(50, 102 )                                          0.00
+                                                             S2       Location 0.2σ                                                    N(50, 102 )            N(52, 102 )                                          2.00
+                                                             S3       Location 0.5σ                                                    N(50, 102 )            N(55, 102 )                                          5.00
+                                                             S4       Location 1.0σ                                                    N(50, 102 )            N(60, 102 )                                          10.00
+                                                             S5       Scale 1.5×                                                       N(50, 102 )            N(50, 152 )                                          3.99
+                                                             S6       Skew + scale (Log-normal)                                        N(50, 102 )            LogN(3.787, 0.52 )                                   12.16
+                                                             S7       Location + Scale                                                 N(50, 102 )            N(55, 152 )                                          5.83
+                                    2
+                                                                                                            √
+S6: σlog = 0.5 and µlog = log 50 − σlog /2 = 3.787, giving mean 50 and SD 26.6. True W1 is exact for S1–S5 ( 2/π |σ1 − σ2 | in S5) and obtained by numerical quadrature for S6 and
+S7; the performance measures use the exact values 3.989423 (S5), 12.159806 (S6) and 5.833155 (S7).
+
+
+
+
+3.1.2                                       Results
+
+Figure 2 and Table 2 report bias, coverage and mean CI width of W    b 1 (the table also RMSE), in the original units of the effect
+modifier. The upward bias of Section 2.3 is largest under the null (S1: 2.46 at n = 50, 1.26 at n = 200), where F1 = F2 ; for S3–S7
+it was small relative to the true W1 and at n = 200 at most 0.193 (S7).
+
+
+                                     (A) Bias                                                                            (B) Coverage                                                                              (C) CI width
+                               2.5                                                                                 1.0                                                                                      10.0
+                                                                                    Coverage of 95% bootstrap CI
+
+
+
+
+                                                                                                                                                                              Mean CI width (units of W1)
+    Bias of W1 (units of W1)
+
+
+
+
+                               2.0                                                                                 0.8
+                                                                                                                                                                                                             7.5
+
+                               1.5                                                                                 0.6
+                                                                                                                                                                                                             5.0
+                               1.0                                                                                 0.4
+
+                                                                                                                                                                                                             2.5
+                               0.5                                                                                 0.2
+
+
+                               0.0                                                                                 0.0                                                                                       0.0
+                                       S1   S2   S3     S4       S5   S6   S7                                              S1    S2      S3     S4       S5   S6    S7                                               S1    S2     S3     S4       S5   S6   S7
+                                                      Scenario                                                                                Scenario                                                                                 Scenario
+                                                                                                                         Sample size       n=50           n=100       n=200
+
+
+
+F I G U R E 2 Bias (panel A), coverage of the 95% percentile bootstrap CI (panel B) and mean CI width (panel C) of W      b 1 by
+scenario (S1–S7) and per-region sample size (n = 50, 100, 200), in the original units of the effect modifier. Dashed lines mark
+zero bias and the nominal 0.95; S1 coverage is zero (Section 3.1.2).
+
+
+
+   For S3–S7 at n ≥ 100, coverage ranged over 0.92–0.95; of these ten cells, 5 lie more than two Monte Carlo standard errors (at
+most 0.005) below 0.95, the lowest being S5 at n = 100 (0.917). The shortfall is largest in S5 and S7, whose CDFs cross; there
+the intervals lie above the true value, in line with the upward bias of Section 2.3, whereas in S6 and in S4 at n = 100, where
+the bias is smaller relative to the sampling standard deviation of Wb 1 , the shortfall is small and the misses fall on both sides. At
+n = 50 coverage was lowest in S2, near the boundary (0.703), and in S5 (0.862).
+   Coverage under S1 is zero because its true W1 lies at the parameter space boundary: with continuous data every bootstrap
+replicate of Wb 1 is positive, so a percentile interval cannot contain zero at any sample size. Whether an observed distance is
+distinguishable from no difference is read against the null floor, whose 95th percentile under S1 is 4.21, 2.97 and 2.11 at n = 50,
+100 and 200 (σ = 10, equal n). In S2, S5 and S7, the cells whose intervals miss from below (S4 and S6 at n = 100 fall short
+with misses on both sides), the true value exceeded the upper limit in at most 1.1% of replications at any sample size (never in
+S2), against 2.5% nominal, though at about the nominal rate in S6. The upper confidence limit, which the application reads
+for distances unresolved against the null floor, is therefore a conservative reading of how large a difference could be in S2, S5
+and S7; its one-sided coverage P(W1 ≤ U) for S3–S7 at n ≥ 100 ranged over 0.9710–0.9999 against a nominal 0.975, above
+nominal in S5, S7 and S3 at n = 100, near nominal in S6 and in S3 at n = 200, and below it in S4 at n = 100.
+QUANTIFYING EFFECT MODIFIER SIMILARITY FOR REGIONAL POOLING                                                                                                                          7
+
+
+T A B L E 2 Bias, coverage of the 95% percentile bootstrap confidence interval, RMSE and mean CI width of W
+                                                                                                          b 1 by scenario
+and sample size, in the original units of the effect modifier.
+                                      Scenario              True W1           n        Bias      Coverage        RMSE         Mean CI width
+                                      S1 (Null)                  0.00       50        2.463           0.000         2.63                   4.19
+                                                                           100        1.759           0.000         1.87                   2.94
+                                                                           200        1.260           0.000         1.34                   2.07
+                                      S2 (0.2σ)                  2.00       50        0.989           0.703         1.60                   4.67
+                                                                           100        0.472           0.904         1.13                   3.57
+                                                                           200        0.174           0.947         0.85                   2.84
+                                      S3 (0.5σ)                  5.00       50        0.175           0.951         1.83                   6.22
+                                                                           100        0.051           0.951         1.37                   4.96
+                                                                           200        0.021           0.948         0.98                   3.77
+                                      S4 (1.0σ)                 10.00       50       0.034            0.942         1.98                   7.52
+                                                                           100      −0.013            0.945         1.42                   5.45
+                                                                           200       0.005            0.948         1.00                   3.89
+                                      S5 (Scale)                 3.99       50        0.830           0.862         1.64                   5.65
+                                                                           100        0.393           0.917         1.11                   4.10
+                                                                           200        0.187           0.946         0.77                   2.97
+                                      S6 (Skew)                 12.16       50        0.377           0.945         2.61                   9.73
+                                                                           100        0.203           0.942         1.86                   7.04
+                                                                           200        0.111           0.947         1.29                   5.03
+                                      S7 (Loc+Scale)             5.83       50        0.638           0.928         2.00                   6.97
+                                                                           100        0.340           0.935         1.45                   5.27
+                                                                           200        0.193           0.943         1.01                   3.87
+                                        q
+Bias is Mean(W b 1 ) − W1 and RMSE is Mean[(W     b 1 − W1 )2 ]; coverage is the proportion of the 95% percentile bootstrap intervals that contain W1 , and is zero under S1 because
+W1 = 0 lies at the parameter space boundary and a percentile interval cannot contain it; CI width is the mean of (upper − lower). Scenarios are specified with σ = 10. Results based on
+10,000 replications with B = 2,000 bootstrap resamples.
+
+
+
+  A registered extension of the estimation study (protocol and outputs in the repository) added cells outside the original design:
+unequal regional sizes, a heavy-tailed reference distribution, integer-grid data, n = 1,000 per region and the application’s
+operating point (Table 3). Across the ten non-null cells coverage ranged over 0.921–0.952 (Monte Carlo standard error at most
+0.005; 2000–10,000 replications per cell); at the application’s operating point it was 0.951 with equal sizes and 0.947 with
+unequal, rounded samples, with upper-limit coverage 0.9825 and 0.9775.
+
+
+3.2              Identification
+
+3.2.1                Design
+
+Four worlds are simulated, each with regions constructed either from the anchor’s own population (true matches) or from a
+discordant one. Set 1 (Gaussian) places discordance in location and scale; Set 2 (log-normal) in location and in dispersion
+combined with shape; Set 3 (mixture) in distributional shape alone, every region, matched or discordant, having mean 50 and SD
+10. Set 4 (extremes) places a 5% subgroup in each tail, 40 units from the centre in the anchor; discordant regions displace both
+subgroups (to 70 or 100 units), raise their prevalence to 12% (mean fixed), or displace only the upper subgroup to 100 units,
+and two control regions instead shift their whole population by 2 and 3 units. In the subgroup cells a subgroup of prevalence ε
+displaced by d moves W1 by εd but the KS statistic by at most about ε; the two control regions shift the whole population and
+contain no displaced subgroup. Ground truth is the construction label, so the target is defined without reference to any of the
+compared measures and the comparison is not circular.
+   Three measures enter the comparison: W1 ; the KS statistic, the most common comparison of full distributions; and SMD, the
+standard comparison of location. Other distances, tasks and performance measures run under the protocol (representative-value
+distances, a log-scale SMD, a harm measure based on the largest W1 among the retained regions, the probability that the retained
+set includes a discordant region, a threshold-rule study, an eligibility-rule sensitivity analysis, and a clustering task whose
+8                                                                                                                                                                 AUTHOR ONE ET AL .
+
+
+T A B L E 3 Registered extension of the estimation study: unequal regional sizes, a t3 reference distribution, integer-grid data,
+n = 1,000 per region and the application’s operating point (0.2 SD). Bias, RMSE and mean width in the original units; coverage
+of the 95% percentile interval and of its one-sided 97.5% upper limit.
+     Cell                                                n1        n2      Reps     True W1          Bias    RMSE        Coverage       Upper-limit coverage          Mean width
+     E1 unequal n                                      100       300 10,000              5.00  0.056             1.14         0.947                       0.9784                4.25
+     E1 unequal n                                      200     1,000  5,000              5.00  0.017             0.78         0.941                       0.9734                2.97
+     E2 heavy tails: t3 , null                         100       100 10,000              0.00  1.958             2.09         0.000                       1.0000                3.08
+     E2 heavy tails: t3 , shift                        100       100 10,000              5.00  0.491             1.28         0.921                       0.9947                4.44
+     E3 integer grid                                   100       100 10,000              5.00  0.064             1.38         0.945                       0.9779                4.97
+     E3 integer grid                                   200       200 10,000              5.00  0.021             0.98         0.950                       0.9789                3.77
+     E3 integer grid                                 1,000     1,000  2,000              5.00  0.019             0.45         0.952                       0.9785                1.74
+     E4 large n: S3                                  1,000     1,000  5,000              5.00 −0.002             0.45         0.946                       0.9746                1.74
+     E4 large n: S5                                  1,000     1,000  5,000              3.99  0.034             0.35         0.944                       0.9826                1.35
+     E5 small distance                               1,000     1,000  2,000              2.00  0.034             0.44         0.951                       0.9825                1.66
+     E6 small distance, unequal n, rounded           2,900     1,200  2,000              2.00 −0.001             0.35         0.947                       0.9775                1.37
+
+Cells: E1, unequal regional sizes (100 against 300; 200 against 1,000); E2, a t3 reference scaled to SD 10, under the null and under a 5-unit shift; E3, integer-grid data (the S3 contrast
+rounded to integers at n = 100, 200 and 1,000); E4, n = 1,000 per region for the S3 and S5 contrasts; E5 and E6, the application’s operating point (the 0.2 SD contrast of S2 at
+n = 1,000 per region, and at 2,900 against 1,200 with both samples rounded to multiples of 10, as systolic blood pressure is recorded).
+Under the t3 null the true W1 is zero, so percentile coverage is structurally zero and upper-limit coverage identically 1, as under S1. The rounded-data truth is the W1 of the rounded
+population distributions; Monte Carlo standard error of coverage at most 0.005. Registered (PROTOCOL_study2_extension.md) after the external review; E5, E6 and the
+integer-grid cell at n = 1,000 were added by amendment before being run.
+
+
+
+registered criterion for estimating the number of groups was not met) are not reported; this paper compares distribution-level
+measures with the single-summary SMD and prescribes no grouping procedure; the outputs are in the repository.
+   An anchor and nine candidate regions are drawn; each measure ranks the candidates by their distance to the anchor, and the k
+closest are retained, k being the number of true matches (an oracle the application does not use). Performance is the area under
+the receiver operating characteristic curve (AUC) for discriminating true matches from discordant candidates (chance = 0.5),
+over 10,000 replications per cell at the base grid (n = 25–100 per region) and 3,000 at the extended grid (n = 150–2,000). The
+extended grid, the accuracy target and the definitions of the two behaviours below were fixed after the base-grid results had been
+seen, and the Monte Carlo intervals of Table 4 were added later; the reported target is the middle of the three examined.
+
+
+3.2.2                Two Behaviours: Blind and Recovering
+
+Extending the sample-size grid to n = 2,000 separates the measures into two behaviours (Figure 3). A measure is blind in a
+cell when its AUC stays at chance through n = 2,000: the population value of its distance carries no information about the
+construction label, so the task is unsolvable for that measure at any sample size, an identification failure and not a power failure.
+This is exact by construction in every mean-matched cell, where the population SMD is zero. On the selection task, SMD is
+blind in 7 of the 13 cells (marked in Table 4; AUC 0.49–0.51 across the full grid in all of them).
+   A measure is recovering when its AUC reaches the target and stays above it at every larger sample size: identification succeeds,
+and what remains is a required-sample-size question. W1 and the KS statistic are recovering in every cell; the KS statistic is
+blind nowhere, reaching selection AUC 0.98 at n = 2,000 even in its weakest cell, asymmetric severity in Set 4.
+   Table 4 reports, for all 13 cells, the per-region sample size at which each measure’s selection AUC reaches 0.9, with 95%
+Monte Carlo intervals. The sample sizes of W1 and the KS statistic are not compared here; the reason to use W1 (Section 5) is
+that it is not blind where the SMD is and carries a clinical-scale translation. A check of the bulk-shift control, the cell in which
+the KS statistic reaches the target at the smaller n (Table 4), registered after an exploratory look, is not reported here (protocol
+and outputs in the repository).
+
+
+
+4             APPLICATION: HYPOTHETICAL THROMBOLYTIC MRCT USING GUSTO-I DATA
+
+We illustrate the per-effect-modifier Wasserstein-1 framework through a hypothetical scenario grounded in publicly available data
+from GUSTO-I, a large international trial in acute myocardial infarction (AMI). A sponsor planning a Phase 3 MRCT of a novel
+thrombolytic agent (Drug T) uses IPD from GUSTO-I (N = 40,830; 16 regions) 26 to quantify how the distributions of candidate
+QUANTIFYING EFFECT MODIFIER SIMILARITY FOR REGIONAL POOLING                                                                                                                           9
+
+
+
+                                                Set 3, combined                         Set 4, extremes further out                Set 4, location shift of everyone
+  AUC (match versus discordant)
+
+                                             (mean and SD matched)                           (mean matched)                           (control: KS's home turf)
+                                  1.0
+
+                                  0.9
+
+                                  0.8
+
+                                  0.7
+
+                                  0.6
+
+                                  0.5
+
+                                  0.4
+                                        25   50   100 200 400        1000 2000 25        50    100 200 400      1000 2000 25           50     100 200 400              1000 2000
+                                                                             sample size per region, n (log scale)
+
+                                                                                              W1     KS          SMD
+
+
+F I G U R E 3 Selection AUC (true matches versus discordant candidates) as a function of per-region sample size (n = 25–
+2,000, log scale) for three distance measures in three cells of the identification study: the Set 3 combined cell (mean- and
+SD-matched mixtures), the Set 4 symmetric-severity cell (mean-matched displaced extremes), and the Set 4 bulk-shift control
+cell (uniform location shift of the whole population). The dashed horizontal line marks AUC = 0.9; chance corresponds to 0.5.
+
+
+
+T A B L E 4 Per-region sample size at which selection AUC reaches 0.9, by cell and measure, interpolated on log n over the
+grid n = 25–2,000, with 95% Monte Carlo intervals from the delta method applied to the log-n interpolation. Cells whose AUC
+stays at chance (0.49–0.51) across the full grid are marked “blind”; ≤ 25 marks a target reached at the smallest grid size, where
+no interval is available.
+                                              Cell                          W1 [95% MC interval]   KS [95% MC interval]        SMD [95% MC interval]
+                                              Set 1, location               33 [31, 33]            39 [37, 40]                 30 [29, 31]
+                                              Set 1, scale                  ≤ 25                   76 [73, 78]                 blind
+                                              Set 1, combined               35 [33, 36]            62 [60, 63]                 67 [64, 68]
+                                              Set 2, location               129 [123, 135]         157 [149, 165]              134 [127, 140]
+                                              Set 2, shape                  32 [30, 33]            77 [75, 79]                 blind
+                                              Set 2, combined               60 [58, 62]            188 [182, 193]              529 [509, 548]
+                                              Set 4, symmetric severity     42 [41, 43]            1,047 [1,011, 1,083]        blind
+                                              Set 4, symmetric prevalence   98 [94, 101]           367 [356, 378]              blind
+                                              Set 4, asymmetric severity    67 [64, 69]            1,252 [1,226, 1,278]        530 [507, 554]
+                                              Set 4, bulk shift (control)   377 [362, 392]         333 [318, 348]              489 [469, 509]
+                                              Set 3, combined               368 [354, 381]         550 [528, 572]              blind
+                                              Set 3, shape-skewed           537 [520, 554]         905 [865, 945]              blind
+                                              Set 3, shape-symmetric        690 [661, 718]         716 [687, 747]              blind
+
+Cells are contrast types within each world; the “combined” cell holds discordant regions that differ from the anchor in both of the world’s contrast types at once (in Set 3, asymmetric
+and bimodal), not a pool of the other cells.
+Intervals reflect only the Monte Carlo error of the two AUC estimates that bracket the crossing, not the error of interpolating between grid points; limits are rounded outward to whole
+patients.
+
+
+
+effect modifiers in other regions differ from those in a designated anchor region, treating the GUSTO-I regions as stand-ins for
+the regional populations the new trial would enrol; GUSTO-I was not designed as an MRCT and its regions are anonymized.
+10                                                                                                                   AUTHOR ONE ET AL .
+
+
+4.1          Scenario Design and Effect Modifier Selection
+
+The sponsor takes age and systolic blood pressure (SBP) as the candidate effect modifiers for Drug T. The Fibrinolytic Therapy
+Trialists’ (FTT) meta-analysis of existing fibrinolytic agents 27 concluded that, among patients presenting with ST elevation or
+bundle-branch block, benefit is present irrespective of age and of blood pressure, and reports no per-unit CATE slope on the
+absolute mortality scale for either; we therefore treat Lclinical as unknown for both and read each distance against the reference
+distance ∆clin /LUB of Section 2.4. The illustrative bounds are LUB,age = 1 × 10−2 per year and LUB,SBP = 2 × 10−3 per mmHg
+on the 30-day mortality scale, set so that at a margin ∆clin of 1 percentage point the reference distances are 1 year of age and
+5 mmHg of SBP; the FTT meta-analysis 27 and the GUSTO-I prognostic model 28 are reference points, not sources of the bounds.
+   The sponsor selects Region 8 as the anchor region (n = 2,916 patients). Records with SBP = 0 mmHg (6 patients) or age
+> 100 years (3 patients) were retained; excluding them changed no null-floor classification below and 2 adjacent SBP ranks,
+and winsorizing at the 1st and 99th percentiles changed 4 of the 30 ranks; both checks were made post hoc. SBP is heaped on
+multiples of 10 mmHg, most in Region 8 (79.5% of readings), so recording practice may contribute to the SBP distances (not
+quantified here).
+
+
+4.2          Null Floor: Which Distances Are Distinguishable from No Difference?
+
+We computed the null floor of Section 2.3 separately for each candidate partner, from two independent resamples, with
+replacement, of Region 8’s (R8) empirical distribution at sizes nR8 = 2,916 and npartner , recomputing W b 1 over 2,000 repetitions.
+We call an observed distance unresolved when it lies at or below the 95th percentile of its null distribution (a one-sided test of
+F1 = F2 at level 0.05). A permutation test of F1 = F2 on the pooled sample classifies all 30 distances in the same way (30 of
+30 agree). On age, the distances of six of the fifteen partners—R1, R4, R5, R7, R9 and R15—are unresolved at level 0.05; on
+systolic blood pressure, fourteen of fifteen are resolved, the single exception being R2.
+   How large the differences of the six partners unresolved at level 0.05 could be is read from the upper confidence limits
+(Figure 4, Table 5), which for small distances near the boundary err above rather than below the true value in the estimation study
+(Section 3.1.2). The GUSTO-I distances are 0.03–0.30 SD of Region 8’s distributions, below the 0.4 SD at which S3–S7 begin
+and in places above the 0.2 SD of S2; the extension cells at 0.2 SD, the application’s operating point (Table 3), gave percentile
+coverage 0.951 and 0.947 and upper-limit coverage 0.9825 and 0.9775.
+
+
+4.3          Distributional Assessment: Per-Effect-Modifier W1 Across 15 Partner Regions
+
+We computed W    b 1 between Region 8 and each of the remaining 15 regions for both candidate effect modifiers, with percentile
+bootstrap 95% confidence intervals (B = 2,000): Figure 4 orders the partners by W     b 1 and Table 5 lists them by region number.
+   Several partners fall in the middle of each ranking, where the confidence intervals of neighbouring partners overlap (Figure 4),
+so their order is not resolved by the figure and the order of the figure is not read as a resolved ranking.R2 has the second-largest
+W                                      b 1,SBP (0.95 mmHg), while R9 is among the six smallest W
+ b 1,age (2.15 years) but the smallest W                                                            b 1,age (0.59 years) but the largest
+W1,SBP (6.80 mmHg). Both small distances are unresolved against their null floors (Section 4.2), so the reversal rests on the two
+ b
+large ones and illustrates that the distance on one candidate effect modifier need not carry information about the distance on
+another.
+
+
+4.4          Clinical Interpretation
+
+For each partner, the interval of Wb 1 is read against the reference distance ∆clin /LUB of its effect modifier at ∆clin = 1%pt, the
+dotted line of Figure 4 (1 year for age, 5 mmHg for SBP), with the limits read from Table 5 where an interval ends near the line;
+the line depends on the sponsor’s illustrative bound and is not a threshold for pooling. An interval wholly below the line means
+that even the upper confidence limit of the distance would require a slope above the bound to produce ∆clin ; an interval containing
+the line is compatible with a difference that could and one that could not produce it; an interval wholly above the line means that,
+within the class of CATEs restricted only by their slope, a slope within the bound could produce ∆clin even at the lower confidence
+limit of the distance. For distances unresolved against the null floor, only the upper confidence limit carries the reading.
+QUANTIFYING EFFECT MODIFIER SIMILARITY FOR REGIONAL POOLING                                                                                                               11
+
+
+
+                            (A) Age                                                                                 (B) Systolic blood pressure
+                     R5†                                                                                      R2†
+                                         Dclin LUB                                                                                                    Dclin LUB
+                     R7†                                                                                      R13
+                     R4†                                                                                      R4
+                     R9†                                                                                      R3
+                     R15†                                                                                     R6
+    Partner region
+
+
+
+
+                                                                                             Partner region
+                     R1†                                                                                      R5
+                     R14                                                                                      R1
+                     R12                                                                                      R10
+                     R6                                                                                       R16
+                     R13                                                                                      R14
+                     R11                                                                                      R15
+                     R10                                                                                      R7
+                     R16                                                                                      R12
+                     R2                                                                                       R11
+                     R3                                                                                       R9
+
+                            0.00      1.00               2.00                3.00                                   0.00         2.00     4.00             6.00    8.00
+
+                                             W1 (years)                                                                                 W1 (mmHg)
+
+
+FIGURE 4 W        b 1 with 95% percentile bootstrap CIs for Region 8 versus each partner region (GUSTO-I), ordered by W    b 1 within
+                                                                                                       †
+each panel, in original units: panel (A) age (years), panel (B) systolic blood pressure (mmHg). Distance unresolved against
+its null floor (Section 4.2). The dotted vertical line marks ∆clin /LUB , the distance at which the illustrative bound of Section 4.1
+would produce ∆clin = 1%pt: 1 year for age and 5 mmHg for SBP. The line depends on the sponsor’s illustrative bound and is
+not a threshold for pooling.
+
+
+
+T A B L E 5 Per-effect-modifier Wasserstein-1 distance W  b 1 in original variable units (years for age, mmHg for SBP) with 95%
+percentile bootstrap CIs for Region 8 versus each partner region (GUSTO-I), listed by region number.
+                                                Partner           n     b 1,age (yr) [95% CI]
+                                                                        W                                       b 1,SBP (mmHg) [95% CI]
+                                                                                                                W
+                                                R1            2188      0.65 [0.51, 1.03]†                      3.61 [2.68, 4.93]
+                                                R2            2952      2.15 [1.57, 2.76]                       0.95 [0.76, 1.82]†
+                                                R3            2030      2.61 [1.96, 3.28]                       3.35 [2.32, 4.65]
+                                                R4            2876      0.56 [0.37, 1.16]†                      2.60 [1.82, 3.75]
+                                                R5            1909      0.39 [0.35, 0.92]†                      3.37 [2.32, 4.59]
+                                                R6            1585      0.91 [0.63, 1.39]                       3.37 [2.06, 4.77]
+                                                R7            3150      0.40 [0.30, 0.95]†                      5.07 [4.03, 6.22]
+                                                R9            3123      0.59 [0.40, 1.12]†                      6.80 [5.71, 8.01]
+                                                R10           1717      1.38 [0.79, 2.13]                       4.00 [2.88, 5.39]
+                                                R11           2491      1.27 [0.76, 1.91]                       6.44 [5.25, 7.71]
+                                                R12           4352      0.86 [0.47, 1.43]                       6.40 [5.39, 7.46]
+                                                R13           2297      1.15 [0.76, 1.74]                       2.40 [1.42, 3.72]
+                                                R14           3437      0.70 [0.42, 1.29]                       4.36 [3.41, 5.44]
+                                                R15           2576      0.61 [0.40, 1.25]†                      4.72 [3.60, 5.94]
+                                                R16           1231      1.74 [1.16, 2.47]                       4.28 [3.06, 5.71]
+
+Point estimates with 95% percentile bootstrap CIs (B = 2,000, seed = 2026), listed by region number. † Distance unresolved against its null floor (Section 4.2).
+
+
+
+
+5                          DISCUSSION
+
+This paper answers the requirements set out in Section 2.1. W1 meets requirement (i): in the identification study the SMD is at
+chance at every sample size examined in the mean-matched cells, whereas W1 , like the KS statistic, reaches the discrimination
+target in every cell. It meets requirements (ii) and (iii): the heterogeneity bound ∆max (equation 6) translates distributional
+distance into a clinically interpretable scale, is sharp when the slope is the only restriction on the CATE and tightens under
+12                                                                                                                     AUTHOR ONE ET AL .
+
+monotonicity (Appendix A.2), and its constant is a clinical slope that the sponsor specifies. Its estimation is characterized in
+Section 3.1.2: for true distances of about 0.4 to 1.2 SD at n ≥ 100 per region, percentile bootstrap coverage was below 0.95
+beyond Monte Carlo error in 5 of the ten cells.
+   These findings carry two implications for pooling assessments, illustrated by the GUSTO-I example (Section 4). First, when
+several candidate effect modifiers are considered, the per-modifier distances need not agree: a partner close to the anchor on
+one effect modifier can be distant on another, as in the contrast between R2 and R9. Second, within one effect modifier ∆max
+multiplies every distance by the same Lclinical , so calibration does not reorder partners; what the unknown-slope reading adds is
+the reference distance ∆clin /LUB specified for that modifier, against which each distance is read.
+   Across the 15 partners the orderings by age and by systolic blood pressure distance show no positive agreement (Spearman
+correlation −0.30, 95% interval −0.51 to 0.02 from 1,000 patient-level bootstrap replicates that resample within every region,
+Region 8 shared across partners); the interval excludes the strong positive agreement under which one modifier’s distances
+could stand in for the other’s, so a single distance aggregated over the two modifiers could mask differences that a per-modifier
+assessment retains.
+   In GUSTO-I, whose regional differences are predominantly differences in location (partner standard deviations within a factor
+of 1.11 of the anchor’s), W1 ordered the 15 partners much as the SMD did (Spearman correlation 0.90, 95% interval 0.70 to 0.99,
+for age and 0.95, 0.90 to 0.99, for systolic blood pressure), and a registered survey of region pairs in GUSTO-I, IST-1 and IST-3
+found agreement of the same order (Spearman correlation 0.839–0.996; repository). 29,30 The limitations of the SMD bind where
+distributional differences go beyond location—mixtures and rare displaced subgroups—and configurations beyond location
+cannot be excluded before the distances are computed. The reason to use W1 is that, like the KS statistic, it is not blind where the
+SMD is, and that it carries a translation to the clinical scale whose constant is a per-unit clinical slope, valid for every CATE in
+the class and conservative for any particular one.
+   Because W1 requires only baseline effect modifier distributions, regional data can be assembled from prior trials, registries,
+electronic health records, or other real-world evidence (RWE) sources, provided the source population approximates the
+population each region is expected to enrol, so that the assessment can be made at the planning stage. It uses neither treatment
+assignment nor outcomes, requires individual-level baseline values, and complements rather than replaces assessments based on
+observed treatment effects.
+   The W1 distance is one input within a holistic regulatory evaluation. 3,4 It treats continuous effect modifiers marginally, leaving
+categorical and multivariate extensions for future work, and it is stated for collapsible effect scales (Section 2). Which baseline
+characteristics are effect modifiers is taken as given; their identification requires evidence on treatment-by-covariate interaction
+rather than on prognosis alone (Section 2.4) and lies outside the framework. Because W1 is non-negative, W           b 1 exhibits positive
+bias near zero, zero percentile coverage when the true value is zero (S1), and undercoverage near the boundary and where the
+bias is large relative to the sampling standard deviation, with the intervals erring above the true value (Section 3.1.2). 31 The
+coverage reported for the estimation study from n = 100 per region refers to true distances of about 0.4 to 1.2 SD of the reference
+distribution, with equal regional sizes; the registered extension (Table 3) covers 0.2 SD at the application’s sample sizes, unequal
+sizes, a heavy-tailed reference and grid-recorded data, but not every combination the application presents. Proposition 1 assumes
+a CATE common to all regions, so regional differences in extrinsic factors that alter τ itself lie outside what W1 measures, and
+unmeasured effect modifiers may contribute to heterogeneity beyond what the distance captures.
+   The limitations of the calibration are those of the Lipschitz premise of Proposition 1. First, the constant is a clinical judgment
+(Section 2.4), so conclusions drawn from ∆max , or from the reference distance ∆clin /LUB , are conditional on it. Second, for a
+CATE that changes steeply over a narrow range of the effect modifier—a threshold or step function—the Lipschitz constant is
+large and equation (4) is correspondingly loose. This is by design: the bound is a worst case over the CATEs compatible with
+the stated Lclinical , and a loose bound overstates rather than understates the potential difference. Finally, the bound is per effect
+                                                               P
+modifier. If the CATE is Lipschitz with respect to d(x, y) = k Lk |xk − yk |, then |τ̄1 − τ̄2 | ≤ Wd (P1 , P2 ), the Wasserstein distance
+between the joint distributions under cost d, and Wd ≥ k Lk W1(k) ; the per-modifier sum is a valid bound for a CATE additive
+                                                             P
+
+across modifiers but, under interaction, can understate heterogeneity. Estimating Wd is outside this paper.
+   Inference tailored to the boundary behavior of W  b 1 —resampling fewer than n observations 32 or the numerical delta method for
+directionally differentiable functionals 33 —could extend the operational range of the intervals at small distances.
+   The principal contribution of this paper is a distributional similarity measure for effect modifiers whose heterogeneity bound
+holds for every CATE with a given per-unit clinical slope, is sharp over that class and conservative for any particular CATE, and
+whose calibration constant is that slope. With bootstrap confidence intervals and clinical calibration via ∆max or the reference
+QUANTIFYING EFFECT MODIFIER SIMILARITY FOR REGIONAL POOLING                                                                                        13
+
+distance ∆clin /LUB , W1 supplies a quantitative input to the judgment of “similar enough”, informing, not prescribing, pooling
+decisions.
+
+AUTHOR CONTRIBUTIONS
+[Author 1] conceived the research question and led the project. [Author 2] developed the mathematical framework and conducted
+the simulation study. [Author 3] contributed to the application example and manuscript preparation. All authors reviewed and
+approved the final manuscript.
+
+ACKNOWLEDGMENTS
+The authors thank [colleagues] for helpful discussions on ICH E17 implementation.
+
+FINANCIAL DISCLOSURE
+None reported.
+
+CONFLICT OF INTEREST
+The authors declare no potential conflict of interests.
+
+DATA AVAILABILITY STATEMENT
+R code for computing the Wasserstein-1 distance and reproducing the simulation studies and the application is available at
+[repository URL]. The GUSTO-I individual patient data analysed in Section 4 are publicly available as the dataset gusto in the
+R package predtools (version 0.0.3; https://github.com/resplab/predtools); the trial is described in the original publication; 26
+the analysis scripts load the data frame with data(gusto, package = "predtools") or from the identical CSV copy
+distributed with the code (N = 40,830 in both). The estimation study ran on a PSOCK cluster with L’Ecuyer–CMRG streams
+seeded per cell (42 + 1,000k, k = 1, . . . , 21); replicates are assigned to workers dynamically, so the summaries are reproducible
+to Monte Carlo error, not bit for bit. A registered survey of region pairs in GUSTO-I, IST-1 and IST-3 is reported in Section 5
+only as the range of its rank correlations, its tables not being reproduced; its protocol and outputs are included with the R code,
+as are the registered protocols of the extension of the estimation study and of the Set 4 control check and their outputs, and the
+outputs of the patient-level rank bootstrap and of the post hoc basic interval.
+
+REFERENCES
+ 1. Chen J, Quan H, Binkowitz B, et al. Assessing consistent treatment effect in a multi-regional clinical trial: a systematic review. Pharm Stat.
+    2010;9(3):242–253. doi: 10.1002/pst.438
+ 2. Quan H, Li M, Chen J, et al. Assessment of consistency of treatment effects in multiregional clinical trials. Drug Inf J. 2010;44(5):617–632. doi:
+    10.1177/009286151004400509
+ 3. ICH E17 Expert Working Group . General Principles for Planning and Design of Multi-Regional Clinical Trials (E17). tech. rep., International
+    Council for Harmonisation; Geneva, Switzerland: 2017.
+ 4. Matsushima N, Otsubo Y, Aoi Y, et al. Summary report of a public workshop: case studies of multi-regional clinical trial incorporating concept of
+    the ICH E17 guideline. Clin Pharmacol Ther. 2024;115(5):965–970. doi: 10.1002/cpt.3163
+ 5. Song J, Ji C, Chen M, et al. Basic Considerations for Data Pooling Strategy in Multi-Regional Clinical Trials (MRCTs). Ther Innov Regul Sci.
+    2025;59(2):359–364. doi: 10.1007/s43441-025-00744-8
+ 6. Komiyama O, Hiro S, Matsuoka N, Yamamoto H. Pooling Strategies. In: Li G, Binkowitz B, Wang W, Quan H, Chen J., eds. Simultaneous Global
+    New Drug Development: Multi-Regional Clinical Trials after ICH E17, , Chapman and Hall/CRC, 2021:45–55
+ 7. Shen J, Qu Y, Zhang W, Yu Y. Wasserstein Distance Guided Representation Learning for Domain Adaptation. In: . 32. AAAI. 2018
+ 8. Redko I, Habrard A, Sebban M. Theoretical Analysis of Domain Adaptation with Optimal Transport. In: . 10535 of Lecture Notes in Computer
+    Science. ECML PKDD. Springer 2017:737–753
+ 9. Stuart EA, Cole SR, Bradshaw CP, Leaf PJ. The Use of Propensity Scores to Assess the Generalizability of Results from Randomized Trials.
+    Journal of the Royal Statistical Society: Series A (Statistics in Society). 2011;174(2):369–386. doi: 10.1111/j.1467-985X.2010.00673.x
+10. Tipton E. How Generalizable Is Your Experiment? An Index for Comparing Experimental Samples and Populations. Journal of Educational and
+    Behavioral Statistics. 2014;39(6):478–501. doi: 10.3102/1076998614558486
+11. Munk A, Czado C. Nonparametric Validation of Similar Distributions and Assessment of Goodness of Fit. Journal of the Royal Statistical Society:
+    Series B (Statistical Methodology). 1998;60(1):223–241. doi: 10.1111/1467-9868.00121
+12. Austin PC. An introduction to propensity score methods for reducing the effects of confounding in observational studies. Multivariate Behav Res.
+    2011;46(3):399–424. doi: 10.1080/00273171.2011.568786
+13. Villani C. Optimal Transport: Old and New. Springer, 2009
+14. Vallender SS. Calculation of the Wasserstein distance between probability distributions on the line. Theory Probab Appl. 1974;18(4):784–786. doi:
+    10.1137/1118101
+15. Panaretos VM, Zemel Y. Statistical aspects of Wasserstein distances. Annu Rev Stat Appl. 2019;6:405–431. doi: 10.1146/annurev-statistics-030718-
+    104938
+16. Fang Z, Santos A. Inference on directionally differentiable functions. Rev Econ Stud. 2019;86(1):377–412. doi: 10.1093/restud/rdy049
+17. Dümbgen L. On nondifferentiable functions and the bootstrap. Probab Theory Relat Fields. 1993;95:125–140. doi: 10.1007/BF01197342
+14                                                                                                                                  AUTHOR ONE ET AL .
+
+18. Sommerfeld M, Munk A. Inference for empirical Wasserstein distances on finite spaces. J R Stat Soc Series B. 2018;80(1):219–238. doi:
+    10.1111/rssb.12236
+19. Efron B, Tibshirani RJ. An Introduction to the Bootstrap. New York: Chapman & Hall/CRC, 1993
+20. Riley RD, Lambert PC, Abo-Zaid G. Meta-analysis of individual participant data: rationale, conduct, and reporting. BMJ. 2010;340:c221. doi:
+    10.1136/bmj.c221
+21. Fisher DJ, Carpenter JR, Morris TP, Freeman SC, Tierney JF. Meta-analytical methods to identify who benefits most from treatments: daft, deluded,
+    or deft approach?. BMJ. 2017;356:j573. doi: 10.1136/bmj.j573
+22. Ballman KV. Biomarker: Predictive or Prognostic?. Journal of Clinical Oncology. 2015;33(33):3968–3971. doi: 10.1200/JCO.2015.63.3651
+23. Kent DM, Paulus JK, van Klaveren D, et al. The Predictive Approaches to Treatment effect Heterogeneity (PATH) Statement. Annals of Internal
+    Medicine. 2020;172(1):35–45. doi: 10.7326/M18-3667
+24. Wasserstein RL, Lazar NA. The ASA Statement on p-Values: Context, Process, and Purpose. Am Stat. 2016;70(2):129–133. doi:
+    10.1080/00031305.2016.1154108
+25. Morris TP, White IR, Crowther MJ. Using simulation studies to evaluate statistical methods. Statistics in Medicine. 2019;38(11):2074–2102. doi:
+    10.1002/sim.8086
+26. The GUSTO Investigators . An international randomized trial comparing four thrombolytic strategies for acute myocardial infarction. N Engl J
+    Med. 1993;329(10):673–682. doi: 10.1056/NEJM199309023291001
+27. Fibrinolytic Therapy Trialists’ (FTT) Collaborative Group . Indications for fibrinolytic therapy in suspected acute myocardial infarction: collabora-
+    tive overview of early mortality and major morbidity results from all randomised trials of more than 1000 patients. Lancet. 1994;343(8893):311–322.
+    doi: 10.1016/S0140-6736(94)91161-4
+28. Lee KL, Woodlief LH, Topol EJ, et al. Predictors of 30-day mortality in the era of reperfusion for acute myocardial infarction. Results from an
+    international trial of 41,021 patients. Circulation. 1995;91(6):1659–1668. doi: 10.1161/01.cir.91.6.1659
+29. International Stroke Trial Collaborative Group . The International Stroke Trial (IST): a randomised trial of aspirin, subcutaneous heparin, both, or
+    neither among 19,435 patients with acute ischaemic stroke. Lancet. 1997;349(9065):1569–1581. doi: 10.1016/S0140-6736(97)04011-7
+30. IST-3 collaborative group . The benefits and harms of intravenous thrombolysis with recombinant tissue plasminogen activator within 6 h of acute
+    ischaemic stroke (IST-3): a randomised controlled trial. Lancet. 2012;379(9834):2352–2363. doi: 10.1016/S0140-6736(12)60768-5
+31. Andrews DWK. Inconsistency of the Bootstrap when a Parameter is on the Boundary of the Parameter Space. Econometrica. 2000;68(2):399–405.
+    doi: 10.1111/1468-0262.00114
+32. Bickel PJ, Götze F, van Zwet WR. Resampling Fewer Than n Observations: Gains, Losses, and Remedies for Losses. Statistica Sinica. 1997;7(1):1–
+    31. Reprinted in Selected Works of Willem van Zwet, Springer, 2012, pp. 267–297, doi:10.1007/978-1-4614-1314-1_17.
+33. Hong H, Li J. The Numerical Delta Method. Journal of Econometrics. 2018;206(2):379–394. doi: 10.1016/j.jeconom.2018.06.007
+34. del Barrio E, Giné E, Matrán C. Central limit theorems for the Wasserstein distance between the empirical and the true distributions. Ann Probab.
+    1999;27(2):1009–1071. doi: 10.1214/aop/1022677394
+
+
+
+SUPPORTING INFORMATION
+No supporting information accompanies this article; the R code, the registered protocols and all outputs are available as described
+in the Data availability statement.
+
+
+ How to cite this article: Author One, Author Two, and Author Three. Quantifying effect modifier similarity for regional pooling
+ in multi-regional clinical trials. Statist. Med. 2026;00:1–23.
+
+
+APPENDIX
+
+A PROOFS AND MATHEMATICAL DETAILS
+A.1 Upward Bias and Asymptotic Properties
+Upward bias of W   b 1 . Since E F̂r (x) = Fr (x), Jensen’s inequality gives E |F̂1 (x) − F̂2 (x)| ≥ |F1 (x) − F2 (x)| at every x, and integrating
+the non-negative integrand gives E W       b 1 ≥ W1 for all n1 , n2 .
+                                                                                                                           R√
+   The empirical Wasserstein-1 distance W         b 1 = W1 (F̂1 , F̂2 ) is a consistent estimator of W1 (F1 , F2 ); when       F(1 − F) dx < ∞,
+√                                                   R                                                34
+   n W1 (F̂n , F) converges
+                    R√         in distribution   to   |B(F(x))|   dx   with  B a Brownian    bridge.    For two   samples   with  n1 /(n1 + n2 ) →
+λ ∈ (0, 1), when          Fr (1 − Fr ) dx < ∞ (r = 1, 2) and {x : F1 (x) = F2 (x) ∈ (0, 1)} has Lebesgue measure zero, the directional
+derivative of W1 at (F1 , F2 ) is linear, the limit is Gaussian and the percentile bootstrap interval achieves asymptotically correct
+coverage; 16 this condition excludes F1 = F2 , where the derivative is non-linear and the naive bootstrap is not consistent. 17,16 For
+an effect modifier recorded on a grid, the CDFs are step functions and the condition fails whenever they agree at any grid point
+inside the support; the finite-space results of Sommerfeld and Munk then apply, 18 with a Gaussian limit when the dual solution
+is unique. The condition concerns the population CDFs and cannot be checked from the samples, so for a distance unresolved
+against its null floor F1 = F2 is not excluded and the interval is read at its upper limit only.
+QUANTIFYING EFFECT MODIFIER SIMILARITY FOR REGIONAL POOLING                                                                             15
+
+
+A.2 Comparison with the Kolmogorov–Smirnov Bound; Attainment on the Outcome Scale
+Neither bound dominates in general. On a support [a, b], W1 ≤ (b − a) DKS and TV(τ ) ≤ Lclinical (b − a), and Lclinical · W1 ≤
+TV(τ ) · DKS holds exactly when W1 /DKS ≤ TV(τ )/Lclinical . For a CATE whose slope has constant magnitude Lclinical , such as a
+linear CATE, TV(τ ) = Lclinical (b − a) and equation (4) is never the looser of the two; the Kolmogorov–Smirnov bound gains as
+the CATE’s slope falls below its maximum over much of the support, most sharply for a threshold CATE (Section 5).
+   The Kolmogorov–Smirnov bound is likewise sharp within its own class, by a step CATE of height TV(τ ) at the point where
+|F1 − F2 | is largest. A bound on the magnitude of τ itself tightens equation (4) further: on a support [a, b] the attaining τ ∗ ranges
+over up to Lclinical (b − a), which on the risk-difference scale is 0.91 for age and 0.56 for systolic blood pressure over the recorded
+supports of Section 4, exceeding the highest 30-day mortality Lee et al. report for any age group (20.5% above 75 years 28 ),
+beyond any baseline risk; for distributions with unbounded support no CATE bounded on the outcome scale attains the bound at
+all.
+   Sharpness and the  R x monotone case. Over the unrestricted Lipschitz class, the supremum Lclinical W1 of equation (4) is attained
+by τ ∗ (x) = Lclinical x0 sgn(F2 (t) − F1 (t))R dt, whose slope changes sign at every crossing of the two CDFs. If τ isRalso monotone,
+with 0 ≤ τ ′ ≤ Lclinical , then τ̄1 − τ̄2 = (F2 − F1 ) τ ′ dx lies between −Lclinical A− and Lclinical A+ , where A± = (F2 − F1 )± dx
+satisfy A+ + A− = W1 and A+ − A− = µ1 − µ2 , so that
+
+                                    sup                   |τ̄1 − τ̄2 | = Lclinical max(A+ , A− ) = 12 Lclinical (W1 + |µ1 − µ2 |) ,   (A1)
+                       τ monotone, Lclinical -Lipschitz
+
+which equals Lclinical W1 when the CDFs do not cross and Lclinical W1 /2 when the means coincide. In the application of Section 4,
+the factor (W1 + |µ1 − µ2 |)/(2W1 ) by which a monotone CATE would reduce ∆max ranges from 0.66 to 1.00 across the age
+distances and from 0.72 to 1.00 across the SBP distances (point estimates, including the unresolved R2 on SBP).
+

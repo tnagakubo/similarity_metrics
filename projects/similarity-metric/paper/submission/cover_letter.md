@@ -1,5 +1,7 @@
 # Cover Letter
 
+*Draft rewritten 2026-11-14 (D-20261114-1) for the per-effect-modifier W₁ manuscript; the 2026-02 draft described the retired nABCD index. Fields in [brackets] are for the authors.*
+
 ---
 
 [Date]
@@ -8,54 +10,37 @@
 Statistics in Medicine
 Wiley
 
----
-
-**Re: Submission of Original Article**
+**Re: Submission of a Research Article**
 **Title: Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials**
-
----
 
 Dear Editor,
 
-We are pleased to submit our manuscript entitled "Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials" for consideration as an Original Article in *Statistics in Medicine*.
+We submit the manuscript "Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials" for consideration as a Research Article in *Statistics in Medicine*.
 
-## Why Statistics in Medicine?
+The ICH E17 guideline describes the pooling of regions in multi-regional clinical trials in terms of the similarity of effect modifier distributions, but it names no measure of that similarity. The manuscript presents one: the Wasserstein-1 distance between two regions' distributions of each candidate effect modifier, kept in the modifier's original units.
 
-This manuscript addresses a methodological gap at the intersection of biostatistics and regulatory science—a core focus of your journal. The ICH E17 guideline recommends regional pooling in multi-regional clinical trials based on similarity of effect modifier distributions, yet provides no quantitative methodology. *Statistics in Medicine* has a strong tradition of publishing methods that bridge statistical theory and regulatory practice, making it the ideal venue for this work.
+The manuscript makes three contributions.
 
-## Summary of Contributions
+1. **A clinical-scale reading of a distributional distance.** If the conditional average treatment effect is common to the regions, depends on the modifier alone and is Lipschitz with a per-unit clinical slope, the regional average treatment effects differ by at most the slope times the distance. The inequality is the Kantorovich–Rubinstein duality; what is new is its formulation for regional pooling with a clinical slope as the constant, and the reading of each distance against a sponsor's stated bound when the slope is unknown.
+2. **An evaluation of the estimator.** A simulation study, reported in the ADEMP structure with Monte Carlo standard errors, gives the bias and the coverage of the percentile bootstrap interval, including where the interval undercovers and on which side it errs. A registered extension covers unequal regional sizes, a heavy-tailed reference distribution and grid-recorded data.
+3. **An evaluation of identification.** A selection simulation shows that the standardized mean difference on the original scale stays at chance at every sample size examined when regional means are matched, whereas the Wasserstein-1 distance and the Kolmogorov–Smirnov statistic reach the discrimination target in every configuration.
 
-We develop and validate nABCD (normalized Area Between Cumulative Distributions), a planning-stage dissimilarity index for comparing effect modifier distributions across regions. Our key contributions include:
+An example based on the publicly available GUSTO-I data illustrates how the distances and their intervals are read.
 
-1. **A principled dissimilarity index** based on the Wasserstein-1 distance, capturing full distributional differences (location, scale, and shape) that are missed by the standardized mean difference
+The paper quantifies differences between regional distributions. It deliberately prescribes no pooling rule or threshold; that judgment remains clinical, and we say so in the text. We also report the limits of the work plainly: the bound is a conservative worst case, the calibration constant is a clinical judgment, and bootstrap coverage falls below the nominal level in part of the range studied.
 
-2. **Scale-free estimation** through IQR normalization with percentile bootstrap confidence intervals, enabling comparison across effect modifiers measured on different scales
+The R code, the registered protocols and all outputs will be made available at [repository URL].
 
-3. **Clinical calibration framework** connecting distributional differences to potential treatment effect heterogeneity ($\Delta_{\max}$) through the Kantorovich–Rubinstein duality, with sensitivity analysis over the CATE sensitivity parameter
+**Statements**
 
-4. **Data-source flexibility**: Because nABCD requires only baseline EM distributions, it can be computed from any representative population data source—prior trials, disease registries, electronic health records, or real-world evidence databases
-
-5. **Comprehensive validation** through simulation studies (eight scenarios) and application to two publicly available stroke trial datasets (IST-1, 31 countries; IST-3, 8 countries), demonstrating both EM-unknown and EM-identified planning scenarios
-
-## Relevance and Timeliness
-
-With the increasing globalization of clinical trials, regulatory agencies worldwide are implementing ICH E17. Recent publications from both the China NMPA (Song et al. 2025) and the broader regulatory community (Long et al. 2025) have highlighted the lack of quantitative tools for operationalizing pooling recommendations. Our framework provides this missing tool, with the practical advantage that it can leverage the growing availability of real-world evidence databases for MRCT planning. Open-source R code is provided to facilitate immediate adoption.
-
-## Statements
-
-- This manuscript has not been published previously and is not under consideration elsewhere
-- All authors have approved the submitted version
-- The authors declare no conflicts of interest
-- [Funding statement if applicable]
-
-We believe this work will be of significant interest to your readership of biostatisticians, clinical trialists, and regulatory scientists. We look forward to your consideration.
+- The manuscript has not been published and is not under consideration elsewhere.
+- All authors have approved the submitted version.
+- The authors declare no conflict of interest.
+- [Funding statement]
+- [Statement on the use of AI tools in preparing the manuscript, as the journal's policy requires]
 
 Sincerely,
 
-[Corresponding Author Name]
-[Title, Affiliation]
+[Corresponding author name]
+[Title, affiliation]
 [Email]
-
----
-
-*Cover letter for Statistics in Medicine submission*

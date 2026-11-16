@@ -4,10 +4,10 @@
 
 ## Manuscript Title
 
-**nABCD: A Normalized Metric for Comparing Effect Modifier Distributions in Multi-Regional Clinical Trials**
+**Quantifying Effect Modifier Similarity for Regional Pooling in Multi-Regional Clinical Trials**
 
 **Running Title** (≤70 characters):
-nABCD for Effect Modifier Comparison in MRCTs
+Quantifying Effect Modifier Similarity for Regional Pooling
 
 ---
 
@@ -42,10 +42,11 @@ Fax: [+XX-XXX-XXX-XXXX] (if applicable)
 
 ## Word Count
 
-- **Abstract**: 248 words
-- **Main text**: ~5,000 words (excluding references, tables, and figure legends)
-- **Tables**: 7
+- **Abstract**: 250 words
+- **Main text**: 6,079 words (excluding references, tables, and figure legends; `scripts/structure_audit.py`, 2026-11-14)
+- **Tables**: 5
 - **Figures**: 4
+- **Pages**: 16 (Wiley NJD template, one column)
 
 ---
 
@@ -74,7 +75,7 @@ The authors declare no conflicts of interest.
 
 ## Data Availability Statement
 
-R code for nABCD computation is available at [repository URL]. Simulation data can be regenerated using the provided code.
+As in the manuscript: R code, registered protocols and all outputs at [repository URL]; the GUSTO-I individual patient data are publicly available as the dataset `gusto` in the R package predtools.
 
 ---
 
@@ -94,7 +95,7 @@ R code for nABCD computation is available at [repository URL]. Simulation data c
 
 ## Ethics Statement
 
-Not applicable. This study uses simulated data only.
+Not applicable. The study uses simulated data and publicly available, de-identified data from a published trial (GUSTO-I).
 
 ---
 
@@ -104,4 +105,4 @@ Not applicable. This study uses simulated data only.
 
 ---
 
-*Title page prepared for Statistics in Medicine submission*
+*Title page prepared for Statistics in Medicine submission; updated 2026-11-14 (D-20261114-1) from the nABCD-era draft. Author names, affiliations, ORCID, funding and contributions remain for the authors to fill in.*
