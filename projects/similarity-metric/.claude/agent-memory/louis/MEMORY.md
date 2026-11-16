@@ -1,0 +1,1 @@
+- [Recurring fix holes](feedback_recurring_fix_holes.md) — seven holes the team reopens in /review-fix (ledger drift, omission list, quantifier scope, per-modifier sum, typed labels)

@@ -1,0 +1,12 @@
+<section id="existing" data-transition="fade">
+<p class="eyebrow">2 ｜ 物差し</p>
+<h2>既存の指標は、それぞれ何かが足りない</h2>
+<table>
+<tr><th style="width:22%">指標</th><th style="width:26%">捉えるもの</th><th style="width:52%">足りない点</th></tr>
+<tr><td>SMD（標準化平均差）</td><td>位置（平均）の差</td><td>広がりや形の差に反応しない</td></tr>
+<tr><td>KS 統計量</td><td>分布全体の差</td><td>臨床的に解釈できる尺度を持たない</td></tr>
+<tr><td>KL divergence</td><td>分布全体の差</td><td>非対称で、密度推定が必要。小標本では実用的でない</td></tr>
+</table>
+<p class="sub">例：N(50, 5²) と N(50, 15²) は広がりが 3 倍違うのに、SMD は 0</p>
+<aside>ここから方法です。まず既存の選択肢を並べます。SMD、標準化平均差は平均の差しか見ないので、平均が同じで広がりが 3 倍違う二つの分布でもゼロになります。KS 統計量は分布全体の差を捉えますが、臨床的に解釈できる尺度を持ちません。KL divergence は非対称で、経験分布どうしでは発散しやすく、密度推定も必要なので、地域ごとの小さい標本では実用的ではありません。それぞれ何かが足りない、というのがこのスライドの要点です。</aside>
+</section>

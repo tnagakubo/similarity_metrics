@@ -1,0 +1,10 @@
+<section id="est" data-transition="fade">
+<p class="eyebrow">3 ｜ 読み方</p>
+<h2>推定は、経験分布と percentile bootstrap で行う</h2>
+<div class="cards">
+<div class="card"><p class="card-k">点推定</p><p class="card-t">経験分布の差を積分</p><p class="card-d">二地域の経験分布関数の差の絶対値を足し上げる</p></div>
+<div class="card"><p class="card-k">95% 信頼区間</p><p class="card-t">percentile bootstrap</p><p class="card-d">地域ごとに独立に再抽出し、2,000 回の 2.5・97.5 パーセンタイルを取る</p></div>
+<div class="card"><p class="card-k">注意点</p><p class="card-t">上方に偏る</p><p class="card-d">距離は負にならない。同じ分布の二地域でも正の値が出る</p></div>
+</div>
+<aside>次に、データからどう推定するかです。点推定は単純で、二つの地域の経験分布関数の差の絶対値を積分します。信頼区間は percentile bootstrap です。各地域を独立に、元のサイズで再抽出することを 2,000 回繰り返し、その 2.5 パーセンタイルと 97.5 パーセンタイルを区間にします。分散の推定が要らないことが、この方法を選ぶ理由です。一つ注意があります。距離は負にならないので、推定値は常に上に偏ります。二つの地域が全く同じ分布から来ていても、推定値は正になります。この性質への対処が、次のスライドです。</aside>
+</section>
